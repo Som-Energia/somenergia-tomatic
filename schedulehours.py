@@ -3,36 +3,38 @@
 import itertools
 import random
 
-hores = [
-	 '9:00-10:15',
-	'10:15-11:30',
-	'11:30-12:45',
-	'12:45-14:00',
-	]
+def llegeixHores(horesfile):
+	linees = [
+		l.strip() for l in open(horesfile) if l.strip() ]
+	return ['-'.join((h1,h2)) for h1,h2 in zip(linees,linees[1:]) ]
+
+def llegeixTorns(tornsfile):
+	return dict(
+		(nom, [int(primer), int(segon), int(tercer)])
+		for nom, primer, segon, tercer in (
+			line.split("\t")
+			for line in open(tornsfile)
+			)
+		)
+def llegeixDisponibilitat(disponibilitatFile):
+	with open(disponibilitatFile) as thefile:
+		return[
+			(
+				row[0],
+				row[1] if row[1] in dies else None,
+				row[1] if row[1] not in dies else (row[2] if len(row)>2 else None)
+			)
+			for row in ( line.split() for line in thefile)
+		]
+
+torns = llegeixTorns('torns.csv')
+hores=llegeixHores('hores.csv')
 nhores=len(hores)
 nnivells=3
 dies = 'dl','dm','dx','dj','dv'
 ndies=len(dies)
+indisponibilitats = llegeixDisponibilitat('indisponibilitats.conf')
 
-torns = dict(
-	(nom, [int(primer), int(segon), int(tercer)])
-	for nom, primer, segon, tercer in (
-		line.split("\t")
-		for line in open('torns.csv')
-		)
-	)
-
-indisponibilitats = [
-	('tania','dl',None),
-	('judit','dl',None),
-	('monica','dv',None),
-	('david','dl',None),
-	('david','dv',None),
-	('david',None,'1100'),
-	('pere',None,'1000'),
-	('erola',None,'1000'),
-	('marc',None,'1000'),
-	]
 
 caselles = list(itertools.product(dies, range(nhores), range(nnivells)))
 
