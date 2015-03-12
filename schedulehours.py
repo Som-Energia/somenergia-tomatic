@@ -46,6 +46,14 @@ class Backtracker:
 			((dia,hora,nom), not self.indisponible(dia, hora, nom))
 			for nom, dia, hora in itertools.product(self.companys, dies, range(nhores))
 			))
+		self.teTelefon = dict((
+			((dia,hora,nom), False)
+			for nom, dia, hora in itertools.product(self.companys, dies, range(nhores))
+			))
+		self.tePrincipal = dict((
+			((nom, dia), False)
+			for nom, dia in itertools.product(self.companys, dies)
+			))
 		self.horesDiaries = dict(((nom,dia), 0) for nom,dia in itertools.product(self.companys,dies))
 		self.nbactracks = 0
 
@@ -68,12 +76,26 @@ class Backtracker:
 			self.reportSolution(partial)
 			return
 		day, hora, nivell = caselles[len(partial)]
-#		print partial
+
+		if not nivell and not hora:
+			# Comencem dia
+			diesRestants =  5-dies.index(day)
+			tornsColocables = diesRestants*2
+			for company in self.companys:
+				if torns[company][0] > diesRestants:
+					print "Eps a {} li queden massa T1 per posar".format(company)
+					return
+				tornsPendents = sum(torns[company][torn] for torn in range(nnivells))
+				if tornsPendents > tornsColocables:
+#					print "Eps a {} no li queden dies per posar les seves hores".format(company)
+					return
+
 		companys = list(torns.keys())
 		if self.doshuffle:
 			random.shuffle(companys)
+
 		for company in companys:
-			if torns[company][nivell] == 0:
+			if torns[company][nivell] < 1:
 #				print "En {} ja ha exhaurit els seus torns de {} nivell".format( company, nivell)
 				continue
 			if not self.disponible[day, hora, company]:
@@ -82,12 +104,20 @@ class Backtracker:
 			if self.horesDiaries[company, day]==2:
 #				print "No li posem mes a {} que ja te {} hores el {}".format( company, self.horesDiaries[company], day)
 				continue
-			if self.horesDiaries[company, day]==1 and hora==1:
+			if hora and self.horesDiaries[company, day] and not self.teTelefon[day, hora-1, company]:
+#				print "No li posem hores trencades a {} el {}".format(company, day)
+				continue
+			if hora==2 and self.teTelefon[day, hora-1, company]==1:
 #				print "Deixem esmorzar a {} el {}".format( company, day)
 				continue
+			if nivell==0 and self.tePrincipal[company, day]:
+#				print "Dos principals al {} el {} no, sisplau".format(company,day)
+				continue
 
-			if len(partial) < 20 : print "  "*len(partial)+company[:2]
+			if len(partial) < 60 : print "  "*len(partial)+company[:2]
 
+			if nivell == 0: self.tePrincipal[company, day]=True
+			self.teTelefon[day, hora, company]=True
 			self.disponible[day, hora, company]=False
 			self.horesDiaries[company,day]+=1
 			torns[company][nivell]-=1
@@ -98,8 +128,10 @@ class Backtracker:
 			torns[company][nivell]+=1
 			self.horesDiaries[company,day]-=1
 			self.disponible[day, hora, company]=True
+			self.teTelefon[day, hora, company]=False
+			if nivell == 0: self.tePrincipal[company, day]=False
 
-			if self.nbactracks > 1000:
+			if self.nbactracks > 100000:
 				break
 			
 
