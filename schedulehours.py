@@ -7,8 +7,9 @@ import random
 class Backtracker:
 	class ErrorConfiguracio(Exception): pass
 
-	def __init__(self, shuffle=True) :
+	def __init__(self, shuffle=True, verboseSteps=False) :
 
+		self.verboseSteps = verboseSteps
 		self.maxHoresDiaries = 2
 		self.doshuffle = shuffle
 		self.ntelefons = 3
@@ -36,7 +37,7 @@ class Backtracker:
 			for nom, dia in itertools.product(self.companys, self.dies))
 
 		self.nbactracks = 0
-		self.cutters = {}
+		self.cutLog = {}
 		self.longer = []
 
 		self.cost = 0
@@ -121,14 +122,14 @@ class Backtracker:
 			self.solveTorn([])
 
 	def printCuts(self):
-		for (depth, motiu), many in sorted(self.cutters.items()):
+		for (depth, motiu), many in sorted(self.cutLog.items()):
 			print depth, motiu, many
 
 	def cut(self, motiu, partial):
 		try:
-			self.cutters[len(partial), motiu]+=1
+			self.cutLog[len(partial), motiu]+=1
 		except KeyError:
-			self.cutters[len(partial), motiu]=1
+			self.cutLog[len(partial), motiu]=1
 			
 
 	def maxTornsDiaris(self, company):
@@ -233,7 +234,8 @@ class Backtracker:
 			self.cost += cost
 			self.penalties += penalties
 
-#			if len(partial) < 60 : print "  "*len(partial)+company[:2]
+			if self.verboseSteps and len(partial) < 60 :
+				print "  "*len(partial)+company[:2]
 
 			if telefon == 0: self.tePrincipal[company, day]=True
 			self.teTelefon[day, hora, company]=True
@@ -339,7 +341,9 @@ def signal_handler(signal, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-b = Backtracker()
+b = Backtracker(
+	verboseSteps=False,
+	)
 for k,v in sorted(b.disponible.items()) : 
 	if 'david' not in k: continue
 	print k,v
