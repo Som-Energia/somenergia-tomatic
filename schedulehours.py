@@ -21,7 +21,7 @@ class Backtracker:
 		self.companys = list(self.torns.keys())
 		self.caselles = list(itertools.product(self.dies, range(self.nhores), range(self.ntelefons)))
 		self.topesDiaris = self.llegeixTopesDiaris('topesDiaris.csv')
-		self.disponible = self.initAvailability(
+		self.disponible = self.initBusyTable(
 			'indisponibilitats.conf', self.companys, self.dies, self.nhores)
 
 		self.teTelefon = dict((
@@ -38,11 +38,16 @@ class Backtracker:
 
 		self.nbactracks = 0
 		self.cutLog = {}
-		self.longer = []
+
+		# just for tracking
+		self.bestSolution = []
+		self.bestCost = 1000
 
 		self.cost = 0
 		self.minimumCost = 60
 		self.penalties=[]
+
+		self.ended=False
 
 	def llegeixHores(self, horesfile):
 		linees = [
@@ -72,6 +77,7 @@ class Backtracker:
 					telefon, horesTelefon, self.ndies*self.nhores, tornsfile))
 		return result
 
+
 	def llegeixTopesDiaris(self, filename) :
 		result = dict((
 			(nom.strip(), int(tope))
@@ -86,7 +92,11 @@ class Backtracker:
 				.format(nom, filename))
 		return result
 
-	def initAvailability(self, filename, companys, dies, nhores) :
+	def maxTornsDiaris(self, company):
+		return self.topesDiaris.get(company, self.maxHoresDiaries)
+
+
+	def initBusyTable(self, filename, companys, dies, nhores) :
 		availability = dict(
 			((dia,hora,nom), True)
 			for nom, dia, hora in itertools.product(companys, dies, range(nhores))
@@ -116,11 +126,6 @@ class Backtracker:
 		self.disponible[day, hour, person] = not busy
 
 
-	def solve(self) :
-		while True:
-			self.nbactracks = 0
-			self.solveTorn([])
-
 	def printCuts(self):
 		for (depth, motiu), many in sorted(self.cutLog.items()):
 			print depth, motiu, many
@@ -132,13 +137,23 @@ class Backtracker:
 			self.cutLog[len(partial), motiu]=1
 			
 
-	def maxTornsDiaris(self, company):
-		return self.topesDiaris.get(company, self.maxHoresDiaries)
 
+	def solve(self) :
+		while not self.ended:
+			self.nbactracks = 0
+			self.solveTorn([])
+
+		self.printCuts()
+		if len(self.bestSolution) != len(self.caselles):
+			self.minimumCost = self.bestCost
+			self.reportSolution((self.bestSolution+['?']*60)[:60] )
 
 	def solveTorn(self, partial):
-		if (len(self.longer), -self.minimumCost) <= (len(partial), -self.cost):
-			self.longer=partial
+		if self.ended: return
+
+		if (len(self.bestSolution), -self.bestCost) <= (len(partial), -self.cost):
+			self.bestSolution=partial
+			self.bestCost=self.cost
 			print len(partial), self.cost
 
 		if len(partial) == len(self.caselles):
@@ -259,7 +274,7 @@ class Backtracker:
 
 	def reportSolution(self, solution) :
 
-		# resetejar el fitxer de zero, si el cost es diferent
+		# buidar el fitxer, si el cost es diferent
 		if self.minimumCost != self.__dict__.get('storedCost', 'resEsComparaAmbMi'):
 			with open("taula.html",'w') as output:
 				self.storedCost = self.minimumCost
@@ -305,7 +320,7 @@ class Backtracker:
 				]
 				+ [
 					'</table>',
-					"<p>Penalitzacio: {}</p>".format(self.cost),
+					"<p>Penalitzacio: {}</p>".format(self.minimumCost),
 					"<ul>",
 					"\n".join(
 						"<li>{}: {}</li>".format(*reason)
@@ -322,22 +337,18 @@ import unittest
 
 class Backtracker_Test(unittest.TestCase):
 	def test_availability(self):
-		availability = initAvailability()
+		availability = initBusyTable()
 
 if '--test' in sys.argv:
 	sys.argv.remove('--test')
 	unittest.main()
 
-import signal 
+import signal
 import subprocess
 
 def signal_handler(signal, frame):
 	print 'You pressed Ctrl-C!'
-	b.printCuts()
-	if len(b.longer) != len(b.caselles):
-		print(b.longer)
-		b.reportSolution((b.longer+['?']*60)[:60] )
-	sys.exit(-1)
+	b.ended = True
 
 signal.signal(signal.SIGINT, signal_handler)
 
