@@ -177,7 +177,7 @@ class Backtracker:
 		for company in shuffled:
 
 			cost = 0
-			rationale = []
+			penalties = []
 
 			if self.torns[company][telefon] < 1:
 #				print "{} ja ha exhaurit els seus torns de {} telefon".format( company, telefon)
@@ -204,7 +204,7 @@ class Backtracker:
 				continue
 
 			def penalize(value, short, reason):
-				rationale.append((value,reason))
+				penalties.append((value,reason))
 				return value
 
 			if hora and self.horesDiaries[company, day] and not self.teTelefon[day, hora-1, company]:
@@ -231,7 +231,7 @@ class Backtracker:
 				break
 
 			self.cost += cost
-			self.penalties += rationale
+			self.penalties += penalties
 
 #			if len(partial) < 60 : print "  "*len(partial)+company[:2]
 
@@ -249,8 +249,8 @@ class Backtracker:
 			self.setBusy(company,day,hora, False)
 			self.teTelefon[day, hora, company]=False
 			if telefon == 0: self.tePrincipal[company, day]=False
-			if rationale:
-				del self.penalties[-len(rationale):]
+			if penalties:
+				del self.penalties[-len(penalties):]
 			self.cost -= cost
 
 			if self.nbactracks > 1000: break
