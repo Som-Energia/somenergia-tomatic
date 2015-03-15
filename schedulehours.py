@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import itertools
+from itertools import product as xproduct
 import random
 
 class Backtracker:
@@ -19,22 +19,22 @@ class Backtracker:
 		self.nhores = len(self.hores)
 		self.torns = self.llegeixTorns('torns.csv', self.ntelefons)
 		self.companys = list(self.torns.keys())
-		self.caselles = list(itertools.product(self.dies, range(self.nhores), range(self.ntelefons)))
-		self.topesDiaris = self.llegeixTopesDiaris('topesDiaris.csv')
+		self.caselles = list(xproduct(self.dies, range(self.nhores), range(self.ntelefons)))
+		self.topesDiaris = self.llegeixTopesDiaris('topesDiaris.csv', self.companys)
 		self.disponible = self.initBusyTable(
 			'indisponibilitats.conf', self.companys, self.dies, self.nhores)
 
 		self.teTelefon = dict((
 			((dia,hora,nom), False)
-			for nom, dia, hora in itertools.product(self.companys, self.dies, range(self.nhores))
+			for nom, dia, hora in xproduct(self.companys, self.dies, range(self.nhores))
 			))
 		self.tePrincipal = dict((
 			((nom, dia), False)
-			for nom, dia in itertools.product(self.companys, self.dies)
+			for nom, dia in xproduct(self.companys, self.dies)
 			))
 		self.horesDiaries = dict(
 			((nom,dia), 0)
-			for nom, dia in itertools.product(self.companys, self.dies))
+			for nom, dia in xproduct(self.companys, self.dies))
 
 		self.nbactracks = 0
 		self.cutLog = {}
@@ -50,9 +50,9 @@ class Backtracker:
 		self.ended=False
 
 	def llegeixHores(self, horesfile):
-		linees = [
-			l.strip() for l in open(horesfile) if l.strip() ]
-		return ['-'.join((h1,h2)) for h1,h2 in zip(linees,linees[1:]) ]
+		with open(horesfile) as thefile:
+			lines = [ l.strip() for l in thefile if l.strip() ]
+		return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
 
 	def llegeixTorns(self,tornsfile, ntelefons):
 		result = dict()
@@ -78,18 +78,22 @@ class Backtracker:
 		return result
 
 
-	def llegeixTopesDiaris(self, filename) :
-		result = dict((
-			(nom.strip(), int(tope))
-				for nom, tope in (
-					line.split('\t')
-					for line in open(filename)
-					)
-			))
-		for nom in result:
-			if nom in self.torns: continue
-			raise Backtracker.ErrorConfiguracio("Eps, '{}' que apareix a '{}' no surt a torns.csv"
-				.format(nom, filename))
+	def llegeixTopesDiaris(self, filename, persons) :
+		with open(filename) as thefile:
+			result = dict()
+			try:
+				for i, (nom, tope) in enumerate(
+						[c.strip() for c in line.split()]
+						for line in thefile):
+					if nom not in persons:
+						raise Backtracker.ErrorConfiguracio(
+							"Eps, '{}' que apareix a '{}' no surt a torns.csv"
+							.format(nom, filename))
+					result[nom] = int(tope)
+			except ValueError as e:
+				raise Backtracker.ErrorConfiguracio(
+					"{}:{}: {}".format(
+						filename, i+1, e.args))
 		return result
 
 	def maxTornsDiaris(self, company):
@@ -99,7 +103,7 @@ class Backtracker:
 	def initBusyTable(self, filename, companys, dies, nhores) :
 		availability = dict(
 			((dia,hora,nom), True)
-			for nom, dia, hora in itertools.product(companys, dies, range(nhores))
+			for nom, dia, hora in xproduct(companys, dies, range(nhores))
 			)
 		with open(filename) as thefile:
 			for linenum,row in enumerate(line.split() for line in thefile) :
