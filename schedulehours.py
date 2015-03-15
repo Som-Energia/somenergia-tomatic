@@ -79,8 +79,8 @@ class Backtracker:
 
 
 	def llegeixTopesDiaris(self, filename, persons) :
+		result = dict()
 		with open(filename) as thefile:
-			result = dict()
 			try:
 				for i, (nom, tope) in enumerate(
 						[c.strip() for c in line.split()]
@@ -116,7 +116,7 @@ class Backtracker:
 				if len(affectedTurns)!=nhores :
 					raise Backtracker.ErrorConfiguracio(
 						"'{}':{}: Expected busy string of lenght {} containing '1' on busy hours, found '{}'".format(
-						filename, linenum, nhores, affectedTurns))
+						filename, linenum+1, nhores, affectedTurns))
 				for hora, busy in enumerate(affectedTurns) :
 					if busy!='1': continue
 					for dia in affectedDays:
@@ -304,14 +304,15 @@ class Backtracker:
 				[
 					'<table>',
 					'<tr><td></td><th colspan=3>' + '</th><td></td><th colspan=3>'.join(
-						dia for dia in self.dies
+						d for d in self.dies
 					) + '</th><tr>',
-					'<tr><td></td><th>' + 
+					'<tr><td></td><th>' +
 					'<th>'.join(
 						'</th><th>'.join(
 							'T{}'.format(telefon+1)
-							for telefon in range(self.ntelefons))+'</th><td></td>'
-						for dia in self.dies
+							for telefon in range(self.ntelefons))
+						+ '</th><td></td>'
+						for d in self.dies
 					) + '</th><tr>',
 				]+
 				[
