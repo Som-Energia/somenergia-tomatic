@@ -10,10 +10,11 @@ class Backtracker:
 	def __init__(self, shuffle=True, verboseSteps=False) :
 
 		self.verboseSteps = verboseSteps
-		self.maxHoresDiaries = 2
+		self.normalTopHours = 2
 		self.doshuffle = shuffle
 		self.ntelefons = 3
-		self.dies = 'dl','dm','dx','dj','dv'
+		self.dies = 'dv','dl','dm','dx','dj'
+		self.ordreDies = 'dl','dm','dx','dj','dv'
 		self.ndies = len(self.dies)
 		self.hores = self.llegeixHores('hores.csv')
 		self.nhores = len(self.hores)
@@ -34,6 +35,16 @@ class Backtracker:
 			))
 		self.horesDiaries = dict(
 			((nom,dia), 0)
+			for nom, dia in xproduct(self.companys, self.dies))
+
+		# Number of hours available each day
+		self.disponibilitatDiaria = dict(
+			((nom,dia), min(
+				self.maxTornsDiaris(nom),
+				sum(
+					0 if self.isBusy(nom,dia,hora) else 1
+					for hora in xrange(self.nhores))
+				))
 			for nom, dia in xproduct(self.companys, self.dies))
 
 		self.nbactracks = 0
@@ -97,7 +108,7 @@ class Backtracker:
 		return result
 
 	def maxTornsDiaris(self, company):
-		return self.topesDiaris.get(company, self.maxHoresDiaries)
+		return self.topesDiaris.get(company, self.normalTopHours)
 
 
 	def initBusyTable(self, filename, companys, dies, nhores) :
@@ -107,6 +118,7 @@ class Backtracker:
 			)
 		with open(filename) as thefile:
 			for linenum,row in enumerate(line.split() for line in thefile) :
+				if not row: continue
 				row = [col.strip() for col in row]
 				company = row[0]
 				affectedDays = [row[1]] if row[1] in dies else dies
@@ -184,11 +196,12 @@ class Backtracker:
 #					print "Eps a {} li queden massa T1 per posar".format(company)
 					return
 				tornsPendents = sum(self.torns[company][torn] for torn in range(self.ntelefons))
-				tornsColocables = diesRestants*self.maxTornsDiaris(company)
+				tornsColocables = sum(self.disponibilitatDiaria[company,dia] for dia in self.dies[idia:])
 				if tornsPendents > tornsColocables:
 					self.cut("PreveigTots", partial)
-#					print "Eps a {} no li queden dies per posar les seves hores".format(company)
+					print "Eps a {} nomes li queden {} forats per posar {} hores".format(company, tornsColocables, tornsPendents)
 					return
+				
 
 		shuffled = list(self.companys)
 		if self.doshuffle:
@@ -304,7 +317,7 @@ class Backtracker:
 				[
 					'<table>',
 					'<tr><td></td><th colspan=3>' + '</th><td></td><th colspan=3>'.join(
-						d for d in self.dies
+						d for d in self.ordreDies
 					) + '</th><tr>',
 					'<tr><td></td><th>' +
 					'<th>'.join(
@@ -312,14 +325,14 @@ class Backtracker:
 							'T{}'.format(telefon+1)
 							for telefon in range(self.ntelefons))
 						+ '</th><td></td>'
-						for d in self.dies
+						for d in self.ordreDies
 					) + '</th><tr>',
 				]+
 				[
 					'<tr><th>{}</th>'.format(h) +
 					'<td>&nbsp;</td>'.join(
 						'</td>'.join("<td class='{0}'>{0}</td>".format(solution[d,hi,l].capitalize()) for l in range(self.ntelefons))
-						for d in self.dies)
+						for d in self.ordreDies)
 					+ '</tr>'
 					for hi, h in enumerate(self.hores)
 				]
@@ -358,7 +371,7 @@ def signal_handler(signal, frame):
 signal.signal(signal.SIGINT, signal_handler)
 
 b = Backtracker(
-	verboseSteps=False,
+	verboseSteps=True,
 	)
 for k,v in sorted(b.disponible.items()) : 
 	if 'david' not in k: continue
