@@ -199,7 +199,7 @@ class Backtracker:
 				tornsColocables = sum(self.disponibilitatDiaria[company,dia] for dia in self.dies[idia:])
 				if tornsPendents > tornsColocables:
 					self.cut("PreveigTots", partial)
-					print "Eps a {} nomes li queden {} forats per posar {} hores".format(company, tornsColocables, tornsPendents)
+#					print "Eps a {} nomes li queden {} forats per posar {} hores".format(company, tornsColocables, tornsPendents)
 					return
 				
 
@@ -296,6 +296,9 @@ class Backtracker:
 			with open("taula.html",'w') as output:
 				self.storedCost = self.minimumCost
 				output.write("""\
+					<!DOCTYPE html5>
+					<html>
+					<head>
 					<style>
 					td, th {
 						border:1px solid black;
@@ -307,9 +310,11 @@ class Backtracker:
 					.{} {{ background-color: #{:02x}{:02x}{:02x}; }}
 					""".format(
 						nom, random.randint(127,255), random.randint(127,255), random.randint(127,255)) for nom in self.companys)
-					+""")
+					+"""
 					</style>
-						""")
+					</head>
+					<body>
+					""")
 
 		solution = dict(zip(self.caselles, solution))
 		with open("taula.html",'a') as output:
@@ -330,8 +335,8 @@ class Backtracker:
 				]+
 				[
 					'<tr><th>{}</th>'.format(h) +
-					'<td>&nbsp;</td>'.join(
-						'</td>'.join("<td class='{0}'>{0}</td>".format(solution[d,hi,l].capitalize()) for l in range(self.ntelefons))
+					'\n<td>&nbsp;</td>\n'.join(
+						'\n'.join("<td class='{0}'>{0}</td>".format(solution[d,hi,l].capitalize()) for l in range(self.ntelefons))
 						for d in self.ordreDies)
 					+ '</tr>'
 					for hi, h in enumerate(self.hores)
@@ -345,6 +350,7 @@ class Backtracker:
 						for reason in self.penalties
 					),
 					"</ul>",
+					'',
 				]
 				))
 #		exit(0)
@@ -371,7 +377,7 @@ def signal_handler(signal, frame):
 signal.signal(signal.SIGINT, signal_handler)
 
 b = Backtracker(
-	verboseSteps=True,
+	verboseSteps=False,
 	)
 for k,v in sorted(b.disponible.items()) : 
 	if 'david' not in k: continue
