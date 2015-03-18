@@ -7,7 +7,7 @@ import random
 class Backtracker:
 	class ErrorConfiguracio(Exception): pass
 
-	def __init__(self, shuffle=True, verboseSteps=False) :
+	def __init__(self, shuffle=True, verboseSteps=False, costLimit=1000, backtrackDepth=1000) :
 
 		self.verboseSteps = verboseSteps
 		self.normalTopHours = 2
@@ -47,15 +47,36 @@ class Backtracker:
 				))
 			for nom, dia in xproduct(self.companys, self.dies))
 
+		self.taules = dict(
+			marc=0,
+			eduard=1,
+			pere=1,
+			david=1,
+			aleix=1,
+			carles=2,
+			marta=2,
+			monica=2,
+			yaiza=2,
+			erola=3,
+			judit=3,
+			manel=3,
+			tania=3,
+			)
+
+		self.ocupacioTaules = dict(
+			((dia, hora, taula), 0)
+			for dia, hora, taula in xproduct(self.dies, range(self.nhores), set(self.taules.values())))
+
 		self.nbactracks = 0
+		self.backtrackDepth = backtrackDepth
 		self.cutLog = {}
 
 		# just for tracking
 		self.bestSolution = []
-		self.bestCost = 1000
+		self.bestCost = 1000000000
 
 		self.cost = 0
-		self.minimumCost = 60
+		self.minimumCost = costLimit
 		self.penalties=[]
 
 		self.ended=False
@@ -211,6 +232,7 @@ class Backtracker:
 
 			cost = 0
 			penalties = []
+			taula=self.taules[company]
 
 			if self.torns[company][telefon] < 1:
 #				print "{} ja ha exhaurit els seus torns de {} telefon".format( company, telefon)
@@ -218,12 +240,18 @@ class Backtracker:
 				continue
 
 			if self.isBusy(company, day, hora):
-#				print "{} no esta disponible el {} a la hora {}".format( company, day, hora)
+#				print "{} no esta disponible el {} a la hora {}".format( company, day, hora+1)
 				self.cut("Indisponible", partial)
 				continue
 
 			if telefon==0 and self.tePrincipal[company, day]:
 #				print "Dos principals per {} el {} no, sisplau".format(company,day)
+				self.cut("DosPrincipals", partial)
+				continue
+
+			if self.ocupacioTaules[day, hora, taula]>=2 :
+#				print "{} te {} persones a la mateixa taula amb telefon a {}a hora del {}".format(company, self.ocupacioTaules[day, hora, taula], hora+1, day)
+				self.cut("TaulaSorollosa", partial)
 				continue
 
 			if self.horesDiaries[company, day] >= self.maxTornsDiaris(company):
@@ -253,6 +281,11 @@ class Backtracker:
 				cost += penalize(self.horesDiaries[company, day], "Repartiment",
 					"{} te mes de {} hores el {}".format(company, self.horesDiaries[company, day], day))
 
+			if self.ocupacioTaules[day, hora, taula]>0 :
+				cost += penalize(self.ocupacioTaules[day, hora, taula]*5, "Ocupacio",
+					"{} te {} persones a la mateixa taula amb telefon a {}a hora del {}".format(
+						company, self.ocupacioTaules[day, hora, taula], hora+1, day))
+
 			if self.cost + cost > self.minimumCost :
 #				print "Solucio masa costosa: {}".format(self.cost+cost)
 				self.cut("TooMuchCost", partial)
@@ -274,10 +307,12 @@ class Backtracker:
 			self.setBusy(company,day,hora)
 			self.horesDiaries[company,day]+=1
 			self.torns[company][telefon]-=1
+			self.ocupacioTaules[day,hora,taula]+=1
 
 			self.solveTorn(partial+[company])
 			self.nbactracks += 1
 
+			self.ocupacioTaules[day,hora,taula]-=1
 			self.torns[company][telefon]+=1
 			self.horesDiaries[company,day]-=1
 			self.setBusy(company,day,hora, False)
@@ -287,7 +322,7 @@ class Backtracker:
 				del self.penalties[-len(penalties):]
 			self.cost -= cost
 
-			if self.nbactracks > 1000: break
+			if self.nbactracks > self.backtrackDepth: break
 
 	def reportSolution(self, solution) :
 
@@ -377,7 +412,9 @@ def signal_handler(signal, frame):
 signal.signal(signal.SIGINT, signal_handler)
 
 b = Backtracker(
-	verboseSteps=False,
+	verboseSteps=True,
+	costLimit=1000000000,
+	backtrackDepth=100000,
 	)
 for k,v in sorted(b.disponible.items()) : 
 	if 'david' not in k: continue
