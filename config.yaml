@@ -14,14 +14,14 @@ backtrackDepth: 10000   # Comprovacions a una via abans de rendir-se i provar un
 costLimit: 1000000000   # No et molestis en comprobar solucions que no sigui millors
 deixaEsmorzar: true     # Si hom ha de tenir una de les hores d'esmorzar lliures
 descartaNoPrometedores: true # Pot descartar solucions bones, pero agilitza molt
-maximPerTaula: 2   # maxim numero de telefons simultanis a una mateixa taula
-maximsT1PerDia: 1   # maxim numero de torns primaris diaris per a una persona
-maximHoresDiariesGeneral: 2   # maxim numero de torns diaris per una persona
+maximPerTaula: 2   # maxim nombre de telefons simultanis a una mateixa taula
+maximsT1PerDia: 1   # maxim nombre de torns primaris diaris per a una persona
+maximHoresDiariesGeneral: 2   # maxim nombre de torns diaris per una persona
 maximHoresDiaries:   # excepcions al maximHoresDiariesGeneral
    manel: 3
-costHoresDiscontinues: 40   # Per cada salt que tens entre dos hores de telefon un mateix dia
+costHoresDiscontinues: 40   # Per cada salt que te una persona entre dos hores de telefon un mateix dia
 costHoresConcentrades: 1   # Es multiplica per n·(n-1)/2 on n es el nombre d'hores diaries d'una mateixa persona
-costTaulaSorollosa: 5   # es multiplica per n·(n-1)/2 on n es el nombre de telefons funcionant a la taula
+costTaulaSorollosa: 5   # Es multiplica per n·(n-1)/2 on n es el nombre de telefons simultanis a una taula
 costHoraNoDesitjada: 0   # No implementat
 taules: # Asignacio de les persones en taules
    marc:   0
