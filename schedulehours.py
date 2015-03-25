@@ -10,9 +10,7 @@ class Backtracker:
 	def __init__(self, config) :
 
 		self.config = config
-		self.verboseSteps = config.mostraCami
 		self.globalMaxTurnsADay = config.maximHoresDiariesGeneral
-		self.doshuffle = config.aleatori
 		self.ntelefons = config.nTelefons
 		self.dies = config.diesCerca
 		self.diesVisualitzacio = config.diesVisualitzacio
@@ -26,21 +24,21 @@ class Backtracker:
 		self.torns = self.llegeixTorns('torns.csv', self.ntelefons)
 		self.companys = list(self.torns.keys())
 		self.caselles = list(xproduct(self.dies, range(self.nhores), range(self.ntelefons)))
-		self.topesDiaris = self.llegeixTopesDiaris('topesDiaris.csv', self.companys)
+		self.topesDiaris = self.llegeixTopesDiaris(self.companys)
 		self.disponible = self.initBusyTable(
 			'indisponibilitats.conf', self.companys, self.dies, self.nhores)
 
-		self.teTelefon = dict((
-			((dia,hora,nom), False)
-			for nom, dia, hora in xproduct(self.companys, self.dies, range(self.nhores))
-			))
-		self.tePrincipal = dict((
-			((nom, dia), 0)
-			for nom, dia in xproduct(self.companys, self.dies)
-			))
-		self.horesDiaries = dict(
-			((nom,dia), 0)
-			for nom, dia in xproduct(self.companys, self.dies))
+		def createTable(defaultValue, *iterables) :
+			"""Creates a table with as many cells as the cross product of the iterables"""
+			return dict((keys, defaultValue) for keys in xproduct(*iterables))
+
+		self.teTelefon = createTable(False,  self.dies, range(self.nhores), self.companys)
+		self.tePrincipal = createTable(0,  self.companys, self.dies)
+		self.horesDiaries = createTable(0,  self.companys, self.dies)
+
+		self.taules = config.taules
+		self.telefonsALaTaula = createTable(0,
+			self.dies, range(self.nhores), set(self.taules.values()))
 
 		# Number of hours available each day
 		self.disponibilitatDiaria = dict(
@@ -51,12 +49,6 @@ class Backtracker:
 					for hora in xrange(self.nhores))
 				))
 			for nom, dia in xproduct(self.companys, self.dies))
-
-		self.taules = config.taules
-
-		self.ocupacioTaules = dict(
-			((dia, hora, taula), 0)
-			for dia, hora, taula in xproduct(self.dies, range(self.nhores), set(self.taules.values())))
 
 		self.nbactracks = 0
 		self.backtrackDepth = config.backtrackDepth
@@ -100,7 +92,7 @@ class Backtracker:
 		return result
 
 
-	def llegeixTopesDiaris(self, filename, persons) :
+	def llegeixTopesDiaris(self, persons) :
 		dailyMaxPerPerson = dict(
 			(nom, int(value))
 			for nom, value
@@ -192,15 +184,18 @@ class Backtracker:
 			idia = self.dies.index(day)
 			diesRestants =  self.ndies-idia
 
-			if idia and self.cost*self.ndies / idia > self.minimumCost:
-				self.cut("NoEarlyCost", partial)
-				return
+			# TODO: Heuristica que pot tallar bones solucions
+			if self.config.descartaNoPrometedores :
+				if idia and self.cost*self.ndies / idia > self.minimumCost:
+					self.cut("NoEarlyCost", partial)
+					return
 
 			for company in self.companys:
 				if self.torns[company][0] > diesRestants * self.config.maximsT1PerDia:
 					self.cut("PreveigT1", partial)
 #					print "Eps a {} li queden massa T1 per posar".format(company)
 					return
+
 				tornsPendents = sum(self.torns[company][torn] for torn in range(self.ntelefons))
 				tornsColocables = sum(self.disponibilitatDiaria[company,dia] for dia in self.dies[idia:])
 				if tornsPendents > tornsColocables:
@@ -210,7 +205,7 @@ class Backtracker:
 				
 
 		shuffled = list(self.companys)
-		if self.doshuffle:
+		if self.config.aleatori:
 			random.shuffle(shuffled)
 
 		for company in shuffled:
@@ -219,8 +214,8 @@ class Backtracker:
 			penalties = []
 			taula=self.taules[company]
 
-			if self.torns[company][telefon] < 1:
-#				print "{} ja ha exhaurit els seus torns de {} telefon".format( company, telefon)
+			if self.torns[company][telefon] <= 0:
+#				print "{} ja ha exhaurit els seus torns de telefon {}ari".format( company, telefon)
 				self.cut("TotColocat", partial)
 				continue
 
@@ -231,11 +226,11 @@ class Backtracker:
 
 			if telefon==0 and self.tePrincipal[company, day] >= self.config.maximsT1PerDia:
 #				print "Dos principals per {} el {} no, sisplau".format(company,day)
-				self.cut("DosPrincipals", partial)
+				self.cut("MassesPrincipals", partial)
 				continue
 
-			if self.ocupacioTaules[day, hora, taula]>=self.config.maximPerTaula :
-#				print "{} te {} persones a la mateixa taula amb telefon a {}a hora del {}".format(company, self.ocupacioTaules[day, hora, taula], hora+1, day)
+			if self.telefonsALaTaula[day, hora, taula]>=self.config.maximPerTaula :
+#				print "{} te {} persones a la mateixa taula amb telefon a {}a hora del {}".format(company, self.telefonsALaTaula[day, hora, taula], hora+1, day)
 				self.cut("TaulaSorollosa", partial)
 				continue
 
@@ -244,7 +239,7 @@ class Backtracker:
 				self.cut("DiaATope", partial)
 				continue
 
-			if hora==2 and self.teTelefon[day, 1, company]:
+			if self.config.deixaEsmorzar and hora==2 and self.teTelefon[day, 1, company]:
 #				print "{} es queda sense esmorzar el {}".format(company, day)
 				self.cut("Esmorzar", partial)
 				continue
@@ -259,17 +254,22 @@ class Backtracker:
 #					print("{} te hores separades el {}".format(company,day))
 					continue
 
-				cost += penalize(40, "Discontinu",
-					"{} te hores separades el {}".format(company, day))
+				if self.config.costHoresDiscontinues:
+					cost += penalize(self.config.costHoresDiscontinues, "Discontinu",
+						"{} te hores separades el {}".format(company, day))
 
 			if self.horesDiaries[company, day]>0 :
-				cost += penalize(self.horesDiaries[company, day], "Repartiment",
+				cost += penalize(
+					self.config.costHoresConcentrades * self.horesDiaries[company, day],
+					"Repartiment",
 					"{} te mes de {} hores el {}".format(company, self.horesDiaries[company, day], day))
 
-			if self.ocupacioTaules[day, hora, taula]>0 :
-				cost += penalize(self.ocupacioTaules[day, hora, taula]*5, "Ocupacio",
+			if self.telefonsALaTaula[day, hora, taula]>0 :
+				cost += penalize(
+					self.config.costTaulaSorollosa * self.telefonsALaTaula[day, hora, taula],
+					"Ocupacio",
 					"{} te {} persones a la mateixa taula amb telefon a {}a hora del {}".format(
-						company, self.ocupacioTaules[day, hora, taula], hora+1, day))
+						company, self.telefonsALaTaula[day, hora, taula], hora+1, day))
 
 			if self.cost + cost > self.minimumCost :
 #				print "Solucio masa costosa: {}".format(self.cost+cost)
@@ -281,23 +281,26 @@ class Backtracker:
 				self.cut("CostEqual", partial)
 				break
 
+			if self.config.mostraCami:
+				if len(partial) < self.config.maximCamiAMostrar :
+					print "  "*len(partial)+company[:2]
+
+			# Anotem la casella
 			self.cost += cost
 			self.penalties += penalties
-
-			if self.verboseSteps and len(partial) < 60 :
-				print "  "*len(partial)+company[:2]
-
 			if telefon == 0: self.tePrincipal[company, day]+=1
 			self.teTelefon[day, hora, company]=True
 			self.setBusy(company,day,hora)
 			self.horesDiaries[company,day]+=1
 			self.torns[company][telefon]-=1
-			self.ocupacioTaules[day,hora,taula]+=1
+			self.telefonsALaTaula[day,hora,taula]+=1
 
+			# Provem amb la seguent casella
 			self.solveTorn(partial+[company])
 			self.nbactracks += 1
 
-			self.ocupacioTaules[day,hora,taula]-=1
+			# Desanotem la casella
+			self.telefonsALaTaula[day,hora,taula]-=1
 			self.torns[company][telefon]+=1
 			self.horesDiaries[company,day]-=1
 			self.setBusy(company,day,hora, False)
@@ -307,7 +310,8 @@ class Backtracker:
 				del self.penalties[-len(penalties):]
 			self.cost -= cost
 
-			if self.nbactracks > self.backtrackDepth: break
+			# Si portem massa estona explorant el camí parem i provem un altre
+			if self.config.aleatori and self.nbactracks > self.backtrackDepth: break
 
 	def reportSolution(self, solution) :
 
@@ -328,8 +332,12 @@ td, th {
 td:empty { border:0;}
 td { padding: 1ex;}
 """+ ''.join(
-			".{} {{ background-color: #{:02x}{:02x}{:02x}; }}\n".format(
+			(".{} {{ background-color: #{:01x}{:02x}{:02x}; }}\n".format(
 						nom, random.randint(127,255), random.randint(127,255), random.randint(127,255)) for nom in self.companys)
+			if self.config.randomColors else
+			(".{} {{ background-color: #{}; }}\n".format(
+						nom, self.config.colors[nom]) for nom in self.companys)
+			)
 					+"""
 </style>
 </head>
