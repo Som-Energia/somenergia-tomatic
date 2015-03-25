@@ -7,16 +7,21 @@ import random
 class Backtracker:
 	class ErrorConfiguracio(Exception): pass
 
-	def __init__(self, shuffle=True, verboseSteps=False, costLimit=1000, backtrackDepth=1000) :
+	def __init__(self, config) :
 
-		self.verboseSteps = verboseSteps
-		self.normalTopHours = 2
-		self.doshuffle = shuffle
-		self.ntelefons = 3
-		self.dies = 'dv','dl','dm','dx','dj'
-		self.ordreDies = 'dl','dm','dx','dj','dv'
+		self.config = config
+		self.verboseSteps = config.mostraCami
+		self.globalMaxTurnsADay = config.maximHoresDiariesGeneral
+		self.doshuffle = config.aleatori
+		self.ntelefons = config.nTelefons
+		self.dies = config.diesCerca
+		self.diesVisualitzacio = config.diesVisualitzacio
+		if set(self.dies) != set(self.diesVisualitzacio) :
+			raise Backtracker.ErrorConfiguracio(
+				"No s'han configurat els mateixos dies per cerca i visualització.")
+
 		self.ndies = len(self.dies)
-		self.hores = self.llegeixHores('hores.csv')
+		self.hores = self.llegeixHores()
 		self.nhores = len(self.hores)
 		self.torns = self.llegeixTorns('torns.csv', self.ntelefons)
 		self.companys = list(self.torns.keys())
@@ -30,7 +35,7 @@ class Backtracker:
 			for nom, dia, hora in xproduct(self.companys, self.dies, range(self.nhores))
 			))
 		self.tePrincipal = dict((
-			((nom, dia), False)
+			((nom, dia), 0)
 			for nom, dia in xproduct(self.companys, self.dies)
 			))
 		self.horesDiaries = dict(
@@ -47,28 +52,14 @@ class Backtracker:
 				))
 			for nom, dia in xproduct(self.companys, self.dies))
 
-		self.taules = dict(
-			marc=0,
-			eduard=1,
-			pere=1,
-			david=1,
-			aleix=1,
-			carles=2,
-			marta=2,
-			monica=2,
-			yaiza=2,
-			erola=3,
-			judit=3,
-			manel=3,
-			tania=3,
-			)
+		self.taules = config.taules
 
 		self.ocupacioTaules = dict(
 			((dia, hora, taula), 0)
 			for dia, hora, taula in xproduct(self.dies, range(self.nhores), set(self.taules.values())))
 
 		self.nbactracks = 0
-		self.backtrackDepth = backtrackDepth
+		self.backtrackDepth = config.backtrackDepth
 		self.cutLog = {}
 
 		# just for tracking
@@ -76,14 +67,13 @@ class Backtracker:
 		self.bestCost = 1000000000
 
 		self.cost = 0
-		self.minimumCost = costLimit
+		self.minimumCost = config.costLimit
 		self.penalties=[]
 
 		self.ended=False
 
-	def llegeixHores(self, horesfile):
-		with open(horesfile) as thefile:
-			lines = [ l.strip() for l in thefile if l.strip() ]
+	def llegeixHores(self):
+		lines = [str(h) for h in self.config.hores ]
 		return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
 
 	def llegeixTorns(self,tornsfile, ntelefons):
@@ -111,25 +101,20 @@ class Backtracker:
 
 
 	def llegeixTopesDiaris(self, filename, persons) :
-		result = dict()
-		with open(filename) as thefile:
-			try:
-				for i, (nom, tope) in enumerate(
-						[c.strip() for c in line.split()]
-						for line in thefile):
-					if nom not in persons:
-						raise Backtracker.ErrorConfiguracio(
-							"Eps, '{}' que apareix a '{}' no surt a torns.csv"
-							.format(nom, filename))
-					result[nom] = int(tope)
-			except ValueError as e:
-				raise Backtracker.ErrorConfiguracio(
-					"{}:{}: {}".format(
-						filename, i+1, e.args))
-		return result
+		dailyMaxPerPerson = dict(
+			(nom, int(value))
+			for nom, value
+			in self.config.maximHoresDiaries.items()
+			)
+		for name in dailyMaxPerPerson:
+			if name in persons: continue
+			raise Backtracker.ErrorConfiguracio(
+				"Eps, el nom '{}' de maximHoresDiaries a config.yaml no surt a torns.csv"
+				.format(nom))
+		return dailyMaxPerPerson
 
 	def maxTornsDiaris(self, company):
-		return self.topesDiaris.get(company, self.normalTopHours)
+		return self.topesDiaris.get(company, self.globalMaxTurnsADay)
 
 
 	def initBusyTable(self, filename, companys, dies, nhores) :
@@ -212,7 +197,7 @@ class Backtracker:
 				return
 
 			for company in self.companys:
-				if self.torns[company][0] > diesRestants:
+				if self.torns[company][0] > diesRestants * self.config.maximsT1PerDia:
 					self.cut("PreveigT1", partial)
 #					print "Eps a {} li queden massa T1 per posar".format(company)
 					return
@@ -244,12 +229,12 @@ class Backtracker:
 				self.cut("Indisponible", partial)
 				continue
 
-			if telefon==0 and self.tePrincipal[company, day]:
+			if telefon==0 and self.tePrincipal[company, day] >= self.config.maximsT1PerDia:
 #				print "Dos principals per {} el {} no, sisplau".format(company,day)
 				self.cut("DosPrincipals", partial)
 				continue
 
-			if self.ocupacioTaules[day, hora, taula]>=2 :
+			if self.ocupacioTaules[day, hora, taula]>=self.config.maximPerTaula :
 #				print "{} te {} persones a la mateixa taula amb telefon a {}a hora del {}".format(company, self.ocupacioTaules[day, hora, taula], hora+1, day)
 				self.cut("TaulaSorollosa", partial)
 				continue
@@ -302,7 +287,7 @@ class Backtracker:
 			if self.verboseSteps and len(partial) < 60 :
 				print "  "*len(partial)+company[:2]
 
-			if telefon == 0: self.tePrincipal[company, day]=True
+			if telefon == 0: self.tePrincipal[company, day]+=1
 			self.teTelefon[day, hora, company]=True
 			self.setBusy(company,day,hora)
 			self.horesDiaries[company,day]+=1
@@ -317,7 +302,7 @@ class Backtracker:
 			self.horesDiaries[company,day]-=1
 			self.setBusy(company,day,hora, False)
 			self.teTelefon[day, hora, company]=False
-			if telefon == 0: self.tePrincipal[company, day]=False
+			if telefon == 0: self.tePrincipal[company, day]-=1
 			if penalties:
 				del self.penalties[-len(penalties):]
 			self.cost -= cost
@@ -331,49 +316,54 @@ class Backtracker:
 			with open("taula.html",'w') as output:
 				self.storedCost = self.minimumCost
 				output.write("""\
-					<!DOCTYPE html5>
-					<html>
-					<head>
-					<style>
-					td, th {
-						border:1px solid black;
-						width: 8em;
-						text-align: center;
-					}
-					td { padding: 1ex;}
-					"""+ ''.join("""\
-					.{} {{ background-color: #{:02x}{:02x}{:02x}; }}
-					""".format(
+<!doctype html>
+<html>
+<head>
+<style>
+td, th {
+	border:1px solid black;
+	width: 8em;
+	text-align: center;
+}
+td:empty { border:0;}
+td { padding: 1ex;}
+"""+ ''.join(
+			".{} {{ background-color: #{:02x}{:02x}{:02x}; }}\n".format(
 						nom, random.randint(127,255), random.randint(127,255), random.randint(127,255)) for nom in self.companys)
 					+"""
-					</style>
-					</head>
-					<body>
-					""")
+</style>
+</head>
+<body>
+""")
 
 		solution = dict(zip(self.caselles, solution))
 		with open("taula.html",'a') as output:
 			output.write( '\n'.join(
 				[
 					'<table>',
-					'<tr><td></td><th colspan=3>' + '</th><td></td><th colspan=3>'.join(
-						d for d in self.ordreDies
+					'<tr><td></td><th colspan=3>' +
+					'</th><td></td><th colspan=3>'.join(
+						d for d in self.diesVisualitzacio
 					) + '</th><tr>',
-					'<tr><td></td><th>' +
-					'<th>'.join(
-						'</th><th>'.join(
-							'T{}'.format(telefon+1)
+					'<tr><td></td>' +
+					''.join(
+						''.join(
+							'<th>T{}</th>'.format(telefon+1)
 							for telefon in range(self.ntelefons))
-						+ '</th><td></td>'
-						for d in self.ordreDies
-					) + '</th><tr>',
+						+ '\n<td></td>\n'
+						for d in self.diesVisualitzacio
+					) + '<tr>',
 				]+
 				[
-					'<tr><th>{}</th>'.format(h) +
+					'<tr><th>{}</th>\n'.format(h) +
 					'\n<td>&nbsp;</td>\n'.join(
-						'\n'.join("<td class='{0}'>{0}</td>".format(solution[d,hi,l].capitalize()) for l in range(self.ntelefons))
-						for d in self.ordreDies)
-					+ '</tr>'
+						'\n'.join(
+							"<td class='{0}'>{1}</td>".format(
+								solution[d,hi,l].lower(),
+								solution[d,hi,l].capitalize()
+								) for l in range(self.ntelefons)
+							) for d in self.diesVisualitzacio)
+					+ '\n</tr>'
 					for hi, h in enumerate(self.hores)
 				]
 				+ [
@@ -411,14 +401,9 @@ def signal_handler(signal, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-b = Backtracker(
-	verboseSteps=True,
-	costLimit=1000000000,
-	backtrackDepth=100000,
-	)
-for k,v in sorted(b.disponible.items()) : 
-	if 'david' not in k: continue
-	print k,v
+from namespace import namespace as ns
+
+b = Backtracker(ns.load("config.yaml"))
 b.solve()
 
 

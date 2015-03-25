@@ -1,0 +1,53 @@
+aleatori: true
+nTelefons: 3
+diesCerca: ['dv','dl','dm','dx','dj'] # Els mes conflictius davant
+diesVisualitzacio: ['dl','dm','dx','dj','dv']
+hores:  # La darrera es per tancar
+- '09:00'
+- '10:15'
+- '11:30'
+- '12:45'
+- '14:00'
+costLimit: 1000000000 # No et molestis en comprobar solucions que no sigui millors
+backtrackDepth: 10000 # Numero de comprobacions en una via abans de rendir-se
+mostraCami:  false # mostra el cami de cerca que va fent (lent)
+maximPerTaula: 2
+maximsT1PerDia: 1
+maximHoresDiariesGeneral: 2
+maximHoresDiaries:
+   manel: 3
+taules: 
+   marc:   0
+   eduard: 1
+   pere:   1
+   david:  1
+   aleix:  1
+   carles: 2
+   marta:  2
+   monica: 2
+   yaiza:  2
+   erola:  3
+   manel:  3
+   tania:  3
+   judit:  3
+   silvia: 4
+   juan:   4
+colors:
+   marc:   #fbe8bc
+   eduard: #d8b9c5
+   pere:   #8f928e
+   david:  #ffd3ac
+   aleix:  #eed0eb
+   carles: #c98e98
+   marta:  #eb9481
+   monica: #7fada0
+   yaiza:  #90cdb9
+   erola:  #8789c8
+   manel:  #88dfe3
+   tania:  #c8abf4
+   judit:  #e781e8
+   silvia: #8097fa
+   juan:   #fa9080
+
+
+
