@@ -23,6 +23,8 @@ costHoresDiscontinues: 40   # Per cada salt que te una persona entre dos hores d
 costHoresConcentrades: 1   # Es multiplica per n·(n-1)/2 on n es el nombre d'hores diaries d'una mateixa persona
 costTaulaSorollosa: 5   # Es multiplica per n·(n-1)/2 on n es el nombre de telefons simultanis a una taula
 costHoraNoDesitjada: 0   # No implementat
+noVolenEsmorzar:
+- david
 taules: # Asignacio de les persones en taules
    marc:   0
    eduard: 1

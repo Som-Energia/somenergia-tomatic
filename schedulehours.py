@@ -239,10 +239,11 @@ class Backtracker:
 				self.cut("DiaATope", partial)
 				continue
 
-			if self.config.deixaEsmorzar and hora==2 and self.teTelefon[day, 1, company]:
-#				print "{} es queda sense esmorzar el {}".format(company, day)
-				self.cut("Esmorzar", partial)
-				continue
+			if self.config.deixaEsmorzar and company not in self.config.noVolenEsmorzar:
+				if hora==2 and self.teTelefon[day, 1, company]:
+#					print "{} es queda sense esmorzar el {}".format(company, day)
+					self.cut("Esmorzar", partial)
+					continue
 
 			def penalize(value, short, reason):
 				penalties.append((value,reason))
