@@ -3,6 +3,7 @@
 
 from itertools import product as xproduct
 import random
+from datetime import date, timedelta
 
 class Backtracker:
 	class ErrorConfiguracio(Exception): pass
@@ -49,6 +50,25 @@ class Backtracker:
 					for hora in xrange(self.nhores))
 				))
 			for nom, dia in xproduct(self.companys, self.dies))
+
+		self.grupsAlliberats = dict([
+			(company, [
+				group 
+				for group, companysDelGrup in self.config.sempreUnLliure.items()
+				if company in companysDelGrup])
+			for company in self.companys
+			])
+
+		self.lliuresEnGrupDAlliberats = dict([
+			((group, dia, hora), len(companysDelGrup))
+			for (group, companysDelGrupa), dia, hora
+			in xproduct(
+				self.config.sempreUnLliure.items(),
+				self.dies,
+				xrange(self.nhores),
+				)
+			])
+
 
 		self.nbactracks = 0
 		self.backtrackDepth = config.backtrackDepth
@@ -115,7 +135,9 @@ class Backtracker:
 			for nom, dia, hora in xproduct(companys, dies, range(nhores))
 			)
 		with open(filename) as thefile:
-			for linenum,row in enumerate(line.split() for line in thefile) :
+			for linenum,row in enumerate(thefile) :
+				row = row.split('#')[0]
+				row = row.split()
 				if not row: continue
 				row = [col.strip() for col in row]
 				company = row[0]
@@ -234,6 +256,28 @@ class Backtracker:
 				self.cut("TaulaSorollosa", partial)
 				continue
 
+			def lastInIdleGroup():
+				for group in self.grupsAlliberats[company] :
+					if self.lliuresEnGrupDAlliberats[group, day, hora] > 1:
+						continue
+
+#					print "El grup {} on pertany {} no te gent el {} a {} hora".format(group, company, day, hora+1)
+					return True
+				return False
+
+			def markIdleGroups(company, day, hora):
+				for g in self.grupsAlliberats[company] :
+					self.lliuresEnGrupDAlliberats[g, day, hora] -= 1
+				
+			def unmarkIdleGroups(company, day, hora):
+				for g in self.grupsAlliberats[company] :
+					self.lliuresEnGrupDAlliberats[g, day, hora] += 1
+				
+
+			if lastInIdleGroup() or False:
+				self.cut("IdleGroupViolated", partial)
+				continue
+
 			if self.horesDiaries[company, day] >= self.maxTornsDiaris(company):
 #				print "No li posem mes a {} que ja te {} hores el {}".format( company, self.horesDiaries[company], day)
 				self.cut("DiaATope", partial)
@@ -295,12 +339,14 @@ class Backtracker:
 			self.horesDiaries[company,day]+=1
 			self.torns[company][telefon]-=1
 			self.telefonsALaTaula[day,hora,taula]+=1
+			markIdleGroups(company,day,hora)
 
 			# Provem amb la seguent casella
 			self.solveTorn(partial+[company])
 			self.nbactracks += 1
 
 			# Desanotem la casella
+			unmarkIdleGroups(company,day,hora)
 			self.telefonsALaTaula[day,hora,taula]-=1
 			self.torns[company][telefon]+=1
 			self.horesDiaries[company,day]-=1
@@ -317,10 +363,12 @@ class Backtracker:
 	def reportSolution(self, solution) :
 
 		# buidar el fitxer, si el cost es diferent
-		if self.minimumCost != self.__dict__.get('storedCost', 'resEsComparaAmbMi'):
-			with open("taula.html",'w') as output:
-				self.storedCost = self.minimumCost
-				output.write("""\
+		nextMonday = date.today() + timedelta(days=7-date.today().weekday())
+
+		firstAtCost = self.minimumCost != self.__dict__.get('storedCost', 'resEsComparaAmbMi')
+		if firstAtCost:
+			self.storedCost = self.minimumCost
+			header = ("""\
 <!doctype html>
 <html>
 <head>
@@ -333,21 +381,24 @@ td, th {
 td:empty { border:0;}
 td { padding: 1ex;}
 """+ ''.join(
-			(".{} {{ background-color: #{:01x}{:02x}{:02x}; }}\n".format(
-						nom, random.randint(127,255), random.randint(127,255), random.randint(127,255)) for nom in self.companys)
-			if self.config.randomColors else
-			(".{} {{ background-color: #{}; }}\n".format(
-						nom, self.config.colors[nom]) for nom in self.companys)
-			)
+				(".{} {{ background-color: #{:01x}{:02x}{:02x}; }}\n".format(
+							nom, random.randint(127,255), random.randint(127,255), random.randint(127,255)) for nom in self.companys)
+				if self.config.randomColors else
+				(".{} {{ background-color: #{}; }}\n".format(
+							nom, self.config.colors[nom]) for nom in self.companys)
+				)
 					+"""
 </style>
 </head>
 <body>
 """)
+			with open("graella-telefons-{}.html".format(nextMonday),'w') as output:
+				output.write(header)
+			with open("taula.html",'w') as output:
+				output.write(header)
 
 		solution = dict(zip(self.caselles, solution))
-		with open("taula.html",'a') as output:
-			output.write( '\n'.join(
+		taula = '\n'.join(
 				[
 					'<table>',
 					'<tr><td></td><th colspan=3>' +
@@ -355,11 +406,11 @@ td { padding: 1ex;}
 						d for d in self.diesVisualitzacio
 					) + '</th><tr>',
 					'<tr><td></td>' +
-					''.join(
+					'\n<td></td>\n'.join(
 						''.join(
 							'<th>T{}</th>'.format(telefon+1)
 							for telefon in range(self.ntelefons))
-						+ '\n<td></td>\n'
+						+ '\n'
 						for d in self.diesVisualitzacio
 					) + '<tr>',
 				]+
@@ -377,6 +428,10 @@ td { padding: 1ex;}
 				]
 				+ [
 					'</table>',
+				]
+			)
+		penalitzacions = '\n'.join([
+					"",
 					"<p>Penalitzacio: {}</p>".format(self.minimumCost),
 					"<ul>",
 					"\n".join(
@@ -385,8 +440,20 @@ td { padding: 1ex;}
 					),
 					"</ul>",
 					'',
-				]
-				))
+				])
+		with open("taula.html",'a') as output:
+			output.write(taula)
+			output.write(penalitzacions)
+		if firstAtCost:
+			with open("graella-telefons-{}.html".format(nextMonday),'a') as output:
+				output.write(taula)
+				output.write('\n'.join([
+                    '',
+					'</body>',
+					'</head>',
+                    '',
+					]))
+
 #		exit(0)
 
 

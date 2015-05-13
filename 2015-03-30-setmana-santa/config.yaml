@@ -22,7 +22,6 @@ maximHoresDiaries:   # excepcions al maximHoresDiariesGeneral
    judit: 4
 noVolenEsmorzar:
 - david
-- judit
 costHoresDiscontinues: 40   # Per cada salt que te una persona entre dos hores de telefon un mateix dia
 costHoresConcentrades: 1   # Es multiplica per n·(n-1)/2 on n es el nombre d'hores diaries d'una mateixa persona
 costTaulaSorollosa: 5   # Es multiplica per n·(n-1)/2 on n es el nombre de telefons simultanis a una taula
@@ -42,7 +41,7 @@ taules: # Asignacio de les persones en taules
    tania:  3
    judit:  3
    silvia: 4
-   juan:   4
+   joan:   4
 randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
 colors:
    marc:   'fbe8bc'
@@ -59,5 +58,5 @@ colors:
    tania:  'c8abf4'
    judit:  'e781e8'
    silvia: '8097fa'
-   juan:   'fa9080'
+   joan:   'fa9080'
 
