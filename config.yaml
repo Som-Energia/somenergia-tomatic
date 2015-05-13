@@ -18,7 +18,8 @@ maximPerTaula: 2   # maxim nombre de telefons simultanis a una mateixa taula
 maximsT1PerDia: 1   # maxim nombre de torns primaris diaris per a una persona
 maximHoresDiariesGeneral: 2   # maxim nombre de torns diaris per una persona
 maximHoresDiaries:   # excepcions al maximHoresDiariesGeneral
-   manel: 3
+   joan: 3
+   silvia: 3
 costHoresDiscontinues: 40   # Per cada salt que te una persona entre dos hores de telefon un mateix dia
 costHoresConcentrades: 1   # Es multiplica per n·(n-1)/2 on n es el nombre d'hores diaries d'una mateixa persona
 costTaulaSorollosa: 5   # Es multiplica per n·(n-1)/2 on n es el nombre de telefons simultanis a una taula
@@ -52,7 +53,7 @@ randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
 colors:
    marc:   'fbe8bc'
    eduard: 'd8b9c5'
-   pere:   '8f928e'
+   pere:   'f7d358'
    david:  'ffd3ac'
    aleix:  'eed0eb'
    carles: 'c98e98'
