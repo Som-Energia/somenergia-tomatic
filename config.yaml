@@ -1,6 +1,6 @@
 nTelefons: 3
-diesCerca: ['dl','dm','dx','dj'] # Els mes conflictius davant
-diesVisualitzacio: ['dl','dm','dx','dj']
+diesCerca: ['dv','dl','dm','dx','dj'] # Els mes conflictius davant
+diesVisualitzacio: ['dl','dm','dx','dj','dv']
 hores:  # La darrera es per tancar
 - '09:00'
 - '10:15'

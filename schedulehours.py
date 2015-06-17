@@ -372,7 +372,11 @@ class Backtracker:
 <!doctype html>
 <html>
 <head>
+<meta charset='utf-8' />
 <style>
+h1 {
+    color: #560;
+}
 td, th {
 	border:1px solid black;
 	width: 8em;
@@ -394,6 +398,7 @@ td { padding: 1ex;}
 """)
 			with open("graella-telefons-{}.html".format(nextMonday),'w') as output:
 				output.write(header)
+				output.write("<h1>Setmana {}</h1>".format(nextMonday))
 			with open("taula.html",'w') as output:
 				output.write(header)
 
