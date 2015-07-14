@@ -22,7 +22,7 @@ class Backtracker:
 		self.ndies = len(self.dies)
 		self.hores = self.llegeixHores()
 		self.nhores = len(self.hores)
-		self.torns = self.llegeixTorns('torns.csv', self.ntelefons)
+		self.torns = self.llegeixTorns('carrega.csv', self.ntelefons)
 		self.companys = list(self.torns.keys())
 		self.caselles = list(xproduct(self.dies, range(self.nhores), range(self.ntelefons)))
 		self.topesDiaris = self.llegeixTopesDiaris(self.companys)
@@ -121,7 +121,7 @@ class Backtracker:
 		for name in dailyMaxPerPerson:
 			if name in persons: continue
 			raise Backtracker.ErrorConfiguracio(
-				"Eps, el nom '{}' de maximHoresDiaries a config.yaml no surt a torns.csv"
+				"Eps, el nom '{}' de maximHoresDiaries a config.yaml no surt a carrega.csv"
 				.format(nom))
 		return dailyMaxPerPerson
 

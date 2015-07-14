@@ -42,13 +42,7 @@ taules: # Asignacio de les persones en taules
    judit:  3
    silvia: 4
    joan:   4
-sempreUnLliure:
-  suportSilvia:
-    - silvia
-    - monica
-  suportJoan: 
-    - joan
-    - yaiza
+sempreUnLliure: {}
 randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
 colors:
    marc:   'fbe8bc'
