@@ -5,6 +5,7 @@ from itertools import product as xproduct
 import random
 from datetime import date, timedelta
 import glob
+from consolemsg import step, error, warn
 
 
 def baixaDades() :
@@ -22,6 +23,7 @@ def baixaDades() :
     import gspread
     from oauth2client.client import SignedJwtAssertionCredentials
 
+    step('Autentificant al Google Drive')
     credential = 'TestSomEnergia-0b81931bf087.json'
     name = 'Vacances'
 
@@ -37,11 +39,12 @@ def baixaDades() :
     try:
         doc = gc.open(name)
     except:
-        print "No s'ha trobat el document, potser no li has donat permisos a l'aplicacio"
-        print "Cal compartir el document 'Vacances' amb el següent correu:"
-        print json_key['client_email']
+        error("No s'ha trobat el document, potser no li has donat permisos a l'aplicacio")
+        error("Cal compartir el document 'Vacances' amb el següent correu:")
+        error(json_key['client_email'])
         sys.exit(-1)
 
+    step('Baixant carrega setmanal...')
     carregaSheet = doc.get_worksheet(5)
     carrega = table(carregaSheet,'CarregaSetmanaVinent')
     with open('carrega.csv','w') as phoneload :
@@ -51,6 +54,9 @@ def baixaDades() :
                 for row in carrega
                 )
             )
+
+    step('Baixant vacances...')
+
     def transliterate(word):
         word=unicode(word).lower()
         for old, new in zip(
@@ -61,21 +67,18 @@ def baixaDades() :
         return word
 
     holidaysSheet = doc.get_worksheet(0)
-    holidays1S = table(holidaysSheet,'Vacances2015Semestre1')
     holidays2S = table(holidaysSheet,'Vacances2015Semestre2')
 
     nextMonday = date.today() + timedelta(days=7-date.today().weekday())
     nextFriday = nextMonday+timedelta(days=4)
     mondayYear = nextMonday.year
-    endingYear = nextFriday.year
     startingSemester = 1 if nextMonday < date(mondayYear,7,1) else 2
-    endingSemester = 1 if nextFriday < date(mondayYear,7,1) else 2
     startingOffset = (nextMonday - date(mondayYear,1 if startingSemester is 1 else 7,1)).days
-    endingOffset = (nextFriday - date(endingYear,1 if endingSemester is 1 else 7,1)).days
+
+#    endingSemester = 1 if nextFriday < date(mondayYear,7,1) else 2
 #    if startingSemester == endingSemester :
-    who = [row[0] for row in holidays1S ]
+    who = [row[0] for row in holidays2S ]
     holidays = [
-        (name, days) for name, days in [
         (transliterate(name), [
             day for day, value in zip(
                 ['dl','dm','dx','dj','dv'],
@@ -85,15 +88,11 @@ def baixaDades() :
             ])
         for name, row in zip(who, holidays2S)
         ]
-        if days
-        # and name in [...] TODO
-        ]
     with open('indisponibilitats-vacances.conf','w') as holidaysfile:
         for name, days in holidays:
             for day in days:
                 holidaysfile.write("{} {} # vacances\n".format(name, day))
     
-
 
 
 
@@ -580,7 +579,9 @@ signal.signal(signal.SIGINT, signal_handler)
 
 from namespace import namespace as ns
 
+step('Carregant configuració...')
 b = Backtracker(ns.load("config.yaml"))
+step('Generant horari...')
 b.solve()
 
 
