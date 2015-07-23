@@ -6,7 +6,7 @@ import random
 from datetime import date, timedelta
 import glob
 from consolemsg import step, error, warn
-
+import codecs
 
 def baixaDades() :
     def table(sheet, name):
@@ -94,7 +94,29 @@ def baixaDades() :
                 holidaysfile.write("{} {} # vacances\n".format(name, day))
     
 
+    step('Baixant altres indisponibilitats setmanals...')
 
+    indisSheet = doc.get_worksheet(4)
+    indis = indisSheet.get_all_values()
+    with codecs.open('indisponibilitats-setmana.conf','w','utf8') as indisfile:
+        for _, who, day, hour, howlong, need, comment, done in indis[1:] :
+            if done == '1': continue
+            days = ['dl','dm','dx','dj','dv'] if day == 'Tots' else [day.lower()]
+            hours = {
+                '9:': '1000',
+                '10': '0100',
+                '11': '0010',
+                '12': '0001',
+                'To': '',
+            } [hour[:2]]
+            for day in days :
+                line = u"{} {} {} # {}\n".format(
+                    transliterate(who),
+                    day,
+                    hours,
+                    comment,
+                )
+                indisfile.write(line)
 
 
 class Backtracker:
