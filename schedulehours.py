@@ -4,33 +4,46 @@
 from itertools import product as xproduct
 import random
 from datetime import date, timedelta
+import glob
 
 
 def baixaDades() :
-    name = 'Vacances'
-    cells='CarregaSetmanaVinent' # 'G23:J37'
-
-    credential = 'TestSomEnergia-0b81931bf087.json'
+    def table(sheet, name):
+        cells = sheet.range(name)
+        width = cells[-1].col-cells[0].col +1
+        height = cells[-1].row-cells[0].row +1
+        print width, height 
+        return [ 
+            [cell.value for cell in row]
+            for row in zip( *(iter(cells),)*width)
+            ]
 
     import json
     import gspread
     from oauth2client.client import SignedJwtAssertionCredentials
 
+    credential = 'TestSomEnergia-0b81931bf087.json'
+    name = 'Vacances'
+
     json_key = json.load(open(credential))
-    scope = ['https://spreadsheets.google.com/feeds']
 
-    print "Cal compartir el document amb el següent correu:"
-    print json_key['client_email']
-
-    credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'], scope)
+    credentials = SignedJwtAssertionCredentials(
+        json_key['client_email'],
+        json_key['private_key'],
+        scope = ['https://spreadsheets.google.com/feeds']
+        )
 
     gc = gspread.authorize(credentials)
-    doc = gc.open(name)
-    wks = doc.get_worksheet(5)
-    carrega = [
-        [ cell.value for cell in  row ]
-        for row in zip( *(iter(wks.range('CarregaSetmanaVinent')),)*4)
-        ]
+    try:
+        doc = gc.open(name)
+    except:
+        print "No s'ha trobat el document, potser no li has donat permisos a l'aplicacio"
+        print "Cal compartir el document 'Vacances' amb el següent correu:"
+        print json_key['client_email']
+        sys.exit(-1)
+
+    carregaSheet = doc.get_worksheet(5)
+    carrega = table(carregaSheet,'CarregaSetmanaVinent')
     with open('carrega.csv','w') as phoneload :
         phoneload.write(
             "\n".join(
@@ -38,6 +51,49 @@ def baixaDades() :
                 for row in carrega
                 )
             )
+    def transliterate(word):
+        word=unicode(word).lower()
+        for old, new in zip(
+            u'àèìòùáéíóúçñ',
+            u'aeiouaeioucn',
+            ) :
+            word = word.replace(old,new)
+        return word
+
+    holidaysSheet = doc.get_worksheet(0)
+    holidays1S = table(holidaysSheet,'Vacances2015Semestre1')
+    holidays2S = table(holidaysSheet,'Vacances2015Semestre2')
+
+    nextMonday = date.today() + timedelta(days=7-date.today().weekday())
+    nextFriday = nextMonday+timedelta(days=4)
+    mondayYear = nextMonday.year
+    endingYear = nextFriday.year
+    startingSemester = 1 if nextMonday < date(mondayYear,7,1) else 2
+    endingSemester = 1 if nextFriday < date(mondayYear,7,1) else 2
+    startingOffset = (nextMonday - date(mondayYear,1 if startingSemester is 1 else 7,1)).days
+    endingOffset = (nextFriday - date(endingYear,1 if endingSemester is 1 else 7,1)).days
+#    if startingSemester == endingSemester :
+    who = [row[0] for row in holidays1S ]
+    holidays = [
+        (name, days) for name, days in [
+        (transliterate(name), [
+            day for day, value in zip(
+                ['dl','dm','dx','dj','dv'],
+                row[startingOffset+1:startingOffset+6]
+                )
+            if value.strip()
+            ])
+        for name, row in zip(who, holidays2S)
+        ]
+        if days
+        # and name in [...] TODO
+        ]
+    with open('indisponibilitats-vacances.conf','w') as holidaysfile:
+        for name, days in holidays:
+            for day in days:
+                holidaysfile.write("{} {} # vacances\n".format(name, day))
+    
+
 
 
 
