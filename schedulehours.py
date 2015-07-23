@@ -5,6 +5,43 @@ from itertools import product as xproduct
 import random
 from datetime import date, timedelta
 
+
+def baixaDades() :
+    name = 'Vacances'
+    cells='CarregaSetmanaVinent' # 'G23:J37'
+
+    credential = 'TestSomEnergia-0b81931bf087.json'
+
+    import json
+    import gspread
+    from oauth2client.client import SignedJwtAssertionCredentials
+
+    json_key = json.load(open(credential))
+    scope = ['https://spreadsheets.google.com/feeds']
+
+    print "Cal compartir el document amb el següent correu:"
+    print json_key['client_email']
+
+    credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'], scope)
+
+    gc = gspread.authorize(credentials)
+    doc = gc.open(name)
+    wks = doc.get_worksheet(5)
+    carrega = [
+        [ cell.value for cell in  row ]
+        for row in zip( *(iter(wks.range('CarregaSetmanaVinent')),)*4)
+        ]
+    with open('carrega.csv','w') as phoneload :
+        phoneload.write(
+            "\n".join(
+                '\t'.join(c for c in row)
+                for row in carrega
+                )
+            )
+
+
+
+
 class Backtracker:
 	class ErrorConfiguracio(Exception): pass
 
@@ -27,7 +64,7 @@ class Backtracker:
 		self.caselles = list(xproduct(self.dies, range(self.nhores), range(self.ntelefons)))
 		self.topesDiaris = self.llegeixTopesDiaris(self.companys)
 		self.disponible = self.initBusyTable(
-			'indisponibilitats.conf', self.companys, self.dies, self.nhores)
+            *glob.glob('indisponibilitats*.conf'))
 
 		def createTable(defaultValue, *iterables) :
 			"""Creates a table with as many cells as the cross product of the iterables"""
@@ -129,30 +166,31 @@ class Backtracker:
 		return self.topesDiaris.get(company, self.globalMaxTurnsADay)
 
 
-	def initBusyTable(self, filename, companys, dies, nhores) :
+	def initBusyTable(self, *filenames) :
 		availability = dict(
 			((dia,hora,nom), True)
-			for nom, dia, hora in xproduct(companys, dies, range(nhores))
+			for nom, dia, hora in xproduct(self.companys, self.dies, range(self.nhores))
 			)
-		with open(filename) as thefile:
-			for linenum,row in enumerate(thefile) :
-				row = row.split('#')[0]
-				row = row.split()
-				if not row: continue
-				row = [col.strip() for col in row]
-				company = row[0]
-				affectedDays = [row[1]] if row[1] in dies else dies
-				affectedTurns = row[1].strip() if row[1] not in dies else (
-					row[2] if len(row)>2 else '1'*nhores
-					)
-				if len(affectedTurns)!=nhores :
-					raise Backtracker.ErrorConfiguracio(
-						"'{}':{}: Expected busy string of lenght {} containing '1' on busy hours, found '{}'".format(
-						filename, linenum+1, nhores, affectedTurns))
-				for hora, busy in enumerate(affectedTurns) :
-					if busy!='1': continue
-					for dia in affectedDays:
-						availability[dia, hora, company] = False
+		for filename in filenames:
+			with open(filename) as thefile:
+				for linenum,row in enumerate(thefile) :
+					row = row.split('#')[0]
+					row = row.split()
+					if not row: continue
+					row = [col.strip() for col in row]
+					company = row[0]
+					affectedDays = [row[1]] if row[1] in self.dies else self.dies
+					affectedTurns = row[1].strip() if row[1] not in self.dies else (
+						row[2] if len(row)>2 else '1'*self.nhores
+						)
+					if len(affectedTurns)!=self.nhores :
+						raise Backtracker.ErrorConfiguracio(
+							"'{}':{}: Expected busy string of lenght {} containing '1' on busy hours, found '{}'".format(
+							filename, linenum+1, self.nhores, affectedTurns))
+					for hora, busy in enumerate(affectedTurns) :
+						if busy!='1': continue
+						for dia in affectedDays:
+							availability[dia, hora, company] = False
 		return availability
 
 	def isBusy(self, person, day, hour):
@@ -472,6 +510,8 @@ class Backtracker_Test(unittest.TestCase):
 if '--test' in sys.argv:
 	sys.argv.remove('--test')
 	unittest.main()
+
+baixaDades()
 
 import signal
 import subprocess
