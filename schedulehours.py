@@ -5,7 +5,7 @@ from itertools import product as xproduct
 import random
 from datetime import date, timedelta
 import glob
-from consolemsg import step, error, warn
+from consolemsg import step, error, warn, fail
 import codecs
 
 def baixaDades() :
@@ -24,7 +24,7 @@ def baixaDades() :
     from oauth2client.client import SignedJwtAssertionCredentials
 
     step('Autentificant al Google Drive')
-    credential = 'TestSomEnergia-0b81931bf087.json'
+    credential = 'drive-certificate.json'
     name = 'Vacances'
 
     json_key = json.load(open(credential))
@@ -587,8 +587,15 @@ class Backtracker_Test(unittest.TestCase):
 if '--test' in sys.argv:
 	sys.argv.remove('--test')
 	unittest.main()
+	sys.exit()
 
-baixaDades()
+if 'get' in sys.argv:
+	sys.argv.remove('get')
+	baixaDades()
+	sys.exit()
+
+if 'publish' in sys.argv:
+	fail("Publicació automatica no implementada encara")
 
 import signal
 import subprocess
