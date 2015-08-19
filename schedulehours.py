@@ -13,7 +13,6 @@ def baixaDades() :
         cells = sheet.range(name)
         width = cells[-1].col-cells[0].col +1
         height = cells[-1].row-cells[0].row +1
-        print width, height 
         return [ 
             [cell.value for cell in row]
             for row in zip( *(iter(cells),)*width)
@@ -206,6 +205,7 @@ class Backtracker:
 		result = dict()
 		with open(tornsfile) as thefile:
 			for numline, line in enumerate(thefile):
+				if not line.strip(): continue
 				row = [col.strip() for col in line.split('\t') ]
 				name = row[0]
 				if len(row)!=ntelefons+1 :
@@ -305,7 +305,7 @@ class Backtracker:
 		if (len(self.bestSolution), -self.bestCost) <= (len(partial), -self.cost):
 			self.bestSolution=partial
 			self.bestCost=self.cost
-			print len(partial), self.cost
+			print 'Caselles: {}/{} Cost: {}'.format(len(partial), len(self.caselles), self.cost)
 
 		if len(partial) == len(self.caselles):
 			self.minimumCost = self.cost
@@ -578,16 +578,6 @@ td { padding: 1ex;}
 
 
 import sys
-import unittest
-
-class Backtracker_Test(unittest.TestCase):
-	def test_availability(self):
-		availability = initBusyTable()
-
-if '--test' in sys.argv:
-	sys.argv.remove('--test')
-	unittest.main()
-	sys.exit()
 
 if 'get' in sys.argv:
 	sys.argv.remove('get')
@@ -609,7 +599,12 @@ signal.signal(signal.SIGINT, signal_handler)
 from namespace import namespace as ns
 
 step('Carregant configuració...')
-b = Backtracker(ns.load("config.yaml"))
+try:
+    b = Backtracker(ns.load("config.yaml"))
+except:
+    error("Configuració incorrecta")
+    raise
+
 step('Generant horari...')
 b.solve()
 
