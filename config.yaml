@@ -33,14 +33,14 @@ taules: # Asignacio de les persones en taules
    david:  1
    aleix:  1
    carles: 2
-   marta:  2
    monica: 2
-   yaiza:  2
+   silvia: 2
    erola:  3
    manel:  3
    tania:  3
    judit:  3
-   silvia: 4
+   marta:  4
+   yaiza:  4
    joan:   4
 sempreUnLliure: {}
 randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
