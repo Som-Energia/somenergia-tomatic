@@ -7,8 +7,16 @@ from datetime import date, timedelta
 import glob
 from consolemsg import step, error, warn, fail
 import codecs
+import sys
 
-def baixaDades() :
+
+def iniciSetmana():
+    if sys.argv > 1:
+        data = date(*(int(i) for i in sys.argv[1].split('-')))
+        return data - timedelta(days=data.weekday())
+    return date.today() + timedelta(days=7-date.today().weekday())
+
+def baixaDades(setmana) :
     def table(sheet, name):
         cells = sheet.range(name)
         width = cells[-1].col-cells[0].col +1
@@ -24,7 +32,7 @@ def baixaDades() :
 
     step('Autentificant al Google Drive')
     credential = 'drive-certificate.json'
-    name = 'Vacances'
+    name = 'Quadre de Vacances'
 
     json_key = json.load(open(credential))
 
@@ -39,12 +47,13 @@ def baixaDades() :
         doc = gc.open(name)
     except:
         error("No s'ha trobat el document, potser no li has donat permisos a l'aplicacio")
-        error("Cal compartir el document 'Vacances' amb el següent correu:")
+        error("Cal compartir el document '{}' amb el següent correu:".format(name))
         error(json_key['client_email'])
         sys.exit(-1)
 
     step('Baixant carrega setmanal...')
-    carregaSheet = doc.get_worksheet(5)
+
+    carregaSheet = doc.get_worksheet(6)
     carrega = table(carregaSheet,'CarregaSetmanaVinent')
     with open('carrega.csv','w') as phoneload :
         phoneload.write(
@@ -68,7 +77,7 @@ def baixaDades() :
     holidaysSheet = doc.get_worksheet(0)
     holidays2S = table(holidaysSheet,'Vacances2015Semestre2')
 
-    nextMonday = date.today() + timedelta(days=7-date.today().weekday())
+    nextMonday = iniciSetmana()
     nextFriday = nextMonday+timedelta(days=4)
     mondayYear = nextMonday.year
     startingSemester = 1 if nextMonday < date(mondayYear,7,1) else 2
@@ -95,7 +104,7 @@ def baixaDades() :
 
     step('Baixant altres indisponibilitats setmanals...')
 
-    indisSheet = doc.get_worksheet(4)
+    indisSheet = doc.get_worksheet(5)
     indis = indisSheet.get_all_values()
     with codecs.open('indisponibilitats-setmana.conf','w','utf8') as indisfile:
         for _, who, day, hour, howlong, need, comment, done in indis[1:] :
@@ -113,7 +122,7 @@ def baixaDades() :
                     transliterate(who),
                     day,
                     hours,
-                    comment,
+                    ' '.join((howlong,_,comment)),
                 )
                 indisfile.write(line)
 
@@ -478,7 +487,7 @@ class Backtracker:
 	def reportSolution(self, solution) :
 
 		# buidar el fitxer, si el cost es diferent
-		nextMonday = date.today() + timedelta(days=7-date.today().weekday())
+		nextMonday = iniciSetmana()
 
 		firstAtCost = self.minimumCost != self.__dict__.get('storedCost', 'resEsComparaAmbMi')
 		if firstAtCost:
@@ -586,6 +595,7 @@ if 'get' in sys.argv:
 
 if 'publish' in sys.argv:
 	fail("Publicació automatica no implementada encara")
+
 
 import signal
 import subprocess
