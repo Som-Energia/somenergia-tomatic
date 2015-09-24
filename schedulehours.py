@@ -10,6 +10,7 @@ from consolemsg import step, error, warn, fail
 import codecs
 import sys
 
+monitoringFile = 'taula.html'
 
 def iniciSetmana():
     dateProvided = len(sys.argv)>1
@@ -539,7 +540,7 @@ td { padding: 1ex;}
 			with open("graella-telefons-{}.html".format(monday),'w') as output:
 				output.write(header)
 				output.write("<h1>Setmana {}</h1>".format(monday))
-			with open("taula.html",'w') as output:
+			with open(monitoringFile,'w') as output:
 				output.write(header)
 
 		solution = dict(zip(self.caselles, solution))
@@ -586,7 +587,7 @@ td { padding: 1ex;}
 					"</ul>",
 					'',
 				])
-		with open("taula.html",'a') as output:
+		with open(monitoringFile,'a') as output:
 			output.write(taula)
 			output.write(penalitzacions)
 		if firstAtCost:
