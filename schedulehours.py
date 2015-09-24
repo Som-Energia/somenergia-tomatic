@@ -4,6 +4,7 @@
 from itertools import product as xproduct
 import random
 from datetime import date, timedelta
+import datetime
 import glob
 from consolemsg import step, error, warn, fail
 import codecs
@@ -11,12 +12,18 @@ import sys
 
 
 def iniciSetmana():
-    if sys.argv > 1:
-        data = date(*(int(i) for i in sys.argv[1].split('-')))
-        return data - timedelta(days=data.weekday())
-    return date.today() + timedelta(days=7-date.today().weekday())
+    dateProvided = len(sys.argv)>1
+    
+    if dateProvided:
+         # take the monday of the week including that date
+        date = datetime.datetime.strptime(sys.argv[1],"%Y-%-m-%d")
+        return date - timedelta(days=date.weekday())
 
-def baixaDades(setmana) :
+    # If no date provided, take the next monday
+    today = date.today()
+    return today + timedelta(days=7-today.weekday())
+
+def baixaDades() :
     def table(sheet, name):
         cells = sheet.range(name)
         width = cells[-1].col-cells[0].col +1
@@ -107,25 +114,34 @@ def baixaDades(setmana) :
     indisSheet = doc.get_worksheet(5)
     indis = indisSheet.get_all_values()
     with codecs.open('indisponibilitats-setmana.conf','w','utf8') as indisfile:
-        for _, who, day, hour, howlong, need, comment, done in indis[1:] :
-            if done == '1': continue
-            days = ['dl','dm','dx','dj','dv'] if day == 'Tots' else [day.lower()]
-            hours = {
-                '9:': '1000',
-                '10': '0100',
-                '11': '0010',
-                '12': '0001',
-                'To': '',
-            } [hour[:2]]
-            for day in days :
-                line = u"{} {} {} # {}\n".format(
-                    transliterate(who),
-                    day,
-                    hours,
-                    ' '.join((howlong,_,comment)),
-                )
-                indisfile.write(line)
+        for _, who, day, weekday, hours, need, comment in indis[1:] :
+            if weekday and day:
+                fail("Indisponibilitat especifica dia puntual {} i dia de la setmana {}"
+                    .format(day,weekday))
+            if weekday.strip(): continue
+            theDay = datetime.datetime.strptime(day, "%d/%m/%Y").date()
+            if theDay < iniciSetmana(): continue
+            if theDay > iniciSetmana()+timedelta(days=7): continue
 
+            startHours = [ h.split(':')[0].strip() for h in hours.split(',')]
+            print startHours
+            bitmap = ''.join((
+                ('1' if '9' in startHours else '0'),
+                ('1' if '10' in startHours else '0'),
+                ('1' if '11' in startHours else '0'),
+                ('1' if '12' in startHours else '0'),
+            ))
+            print bitmap
+            weekdayShort = u'dl dm dx dj dv ds dg'.split()[theDay.weekday()]
+
+
+            line = u"{} {} {} # {}\n".format(
+                transliterate(who),
+                weekdayShort,
+                bitmap,
+                comment)
+            indisfile.write(line)
+    sys.exit()
 
 class Backtracker:
 	class ErrorConfiguracio(Exception): pass
