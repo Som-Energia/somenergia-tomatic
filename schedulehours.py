@@ -16,14 +16,14 @@ def iniciSetmana():
     
     if dateProvided:
          # take the monday of the week including that date
-        date = datetime.datetime.strptime(sys.argv[1],"%Y-%-m-%d")
+        date = datetime.datetime.strptime(sys.argv[1],"%Y-%m-%d").date()
         return date - timedelta(days=date.weekday())
 
     # If no date provided, take the next monday
     today = date.today()
     return today + timedelta(days=7-today.weekday())
 
-def baixaDades() :
+def baixaDades(monday) :
     def table(sheet, name):
         cells = sheet.range(name)
         width = cells[-1].col-cells[0].col +1
@@ -58,10 +58,12 @@ def baixaDades() :
         error(json_key['client_email'])
         sys.exit(-1)
 
-    step('Baixant carrega setmanal...')
+    carregaRangeName = 'Carrega_{:02d}_{:02d}_{:02d}'.format(
+        *monday.timetuple())
+    step('Baixant carrega setmanal del rang {}...'.format(carregaRangeName))
 
     carregaSheet = doc.get_worksheet(6)
-    carrega = table(carregaSheet,'CarregaSetmanaVinent')
+    carrega = table(carregaSheet, carregaRangeName)
     with open('carrega.csv','w') as phoneload :
         phoneload.write(
             "\n".join(
@@ -77,18 +79,17 @@ def baixaDades() :
         for old, new in zip(
             u'àèìòùáéíóúçñ',
             u'aeiouaeioucn',
-            ) :
+        ) :
             word = word.replace(old,new)
         return word
 
     holidaysSheet = doc.get_worksheet(0)
     holidays2S = table(holidaysSheet,'Vacances2015Semestre2')
 
-    nextMonday = iniciSetmana()
-    nextFriday = nextMonday+timedelta(days=4)
-    mondayYear = nextMonday.year
-    startingSemester = 1 if nextMonday < date(mondayYear,7,1) else 2
-    startingOffset = (nextMonday - date(mondayYear,1 if startingSemester is 1 else 7,1)).days
+    nextFriday = monday+timedelta(days=4)
+    mondayYear = monday.year
+    startingSemester = 1 if monday < date(mondayYear,7,1) else 2
+    startingOffset = (monday - date(mondayYear,1 if startingSemester is 1 else 7,1)).days
 
 #    endingSemester = 1 if nextFriday < date(mondayYear,7,1) else 2
 #    if startingSemester == endingSemester :
@@ -118,20 +119,19 @@ def baixaDades() :
             if weekday and day:
                 fail("Indisponibilitat especifica dia puntual {} i dia de la setmana {}"
                     .format(day,weekday))
-            if weekday.strip(): continue
+            if weekday.strip():
+                fail("Hi ha indisponibilitats permaments al drive, afegeix-les a ma i esborra-les")
             theDay = datetime.datetime.strptime(day, "%d/%m/%Y").date()
             if theDay < iniciSetmana(): continue
             if theDay > iniciSetmana()+timedelta(days=7): continue
 
             startHours = [ h.split(':')[0].strip() for h in hours.split(',')]
-            print startHours
             bitmap = ''.join((
                 ('1' if '9' in startHours else '0'),
                 ('1' if '10' in startHours else '0'),
                 ('1' if '11' in startHours else '0'),
                 ('1' if '12' in startHours else '0'),
             ))
-            print bitmap
             weekdayShort = u'dl dm dx dj dv ds dg'.split()[theDay.weekday()]
 
 
@@ -141,7 +141,6 @@ def baixaDades() :
                 bitmap,
                 comment)
             indisfile.write(line)
-    sys.exit()
 
 class Backtracker:
 	class ErrorConfiguracio(Exception): pass
@@ -328,9 +327,10 @@ class Backtracker:
 		if self.ended: return
 
 		if (len(self.bestSolution), -self.bestCost) <= (len(partial), -self.cost):
+			print 'Caselles: {}/{} Cost: {}'.format(
+                len(partial), len(self.caselles), self.cost)
 			self.bestSolution=partial
 			self.bestCost=self.cost
-			print 'Caselles: {}/{} Cost: {}'.format(len(partial), len(self.caselles), self.cost)
 
 		if len(partial) == len(self.caselles):
 			self.minimumCost = self.cost
@@ -503,7 +503,7 @@ class Backtracker:
 	def reportSolution(self, solution) :
 
 		# buidar el fitxer, si el cost es diferent
-		nextMonday = iniciSetmana()
+		monday = iniciSetmana()
 
 		firstAtCost = self.minimumCost != self.__dict__.get('storedCost', 'resEsComparaAmbMi')
 		if firstAtCost:
@@ -536,9 +536,9 @@ td { padding: 1ex;}
 </head>
 <body>
 """)
-			with open("graella-telefons-{}.html".format(nextMonday),'w') as output:
+			with open("graella-telefons-{}.html".format(monday),'w') as output:
 				output.write(header)
-				output.write("<h1>Setmana {}</h1>".format(nextMonday))
+				output.write("<h1>Setmana {}</h1>".format(monday))
 			with open("taula.html",'w') as output:
 				output.write(header)
 
@@ -590,7 +590,7 @@ td { padding: 1ex;}
 			output.write(taula)
 			output.write(penalitzacions)
 		if firstAtCost:
-			with open("graella-telefons-{}.html".format(nextMonday),'a') as output:
+			with open("graella-telefons-{}.html".format(monday),'a') as output:
 				output.write(taula)
 				output.write('\n'.join([
                     '',
@@ -606,11 +606,12 @@ import sys
 
 if 'get' in sys.argv:
 	sys.argv.remove('get')
-	baixaDades()
+	baixaDades(iniciSetmana())
 	sys.exit()
 
 if 'publish' in sys.argv:
 	fail("Publicació automatica no implementada encara")
+
 
 
 import signal
