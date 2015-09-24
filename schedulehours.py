@@ -604,15 +604,10 @@ td { padding: 1ex;}
 
 import sys
 
-if 'get' in sys.argv:
-	sys.argv.remove('get')
+if '--keep' in sys.argv:
+	sys.argv.remove('--keep')
+else:
 	baixaDades(iniciSetmana())
-	sys.exit()
-
-if 'publish' in sys.argv:
-	fail("Publicació automatica no implementada encara")
-
-
 
 import signal
 import subprocess
