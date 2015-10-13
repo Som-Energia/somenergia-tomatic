@@ -124,7 +124,7 @@ def baixaDades(monday) :
                 fail("Hi ha indisponibilitats permaments al drive, afegeix-les a ma i esborra-les")
             theDay = datetime.datetime.strptime(day, "%d/%m/%Y").date()
             if theDay < iniciSetmana(): continue
-            if theDay > iniciSetmana()+timedelta(days=7): continue
+            if theDay > iniciSetmana()+timedelta(days=6): continue
 
             startHours = [ h.split(':')[0].strip() for h in hours.split(',')]
             bitmap = ''.join((
@@ -134,7 +134,6 @@ def baixaDades(monday) :
                 ('1' if '12' in startHours else '0'),
             ))
             weekdayShort = u'dl dm dx dj dv ds dg'.split()[theDay.weekday()]
-
 
             line = u"{} {} {} # {}\n".format(
                 transliterate(who),
