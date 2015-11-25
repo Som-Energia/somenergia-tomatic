@@ -17,8 +17,8 @@ def iniciSetmana():
     
     if dateProvided:
          # take the monday of the week including that date
-        date = datetime.datetime.strptime(sys.argv[1],"%Y-%m-%d").date()
-        return date - timedelta(days=date.weekday())
+        givenDate = datetime.datetime.strptime(sys.argv[1],"%Y-%m-%d").date()
+        return givenDate - timedelta(days=givenDate.weekday())
 
     # If no date provided, take the next monday
     today = date.today()
@@ -592,8 +592,11 @@ td { padding: 1ex;}
 		if firstAtCost:
 			with open("graella-telefons-{}.html".format(monday),'a') as output:
 				output.write(taula)
+				with open("extensions.html") as extensions_html:
+					extensions = extensions_html.read()
 				output.write('\n'.join([
-                    '',
+					extensions,
+					'',
 					'</body>',
 					'</head>',
                     '',
