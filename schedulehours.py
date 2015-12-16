@@ -11,6 +11,9 @@ import codecs
 import sys
 
 monitoringFile = 'taula.html'
+worksheet_year_holidays_base = 0
+worksheet_unavailabilities = 5
+worksheet_load = 6
 
 def iniciSetmana():
     dateProvided = len(sys.argv)>1
@@ -63,7 +66,7 @@ def baixaDades(monday) :
         *monday.timetuple())
     step('Baixant carrega setmanal del rang {}...'.format(carregaRangeName))
 
-    carregaSheet = doc.get_worksheet(6)
+    carregaSheet = doc.get_worksheet(worksheet_load)
     carrega = table(carregaSheet, carregaRangeName)
     with open('carrega.csv','w') as phoneload :
         phoneload.write(
@@ -84,13 +87,19 @@ def baixaDades(monday) :
             word = word.replace(old,new)
         return word
 
-    holidaysSheet = doc.get_worksheet(0)
-    holidays2S = table(holidaysSheet,'Vacances2015Semestre2')
-
     nextFriday = monday+timedelta(days=4)
     mondayYear = monday.year
     startingSemester = 1 if monday < date(mondayYear,7,1) else 2
     startingOffset = (monday - date(mondayYear,1 if startingSemester is 1 else 7,1)).days
+
+    holidaysSheet = doc.get_worksheet(worksheet_year_holidays_base+mondayYear-2015)
+    holidays2SRange = 'Vacances{}Semestre{}'.format(
+        mondayYear,
+        startingSemester,
+        )
+    step(holidays2SRange)
+
+    holidays2S = table(holidaysSheet,holidays2SRange)
 
 #    endingSemester = 1 if nextFriday < date(mondayYear,7,1) else 2
 #    if startingSemester == endingSemester :
@@ -113,7 +122,7 @@ def baixaDades(monday) :
 
     step('Baixant altres indisponibilitats setmanals...')
 
-    indisSheet = doc.get_worksheet(5)
+    indisSheet = doc.get_worksheet(worksheet_unavailabilities)
     indis = indisSheet.get_all_values()
     with codecs.open('indisponibilitats-setmana.conf','w','utf8') as indisfile:
         for _, who, day, weekday, hours, need, comment in indis[1:] :
@@ -152,9 +161,10 @@ class Backtracker:
 		self.ntelefons = config.nTelefons
 		self.dies = config.diesCerca
 		self.diesVisualitzacio = config.diesVisualitzacio
-		if set(self.dies) != set(self.diesVisualitzacio) :
+		diesErronis = set(self.dies) - set(self.diesVisualitzacio)
+		if diesErronis:
 			raise Backtracker.ErrorConfiguracio(
-				"No s'han configurat els mateixos dies per cerca i visualització.")
+				"Aquests dies no son a la llista de visualitzacio: {}".format(diesErronis))
 
 		self.ndies = len(self.dies)
 		self.hores = self.llegeixHores()
@@ -164,7 +174,7 @@ class Backtracker:
 		self.caselles = list(xproduct(self.dies, range(self.nhores), range(self.ntelefons)))
 		self.topesDiaris = self.llegeixTopesDiaris(self.companys)
 		self.disponible = self.initBusyTable(
-            *glob.glob('indisponibilitats*.conf'))
+			*glob.glob('indisponibilitats*.conf'))
 
 		def createTable(defaultValue, *iterables) :
 			"""Creates a table with as many cells as the cross product of the iterables"""
@@ -280,10 +290,15 @@ class Backtracker:
 					if not row: continue
 					row = [col.strip() for col in row]
 					company = row[0]
-					affectedDays = [row[1]] if row[1] in self.dies else self.dies
-					affectedTurns = row[1].strip() if row[1] not in self.dies else (
-						row[2] if len(row)>2 else '1'*self.nhores
-						)
+					affectedDays = self.dies
+					remain = row[1:]
+					if row[1] in self.diesVisualitzacio:
+						if row[1] not in self.dies: # holyday
+							continue
+						affectedDays = [row[1]]
+						remain = row[2:]
+					affectedTurns = remain[0].strip() if remain else '1'*self.nhores
+
 					if len(affectedTurns)!=self.nhores :
 						raise Backtracker.ErrorConfiguracio(
 							"'{}':{}: Expected busy string of lenght {} containing '1' on busy hours, found '{}'".format(
@@ -564,8 +579,8 @@ td { padding: 1ex;}
 					'\n<td>&nbsp;</td>\n'.join(
 						'\n'.join(
 							"<td class='{0}'>{1}</td>".format(
-								solution[d,hi,l].lower(),
-								solution[d,hi,l].capitalize()
+								solution.get((d,hi,l),'festiu').lower(),
+								solution.get((d,hi,l),'festiu').capitalize()
 								) for l in range(self.ntelefons)
 							) for d in self.diesVisualitzacio)
 					+ '\n</tr>'
@@ -598,7 +613,7 @@ td { padding: 1ex;}
 					extensions,
 					'',
 					'</body>',
-					'</head>',
+					'</html>',
                     '',
 					]))
 
