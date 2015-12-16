@@ -1,5 +1,5 @@
 nTelefons: 3
-diesCerca: ['dx','dv','dm','dj', 'dl'] # Els mes conflictius davant
+diesCerca: ['dx','dm', 'dv','dj', 'dl'] # Els mes conflictius davant
 diesVisualitzacio: ['dl','dm','dx','dj','dv']
 hores:  # La darrera es per tancar
 - '09:00'
@@ -36,6 +36,7 @@ taules: # Asignacio de les persones en taules
    carles: 2
    monica: 2
    silvia: 2
+   robert: 2
    erola:  3
    manel:  3
    tania:  3
@@ -46,6 +47,7 @@ taules: # Asignacio de les persones en taules
 sempreUnLliure: {}
 randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
 colors:
+   robert: 'e8fbbc'
    marc:   'fbe8bc'
    eduard: 'd8b9c5'
    pere:   '8f928e'
