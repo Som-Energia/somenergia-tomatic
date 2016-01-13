@@ -11,7 +11,6 @@ import codecs
 import sys
 
 monitoringFile = 'taula.html'
-worksheet_year_holidays_base = 0
 worksheet_unavailabilities = 5
 worksheet_load = 6
 
@@ -92,12 +91,12 @@ def baixaDades(monday) :
     startingSemester = 1 if monday < date(mondayYear,7,1) else 2
     startingOffset = (monday - date(mondayYear,1 if startingSemester is 1 else 7,1)).days
 
-    holidaysSheet = doc.get_worksheet(worksheet_year_holidays_base+mondayYear-2015)
+    holidaysSheet = doc.get_worksheet(0)
     holidays2SRange = 'Vacances{}Semestre{}'.format(
         mondayYear,
         startingSemester,
         )
-    step(holidays2SRange)
+    step("Baixant Interval {} {}".format(holidaysSheet, holidays2SRange))
 
     holidays2S = table(holidaysSheet,holidays2SRange)
 
@@ -379,7 +378,6 @@ class Backtracker:
 					self.cut("PreveigTots", partial)
 #					print "Eps a {} nomes li queden {} forats per posar {} hores".format(company, tornsColocables, tornsPendents)
 					return
-				
 
 		shuffled = list(self.companys)
 		if self.config.aleatori:
