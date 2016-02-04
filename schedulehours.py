@@ -342,7 +342,7 @@ class Backtracker:
 
 		if (len(self.bestSolution), -self.bestCost) <= (len(partial), -self.cost):
 			print 'Caselles: {}/{} Cost: {}'.format(
-                len(partial), len(self.caselles), self.cost)
+				len(partial), len(self.caselles), self.cost)
 			self.bestSolution=partial
 			self.bestCost=self.cost
 
@@ -372,7 +372,8 @@ class Backtracker:
 #					print "Eps a {} li queden massa T1 per posar".format(company)
 					return
 
-				tornsPendents = sum(self.torns[company][torn] for torn in range(self.ntelefons))
+				tornsPendents = sum(self.torns[company][torn]
+					for torn in range(self.ntelefons))
 				tornsColocables = sum(self.disponibilitatDiaria[company,dia] for dia in self.dies[idia:])
 				if tornsPendents > tornsColocables:
 					self.cut("PreveigTots", partial)
@@ -618,11 +619,25 @@ td { padding: 1ex;}
 #		exit(0)
 
 
+def parseArgs():
+	import argparse
+	parser = argparse.ArgumentParser()
+
+	parser.add_argument(
+		'--keep',
+		action='store_true',
+		help="no baixa les dades del drive"
+		)
+
+	return parser.parse_args()
+
+
 import sys
 
-if '--keep' in sys.argv:
-	sys.argv.remove('--keep')
-else:
+args = parseArgs()
+
+
+if not args.keep:
 	baixaDades(iniciSetmana())
 
 import signal
@@ -651,4 +666,4 @@ b.solve()
 
 
 
-
+# vim: noet
