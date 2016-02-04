@@ -40,10 +40,14 @@ def baixaDades(monday) :
     from oauth2client.client import SignedJwtAssertionCredentials
 
     step('Autentificant al Google Drive')
-    credential = 'drive-certificate.json'
+    credential = 'drive-certificate.jsons'
     name = 'Quadre de Vacances'
 
-    json_key = json.load(open(credential))
+    try:
+        with open(credential) as credentialFile:
+            json_key = json.load(credentialFile)
+    except Exception as e:
+        fail(str(e))
 
     credentials = SignedJwtAssertionCredentials(
         json_key['client_email'],
@@ -55,9 +59,10 @@ def baixaDades(monday) :
     try:
         doc = gc.open(name)
     except:
-        error("No s'ha trobat el document, potser no li has donat permisos a l'aplicacio")
-        error("Cal compartir el document '{}' amb el següent correu:".format(name))
-        error(json_key['client_email'])
+        error("No s'ha trobat el document, o no li has donat permisos a l'aplicacio")
+        error("Cal compartir el document '{}' amb el següent correu:"
+            .format(name,json_key['client_email']))
+        error(str(e))
         sys.exit(-1)
 
     carregaRangeName = 'Carrega_{:02d}_{:02d}_{:02d}'.format(
@@ -269,7 +274,7 @@ class Backtracker:
 		for name in dailyMaxPerPerson:
 			if name in persons: continue
 			raise Backtracker.ErrorConfiguracio(
-				"Eps, el nom '{}' de maximHoresDiaries a config.yaml no surt a carrega.csv"
+				"El nom '{}' de maximHoresDiaries a config.yaml no surt a carrega.csv"
 				.format(nom))
 		return dailyMaxPerPerson
 
@@ -381,8 +386,8 @@ class Backtracker:
 
 			for company in self.companys:
 				if self.torns[company][0] > diesRestants * self.config.maximsT1PerDia:
-					self.cut("PreveigT1", partial,
-						"Eps a {} li queden massa T1 per posar"
+					self.cut("T1RestantsIncolocables", partial,
+						"A {} li queden massa T1 per posar"
 						.format(company))
 					return
 
@@ -390,8 +395,8 @@ class Backtracker:
 					for torn in range(self.ntelefons))
 				tornsColocables = sum(self.disponibilitatDiaria[company,dia] for dia in self.dies[idia:])
 				if tornsPendents > tornsColocables:
-					self.cut("PreveigTots", partial,
-						"Eps a {} nomes li queden {} forats per posar {} hores"
+					self.cut("RestantsIncolocables", partial,
+						"A {} nomes li queden {} forats per posar {} hores"
 						.format(company, tornsColocables, tornsPendents))
 					return
 
