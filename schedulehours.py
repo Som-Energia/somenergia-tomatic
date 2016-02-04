@@ -15,16 +15,15 @@ worksheet_unavailabilities = 5
 worksheet_load = 6
 
 def iniciSetmana():
-    dateProvided = len(sys.argv)>1
-    
-    if dateProvided:
-         # take the monday of the week including that date
-        givenDate = datetime.datetime.strptime(sys.argv[1],"%Y-%m-%d").date()
-        return givenDate - timedelta(days=givenDate.weekday())
+	if args.date is None:
+		# If no date provided, take the next monday
+		today = date.today()
+		return today + timedelta(days=7-today.weekday())
 
-    # If no date provided, take the next monday
-    today = date.today()
-    return today + timedelta(days=7-today.weekday())
+	 # take the monday of the week including that date
+	givenDate = datetime.datetime.strptime(args.date,"%Y-%m-%d").date()
+	return givenDate - timedelta(days=givenDate.weekday())
+
 
 def baixaDades(monday) :
     def table(sheet, name):
@@ -219,6 +218,8 @@ class Backtracker:
 		self.nbactracks = 0
 		self.backtrackDepth = config.backtrackDepth
 		self.cutLog = {}
+		self.deeperCutDepth = 0
+		self.deeperCutLog = None
 
 		# just for tracking
 		self.bestSolution = []
@@ -319,30 +320,41 @@ class Backtracker:
 		for (depth, motiu), many in sorted(self.cutLog.items()):
 			print depth, motiu, many
 
-	def cut(self, motiu, partial):
+	def cut(self, motiu, partial, log=None):
 		try:
 			self.cutLog[len(partial), motiu]+=1
 		except KeyError:
 			self.cutLog[len(partial), motiu]=1
-			
+		if motiu in args.verbose:
+			warn(log or motiu)
+		if self.deeperCutLog and len(self.deeperCutLog) > len(partial): return
+		self.deeperCutDepth = len(partial)
+		self.deeperCutLog = log or motiu
+		
 
 
 	def solve(self) :
 		while not self.ended:
 			self.nbactracks = 0
 			self.solveTorn([])
+			if self.nbactracks < self.backtrackDepth:
+				break
 
 		self.printCuts()
 		if len(self.bestSolution) != len(self.caselles):
 			self.minimumCost = self.bestCost
 			self.reportSolution((self.bestSolution+['?']*60)[:60] )
+			error("Impossible trobar solució\n{}".format( self.deeperCutLog))
 
 	def solveTorn(self, partial):
 		if self.ended: return
 
 		if (len(self.bestSolution), -self.bestCost) <= (len(partial), -self.cost):
-			print 'Caselles: {}/{} Cost: {}'.format(
-				len(partial), len(self.caselles), self.cost)
+			if len(partial) == len(self.caselles):
+				print 'Solució trobada amb cost {}.'.format(self.cost)
+			else:
+				print 'Solució incomplerta {}/{} caselles, cost {}'.format(
+					len(partial), len(self.caselles), self.cost)
 			self.bestSolution=partial
 			self.bestCost=self.cost
 
@@ -363,21 +375,24 @@ class Backtracker:
 			# TODO: Heuristica que pot tallar bones solucions
 			if self.config.descartaNoPrometedores :
 				if idia and self.cost*self.ndies / idia > self.minimumCost:
-					self.cut("NoEarlyCost", partial)
+					self.cut("NoEarlyCost", partial,
+						"Tallant una solucio poc prometedora")
 					return
 
 			for company in self.companys:
 				if self.torns[company][0] > diesRestants * self.config.maximsT1PerDia:
-					self.cut("PreveigT1", partial)
-#					print "Eps a {} li queden massa T1 per posar".format(company)
+					self.cut("PreveigT1", partial,
+						"Eps a {} li queden massa T1 per posar"
+						.format(company))
 					return
 
 				tornsPendents = sum(self.torns[company][torn]
 					for torn in range(self.ntelefons))
 				tornsColocables = sum(self.disponibilitatDiaria[company,dia] for dia in self.dies[idia:])
 				if tornsPendents > tornsColocables:
-					self.cut("PreveigTots", partial)
-#					print "Eps a {} nomes li queden {} forats per posar {} hores".format(company, tornsColocables, tornsPendents)
+					self.cut("PreveigTots", partial,
+						"Eps a {} nomes li queden {} forats per posar {} hores"
+						.format(company, tornsColocables, tornsPendents))
 					return
 
 		shuffled = list(self.companys)
@@ -391,23 +406,27 @@ class Backtracker:
 			taula=self.taules[company]
 
 			if self.torns[company][telefon] <= 0:
-#				print "{} ja ha exhaurit els seus torns de telefon {}ari".format( company, telefon)
-				self.cut("TotColocat", partial)
+				self.cut("TotColocat", partial,
+					"{} ja ha exhaurit els seus torns de telefon {}ari"
+					.format( company, telefon))
 				continue
 
 			if self.isBusy(company, day, hora):
-#				print "{} no esta disponible el {} a la hora {}".format( company, day, hora+1)
-				self.cut("Indisponible", partial)
+				self.cut("Indisponible", partial,
+					"{} no esta disponible el {} a la hora {}"
+					.format( company, day, hora+1))
 				continue
 
 			if telefon==0 and self.tePrincipal[company, day] >= self.config.maximsT1PerDia:
-#				print "Dos principals per {} el {} no, sisplau".format(company,day)
-				self.cut("MassesPrincipals", partial)
+				self.cut("MassesPrincipals", partial,
+					"Dos principals per {} el {} no, sisplau"
+					.format(company,day))
 				continue
 
 			if self.telefonsALaTaula[day, hora, taula]>=self.config.maximPerTaula :
-#				print "{} te {} persones a la mateixa taula amb telefon a {}a hora del {}".format(company, self.telefonsALaTaula[day, hora, taula], hora+1, day)
-				self.cut("TaulaSorollosa", partial)
+				self.cut("TaulaSorollosa", partial,
+					"{} te {} persones a la mateixa taula amb telefon a {}a hora del {}"
+					.format(company, self.telefonsALaTaula[day, hora, taula], hora+1, day))
 				continue
 
 			def lastInIdleGroup():
@@ -415,8 +434,7 @@ class Backtracker:
 					if self.lliuresEnGrupDAlliberats[group, day, hora] > 1:
 						continue
 
-#					print "El grup {} on pertany {} no te gent el {} a {} hora".format(group, company, day, hora+1)
-					return True
+					return "El grup {} on pertany {} no te gent el {} a {} hora".format(group, company, day, hora+1)
 				return False
 
 			def markIdleGroups(company, day, hora):
@@ -429,18 +447,20 @@ class Backtracker:
 				
 
 			if lastInIdleGroup() or False:
-				self.cut("IdleGroupViolated", partial)
+				self.cut("IdleGroupViolated", partial, lastInIdleGroup())
 				continue
 
 			if self.horesDiaries[company, day] >= self.maxTornsDiaris(company):
-#				print "No li posem mes a {} que ja te {} hores el {}".format( company, self.horesDiaries[company], day)
-				self.cut("DiaATope", partial)
+				self.cut("DiaATope", partial,
+					"No li posem mes a {} que ja te {} hores el {}"
+					.format( company, self.horesDiaries[company, day], day))
 				continue
 
 			if self.config.deixaEsmorzar and company not in self.config.noVolenEsmorzar:
 				if hora==2 and self.teTelefon[day, 1, company]:
-#					print "{} es queda sense esmorzar el {}".format(company, day)
-					self.cut("Esmorzar", partial)
+					self.cut("Esmorzar", partial,
+						"{} es queda sense esmorzar el {}"
+						.format(company, day))
 					continue
 
 			def penalize(value, short, reason):
@@ -449,8 +469,8 @@ class Backtracker:
 
 			if hora and self.horesDiaries[company, day] and not self.teTelefon[day, hora-1, company]:
 				if self.maxTornsDiaris(company) < 3:
-					self.cut("Discontinu", partial)
-#					print("{} te hores separades el {}".format(company,day))
+					self.cut("Discontinu", partial,
+						"{} te hores separades el {}".format(company,day))
 					continue
 
 				if self.config.costHoresDiscontinues:
@@ -471,16 +491,18 @@ class Backtracker:
 						company, self.telefonsALaTaula[day, hora, taula], hora+1, day))
 
 			if self.cost + cost > self.minimumCost :
-#				print "Solucio masa costosa: {}".format(self.cost+cost)
-				self.cut("TooMuchCost", partial)
+				self.cut("TooMuchCost", partial,
+					"Solucio masa costosa: {}"
+					.format(self.cost+cost))
 				break
 
 			if self.cost + cost == self.minimumCost and len(partial)<len(self.caselles)*0.7 :
-#				print "Solucio segurament massa costosa, no perdem temps: {}".format(self.cost+cost)
-				self.cut("CostEqual", partial)
+				self.cut("CostEqual", partial,
+					"Solucio segurament massa costosa, no perdem temps: {}"
+					.format(self.cost+cost))
 				break
 
-			if self.config.mostraCami:
+			if self.config.mostraCami or args.track:
 				if len(partial) < self.config.maximCamiAMostrar :
 					print "  "*len(partial)+company[:2]
 
@@ -629,13 +651,34 @@ def parseArgs():
 		help="no baixa les dades del drive"
 		)
 
+	parser.add_argument(
+		'--track',
+		action='store_true',
+		help="visualitza per pantalla el progres de la cerca (molt lent)"
+		)
+
+	parser.add_argument(
+		'-v',
+		dest='verbose',
+		metavar='message',
+		nargs='+',
+		default=[],
+		help="activa els missatges de tall del tipus indicat",
+		)
+
+	parser.add_argument(
+		dest='date',
+		nargs='?',
+		default=None,
+		help='generates the schedule for the week including such date',
+		)
+
 	return parser.parse_args()
 
 
 import sys
 
 args = parseArgs()
-
 
 if not args.keep:
 	baixaDades(iniciSetmana())
