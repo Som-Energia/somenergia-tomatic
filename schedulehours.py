@@ -28,8 +28,62 @@ def iniciSetmana():
 	givenDate = datetime.datetime.strptime(args.date,"%Y-%m-%d").date()
 	return givenDate - timedelta(days=givenDate.weekday())
 
+def outputFile():
+	return "graella-telefons-{}.html".format(iniciSetmana())
+
+def transliterate(word):
+	word=unicode(word).lower()
+	for old, new in zip(
+		u'àèìòùáéíóúçñ',
+		u'aeiouaeioucn',
+	) :
+		word = word.replace(old,new)
+	return word
+
+class SheetFetcher():
+	def __init__(self, documentName, credentialFilename):
+		import json
+		import gspread
+		from oauth2client.client import SignedJwtAssertionCredentials
+		try:
+			with open(credentialFilename) as credentialFile:
+				json_key = json.load(credentialFile)
+		except Exception as e:
+			fail(str(e))
+
+		credentials = SignedJwtAssertionCredentials(
+			json_key['client_email'],
+			json_key['private_key'],
+			scope = ['https://spreadsheets.google.com/feeds']
+			)
+
+		gc = gspread.authorize(credentials)
+		try:
+			self.doc = gc.open(documentName)
+		except:
+			error("No s'ha trobat el document, o no li has donat permisos a l'aplicacio")
+			error("Cal compartir el document '{}' amb el següent correu:"
+				.format(documentName,json_key['client_email']))
+			error(str(e))
+			sys.exit(-1)
+
+	def get_range(self, worksheetIndex, rangeName):
+		workSheet = self.doc.get_worksheet(worksheetIndex)
+		cells = workSheet.range(rangeName)
+		width = cells[-1].col-cells[0].col +1
+		height = cells[-1].row-cells[0].row +1
+		return [ 
+			[cell.value for cell in row]
+			for row in zip( *(iter(cells),)*width)
+			]
+
+	def get_fullsheet(self, worksheetIndex):
+		workSheet = self.doc.get_worksheet(worksheetIndex)
+		return workSheet.get_all_values()
+
 
 def baixaDades(monday) :
+
     def table(sheet, name):
         cells = sheet.range(name)
         width = cells[-1].col-cells[0].col +1
@@ -39,42 +93,20 @@ def baixaDades(monday) :
             for row in zip( *(iter(cells),)*width)
             ]
 
-    import json
-    import gspread
-    from oauth2client.client import SignedJwtAssertionCredentials
 
     step('Autentificant al Google Drive')
-    credential = 'drive-certificate.json'
-    name = 'Quadre de Vacances'
+    fetcher = SheetFetcher(
+		documentName='Quadre de Vacances',
+		credentialFilename='drive-certificate.json',
+		)
 
-    try:
-        with open(credential) as credentialFile:
-            json_key = json.load(credentialFile)
-    except Exception as e:
-        fail(str(e))
-
-    credentials = SignedJwtAssertionCredentials(
-        json_key['client_email'],
-        json_key['private_key'],
-        scope = ['https://spreadsheets.google.com/feeds']
-        )
-
-    gc = gspread.authorize(credentials)
-    try:
-        doc = gc.open(name)
-    except:
-        error("No s'ha trobat el document, o no li has donat permisos a l'aplicacio")
-        error("Cal compartir el document '{}' amb el següent correu:"
-            .format(name,json_key['client_email']))
-        error(str(e))
-        sys.exit(-1)
+    step('Baixant carrega setmanal...')
 
     carregaRangeName = 'Carrega_{:02d}_{:02d}_{:02d}'.format(
         *monday.timetuple())
-    step('Baixant carrega setmanal del rang {}...'.format(carregaRangeName))
-
-    carregaSheet = doc.get_worksheet(worksheet_load)
-    carrega = table(carregaSheet, carregaRangeName)
+    step("  Descarregant el rang '{}'...".format(carregaRangeName))
+    carrega = fetcher.get_range(worksheet_load, carregaRangeName)
+    step("  Guardant-ho com '{}'...".format('carrega.csv'))
     with open('carrega.csv','w') as phoneload :
         phoneload.write(
             "\n".join(
@@ -85,28 +117,17 @@ def baixaDades(monday) :
 
     step('Baixant vacances...')
 
-    def transliterate(word):
-        word=unicode(word).lower()
-        for old, new in zip(
-            u'àèìòùáéíóúçñ',
-            u'aeiouaeioucn',
-        ) :
-            word = word.replace(old,new)
-        return word
-
     nextFriday = monday+timedelta(days=4)
     mondayYear = monday.year
     startingSemester = 1 if monday < date(mondayYear,7,1) else 2
     startingOffset = (monday - date(mondayYear,1 if startingSemester is 1 else 7,1)).days
 
-    holidaysSheet = doc.get_worksheet(0)
     holidays2SRange = 'Vacances{}Semestre{}'.format(
         mondayYear,
         startingSemester,
         )
-    step("Baixant Interval {} {}".format(holidaysSheet, holidays2SRange))
-
-    holidays2S = table(holidaysSheet,holidays2SRange)
+    step("  Baixant vacances de l'interval {}".format(holidays2SRange))
+    holidays2S = fetcher.get_range(0, holidays2SRange)
 
 #    endingSemester = 1 if nextFriday < date(mondayYear,7,1) else 2
 #    if startingSemester == endingSemester :
@@ -121,16 +142,18 @@ def baixaDades(monday) :
             ])
         for name, row in zip(who, holidays2S)
         ]
+    step("  Guardant indisponibilitats per vacances a 'indisponibilitats-vacances.conf'...")
     with open('indisponibilitats-vacances.conf','w') as holidaysfile:
         for name, days in holidays:
             for day in days:
                 holidaysfile.write("{} {} # vacances\n".format(name, day))
     
 
-    step('Baixant altres indisponibilitats setmanals...')
+    step("Baixant altres indisponibilitats setmanals...")
 
-    indisSheet = doc.get_worksheet(worksheet_unavailabilities)
-    indis = indisSheet.get_all_values()
+    step("  Baixant el full {}...".format(worksheet_unavailabilities))
+    indis = fetcher.get_fullsheet(worksheet_unavailabilities)
+    step("  Guardant indisponibilitats setmanals a 'indisponibilitats-setmana.conf'...")
     with open('indisponibilitats-setmana.conf','w') as indisfile:
         for _, who, day, weekday, hours, need, comment in indis[1:] :
             if weekday and day:
@@ -238,7 +261,7 @@ class Backtracker:
 		self.minimumCost = config.costLimit
 		self.penalties=[]
 
-		self.ended=False
+		self.terminated=False
 
 	def llegeixHores(self):
 		lines = [str(h) for h in self.config.hores ]
@@ -343,20 +366,22 @@ class Backtracker:
 
 
 	def solve(self) :
-		while not self.ended:
+		while not self.terminated:
 			self.nbactracks = 0
 			self.solveTorn([])
 			if self.nbactracks < self.backtrackDepth:
 				break
 
-		self.printCuts()
 		if len(self.bestSolution) != len(self.caselles):
+			self.printCuts()
 			self.minimumCost = self.bestCost
 			self.reportSolution((self.bestSolution+['?']*60)[:60] )
 			error("Impossible trobar solució\n{}".format( self.deeperCutLog))
+		else:
+			step("Millor graella grabada a '{}'".format(outputFile()))
 
 	def solveTorn(self, partial):
-		if self.ended: return
+		if self.terminated: return
 
 		if (len(self.bestSolution), -self.bestCost) <= (len(partial), -self.cost):
 			if len(partial) == len(self.caselles):
@@ -395,9 +420,14 @@ class Backtracker:
 						.format(company))
 					return
 
-				tornsPendents = sum(self.torns[company][torn]
-					for torn in range(self.ntelefons))
-				tornsColocables = sum(self.disponibilitatDiaria[company,dia] for dia in self.dies[idia:])
+				tornsPendents = sum(
+					self.torns[company][torn]
+					for torn in range(self.ntelefons)
+					)
+				tornsColocables = sum(
+					self.disponibilitatDiaria[company,dia]
+					for dia in self.dies[idia:]
+					)
 				if tornsPendents > tornsColocables:
 					self.cut("RestantsIncolocables", partial,
 						"A {} nomes li queden {} forats per posar {} hores"
@@ -413,6 +443,8 @@ class Backtracker:
 			cost = 0
 			penalties = []
 			taula=self.taules[company]
+
+			# Motius de rebuig del camí
 
 			if self.torns[company][telefon] <= 0:
 				self.cut("TotColocat", partial,
@@ -455,7 +487,7 @@ class Backtracker:
 					self.lliuresEnGrupDAlliberats[g, day, hora] += 1
 				
 
-			if lastInIdleGroup() or False:
+			if lastInIdleGroup():
 				self.cut("IdleGroupViolated", partial, lastInIdleGroup())
 				continue
 
@@ -623,7 +655,7 @@ u"""\
 			)
 
 
-			with open("graella-telefons-{}.html".format(monday),'w') as output:
+			with open(outputFile(),'w') as output:
 				output.write(header)
 				output.write("<h1>Setmana {}</h1>".format(monday))
 			with open(monitoringFile,'w') as output:
@@ -690,7 +722,6 @@ u"""\
                     '',
 					]))
 
-#		exit(0)
 
 
 def parseArgs():
@@ -740,7 +771,7 @@ import subprocess
 
 def signal_handler(signal, frame):
 	print 'You pressed Ctrl-C!'
-	b.ended = True
+	b.terminated = True
 
 signal.signal(signal.SIGINT, signal_handler)
 
