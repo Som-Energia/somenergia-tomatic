@@ -546,8 +546,14 @@ class Backtracker:
 			if self.config.aleatori and self.nbactracks > self.backtrackDepth: break
 
 	def reportSolution(self, solution) :
-
 		# buidar el fitxer, si el cost es diferent
+
+		def properName(name):
+			"""Capitalizes name unless configuration provides
+			A better alternative, for example with tildes.
+			"""
+			return self.config.noms.get(name, name.title())
+
 		monday = iniciSetmana()
 
 		firstAtCost = self.minimumCost != self.__dict__.get('storedCost', 'resEsComparaAmbMi')
@@ -607,7 +613,7 @@ td { padding: 1ex;}
 			.format(
 				name = name,
 				extension = self.config.extensions.get(name, "???"),
-				properName = self.config.noms.get(name, name.title())
+				properName = properName(name),
 			)
 			for name in sorted(self.companys)))
 			+
@@ -644,9 +650,9 @@ u"""\
 					'<tr><th>{}</th>\n'.format(h) +
 					'\n<td>&nbsp;</td>\n'.join(
 						'\n'.join(
-							"<td class='{0}'>{1}</td>".format(
+							u"<td class='{0}'>{1}</td>".format(
 								solution.get((d,hi,l),'festiu').lower(),
-								solution.get((d,hi,l),'festiu').capitalize()
+								properName(solution.get((d,hi,l),'festiu')),
 								) for l in range(self.ntelefons)
 							) for d in self.diesVisualitzacio)
 					+ '\n</tr>'
