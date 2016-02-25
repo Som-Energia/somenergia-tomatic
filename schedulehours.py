@@ -40,7 +40,7 @@ def baixaDades(monday) :
     from oauth2client.client import SignedJwtAssertionCredentials
 
     step('Autentificant al Google Drive')
-    credential = 'drive-certificate.jsons'
+    credential = 'drive-certificate.json'
     name = 'Quadre de Vacances'
 
     try:
