@@ -14,6 +14,10 @@ monitoringFile = 'taula.html'
 worksheet_unavailabilities = 5
 worksheet_load = 6
 
+# Dirty Hack: Behave like python3 open regarding unicode
+def open(*args, **kwd):
+	return codecs.open(encoding='utf8', *args, **kwd)
+
 def iniciSetmana():
 	if args.date is None:
 		# If no date provided, take the next monday
@@ -127,7 +131,7 @@ def baixaDades(monday) :
 
     indisSheet = doc.get_worksheet(worksheet_unavailabilities)
     indis = indisSheet.get_all_values()
-    with codecs.open('indisponibilitats-setmana.conf','w','utf8') as indisfile:
+    with open('indisponibilitats-setmana.conf','w') as indisfile:
         for _, who, day, weekday, hours, need, comment in indis[1:] :
             if weekday and day:
                 fail("Indisponibilitat especifica dia puntual {} i dia de la setmana {}"
@@ -261,7 +265,7 @@ class Backtracker:
 				continue
 			raise Backtracker.ErrorConfiguracio(
 				"Les hores de T{} sumen {} i no pas {}, revisa {}".format(
-					telefon, horesTelefon, self.ndies*self.nhores, tornsfile))
+					telefon+1, horesTelefon, self.ndies*self.nhores, tornsfile))
 		return result
 
 
@@ -547,8 +551,23 @@ class Backtracker:
 		monday = iniciSetmana()
 
 		firstAtCost = self.minimumCost != self.__dict__.get('storedCost', 'resEsComparaAmbMi')
+
 		if firstAtCost:
 			self.storedCost = self.minimumCost
+			personalColors = ''.join((
+				".{} {{ background-color: #{}; }}\n".format(
+					nom,
+					self.config.colors[nom]
+					if nom in self.config.colors
+					and not self.config.randomColors
+					else "{:02x}{:02x}{:02x}".format(
+						random.randint(127,255),
+						random.randint(127,255),
+						random.randint(127,255),
+						)
+					)
+				for nom in self.companys
+				))
 			header = ("""\
 <!doctype html>
 <html>
@@ -565,18 +584,39 @@ td, th {
 }
 td:empty { border:0;}
 td { padding: 1ex;}
-"""+ ''.join(
-				(".{} {{ background-color: #{:01x}{:02x}{:02x}; }}\n".format(
-							nom, random.randint(127,255), random.randint(127,255), random.randint(127,255)) for nom in self.companys)
-				if self.config.randomColors else
-				(".{} {{ background-color: #{}; }}\n".format(
-							nom, self.config.colors[nom]) for nom in self.companys)
-				)
-					+"""
+.extensions { width: 60%; }
+.extension {
+	display: inline-block;
+	padding: 1ex 0ex;
+	width: 14%;
+	text-align: center;
+	margin: 2pt 0pt;
+	border: 1pt solid black;
+	height: 100%;
+}
+"""+ personalColors + """
 </style>
 </head>
 <body>
 """)
+			extensions = (u"""\
+<h3>Extensions</h3>
+<div class="extensions">
+""" + "".join((
+			u'<div class="extension {name}">{properName}<br/>{extension}</div>\n'
+			.format(
+				name = name,
+				extension = self.config.extensions.get(name, "???"),
+				properName = self.config.noms.get(name, name.title())
+			)
+			for name in sorted(self.companys)))
+			+
+u"""\
+</div>
+"""
+			)
+
+
 			with open("graella-telefons-{}.html".format(monday),'w') as output:
 				output.write(header)
 				output.write("<h1>Setmana {}</h1>".format(monday))
@@ -631,10 +671,11 @@ td { padding: 1ex;}
 			output.write(taula)
 			output.write(penalitzacions)
 		if firstAtCost:
-			with open("graella-telefons-{}.html".format(monday),'a') as output:
+			graellaFile = "graella-telefons-{}.html".format(monday)
+			with open(graellaFile,'a') as output:
 				output.write(taula)
 				with open("extensions.html") as extensions_html:
-					extensions = extensions_html.read()
+					extensions += extensions_html.read()
 				output.write('\n'.join([
 					extensions,
 					'',
