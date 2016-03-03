@@ -31,24 +31,22 @@ taules: # Asignacio de les persones en taules
    marc:   0
    eduard: 1
    pere:   1
-   david:  1
-   aleix:  1
-   carles: 2
-   monica: 2
-   silvia: 2
-   robert: 2
-   erola:  3
-   manel:  3
-   tania:  3
-   judit:  3
-   marta:  4
-   yaiza:  4
-   joan:   4
-   judith: 5
+   judit:  1
+   david:  2
+   aleix:  2
+   cesar:  2
+   carles: 3
+   monica: 3
+   judith: 3
+   silvia: 3
+   victor: 4
+   erola:  4
+   manel:  4
+   tania:  4
+   marta:  5
+   yaiza:  5
+   joan:   5
    anna:   5
-   cesar:  5
-   victor: 5
-   bobo: 5
 sempreUnLliure: {}
 randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
 colors:
@@ -88,6 +86,7 @@ noms: # Els que no només cal posar en majúscules
    monica: Mònica
    tania: Tània
    cesar: César
+   victor: Víctor
 
 
 
