@@ -46,7 +46,7 @@ taules: # Asignacio de les persones en taules
    marta:  5
    yaiza:  5
    joan:   5
-   anna:   5
+   ana:    5
 sempreUnLliure: {}
 randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
 colors:
