@@ -11,8 +11,8 @@ import codecs
 import sys
 
 monitoringFile = 'taula.html'
-worksheet_unavailabilities = 5
-worksheet_load = 6
+worksheet_unavailabilities = 6
+worksheet_load = 5
 
 # Dirty Hack: Behave like python3 open regarding unicode
 def open(*args, **kwd):
