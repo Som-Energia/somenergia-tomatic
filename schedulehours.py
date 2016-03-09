@@ -11,8 +11,8 @@ import codecs
 import sys
 
 monitoringFile = 'taula.html'
-worksheet_unavailabilities = 6
-worksheet_load = 5
+worksheet_unavailabilities = u'Reunions i altres afers' # 'oyfu0hb'
+worksheet_load = 'o9rxhxk' # u'Càrrega setmanal de telèfon'
 
 # Dirty Hack: Behave like python3 open regarding unicode
 def open(*args, **kwd):
@@ -67,18 +67,28 @@ class SheetFetcher():
 			error(str(e))
 			sys.exit(-1)
 
-	def get_range(self, worksheetIndex, rangeName):
-		workSheet = self.doc.get_worksheet(worksheetIndex)
-		cells = workSheet.range(rangeName)
+	def _worksheet(self, selector):
+		if type(selector) is int:
+			return self.doc.get_worksheet(selector)
+
+		for s in self.doc.worksheets():
+			if selector == s.id: return s
+			if selector == s.title: return s
+
+		raise Exception("Worksheet '{}' not found".format(selector))
+
+	def get_range(self, worksheetsSelector, rangeName):
+		worksheet = self._worksheet(worksheetsSelector)
+		cells = worksheet.range(rangeName)
 		width = cells[-1].col-cells[0].col +1
 		height = cells[-1].row-cells[0].row +1
-		return [ 
+		return [
 			[cell.value for cell in row]
 			for row in zip( *(iter(cells),)*width)
 			]
 
-	def get_fullsheet(self, worksheetIndex):
-		workSheet = self.doc.get_worksheet(worksheetIndex)
+	def get_fullsheet(self, worksheetsSelector):
+		workSheet = self._worksheet(worksheetsSelector)
 		return workSheet.get_all_values()
 
 
@@ -151,7 +161,7 @@ def baixaDades(monday) :
 
     step("Baixant altres indisponibilitats setmanals...")
 
-    step("  Baixant el full {}...".format(worksheet_unavailabilities))
+    step("  Baixant el full '{}'...".format(worksheet_unavailabilities))
     indis = fetcher.get_fullsheet(worksheet_unavailabilities)
     step("  Guardant indisponibilitats setmanals a 'indisponibilitats-setmana.conf'...")
     with open('indisponibilitats-setmana.conf','w') as indisfile:
@@ -302,7 +312,7 @@ class Backtracker:
 			if name in persons: continue
 			raise Backtracker.ErrorConfiguracio(
 				"El nom '{}' de maximHoresDiaries a config.yaml no surt a carrega.csv"
-				.format(nom))
+				.format(name))
 		return dailyMaxPerPerson
 
 	def maxTornsDiaris(self, company):
@@ -466,7 +476,7 @@ class Backtracker:
 
 			if self.telefonsALaTaula[day, hora, taula]>=self.config.maximPerTaula :
 				self.cut("TaulaSorollosa", partial,
-					"{} te {} persones a la mateixa taula amb telefon a {}a hora del {}"
+					"{} ja té {} persones a la mateixa taula amb telefon a {}a hora del {}"
 					.format(company, self.telefonsALaTaula[day, hora, taula], hora+1, day))
 				continue
 
