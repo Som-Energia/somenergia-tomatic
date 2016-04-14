@@ -1,5 +1,5 @@
 nTelefons: 3
-diesCerca: ['dx','dm', 'dv','dj', 'dl'] # Els mes conflictius davant
+diesCerca: ['dx','dm','dj', 'dv','dl'] # Els mes conflictius davant
 diesVisualitzacio: ['dl','dm','dx','dj','dv']
 hores:  # La darrera es per tancar
 - '09:00'
@@ -65,6 +65,8 @@ colors:
    judit:  'e781e8'
    silvia: '8097fa'
    joan:   'fae080'
+   ana:    '98bdc0'
+   victor: 'ff3333'
 extensions:
    marta:  3040
    monica: 3041
@@ -82,6 +84,8 @@ extensions:
    david:  3054
    silvia: 3055
    joan:   3056
+   ana:    3181
+   victor: 3182
 noms: # Els que no només cal posar en majúscules
    silvia: Sílvia
    monica: Mònica
