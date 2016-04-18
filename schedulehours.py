@@ -9,6 +9,7 @@ import glob
 from consolemsg import step, error, warn, fail
 import codecs
 import sys
+from sheetfetcher import SheetFetcher
 
 monitoringFile = 'taula.html'
 worksheet_unavailabilities = u'Reunions i altres afers' # 'oyfu0hb'
@@ -40,59 +41,7 @@ def transliterate(word):
 		word = word.replace(old,new)
 	return word
 
-class SheetFetcher():
-	def __init__(self, documentName, credentialFilename):
-		import json
-		import gspread
-		from oauth2client.client import SignedJwtAssertionCredentials
-		try:
-			with open(credentialFilename) as credentialFile:
-				json_key = json.load(credentialFile)
-		except Exception as e:
-			fail(str(e))
-
-		credentials = SignedJwtAssertionCredentials(
-			json_key['client_email'],
-			json_key['private_key'],
-			scope = ['https://spreadsheets.google.com/feeds']
-			)
-
-		gc = gspread.authorize(credentials)
-		try:
-			self.doc = gc.open(documentName)
-		except:
-			error("No s'ha trobat el document, o no li has donat permisos a l'aplicacio")
-			error("Cal compartir el document '{}' amb el següent correu:"
-				.format(documentName,json_key['client_email']))
-			error(str(e))
-			sys.exit(-1)
-
-	def _worksheet(self, selector):
-		if type(selector) is int:
-			return self.doc.get_worksheet(selector)
-
-		for s in self.doc.worksheets():
-			if selector == s.id: return s
-			if selector == s.title: return s
-
-		raise Exception("Worksheet '{}' not found".format(selector))
-
-	def get_range(self, worksheetsSelector, rangeName):
-		worksheet = self._worksheet(worksheetsSelector)
-		cells = worksheet.range(rangeName)
-		width = cells[-1].col-cells[0].col +1
-		height = cells[-1].row-cells[0].row +1
-		return [
-			[cell.value for cell in row]
-			for row in zip( *(iter(cells),)*width)
-			]
-
-	def get_fullsheet(self, worksheetsSelector):
-		workSheet = self._worksheet(worksheetsSelector)
-		return workSheet.get_all_values()
-
-
-def baixaDades(monday) :
+def baixaDades(monday, certificat) :
 
     def table(sheet, name):
         cells = sheet.range(name)
@@ -107,7 +56,7 @@ def baixaDades(monday) :
     step('Autentificant al Google Drive')
     fetcher = SheetFetcher(
 		documentName='Quadre de Vacances',
-		credentialFilename='drive-certificate.json',
+		credentialFilename=certificat,
 		)
 
     step('Baixant carrega setmanal...')
@@ -766,6 +715,13 @@ def parseArgs():
 		help='generates the schedule for the week including such date',
 		)
 
+	parser.add_argument(
+		'--certificate','-C',
+		metavar='CERTIFICATE.json',
+		default='drive-certificate.json',
+		help='certificat amb permisos per accedir al document gdrive',
+		)
+
 	return parser.parse_args()
 
 
@@ -774,7 +730,7 @@ import sys
 args = parseArgs()
 
 if not args.keep:
-	baixaDades(iniciSetmana())
+	baixaDades(iniciSetmana(), args.certificate)
 
 import signal
 import subprocess
@@ -785,7 +741,7 @@ def signal_handler(signal, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-from namespace import namespace as ns
+from yamlns import namespace as ns
 
 step('Carregant configuració...')
 try:
