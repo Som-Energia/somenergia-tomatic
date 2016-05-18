@@ -1,5 +1,5 @@
 nTelefons: 3
-diesCerca: ['dx','dm','dj', 'dv','dl'] # Els mes conflictius davant
+diesCerca: ['dx','dm','dj', 'dv',] # Els mes conflictius davant
 diesVisualitzacio: ['dl','dm','dx','dj','dv']
 hores:  # La darrera es per tancar
 - '09:00'
@@ -47,6 +47,7 @@ taules: # Asignacio de les persones en taules
    yaiza:  5
    joan:   5
    ana:    5
+   jordi:  5
 sempreUnLliure: {}
 randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
 colors:
@@ -67,6 +68,7 @@ colors:
    joan:   'fae080'
    ana:    '98bdc0'
    victor: 'ff3333'
+   jordi: 'ff9999' 
 extensions:
    marta:  3040
    monica: 3041
@@ -86,6 +88,7 @@ extensions:
    joan:   3056
    ana:    3181
    victor: 3182
+   jordi:  3183 
 noms: # Els que no només cal posar en majúscules
    silvia: Sílvia
    monica: Mònica
