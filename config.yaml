@@ -1,6 +1,7 @@
 nTelefons: 3
 diesCerca: ['dx','dm','dj', 'dl', 'dv',] # Els mes conflictius davant
 diesVisualitzacio: ['dl','dm','dx','dj','dv']
+
 hores:  # La darrera es per tancar
 - '09:00'
 - '10:15'
@@ -20,9 +21,9 @@ maximPerTaula: 2   # maxim nombre de telefons simultanis a una mateixa taula
 maximsT1PerDia: 1   # maxim nombre de torns primaris diaris per a una persona
 maximHoresDiariesGeneral: 2  # maxim nombre de torns diaris per una persona
 maximHoresDiaries:   # excepcions al maximHoresDiariesGeneral
-   manel: 3
-   joan: 3
-   silvia: 3
+   manel: 2
+   joan: 2
+   silvia: 2
 costHoresDiscontinues: 40   # Per cada salt que te una persona entre dos hores de telefon un mateix dia
 costHoresConcentrades: 1   # Es multiplica per n·(n-1)/2 on n es el nombre d'hores diaries d'una mateixa persona
 costTaulaSorollosa: 5   # Es multiplica per n·(n-1)/2 on n es el nombre de telefons simultanis a una taula
