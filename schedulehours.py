@@ -537,8 +537,24 @@ class Backtracker:
 			if self.config.aleatori and self.nbactracks > self.backtrackDepth: break
 
 	def reportSolution(self, solution) :
-		# buidar el fitxer, si el cost es diferent
 
+		# buidar el fitxer, si el cost es diferent
+		def yamlExport(solution):
+			y = ns(zip(
+				self.diesVisualitzacio,
+				[ns() for i in range(len(self.diesVisualitzacio))]))
+			for d in y:
+				for h in range(self.nhores):
+					y[d][h+1]=[None]*self.ntelefons 
+			for k in solution:
+				y[k[0]][k[1]+1][k[2]]= solution[(k[0],k[1],k[2])]
+			y['hores']=self.config.hores
+			y['torns']= ["T"+str(i+1) for i in range(ntelefons)]
+			y['colors']=self.config.colors
+			y['extensions']=self.config.extensions
+			y['setmana']=iniciSetmana()
+			with open("graella-"+str(iniciSetmana())+".yaml",'w') as output:
+				output.write(y.dump())
 		def properName(name):
 			"""Capitalizes name unless configuration provides
 			A better alternative, for example with tildes.
@@ -668,6 +684,7 @@ u"""\
 			output.write(taula)
 			output.write(penalitzacions)
 		if firstAtCost:
+			#yamlExport(solution)
 			graellaFile = "graella-telefons-{}.html".format(monday)
 			with open(graellaFile,'a') as output:
 				output.write(taula)
