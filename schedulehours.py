@@ -548,8 +548,9 @@ class Backtracker:
 					y[d][h+1]=[None]*self.ntelefons 
 			for k in solution:
 				y[k[0]][k[1]+1][k[2]]= solution[(k[0],k[1],k[2])]
+			y=ns({'timetable': y})
 			y['hores']=self.config.hores
-			y['torns']= ["T"+str(i+1) for i in range(ntelefons)]
+			y['torns']= ["T"+str(i+1) for i in range(self.ntelefons)]
 			y['colors']=self.config.colors
 			y['extensions']=self.config.extensions
 			y['setmana']=iniciSetmana()
@@ -684,7 +685,7 @@ u"""\
 			output.write(taula)
 			output.write(penalitzacions)
 		if firstAtCost:
-			#yamlExport(solution)
+			yamlExport(solution)
 			graellaFile = "graella-telefons-{}.html".format(monday)
 			with open(graellaFile,'a') as output:
 				output.write(taula)

@@ -14,6 +14,7 @@ setup(
     url = 'https://github.com/Som-Energia/somenergia-phonehours',
     long_description = readme,
     license = 'GNU General Public License v3 or later (GPLv3+)',
+    test_suite = 'schedulehours_test',
     scripts=[
         'schedulehours.py',
         ],
