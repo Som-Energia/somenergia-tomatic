@@ -5,8 +5,14 @@ from yamlns import namespace as ns
 def llegeixHores(yaml):
 		lines = [str(h) for h in yaml.hores ]
 		return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
-
 def htmlTable(yaml):
+    def partialCoreTable(day,turn):
+        return "\n".join([
+                """<td class='{name}'>"""
+                """{properName}</td>""".format(
+                    name=name,
+                    properName=name.title())
+                    for name in yaml.timetable[day][turn+1]])+"\n"
     headerDays=("""<tr>"""
             """<td></td>"""+""
             "".join([
@@ -20,13 +26,8 @@ def htmlTable(yaml):
     headerTlfnos=("""<tr><td></td>"""
             ""+("".join(["<th>{}</th>".format(t) for t in yaml.torns]))+"</tr>\n")
     dayTable=("</tr>\n".join([
-                """<tr><th>{period}</th>\n""".format(period=period)+""
-                "\n".join([
-                    """<td class='{name}'>"""
-                    """{properName}</td>""".format(
-                        name=name,
-                        properName=name.title())
-                        for name in yaml.timetable.dl[turn+1]])+"\n"
+                """<tr><th>{period}</th>\n""".format(
+                    period=period)+partialCoreTable(day,turn)
                  for turn,period in enumerate(llegeixHores(yaml))
                  ])+""
             """</tr>\n""")
