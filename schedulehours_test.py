@@ -7,16 +7,19 @@ def llegeixHores(yaml):
 		return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
 
 def htmlTable(yaml):
-    return(
-            """<table>\n"""
-            """<tr>"""
-            """<td></td><th colspan={colspan}>dl</th>""".format(
-                colspan=len(yaml.torns)
-                )+""
-            """</tr>\n"""
-            """<tr><td></td>"""
-            ""+("".join(["<th>{}</th>".format(t) for t in yaml.torns]))+"</tr>\n"+""
-            "</tr>\n".join([
+    headerDays=("""<tr>"""
+            """<td></td>"""+""
+            "".join([
+                """<th colspan={colspan}>{day}</th>""".format(
+                    colspan=len(yaml.torns),
+                    day=day
+                    )
+                for day in yaml.timetable.keys()
+                ])+""
+            """</tr>\n""")
+    headerTlfnos=("""<tr><td></td>"""
+            ""+("".join(["<th>{}</th>".format(t) for t in yaml.torns]))+"</tr>\n")
+    dayTable=("</tr>\n".join([
                 """<tr><th>{period}</th>\n""".format(period=period)+""
                 "\n".join([
                     """<td class='{name}'>"""
@@ -26,7 +29,9 @@ def htmlTable(yaml):
                         for name in yaml.timetable.dl[turn+1]])+"\n"
                  for turn,period in enumerate(llegeixHores(yaml))
                  ])+""
-            """</tr>\n"""
+            """</tr>\n""")
+    return( """<table>\n"""
+            ""+headerDays+headerTlfnos+dayTable+""
             """</table>"""
             )
 
