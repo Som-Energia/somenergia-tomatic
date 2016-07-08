@@ -13,10 +13,9 @@ def htmlTable(yaml):
                     name=name,
                     properName=name.title())
                     for name in yaml.timetable[day][turn+1]])+"\n"
-    headerDays=("""<tr>"""
-            """<td></td>"""+""
+    headerDays=("""<tr>"""+""
             "".join([
-                """<th colspan={colspan}>{day}</th>""".format(
+                """<td></td><th colspan={colspan}>{day}</th>""".format(
                     colspan=len(yaml.torns),
                     day=day
                     )
@@ -27,7 +26,9 @@ def htmlTable(yaml):
             ""+("".join(["<th>{}</th>".format(t) for t in yaml.torns]))+"</tr>\n")
     dayTable=("</tr>\n".join([
                 """<tr><th>{period}</th>\n""".format(
-                    period=period)+partialCoreTable(day,turn)
+                    period=period)+"<td>&nbsp;</td>\n".join(
+                        [partialCoreTable(day,turn) for day in yaml.timetable.keys()
+                        ])
                  for turn,period in enumerate(llegeixHores(yaml))
                  ])+""
             """</tr>\n""")
@@ -144,4 +145,58 @@ class ScheduleHours_Test(unittest.TestCase):
             """</tr>\n"""
             """</table>""")
 
+    def test_htmlTable_twoTelephonesTwoTurnsTwoDays(self):
+        self.maxDiff = None
+        inputyaml=self.ns(u"""\
+            setmana: 2016-07-25
+            timetable:
+              dl:
+                1:
+                - ana
+                - jordi
+                2:
+                - jordi
+                - aleix
+              dm:
+                1:
+                - victor
+                - marta
+                2:
+                - ana
+                - victor
+            hores:
+            - 09:00
+            - '10:15'
+            - '11:30'
+            torns:
+            - T1
+            - T2
+            colors:
+              ana: 98bdc0
+              jordi: ff9999
+            extensions:
+              ana: 3181
+              jordi: 3183
+            """)
+        self.assertMultiLineEqual(
+            htmlTable(inputyaml),
+            """<table>\n"""
+            """<tr><td></td><th colspan=2>dl</th><td></td><th colspan=2>dm</th></tr>\n"""
+            """<tr><td></td><th>T1</th><th>T2</th>"""
+            """</tr>\n"""
+            """<tr><th>09:00-10:15</th>\n"""
+            """<td class='ana'>Ana</td>\n"""
+            """<td class='jordi'>Jordi</td>\n"""
+            """<td>&nbsp;</td>\n"""
+            """<td class='victor'>Victor</td>\n"""
+            """<td class='marta'>Marta</td>\n"""
+            """</tr>\n"""
+            """<tr><th>10:15-11:30</th>\n"""
+            """<td class='jordi'>Jordi</td>\n"""
+            """<td class='aleix'>Aleix</td>\n"""
+            """<td>&nbsp;</td>\n"""
+            """<td class='ana'>Ana</td>\n"""
+            """<td class='victor'>Victor</td>\n"""
+            """</tr>\n"""
+            """</table>""")
 # vim: ts=4 sw=4 et
