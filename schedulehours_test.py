@@ -2,16 +2,22 @@
 import unittest
 from yamlns import namespace as ns
 
+
 def llegeixHores(yaml):
 		lines = [str(h) for h in yaml.hores ]
 		return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
 def htmlTable(yaml):
+    
+    def properName(name):
+        name = yaml.noms[name] if name in yaml.noms else name
+        return name.title()
+    
     def partialCoreTable(day,turn):
         return "\n".join([
-                """<td class='{name}'>"""
-                """{properName}</td>""".format(
+                u"""<td class='{name}'>"""
+                u"""{properName}</td>""".format(
                     name=name,
-                    properName=name.title())
+                    properName=properName(name))
                     for name in yaml.timetable[day][turn+1]])+"\n"
     headerDays=("""<tr>"""+""
             "".join([
@@ -48,7 +54,7 @@ class ScheduleHours_Test(unittest.TestCase):
 
     def test_htmlTable_oneslot(self):
 
-        inputyaml=self.ns(u"""\
+        inputyaml=self.ns("""\
             setmana: 2016-07-25
             timetable:
               dl:
@@ -63,20 +69,26 @@ class ScheduleHours_Test(unittest.TestCase):
               ana: 98bdc0
             extensions:
               ana: 3181
+            noms: # Els que no només cal posar en majúscules
+              silvia: Sílvia
+              monica: Mònica
+              tania: Tània
+              cesar: César
+              victor: Víctor
             """)
 
         self.assertMultiLineEqual(
             htmlTable(inputyaml), 
-            """<table>\n"""
-            """<tr><td></td><th colspan=1>dl</th></tr>\n"""
-            """<tr><td></td><th>T1</th>"""
-            """</tr>\n"""
-            """<tr><th>09:00-10:15</th>\n"""
-            """<td class='ana'>Ana</td>\n"""
-            """</tr>\n"""
-            """</table>""")
+            u"""<table>\n"""
+            u"""<tr><td></td><th colspan=1>dl</th></tr>\n"""
+            u"""<tr><td></td><th>T1</th>"""
+            u"""</tr>\n"""
+            u"""<tr><th>09:00-10:15</th>\n"""
+            u"""<td class='ana'>Ana</td>\n"""
+            u"""</tr>\n"""
+            u"""</table>""")
     def test_htmlTable_twoTelephonesOneTurnOneDay(self):
-        inputyaml=self.ns(u"""\
+        inputyaml=self.ns("""\
             setmana: 2016-07-25
             timetable:
               dl:
@@ -95,21 +107,27 @@ class ScheduleHours_Test(unittest.TestCase):
             extensions:
               ana: 3181
               jordi: 3183
+            noms: # Els que no només cal posar en majúscules
+              silvia: Sílvia
+              monica: Mònica
+              tania: Tània
+              cesar: César
+              victor: Víctor
             """)
         self.assertMultiLineEqual(
             htmlTable(inputyaml),
-            """<table>\n"""
-            """<tr><td></td><th colspan=2>dl</th></tr>\n"""
-            """<tr><td></td><th>T1</th><th>T2</th>"""
-            """</tr>\n"""
-            """<tr><th>09:00-10:15</th>\n"""
-            """<td class='ana'>Ana</td>\n"""
-            """<td class='jordi'>Jordi</td>\n"""
-            """</tr>\n"""
-            """</table>""")
+            u"""<table>\n"""
+            u"""<tr><td></td><th colspan=2>dl</th></tr>\n"""
+            u"""<tr><td></td><th>T1</th><th>T2</th>"""
+            u"""</tr>\n"""
+            u"""<tr><th>09:00-10:15</th>\n"""
+            u"""<td class='ana'>Ana</td>\n"""
+            u"""<td class='jordi'>Jordi</td>\n"""
+            u"""</tr>\n"""
+            u"""</table>""")
         
     def test_htmlTable_twoTelephonesTwoTurnsOneDay(self):
-        inputyaml=self.ns(u"""\
+        inputyaml=self.ns("""\
             setmana: 2016-07-25
             timetable:
               dl:
@@ -132,26 +150,32 @@ class ScheduleHours_Test(unittest.TestCase):
             extensions:
               ana: 3181
               jordi: 3183
+            noms: # Els que no només cal posar en majúscules
+               silvia: Sílvia
+               monica: Mònica
+               tania: Tània
+               cesar: César
+               victor: Víctor            
             """)
         self.assertMultiLineEqual(
             htmlTable(inputyaml),
-            """<table>\n"""
-            """<tr><td></td><th colspan=2>dl</th></tr>\n"""
-            """<tr><td></td><th>T1</th><th>T2</th>"""
-            """</tr>\n"""
-            """<tr><th>09:00-10:15</th>\n"""
-            """<td class='ana'>Ana</td>\n"""
-            """<td class='jordi'>Jordi</td>\n"""
-            """</tr>\n"""
-            """<tr><th>10:15-11:30</th>\n"""
-            """<td class='jordi'>Jordi</td>\n"""
-            """<td class='aleix'>Aleix</td>\n"""
-            """</tr>\n"""
-            """</table>""")
+            u"""<table>\n"""
+            u"""<tr><td></td><th colspan=2>dl</th></tr>\n"""
+            u"""<tr><td></td><th>T1</th><th>T2</th>"""
+            u"""</tr>\n"""
+            u"""<tr><th>09:00-10:15</th>\n"""
+            u"""<td class='ana'>Ana</td>\n"""
+            u"""<td class='jordi'>Jordi</td>\n"""
+            u"""</tr>\n"""
+            u"""<tr><th>10:15-11:30</th>\n"""
+            u"""<td class='jordi'>Jordi</td>\n"""
+            u"""<td class='aleix'>Aleix</td>\n"""
+            u"""</tr>\n"""
+            u"""</table>""")
 
     def test_htmlTable_twoTelephonesTwoTurnsTwoDays(self):
         self.maxDiff = None
-        inputyaml=self.ns(u"""\
+        inputyaml=self.ns("""\
             setmana: 2016-07-25
             timetable:
               dl:
@@ -181,33 +205,39 @@ class ScheduleHours_Test(unittest.TestCase):
             extensions:
               ana: 3181
               jordi: 3183
+            noms: # Els que no només cal posar en majúscules
+               silvia: Sílvia
+               monica: Mònica
+               tania: Tània
+               cesar: César
+               victor: Víctor
             """)
         self.assertMultiLineEqual(
             htmlTable(inputyaml),
-            """<table>\n"""
-            """<tr><td></td><th colspan=2>dl</th><td></td><th colspan=2>dm</th>"""
-            """</tr>\n"""
-            """<tr><td></td><th>T1</th><th>T2</th><td></td><th>T1</th><th>T2</th>"""
-            """</tr>\n"""
-            """<tr><th>09:00-10:15</th>\n"""
-            """<td class='ana'>Ana</td>\n"""
-            """<td class='jordi'>Jordi</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='victor'>Victor</td>\n"""
-            """<td class='marta'>Marta</td>\n"""
-            """</tr>\n"""
-            """<tr><th>10:15-11:30</th>\n"""
-            """<td class='jordi'>Jordi</td>\n"""
-            """<td class='aleix'>Aleix</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='ana'>Ana</td>\n"""
-            """<td class='victor'>Victor</td>\n"""
-            """</tr>\n"""
-            """</table>""")
+            u"""<table>\n"""
+            u"""<tr><td></td><th colspan=2>dl</th><td></td><th colspan=2>dm</th>"""
+            u"""</tr>\n"""
+            u"""<tr><td></td><th>T1</th><th>T2</th><td></td><th>T1</th><th>T2</th>"""
+            u"""</tr>\n"""
+            u"""<tr><th>09:00-10:15</th>\n"""
+            u"""<td class='ana'>Ana</td>\n"""
+            u"""<td class='jordi'>Jordi</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='victor'>Víctor</td>\n"""
+            u"""<td class='marta'>Marta</td>\n"""
+            u"""</tr>\n"""
+            u"""<tr><th>10:15-11:30</th>\n"""
+            u"""<td class='jordi'>Jordi</td>\n"""
+            u"""<td class='aleix'>Aleix</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='ana'>Ana</td>\n"""
+            u"""<td class='victor'>Víctor</td>\n"""
+            u"""</tr>\n"""
+            u"""</table>""")
     
     def test_htmlTable_manyTelephonesmanyTurnsmanyDays(self):
         self.maxDiff = None
-        inputyaml=self.ns(u"""\
+        inputyaml=self.ns("""\
             setmana: 2016-07-25
             timetable:
               dl:
@@ -305,105 +335,111 @@ class ScheduleHours_Test(unittest.TestCase):
             - T1
             - T2
             - T3
+            noms: # Els que no només cal posar en majúscules
+              silvia: Sílvia
+              monica: Mònica
+              tania: Tània
+              cesar: César
+              victor: Víctor
             """)
         self.assertMultiLineEqual(
             htmlTable(inputyaml),
-            """<table>\n"""
-            """<tr><td></td><th colspan=3>dl</th>"""
-            """<td></td><th colspan=3>dm</th>"""
-            """<td></td><th colspan=3>dx</th>"""
-            """<td></td><th colspan=3>dj</th>"""
-            """<td></td><th colspan=3>dv</th></tr>\n"""
-            """<tr>"""
-            """<td></td><th>T1</th><th>T2</th><th>T3</th>"""
-            """<td></td><th>T1</th><th>T2</th><th>T3</th>"""
-            """<td></td><th>T1</th><th>T2</th><th>T3</th>"""
-            """<td></td><th>T1</th><th>T2</th><th>T3</th>"""
-            """<td></td><th>T1</th><th>T2</th><th>T3</th>"""
-            """</tr>\n"""
-            """<tr><th>09:00-10:15</th>\n"""
-            """<td class='ana'>Ana</td>\n"""
-            """<td class='jordi'>Jordi</td>\n"""
-            """<td class='pere'>Pere</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='victor'>Victor</td>\n"""
-            """<td class='marta'>Marta</td>\n"""
-            """<td class='ana'>Ana</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='aleix'>Aleix</td>\n"""
-            """<td class='pere'>Pere</td>\n"""
-            """<td class='yaiza'>Yaiza</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='judit'>Judit</td>\n"""
-            """<td class='jordi'>Jordi</td>\n"""
-            """<td class='carles'>Carles</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='marta'>Marta</td>\n"""
-            """<td class='victor'>Victor</td>\n"""
-            """<td class='judit'>Judit</td>\n"""
-            """</tr>\n"""
-            """<tr><th>10:15-11:30</th>\n"""
-            """<td class='jordi'>Jordi</td>\n"""
-            """<td class='aleix'>Aleix</td>\n"""
-            """<td class='pere'>Pere</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='ana'>Ana</td>\n"""
-            """<td class='victor'>Victor</td>\n"""
-            """<td class='marta'>Marta</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='pere'>Pere</td>\n"""
-            """<td class='aleix'>Aleix</td>\n"""
-            """<td class='carles'>Carles</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='joan'>Joan</td>\n"""
-            """<td class='silvia'>Silvia</td>\n"""
-            """<td class='jordi'>Jordi</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='victor'>Victor</td>\n"""
-            """<td class='joan'>Joan</td>\n"""
-            """<td class='judit'>Judit</td>\n"""
-            """</tr>\n"""
-            """<tr><th>11:30-12:45</th>\n"""
-            """<td class='carles'>Carles</td>\n"""
-            """<td class='joan'>Joan</td>\n"""
-            """<td class='eduard'>Eduard</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='silvia'>Silvia</td>\n"""
-            """<td class='eduard'>Eduard</td>\n"""
-            """<td class='monica'>Monica</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='marc'>Marc</td>\n"""
-            """<td class='judit'>Judit</td>\n"""
-            """<td class='victor'>Victor</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='monica'>Monica</td>\n"""
-            """<td class='marc'>Marc</td>\n"""
-            """<td class='tania'>Tania</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='eduard'>Eduard</td>\n"""
-            """<td class='yaiza'>Yaiza</td>\n"""
-            """<td class='jordi'>Jordi</td>\n"""
-            """</tr>\n"""
-            """<tr><th>12:45-14:00</th>\n"""
-            """<td class='yaiza'>Yaiza</td>\n"""
-            """<td class='joan'>Joan</td>\n"""
-            """<td class='eduard'>Eduard</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='david'>David</td>\n"""
-            """<td class='silvia'>Silvia</td>\n"""
-            """<td class='marc'>Marc</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='david'>David</td>\n"""
-            """<td class='silvia'>Silvia</td>\n"""
-            """<td class='victor'>Victor</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='tania'>Tania</td>\n"""
-            """<td class='monica'>Monica</td>\n"""
-            """<td class='marc'>Marc</td>\n"""
-            """<td>&nbsp;</td>\n"""
-            """<td class='jordi'>Jordi</td>\n"""
-            """<td class='carles'>Carles</td>\n"""
-            """<td class='aleix'>Aleix</td>\n"""
-            """</tr>\n"""
-            """</table>""")
+            u"""<table>\n"""
+            u"""<tr><td></td><th colspan=3>dl</th>"""
+            u"""<td></td><th colspan=3>dm</th>"""
+            u"""<td></td><th colspan=3>dx</th>"""
+            u"""<td></td><th colspan=3>dj</th>"""
+            u"""<td></td><th colspan=3>dv</th></tr>\n"""
+            u"""<tr>"""
+            u"""<td></td><th>T1</th><th>T2</th><th>T3</th>"""
+            u"""<td></td><th>T1</th><th>T2</th><th>T3</th>"""
+            u"""<td></td><th>T1</th><th>T2</th><th>T3</th>"""
+            u"""<td></td><th>T1</th><th>T2</th><th>T3</th>"""
+            u"""<td></td><th>T1</th><th>T2</th><th>T3</th>"""
+            u"""</tr>\n"""
+            u"""<tr><th>09:00-10:15</th>\n"""
+            u"""<td class='ana'>Ana</td>\n"""
+            u"""<td class='jordi'>Jordi</td>\n"""
+            u"""<td class='pere'>Pere</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='victor'>Víctor</td>\n"""
+            u"""<td class='marta'>Marta</td>\n"""
+            u"""<td class='ana'>Ana</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='aleix'>Aleix</td>\n"""
+            u"""<td class='pere'>Pere</td>\n"""
+            u"""<td class='yaiza'>Yaiza</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='judit'>Judit</td>\n"""
+            u"""<td class='jordi'>Jordi</td>\n"""
+            u"""<td class='carles'>Carles</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='marta'>Marta</td>\n"""
+            u"""<td class='victor'>Víctor</td>\n"""
+            u"""<td class='judit'>Judit</td>\n"""
+            u"""</tr>\n"""
+            u"""<tr><th>10:15-11:30</th>\n"""
+            u"""<td class='jordi'>Jordi</td>\n"""
+            u"""<td class='aleix'>Aleix</td>\n"""
+            u"""<td class='pere'>Pere</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='ana'>Ana</td>\n"""
+            u"""<td class='victor'>Víctor</td>\n"""
+            u"""<td class='marta'>Marta</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='pere'>Pere</td>\n"""
+            u"""<td class='aleix'>Aleix</td>\n"""
+            u"""<td class='carles'>Carles</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='joan'>Joan</td>\n"""
+            u"""<td class='silvia'>Sílvia</td>\n"""
+            u"""<td class='jordi'>Jordi</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='victor'>Víctor</td>\n"""
+            u"""<td class='joan'>Joan</td>\n"""
+            u"""<td class='judit'>Judit</td>\n"""
+            u"""</tr>\n"""
+            u"""<tr><th>11:30-12:45</th>\n"""
+            u"""<td class='carles'>Carles</td>\n"""
+            u"""<td class='joan'>Joan</td>\n"""
+            u"""<td class='eduard'>Eduard</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='silvia'>Sílvia</td>\n"""
+            u"""<td class='eduard'>Eduard</td>\n"""
+            u"""<td class='monica'>Mònica</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='marc'>Marc</td>\n"""
+            u"""<td class='judit'>Judit</td>\n"""
+            u"""<td class='victor'>Víctor</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='monica'>Mònica</td>\n"""
+            u"""<td class='marc'>Marc</td>\n"""
+            u"""<td class='tania'>Tània</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='eduard'>Eduard</td>\n"""
+            u"""<td class='yaiza'>Yaiza</td>\n"""
+            u"""<td class='jordi'>Jordi</td>\n"""
+            u"""</tr>\n"""
+            u"""<tr><th>12:45-14:00</th>\n"""
+            u"""<td class='yaiza'>Yaiza</td>\n"""
+            u"""<td class='joan'>Joan</td>\n"""
+            u"""<td class='eduard'>Eduard</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='david'>David</td>\n"""
+            u"""<td class='silvia'>Sílvia</td>\n"""
+            u"""<td class='marc'>Marc</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='david'>David</td>\n"""
+            u"""<td class='silvia'>Sílvia</td>\n"""
+            u"""<td class='victor'>Víctor</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='tania'>Tània</td>\n"""
+            u"""<td class='monica'>Mònica</td>\n"""
+            u"""<td class='marc'>Marc</td>\n"""
+            u"""<td>&nbsp;</td>\n"""
+            u"""<td class='jordi'>Jordi</td>\n"""
+            u"""<td class='carles'>Carles</td>\n"""
+            u"""<td class='aleix'>Aleix</td>\n"""
+            u"""</tr>\n"""
+            u"""</table>""")
 # vim: ts=4 sw=4 et
