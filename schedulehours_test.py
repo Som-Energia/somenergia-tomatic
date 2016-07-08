@@ -2,16 +2,31 @@
 import unittest
 from yamlns import namespace as ns
 
+def properName(name,yaml):
+    name = yaml.noms[name] if name in yaml.noms else name
+    return name.title()
+    
 
 def llegeixHores(yaml):
 		lines = [str(h) for h in yaml.hores ]
 		return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
+
+def htmlExtensions(yaml):
+    return (u"""<h3>Extensions</h3>\n"""
+            u"""<div class="extensions">\n"""
+            ""+"\n".join([(u"""<div class="extension {}">"""
+                     u"""{}<br/>{}</div>""").format(
+                        name,
+                        properName(name,yaml),
+                        extension)
+                    for (name,extension) in yaml.extensions.items()])+""
+            u"""\n</div>""")
+
 def htmlTable(yaml):
-    
-    def properName(name):
-        name = yaml.noms[name] if name in yaml.noms else name
-        return name.title()
-    
+    def properName(name,yaml=yaml):
+        global properName
+        return properName(name,yaml)
+
     def partialCoreTable(day,turn):
         return "\n".join([
                 u"""<td class='{name}'>"""
@@ -46,7 +61,6 @@ def htmlTable(yaml):
             ""+headerDays+headerTlfnos+coreTable+""
             """</table>"""
             )
-
 
 class ScheduleHours_Test(unittest.TestCase):
     def ns(self,content):
@@ -442,4 +456,16 @@ class ScheduleHours_Test(unittest.TestCase):
             u"""<td class='aleix'>Aleix</td>\n"""
             u"""</tr>\n"""
             u"""</table>""")
+    def test_htmlExtension_oneExtension(self):
+        yaml = ("""\
+            extensions:
+               marta:  3040
+            noms:
+               cesar: César
+               """)
+        nsyaml = self.ns(yaml)    
+        self.assertMultiLineEqual(htmlExtensions(nsyaml),"""<h3>Extensions</h3>\n""" 
+        """<div class="extensions">\n"""
+        """<div class="extension marta">Marta<br/>3040</div>\n"""
+        """</div>""")
 # vim: ts=4 sw=4 et
