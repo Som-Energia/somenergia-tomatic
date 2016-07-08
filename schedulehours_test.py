@@ -22,9 +22,13 @@ def htmlTable(yaml):
                 for day in yaml.timetable.keys()
                 ])+""
             """</tr>\n""")
-    headerTlfnos=("""<tr><td></td>"""
-            ""+("".join(["<th>{}</th>".format(t) for t in yaml.torns]))+"</tr>\n")
-    dayTable=("</tr>\n".join([
+    headerTlfnos=("""<tr>"""+("""<td></td>"""
+            ""+("".join([
+                         "<th>{}</th>".format(t) 
+                         for t in yaml.torns
+                         ])))*len(yaml.timetable.keys())+""
+            "</tr>\n")
+    coreTable=("</tr>\n".join([
                 """<tr><th>{period}</th>\n""".format(
                     period=period)+"<td>&nbsp;</td>\n".join(
                         [partialCoreTable(day,turn) for day in yaml.timetable.keys()
@@ -33,7 +37,7 @@ def htmlTable(yaml):
                  ])+""
             """</tr>\n""")
     return( """<table>\n"""
-            ""+headerDays+headerTlfnos+dayTable+""
+            ""+headerDays+headerTlfnos+coreTable+""
             """</table>"""
             )
 
@@ -181,7 +185,135 @@ class ScheduleHours_Test(unittest.TestCase):
         self.assertMultiLineEqual(
             htmlTable(inputyaml),
             """<table>\n"""
-            """<tr><td></td><th colspan=2>dl</th><td></td><th colspan=2>dm</th></tr>\n"""
+            """<tr><td></td><th colspan=2>dl</th><td></td><th colspan=2>dm</th>"""
+            """</tr>\n"""
+            """<tr><td></td><th>T1</th><th>T2</th><td></td><th>T1</th><th>T2</th>"""
+            """</tr>\n"""
+            """<tr><th>09:00-10:15</th>\n"""
+            """<td class='ana'>Ana</td>\n"""
+            """<td class='jordi'>Jordi</td>\n"""
+            """<td>&nbsp;</td>\n"""
+            """<td class='victor'>Victor</td>\n"""
+            """<td class='marta'>Marta</td>\n"""
+            """</tr>\n"""
+            """<tr><th>10:15-11:30</th>\n"""
+            """<td class='jordi'>Jordi</td>\n"""
+            """<td class='aleix'>Aleix</td>\n"""
+            """<td>&nbsp;</td>\n"""
+            """<td class='ana'>Ana</td>\n"""
+            """<td class='victor'>Victor</td>\n"""
+            """</tr>\n"""
+            """</table>""")
+    
+    def _test_htmlTable_manyTelephonesmanyTurnsmanyDays(self):
+        self.maxDiff = None
+        inputyaml=self.ns(u"""\
+            setmana: 2016-07-25
+            timetable:
+              dl:
+                1:
+                - ana
+                - jordi
+                - pere
+                2:
+                - jordi
+                - aleix
+                - pere
+                3:
+                - carles
+                - joan
+                - eduard
+                4:
+                - yaiza
+                - joan
+                - eduard
+              dm:
+                1:
+                - victor
+                - marta
+                - ana
+                2:
+                - ana
+                - victor
+                - marta
+                3:
+                - silvia
+                - eduard
+                - monica
+                4:
+                - david
+                - silvia
+                - marc
+              dx:
+                1:
+                - aleix
+                - pere
+                - yaiza
+                2:
+                - pere
+                - aleix
+                - carles
+                3:
+                - marc
+                - judit
+                - victor
+                4:
+                - david
+                - silvia
+                - victor
+              dj:
+                1:
+                - judit
+                - jordi
+                - carles
+                2:
+                - joan
+                - silvia
+                - jordi
+                3:
+                - monica
+                - marc
+                - tania
+                4:
+                - tania
+                - monica
+                - marc
+              dv:
+                1:
+                - marta
+                - victor
+                - judit
+                2:
+                - victor
+                - joan
+                - judit
+                3:
+                - eduard
+                - yaiza
+                - jordi
+                4:
+                - jordi
+                - carles
+                - aleix
+            hores:
+            - 09:00
+            - '10:15'
+            - '11:30'
+            - '12:45'
+            - '14:00'
+            torns:
+            - T1
+            - T2
+            - T3
+            """)
+        self.assertMultiLineEqual(
+            htmlTable(inputyaml),
+            """<table>\n"""
+            """<tr><td></td><th colspan=3>dl</th>"""
+            """<td></td><th colspan=3>dm</th>"""
+            """<td></td><th colspan=3>dx</th>"""
+            """<td></td><th colspan=3>dj</th>"""
+            """<td></td><th colspan=3>dv</th><tr>"""
             """<tr><td></td><th>T1</th><th>T2</th>"""
             """</tr>\n"""
             """<tr><th>09:00-10:15</th>\n"""
