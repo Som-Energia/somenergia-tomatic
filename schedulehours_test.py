@@ -2,6 +2,10 @@
 import unittest
 from yamlns import namespace as ns
 
+def llegeixHores(yaml):
+		lines = [str(h) for h in yaml.hores ]
+		return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
+
 def htmlTable(yaml):
     return(
             """<table>\n"""
@@ -11,22 +15,20 @@ def htmlTable(yaml):
                 )+""
             """</tr>\n"""
             """<tr><td></td>"""
-            ""+("".join(["<th>{}</th>".format(t) for t in yaml.torns]))+""
-            """</tr>\n"""
-            """<tr><th>{period}</th>\n"""+""
-            "\n".join([
-                """<td class='{name}'>"""
-                """{properName}</td>""".format(
-                    name=name,
-                    properName=name.title())
-                    for name in yaml.timetable.dl[1]])+"\n"
+            ""+("".join(["<th>{}</th>".format(t) for t in yaml.torns]))+"</tr>\n"+""
+            "</tr>\n".join([
+                """<tr><th>{period}</th>\n""".format(period=period)+""
+                "\n".join([
+                    """<td class='{name}'>"""
+                    """{properName}</td>""".format(
+                        name=name,
+                        properName=name.title())
+                        for name in yaml.timetable.dl[turn+1]])+"\n"
+                 for turn,period in enumerate(llegeixHores(yaml))
+                 ])+""
             """</tr>\n"""
             """</table>"""
-            ).format(
-                name=yaml.timetable.dl[1][0],
-                properName=yaml.timetable.dl[1][0].title(),
-                period="-".join(yaml.hores[0:2])
-                )
+            )
 
 
 class ScheduleHours_Test(unittest.TestCase):
@@ -95,5 +97,45 @@ class ScheduleHours_Test(unittest.TestCase):
             """</tr>\n"""
             """</table>""")
         
+    def test_htmlTable_twoTelephonesTwoTurnsOneDay(self):
+        inputyaml=self.ns(u"""\
+            setmana: 2016-07-25
+            timetable:
+              dl:
+                1:
+                - ana
+                - jordi
+                2:
+                - jordi
+                - aleix
+            hores:
+            - 09:00
+            - '10:15'
+            - '11:30'
+            torns:
+            - T1
+            - T2
+            colors:
+              ana: 98bdc0
+              jordi: ff9999
+            extensions:
+              ana: 3181
+              jordi: 3183
+            """)
+        self.assertMultiLineEqual(
+            htmlTable(inputyaml),
+            """<table>\n"""
+            """<tr><td></td><th colspan=2>dl</th></tr>\n"""
+            """<tr><td></td><th>T1</th><th>T2</th>"""
+            """</tr>\n"""
+            """<tr><th>09:00-10:15</th>\n"""
+            """<td class='ana'>Ana</td>\n"""
+            """<td class='jordi'>Jordi</td>\n"""
+            """</tr>\n"""
+            """<tr><th>10:15-11:30</th>\n"""
+            """<td class='jordi'>Jordi</td>\n"""
+            """<td class='aleix'>Aleix</td>\n"""
+            """</tr>\n"""
+            """</table>""")
 
 # vim: ts=4 sw=4 et
