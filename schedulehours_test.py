@@ -12,6 +12,20 @@ def llegeixHores(yaml):
 		return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
 
 def htmlExtensions(yaml):
+    header =(u"""<h3>Extensions</h3>\n"""
+            u"""<div class="extensions">\n""")
+    footer = u"""</div>"""
+    if 'extensions' in yaml:
+        body = ("\n".join([(u"""<div class="extension {}">"""
+                         u"""{}<br/>{}</div>""").format(
+                            name,
+                            properName(name,yaml),
+                            extension)
+                        for (name,extension) in yaml.extensions.items()])+""
+               "\n")
+    else:
+        body = ""
+    return header+body+footer
     return (u"""<h3>Extensions</h3>\n"""
             u"""<div class="extensions">\n"""
             ""+"\n".join([(u"""<div class="extension {}">"""
@@ -467,5 +481,30 @@ class ScheduleHours_Test(unittest.TestCase):
         self.assertMultiLineEqual(htmlExtensions(nsyaml),"""<h3>Extensions</h3>\n""" 
         """<div class="extensions">\n"""
         """<div class="extension marta">Marta<br/>3040</div>\n"""
+        """</div>""")
+    
+    def test_htmlExtension_twoExtensions(self):
+        yaml = ("""\
+            extensions:
+               marta:  3040
+               aleix:  3053
+            noms:
+               cesar: César
+               """)
+        nsyaml = self.ns(yaml)    
+        self.assertMultiLineEqual(htmlExtensions(nsyaml),"""<h3>Extensions</h3>\n""" 
+        """<div class="extensions">\n"""
+        """<div class="extension marta">Marta<br/>3040</div>\n"""
+        """<div class="extension aleix">Aleix<br/>3053</div>\n"""
+        """</div>""")
+
+    def test_htmlExtension_noExtensions(self):
+        yaml = ("""\
+            noms:
+               cesar: César
+               """)
+        nsyaml = self.ns(yaml)    
+        self.assertMultiLineEqual(htmlExtensions(nsyaml),"""<h3>Extensions</h3>\n""" 
+        """<div class="extensions">\n"""
         """</div>""")
 # vim: ts=4 sw=4 et
