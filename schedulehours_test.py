@@ -11,6 +11,15 @@ def llegeixHores(yaml):
 		lines = [str(h) for h in yaml.hores ]
 		return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
 
+def htmlSetmana(yaml):
+    if 'setmana' in yaml:
+        setmanaHeader = ("<h1>"
+                         "Setmana {}".format(yaml.setmana)+""
+                         "</h1>")
+    else:
+        setmanaHeader = "<h1>Setmana ???</h1>"
+    return setmanaHeader
+
 def htmlExtensions(yaml):
     header =(u"""<h3>Extensions</h3>\n"""
             u"""<div class="extensions">\n""")
@@ -26,15 +35,6 @@ def htmlExtensions(yaml):
     else:
         body = ""
     return header+body+footer
-    return (u"""<h3>Extensions</h3>\n"""
-            u"""<div class="extensions">\n"""
-            ""+"\n".join([(u"""<div class="extension {}">"""
-                     u"""{}<br/>{}</div>""").format(
-                        name,
-                        properName(name,yaml),
-                        extension)
-                    for (name,extension) in yaml.extensions.items()])+""
-            u"""\n</div>""")
 
 def htmlTable(yaml):
     def properName(name,yaml=yaml):
@@ -507,4 +507,19 @@ class ScheduleHours_Test(unittest.TestCase):
         self.assertMultiLineEqual(htmlExtensions(nsyaml),"""<h3>Extensions</h3>\n""" 
         """<div class="extensions">\n"""
         """</div>""")
+
+    def test_htmlHeader_properSetmana(self):
+        yaml = ("""\
+            setmana: 2016-07-25
+                """)
+        nsyaml = self.ns(yaml)
+        self.assertMultiLineEqual(htmlSetmana(nsyaml),"""<h1>Setmana 2016-07-25</h1>""")
+
+    def test_htmlHeader_noSetmana(self):
+        yaml = ("""\
+            noms:
+               cesar: César
+                """)
+        nsyaml = self.ns(yaml)
+        self.assertMultiLineEqual(htmlSetmana(nsyaml),"""<h1>Setmana ???</h1>""")
 # vim: ts=4 sw=4 et
