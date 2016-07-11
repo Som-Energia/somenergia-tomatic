@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import unittest
 from yamlns import namespace as ns
+import b2btest
+import sys
 
 def properName(name,yaml):
     name = yaml.noms[name] if name in yaml.noms else name
@@ -10,7 +12,54 @@ def properName(name,yaml):
 def llegeixHores(yaml):
 		lines = [str(h) for h in yaml.hores ]
 		return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
-
+def htmlParse(yaml):
+    header = (u"""<!doctype html>\n"""
+        u"""<html>\n"""
+        u"""<head>\n"""
+        u"""<meta charset='utf-8' />\n"""
+        u"""<style>\n"""
+        u"""h1 {\n"""
+        u"""    color: #560;\n"""
+        u"""}\n"""
+        u"""td, th {\n"""
+        u"""	border:1px solid black;\n"""
+        u"""	width: 8em;\n"""
+        u"""	text-align: center;\n"""
+        u"""}\n"""
+        u"""td:empty { border:0;}\n"""
+        u"""td { padding: 1ex;}\n"""
+        u""".extensions { width: 60%; }\n"""
+        u""".extension {\n"""
+        u"""	display: inline-block;\n"""
+        u"""	padding: 1ex 0ex;\n"""
+        u"""	width: 14%;\n"""
+        u"""	text-align: center;\n"""
+        u"""	margin: 2pt 0pt;\n"""
+        u"""	border: 1pt solid black;\n"""
+        u"""	height: 100%;\n"""
+        u"""}\n""")
+    subheader = (u"""\n</style>\n</head>\n"""
+                 u"""<body>\n""")
+    footer = u"""</body>\n</html>"""
+    return (header+htmlColors(yaml)+subheader
+        +htmlSetmana(yaml)+htmlTable(yaml)+
+        htmlExtensions(yaml)+
+        htmlFixExtensions()+footer)
+def htmlFixExtensions():
+    return (u"""<div class="extensions">\n"""
+            u"""<div class="extension """
+            u"""gijsbert">Inalàmbric<br/>3385</div>\n"""
+            u"""<div class="extension recepcio">"""
+            u"""Recepcio<br/>3405</div>\n"""
+            u"""</div>\n"""
+            u"""<h3>Recordatori desviaments</h3>\n"""
+            u"""<ul>\n"""
+            u"""<li>*60 Immediat</li>\n"""
+            u"""<li>*63 Ocupat o no responem</li>\n"""
+            u"""<li>*64 Treure desviaments</li>\n"""
+            u"""<li>*90 Marcar número</li>\n"""
+            u"""</ul>\n"""
+            )
 def htmlColors(yaml):
     if 'colors' in yaml:
         colors= "\n".join(
@@ -35,12 +84,14 @@ def htmlExtensions(yaml):
             u"""<div class="extensions">\n""")
     footer = u"""</div>"""
     if 'extensions' in yaml:
+        extensions = sorted(yaml.extensions.items(),
+            key=lambda e:e[0])
         body = ("\n".join([(u"""<div class="extension {}">"""
                          u"""{}<br/>{}</div>""").format(
                             name,
                             properName(name,yaml),
                             extension)
-                        for (name,extension) in yaml.extensions.items()])+""
+                        for (name,extension) in extensions])+""
                "\n")
     else:
         body = ""
@@ -89,7 +140,7 @@ def htmlTable(yaml):
 class ScheduleHours_Test(unittest.TestCase):
     def ns(self,content):
         return ns.loads(content)
-
+    
     def test_htmlTable_oneslot(self):
 
         inputyaml=self.ns("""\
@@ -504,8 +555,8 @@ class ScheduleHours_Test(unittest.TestCase):
         nsyaml = self.ns(yaml)    
         self.assertMultiLineEqual(htmlExtensions(nsyaml),"""<h3>Extensions</h3>\n""" 
         """<div class="extensions">\n"""
-        """<div class="extension marta">Marta<br/>3040</div>\n"""
         """<div class="extension aleix">Aleix<br/>3053</div>\n"""
+        """<div class="extension marta">Marta<br/>3040</div>\n"""
         """</div>""")
 
     def test_htmlExtension_noExtensions(self):
@@ -550,4 +601,162 @@ class ScheduleHours_Test(unittest.TestCase):
         nsyaml = self.ns(yaml)
         self.assertMultiLineEqual(htmlColors(nsyaml),
             """""")
+    def test_htmlParse_completeHtml(self):
+       self.maxDiff = None
+       inputyaml = ("""\
+        timetable:
+          dl:
+            1:
+            - ana
+            - jordi
+            - pere
+            2:
+            - jordi
+            - aleix
+            - pere
+            3:
+            - carles
+            - joan
+            - eduard
+            4:
+            - yaiza
+            - joan
+            - eduard
+          dm:
+            1:
+            - victor
+            - marta
+            - ana
+            2:
+            - ana
+            - victor
+            - marta
+            3:
+            - silvia
+            - eduard
+            - monica
+            4:
+            - david
+            - silvia
+            - marc
+          dx:
+            1:
+            - aleix
+            - pere
+            - yaiza
+            2:
+            - pere
+            - aleix
+            - carles
+            3:
+            - marc
+            - judit
+            - victor
+            4:
+            - david
+            - silvia
+            - victor
+          dj:
+            1:
+            - judit
+            - jordi
+            - carles
+            2:
+            - joan
+            - silvia
+            - jordi
+            3:
+            - monica
+            - marc
+            - tania
+            4:
+            - tania
+            - monica
+            - marc
+          dv:
+            1:
+            - marta
+            - victor
+            - judit
+            2:
+            - victor
+            - joan
+            - judit
+            3:
+            - eduard
+            - yaiza
+            - jordi
+            4:
+            - jordi
+            - carles
+            - aleix
+        hores:
+        - 09:00
+        - '10:15'
+        - '11:30'
+        - '12:45'
+        - '14:00'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          marc: fbe8bc
+          eduard: d8b9c5
+          pere: 8f928e
+          david: ffd3ac
+          aleix: eed0eb
+          carles: c98e98
+          marta: eb9481
+          monica: 7fada0
+          yaiza: 90cdb9
+          erola: 8789c8
+          manel: 88dfe3
+          tania: c8abf4
+          judit: e781e8
+          silvia: 8097fa
+          joan: fae080
+          ana: 98bdc0
+          victor: ff3333
+          jordi: ff9999
+          judith: cb8a85
+        extensions:
+          marta: 3040
+          monica: 3041
+          manel: 3042
+          erola: 3043
+          yaiza: 3044
+          eduard: 3045
+          marc: 3046
+          judit: 3047
+          judith: 3057
+          tania: 3048
+          carles: 3051
+          pere: 3052
+          aleix: 3053
+          david: 3054
+          silvia: 3055
+          joan: 3056
+          ana: 3181
+          victor: 3182
+          jordi: 3183
+        setmana: 2016-07-25
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
+               """)
+       nsyaml = self.ns(inputyaml)
+       self.b2bdatapath = "testcases"
+       self.assertB2BEqual(htmlParse(nsyaml).encode('utf-8'))
+
+if __name__ == "__main__":
+
+    if '--accept' in sys.argv:
+        sys.argv.remove('--accept')
+        unittest.TestCase.acceptMode = True
+    
+    unittest.main()
 # vim: ts=4 sw=4 et
