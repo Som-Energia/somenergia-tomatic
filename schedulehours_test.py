@@ -11,6 +11,16 @@ def llegeixHores(yaml):
 		lines = [str(h) for h in yaml.hores ]
 		return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
 
+def htmlColors(yaml):
+    if 'colors' in yaml:
+        colors= "\n".join(
+            ".{} {{ background-color: #{}; }}".format(
+                name,color)
+            for name,color in yaml.colors.items())
+    else:
+        colors=""
+    return colors
+
 def htmlSetmana(yaml):
     if 'setmana' in yaml:
         setmanaHeader = ("<h1>"
@@ -522,4 +532,22 @@ class ScheduleHours_Test(unittest.TestCase):
                 """)
         nsyaml = self.ns(yaml)
         self.assertMultiLineEqual(htmlSetmana(nsyaml),"""<h1>Setmana ???</h1>""")
+
+    def test_htmlColors_oneColor(self):
+        yaml = ("""\
+            colors:
+               marc: fbe8bc
+                """)
+        nsyaml = self.ns(yaml)
+        self.assertMultiLineEqual(htmlColors(nsyaml),
+            """.marc { background-color: #fbe8bc; }""")
+
+    def test_htmlColors_noColor(self):
+        yaml = ("""\
+            noms:
+               cesar: César
+                """)
+        nsyaml = self.ns(yaml)
+        self.assertMultiLineEqual(htmlColors(nsyaml),
+            """""")
 # vim: ts=4 sw=4 et
