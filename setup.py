@@ -22,6 +22,7 @@ setup(
         'somutils',
         'yamlns',
         'consolemsg',
+		'parse'
     ],
     classifiers = [
         'Programming Language :: Python',

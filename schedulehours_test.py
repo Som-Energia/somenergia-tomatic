@@ -3,6 +3,8 @@ import unittest
 from yamlns import namespace as ns
 import b2btest
 import sys
+from parse import parse
+import random
 
 def properName(name,yaml):
     name = yaml.noms[name] if name in yaml.noms else name
@@ -61,14 +63,22 @@ def htmlFixExtensions():
             u"""</ul>\n"""
             )
 def htmlColors(yaml):
-    if 'colors' in yaml:
-        colors= "\n".join(
-            ".{} {{ background-color: #{}; }}".format(
-                name,color)
-            for name,color in yaml.colors.items())
-    else:
-        colors=""
+    colors= "\n".join(
+        ".{} {{ background-color: #{}; }}".format(
+            nom,
+            yaml.colors[nom]
+            if 'colors' in yaml and nom in yaml.colors
+            else
+                "{:02x}{:02x}{:02x}".format(
+                random.randint(127,255),
+                random.randint(127,255),
+                random.randint(127,255),
+                )
+            )
+        for nom in yaml.companys
+        )
     return colors
+
 
 def htmlSetmana(yaml):
     if 'setmana' in yaml:
@@ -588,19 +598,27 @@ class ScheduleHours_Test(unittest.TestCase):
         yaml = ("""\
             colors:
                marc: fbe8bc
+            companys:
+            - marc
                 """)
         nsyaml = self.ns(yaml)
         self.assertMultiLineEqual(htmlColors(nsyaml),
             """.marc { background-color: #fbe8bc; }""")
 
-    def test_htmlColors_noColor(self):
+    def test_htmlColors_randomColor(self):
         yaml = ("""\
-            noms:
-               cesar: César
+            companys:
+            - cesar
                 """)
         nsyaml = self.ns(yaml)
-        self.assertMultiLineEqual(htmlColors(nsyaml),
-            """""")
+        self.assertRegexpMatches(parse(
+            """.cesar {{ background-color: {} }}""",
+                  htmlColors(nsyaml)
+                  )[0],
+            '#[0-9a-f]{6};'
+
+        )
+
     def test_htmlParse_completeHtml(self):
        self.maxDiff = None
        inputyaml = ("""\
@@ -747,7 +765,26 @@ class ScheduleHours_Test(unittest.TestCase):
            tania: Tània
            cesar: César
            victor: Víctor
-               """)
+        companys:
+        - marta
+        - monica
+        - manel
+        - erola
+        - yaiza
+        - eduard
+        - marc
+        - judit
+        - judith
+        - tania
+        - carles
+        - pere
+        - aleix
+        - david
+        - silvia
+        - joan
+        - ana
+        - victor
+        - jordi""")
        nsyaml = self.ns(inputyaml)
        self.b2bdatapath = "testcases"
        self.assertB2BEqual(htmlParse(nsyaml).encode('utf-8'))

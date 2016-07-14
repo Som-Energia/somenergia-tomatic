@@ -537,7 +537,131 @@ class Backtracker:
 			if self.config.aleatori and self.nbactracks > self.backtrackDepth: break
 
 	def reportSolution(self, solution) :
+		def htmlParse(yaml):
+			def properName(name,yaml=yaml):
+				name = yaml.noms[name] if name in yaml.noms else name
+				return name.title()
+			def htmlExtensions(yaml):
+				header =(u"""<h3>Extensions</h3>\n"""
+						u"""<div class="extensions">\n""")
+				footer = u"""</div>"""
+				if 'extensions' in yaml:
+					extensions = sorted(yaml.extensions.items(),
+						key=lambda e:e[0])
+					body = ("\n".join([(u"""<div class="extension {}">"""
+									 u"""{}<br/>{}</div>""").format(
+										name,
+										properName(name,yaml),
+										extension)
+									for (name,extension) in extensions])+""
+						   "\n")
+				else:
+					body = ""
+				return header+body+footer
 
+			def htmlTable(yaml):
+				def llegeixHores(yaml):
+					lines = [str(h) for h in yaml.hores ]
+					return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
+
+				def partialCoreTable(day,turn):
+					return "\n".join([
+							u"""<td class='{name}'>"""
+							u"""{properName}</td>""".format(
+								name=name,
+								properName=properName(name))
+								for name in yaml.timetable[day][turn+1]])+"\n"
+				headerDays=("""<tr>"""+""
+						"".join([
+							"""<td></td><th colspan={colspan}>{day}</th>""".format(
+								colspan=len(yaml.torns),
+								day=day
+								)
+							for day in yaml.timetable.keys()
+							])+""
+						"""</tr>\n""")
+				headerTlfnos=("""<tr>"""+("""<td></td>"""
+						""+("".join([
+									 "<th>{}</th>".format(t) 
+									 for t in yaml.torns
+									 ])))*len(yaml.timetable.keys())+""
+						"</tr>\n")
+				coreTable=("</tr>\n".join([
+							"""<tr><th>{period}</th>\n""".format(
+								period=period)+"<td>&nbsp;</td>\n".join(
+									[partialCoreTable(day,turn) for day in yaml.timetable.keys()
+									])
+							 for turn,period in enumerate(llegeixHores(yaml))
+							 ])+""
+						"""</tr>\n""")
+				return( """<table>\n"""
+						""+headerDays+headerTlfnos+coreTable+""
+						"""</table>"""
+						)
+			def htmlColors(yaml):
+				if 'colors' in yaml:
+					colors= "\n".join(
+						".{} {{ background-color: #{}; }}".format(
+							name,color)
+						for name,color in yaml.colors.items())
+				else:
+					colors=""
+				return colors
+			def htmlFixExtensions():
+				return (u"""<div class="extensions">\n"""
+					u"""<div class="extension """
+					u"""gijsbert">Inalàmbric<br/>3385</div>\n"""
+					u"""<div class="extension recepcio">"""
+					u"""Recepcio<br/>3405</div>\n"""
+					u"""</div>\n"""
+					u"""<h3>Recordatori desviaments</h3>\n"""
+					u"""<ul>\n"""
+					u"""<li>*60 Immediat</li>\n"""
+					u"""<li>*63 Ocupat o no responem</li>\n"""
+					u"""<li>*64 Treure desviaments</li>\n"""
+					u"""<li>*90 Marcar número</li>\n"""
+					u"""</ul>\n"""
+				)
+			def htmlSetmana(yaml):
+				if 'setmana' in yaml:
+					setmanaHeader = ("<h1>"
+									 "Setmana {}".format(yaml.setmana)+""
+									 "</h1>")
+				else:
+					setmanaHeader = "<h1>Setmana ???</h1>"
+				return setmanaHeader
+			header = (u"""<!doctype html>\n"""
+				u"""<html>\n"""
+				u"""<head>\n"""
+				u"""<meta charset='utf-8' />\n"""
+				u"""<style>\n"""
+				u"""h1 {\n"""
+				u"""    color: #560;\n"""
+				u"""}\n"""
+				u"""td, th {\n"""
+				u"""	border:1px solid black;\n"""
+				u"""	width: 8em;\n"""
+				u"""	text-align: center;\n"""
+				u"""}\n"""
+				u"""td:empty { border:0;}\n"""
+				u"""td { padding: 1ex;}\n"""
+				u""".extensions { width: 60%; }\n"""
+				u""".extension {\n"""
+				u"""	display: inline-block;\n"""
+				u"""	padding: 1ex 0ex;\n"""
+				u"""	width: 14%;\n"""
+				u"""	text-align: center;\n"""
+				u"""	margin: 2pt 0pt;\n"""
+				u"""	border: 1pt solid black;\n"""
+				u"""	height: 100%;\n"""
+				u"""}\n""")
+			subheader = (u"""\n</style>\n</head>\n"""
+						 u"""<body>\n""")
+			footer = u"""</body>\n</html>"""
+			return (header+htmlColors(yaml)+subheader
+				+htmlSetmana(yaml)+htmlTable(yaml)+
+				htmlExtensions(yaml)+
+				htmlFixExtensions()+footer)
 		# buidar el fitxer, si el cost es diferent
 		def yamlExport(solution):
 			y = ns(zip(
@@ -554,8 +678,11 @@ class Backtracker:
 			y['colors']=self.config.colors
 			y['extensions']=self.config.extensions
 			y['setmana']=iniciSetmana()
+			y['noms']=self.config.noms
+			y['companys']=self.companys
 			with open("graella-"+str(iniciSetmana())+".yaml",'w') as output:
-				output.write(y.dump())
+				output.write(y.dump().decode('utf-8'))
+			return y
 		def properName(name):
 			"""Capitalizes name unless configuration provides
 			A better alternative, for example with tildes.
@@ -685,8 +812,12 @@ u"""\
 			output.write(taula)
 			output.write(penalitzacions)
 		if firstAtCost:
-			yamlExport(solution)
+			y=yamlExport(solution)
+			h=htmlParse(y)
 			graellaFile = "graella-telefons-{}.html".format(monday)
+			newGraellaFile = "new-"+graellaFile
+			with open(newGraellaFile,'w') as output:
+				output.write(h)
 			with open(graellaFile,'a') as output:
 				output.write(taula)
 				with open("extensions.html") as extensions_html:
