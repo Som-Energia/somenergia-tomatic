@@ -5,7 +5,7 @@ import b2btest
 import sys
 from parse import parse
 import random
-
+from htmlgen import HtmlGen
 def properName(name,yaml):
     name = yaml.noms[name] if name in yaml.noms else name
     return name.title()
@@ -150,10 +150,11 @@ def htmlTable(yaml):
 class ScheduleHours_Test(unittest.TestCase):
     def ns(self,content):
         return ns.loads(content)
-    
+    def setUp(self):
+        self.h=HtmlGen()
     def test_htmlTable_oneslot(self):
-
-        inputyaml=self.ns("""\
+        
+        self.h.yaml=self.ns("""\
             setmana: 2016-07-25
             timetable:
               dl:
@@ -177,7 +178,7 @@ class ScheduleHours_Test(unittest.TestCase):
             """)
 
         self.assertMultiLineEqual(
-            htmlTable(inputyaml), 
+            self.h.htmlTable(), 
             u"""<table>\n"""
             u"""<tr><td></td><th colspan=1>dl</th></tr>\n"""
             u"""<tr><td></td><th>T1</th>"""
@@ -186,6 +187,7 @@ class ScheduleHours_Test(unittest.TestCase):
             u"""<td class='ana'>Ana</td>\n"""
             u"""</tr>\n"""
             u"""</table>""")
+        
     def test_htmlTable_twoTelephonesOneTurnOneDay(self):
         inputyaml=self.ns("""\
             setmana: 2016-07-25
