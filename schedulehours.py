@@ -599,13 +599,20 @@ class Backtracker:
 						"""</table>"""
 						)
 			def htmlColors(yaml):
-				if 'colors' in yaml:
-					colors= "\n".join(
-						".{} {{ background-color: #{}; }}".format(
-							name,color)
-						for name,color in yaml.colors.items())
-				else:
-					colors=""
+				colors= "\n".join(
+					".{} {{ background-color: #{}; }}".format(
+						nom,
+						yaml.colors[nom]
+						if 'colors' in yaml and nom in yaml.colors
+						else
+							"{:02x}{:02x}{:02x}".format(
+							random.randint(127,255),
+							random.randint(127,255),
+							random.randint(127,255),
+							)
+						)
+					for nom in yaml.companys
+					)
 				return colors
 			def htmlFixExtensions():
 				return (u"""<div class="extensions">\n"""
