@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+import random
 class HtmlGen(object):
 
     def properName(self,name):
         name = self.yaml.noms[name] if name in self.yaml.noms else name
         return name.title()
-
+    def __init__(self,yaml):
+        self.yaml=yaml
 
     def llegeixHores(self):
         lines = [str(h) for h in self.yaml.hores ]
@@ -45,3 +47,99 @@ class HtmlGen(object):
                 ""+headerDays+headerTlfnos+coreTable+""
                 """</table>"""
                 )
+    def htmlExtensions(self):
+        header =(u"""<h3>Extensions</h3>\n"""
+                u"""<div class="extensions">\n""")
+        footer = u"""</div>"""
+        if 'extensions' in self.yaml:
+            extensions = sorted(self.yaml.extensions.items(),
+                key=lambda e:e[0])
+            body = ("\n".join([(u"""<div class="extension {}">"""
+                             u"""{}<br/>{}</div>""").format(
+                                name,
+                                self.properName(name),
+                                extension)
+                            for (name,extension) in extensions])+""
+                   "\n")
+        else:
+            body = ""
+        return header+body+footer
+    
+    def htmlSetmana(self):
+        if 'setmana' in self.yaml:
+            setmanaHeader = ("<h1>"
+                             "Setmana {}".format(self.yaml.setmana)+""
+                             "</h1>")
+        else:
+            setmanaHeader = "<h1>Setmana ???</h1>"
+        return setmanaHeader
+    
+    def htmlColors(self):
+        colors= "\n".join(
+            ".{} {{ background-color: #{}; }}".format(
+                nom,
+                self.yaml.colors[nom]
+                if 'colors' in self.yaml and nom in self.yaml.colors
+                else
+                    "{:02x}{:02x}{:02x}".format(
+                    random.randint(127,255),
+                    random.randint(127,255),
+                    random.randint(127,255),
+                    )
+                )
+            for nom in self.yaml.companys
+            )
+        return colors
+    
+    def htmlParse(self):
+        header = (u"""<!doctype html>\n"""
+            u"""<html>\n"""
+            u"""<head>\n"""
+            u"""<meta charset='utf-8' />\n"""
+            u"""<style>\n"""
+            u"""h1 {\n"""
+            u"""    color: #560;\n"""
+            u"""}\n"""
+            u"""td, th {\n"""
+            u"""	border:1px solid black;\n"""
+            u"""	width: 8em;\n"""
+            u"""	text-align: center;\n"""
+            u"""}\n"""
+            u"""td:empty { border:0;}\n"""
+            u"""td { padding: 1ex;}\n"""
+            u""".extensions { width: 60%; }\n"""
+            u""".extension {\n"""
+            u"""	display: inline-block;\n"""
+            u"""	padding: 1ex 0ex;\n"""
+            u"""	width: 14%;\n"""
+            u"""	text-align: center;\n"""
+            u"""	margin: 2pt 0pt;\n"""
+            u"""	border: 1pt solid black;\n"""
+            u"""	height: 100%;\n"""
+            u"""}\n"""
+            )
+        subheader = (u"""\n</style>\n</head>\n"""
+                     u"""<body>\n"""
+                     )
+        footer = u"""</body>\n</html>"""
+        return (header+self.htmlColors()+subheader
+            +self.htmlSetmana()+self.htmlTable()+
+            self.htmlExtensions()+
+            self.htmlFixExtensions()+footer
+        )
+    
+    def htmlFixExtensions(self):
+        return (u"""<div class="extensions">\n"""
+                u"""<div class="extension """
+                u"""gijsbert">Inalàmbric<br/>3385</div>\n"""
+                u"""<div class="extension recepcio">"""
+                u"""Recepcio<br/>3405</div>\n"""
+                u"""</div>\n"""
+                u"""<h3>Recordatori desviaments</h3>\n"""
+                u"""<ul>\n"""
+                u"""<li>*60 Immediat</li>\n"""
+                u"""<li>*63 Ocupat o no responem</li>\n"""
+                u"""<li>*64 Treure desviaments</li>\n"""
+                u"""<li>*90 Marcar número</li>\n"""
+                u"""</ul>\n"""
+        )

@@ -6,155 +6,12 @@ import sys
 from parse import parse
 import random
 from htmlgen import HtmlGen
-def properName(name,yaml):
-    name = yaml.noms[name] if name in yaml.noms else name
-    return name.title()
-    
-
-def llegeixHores(yaml):
-		lines = [str(h) for h in yaml.hores ]
-		return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
-def htmlParse(yaml):
-    header = (u"""<!doctype html>\n"""
-        u"""<html>\n"""
-        u"""<head>\n"""
-        u"""<meta charset='utf-8' />\n"""
-        u"""<style>\n"""
-        u"""h1 {\n"""
-        u"""    color: #560;\n"""
-        u"""}\n"""
-        u"""td, th {\n"""
-        u"""	border:1px solid black;\n"""
-        u"""	width: 8em;\n"""
-        u"""	text-align: center;\n"""
-        u"""}\n"""
-        u"""td:empty { border:0;}\n"""
-        u"""td { padding: 1ex;}\n"""
-        u""".extensions { width: 60%; }\n"""
-        u""".extension {\n"""
-        u"""	display: inline-block;\n"""
-        u"""	padding: 1ex 0ex;\n"""
-        u"""	width: 14%;\n"""
-        u"""	text-align: center;\n"""
-        u"""	margin: 2pt 0pt;\n"""
-        u"""	border: 1pt solid black;\n"""
-        u"""	height: 100%;\n"""
-        u"""}\n""")
-    subheader = (u"""\n</style>\n</head>\n"""
-                 u"""<body>\n""")
-    footer = u"""</body>\n</html>"""
-    return (header+htmlColors(yaml)+subheader
-        +htmlSetmana(yaml)+htmlTable(yaml)+
-        htmlExtensions(yaml)+
-        htmlFixExtensions()+footer)
-def htmlFixExtensions():
-    return (u"""<div class="extensions">\n"""
-            u"""<div class="extension """
-            u"""gijsbert">Inalàmbric<br/>3385</div>\n"""
-            u"""<div class="extension recepcio">"""
-            u"""Recepcio<br/>3405</div>\n"""
-            u"""</div>\n"""
-            u"""<h3>Recordatori desviaments</h3>\n"""
-            u"""<ul>\n"""
-            u"""<li>*60 Immediat</li>\n"""
-            u"""<li>*63 Ocupat o no responem</li>\n"""
-            u"""<li>*64 Treure desviaments</li>\n"""
-            u"""<li>*90 Marcar número</li>\n"""
-            u"""</ul>\n"""
-            )
-def htmlColors(yaml):
-    colors= "\n".join(
-        ".{} {{ background-color: #{}; }}".format(
-            nom,
-            yaml.colors[nom]
-            if 'colors' in yaml and nom in yaml.colors
-            else
-                "{:02x}{:02x}{:02x}".format(
-                random.randint(127,255),
-                random.randint(127,255),
-                random.randint(127,255),
-                )
-            )
-        for nom in yaml.companys
-        )
-    return colors
-
-
-def htmlSetmana(yaml):
-    if 'setmana' in yaml:
-        setmanaHeader = ("<h1>"
-                         "Setmana {}".format(yaml.setmana)+""
-                         "</h1>")
-    else:
-        setmanaHeader = "<h1>Setmana ???</h1>"
-    return setmanaHeader
-
-def htmlExtensions(yaml):
-    header =(u"""<h3>Extensions</h3>\n"""
-            u"""<div class="extensions">\n""")
-    footer = u"""</div>"""
-    if 'extensions' in yaml:
-        extensions = sorted(yaml.extensions.items(),
-            key=lambda e:e[0])
-        body = ("\n".join([(u"""<div class="extension {}">"""
-                         u"""{}<br/>{}</div>""").format(
-                            name,
-                            properName(name,yaml),
-                            extension)
-                        for (name,extension) in extensions])+""
-               "\n")
-    else:
-        body = ""
-    return header+body+footer
-
-def htmlTable(yaml):
-    def properName(name,yaml=yaml):
-        global properName
-        return properName(name,yaml)
-
-    def partialCoreTable(day,turn):
-        return "\n".join([
-                u"""<td class='{name}'>"""
-                u"""{properName}</td>""".format(
-                    name=name,
-                    properName=properName(name))
-                    for name in yaml.timetable[day][turn+1]])+"\n"
-    headerDays=("""<tr>"""+""
-            "".join([
-                """<td></td><th colspan={colspan}>{day}</th>""".format(
-                    colspan=len(yaml.torns),
-                    day=day
-                    )
-                for day in yaml.timetable.keys()
-                ])+""
-            """</tr>\n""")
-    headerTlfnos=("""<tr>"""+("""<td></td>"""
-            ""+("".join([
-                         "<th>{}</th>".format(t) 
-                         for t in yaml.torns
-                         ])))*len(yaml.timetable.keys())+""
-            "</tr>\n")
-    coreTable=("</tr>\n".join([
-                """<tr><th>{period}</th>\n""".format(
-                    period=period)+"<td>&nbsp;</td>\n".join(
-                        [partialCoreTable(day,turn) for day in yaml.timetable.keys()
-                        ])
-                 for turn,period in enumerate(llegeixHores(yaml))
-                 ])+""
-            """</tr>\n""")
-    return( """<table>\n"""
-            ""+headerDays+headerTlfnos+coreTable+""
-            """</table>"""
-            )
 
 class ScheduleHours_Test(unittest.TestCase):
     def ns(self,content):
         return ns.loads(content)
-    def setUp(self):
-        self.h=HtmlGen()
     def test_htmlTable_oneslot(self):
-        
-        self.h.yaml=self.ns("""\
+        h=HtmlGen(self.ns("""\
             setmana: 2016-07-25
             timetable:
               dl:
@@ -176,9 +33,10 @@ class ScheduleHours_Test(unittest.TestCase):
               cesar: César
               victor: Víctor
             """)
+        )
 
         self.assertMultiLineEqual(
-            self.h.htmlTable(), 
+            h.htmlTable(), 
             u"""<table>\n"""
             u"""<tr><td></td><th colspan=1>dl</th></tr>\n"""
             u"""<tr><td></td><th>T1</th>"""
@@ -189,7 +47,7 @@ class ScheduleHours_Test(unittest.TestCase):
             u"""</table>""")
         
     def test_htmlTable_twoTelephonesOneTurnOneDay(self):
-        inputyaml=self.ns("""\
+        h=HtmlGen(self.ns("""\
             setmana: 2016-07-25
             timetable:
               dl:
@@ -215,8 +73,9 @@ class ScheduleHours_Test(unittest.TestCase):
               cesar: César
               victor: Víctor
             """)
+        )
         self.assertMultiLineEqual(
-            htmlTable(inputyaml),
+            h.htmlTable(),
             u"""<table>\n"""
             u"""<tr><td></td><th colspan=2>dl</th></tr>\n"""
             u"""<tr><td></td><th>T1</th><th>T2</th>"""
@@ -228,7 +87,7 @@ class ScheduleHours_Test(unittest.TestCase):
             u"""</table>""")
         
     def test_htmlTable_twoTelephonesTwoTurnsOneDay(self):
-        inputyaml=self.ns("""\
+        h=HtmlGen(self.ns("""\
             setmana: 2016-07-25
             timetable:
               dl:
@@ -258,8 +117,9 @@ class ScheduleHours_Test(unittest.TestCase):
                cesar: César
                victor: Víctor            
             """)
+        )
         self.assertMultiLineEqual(
-            htmlTable(inputyaml),
+            h.htmlTable(),
             u"""<table>\n"""
             u"""<tr><td></td><th colspan=2>dl</th></tr>\n"""
             u"""<tr><td></td><th>T1</th><th>T2</th>"""
@@ -276,7 +136,7 @@ class ScheduleHours_Test(unittest.TestCase):
 
     def test_htmlTable_twoTelephonesTwoTurnsTwoDays(self):
         self.maxDiff = None
-        inputyaml=self.ns("""\
+        h=HtmlGen(self.ns("""\
             setmana: 2016-07-25
             timetable:
               dl:
@@ -313,8 +173,9 @@ class ScheduleHours_Test(unittest.TestCase):
                cesar: César
                victor: Víctor
             """)
+        )
         self.assertMultiLineEqual(
-            htmlTable(inputyaml),
+            h.htmlTable(),
             u"""<table>\n"""
             u"""<tr><td></td><th colspan=2>dl</th><td></td><th colspan=2>dm</th>"""
             u"""</tr>\n"""
@@ -338,7 +199,7 @@ class ScheduleHours_Test(unittest.TestCase):
     
     def test_htmlTable_manyTelephonesmanyTurnsmanyDays(self):
         self.maxDiff = None
-        inputyaml=self.ns("""\
+        h=HtmlGen(self.ns("""\
             setmana: 2016-07-25
             timetable:
               dl:
@@ -443,8 +304,9 @@ class ScheduleHours_Test(unittest.TestCase):
               cesar: César
               victor: Víctor
             """)
+        )
         self.assertMultiLineEqual(
-            htmlTable(inputyaml),
+            h.htmlTable(),
             u"""<table>\n"""
             u"""<tr><td></td><th colspan=3>dl</th>"""
             u"""<td></td><th colspan=3>dm</th>"""
@@ -544,86 +406,90 @@ class ScheduleHours_Test(unittest.TestCase):
             u"""</tr>\n"""
             u"""</table>""")
     def test_htmlExtension_oneExtension(self):
-        yaml = ("""\
+        h = HtmlGen(self.ns("""\
             extensions:
                marta:  3040
             noms:
                cesar: César
                """)
-        nsyaml = self.ns(yaml)    
-        self.assertMultiLineEqual(htmlExtensions(nsyaml),"""<h3>Extensions</h3>\n""" 
+        )
+        self.assertMultiLineEqual(h.htmlExtensions(),
+        """<h3>Extensions</h3>\n""" 
         """<div class="extensions">\n"""
         """<div class="extension marta">Marta<br/>3040</div>\n"""
         """</div>""")
     
     def test_htmlExtension_twoExtensions(self):
-        yaml = ("""\
+        h = HtmlGen(self.ns("""\
             extensions:
                marta:  3040
                aleix:  3053
             noms:
                cesar: César
                """)
-        nsyaml = self.ns(yaml)    
-        self.assertMultiLineEqual(htmlExtensions(nsyaml),"""<h3>Extensions</h3>\n""" 
+        )
+        self.assertMultiLineEqual(h.htmlExtensions(),
+        """<h3>Extensions</h3>\n""" 
         """<div class="extensions">\n"""
         """<div class="extension aleix">Aleix<br/>3053</div>\n"""
         """<div class="extension marta">Marta<br/>3040</div>\n"""
         """</div>""")
 
     def test_htmlExtension_noExtensions(self):
-        yaml = ("""\
+        h = HtmlGen(self.ns("""\
             noms:
                cesar: César
                """)
-        nsyaml = self.ns(yaml)    
-        self.assertMultiLineEqual(htmlExtensions(nsyaml),"""<h3>Extensions</h3>\n""" 
+        )
+        self.assertMultiLineEqual(h.htmlExtensions(),
+        """<h3>Extensions</h3>\n""" 
         """<div class="extensions">\n"""
         """</div>""")
 
     def test_htmlHeader_properSetmana(self):
-        yaml = ("""\
+        h = HtmlGen(self.ns("""\
             setmana: 2016-07-25
                 """)
-        nsyaml = self.ns(yaml)
-        self.assertMultiLineEqual(htmlSetmana(nsyaml),"""<h1>Setmana 2016-07-25</h1>""")
+        )
+        self.assertMultiLineEqual(h.htmlSetmana(),"""<h1>Setmana 2016-07-25</h1>""")
 
     def test_htmlHeader_noSetmana(self):
-        yaml = ("""\
+        h = HtmlGen(self.ns("""\
             noms:
                cesar: César
                 """)
-        nsyaml = self.ns(yaml)
-        self.assertMultiLineEqual(htmlSetmana(nsyaml),"""<h1>Setmana ???</h1>""")
+        )
+        self.assertMultiLineEqual(h.htmlSetmana(),"""<h1>Setmana ???</h1>""")
 
     def test_htmlColors_oneColor(self):
-        yaml = ("""\
+        h = HtmlGen(self.ns("""\
             colors:
                marc: fbe8bc
             companys:
             - marc
                 """)
-        nsyaml = self.ns(yaml)
-        self.assertMultiLineEqual(htmlColors(nsyaml),
-            """.marc { background-color: #fbe8bc; }""")
+        )
+        self.assertMultiLineEqual(
+            h.htmlColors(),
+            """.marc { background-color: #fbe8bc; }"""
+        )
 
     def test_htmlColors_randomColor(self):
-        yaml = ("""\
+        h = HtmlGen(self.ns("""\
             companys:
             - cesar
                 """)
-        nsyaml = self.ns(yaml)
+        )
         self.assertRegexpMatches(parse(
             """.cesar {{ background-color: {} }}""",
-                  htmlColors(nsyaml)
+                  h.htmlColors()
                   )[0],
             '#[0-9a-f]{6};'
-
         )
 
     def test_htmlParse_completeHtml(self):
        self.maxDiff = None
-       inputyaml = ("""\
+       h = HtmlGen(self.ns("""\
         timetable:
           dl:
             1:
@@ -787,9 +653,9 @@ class ScheduleHours_Test(unittest.TestCase):
         - ana
         - victor
         - jordi""")
-       nsyaml = self.ns(inputyaml)
+       )
        self.b2bdatapath = "testcases"
-       self.assertB2BEqual(htmlParse(nsyaml).encode('utf-8'))
+       self.assertB2BEqual(h.htmlParse().encode('utf-8'))
 
 if __name__ == "__main__":
 
