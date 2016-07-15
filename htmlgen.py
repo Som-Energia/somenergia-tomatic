@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 import random
+from yamlns import namespace as ns
+
 class HtmlGen(object):
 
     def properName(self,name):
         name = self.yaml.noms[name] if name in self.yaml.noms else name
         return name.title()
-    def __init__(self,yaml):
-        self.yaml=yaml
 
     def llegeixHores(self):
         lines = [str(h) for h in self.yaml.hores ]
@@ -143,3 +143,46 @@ class HtmlGen(object):
                 u"""<li>*90 Marcar número</li>\n"""
                 u"""</ul>\n"""
         )
+
+class HtmlGenFromYaml(HtmlGen):
+    def __init__(self, yaml):
+        self.yaml = yaml
+        
+class HtmlGenFromSolution(HtmlGen):
+
+    def iniciSetmana(self, date=None):
+        from datetime import date as dateModule, timedelta
+        import datetime
+        if date is None:
+            # If no date provided, take the next monday
+            today = dateModule.today()
+            return today + timedelta(days=7-today.weekday())
+        # take the monday of the week including that date
+        givenDate = datetime.datetime.strptime(date,"%Y-%m-%d").date()
+        return givenDate - timedelta(days=givenDate.weekday())
+
+    def getYaml(self):
+        return self.yaml
+    
+    def __init__(self, config, solution, companys=None, date=None):
+        y = ns(zip(
+            config.diesVisualitzacio,
+            [ns() for i in range(len(config.diesVisualitzacio))]))
+        nhores = len(config.hores)-1
+        for d in y:
+            for h in range(nhores):
+                y[d][h+1]=[None]*config.nTelefons 
+        for k in solution:
+            y[k[0]][k[1]+1][k[2]]= solution[(k[0],k[1],k[2])]
+        y=ns({'timetable': y})
+        y['hores']=config.hores
+        y['torns']= ["T"+str(i+1) for i in range(config.nTelefons)]
+        y['colors']=config.colors
+        y['extensions']=config.extensions
+        y['setmana']=self.iniciSetmana(date)
+        y['noms']=config.noms
+        if companys:
+            y['companys']=companys
+        #with open("graella-"+str(iniciSetmana())+".yaml",'w') as output:
+        #    output.write(y.dump().decode('utf-8'))
+        self.yaml=y

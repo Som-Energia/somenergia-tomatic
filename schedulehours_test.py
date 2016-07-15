@@ -5,13 +5,63 @@ import b2btest
 import sys
 from parse import parse
 import random
-from htmlgen import HtmlGen
+from htmlgen import HtmlGenFromYaml, HtmlGenFromSolution
+import datetime
 
 class ScheduleHours_Test(unittest.TestCase):
     def ns(self,content):
         return ns.loads(content)
+    
+    def test_yamlSolution_oneslot(self):
+        h=HtmlGenFromSolution(
+            config=self.ns("""\
+                nTelefons: 1
+                diesVisualitzacio: ['dl']
+                hores:  # La darrera es per tancar
+                - '09:00'
+                - '10:15'
+                colors:
+                    ana: 98bdc0
+                extensions:
+                    ana: 3181
+                noms:
+                    cesar: César
+            """),
+            solution={('dl',0,0):'Ana'},
+            date='2016-07-18'
+        )
+        self.assertEqual(
+            dict(h.getYaml()), 
+            dict(ns(
+                {'timetable': ns(
+                    {'dl': ns(
+                        {1: ['Ana']})
+                    }),
+                  
+                  'hores': [
+                    '09:00',
+                    '10:15'
+                  ],
+                  'torns': [
+                    'T1'
+                  ],
+                  'colors': ns(
+                    {'ana': '98bdc0'}
+                  ),
+                  'extensions': ns(
+                    {'ana': 3181}
+                  ),
+                  'noms': ns(
+                    {'cesar': u'César'}
+                  ),
+                  'setmana': datetime.date(
+                    2016,7,18)
+                }
+            ))
+        )
+
     def test_htmlTable_oneslot(self):
-        h=HtmlGen(self.ns("""\
+        h=HtmlGenFromYaml(self.ns("""\
             setmana: 2016-07-25
             timetable:
               dl:
@@ -47,7 +97,7 @@ class ScheduleHours_Test(unittest.TestCase):
             u"""</table>""")
         
     def test_htmlTable_twoTelephonesOneTurnOneDay(self):
-        h=HtmlGen(self.ns("""\
+        h=HtmlGenFromYaml(self.ns("""\
             setmana: 2016-07-25
             timetable:
               dl:
@@ -87,7 +137,7 @@ class ScheduleHours_Test(unittest.TestCase):
             u"""</table>""")
         
     def test_htmlTable_twoTelephonesTwoTurnsOneDay(self):
-        h=HtmlGen(self.ns("""\
+        h=HtmlGenFromYaml(self.ns("""\
             setmana: 2016-07-25
             timetable:
               dl:
@@ -136,7 +186,7 @@ class ScheduleHours_Test(unittest.TestCase):
 
     def test_htmlTable_twoTelephonesTwoTurnsTwoDays(self):
         self.maxDiff = None
-        h=HtmlGen(self.ns("""\
+        h=HtmlGenFromYaml(self.ns("""\
             setmana: 2016-07-25
             timetable:
               dl:
@@ -199,7 +249,7 @@ class ScheduleHours_Test(unittest.TestCase):
     
     def test_htmlTable_manyTelephonesmanyTurnsmanyDays(self):
         self.maxDiff = None
-        h=HtmlGen(self.ns("""\
+        h=HtmlGenFromYaml(self.ns("""\
             setmana: 2016-07-25
             timetable:
               dl:
@@ -406,7 +456,7 @@ class ScheduleHours_Test(unittest.TestCase):
             u"""</tr>\n"""
             u"""</table>""")
     def test_htmlExtension_oneExtension(self):
-        h = HtmlGen(self.ns("""\
+        h = HtmlGenFromYaml(self.ns("""\
             extensions:
                marta:  3040
             noms:
@@ -420,7 +470,7 @@ class ScheduleHours_Test(unittest.TestCase):
         """</div>""")
     
     def test_htmlExtension_twoExtensions(self):
-        h = HtmlGen(self.ns("""\
+        h = HtmlGenFromYaml(self.ns("""\
             extensions:
                marta:  3040
                aleix:  3053
@@ -436,7 +486,7 @@ class ScheduleHours_Test(unittest.TestCase):
         """</div>""")
 
     def test_htmlExtension_noExtensions(self):
-        h = HtmlGen(self.ns("""\
+        h = HtmlGenFromYaml(self.ns("""\
             noms:
                cesar: César
                """)
@@ -447,14 +497,14 @@ class ScheduleHours_Test(unittest.TestCase):
         """</div>""")
 
     def test_htmlHeader_properSetmana(self):
-        h = HtmlGen(self.ns("""\
+        h = HtmlGenFromYaml(self.ns("""\
             setmana: 2016-07-25
                 """)
         )
         self.assertMultiLineEqual(h.htmlSetmana(),"""<h1>Setmana 2016-07-25</h1>""")
 
     def test_htmlHeader_noSetmana(self):
-        h = HtmlGen(self.ns("""\
+        h = HtmlGenFromYaml(self.ns("""\
             noms:
                cesar: César
                 """)
@@ -462,7 +512,7 @@ class ScheduleHours_Test(unittest.TestCase):
         self.assertMultiLineEqual(h.htmlSetmana(),"""<h1>Setmana ???</h1>""")
 
     def test_htmlColors_oneColor(self):
-        h = HtmlGen(self.ns("""\
+        h = HtmlGenFromYaml(self.ns("""\
             colors:
                marc: fbe8bc
             companys:
@@ -475,7 +525,7 @@ class ScheduleHours_Test(unittest.TestCase):
         )
 
     def test_htmlColors_randomColor(self):
-        h = HtmlGen(self.ns("""\
+        h = HtmlGenFromYaml(self.ns("""\
             companys:
             - cesar
                 """)
@@ -489,7 +539,7 @@ class ScheduleHours_Test(unittest.TestCase):
 
     def test_htmlParse_completeHtml(self):
        self.maxDiff = None
-       h = HtmlGen(self.ns("""\
+       h = HtmlGenFromYaml(self.ns("""\
         timetable:
           dl:
             1:
