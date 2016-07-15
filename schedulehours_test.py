@@ -10,26 +10,33 @@ import datetime
 
 
 class ScheduleHours_Test(unittest.TestCase):
-    def eqOrdDict(self, dict1,dict2, msg=None):
+    def eqOrdDict(self, dict1,dict2, 
+         msg=None):
+         if not msg:
+             msg="{}!={}".format(dict1,dict2)
+         
          if dict1 == None or dict2 == None:
-             self.failureException(msg)
+             raise self.failureException(msg)
 
          if type(dict1) is not ns or type(dict2) is not ns:
-             self.failureException(msg)
+             raise self.failureException(msg)
          
          shared_keys = set(dict2.keys()) & set(dict2.keys())        
 
          if not ( len(shared_keys) == len(dict1.keys()) and len(shared_keys) == len(dict2.keys())):
-             self.failureException(msg)
+             raise self.failureException(msg)
          dicts_are_equal = True
          for key in dict1.keys():
-             if type(dict1[key]) is dict:
-                 dicts_are_equal = dicts_are_equal and compare_dictionaries(dict1[key],dict2[key])
+             if type(dict1[key]) is ns:
+                 dicts_are_equal = dicts_are_equal and self.eqOrdDict(dict1[key],dict2[key],msg=msg)
+                 if not dicts_are_equal:
+                    raise self.failureException(msg)
              else:
                  dicts_are_equal = dicts_are_equal and (dict1[key] == dict2[key])
-
-         if not dicts_are_equal:
-             self.failureException(msg)
+                 if not dicts_are_equal:
+                    raise self.failureException(msg)
+         return dicts_are_equal
+    
     def ns(self,content):
         return ns.loads(content)
     def setUp(self):
@@ -50,7 +57,36 @@ class ScheduleHours_Test(unittest.TestCase):
                     cesar: César
             """),
             solution={},
-            date='2016-07-18'
+            date='2016-07-18',
+            companys=['Ana']
+        )
+        self.assertEqual(
+            h.getYaml(),
+            {'timetable': ns(
+                {'dl': ns(
+                    {1: ['festiu']})
+                }),
+              
+              'hores': [
+                '09:00',
+                '10:15'
+              ],
+              'torns': [
+                'T1'
+              ],
+              'colors': ns(
+                {'ana': '98bdc0'}
+              ),
+              'extensions': ns(
+                {'ana': 3181}
+              ),
+              'noms': ns(
+                {'cesar': u'César'}
+              ),
+              'setmana': datetime.date(
+                2016,7,18),
+              'companys': ['Ana']
+            }
         )
     def test_yamlSolution_oneslot(self):
         h=HtmlGenFromSolution(
@@ -71,12 +107,13 @@ class ScheduleHours_Test(unittest.TestCase):
             date='2016-07-18',
             companys=['Ana']
         )
+        
         self.assertEqual(
             h.getYaml(), 
             ns(
                 {'timetable': ns(
                     {'dl': ns(
-                        {1: ['Ana']})
+                        {1: ['ana']})
                     }),
                   
                   'hores': [
@@ -98,7 +135,7 @@ class ScheduleHours_Test(unittest.TestCase):
                   'setmana': datetime.date(
                     2016,7,18),
                   'companys': ['Ana']
-                }
+                },
             )
         )
 

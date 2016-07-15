@@ -172,8 +172,13 @@ class HtmlGenFromSolution(HtmlGen):
         for d in y:
             for h in range(nhores):
                 y[d][h+1]=[None]*config.nTelefons 
-        for k in solution:
-            y[k[0]][k[1]+1][k[2]]= solution[(k[0],k[1],k[2])]
+        for day in config.diesVisualitzacio:
+            for turn in range(nhores):
+                for tel in range(config.nTelefons):
+                    y[day][turn+1][tel]=solution.get(
+                        (day,turn,tel),
+                        'festiu'
+                    ).lower()
         y=ns({'timetable': y})
         y['hores']=config.hores
         y['torns']= ["T"+str(i+1) for i in range(config.nTelefons)]
