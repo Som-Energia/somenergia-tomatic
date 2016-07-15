@@ -8,10 +8,50 @@ import random
 from htmlgen import HtmlGenFromYaml, HtmlGenFromSolution
 import datetime
 
+
 class ScheduleHours_Test(unittest.TestCase):
+    def eqOrdDict(self, dict1,dict2, msg=None):
+         if dict1 == None or dict2 == None:
+             self.failureException(msg)
+
+         if type(dict1) is not ns or type(dict2) is not ns:
+             self.failureException(msg)
+         
+         shared_keys = set(dict2.keys()) & set(dict2.keys())        
+
+         if not ( len(shared_keys) == len(dict1.keys()) and len(shared_keys) == len(dict2.keys())):
+             self.failureException(msg)
+         dicts_are_equal = True
+         for key in dict1.keys():
+             if type(dict1[key]) is dict:
+                 dicts_are_equal = dicts_are_equal and compare_dictionaries(dict1[key],dict2[key])
+             else:
+                 dicts_are_equal = dicts_are_equal and (dict1[key] == dict2[key])
+
+         if not dicts_are_equal:
+             self.failureException(msg)
     def ns(self,content):
         return ns.loads(content)
-    
+    def setUp(self):
+        self.addTypeEqualityFunc(ns,self.eqOrdDict)
+    def test_yamlSolution_oneholiday(self):
+        h=HtmlGenFromSolution(
+            config=self.ns("""\
+                nTelefons: 1
+                diesVisualitzacio: ['dl']
+                hores:  # La darrera es per tancar
+                - '09:00'
+                - '10:15'
+                colors:
+                    ana: 98bdc0
+                extensions:
+                    ana: 3181
+                noms:
+                    cesar: César
+            """),
+            solution={},
+            date='2016-07-18'
+        )
     def test_yamlSolution_oneslot(self):
         h=HtmlGenFromSolution(
             config=self.ns("""\
@@ -28,11 +68,12 @@ class ScheduleHours_Test(unittest.TestCase):
                     cesar: César
             """),
             solution={('dl',0,0):'Ana'},
-            date='2016-07-18'
+            date='2016-07-18',
+            companys=['Ana']
         )
         self.assertEqual(
-            dict(h.getYaml()), 
-            dict(ns(
+            h.getYaml(), 
+            ns(
                 {'timetable': ns(
                     {'dl': ns(
                         {1: ['Ana']})
@@ -55,9 +96,10 @@ class ScheduleHours_Test(unittest.TestCase):
                     {'cesar': u'César'}
                   ),
                   'setmana': datetime.date(
-                    2016,7,18)
+                    2016,7,18),
+                  'companys': ['Ana']
                 }
-            ))
+            )
         )
 
     def test_htmlTable_oneslot(self):

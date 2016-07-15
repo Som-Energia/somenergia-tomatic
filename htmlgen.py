@@ -181,8 +181,7 @@ class HtmlGenFromSolution(HtmlGen):
         y['extensions']=config.extensions
         y['setmana']=self.iniciSetmana(date)
         y['noms']=config.noms
-        if companys:
-            y['companys']=companys
+        y['companys']=companys
         #with open("graella-"+str(iniciSetmana())+".yaml",'w') as output:
         #    output.write(y.dump().decode('utf-8'))
         self.yaml=y
