@@ -28,14 +28,12 @@ class ScheduleHours_Test(unittest.TestCase):
          dicts_are_equal = True
          for key in dict1.keys():
              if type(dict1[key]) is ns:
-                 dicts_are_equal = dicts_are_equal and self.eqOrdDict(dict1[key],dict2[key],msg=msg)
-                 if not dicts_are_equal:
+                 if not self.eqOrdDict(dict1[key],dict2[key],msg=msg):
                     raise self.failureException(msg)
              else:
-                 dicts_are_equal = dicts_are_equal and (dict1[key] == dict2[key])
-                 if not dicts_are_equal:
+                 if not dict1[key] == dict2[key]:
                     raise self.failureException(msg)
-         return dicts_are_equal
+         return True
     
     def ns(self,content):
         return ns.loads(content)
