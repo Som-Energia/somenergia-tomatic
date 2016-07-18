@@ -1514,6 +1514,176 @@ class ScheduleHours_Test(unittest.TestCase):
        )
        self.b2bdatapath = "testcases"
        self.assertB2BEqual(h.htmlParse().encode('utf-8'))
+    
+    def test_htmlParse_completeHtmlWithHoliday(self):
+       self.maxDiff = None
+       h = HtmlGenFromYaml(self.ns("""\
+        timetable:
+          dl:
+            1:
+            - festiu
+            - festiu
+            - festiu
+            2:
+            - festiu
+            - festiu
+            - festiu
+            3:
+            - festiu
+            - festiu
+            - festiu
+            4:
+            - festiu
+            - festiu
+            - festiu
+          dm:
+            1:
+            - victor
+            - marta
+            - ana
+            2:
+            - ana
+            - victor
+            - marta
+            3:
+            - silvia
+            - eduard
+            - monica
+            4:
+            - david
+            - silvia
+            - marc
+          dx:
+            1:
+            - aleix
+            - pere
+            - yaiza
+            2:
+            - pere
+            - aleix
+            - carles
+            3:
+            - marc
+            - judit
+            - victor
+            4:
+            - david
+            - silvia
+            - victor
+          dj:
+            1:
+            - judit
+            - jordi
+            - carles
+            2:
+            - joan
+            - silvia
+            - jordi
+            3:
+            - monica
+            - marc
+            - tania
+            4:
+            - tania
+            - monica
+            - marc
+          dv:
+            1:
+            - marta
+            - victor
+            - judit
+            2:
+            - victor
+            - joan
+            - judit
+            3:
+            - eduard
+            - yaiza
+            - jordi
+            4:
+            - jordi
+            - carles
+            - aleix
+        hores:
+        - 09:00
+        - '10:15'
+        - '11:30'
+        - '12:45'
+        - '14:00'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          marc: fbe8bc
+          eduard: d8b9c5
+          pere: 8f928e
+          david: ffd3ac
+          aleix: eed0eb
+          carles: c98e98
+          marta: eb9481
+          monica: 7fada0
+          yaiza: 90cdb9
+          erola: 8789c8
+          manel: 88dfe3
+          tania: c8abf4
+          judit: e781e8
+          silvia: 8097fa
+          joan: fae080
+          ana: 98bdc0
+          victor: ff3333
+          jordi: ff9999
+          judith: cb8a85
+        extensions:
+          marta: 3040
+          monica: 3041
+          manel: 3042
+          erola: 3043
+          yaiza: 3044
+          eduard: 3045
+          marc: 3046
+          judit: 3047
+          judith: 3057
+          tania: 3048
+          carles: 3051
+          pere: 3052
+          aleix: 3053
+          david: 3054
+          silvia: 3055
+          joan: 3056
+          ana: 3181
+          victor: 3182
+          jordi: 3183
+        setmana: 2016-07-25
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
+        companys:
+        - marta
+        - monica
+        - manel
+        - erola
+        - yaiza
+        - eduard
+        - marc
+        - judit
+        - judith
+        - tania
+        - carles
+        - pere
+        - aleix
+        - david
+        - silvia
+        - joan
+        - ana
+        - victor
+        - jordi""")
+       )
+       self.b2bdatapath = "testcases"
+       self.assertB2BEqual(h.htmlParse().encode('utf-8'))
 
 if __name__ == "__main__":
 
