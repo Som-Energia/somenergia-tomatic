@@ -56,7 +56,8 @@ class ScheduleHours_Test(unittest.TestCase):
                     cesar: César
             """),
             solution={},
-            date='2016-07-18',
+            date=datetime.datetime.strptime(
+                '2016-07-11','%Y-%m-%d').date(),
             companys=['ana']
         )
         self.assertEqual(
@@ -83,7 +84,7 @@ class ScheduleHours_Test(unittest.TestCase):
                 {'cesar': u'César'}
               ),
               'setmana': datetime.date(
-                2016,7,18),
+                2016,7,11),
               'companys': ['ana']
             }
         )
@@ -103,7 +104,8 @@ class ScheduleHours_Test(unittest.TestCase):
                     cesar: César
             """),
             solution={('dl',0,0):'ana'},
-            date='2016-07-18',
+            date=datetime.datetime.strptime(
+                '2016-07-18','%Y-%m-%d').date(),
             companys=['ana']
         )
         
@@ -260,7 +262,8 @@ class ScheduleHours_Test(unittest.TestCase):
                 ('dv',3,1):'victor',
                 ('dv',3,2):'silvia',
                 },
-            date='2016-07-11',
+            date=datetime.datetime.strptime(
+                '2016-07-11','%Y-%m-%d').date(),
             companys= [
                 'aleix',
                 'ana',
@@ -619,7 +622,8 @@ class ScheduleHours_Test(unittest.TestCase):
                 ('dj',3,1):'erola',
                 ('dj',3,2):'joan',
                 },
-            date='2016-07-11',
+            date=datetime.datetime.strptime(
+                '2016-07-11','%Y-%m-%d').date(),
             companys= [
                 'aleix',
                 'ana',

@@ -90,9 +90,8 @@ class HtmlGen(object):
             for nom in self.yaml.companys
             )
         return colors
-    
-    def htmlParse(self):
-        header = (u"""<!doctype html>\n"""
+    def htmlHeader(self):
+        return  (u"""<!doctype html>\n"""
             u"""<html>\n"""
             u"""<head>\n"""
             u"""<meta charset='utf-8' />\n"""
@@ -118,16 +117,35 @@ class HtmlGen(object):
             u"""	height: 100%;\n"""
             u"""}\n"""
             )
-        subheader = (u"""\n</style>\n</head>\n"""
+    def htmlSubHeader(self):
+        return (u"""\n</style>\n</head>\n"""
                      u"""<body>\n"""
                      )
-        footer = u"""</body>\n</html>"""
-        return (header+self.htmlColors()+subheader
-            +self.htmlSetmana()+self.htmlTable()+
+    def htmlFooter(self):
+        return  u"""</body>\n</html>"""
+
+    def htmlParse(self):
+        return (self.htmlHeader()+
+            self.htmlColors()+
+            self.htmlSubHeader()+
+            self.htmlSetmana()+self.htmlTable()+
             self.htmlExtensions()+
-            self.htmlFixExtensions()+footer
+            self.htmlFixExtensions()+
+            self.htmlFooter()
         )
-    
+    def htmlPenalizations(self,minimumCost,penalties):
+        return  '\n'.join([
+            "",
+            "<p>Penalitzacio: {}</p>".format(minimumCost),
+            "<ul>",
+            "\n".join(
+                "<li>{}: {}</li>".format(*reason)
+                for reason in penalties
+            ),
+            "</ul>",
+            '',
+        ])
+
     def htmlFixExtensions(self):
         return (u"""<div class="extensions">\n"""
                 u"""<div class="extension """
@@ -143,6 +161,9 @@ class HtmlGen(object):
                 u"""<li>*90 Marcar número</li>\n"""
                 u"""</ul>\n"""
         )
+        with open("extensions.html") as extensions_html:
+            extensions = extensions_html.read()
+        return extensions
 
 class HtmlGenFromYaml(HtmlGen):
     def __init__(self, yaml):
@@ -158,8 +179,8 @@ class HtmlGenFromSolution(HtmlGen):
             today = dateModule.today()
             return today + timedelta(days=7-today.weekday())
         # take the monday of the week including that date
-        givenDate = datetime.datetime.strptime(date,"%Y-%m-%d").date()
-        return givenDate - timedelta(days=givenDate.weekday())
+        #givenDate = datetime.datetime.strptime(date,"%Y-%m-%d").date()
+        return date - timedelta(days=date.weekday())
 
     def getYaml(self):
         return self.yaml

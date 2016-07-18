@@ -10,6 +10,7 @@ from consolemsg import step, error, warn, fail
 import codecs
 import sys
 from sheetfetcher import SheetFetcher
+from htmlgen import HtmlGenFromSolution
 
 monitoringFile = 'taula.html'
 worksheet_unavailabilities = u'Reunions i altres afers' # 'oyfu0hb'
@@ -537,159 +538,6 @@ class Backtracker:
 			if self.config.aleatori and self.nbactracks > self.backtrackDepth: break
 
 	def reportSolution(self, solution) :
-		def htmlParse(yaml):
-			def properName(name,yaml=yaml):
-				name = yaml.noms[name] if name in yaml.noms else name
-				return name.title()
-			def htmlExtensions(yaml):
-				header =(u"""<h3>Extensions</h3>\n"""
-						u"""<div class="extensions">\n""")
-				footer = u"""</div>"""
-				if 'extensions' in yaml:
-					extensions = sorted(yaml.extensions.items(),
-						key=lambda e:e[0])
-					body = ("\n".join([(u"""<div class="extension {}">"""
-									 u"""{}<br/>{}</div>""").format(
-										name,
-										properName(name,yaml),
-										extension)
-									for (name,extension) in extensions])+""
-						   "\n")
-				else:
-					body = ""
-				return header+body+footer
-
-			def htmlTable(yaml):
-				def llegeixHores(yaml):
-					lines = [str(h) for h in yaml.hores ]
-					return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
-
-				def partialCoreTable(day,turn):
-					return "\n".join([
-							u"""<td class='{name}'>"""
-							u"""{properName}</td>""".format(
-								name=name,
-								properName=properName(name))
-								for name in yaml.timetable[day][turn+1]])+"\n"
-				headerDays=("""<tr>"""+""
-						"".join([
-							"""<td></td><th colspan={colspan}>{day}</th>""".format(
-								colspan=len(yaml.torns),
-								day=day
-								)
-							for day in yaml.timetable.keys()
-							])+""
-						"""</tr>\n""")
-				headerTlfnos=("""<tr>"""+("""<td></td>"""
-						""+("".join([
-									 "<th>{}</th>".format(t) 
-									 for t in yaml.torns
-									 ])))*len(yaml.timetable.keys())+""
-						"</tr>\n")
-				coreTable=("</tr>\n".join([
-							"""<tr><th>{period}</th>\n""".format(
-								period=period)+"<td>&nbsp;</td>\n".join(
-									[partialCoreTable(day,turn) for day in yaml.timetable.keys()
-									])
-							 for turn,period in enumerate(llegeixHores(yaml))
-							 ])+""
-						"""</tr>\n""")
-				return( """<table>\n"""
-						""+headerDays+headerTlfnos+coreTable+""
-						"""</table>"""
-						)
-			def htmlColors(yaml):
-				colors= "\n".join(
-					".{} {{ background-color: #{}; }}".format(
-						nom,
-						yaml.colors[nom]
-						if 'colors' in yaml and nom in yaml.colors
-						else
-							"{:02x}{:02x}{:02x}".format(
-							random.randint(127,255),
-							random.randint(127,255),
-							random.randint(127,255),
-							)
-						)
-					for nom in yaml.companys
-					)
-				return colors
-			def htmlFixExtensions():
-				return (u"""<div class="extensions">\n"""
-					u"""<div class="extension """
-					u"""gijsbert">Inalàmbric<br/>3385</div>\n"""
-					u"""<div class="extension recepcio">"""
-					u"""Recepcio<br/>3405</div>\n"""
-					u"""</div>\n"""
-					u"""<h3>Recordatori desviaments</h3>\n"""
-					u"""<ul>\n"""
-					u"""<li>*60 Immediat</li>\n"""
-					u"""<li>*63 Ocupat o no responem</li>\n"""
-					u"""<li>*64 Treure desviaments</li>\n"""
-					u"""<li>*90 Marcar número</li>\n"""
-					u"""</ul>\n"""
-				)
-			def htmlSetmana(yaml):
-				if 'setmana' in yaml:
-					setmanaHeader = ("<h1>"
-									 "Setmana {}".format(yaml.setmana)+""
-									 "</h1>")
-				else:
-					setmanaHeader = "<h1>Setmana ???</h1>"
-				return setmanaHeader
-			header = (u"""<!doctype html>\n"""
-				u"""<html>\n"""
-				u"""<head>\n"""
-				u"""<meta charset='utf-8' />\n"""
-				u"""<style>\n"""
-				u"""h1 {\n"""
-				u"""    color: #560;\n"""
-				u"""}\n"""
-				u"""td, th {\n"""
-				u"""	border:1px solid black;\n"""
-				u"""	width: 8em;\n"""
-				u"""	text-align: center;\n"""
-				u"""}\n"""
-				u"""td:empty { border:0;}\n"""
-				u"""td { padding: 1ex;}\n"""
-				u""".extensions { width: 60%; }\n"""
-				u""".extension {\n"""
-				u"""	display: inline-block;\n"""
-				u"""	padding: 1ex 0ex;\n"""
-				u"""	width: 14%;\n"""
-				u"""	text-align: center;\n"""
-				u"""	margin: 2pt 0pt;\n"""
-				u"""	border: 1pt solid black;\n"""
-				u"""	height: 100%;\n"""
-				u"""}\n""")
-			subheader = (u"""\n</style>\n</head>\n"""
-						 u"""<body>\n""")
-			footer = u"""</body>\n</html>"""
-			return (header+htmlColors(yaml)+subheader
-				+htmlSetmana(yaml)+htmlTable(yaml)+
-				htmlExtensions(yaml)+
-				htmlFixExtensions()+footer)
-		# buidar el fitxer, si el cost es diferent
-		def yamlExport(solution):
-			y = ns(zip(
-				self.diesVisualitzacio,
-				[ns() for i in range(len(self.diesVisualitzacio))]))
-			for d in y:
-				for h in range(self.nhores):
-					y[d][h+1]=[None]*self.ntelefons 
-			for k in solution:
-				y[k[0]][k[1]+1][k[2]]= solution[(k[0],k[1],k[2])]
-			y=ns({'timetable': y})
-			y['hores']=self.config.hores
-			y['torns']= ["T"+str(i+1) for i in range(self.ntelefons)]
-			y['colors']=self.config.colors
-			y['extensions']=self.config.extensions
-			y['setmana']=iniciSetmana()
-			y['noms']=self.config.noms
-			y['companys']=self.companys
-			with open("graella-"+str(iniciSetmana())+".yaml",'w') as output:
-				output.write(y.dump().decode('utf-8'))
-			return y
 		def properName(name):
 			"""Capitalizes name unless configuration provides
 			A better alternative, for example with tildes.
@@ -699,143 +547,40 @@ class Backtracker:
 		monday = iniciSetmana()
 
 		firstAtCost = self.minimumCost != self.__dict__.get('storedCost', 'resEsComparaAmbMi')
-
+		solution = dict(zip(self.caselles, solution))
+		htmlgen=HtmlGenFromSolution(self.config,solution,self.companys,monday)
 		if firstAtCost:
 			self.storedCost = self.minimumCost
-			personalColors = ''.join((
-				".{} {{ background-color: #{}; }}\n".format(
-					nom,
-					self.config.colors[nom]
-					if nom in self.config.colors
-					and not self.config.randomColors
-					else "{:02x}{:02x}{:02x}".format(
-						random.randint(127,255),
-						random.randint(127,255),
-						random.randint(127,255),
-						)
-					)
-				for nom in self.companys
-				))
-			header = ("""\
-<!doctype html>
-<html>
-<head>
-<meta charset='utf-8' />
-<style>
-h1 {
-    color: #560;
-}
-td, th {
-	border:1px solid black;
-	width: 8em;
-	text-align: center;
-}
-td:empty { border:0;}
-td { padding: 1ex;}
-.extensions { width: 60%; }
-.extension {
-	display: inline-block;
-	padding: 1ex 0ex;
-	width: 14%;
-	text-align: center;
-	margin: 2pt 0pt;
-	border: 1pt solid black;
-	height: 100%;
-}
-"""+ personalColors + """
-</style>
-</head>
-<body>
-""")
-			extensions = (u"""\
-<h3>Extensions</h3>
-<div class="extensions">
-""" + "".join((
-			u'<div class="extension {name}">{properName}<br/>{extension}</div>\n'
-			.format(
-				name = name,
-				extension = self.config.extensions.get(name, "???"),
-				properName = properName(name),
-			)
-			for name in sorted(self.companys)))
-			+
-u"""\
-</div>
-"""
-			)
-
-
+			personalColors = htmlgen.htmlColors()
+			header = htmlgen.htmlHeader()
+			subheader = htmlgen.htmlSubHeader()
 			with open(outputFile(),'w') as output:
-				output.write(header)
-				output.write("<h1>Setmana {}</h1>".format(monday))
+				output.write(
+					header+personalColors+
+					subheader+
+					htmlgen.htmlSetmana())
 			with open(monitoringFile,'w') as output:
-				output.write(header)
+				output.write(
+					header+personalColors+
+					subheader
+				)
 
 		solution = dict(zip(self.caselles, solution))
-		taula = '\n'.join(
-				[
-					'<table>',
-					'<tr><td></td><th colspan=3>' +
-					'</th><td></td><th colspan=3>'.join(
-						d for d in self.diesVisualitzacio
-					) + '</th><tr>',
-					'<tr><td></td>' +
-					'\n<td></td>\n'.join(
-						''.join(
-							'<th>T{}</th>'.format(telefon+1)
-							for telefon in range(self.ntelefons))
-						+ '\n'
-						for d in self.diesVisualitzacio
-					) + '<tr>',
-				]+
-				[
-					'<tr><th>{}</th>\n'.format(h) +
-					'\n<td>&nbsp;</td>\n'.join(
-						'\n'.join(
-							u"<td class='{0}'>{1}</td>".format(
-								solution.get((d,hi,l),'festiu').lower(),
-								properName(solution.get((d,hi,l),'festiu')),
-								) for l in range(self.ntelefons)
-							) for d in self.diesVisualitzacio)
-					+ '\n</tr>'
-					for hi, h in enumerate(self.hores)
-				]
-				+ [
-					'</table>',
-				]
-			)
-		penalitzacions = '\n'.join([
-					"",
-					"<p>Penalitzacio: {}</p>".format(self.minimumCost),
-					"<ul>",
-					"\n".join(
-						"<li>{}: {}</li>".format(*reason)
-						for reason in self.penalties
-					),
-					"</ul>",
-					'',
-				])
+		penalitzacions = (
+			htmlgen.htmlPenalizations(
+				self.minimumCost,
+				self.penalties)
+		)
 		with open(monitoringFile,'a') as output:
-			output.write(taula)
+			output.write(htmlgen.htmlTable())
 			output.write(penalitzacions)
 		if firstAtCost:
-			y=yamlExport(solution)
-			h=htmlParse(y)
 			graellaFile = "graella-telefons-{}.html".format(monday)
-			newGraellaFile = "new-"+graellaFile
-			with open(newGraellaFile,'w') as output:
-				output.write(h)
-			with open(graellaFile,'a') as output:
-				output.write(taula)
-				with open("extensions.html") as extensions_html:
-					extensions += extensions_html.read()
-				output.write('\n'.join([
-					extensions,
-					'',
-					'</body>',
-					'</html>',
-                    '',
-					]))
+			with open(outputFile(),'a') as output:
+				output.write(htmlgen.htmlTable()+
+					htmlgen.htmlExtensions()+
+					htmlgen.htmlFixExtensions()+
+					htmlgen.htmlFooter())
 
 
 
