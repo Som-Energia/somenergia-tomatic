@@ -1336,6 +1336,28 @@ class ScheduleHours_Test(unittest.TestCase):
             """.marc { background-color: #fbe8bc; }"""
         )
 
+    def test_htmlColors_forceRandomColor(self):
+        h = HtmlGenFromYaml(self.ns("""\
+            colors:
+               marc: fbe8bc
+            randomColors: true
+            companys:
+            - marc
+                """)
+        )
+        colors = h.htmlColors()
+        self.assertNotEqual(
+            colors,
+            """.marc { background-color: #fbe8bc; }"""
+        )
+
+        self.assertRegexpMatches(parse(
+            """.marc {{ background-color: {} }}""",
+                  colors
+                  )[0],
+            '#[0-9a-f]{6};'
+        )
+    
     def test_htmlColors_randomColor(self):
         h = HtmlGenFromYaml(self.ns("""\
             companys:

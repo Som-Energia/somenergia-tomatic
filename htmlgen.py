@@ -80,6 +80,8 @@ class HtmlGen(object):
                 nom,
                 self.yaml.colors[nom]
                 if 'colors' in self.yaml and nom in self.yaml.colors
+                    and not ('randomColors' in self.yaml
+                    and self.yaml.randomColors)
                 else
                     "{:02x}{:02x}{:02x}".format(
                     random.randint(127,255),
