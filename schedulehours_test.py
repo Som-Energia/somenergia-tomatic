@@ -16,23 +16,24 @@ class ScheduleHours_Test(unittest.TestCase):
              msg="{}!={}".format(dict1,dict2)
          
          if dict1 == None or dict2 == None:
-             raise self.failureException(msg)
+             raise self.failureException(msg+"\n\n{} or {} is None".format(dict1,dict2))
 
          if type(dict1) is not ns or type(dict2) is not ns:
-             raise self.failureException(msg)
+             raise self.failureException(msg+"\n\n{} or {} are not yamlns".format(dict1,dict2))
          
          shared_keys = set(dict2.keys()) & set(dict2.keys())        
 
          if not ( len(shared_keys) == len(dict1.keys()) and len(shared_keys) == len(dict2.keys())):
-             raise self.failureException(msg)
-         dicts_are_equal = True
+             raise self.failureException(
+                msg+"\n\nLen of keys {} and {} are different".format(
+                    dict1.keys(), dict2.keys()))
          for key in dict1.keys():
              if type(dict1[key]) is ns:
                  if not self.eqOrdDict(dict1[key],dict2[key],msg=msg):
                     raise self.failureException(msg)
              else:
                  if not dict1[key] == dict2[key]:
-                    raise self.failureException(msg)
+                    raise self.failureException(msg+"\n\n"+("{}!={}".format(dict1[key],dict2[key])))
          return True
     
     def ns(self,content):
@@ -56,7 +57,7 @@ class ScheduleHours_Test(unittest.TestCase):
             """),
             solution={},
             date='2016-07-18',
-            companys=['Ana']
+            companys=['ana']
         )
         self.assertEqual(
             h.getYaml(),
@@ -83,7 +84,7 @@ class ScheduleHours_Test(unittest.TestCase):
               ),
               'setmana': datetime.date(
                 2016,7,18),
-              'companys': ['Ana']
+              'companys': ['ana']
             }
         )
     def test_yamlSolution_oneslot(self):
@@ -101,9 +102,9 @@ class ScheduleHours_Test(unittest.TestCase):
                 noms:
                     cesar: César
             """),
-            solution={('dl',0,0):'Ana'},
+            solution={('dl',0,0):'ana'},
             date='2016-07-18',
-            companys=['Ana']
+            companys=['ana']
         )
         
         self.assertEqual(
@@ -132,7 +133,378 @@ class ScheduleHours_Test(unittest.TestCase):
                   ),
                   'setmana': datetime.date(
                     2016,7,18),
-                  'companys': ['Ana']
+                  'companys': ['ana']
+                },
+            )
+        )
+    
+    def test_yamlSolution_completeTimetable(self):
+        h=HtmlGenFromSolution(
+            config=self.ns("""\
+        nTelefons: 3
+        diesCerca: ['dx','dm','dj', 'dl', 'dv',] # Els mes conflictius davant
+        diesVisualitzacio: ['dl','dm','dx','dj','dv']
+
+        hores:  # La darrera es per tancar
+        - '09:00'
+        - '10:15'
+        - '11:30'
+        - '12:45'
+        - '14:00'
+        randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
+        colors:
+           marc:   'fbe8bc'
+           eduard: 'd8b9c5'
+           pere:   '8f928e'
+           david:  'ffd3ac'
+           aleix:  'eed0eb'
+           carles: 'c98e98'
+           marta:  'eb9481'
+           monica: '7fada0'
+           yaiza:  '90cdb9'
+           erola:  '8789c8'
+           manel:  '88dfe3'
+           tania:  'c8abf4'
+           judit:  'e781e8'
+           silvia: '8097fa'
+           joan:   'fae080'
+           ana:    '98bdc0'
+           victor: 'ff3333'
+           jordi: 'ff9999' 
+        extensions:
+           marta:  3040
+           monica: 3041
+           manel:  3042
+           erola:  3043
+           yaiza:  3044
+           eduard: 3045
+           marc:   3046
+           judit:  3047
+           judith: 3057
+           tania:  3048
+           carles: 3051
+           pere:   3052
+           aleix:  3053
+           david:  3054
+           silvia: 3055
+           joan:   3056
+           ana:    3181
+           victor: 3182
+           jordi:  3183 
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
+            """),
+            solution={
+                ('dl',0,0):'jordi',
+                ('dl',0,1):'marta',
+                ('dl',0,2):'tania',
+                ('dl',1,0):'tania',
+                ('dl',1,1):'yaiza',
+                ('dl',1,2):'silvia',
+                ('dl',2,0):'judith',
+                ('dl',2,1):'pere',
+                ('dl',2,2):'ana',
+                ('dl',3,0):'ana',
+                ('dl',3,1):'judith',
+                ('dl',3,2):'erola',
+                ('dm',0,0):'pere',
+                ('dm',0,1):'jordi',
+                ('dm',0,2):'victor',
+                ('dm',1,0):'carles',
+                ('dm',1,1):'victor',
+                ('dm',1,2):'ana',
+                ('dm',2,0):'joan',
+                ('dm',2,1):'silvia',
+                ('dm',2,2):'eduard',
+                ('dm',3,0):'david',
+                ('dm',3,1):'joan',
+                ('dm',3,2):'monica',
+                ('dx',0,0):'yaiza',
+                ('dx',0,1):'monica',
+                ('dx',0,2):'pere',
+                ('dx',1,0):'erola',
+                ('dx',1,1):'joan',
+                ('dx',1,2):'marta',
+                ('dx',2,0):'victor',
+                ('dx',2,1):'eduard',
+                ('dx',2,2):'jordi',
+                ('dx',3,0):'eduard',
+                ('dx',3,1):'david',
+                ('dx',3,2):'victor',
+                ('dj',0,0):'judith',
+                ('dj',0,1):'jordi',
+                ('dj',0,2):'carles',
+                ('dj',1,0):'silvia',
+                ('dj',1,1):'tania',
+                ('dj',1,2):'judith',
+                ('dj',2,0):'monica',
+                ('dj',2,1):'ana',
+                ('dj',2,2):'judit',
+                ('dj',3,0):'judit',
+                ('dj',3,1):'erola',
+                ('dj',3,2):'joan',
+                ('dv',0,0):'ana',
+                ('dv',0,1):'judith',
+                ('dv',0,2):'jordi',
+                ('dv',1,0):'jordi',
+                ('dv',1,1):'ana',
+                ('dv',1,2):'judith',
+                ('dv',2,0):'victor',
+                ('dv',2,1):'carles',
+                ('dv',2,2):'yaiza',
+                ('dv',3,0):'marta',
+                ('dv',3,1):'victor',
+                ('dv',3,2):'silvia',
+                },
+            date='2016-07-11',
+            companys= [
+                'aleix',
+                'ana',
+                'carles',
+                'david',
+                'eduard',
+                'erola',
+                'joan',
+                'jordi',
+                'judit',
+                'judith',
+                'manel',
+                'marc',
+                'marta',
+                'monica',
+                'pere',
+                'silvia',
+                'tania',
+                'victor',
+                'yaiza'
+            ]
+        )
+
+        self.assertEqual(
+            h.getYaml(), 
+            ns(
+                {'timetable': ns(
+                    {'dl': ns(
+                        {1: 
+                            ['jordi',
+                             'marta',
+                             'tania'
+                             ]
+                        ,
+                        2: 
+                            ['tania',
+                             'yaiza',
+                             'silvia'
+                             ]
+                        ,
+                        3: 
+                            ['judith',
+                             'pere',
+                             'ana'
+                             ]
+                        ,
+                        4: 
+                            ['ana',
+                             'judith',
+                             'erola'
+                             ]
+                        }),
+                     'dm': ns({
+                        1: 
+                           ['pere',
+                            'jordi',
+                            'victor'
+                            ]
+                        ,
+                        2: 
+                           ['carles',
+                            'victor',
+                            'ana'
+                            ]
+                        ,
+                        3: 
+                           ['joan',
+                            'silvia',
+                            'eduard'
+                            ]
+                        ,
+                        4: 
+                           ['david',
+                            'joan',
+                            'monica'
+                            ]
+                        }),
+
+                     'dx': ns({
+                        1: 
+                           ['yaiza',
+                            'monica',
+                            'pere'
+                            ]
+                        ,
+                        2: 
+                           ['erola',
+                            'joan',
+                            'marta'
+                            ]
+                        ,
+                        3: 
+                           ['victor',
+                            'eduard',
+                            'jordi'
+                            ]
+                        ,
+                        4: 
+                           ['eduard',
+                            'david',
+                            'victor'
+                            ]
+                        }),
+                     
+                     'dj': ns({
+                        1: 
+                           ['judith',
+                            'jordi',
+                            'carles'
+                            ]
+                        ,
+                        2: 
+                           ['silvia',
+                            'tania',
+                            'judith'
+                            ]
+                        ,
+                        3: 
+                           ['monica',
+                            'ana',
+                            'judit'
+                            ]
+                        ,
+                        4: 
+                           ['judit',
+                            'erola',
+                            'joan'
+                            ]
+                        }),
+
+                     'dv': ns({
+                        1: 
+                           ['ana',
+                            'judith',
+                            'jordi'
+                            ]
+                        ,
+                        2: 
+                           ['jordi',
+                            'ana',
+                            'judith'
+                            ]
+                        ,
+                        3: 
+                           ['victor',
+                            'carles',
+                            'yaiza'
+                            ]
+                        ,
+                        4: 
+                           ['marta',
+                            'victor',
+                            'silvia'
+                            ]
+                        }),
+                    }),
+                  
+                  'hores': [
+                    '09:00',
+                    '10:15',
+                    '11:30',
+                    '12:45',
+                    '14:00'
+                  ],
+                  'torns': [
+                    'T1',
+                    'T2',
+                    'T3'
+                  ],
+                  'colors': ns(
+                    {'ana':    '98bdc0',
+                     'marc':   'fbe8bc',
+                     'eduard': 'd8b9c5',
+                     'pere':   '8f928e',
+                     'david':  'ffd3ac',
+                     'aleix':  'eed0eb',
+                     'carles': 'c98e98',
+                     'marta':  'eb9481',
+                     'monica': '7fada0',
+                     'yaiza':  '90cdb9',
+                     'erola':  '8789c8',
+                     'manel':  '88dfe3',
+                     'tania':  'c8abf4',
+                     'judit':  'e781e8',
+                     'silvia': '8097fa',
+                     'joan':   'fae080',
+                     'ana':    '98bdc0',
+                     'victor': 'ff3333',
+                     'jordi':  'ff9999',
+                    }
+                  ),
+                  'extensions': ns(
+                    {'ana':    3181,
+                     'marta':  3040,
+                     'monica': 3041,
+                     'manel':  3042,
+                     'erola':  3043,
+                     'yaiza':  3044,
+                     'eduard': 3045,
+                     'marc':   3046,
+                     'judit':  3047,
+                     'judith': 3057,
+                     'tania':  3048,
+                     'carles': 3051,
+                     'pere':   3052,
+                     'aleix':  3053,
+                     'david':  3054,
+                     'silvia': 3055,
+                     'joan':   3056,
+                     'ana':    3181,
+                     'victor': 3182,
+                     'jordi':  3183, 
+                    }
+                  ),
+                  'noms': ns({
+                     'silvia': u'Sílvia',
+                     'monica': u'Mònica',
+                     'tania':  u'Tània',
+                     'cesar':  u'César',
+                     'victor': u'Víctor',
+                  }),
+                  'setmana': datetime.date(
+                    2016,7,11),
+                  'companys': [
+                    'aleix',
+                    'ana',
+                    'carles',
+                    'david',
+                    'eduard',
+                    'erola',
+                    'joan',
+                    'jordi',
+                    'judit',
+                    'judith',
+                    'manel',
+                    'marc',
+                    'marta',
+                    'monica',
+                    'pere',
+                    'silvia',
+                    'tania',
+                    'victor',
+                    'yaiza'
+                  ]
                 },
             )
         )
