@@ -1710,7 +1710,7 @@ class ScheduleHours_Test(unittest.TestCase):
        )
        self.b2bdatapath = "testcases"
        self.assertB2BEqual(h.htmlParse().encode('utf-8'))
-    def test_asteriskParse_oneTurnOneAgent(self):
+    def test_asteriskParse_oneTurnOneLocal(self):
        self.maxDiff = None
        h = HtmlGenFromYaml(self.ns("""\
         timetable:
@@ -1735,9 +1735,258 @@ class ScheduleHours_Test(unittest.TestCase):
        )
        self.assertMultiLineEqual(h.asteriskParse(),
         u"""[cua_dl_1]\n"""
-        u"""Member => Agent/217\n"""
+        u"""Member => Local/217\n"""
        )
         
+    def test_asteriskParse_oneTurnOneLocal(self):
+       self.maxDiff = None
+       h = HtmlGenFromYaml(self.ns("""\
+        timetable:
+          dl:
+            1:
+            - ana
+            - jordi
+            - pere
+            2:
+            - jordi
+            - aleix
+            - pere
+            3:
+            - carles
+            - joan
+            - eduard
+            4:
+            - yaiza
+            - joan
+            - eduard
+          dm:
+            1:
+            - victor
+            - marta
+            - ana
+            2:
+            - ana
+            - victor
+            - marta
+            3:
+            - silvia
+            - eduard
+            - monica
+            4:
+            - david
+            - silvia
+            - marc
+          dx:
+            1:
+            - aleix
+            - pere
+            - yaiza
+            2:
+            - pere
+            - aleix
+            - carles
+            3:
+            - marc
+            - judit
+            - victor
+            4:
+            - david
+            - silvia
+            - victor
+          dj:
+            1:
+            - judit
+            - jordi
+            - carles
+            2:
+            - joan
+            - silvia
+            - jordi
+            3:
+            - monica
+            - marc
+            - tania
+            4:
+            - tania
+            - monica
+            - marc
+          dv:
+            1:
+            - marta
+            - victor
+            - judit
+            2:
+            - victor
+            - joan
+            - judit
+            3:
+            - eduard
+            - yaiza
+            - jordi
+            4:
+            - jordi
+            - carles
+            - aleix
+        hores:
+        - 09:00
+        - '10:15'
+        - '11:30'
+        - '12:45'
+        - '14:00'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          marc: fbe8bc
+          eduard: d8b9c5
+          pere: 8f928e
+          david: ffd3ac
+          aleix: eed0eb
+          carles: c98e98
+          marta: eb9481
+          monica: 7fada0
+          yaiza: 90cdb9
+          erola: 8789c8
+          manel: 88dfe3
+          tania: c8abf4
+          judit: e781e8
+          silvia: 8097fa
+          joan: fae080
+          ana: 98bdc0
+          victor: ff3333
+          jordi: ff9999
+          judith: cb8a85
+        extensions:
+          marta:  206
+          monica: 216
+          manel:  212
+          erola:  213
+          yaiza:  205
+          eduard: 222
+          marc:   203
+          judit:  202
+          judith: 211
+          tania:  208
+          carles: 223
+          pere:   224
+          aleix:  214
+          david:  204
+          silvia: 207
+          joan:   215
+          ana:    217
+          victor: 218
+          jordi:  210
+        setmana: 2016-07-25
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
+        companys:
+        - marta
+        - monica
+        - manel
+        - erola
+        - yaiza
+        - eduard
+        - marc
+        - judit
+        - judith
+        - tania
+        - carles
+        - pere
+        - aleix
+        - david
+        - silvia
+        - joan
+        - ana
+        - victor
+        - jordi""")
+       )
+       self.assertMultiLineEqual(h.asteriskParse(),
+        u"""[cua_dl_1]\n"""
+        u"""Member => Local/217\n"""
+        u"""Member => Local/210\n"""
+        u"""Member => Local/224\n"""
+        u"""[cua_dl_2]\n"""
+        u"""Member => Local/210\n"""
+        u"""Member => Local/214\n"""
+        u"""Member => Local/224\n"""
+        u"""[cua_dl_3]\n"""
+        u"""Member => Local/223\n"""
+        u"""Member => Local/215\n"""
+        u"""Member => Local/222\n"""
+        u"""[cua_dl_4]\n"""
+        u"""Member => Local/205\n"""
+        u"""Member => Local/215\n"""
+        u"""Member => Local/222\n"""
+        u"""[cua_dm_1]\n"""
+        u"""Member => Local/218\n"""
+        u"""Member => Local/206\n"""
+        u"""Member => Local/217\n"""
+        u"""[cua_dm_2]\n"""
+        u"""Member => Local/217\n"""
+        u"""Member => Local/218\n"""
+        u"""Member => Local/206\n"""
+        u"""[cua_dm_3]\n"""
+        u"""Member => Local/207\n"""
+        u"""Member => Local/222\n"""
+        u"""Member => Local/216\n"""
+        u"""[cua_dm_4]\n"""
+        u"""Member => Local/204\n"""
+        u"""Member => Local/207\n"""
+        u"""Member => Local/203\n"""
+        u"""[cua_dx_1]\n"""
+        u"""Member => Local/214\n"""
+        u"""Member => Local/224\n"""
+        u"""Member => Local/205\n"""
+        u"""[cua_dx_2]\n"""
+        u"""Member => Local/224\n"""
+        u"""Member => Local/214\n"""
+        u"""Member => Local/223\n"""
+        u"""[cua_dx_3]\n"""
+        u"""Member => Local/203\n"""
+        u"""Member => Local/202\n"""
+        u"""Member => Local/218\n"""
+        u"""[cua_dx_4]\n"""
+        u"""Member => Local/204\n"""
+        u"""Member => Local/207\n"""
+        u"""Member => Local/218\n"""
+        u"""[cua_dj_1]\n"""
+        u"""Member => Local/202\n"""
+        u"""Member => Local/210\n"""
+        u"""Member => Local/223\n"""
+        u"""[cua_dj_2]\n"""
+        u"""Member => Local/215\n"""
+        u"""Member => Local/207\n"""
+        u"""Member => Local/210\n"""
+        u"""[cua_dj_3]\n"""
+        u"""Member => Local/216\n"""
+        u"""Member => Local/203\n"""
+        u"""Member => Local/208\n"""
+        u"""[cua_dj_4]\n"""
+        u"""Member => Local/208\n"""
+        u"""Member => Local/216\n"""
+        u"""Member => Local/203\n"""
+        u"""[cua_dv_1]\n"""
+        u"""Member => Local/206\n"""
+        u"""Member => Local/218\n"""
+        u"""Member => Local/202\n"""
+        u"""[cua_dv_2]\n"""
+        u"""Member => Local/218\n"""
+        u"""Member => Local/215\n"""
+        u"""Member => Local/202\n"""
+        u"""[cua_dv_3]\n"""
+        u"""Member => Local/222\n"""
+        u"""Member => Local/205\n"""
+        u"""Member => Local/210\n"""
+        u"""[cua_dv_4]\n"""
+        u"""Member => Local/210\n"""
+        u"""Member => Local/223\n"""
+        u"""Member => Local/214\n"""
+       )
 if __name__ == "__main__":
 
     if '--accept' in sys.argv:

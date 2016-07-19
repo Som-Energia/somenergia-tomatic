@@ -176,7 +176,7 @@ class HtmlGen(object):
                 r+=u"[cua_{}_{}]\n".format(
                     d,t)
                 for m in tt[d][t]:
-                    r+=(u"Member => Agent/{}\n"
+                    r+=(u"Member => Local/{}\n"
                         ).format(ext[m])
         return r
 
