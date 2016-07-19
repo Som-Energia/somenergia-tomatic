@@ -1717,8 +1717,6 @@ class ScheduleHours_Test(unittest.TestCase):
           dl:
             1:
             - ana
-            - jordi
-            - pere
         hores:
         - 09:00
         - '10:15'
@@ -1729,20 +1727,15 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 98bdc0
           jordi: ff9999
         extensions:
-          pere: 224
           ana: 217
-          jordi: 210
         setmana: 2016-07-25
         companys:
-        - pere
         - ana
-        - jordi""")
+        """)
        )
        self.assertMultiLineEqual(h.asteriskParse(),
         u"""[cua_dl_1]\n"""
         u"""Member => Agent/217\n"""
-        u"""Member => Agent/210\n"""
-        u"""Member => Agent/224\n"""
        )
         
 if __name__ == "__main__":
