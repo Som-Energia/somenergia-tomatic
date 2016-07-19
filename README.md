@@ -66,3 +66,64 @@ Create a link named 'certificate.json' pointing to the actual certificate.
 
 
 
+
+
+
+
+## Development notes
+
+
+### PBX config reload policy
+
+Web modifies a schedule, what to do?
+
+- Modified hours belong to next weeks
+    - No action required
+- Modified hours is for the next days
+    - Schedule a reload at noon.
+- Modified hours belong to the current day
+    - A reload is done imnediatelly
+
+### Web interface API
+
+- currentQueue
+    - nombres
+    - estados
+    - extensiones
+- pauseQueueExtension(extension, bool isPaused)
+- addQueueExtension(extension)
+- extensions()
+    - All extensions able to be at phone
+- schedulings()
+    - List of weeks with schedule
+- schedule(week)
+- changeScheduleSlot(d,h,p,extension)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
