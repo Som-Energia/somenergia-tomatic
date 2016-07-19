@@ -1710,7 +1710,41 @@ class ScheduleHours_Test(unittest.TestCase):
        )
        self.b2bdatapath = "testcases"
        self.assertB2BEqual(h.htmlParse().encode('utf-8'))
-
+    def test_asteriskParse_oneTurnOneAgent(self):
+       self.maxDiff = None
+       h = HtmlGenFromYaml(self.ns("""\
+        timetable:
+          dl:
+            1:
+            - ana
+            - jordi
+            - pere
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          pere: 224
+          ana: 217
+          jordi: 210
+        setmana: 2016-07-25
+        companys:
+        - pere
+        - ana
+        - jordi""")
+       )
+       self.assertMultiLineEqual(h.asteriskParse(),
+        u"""[cua_dl_1]\n"""
+        u"""Member => Agent/217\n"""
+        u"""Member => Agent/210\n"""
+        u"""Member => Agent/224\n"""
+       )
+        
 if __name__ == "__main__":
 
     if '--accept' in sys.argv:

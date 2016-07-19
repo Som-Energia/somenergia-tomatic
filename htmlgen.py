@@ -167,6 +167,19 @@ class HtmlGen(object):
             extensions = extensions_html.read()
         return extensions
 
+    def asteriskParse(self):
+        r = ""
+        tt = self.yaml.timetable
+        ext = self.yaml.extensions
+        for d in tt.keys():
+            for t in tt[d].keys():
+                r+=u"[cua_{}_{}]\n".format(
+                    d,t)
+                for m in tt[d][t]:
+                    r+=(u"Member => Agent/{}\n"
+                        ).format(ext[m])
+        return r
+
 class HtmlGenFromYaml(HtmlGen):
     def __init__(self, yaml):
         self.yaml = yaml
