@@ -168,15 +168,28 @@ class HtmlGen(object):
         return extensions
 
     def asteriskParse(self):
-        r = ""
+        header = (u"""music=default\n"""
+                  u"""strategy=rrmemory\n"""
+                  u"""eventwhencalled=yes\n"""
+                  u"""timeout=15\n"""
+                  u"""retry=1\n"""
+                  u"""wrapuptime=0\n"""
+                  u"""maxlen = 0\n"""
+                  u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+                  u"""announce-frequency = 0\n"""
+                  u"""announce-holdtime = no\n"""
+                  u"""announce-position =no\n"""
+                  u"""context = bustia_veu\n""")
+        r = u""
         tt = self.yaml.timetable
         ext = self.yaml.extensions
         for d in tt.keys():
             for t in tt[d].keys():
-                r+=u"[cua_{}_{}]\n".format(
+                r+=u"[entrada_cua_{}_{}]\n".format(
                     d,t)
+                r+=header
                 for m in tt[d][t]:
-                    r+=(u"Member => Local/{}\n"
+                    r+=(u"member = SIP/{}\n"
                         ).format(ext[m])
         return r
 
