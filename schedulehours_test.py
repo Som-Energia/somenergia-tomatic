@@ -7,7 +7,12 @@ from parse import parse
 import random
 from htmlgen import HtmlGenFromYaml, HtmlGenFromSolution
 import datetime
-
+import asterisk
+config=None
+try:
+    import config
+except ImportError:
+    pass
 
 class ScheduleHours_Test(unittest.TestCase):
     def eqOrdDict(self, dict1,dict2, 
@@ -1915,6 +1920,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -1931,6 +1937,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -1947,6 +1954,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -1963,6 +1971,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -1979,6 +1988,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -1995,6 +2005,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -2011,6 +2022,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -2027,6 +2039,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -2043,6 +2056,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -2059,6 +2073,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -2075,6 +2090,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -2091,6 +2107,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -2107,6 +2124,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -2123,6 +2141,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -2139,6 +2158,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -2155,6 +2175,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -2171,6 +2192,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -2187,6 +2209,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -2203,6 +2226,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -2219,6 +2243,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""wrapuptime=0\n"""
         u"""maxlen = 0\n"""
         u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
@@ -2227,6 +2252,40 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""member = SIP/223\n"""
         u"""member = SIP/214\n"""
        )
+    @unittest.skipIf(not config, "depends on pbx")
+    def test_asteriskSend_oneTurnOneSip(self):
+       self.maxDiff = None
+       h = HtmlGenFromYaml(self.ns("""\
+        timetable:
+          dl:
+            1:
+            - ana
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+        setmana: 2016-07-25
+        companys:
+        - ana
+        """)
+       )
+       asterisk_conf = h.asteriskParse()
+       pbx = asterisk.Pbx(**config.pbx)
+       pbx.sendConfNow(asterisk_conf)
+       queues = pbx._pbx.Queues()
+       self.assertIn('entrada_cua_dl_1',queues)
+       queue = queues['entrada_cua_dl_1']
+       self.assertIn('members',queue)
+       members = queue['members']
+       self.assertIn('SIP/217',members)
+       
 if __name__ == "__main__":
 
     if '--accept' in sys.argv:

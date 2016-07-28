@@ -176,6 +176,7 @@ class HtmlGen(object):
                   u"""wrapuptime=0\n"""
                   u"""maxlen = 0\n"""
                   u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+                  u"""Periodic-announce-frequency = 15\n"""
                   u"""announce-frequency = 0\n"""
                   u"""announce-holdtime = no\n"""
                   u"""announce-position =no\n"""
