@@ -45,6 +45,22 @@ class ScheduleHours_Test(unittest.TestCase):
         return ns.loads(content)
     def setUp(self):
         self.addTypeEqualityFunc(ns,self.eqOrdDict)
+    def tearDown(self):
+        if config:
+            from paramiko import SSHClient,AutoAddPolicy
+            from Asterisk.Manager import Manager
+            sshconfig = config.pbx['scp']
+            with SSHClient() as ssh:
+                ssh.set_missing_host_key_policy(AutoAddPolicy())
+                ssh.connect(sshconfig['pbxhost'],
+                    username=sshconfig['username'],
+                    password=sshconfig['password'])
+                path= "/".join(sshconfig['path'].split("/")[:-1])
+                file = sshconfig['path'].split("/")[-1]
+                ssh.exec_command('cd {}; git checkout {}'.format(path,file))
+            pbx = Manager(**config.pbx['pbx'])
+            pbx.Command('reload')
+
     def test_yamlSolution_oneholiday(self):
         h=HtmlGenFromSolution(
             config=self.ns("""\
@@ -2286,6 +2302,113 @@ class ScheduleHours_Test(unittest.TestCase):
        members = queue['members']
        self.assertIn('SIP/217',members)
        
+    @unittest.skipIf(not config, "depends on pbx")
+    def test_asteriskSend_oneTurnManySip(self):
+       self.maxDiff = None
+       h = HtmlGenFromYaml(self.ns("""\
+        timetable:
+          dl:
+            1:
+            - ana
+            - jordi
+            - pere
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          jordi: 210
+          pere: 224
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        """)
+       )
+       asterisk_conf = h.asteriskParse()
+       pbx = asterisk.Pbx(**config.pbx)
+       pbx.sendConfNow(asterisk_conf)
+       queues = pbx._pbx.Queues()
+       self.assertIn('entrada_cua_dl_1',queues)
+       queue = queues['entrada_cua_dl_1']
+       self.assertIn('members',queue)
+       members = queue['members']
+       self.assertIn('SIP/217',members)
+       self.assertIn('SIP/210',members)
+       self.assertIn('SIP/224',members)
+    
+    @unittest.skipIf(not config, "depends on pbx")
+    def test_asteriskSend_manyTurnManySip(self):
+       self.maxDiff = None
+       h = HtmlGenFromYaml(self.ns("""\
+        timetable:
+          dl:
+            1:
+            - ana
+            - jordi
+            - pere
+            2:
+            - pere
+            - jordi
+          dm:
+            1:
+            - jordi
+            - ana
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          jordi: 210
+          pere: 224
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        """)
+       )
+       asterisk_conf = h.asteriskParse()
+       pbx = asterisk.Pbx(**config.pbx)
+       pbx.sendConfNow(asterisk_conf)
+       queues = pbx._pbx.Queues()
+       self.assertIn('entrada_cua_dl_1',queues)
+       queue = queues['entrada_cua_dl_1']
+       self.assertIn('members',queue)
+       members = queue['members']
+       self.assertIn('SIP/217',members)
+       self.assertIn('SIP/210',members)
+       self.assertIn('SIP/224',members)
+       self.assertIn('entrada_cua_dl_2',queues)
+       queue = queues['entrada_cua_dl_2']
+       self.assertIn('members',queue)
+       members = queue['members']
+       self.assertIn('SIP/210',members)
+       self.assertIn('SIP/224',members)
+       self.assertIn('entrada_cua_dm_1',queues)
+       queue = queues['entrada_cua_dm_1']
+       self.assertIn('members',queue)
+       members = queue['members']
+       self.assertIn('SIP/210',members)
+       self.assertIn('SIP/217',members)
+
 if __name__ == "__main__":
 
     if '--accept' in sys.argv:
