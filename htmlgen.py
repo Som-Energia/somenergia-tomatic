@@ -208,7 +208,6 @@ class HtmlGenFromSolution(HtmlGen):
             today = dateModule.today()
             return today + timedelta(days=7-today.weekday())
         # take the monday of the week including that date
-        #givenDate = datetime.datetime.strptime(date,"%Y-%m-%d").date()
         return date - timedelta(days=date.weekday())
 
     def getYaml(self):
@@ -237,6 +236,4 @@ class HtmlGenFromSolution(HtmlGen):
         y['setmana']=self.iniciSetmana(date)
         y['noms']=config.noms
         y['companys']=companys
-        #with open("graella-"+str(iniciSetmana())+".yaml",'w') as output:
-        #    output.write(y.dump().decode('utf-8'))
         self.yaml=y
