@@ -8,11 +8,18 @@ import random
 from htmlgen import HtmlGenFromYaml, HtmlGenFromSolution
 import datetime
 import asterisk
+from paramiko import SSHClient,AutoAddPolicy
+from Asterisk.Manager import Manager
 config=None
 try:
     import config
 except ImportError:
     pass
+
+class PbxMockup(object):
+    def __init__(self, queues):
+        self._queues = queues
+
 
 class ScheduleHours_Test(unittest.TestCase):
     def eqOrdDict(self, dict1,dict2, 
@@ -47,8 +54,6 @@ class ScheduleHours_Test(unittest.TestCase):
         self.addTypeEqualityFunc(ns,self.eqOrdDict)
     def tearDown(self):
         if config:
-            from paramiko import SSHClient,AutoAddPolicy
-            from Asterisk.Manager import Manager
             sshconfig = config.pbx['scp']
             with SSHClient() as ssh:
                 ssh.set_missing_host_key_policy(AutoAddPolicy())
@@ -2293,7 +2298,7 @@ class ScheduleHours_Test(unittest.TestCase):
         """)
        )
        asterisk_conf = h.asteriskParse()
-       pbx = asterisk.Pbx(**config.pbx)
+       pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
        pbx.sendConfNow(asterisk_conf)
        queues = pbx._pbx.Queues()
        self.assertIn('entrada_cua_dl_1',queues)
@@ -2335,7 +2340,7 @@ class ScheduleHours_Test(unittest.TestCase):
         """)
        )
        asterisk_conf = h.asteriskParse()
-       pbx = asterisk.Pbx(**config.pbx)
+       pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
        pbx.sendConfNow(asterisk_conf)
        queues = pbx._pbx.Queues()
        self.assertIn('entrada_cua_dl_1',queues)
@@ -2386,7 +2391,7 @@ class ScheduleHours_Test(unittest.TestCase):
         """)
        )
        asterisk_conf = h.asteriskParse()
-       pbx = asterisk.Pbx(**config.pbx)
+       pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
        pbx.sendConfNow(asterisk_conf)
        queues = pbx._pbx.Queues()
        self.assertIn('entrada_cua_dl_1',queues)
@@ -2408,7 +2413,7 @@ class ScheduleHours_Test(unittest.TestCase):
        members = queue['members']
        self.assertIn('SIP/210',members)
        self.assertIn('SIP/217',members)
-
+    
 if __name__ == "__main__":
 
     if '--accept' in sys.argv:

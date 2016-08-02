@@ -6,9 +6,11 @@ from tempfile import NamedTemporaryFile as mktmpfile
 
 class Pbx(object):
 
-    def __init__(self,**config):
-        self._pbx = Manager(**config['pbx'])
-        self._sshconfig = config['scp']
+    def __init__(self,pbx,sshconfig):
+        #self._pbx = Manager(**config['pbx'])
+        self._pbx = pbx
+        #self._sshconfig = config['scp']
+        self._sshconfig = sshconfig
 
     def sendConfNow(self, conf):
         with SSHClient() as ssh:
