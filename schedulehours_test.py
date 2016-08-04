@@ -5,7 +5,7 @@ import b2btest
 import sys
 from parse import parse
 import random
-from htmlgen import HtmlGenFromYaml, HtmlGenFromSolution
+from htmlgen import HtmlGenFromYaml, HtmlGenFromSolution, HtmlGenFromAsterisk
 import datetime
 import asterisk
 from paramiko import SSHClient,AutoAddPolicy
@@ -2300,7 +2300,7 @@ class ScheduleHours_Test(unittest.TestCase):
        asterisk_conf = h.asteriskParse()
        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
        pbx.sendConfNow(asterisk_conf)
-       queues = pbx._pbx.Queues()
+       queues = pbx.receiveConf()
        self.assertIn('entrada_cua_dl_1',queues)
        queue = queues['entrada_cua_dl_1']
        self.assertIn('members',queue)
@@ -2342,7 +2342,7 @@ class ScheduleHours_Test(unittest.TestCase):
        asterisk_conf = h.asteriskParse()
        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
        pbx.sendConfNow(asterisk_conf)
-       queues = pbx._pbx.Queues()
+       queues = pbx.receiveConf()
        self.assertIn('entrada_cua_dl_1',queues)
        queue = queues['entrada_cua_dl_1']
        self.assertIn('members',queue)
@@ -2393,7 +2393,7 @@ class ScheduleHours_Test(unittest.TestCase):
        asterisk_conf = h.asteriskParse()
        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
        pbx.sendConfNow(asterisk_conf)
-       queues = pbx._pbx.Queues()
+       queues = pbx.receiveConf()
        self.assertIn('entrada_cua_dl_1',queues)
        queue = queues['entrada_cua_dl_1']
        self.assertIn('members',queue)
@@ -2414,6 +2414,50 @@ class ScheduleHours_Test(unittest.TestCase):
        self.assertIn('SIP/210',members)
        self.assertIn('SIP/217',members)
     
+    @unittest.skipIf(not config, "depends on pbx")
+    def test_asteriskReceive_oneTurnOneSip(self):
+       self.maxDiff = None
+       yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        """
+       h = HtmlGenFromYaml(self.ns(yaml))
+       asterisk_conf = h.asteriskParse()
+       pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+       pbx.sendConfNow(asterisk_conf)
+       h_asterisk = HtmlGenFromAsterisk(h.getYaml(),pbx.receiveConf())
+       h_asterisk_yaml = h_asterisk.getYaml()
+       self.assertIn('timetable',h_asterisk_yaml)
+       self.assertIn('dl',h_asterisk_yaml.timetable)
+       self.assertIn(1,h_asterisk_yaml.timetable.dl)
+       self.assertEqual(
+           set(h_asterisk.getYaml().timetable.dl[1]), 
+           set(self.ns(yaml).timetable.dl[1])
+       )
+
+
 if __name__ == "__main__":
 
     if '--accept' in sys.argv:

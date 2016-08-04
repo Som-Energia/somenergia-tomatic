@@ -24,3 +24,6 @@ class Pbx(object):
                 tmpConfFile = f.name
             scp.put(tmpConfFile,self._sshconfig['path'])
         self._pbx.Command('reload')
+    
+    def receiveConf(self):
+        return self._pbx.Queues()

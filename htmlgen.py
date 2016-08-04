@@ -194,9 +194,14 @@ class HtmlGen(object):
                         ).format(ext[m])
         return r
 
+
+    def getYaml(self):
+        return self.yaml
+
 class HtmlGenFromYaml(HtmlGen):
     def __init__(self, yaml):
         self.yaml = yaml
+
         
 class HtmlGenFromSolution(HtmlGen):
 
@@ -210,8 +215,6 @@ class HtmlGenFromSolution(HtmlGen):
         # take the monday of the week including that date
         return date - timedelta(days=date.weekday())
 
-    def getYaml(self):
-        return self.yaml
     
     def __init__(self, config, solution, companys=None, date=None):
         y = ns(zip(
@@ -236,4 +239,45 @@ class HtmlGenFromSolution(HtmlGen):
         y['setmana']=self.iniciSetmana(date)
         y['noms']=config.noms
         y['companys']=companys
+        self.yaml=y
+
+class HtmlGenFromAsterisk(HtmlGenFromSolution):
+    # Only rrmemory policy queue is implemented
+#   # Because queues are not ordered yet.
+    
+    def __init__(self, yaml, asteriskConf):
+        asteriskQueues = {
+            (k.split('_')[-2], 
+                int(k.split('_')[-1])
+            ): asteriskConf[k]['members'].keys()
+            for k in asteriskConf.keys() 
+        }
+        extensions_inv = { extension : name for name, extension in yaml.extensions.items()}
+        solution_asterisk = {}
+        for q in asteriskQueues:
+            asteriskQueue = [extensions_inv[int(ext_sip.split('/')[1])] 
+                for ext_sip in asteriskQueues[q]]
+            for nTel, name in enumerate(asteriskQueue):
+                solution_asterisk[(q[0],q[1],nTel)]=name
+        tt_yaml = yaml.timetable
+        y= ns()
+        tt_asterisk = ns()
+        for day in { k[0] for k in solution_asterisk}:
+            tt_asterisk[day] = ns()
+            for turn in {k[1] for k in solution_asterisk if k[0]==day}:
+                tt_asterisk[day][turn] = []
+                for tel in {k[2] for k in solution_asterisk if k[0]==day and k[1]==turn}:
+                    tt_asterisk[day][turn].append(
+                        solution_asterisk.get(
+                            (day,
+                            turn,
+                            tel),'Error')
+                    )
+        y.timetable = tt_asterisk
+        y.hores = yaml.hores
+        y.torns = yaml.torns
+        y.colors = yaml.colors
+        y.extensions = yaml.extensions
+        y.setmana = yaml.setmana
+        y.companys = yaml.companys
         self.yaml=y
