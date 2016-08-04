@@ -118,6 +118,8 @@ class HtmlGen(object):
             u"""	border: 1pt solid black;\n"""
             u"""	height: 100%;\n"""
             u"""}\n"""
+            u""".paused { background-color"""
+            u""": #ffffff; }\n"""
             )
     def htmlSubHeader(self):
         return (u"""\n</style>\n</head>\n"""
