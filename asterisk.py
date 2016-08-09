@@ -24,6 +24,11 @@ class Pbx(object):
                 tmpConfFile = f.name
             scp.put(tmpConfFile,self._sshconfig['path'])
         self._pbx.Command('reload')
-    
+    def _pause(self, day, turn , sip, paused):
+        queue="entrada_cua_{day}_{turn}".format(day=day,turn=turn)
+        self._pbx.QueuePause(queue,"SIP/{}".format(sip),paused)
+        
+    def pause(self, day, turn, sip):
+        self._pause(day,turn,sip,True)
     def receiveConf(self):
         return self._pbx.Queues()

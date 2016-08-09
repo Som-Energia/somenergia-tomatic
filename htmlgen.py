@@ -254,20 +254,37 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
             ): asteriskConf[k]['members'].keys()
             for k in asteriskConf.keys() 
         }
+        asteriskPaused = {
+            (k.split('_')[-2], 
+                int(k.split('_')[-1])
+            ): [asterisk_sip for asterisk_sip in
+                asteriskConf[k]['members'].keys()
+                if asteriskConf[k]['members'][asterisk_sip]['Paused']=='1']
+            for k in asteriskConf.keys()
+        }
+
         extensions_inv = { extension : name for name, extension in yaml.extensions.items()}
         solution_asterisk = {}
+        solution_paused = {}
         for q in asteriskQueues:
             asteriskQueue = [extensions_inv[int(ext_sip.split('/')[1])] 
                 for ext_sip in asteriskQueues[q]]
             for nTel, name in enumerate(asteriskQueue):
                 solution_asterisk[(q[0],q[1],nTel)]=name
+        for q in asteriskPaused:
+            asteriskPausedSingle = [extensions_inv[int(ext_sip.split('/')[1])] 
+                for ext_sip in asteriskPaused[q]]
+            for nTel, name in enumerate(asteriskPausedSingle):
+                solution_paused[(q[0],q[1],nTel)]=name
         tt_yaml = yaml.timetable
-        y= ns()
+        paused = ns()
         tt_asterisk = ns()
         for day in { k[0] for k in solution_asterisk}:
             tt_asterisk[day] = ns()
+            paused[day] = ns()
             for turn in {k[1] for k in solution_asterisk if k[0]==day}:
                 tt_asterisk[day][turn] = []
+                paused[day][turn] = []
                 for tel in {k[2] for k in solution_asterisk if k[0]==day and k[1]==turn}:
                     tt_asterisk[day][turn].append(
                         solution_asterisk.get(
@@ -275,7 +292,15 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
                             turn,
                             tel),'Error')
                     )
+                    if (day,turn,tel) in solution_paused:
+                        paused[day][turn].append(
+                            solution_paused[
+                                (day,
+                                turn,
+                                tel)])
+        y = ns()
         y.timetable = tt_asterisk
+        y.paused = paused
         y.hores = yaml.hores
         y.torns = yaml.torns
         y.colors = yaml.colors
