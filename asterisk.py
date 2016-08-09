@@ -30,5 +30,9 @@ class Pbx(object):
         
     def pause(self, day, turn, sip):
         self._pause(day,turn,sip,True)
+    
+    def resume(self, day, turn, sip):
+        self._pause(day,turn,sip,False)
+    
     def receiveConf(self):
         return self._pbx.Queues()
