@@ -2674,6 +2674,123 @@ class ScheduleHours_Test(unittest.TestCase):
        self.assertIn(1,h_asterisk_yaml.paused.dl)
        self.assertEqual(h_asterisk_yaml.paused.dl[1],['pere']) 
 
+    def test_nameToExtension_oneSip(self):
+        yaml = """\
+            timetable:
+              dl:
+                1:
+                - ana
+            hores:
+            - 09:00
+            - '10:15'
+            torns:
+            - T1
+            colors:
+              ana: 98bdc0
+            extensions:
+              ana: 217
+            setmana: 2016-07-25
+            companys:
+            - ana
+            """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        self.assertEqual(h.nameToExtension('ana'),217)
+
+    def test_nameToExtension_manySip(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        self.assertEqual(h.nameToExtension('ana'),217)
+        
+    def test_extensionToName_oneSip(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        self.assertEqual(h.extensionToName(217),'ana')
+    def test_extensionToName_manySip(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        self.assertEqual(h.extensionToName(217),'ana')
+    
 if __name__ == "__main__":
 
     if '--accept' in sys.argv:

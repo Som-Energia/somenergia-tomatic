@@ -168,6 +168,13 @@ class HtmlGen(object):
         with open("extensions.html") as extensions_html:
             extensions = extensions_html.read()
         return extensions
+    
+    def nameToExtension(self, name):
+        return self.yaml.extensions[name]
+
+    def extensionToName(self, extension):
+        extensions_inv = { extension : name for name, extension in self.yaml.extensions.items()}
+        return extensions_inv[extension]
 
     def asteriskParse(self):
         header = (u"""music=default\n"""
