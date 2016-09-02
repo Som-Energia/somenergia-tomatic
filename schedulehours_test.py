@@ -44,6 +44,8 @@ class ScheduleHours_Test(unittest.TestCase):
                  if not self.eqOrdDict(dict1[key],dict2[key],msg=msg):
                     raise self.failureException(msg)
              else:
+                 if not key in dict2:
+                    raise self.failureException(msg+"\n\n"+("{} is not in the second element".format(dict1[key])))
                  if not dict1[key] == dict2[key]:
                     raise self.failureException(msg+"\n\n"+("{}!={}".format(dict1[key],dict2[key])))
          return True
@@ -2932,7 +2934,307 @@ class ScheduleHours_Test(unittest.TestCase):
                                 """)
                                         
         self.assertEqual(h.comparePaused(h_paused),difference)
+    
+    def test_comparePaused_oneDifference_changed(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        paused:
+          dl:
+            1:
+            - ana
+        """
+        yaml_paused="""\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        paused:
+          dl:
+            1:
+            - jordi
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        h_paused = HtmlGenFromYaml(self.ns(yaml_paused))
+        difference = self.ns("""\
+                                dl:
+                                  1:
+                                    ana:    removed
+                                    jordi:  added
+                                """)
+                                        
+        self.assertEqual(h.comparePaused(h_paused),difference)
 
+    def test_comparePaused_manyDifferences(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+          dm:
+            1:
+            - ana
+            - pere
+          dx:
+            2:
+            - pere
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        paused:
+          dl:
+            1:
+            - ana
+          dx:
+            2:
+            - pere
+        """
+        yaml_paused="""\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        paused:
+          dl:
+            1:
+            - ana
+          dm:
+            1:
+            - jordi
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        h_paused = HtmlGenFromYaml(self.ns(yaml_paused))
+        difference = self.ns("""\
+                                dx:
+                                  2:
+                                    pere:  removed
+                                dm:
+                                  1:
+                                    jordi: added
+                                """)
+                                        
+        self.assertEqual(h.comparePaused(h_paused),difference)
+    
+    def test_compareDynamic_oneDifference_added(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        """
+        yaml_dynamic="""\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        dynamic:
+        - ana
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        h_dynamic = HtmlGenFromYaml(self.ns(yaml_dynamic))
+        difference = self.ns("""\
+                                ana: added
+                                """)
+                                        
+        self.assertEqual(h.compareDynamic(h_dynamic),difference)
+    
+    def test_compareDynamic_oneDifference_removed(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        dynamic:
+        - jordi
+        """
+        yaml_dynamic="""\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        h_dynamic = HtmlGenFromYaml(self.ns(yaml_dynamic))
+        difference = self.ns("""\
+                                jordi: removed
+                                """)
+                                        
+        self.assertEqual(h.compareDynamic(h_dynamic),difference)
 if __name__ == "__main__":
 
     if '--accept' in sys.argv:

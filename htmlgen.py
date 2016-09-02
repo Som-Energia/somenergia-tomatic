@@ -210,32 +210,75 @@ class HtmlGen(object):
 class HtmlGenFromYaml(HtmlGen):
     def __init__(self, yaml):
         self.yaml = yaml
-    @staticmethod
-    def _compareYaml(orig,new):
-        for day in response:
-            for turn in response[day]:
-                oldTurn = response[day][turn]
-                response[day][turn]=ns()
-                for name in oldTurn:
-                    response[day][turn][name] = msg
-        return response
-
         
     def comparePaused(self, other):
-        if "paused" in self.yaml and "paused" not in other.yaml:
-            msg = "removed"
-            response = self.yaml.paused
-        elif "paused" in other.yaml:
-            msg = "added"
-            response = other.yaml.paused
-        for day in response:
-            for turn in response[day]:
-                oldTurn = response[day][turn]
-                response[day][turn]=ns()
-                for name in oldTurn:
-                    response[day][turn][name] = msg
-        return response
+        def getPaused(yaml,day,turn):
+            if ("paused" 
+                in yaml and
+                day
+                in yaml.paused and
+                turn
+                in yaml.paused[day]):
+                return set(
+                    yaml.paused[day][turn])
+            else:
+                return set()
             
+        added = set()
+        removed = set()
+        for day in self.yaml.timetable:
+            for turn in self.yaml.timetable[day]:
+                selfPaused = getPaused(
+                    self.yaml,day,turn)
+                otherPaused = getPaused(
+                    other.yaml,day,turn)
+                removedInTurn = selfPaused - otherPaused
+                addedInTurn = otherPaused - selfPaused
+                for name in addedInTurn:
+                    added.add((day,turn,name))
+                for name in removedInTurn:
+                    removed.add((day,turn,name))
+        response = ns()
+        for day in self.yaml.timetable:
+            for turn in self.yaml.timetable[day]:
+                for name in self.yaml.companys:
+                    if (day,turn,name) in added:
+                       if day not in response:
+                           response[day]=ns()
+                       if turn not in response[
+                           day]:
+                           response[day][turn]=ns()
+                       response[day][turn][name]="added"
+                    if (day,turn,name) in removed:
+                       if day not in response:
+                           response[day]=ns()
+                       if turn not in response[
+                           day]:
+                           response[day][turn]=ns()
+                       response[day][turn][name]="removed"
+
+        return response
+    def compareDynamic(self, other):
+        response = ns()
+        if "dynamic" not in other.yaml:
+            added = set()
+            removed = set(self.yaml.dynamic)
+        elif "dynamic" not in self.yaml:
+            removed = set()
+            added = set(other.yaml.dynamic)
+        else:
+            added = set(other.yaml.dynamic
+                ) - set(self.yaml.dynamic)
+            removed = set(self.yaml.dynamic
+                ) - set(other.yaml.dynamic)
+        for name in self.yaml.companys:
+            if name in added:
+                response[name]="added"
+        for name in self.yaml.companys:
+            if name in removed:
+                response[name]="removed"
+        return response
+        
 class HtmlGenFromSolution(HtmlGen):
 
     def iniciSetmana(self, date=None):
