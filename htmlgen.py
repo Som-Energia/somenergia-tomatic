@@ -210,8 +210,19 @@ class HtmlGen(object):
 class HtmlGenFromYaml(HtmlGen):
     def __init__(self, yaml):
         self.yaml = yaml
-
-        
+    def comparePaused(self, other):
+        if "paused" in self.yaml:
+            response = None # Not implemented yet
+        elif "paused" in other.yaml:
+            response = other.yaml.paused
+            for day in response:
+                for turn in response[day]:
+                    oldTurn = response[day][turn]
+                    response[day][turn]=ns()
+                    for name in oldTurn:
+                        response[day][turn][name] = "added"
+        return response
+            
 class HtmlGenFromSolution(HtmlGen):
 
     def iniciSetmana(self, date=None):
