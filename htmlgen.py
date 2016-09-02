@@ -210,23 +210,30 @@ class HtmlGen(object):
 class HtmlGenFromYaml(HtmlGen):
     def __init__(self, yaml):
         self.yaml = yaml
+    @staticmethod
+    def _compareYaml(orig,new):
+        for day in response:
+            for turn in response[day]:
+                oldTurn = response[day][turn]
+                response[day][turn]=ns()
+                for name in oldTurn:
+                    response[day][turn][name] = msg
+        return response
+
+        
     def comparePaused(self, other):
         if "paused" in self.yaml and "paused" not in other.yaml:
+            msg = "removed"
             response = self.yaml.paused
-            for day in response:
-                for turn in response[day]:
-                    oldTurn = response[day][turn]
-                    response[day][turn]=ns()
-                    for name in oldTurn:
-                        response[day][turn][name] = "removed"
         elif "paused" in other.yaml:
+            msg = "added"
             response = other.yaml.paused
-            for day in response:
-                for turn in response[day]:
-                    oldTurn = response[day][turn]
-                    response[day][turn]=ns()
-                    for name in oldTurn:
-                        response[day][turn][name] = "added"
+        for day in response:
+            for turn in response[day]:
+                oldTurn = response[day][turn]
+                response[day][turn]=ns()
+                for name in oldTurn:
+                    response[day][turn][name] = msg
         return response
             
 class HtmlGenFromSolution(HtmlGen):
