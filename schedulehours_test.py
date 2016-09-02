@@ -2790,7 +2790,8 @@ class ScheduleHours_Test(unittest.TestCase):
         """
         h = HtmlGenFromYaml(self.ns(yaml))
         self.assertEqual(h.extensionToName(217),'ana')
-    def test_comparePaused_oneDifference(self):
+
+    def test_comparePaused_oneDifference_added(self):
         yaml = """\
         timetable:
           dl:
@@ -2857,6 +2858,77 @@ class ScheduleHours_Test(unittest.TestCase):
                                 dl:
                                   1:
                                     ana:    added
+                                """)
+                                        
+        self.assertEqual(h.comparePaused(h_paused),difference)
+
+    def test_comparePaused_oneDifference_removed(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        paused:
+          dl:
+            1:
+            - ana
+        """
+        yaml_paused="""\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        h_paused = HtmlGenFromYaml(self.ns(yaml_paused))
+        difference = self.ns("""\
+                                dl:
+                                  1:
+                                    ana:    removed
                                 """)
                                         
         self.assertEqual(h.comparePaused(h_paused),difference)
