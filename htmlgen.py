@@ -248,14 +248,16 @@ class HtmlGenFromYaml(HtmlGen):
                        if turn not in response[
                            day]:
                            response[day][turn]=ns()
-                       response[day][turn][name]="added"
+                       ext = self.nameToExtension(name)
+                       response[day][turn][ext]="added"
                     if (day,turn,name) in removed:
                        if day not in response:
                            response[day]=ns()
                        if turn not in response[
                            day]:
                            response[day][turn]=ns()
-                       response[day][turn][name]="removed"
+                       ext = self.nameToExtension(name)
+                       response[day][turn][ext]="removed"
 
         return response
     def compareDynamic(self, other):
@@ -273,10 +275,12 @@ class HtmlGenFromYaml(HtmlGen):
                 ) - set(other.yaml.dynamic)
         for name in self.yaml.companys:
             if name in added:
-                response[name]="added"
+                ext = self.nameToExtension(name)
+                response[ext]="added"
         for name in self.yaml.companys:
             if name in removed:
-                response[name]="removed"
+                ext = self.nameToExtension(name)
+                response[ext]="removed"
         return response
         
 class HtmlGenFromSolution(HtmlGen):

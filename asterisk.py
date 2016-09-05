@@ -33,6 +33,22 @@ class Pbx(object):
     
     def resume(self, day, turn, sip):
         self._pause(day,turn,sip,False)
-    
+
+    def parsePause(self, diff):
+        for day in diff.keys():
+            for turn in diff[day]:
+                for ext in diff[day][turn]:
+                    if (diff[day][turn][ext]
+                        == "added"):
+                        self.pause(day,
+                            turn,
+                            ext)
+                    elif (diff[day][turn][name]
+                        == "resumed"):
+                        self.resume(day,
+                            turn,
+                            ext)
+
+                            
     def receiveConf(self):
         return self._pbx.Queues()

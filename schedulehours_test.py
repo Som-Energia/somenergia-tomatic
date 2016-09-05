@@ -2859,7 +2859,7 @@ class ScheduleHours_Test(unittest.TestCase):
         difference = self.ns("""\
                                 dl:
                                   1:
-                                    ana:    added
+                                    217:    added
                                 """)
                                         
         self.assertEqual(h.comparePaused(h_paused),difference)
@@ -2930,7 +2930,7 @@ class ScheduleHours_Test(unittest.TestCase):
         difference = self.ns("""\
                                 dl:
                                   1:
-                                    ana:    removed
+                                    217:    removed
                                 """)
                                         
         self.assertEqual(h.comparePaused(h_paused),difference)
@@ -3005,8 +3005,8 @@ class ScheduleHours_Test(unittest.TestCase):
         difference = self.ns("""\
                                 dl:
                                   1:
-                                    ana:    removed
-                                    jordi:  added
+                                    217:    removed
+                                    219:  added
                                 """)
                                         
         self.assertEqual(h.comparePaused(h_paused),difference)
@@ -3094,14 +3094,65 @@ class ScheduleHours_Test(unittest.TestCase):
         difference = self.ns("""\
                                 dx:
                                   2:
-                                    pere:  removed
+                                    218:  removed
                                 dm:
                                   1:
-                                    jordi: added
+                                    219: added
                                 """)
                                         
         self.assertEqual(h.comparePaused(h_paused),difference)
-    
+
+    @unittest.skipIf(not config, "depends on pbx")
+    def test_parsePause_onePaused(self):
+       yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+          dm:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        """
+       difference = self.ns("""\
+                                dm:
+                                  1:
+                                    219: added
+                                """)
+       h = HtmlGenFromYaml(self.ns(yaml))
+       asterisk_conf = h.asteriskParse()
+       pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+       pbx.sendConfNow(asterisk_conf)
+       pbx.parsePause(difference)
+       h_asterisk = HtmlGenFromAsterisk(h.getYaml(),pbx.receiveConf())
+       h_asterisk_yaml = h_asterisk.getYaml()
+       self.assertIn('paused',h_asterisk_yaml)
+       self.assertIn('dm',h_asterisk_yaml.paused)
+       self.assertIn(1,h_asterisk_yaml.paused.dm)
+       self.assertEqual(h_asterisk_yaml.paused.dm[1],['jordi']) 
     def test_compareDynamic_oneDifference_added(self):
         yaml = """\
         timetable:
@@ -3164,7 +3215,7 @@ class ScheduleHours_Test(unittest.TestCase):
         h = HtmlGenFromYaml(self.ns(yaml))
         h_dynamic = HtmlGenFromYaml(self.ns(yaml_dynamic))
         difference = self.ns("""\
-                                ana: added
+                                217: added
                                 """)
                                         
         self.assertEqual(h.compareDynamic(h_dynamic),difference)
@@ -3231,10 +3282,83 @@ class ScheduleHours_Test(unittest.TestCase):
         h = HtmlGenFromYaml(self.ns(yaml))
         h_dynamic = HtmlGenFromYaml(self.ns(yaml_dynamic))
         difference = self.ns("""\
-                                jordi: removed
+                                219: removed
                                 """)
                                         
         self.assertEqual(h.compareDynamic(h_dynamic),difference)
+    
+    def test_compareDynamic_manyDifferences(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        dynamic:
+        - jordi
+        - ana
+        """
+        yaml_dynamic="""\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        dynamic:
+        - jordi
+        - pere
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        h_dynamic = HtmlGenFromYaml(self.ns(yaml_dynamic))
+        difference = self.ns("""\
+                                217: removed
+                                218: added
+                                """)
+                                        
+        self.assertEqual(h.compareDynamic(h_dynamic),difference)
+
 if __name__ == "__main__":
 
     if '--accept' in sys.argv:
