@@ -41,6 +41,8 @@ class ScheduleHours_Test(unittest.TestCase):
                     dict1.keys(), dict2.keys()))
          for key in dict1.keys():
              if type(dict1[key]) is ns:
+                 if key not in dict2:
+                    raise self.failureException(msg+"\n\n"+("{} is not in the second element".format(dict1[key])))
                  if not self.eqOrdDict(dict1[key],dict2[key],msg=msg):
                     raise self.failureException(msg)
              else:
@@ -3007,6 +3009,156 @@ class ScheduleHours_Test(unittest.TestCase):
                                   1:
                                     217:    removed
                                     219:  added
+                                """)
+                                        
+        self.assertEqual(h.comparePaused(h_paused),difference)
+
+    def test_comparePaused_oneDifference_dynamic(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        paused:
+          dl:
+            1:
+            - ana
+        """
+        yaml_paused="""\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        paused:
+          dynamic:
+            - jordi
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        h_paused = HtmlGenFromYaml(self.ns(yaml_paused))
+        difference = self.ns("""\
+                                dl:
+                                    1:
+                                        217: removed
+                                dynamic:
+                                    219:  added
+                                """)
+                                        
+        self.assertEqual(h.comparePaused(h_paused),difference)
+    def test_comparePaused_oneDifference_dynamic(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        paused:
+          dynamic:
+            - pere
+            - ana
+        """
+        yaml_paused="""\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        paused:
+          dynamic:
+            - jordi
+            - ana
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        h_paused = HtmlGenFromYaml(self.ns(yaml_paused))
+        difference = self.ns("""\
+                                dynamic:
+                                    219: added
+                                    218: removed
                                 """)
                                         
         self.assertEqual(h.comparePaused(h_paused),difference)

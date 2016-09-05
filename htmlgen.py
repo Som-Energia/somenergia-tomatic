@@ -223,7 +223,15 @@ class HtmlGenFromYaml(HtmlGen):
                     yaml.paused[day][turn])
             else:
                 return set()
-            
+        def getDynamicPaused(yaml):
+            if ("paused" 
+                in yaml and
+                "dynamic"
+                in yaml.paused):
+                return set(
+                    yaml.paused.dynamic)
+            else:
+                return set()
         added = set()
         removed = set()
         for day in self.yaml.timetable:
@@ -238,7 +246,23 @@ class HtmlGenFromYaml(HtmlGen):
                     added.add((day,turn,name))
                 for name in removedInTurn:
                     removed.add((day,turn,name))
+        selfDynamicPaused = getDynamicPaused(
+            self.yaml)
+        otherDynamicPaused = getDynamicPaused(
+            other.yaml)
+        added_dynamic = otherDynamicPaused - selfDynamicPaused
+        removed_dynamic = selfDynamicPaused - otherDynamicPaused 
         response = ns()
+        if added_dynamic or removed_dynamic:
+            response.dynamic = ns()
+        for name in added_dynamic:
+            ext = self.nameToExtension(name)
+            response.dynamic[ext]="added"
+        
+        for name in removed_dynamic:
+            ext = self.nameToExtension(name)
+            response.dynamic[ext]="removed"
+
         for day in self.yaml.timetable:
             for turn in self.yaml.timetable[day]:
                 for name in self.yaml.companys:
