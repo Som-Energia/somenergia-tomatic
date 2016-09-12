@@ -89,13 +89,16 @@ extensions:
    joan:   3056
    ana:    3181
    victor: 3182
-   jordi:  3183 
+   jordi:  3183
+   lucia:  3184
+   vic:    3185
 noms: # Els que no només cal posar en majúscules
    silvia: Sílvia
    monica: Mònica
    tania: Tània
    cesar: César
    victor: Víctor
+   lucia: Lucía
 
 
 
