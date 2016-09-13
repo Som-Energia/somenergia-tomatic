@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 import unittest
+import datetime
 from yamlns import namespace as ns
 import b2btest
 import sys
 from parse import parse
 import random
-from htmlgen import HtmlGenFromYaml, HtmlGenFromSolution, HtmlGenFromAsterisk
+from htmlgen import HtmlGenFromYaml
+from htmlgen import HtmlGenFromSolution
+from htmlgen import HtmlGenFromAsterisk
 import datetime
 import asterisk
 from paramiko import SSHClient,AutoAddPolicy
@@ -3510,6 +3513,42 @@ class ScheduleHours_Test(unittest.TestCase):
                                 """)
                                         
         self.assertEqual(h.compareDynamic(h_dynamic),difference)
+    
+    def test_getCurrentQueue_getMonday(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        dynamic:
+        - jordi
+        - ana
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        day, _= h.getCurrentQueue(datetime.datetime(2016,9,12,10,0))
+        self.assertEqual(day,'dl')
 
 if __name__ == "__main__":
 

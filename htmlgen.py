@@ -203,7 +203,19 @@ class HtmlGen(object):
                         ).format(ext[m])
         return r
 
-
+    def getCurrentQueue(self,now):
+        dowInt = now.isoweekday()
+        dowDict = {1:'dl',
+               2:'dm',
+               3:'dx',
+               4:'dj',
+               5:'dv'
+               }
+        if dowInt not in dowDict:
+            raise Exception
+        else:
+            day = dowDict[dowInt]
+        return day,None
     def getYaml(self):
         return self.yaml
 
