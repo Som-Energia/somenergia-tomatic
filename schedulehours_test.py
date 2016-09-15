@@ -3586,6 +3586,162 @@ class ScheduleHours_Test(unittest.TestCase):
         _, turn= h.getCurrentQueue(datetime.datetime(2016,9,12,10,0))
         self.assertEqual(turn,1)
 
+    def test_getCurrentQueue_getSecondTurn(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+            2:
+            - jordi
+            - pere
+            - ana
+
+        hores:
+        - 09:00
+        - '10:15'
+        - '11:30'
+
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        dynamic:
+        - jordi
+        - ana
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        _, turn= h.getCurrentQueue(datetime.datetime(2016,9,12,11,29))
+        self.assertEqual(turn,2)
+    
+    def test_getCurrentQueue_getIntermediateTurn(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+            2:
+            - jordi
+            - pere
+            - ana
+          dm:
+            1:
+            - jordi
+            - ana
+            - pere
+            2:
+            - jordi
+            - pere
+            - ana
+            3:
+            - jordi
+            - pere
+            - ana
+
+        hores:
+        - 09:00
+        - '10:15'
+        - '11:30'
+        - '12:45'
+
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        dynamic:
+        - jordi
+        - ana
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        _, turn= h.getCurrentQueue(datetime.datetime(2016,9,13,11,29))
+        self.assertEqual(turn,2)
+    
+    def test_getCurrentQueue_getInvalidTurn(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+            2:
+            - jordi
+            - pere
+            - ana
+          dm:
+            1:
+            - jordi
+            - ana
+            - pere
+            2:
+            - jordi
+            - pere
+            - ana
+            3:
+            - jordi
+            - pere
+            - ana
+
+        hores:
+        - 09:00
+        - '10:15'
+        - '11:30'
+        - '12:45'
+
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        dynamic:
+        - jordi
+        - ana
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        with self.assertRaises(Exception):
+            h.getCurrentQueue(datetime.datetime(2016,9,13,7,29))
 if __name__ == "__main__":
 
     if '--accept' in sys.argv:

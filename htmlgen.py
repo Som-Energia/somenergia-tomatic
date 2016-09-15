@@ -13,14 +13,14 @@ class HtmlGen(object):
         lines = [str(h) for h in self.yaml.hores ]
         return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
 
+    def partialCoreTable(self,day,turn):
+        return "\n".join([
+                u"""<td class='{name}'>"""
+                u"""{properName}</td>""".format(
+                    name=name,
+                    properName=self.properName(name))
+                    for name in self.yaml.timetable[day][turn+1]])+"\n"
     def htmlTable(self):
-        def partialCoreTable(day,turn):
-            return "\n".join([
-                    u"""<td class='{name}'>"""
-                    u"""{properName}</td>""".format(
-                        name=name,
-                        properName=self.properName(name))
-                        for name in self.yaml.timetable[day][turn+1]])+"\n"
         headerDays=("""<tr>"""+""
                 "".join([
                     """<td></td><th colspan={colspan}>{day}</th>""".format(
@@ -39,7 +39,7 @@ class HtmlGen(object):
         coreTable=("</tr>\n".join([
                     """<tr><th>{period}</th>\n""".format(
                         period=period)+"<td>&nbsp;</td>\n".join(
-                            [partialCoreTable(day,turn) for day in self.yaml.timetable.keys()
+                            [self.partialCoreTable(day,turn) for day in self.yaml.timetable.keys()
                             ])
                      for turn,period in enumerate(self.llegeixHores())
                      ])+""
