@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import random
+import datetime
 from yamlns import namespace as ns
 
 class HtmlGen(object):
@@ -204,6 +205,7 @@ class HtmlGen(object):
         return r
 
     def getCurrentQueue(self,now):
+        # Supposes ordered "hores" list (less to greater)
         dowInt = now.isoweekday()
         dowDict = {1:'dl',
                2:'dm',
@@ -215,7 +217,23 @@ class HtmlGen(object):
             raise Exception
         else:
             day = dowDict[dowInt]
-        return day,None
+        parsedTimeIntervals = [
+            datetime.datetime(
+                now.year,
+                now.month,
+                now.day,
+                int(hour[0:2]),
+                int(hour[3:5])
+            )
+            for hour 
+            in self.yaml.hores]
+        if now < parsedTimeIntervals[0]:
+            raise Exception
+        for turn,hour in enumerate(parsedTimeIntervals[1:]):
+            if now < hour:
+                break
+        return day,turn+1
+        
     def getYaml(self):
         return self.yaml
 

@@ -3550,6 +3550,42 @@ class ScheduleHours_Test(unittest.TestCase):
         day, _= h.getCurrentQueue(datetime.datetime(2016,9,12,10,0))
         self.assertEqual(day,'dl')
 
+    def test_getCurrentQueue_getFirstTurn(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+        hores:
+        - 09:00
+        - '10:15'
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        dynamic:
+        - jordi
+        - ana
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        _, turn= h.getCurrentQueue(datetime.datetime(2016,9,12,10,0))
+        self.assertEqual(turn,1)
+
 if __name__ == "__main__":
 
     if '--accept' in sys.argv:
