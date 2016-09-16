@@ -20,6 +20,28 @@ class HtmlGen(object):
                     name=name,
                     properName=self.properName(name))
                     for name in self.yaml.timetable[day][turn+1]])+"\n"
+    def partialCurrentQueue(self,day,turn):
+        hours = ("<tr><th>"+""
+                ""+self.llegeixHores()[turn-1]+""
+                "</th>\n"
+                )
+        partialCoreTable = self.partialCoreTable(day,turn-1)
+        header=("""<table>\n"""
+                    """<tr>"""+""
+                    """<td></td><th colspan={colspan}>{day}</th>""".format(
+                        colspan=len(self.yaml.torns),
+                        day=day
+                        )+"</tr>\n"
+                   )
+        headerTlfnos=("""<tr>"""+("""<td></td>"""
+                ""+("".join([
+                             "<th>{}</th>".format(t) 
+                             for t in self.yaml.torns
+                             ])))*len(self.yaml.timetable.keys())+""
+                "</tr>\n")
+        footer= u"""</tr>\n</table>"""
+        return header+headerTlfnos+hours+partialCoreTable+footer
+    
     def htmlTable(self):
         headerDays=("""<tr>"""+""
                 "".join([

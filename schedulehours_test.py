@@ -3742,6 +3742,123 @@ class ScheduleHours_Test(unittest.TestCase):
         h = HtmlGenFromYaml(self.ns(yaml))
         with self.assertRaises(Exception):
             h.getCurrentQueue(datetime.datetime(2016,9,13,7,29))
+    
+    def test_partialCurrentQueue_getFirstTurn(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+
+        hores:
+        - 09:00
+        - '10:15'
+        
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
+
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        dynamic:
+        - jordi
+        - ana
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        self.assertEqual(h.partialCurrentQueue('dl',1),
+            (u"""<table>\n"""
+             u"""<tr><td></td><th colspan=3>dl"""
+             u"""</th></tr>\n"""
+             u"""<tr><td></td><th>T1</th>"""
+             u"""<th>T2</th><th>T3</th></tr>\n"""
+             u"""<tr><th>09:00-10:15</th>\n"""
+             u"""<td class='ana'>Ana</td>\n"""
+             u"""<td class='pere'>Pere</td>\n"""
+             u"""<td class='jordi'>Jordi</td>\n"""
+             u"""</tr>\n"""
+             u"""</table>"""
+             )
+        )
+    def test_partialCurrentQueue_getSecondTurn(self):
+        yaml = """\
+        timetable:
+          dl:
+            1:
+            - ana
+            - pere
+            - jordi
+            2:
+            - jordi
+            - pere
+            - ana
+        hores:
+        - 09:00
+        - '10:15'
+        - '11:30'
+        
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
+
+        torns:
+        - T1
+        - T2
+        - T3
+        colors:
+          pere: 8f928e
+          ana: 98bdc0
+          jordi: ff9999
+        extensions:
+          ana: 217
+          pere: 218
+          jordi: 219
+        setmana: 2016-07-25
+        companys:
+        - ana
+        - pere
+        - jordi
+        dynamic:
+        - jordi
+        - ana
+        """
+        h = HtmlGenFromYaml(self.ns(yaml))
+        self.assertEqual(h.partialCurrentQueue('dl',2),
+            (u"""<table>\n"""
+             u"""<tr><td></td><th colspan=3>dl"""
+             u"""</th></tr>\n"""
+             u"""<tr><td></td><th>T1</th>"""
+             u"""<th>T2</th><th>T3</th></tr>\n"""
+             u"""<tr><th>10:15-11:30</th>\n"""
+             u"""<td class='jordi'>Jordi</td>\n"""
+             u"""<td class='pere'>Pere</td>\n"""
+             u"""<td class='ana'>Ana</td>\n"""
+             u"""</tr>\n"""
+             u"""</table>"""
+             )
+        )
 if __name__ == "__main__":
 
     if '--accept' in sys.argv:
