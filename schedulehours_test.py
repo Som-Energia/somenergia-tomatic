@@ -10,14 +10,15 @@ from htmlgen import HtmlGenFromYaml
 from htmlgen import HtmlGenFromSolution
 from htmlgen import HtmlGenFromAsterisk
 import datetime
-import asterisk
-from paramiko import SSHClient,AutoAddPolicy
-from Asterisk.Manager import Manager
 config=None
 try:
     import config
 except ImportError:
     pass
+if config:
+    import asterisk
+    from paramiko import SSHClient,AutoAddPolicy
+    from Asterisk.Manager import Manager
 
 class PbxMockup(object):
     def __init__(self, queues):

@@ -37,7 +37,7 @@ class HtmlGen(object):
                 ""+("".join([
                              "<th>{}</th>".format(t) 
                              for t in self.yaml.torns
-                             ])))*len(self.yaml.timetable.keys())+""
+                             ])))+""#*len(self.yaml.timetable.keys())+""
                 "</tr>\n")
         footer= u"""</tr>\n</table>"""
         return header+headerTlfnos+hours+partialCoreTable+footer
