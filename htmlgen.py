@@ -4,6 +4,17 @@ import datetime
 from yamlns import namespace as ns
 
 class HtmlGen(object):
+    
+    def iniciSetmana(date=None):
+        from datetime import date as dateModule, timedelta
+        import datetime
+        if date is None:
+            # If no date provided, take the next monday
+            today = dateModule.today()
+            return today + timedelta(days=7-today.weekday())
+        # take the monday of the week including that date
+        return date - timedelta(days=date.weekday())
+    iniciSetmana=staticmethod(iniciSetmana)
 
     def properName(self,name):
         name = self.yaml.noms[name] if name in self.yaml.noms else name
@@ -28,8 +39,7 @@ class HtmlGen(object):
         partialCoreTable = self.partialCoreTable(day,turn-1)
         header=("""<table>\n"""
                     """<tr>"""+""
-                    """<td></td><th colspan={colspan}>{day}</th>""".format(
-                        colspan=len(self.yaml.torns),
+                    """<td></td><th colspan="100%">{day}</th>""".format(
                         day=day
                         )+"</tr>\n"
                    )
@@ -37,11 +47,36 @@ class HtmlGen(object):
                 ""+("".join([
                              "<th>{}</th>".format(t) 
                              for t in self.yaml.torns
-                             ])))+""#*len(self.yaml.timetable.keys())+""
+                             ])))+#*len(self.yaml.timetable.keys())+""
+                (u"<th>Cua dinàmica</th>" if "dynamic" in self.yaml else "")+
                 "</tr>\n")
         footer= u"""</tr>\n</table>"""
-        return header+headerTlfnos+hours+partialCoreTable+footer
-    
+        partialDynamicTable= self.partialDynamicTable() if "dynamic" in self.yaml else ""
+        return header+headerTlfnos+hours+partialCoreTable+partialDynamicTable+footer
+    def partialDynamicTable(self):
+        return "\n".join([
+                u"""<td class='{name}'>"""
+                u"""{properName}</td>""".format(
+                    name=name,
+                    properName=self.properName(name))
+                    for name in self.yaml.dynamic])+"\n"    
+    def htmlDynamicQueue(self):
+        header=(u'<table class="dynamicQueue">\n'
+                u'<thead>\n'
+                u'  <th colspan="100%">'
+                u'Cua dinàmica</th>\n'
+                u'</thead>\n'
+                u'<tbody>\n'
+        )
+        partialCoreDynamic = self.partialDynamicTable(
+            ) if "dynamic" in self.yaml else (""
+                "<td></td>")
+        footer=(u"</tbody>"
+                u"</table>"
+                )
+
+        
+        return header+partialCoreDynamic+footer
     def htmlTable(self):
         headerDays=("""<tr>"""+""
                 "".join([
@@ -131,7 +166,7 @@ class HtmlGen(object):
             u"""}\n"""
             u"""td:empty { border:0;}\n"""
             u"""td { padding: 1ex;}\n"""
-            u""".extensions { width: 60%; }\n"""
+            u""".extensions { width: 60%;}\n"""
             u""".extension {\n"""
             u"""	display: inline-block;\n"""
             u"""	padding: 1ex 0ex;\n"""
@@ -360,16 +395,6 @@ class HtmlGenFromYaml(HtmlGen):
         return response
         
 class HtmlGenFromSolution(HtmlGen):
-
-    def iniciSetmana(self, date=None):
-        from datetime import date as dateModule, timedelta
-        import datetime
-        if date is None:
-            # If no date provided, take the next monday
-            today = dateModule.today()
-            return today + timedelta(days=7-today.weekday())
-        # take the monday of the week including that date
-        return date - timedelta(days=date.weekday())
 
     
     def __init__(self, config, solution, companys=None, date=None):
