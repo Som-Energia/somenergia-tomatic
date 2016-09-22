@@ -1,12 +1,21 @@
 # -*- coding: utf-8 -*-
 from flask import Flask
-from htmlgen import HtmlGenFromYaml
+from htmlgen import HtmlGenFromYaml, HtmlGenFromAsterisk
 from datetime import datetime
 from yamlns import namespace as ns
-
+config=None
+try:
+    import config
+except ImportError:
+    pass
+if config:
+    import asterisk
+    from paramiko import SSHClient,AutoAddPolicy
+    from Asterisk.Manager import Manager
 hs = {}
 app = Flask(__name__)
 now = None
+pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
 
 def loadYaml(yaml):
     global hs
@@ -15,6 +24,9 @@ def loadYaml(yaml):
     setmana_underscore = week.replace("-","_")
     hs[setmana_underscore]=HtmlGenFromYaml(parsedYaml)
 
+def loadAsterisk(yaml):
+    global hs
+    print HtmlGenFromAsterisk(yaml,pbx.receiveConf()).getYaml()
 def setNow(year,month,day,hour,minute):
     global now
     now=datetime(year,month,day,hour,minute)

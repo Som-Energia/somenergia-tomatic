@@ -48,7 +48,7 @@ class HtmlGen(object):
                              "<th>{}</th>".format(t) 
                              for t in self.yaml.torns
                              ])))+#*len(self.yaml.timetable.keys())+""
-                (u"<th>Cua dinàmica</th>" if "dynamic" in self.yaml else "")+
+                (u'<th colspan="100%">Cua dinàmica</th>' if "dynamic" in self.yaml else "")+
                 "</tr>\n")
         footer= u"""</tr>\n</table>"""
         partialDynamicTable= self.partialDynamicTable() if "dynamic" in self.yaml else ""
@@ -60,23 +60,6 @@ class HtmlGen(object):
                     name=name,
                     properName=self.properName(name))
                     for name in self.yaml.dynamic])+"\n"    
-    def htmlDynamicQueue(self):
-        header=(u'<table class="dynamicQueue">\n'
-                u'<thead>\n'
-                u'  <th colspan="100%">'
-                u'Cua dinàmica</th>\n'
-                u'</thead>\n'
-                u'<tbody>\n'
-        )
-        partialCoreDynamic = self.partialDynamicTable(
-            ) if "dynamic" in self.yaml else (""
-                "<td></td>")
-        footer=(u"</tbody>"
-                u"</table>"
-                )
-
-        
-        return header+partialCoreDynamic+footer
     def htmlTable(self):
         headerDays=("""<tr>"""+""
                 "".join([
