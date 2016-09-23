@@ -13,6 +13,11 @@ if config:
     from paramiko import SSHClient,AutoAddPolicy
     from Asterisk.Manager import Manager
 app = Flask(__name__)
+startOfWeek = HtmlGenFromYaml.iniciSetmana(
+    datetime.now()
+)
+yaml = ns.load("templateTimetable.yaml")
+yaml.setmana = startOfWeek.strftime("%Y-%m-%d")
 
 def loadYaml(yaml):
     global hs
@@ -47,6 +52,7 @@ def index():
 
 @app.route('/getqueue/<setmana>/<hour>/<minute>')
 def get_queue(setmana,hour,minute):
+    loadAsterisk(yaml)
     year,month,day=(
         int(tok) 
         for tok 
@@ -69,12 +75,7 @@ def get_queue(setmana,hour,minute):
         h.htmlFooter()
     )
     return response
-startOfWeek = HtmlGenFromYaml.iniciSetmana(
-    datetime.now()
-)
 hs = {}
 now = None
 pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
-yaml = ns.load("templateTimetable.yaml")
-yaml.setmana = startOfWeek.strftime("%Y-%m-%d")
 loadAsterisk(yaml)
