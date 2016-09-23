@@ -6,6 +6,7 @@ import unittest
 import scheduleserver
 import sys
 from yamlns import namespace as ns
+from datetime import datetime
 config=None
 try:
     import config
@@ -380,9 +381,9 @@ class scheduleServerTest(unittest.TestCase):
         self.assertB2BEqual(rv.data)
 
     @unittest.skipIf(not config, "depends on pbx")
-    def test_receiveFromAsterisk(self):
+    def test_receiveFromAsterisk_firstTurn(self):
         yaml = ns.loads("""\
-                setmana: 2016-07-25
+                setmana: 2016-09-19
                 timetable:
                   dl:
                     1:
@@ -406,11 +407,27 @@ class scheduleServerTest(unittest.TestCase):
                 torns:
                 - T1
                 - T2
+                - T3
                 colors:
-                  ana:    '98bdc0'
-                  tania:  'c8abf4'
-                  monica: '7fada0'
-                  victor: 'ff3333'
+                   marc:   'fbe8bc'
+                   eduard: 'd8b9c5'
+                   pere:   '8f928e'
+                   david:  'ffd3ac'
+                   aleix:  'eed0eb'
+                   carles: 'c98e98'
+                   marta:  'eb9481'
+                   monica: '7fada0'
+                   yaiza:  '90cdb9'
+                   erola:  '8789c8'
+                   manel:  '88dfe3'
+                   tania:  'c8abf4'
+                   judit:  'e781e8'
+                   silvia: '8097fa'
+                   joan:   'fae080'
+                   ana:    '98bdc0'
+                   victor: 'ff3333'
+                   jordi: 'ff9999' 
+                   judith: 'b8aeed'
                 extensions:
                   marta:  206
                   monica: 216
@@ -438,17 +455,38 @@ class scheduleServerTest(unittest.TestCase):
                   cesar: César
                   victor: Víctor
                 companys:
-                - ana
-                - monica
-                - tania
-                - victor
+                  - marta  
+                  - monica 
+                  - manel  
+                  - erola  
+                  - yaiza  
+                  - eduard 
+                  - marc   
+                  - judit  
+                  - judith 
+                  - tania  
+                  - carles 
+                  - pere   
+                  - aleix  
+                  - david  
+                  - silvia 
+                  - joan   
+                  - ana    
+                  - victor 
+                  - jordi  
                 dynamic:
                 - ana
                 - monica
                 - tania
                 """
         )
-        scheduleserver.loadAsterisk(yaml)
+        scheduleserver.loadAsterisk(yaml,
+            date=datetime(2016,9,19,9,19))
+        self.b2bdatapath = "testcases"
+        rv = self.app.get('/getqueue/'
+        '2016_09_19/9/19')
+        self.assertB2BEqual(rv.data)
+
 if __name__ == "__main__":
 
     if '--accept' in sys.argv:

@@ -473,6 +473,7 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
         y = ns()
         y.timetable = tt_asterisk
         y.paused = paused
+        y.noms = yaml.noms
         y.hores = yaml.hores
         y.torns = yaml.torns
         y.colors = yaml.colors

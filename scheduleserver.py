@@ -24,9 +24,15 @@ def loadYaml(yaml):
     setmana_underscore = week.replace("-","_")
     hs[setmana_underscore]=HtmlGenFromYaml(parsedYaml)
 
-def loadAsterisk(yaml):
+def loadAsterisk(yaml,date=None):
     global hs
-    print HtmlGenFromAsterisk(yaml,pbx.receiveConf()).getYaml()
+    startOfWeek = HtmlGenFromYaml.iniciSetmana(
+        datetime.now() if not date else date
+    )
+    hs[startOfWeek.strftime("%Y_%m_%d")
+        ]=HtmlGenFromAsterisk(
+            yaml,pbx.receiveConf()
+        )
 def setNow(year,month,day,hour,minute):
     global now
     now=datetime(year,month,day,hour,minute)
