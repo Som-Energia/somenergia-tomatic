@@ -428,7 +428,9 @@ class scheduleServerTest(unittest.TestCase):
                    victor: 'ff3333'
                    jordi: 'ff9999' 
                    judith: 'b8aeed'
+                   cesar:  'fe9a2e'
                 extensions:
+                  cesar:  200
                   marta:  206
                   monica: 216
                   manel:  212
@@ -455,6 +457,7 @@ class scheduleServerTest(unittest.TestCase):
                   cesar: César
                   victor: Víctor
                 companys:
+                  - cesar
                   - marta  
                   - monica 
                   - manel  
@@ -535,7 +538,9 @@ class scheduleServerTest(unittest.TestCase):
                    victor: 'ff3333'
                    jordi: 'ff9999' 
                    judith: 'b8aeed'
+                   cesar:  'fe9a2e'
                 extensions:
+                  cesar:  200
                   marta:  206
                   monica: 216
                   manel:  212
@@ -581,6 +586,7 @@ class scheduleServerTest(unittest.TestCase):
                   - ana    
                   - victor 
                   - jordi  
+                  - cesar
                 dynamic:
                 - ana
                 - monica

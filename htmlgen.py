@@ -430,6 +430,10 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
             for k in asteriskConf.keys()
                 if 'dinamica' not in k
         }
+        asteriskDynamic = [ext
+            for ext 
+            in asteriskConf['entrada_dinamica']['members'].keys()
+        ]
 
         extensions_inv = { extension : name for name, extension in yaml.extensions.items()}
         solution_asterisk = {}
@@ -470,7 +474,14 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
                                 (day,
                                 turn,
                                 tel)])
+        dynamic = [
+            extensions_inv[
+                int(ext_sip.split('/')[1])]
+            for ext_sip 
+            in asteriskDynamic
+        ]
         y = ns()
+        y.dynamic = dynamic
         y.timetable = tt_asterisk
         y.paused = paused
         y.noms = yaml.noms
