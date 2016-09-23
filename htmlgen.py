@@ -406,9 +406,7 @@ class HtmlGenFromSolution(HtmlGen):
         self.yaml=y
 
 class HtmlGenFromAsterisk(HtmlGenFromSolution):
-    # Only rrmemory policy queue is implemented
-#   # Because queues are not ordered yet.
-    
+    # Only linear queues are implemented at the moment
     def __init__(self, yaml, asteriskConf):
         asteriskQueues = {
             (k.split('_')[-2], 
