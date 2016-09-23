@@ -31,7 +31,24 @@ class scheduleServerTest(unittest.TestCase):
                 torns:
                 - T1
                 colors:
-                  ana: 98bdc0
+                   marc:   'fbe8bc'
+                   eduard: 'd8b9c5'
+                   pere:   '8f928e'
+                   david:  'ffd3ac'
+                   aleix:  'eed0eb'
+                   carles: 'c98e98'
+                   marta:  'eb9481'
+                   monica: '7fada0'
+                   yaiza:  '90cdb9'
+                   erola:  '8789c8'
+                   manel:  '88dfe3'
+                   tania:  'c8abf4'
+                   judit:  'e781e8'
+                   silvia: '8097fa'
+                   joan:   'fae080'
+                   ana:    '98bdc0'
+                   victor: 'ff3333'
+                   jordi: 'ff9999' 
                 extensions:
                   ana: 217
                   pere: 218
@@ -72,7 +89,24 @@ class scheduleServerTest(unittest.TestCase):
                 torns:
                 - T1
                 colors:
-                  ana: 98bdc0
+                   marc:   'fbe8bc'
+                   eduard: 'd8b9c5'
+                   pere:   '8f928e'
+                   david:  'ffd3ac'
+                   aleix:  'eed0eb'
+                   carles: 'c98e98'
+                   marta:  'eb9481'
+                   monica: '7fada0'
+                   yaiza:  '90cdb9'
+                   erola:  '8789c8'
+                   manel:  '88dfe3'
+                   tania:  'c8abf4'
+                   judit:  'e781e8'
+                   silvia: '8097fa'
+                   joan:   'fae080'
+                   ana:    '98bdc0'
+                   victor: 'ff3333'
+                   jordi: 'ff9999' 
                 extensions:
                   ana: 217
                   pere: 218
@@ -106,10 +140,24 @@ class scheduleServerTest(unittest.TestCase):
                 torns:
                 - T1
                 colors:
-                  ana:    '98bdc0'
-                  tania:  'c8abf4'
-                  monica: '7fada0'
-                  victor: 'ff3333'
+                   marc:   'fbe8bc'
+                   eduard: 'd8b9c5'
+                   pere:   '8f928e'
+                   david:  'ffd3ac'
+                   aleix:  'eed0eb'
+                   carles: 'c98e98'
+                   marta:  'eb9481'
+                   monica: '7fada0'
+                   yaiza:  '90cdb9'
+                   erola:  '8789c8'
+                   manel:  '88dfe3'
+                   tania:  'c8abf4'
+                   judit:  'e781e8'
+                   silvia: '8097fa'
+                   joan:   'fae080'
+                   ana:    '98bdc0'
+                   victor: 'ff3333'
+                   jordi: 'ff9999' 
                 extensions:
                   ana: 217
                   pere: 218
@@ -364,8 +412,25 @@ class scheduleServerTest(unittest.TestCase):
                   monica: '7fada0'
                   victor: 'ff3333'
                 extensions:
-                  ana:   200
-                  tania: 204
+                  marta:  206
+                  monica: 216
+                  manel:  212
+                  erola:  213
+                  yaiza:  205
+                  eduard: 222
+                  marc:   203
+                  judit:  202
+                  judith: 211
+                  tania:  208
+                  carles: 223
+                  pere:   224
+                  aleix:  214
+                  david:  204
+                  silvia: 207
+                  joan:   215
+                  ana:    217
+                  victor: 218
+                  jordi:  210
                 noms: # Els que no només cal posar en majúscules
                   silvia: Sílvia
                   monica: Mònica

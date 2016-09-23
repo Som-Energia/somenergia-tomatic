@@ -413,8 +413,15 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
         asteriskQueues = {
             (k.split('_')[-2], 
                 int(k.split('_')[-1])
-            ): asteriskConf[k]['members'].keys()
+            ): [ (ext,asteriskConf[k]
+                    ['members'][ext]
+                    ['Penalty']
+                 )  for ext 
+                    in asteriskConf[k][
+                        'members'].keys()
+               ]
             for k in asteriskConf.keys() 
+                if 'dinamica' not in k
         }
         asteriskPaused = {
             (k.split('_')[-2], 
@@ -423,14 +430,19 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
                 asteriskConf[k]['members'].keys()
                 if asteriskConf[k]['members'][asterisk_sip]['Paused']=='1']
             for k in asteriskConf.keys()
+                if 'dinamica' not in k
         }
 
         extensions_inv = { extension : name for name, extension in yaml.extensions.items()}
         solution_asterisk = {}
         solution_paused = {}
         for q in asteriskQueues:
-            asteriskQueue = [extensions_inv[int(ext_sip.split('/')[1])] 
-                for ext_sip in asteriskQueues[q]]
+            asteriskQueue = [
+                extensions_inv[
+                    int(ext_sip.split('/')[1])]
+                for ext_sip,_ in sorted(
+                    asteriskQueues[q],
+                    key=lambda ext:ext[1])]
             for nTel, name in enumerate(asteriskQueue):
                 solution_asterisk[(q[0],q[1],nTel)]=name
         for q in asteriskPaused:
