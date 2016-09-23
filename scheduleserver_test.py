@@ -487,6 +487,113 @@ class scheduleServerTest(unittest.TestCase):
         '2016_09_19/9/19')
         self.assertB2BEqual(rv.data)
 
+    @unittest.skipIf(not config, "depends on pbx")
+    def test_receiveFromAsterisk_secondTurn(self):
+        yaml = ns.loads("""\
+                setmana: 2016-09-19
+                timetable:
+                  dl:
+                    1:
+                    - ana
+                    - tania
+                  dm:
+                    1:
+                    - tania
+                    - victor
+                    2:
+                    - victor
+                    - cesar
+                    3:
+                    - silvia
+                    - monica
+
+                hores:
+                - 09:00
+                - '10:15'
+                - '11:30'
+                torns:
+                - T1
+                - T2
+                - T3
+                colors:
+                   marc:   'fbe8bc'
+                   eduard: 'd8b9c5'
+                   pere:   '8f928e'
+                   david:  'ffd3ac'
+                   aleix:  'eed0eb'
+                   carles: 'c98e98'
+                   marta:  'eb9481'
+                   monica: '7fada0'
+                   yaiza:  '90cdb9'
+                   erola:  '8789c8'
+                   manel:  '88dfe3'
+                   tania:  'c8abf4'
+                   judit:  'e781e8'
+                   silvia: '8097fa'
+                   joan:   'fae080'
+                   ana:    '98bdc0'
+                   victor: 'ff3333'
+                   jordi: 'ff9999' 
+                   judith: 'b8aeed'
+                extensions:
+                  marta:  206
+                  monica: 216
+                  manel:  212
+                  erola:  213
+                  yaiza:  205
+                  eduard: 222
+                  marc:   203
+                  judit:  202
+                  judith: 211
+                  tania:  208
+                  carles: 223
+                  pere:   224
+                  aleix:  214
+                  david:  204
+                  silvia: 207
+                  joan:   215
+                  ana:    217
+                  victor: 218
+                  jordi:  210
+                noms: # Els que no només cal posar en majúscules
+                  silvia: Sílvia
+                  monica: Mònica
+                  tania: Tània
+                  cesar: César
+                  victor: Víctor
+                companys:
+                  - marta  
+                  - monica 
+                  - manel  
+                  - erola  
+                  - yaiza  
+                  - eduard 
+                  - marc   
+                  - judit  
+                  - judith 
+                  - tania  
+                  - carles 
+                  - pere   
+                  - aleix  
+                  - david  
+                  - silvia 
+                  - joan   
+                  - ana    
+                  - victor 
+                  - jordi  
+                dynamic:
+                - ana
+                - monica
+                - tania
+                """
+        )
+        scheduleserver.loadAsterisk(yaml,
+            date=datetime(2016,9,19,9,19))
+        self.b2bdatapath = "testcases"
+        rv = self.app.get('/getqueue/'
+        '2016_09_19/10/20')
+        self.assertB2BEqual(rv.data)
+
 if __name__ == "__main__":
 
     if '--accept' in sys.argv:
