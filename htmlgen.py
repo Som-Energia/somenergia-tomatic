@@ -219,7 +219,7 @@ class HtmlGen(object):
 
     def asteriskParse(self):
         header = (u"""music=default\n"""
-                  u"""strategy=rrmemory\n"""
+                  u"""strategy=linear\n"""
                   u"""eventwhencalled=yes\n"""
                   u"""timeout=15\n"""
                   u"""retry=1\n"""
@@ -239,9 +239,9 @@ class HtmlGen(object):
                 r+=u"[entrada_cua_{}_{}]\n".format(
                     d,t)
                 r+=header
-                for m in tt[d][t]:
-                    r+=(u"member = SIP/{}\n"
-                        ).format(ext[m])
+                for index,m in enumerate(tt[d][t]):
+                    r+=(u"member = SIP/{},{}\n"
+                        ).format(ext[m],index+1)
         return r
 
     def getCurrentQueue(self,now):
@@ -433,7 +433,7 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
         asteriskDynamic = [ext
             for ext 
             in asteriskConf['entrada_dinamica']['members'].keys()
-        ]
+        ] if 'entrada_dinamica' in asteriskConf else []
 
         extensions_inv = { extension : name for name, extension in yaml.extensions.items()}
         solution_asterisk = {}

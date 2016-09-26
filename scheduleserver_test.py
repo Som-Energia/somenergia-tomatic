@@ -383,7 +383,7 @@ class scheduleServerTest(unittest.TestCase):
     @unittest.skipIf(not config, "depends on pbx")
     def test_receiveFromAsterisk_firstTurn(self):
         yaml = ns.loads("""\
-                setmana: 2016-09-19
+                setmana: 2016-09-26
                 timetable:
                   dl:
                     1:
@@ -484,16 +484,16 @@ class scheduleServerTest(unittest.TestCase):
                 """
         )
         scheduleserver.loadAsterisk(yaml,
-            date=datetime(2016,9,19,9,19))
+            date=datetime(2016,9,19,9,26))
         self.b2bdatapath = "testcases"
         rv = self.app.get('/getqueue/'
-        '2016_09_19/9/19')
+        '2016_09_26/9/19')
         self.assertB2BEqual(rv.data)
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_receiveFromAsterisk_secondTurn(self):
         yaml = ns.loads("""\
-                setmana: 2016-09-19
+                setmana: 2016-09-26
                 timetable:
                   dl:
                     1:
@@ -594,10 +594,10 @@ class scheduleServerTest(unittest.TestCase):
                 """
         )
         scheduleserver.loadAsterisk(yaml,
-            date=datetime(2016,9,19,9,19))
+            date=datetime(2016,9,19,9,26))
         self.b2bdatapath = "testcases"
         rv = self.app.get('/getqueue/'
-        '2016_09_19/10/20')
+        '2016_09_26/10/20')
         self.assertB2BEqual(rv.data)
 
 if __name__ == "__main__":

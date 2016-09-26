@@ -1765,6 +1765,12 @@ class ScheduleHours_Test(unittest.TestCase):
         setmana: 2016-07-25
         companys:
         - ana
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
         """)
        )
        self.assertMultiLineEqual(h.asteriskParse(),
@@ -1942,7 +1948,7 @@ class ScheduleHours_Test(unittest.TestCase):
        self.assertMultiLineEqual(h.asteriskParse(),
         u"""[entrada_cua_dl_1]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -1954,12 +1960,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/217\n"""
-        u"""member = SIP/210\n"""
-        u"""member = SIP/224\n"""
+        u"""member = SIP/217,1\n"""
+        u"""member = SIP/210,2\n"""
+        u"""member = SIP/224,3\n"""
         u"""[entrada_cua_dl_2]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -1971,12 +1977,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/210\n"""
-        u"""member = SIP/214\n"""
-        u"""member = SIP/224\n"""
+        u"""member = SIP/210,1\n"""
+        u"""member = SIP/214,2\n"""
+        u"""member = SIP/224,3\n"""
         u"""[entrada_cua_dl_3]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -1988,12 +1994,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/223\n"""
-        u"""member = SIP/215\n"""
-        u"""member = SIP/222\n"""
+        u"""member = SIP/223,1\n"""
+        u"""member = SIP/215,2\n"""
+        u"""member = SIP/222,3\n"""
         u"""[entrada_cua_dl_4]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2005,12 +2011,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/205\n"""
-        u"""member = SIP/215\n"""
-        u"""member = SIP/222\n"""
+        u"""member = SIP/205,1\n"""
+        u"""member = SIP/215,2\n"""
+        u"""member = SIP/222,3\n"""
         u"""[entrada_cua_dm_1]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2022,12 +2028,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/218\n"""
-        u"""member = SIP/206\n"""
-        u"""member = SIP/217\n"""
+        u"""member = SIP/218,1\n"""
+        u"""member = SIP/206,2\n"""
+        u"""member = SIP/217,3\n"""
         u"""[entrada_cua_dm_2]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2039,12 +2045,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/217\n"""
-        u"""member = SIP/218\n"""
-        u"""member = SIP/206\n"""
+        u"""member = SIP/217,1\n"""
+        u"""member = SIP/218,2\n"""
+        u"""member = SIP/206,3\n"""
         u"""[entrada_cua_dm_3]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2056,12 +2062,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/207\n"""
-        u"""member = SIP/222\n"""
-        u"""member = SIP/216\n"""
+        u"""member = SIP/207,1\n"""
+        u"""member = SIP/222,2\n"""
+        u"""member = SIP/216,3\n"""
         u"""[entrada_cua_dm_4]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2073,12 +2079,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/204\n"""
-        u"""member = SIP/207\n"""
-        u"""member = SIP/203\n"""
+        u"""member = SIP/204,1\n"""
+        u"""member = SIP/207,2\n"""
+        u"""member = SIP/203,3\n"""
         u"""[entrada_cua_dx_1]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2090,12 +2096,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/214\n"""
-        u"""member = SIP/224\n"""
-        u"""member = SIP/205\n"""
+        u"""member = SIP/214,1\n"""
+        u"""member = SIP/224,2\n"""
+        u"""member = SIP/205,3\n"""
         u"""[entrada_cua_dx_2]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2107,12 +2113,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/224\n"""
-        u"""member = SIP/214\n"""
-        u"""member = SIP/223\n"""
+        u"""member = SIP/224,1\n"""
+        u"""member = SIP/214,2\n"""
+        u"""member = SIP/223,3\n"""
         u"""[entrada_cua_dx_3]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2124,12 +2130,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/203\n"""
-        u"""member = SIP/202\n"""
-        u"""member = SIP/218\n"""
+        u"""member = SIP/203,1\n"""
+        u"""member = SIP/202,2\n"""
+        u"""member = SIP/218,3\n"""
         u"""[entrada_cua_dx_4]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2141,12 +2147,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/204\n"""
-        u"""member = SIP/207\n"""
-        u"""member = SIP/218\n"""
+        u"""member = SIP/204,1\n"""
+        u"""member = SIP/207,2\n"""
+        u"""member = SIP/218,3\n"""
         u"""[entrada_cua_dj_1]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2158,12 +2164,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/202\n"""
-        u"""member = SIP/210\n"""
-        u"""member = SIP/223\n"""
+        u"""member = SIP/202,1\n"""
+        u"""member = SIP/210,2\n"""
+        u"""member = SIP/223,3\n"""
         u"""[entrada_cua_dj_2]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2175,12 +2181,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/215\n"""
-        u"""member = SIP/207\n"""
-        u"""member = SIP/210\n"""
+        u"""member = SIP/215,1\n"""
+        u"""member = SIP/207,2\n"""
+        u"""member = SIP/210,3\n"""
         u"""[entrada_cua_dj_3]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2192,12 +2198,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/216\n"""
-        u"""member = SIP/203\n"""
-        u"""member = SIP/208\n"""
+        u"""member = SIP/216,1\n"""
+        u"""member = SIP/203,2\n"""
+        u"""member = SIP/208,3\n"""
         u"""[entrada_cua_dj_4]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2209,12 +2215,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/208\n"""
-        u"""member = SIP/216\n"""
-        u"""member = SIP/203\n"""
+        u"""member = SIP/208,1\n"""
+        u"""member = SIP/216,2\n"""
+        u"""member = SIP/203,3\n"""
         u"""[entrada_cua_dv_1]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2226,12 +2232,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/206\n"""
-        u"""member = SIP/218\n"""
-        u"""member = SIP/202\n"""
+        u"""member = SIP/206,1\n"""
+        u"""member = SIP/218,2\n"""
+        u"""member = SIP/202,3\n"""
         u"""[entrada_cua_dv_2]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2243,12 +2249,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/218\n"""
-        u"""member = SIP/215\n"""
-        u"""member = SIP/202\n"""
+        u"""member = SIP/218,1\n"""
+        u"""member = SIP/215,2\n"""
+        u"""member = SIP/202,3\n"""
         u"""[entrada_cua_dv_3]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2260,12 +2266,12 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/222\n"""
-        u"""member = SIP/205\n"""
-        u"""member = SIP/210\n"""
+        u"""member = SIP/222,1\n"""
+        u"""member = SIP/205,2\n"""
+        u"""member = SIP/210,3\n"""
         u"""[entrada_cua_dv_4]\n"""
         u"""music=default\n"""
-        u"""strategy=rrmemory\n"""
+        u"""strategy=linear\n"""
         u"""eventwhencalled=yes\n"""
         u"""timeout=15\n"""
         u"""retry=1\n"""
@@ -2277,9 +2283,9 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
         u"""context = bustia_veu\n"""        
-        u"""member = SIP/210\n"""
-        u"""member = SIP/223\n"""
-        u"""member = SIP/214\n"""
+        u"""member = SIP/210,1\n"""
+        u"""member = SIP/223,2\n"""
+        u"""member = SIP/214,3\n"""
        )
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskSend_oneTurnOneSip(self):
@@ -2303,6 +2309,12 @@ class ScheduleHours_Test(unittest.TestCase):
         setmana: 2016-07-25
         companys:
         - ana
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
         """)
        )
        asterisk_conf = h.asteriskParse()
@@ -2345,6 +2357,12 @@ class ScheduleHours_Test(unittest.TestCase):
         - ana
         - pere
         - jordi
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
         """)
        )
        asterisk_conf = h.asteriskParse()
@@ -2396,6 +2414,12 @@ class ScheduleHours_Test(unittest.TestCase):
         - ana
         - pere
         - jordi
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
         """)
        )
        asterisk_conf = h.asteriskParse()
@@ -2450,6 +2474,12 @@ class ScheduleHours_Test(unittest.TestCase):
         - ana
         - pere
         - jordi
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
         """
        h = HtmlGenFromYaml(self.ns(yaml))
        asterisk_conf = h.asteriskParse()
@@ -2506,6 +2536,12 @@ class ScheduleHours_Test(unittest.TestCase):
         - ana
         - pere
         - jordi
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
         """
        h = HtmlGenFromYaml(self.ns(yaml))
        asterisk_conf = h.asteriskParse()
@@ -2550,6 +2586,12 @@ class ScheduleHours_Test(unittest.TestCase):
         setmana: 2016-07-25
         companys:
         - ana
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
         """
        h = HtmlGenFromYaml(self.ns(yaml))
        asterisk_conf = h.asteriskParse()
@@ -2592,6 +2634,12 @@ class ScheduleHours_Test(unittest.TestCase):
         - ana
         - pere
         - jordi
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
         """
        h = HtmlGenFromYaml(self.ns(yaml))
        asterisk_conf = h.asteriskParse()
@@ -2622,6 +2670,12 @@ class ScheduleHours_Test(unittest.TestCase):
         extensions:
           ana: 217
         setmana: 2016-07-25
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
         companys:
         - ana
         """
@@ -2658,6 +2712,12 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 8f928e
           ana: 98bdc0
           jordi: ff9999
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
         extensions:
           ana: 217
           pere: 218
@@ -2693,6 +2753,12 @@ class ScheduleHours_Test(unittest.TestCase):
             - '10:15'
             torns:
             - T1
+            noms: # Els que no només cal posar en majúscules
+              silvia: Sílvia
+              monica: Mònica
+              tania: Tània
+              cesar: César
+              victor: Víctor
             colors:
               ana: 98bdc0
             extensions:
@@ -2727,6 +2793,12 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
         setmana: 2016-07-25
         companys:
         - ana
@@ -2751,6 +2823,12 @@ class ScheduleHours_Test(unittest.TestCase):
         - T1
         - T2
         - T3
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
         colors:
           pere: 8f928e
           ana: 98bdc0
@@ -2814,6 +2892,12 @@ class ScheduleHours_Test(unittest.TestCase):
         - T1
         - T2
         - T3
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
         colors:
           pere: 8f928e
           ana: 98bdc0
@@ -2850,6 +2934,12 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
         setmana: 2016-07-25
         companys:
         - ana
@@ -2894,6 +2984,12 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         setmana: 2016-07-25
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
         companys:
         - ana
         - pere
@@ -2960,6 +3056,12 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 8f928e
           ana: 98bdc0
           jordi: ff9999
+        noms: # Els que no només cal posar en majúscules
+           silvia: Sílvia
+           monica: Mònica
+           tania: Tània
+           cesar: César
+           victor: Víctor
         extensions:
           ana: 217
           pere: 218
@@ -3036,6 +3138,12 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 8f928e
           ana: 98bdc0
           jordi: ff9999
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         extensions:
           ana: 217
           pere: 218
@@ -3064,6 +3172,12 @@ class ScheduleHours_Test(unittest.TestCase):
         - T1
         - T2
         - T3
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         colors:
           pere: 8f928e
           ana: 98bdc0
@@ -3116,6 +3230,12 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         setmana: 2016-07-25
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         companys:
         - ana
         - pere
@@ -3143,6 +3263,12 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 8f928e
           ana: 98bdc0
           jordi: ff9999
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         extensions:
           ana: 217
           pere: 218
@@ -3193,6 +3319,12 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 8f928e
           ana: 98bdc0
           jordi: ff9999
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         extensions:
           ana: 217
           pere: 218
@@ -3224,6 +3356,12 @@ class ScheduleHours_Test(unittest.TestCase):
         - T1
         - T2
         - T3
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         colors:
           pere: 8f928e
           ana: 98bdc0
@@ -3279,6 +3417,12 @@ class ScheduleHours_Test(unittest.TestCase):
         - T1
         - T2
         - T3
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         colors:
           pere: 8f928e
           ana: 98bdc0
@@ -3324,6 +3468,12 @@ class ScheduleHours_Test(unittest.TestCase):
         - T1
         - T2
         - T3
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         colors:
           pere: 8f928e
           ana: 98bdc0
@@ -3348,6 +3498,12 @@ class ScheduleHours_Test(unittest.TestCase):
         hores:
         - 09:00
         - '10:15'
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         torns:
         - T1
         - T2
@@ -3391,6 +3547,12 @@ class ScheduleHours_Test(unittest.TestCase):
         - T1
         - T2
         - T3
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         colors:
           pere: 8f928e
           ana: 98bdc0
@@ -3417,6 +3579,12 @@ class ScheduleHours_Test(unittest.TestCase):
         hores:
         - 09:00
         - '10:15'
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         torns:
         - T1
         - T2
@@ -3467,6 +3635,12 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         setmana: 2016-07-25
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         companys:
         - ana
         - pere
@@ -3493,6 +3667,12 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 8f928e
           ana: 98bdc0
           jordi: ff9999
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         extensions:
           ana: 217
           pere: 218
@@ -3539,6 +3719,12 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         setmana: 2016-07-25
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         companys:
         - ana
         - pere
@@ -3575,6 +3761,12 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         setmana: 2016-07-25
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         companys:
         - ana
         - pere
@@ -3604,6 +3796,13 @@ class ScheduleHours_Test(unittest.TestCase):
         - 09:00
         - '10:15'
         - '11:30'
+        
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
 
         torns:
         - T1
@@ -3662,6 +3861,12 @@ class ScheduleHours_Test(unittest.TestCase):
         - '11:30'
         - '12:45'
 
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         torns:
         - T1
         - T2
@@ -3719,6 +3924,12 @@ class ScheduleHours_Test(unittest.TestCase):
         - '11:30'
         - '12:45'
 
+        noms: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         torns:
         - T1
         - T2
@@ -3781,17 +3992,15 @@ class ScheduleHours_Test(unittest.TestCase):
         - ana
         - pere
         - jordi
-        dynamic:
-        - jordi
-        - ana
         """
         h = HtmlGenFromYaml(self.ns(yaml))
         self.assertEqual(h.partialCurrentQueue('dl',1),
             (u"""<table>\n"""
-             u"""<tr><td></td><th colspan=3>dl"""
+             u"""<tr><td></td><th colspan="100%">dl"""
              u"""</th></tr>\n"""
              u"""<tr><td></td><th>T1</th>"""
-             u"""<th>T2</th><th>T3</th></tr>\n"""
+             u"""<th>T2</th><th>T3</th>"""
+             u"""</tr>\n"""
              u"""<tr><th>09:00-10:15</th>\n"""
              u"""<td class='ana'>Ana</td>\n"""
              u"""<td class='pere'>Pere</td>\n"""
@@ -3841,17 +4050,15 @@ class ScheduleHours_Test(unittest.TestCase):
         - ana
         - pere
         - jordi
-        dynamic:
-        - jordi
-        - ana
         """
         h = HtmlGenFromYaml(self.ns(yaml))
         self.assertEqual(h.partialCurrentQueue('dl',2),
             (u"""<table>\n"""
-             u"""<tr><td></td><th colspan=3>dl"""
+             u"""<tr><td></td><th colspan="100%">dl"""
              u"""</th></tr>\n"""
              u"""<tr><td></td><th>T1</th>"""
-             u"""<th>T2</th><th>T3</th></tr>\n"""
+             u"""<th>T2</th><th>T3</th>"""
+             u"""</tr>\n"""
              u"""<tr><th>10:15-11:30</th>\n"""
              u"""<td class='jordi'>Jordi</td>\n"""
              u"""<td class='pere'>Pere</td>\n"""
