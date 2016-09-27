@@ -29,9 +29,12 @@ class MongoMockup(object):
     def __init__(self, timetables):
         self.timetables = timetables
     def find_one(self, week_dict):
-        return self.timetables[
-            week_dict['week']
-        ] if week_dict[
+        return {
+            'yaml': self.timetables[
+                week_dict['week']
+            ],
+            'week': week_dict['week']
+        } if week_dict[
             'week'
         ] in self.timetables else None
             
@@ -39,7 +42,7 @@ class MongoMockup(object):
         self.timetables[
             timetable_dict[
                 'week'
-            ].strftime("%Y_%m_%d")
+            ]
         ]=timetable_dict['yaml']
 
 class ScheduleHours_Test(unittest.TestCase):
@@ -139,7 +142,7 @@ class ScheduleHours_Test(unittest.TestCase):
               'companys': ['ana']
             }
         )
-    def test_mongoConnector_emptyDb(self):
+    def test_mongoConnector_loadOne(self):
         h=HtmlGenFromSolution(
             config=self.ns("""\
                 nTelefons: 1
@@ -166,7 +169,35 @@ class ScheduleHours_Test(unittest.TestCase):
             m.loadTimetable(
                 '2016_07_18'
             ),
-            h.getYaml().dump()
+            h.getYaml()
+        )
+    def test_mongoConnector_insertLoadOne(self):
+        h=HtmlGenFromSolution(
+            config=self.ns("""\
+                nTelefons: 1
+                diesVisualitzacio: ['dl']
+                hores:  # La darrera es per tancar
+                - '09:00'
+                - '10:15'
+                colors:
+                    ana: 98bdc0
+                extensions:
+                    ana: 3181
+                noms:
+                    cesar: César
+            """),
+            solution={('dl',0,0):'ana'},
+            date=datetime.datetime.strptime(
+                '2016-07-18','%Y-%m-%d').date(),
+            companys=['ana']
+        )
+        m = MongoConnector(MongoMockup({}))
+        m.saveTimetable(h.getYaml())
+        self.assertEqual(
+            m.loadTimetable(
+                '2016_07_18'
+            ),
+            h.getYaml()
         )
     def test_yamlSolution_oneslot(self):
         h=HtmlGenFromSolution(
