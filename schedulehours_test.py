@@ -199,6 +199,83 @@ class ScheduleHours_Test(unittest.TestCase):
             ),
             h.getYaml()
         )
+    def test_mongoConnector_insertExisting(self):
+        h=HtmlGenFromSolution(
+            config=self.ns("""\
+                nTelefons: 1
+                diesVisualitzacio: ['dl']
+                hores:  # La darrera es per tancar
+                - '09:00'
+                - '10:15'
+                colors:
+                    ana: 98bdc0
+                extensions:
+                    ana: 3181
+                noms:
+                    cesar: César
+            """),
+            solution={('dl',0,0):'ana'},
+            date=datetime.datetime.strptime(
+                '2016-07-18','%Y-%m-%d').date(),
+            companys=['ana']
+        )
+        m = MongoConnector(MongoMockup({}))
+        m.saveTimetable(h.getYaml())
+        with self.assertRaises(Exception):
+            m.saveTimetable(h.getYaml())
+    
+    def test_mongoConnector_insertForce(self):
+        h=HtmlGenFromSolution(
+            config=self.ns("""\
+                nTelefons: 1
+                diesVisualitzacio: ['dl']
+                hores:  # La darrera es per tancar
+                - '09:00'
+                - '10:15'
+                colors:
+                    ana: 98bdc0
+                extensions:
+                    ana: 3181
+                noms:
+                    cesar: César
+            """),
+            solution={('dl',0,0):'ana'},
+            date=datetime.datetime.strptime(
+                '2016-07-18','%Y-%m-%d').date(),
+            companys=['ana']
+        )
+        m = MongoConnector(MongoMockup({}))
+        m.saveTimetable(h.getYaml())
+        self.assertEqual(
+            m.saveTimetable(h.getYaml(),force=True),
+            None
+        )
+    
+    def test_mongoConnector_loadUnexisting(self):
+        h=HtmlGenFromSolution(
+            config=self.ns("""\
+                nTelefons: 1
+                diesVisualitzacio: ['dl']
+                hores:  # La darrera es per tancar
+                - '09:00'
+                - '10:15'
+                colors:
+                    ana: 98bdc0
+                extensions:
+                    ana: 3181
+                noms:
+                    cesar: César
+            """),
+            solution={('dl',0,0):'ana'},
+            date=datetime.datetime.strptime(
+                '2016-07-18','%Y-%m-%d').date(),
+            companys=['ana']
+        )
+        m = MongoConnector(MongoMockup({}))
+        m.saveTimetable(h.getYaml())
+        with self.assertRaises(Exception):
+            m.loadTimetable('1900_01_02')
+        
     def test_yamlSolution_oneslot(self):
         h=HtmlGenFromSolution(
             config=self.ns("""\
