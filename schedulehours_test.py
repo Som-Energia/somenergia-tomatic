@@ -9,6 +9,7 @@ import random
 from htmlgen import HtmlGenFromYaml
 from htmlgen import HtmlGenFromSolution
 from htmlgen import HtmlGenFromAsterisk
+from mongo import MongoConnector
 import datetime
 config=None
 try:
@@ -24,6 +25,22 @@ class PbxMockup(object):
     def __init__(self, queues):
         self._queues = queues
 
+class MongoMockup(object):
+    def __init__(self, timetables):
+        self.timetables = timetables
+    def find_one(self, week_dict):
+        return self.timetables[
+            week_dict['week']
+        ] if week_dict[
+            'week'
+        ] in self.timetables else None
+            
+    def insert_one(self, timetable_dict):
+        self.timetables[
+            timetable_dict[
+                'week'
+            ].strftime("%Y_%m_%d")
+        ]=timetable_dict['yaml']
 
 class ScheduleHours_Test(unittest.TestCase):
     def eqOrdDict(self, dict1,dict2, 
@@ -121,6 +138,35 @@ class ScheduleHours_Test(unittest.TestCase):
                 2016,7,11),
               'companys': ['ana']
             }
+        )
+    def test_mongoConnector_emptyDb(self):
+        h=HtmlGenFromSolution(
+            config=self.ns("""\
+                nTelefons: 1
+                diesVisualitzacio: ['dl']
+                hores:  # La darrera es per tancar
+                - '09:00'
+                - '10:15'
+                colors:
+                    ana: 98bdc0
+                extensions:
+                    ana: 3181
+                noms:
+                    cesar: César
+            """),
+            solution={('dl',0,0):'ana'},
+            date=datetime.datetime.strptime(
+                '2016-07-18','%Y-%m-%d').date(),
+            companys=['ana']
+        )
+        m = MongoConnector(MongoMockup({
+            '2016_07_18': h.getYaml().dump()
+        }))
+        self.assertEqual(
+            m.loadTimetable(
+                '2016_07_18'
+            ),
+            h.getYaml().dump()
         )
     def test_yamlSolution_oneslot(self):
         h=HtmlGenFromSolution(
