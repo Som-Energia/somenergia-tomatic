@@ -9,7 +9,7 @@ import random
 from htmlgen import HtmlGenFromYaml
 from htmlgen import HtmlGenFromSolution
 from htmlgen import HtmlGenFromAsterisk
-from mongo import MongoConnector
+from mongo import MongoConnector, FileProvider
 import datetime
 config=None
 try:
@@ -275,7 +275,31 @@ class ScheduleHours_Test(unittest.TestCase):
         m.saveTimetable(h.getYaml())
         with self.assertRaises(Exception):
             m.loadTimetable('1900_01_02')
-        
+    def test_fileProvider_insert_find(self):
+        yaml = """\
+                nTelefons: 1
+                diesVisualitzacio: ['dl']
+                hores:  # La darrera es per tancar
+                - '09:00'
+                - '10:15'
+                colors:
+                    ana: 98bdc0
+                extensions:
+                    ana: 3181
+                noms:
+                    cesar: César
+        """
+        f = FileProvider("/tmp")
+        f.insert_one({
+           'week':'2016_04_02',
+           'yaml':yaml
+        })
+        self.assertEqual(yaml,
+            f.find_one({
+               'week':'2016_04_02'
+            })['yaml']
+        )
+
     def test_yamlSolution_oneslot(self):
         h=HtmlGenFromSolution(
             config=self.ns("""\

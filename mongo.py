@@ -24,3 +24,25 @@ class MongoConnector(object):
             return ns.loads(response['yaml'])
         else:
             raise Exception
+class FileProvider(object):
+    def __init__(self,directory):
+        self.directory=directory
+    def find_one(self, week_dict):
+        try:
+            y = open(
+                self.directory+"/"+
+                week_dict['week']+
+                ".yaml"
+            ).read()
+        except IOError:
+            return None
+        return {'week':
+            week_dict['week']
+            ,'yaml':y}
+    def insert_one(self, arg):
+        with open(
+            self.directory+"/"+
+            arg['week']+".yaml",
+            "w"
+        ) as f:
+            f.write(arg['yaml'])
