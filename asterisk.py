@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from Asterisk.Manager import Manager
 from paramiko import SSHClient, AutoAddPolicy
 from scp import SCPClient
 from tempfile import NamedTemporaryFile as mktmpfile

@@ -11,6 +11,7 @@ from htmlgen import HtmlGenFromSolution
 from htmlgen import HtmlGenFromAsterisk
 from mongo import MongoConnector, FileProvider
 import datetime
+
 config=None
 try:
     import config
@@ -21,9 +22,11 @@ if config:
     from paramiko import SSHClient,AutoAddPolicy
     from Asterisk.Manager import Manager
 
-class PbxMockup(object):
-    def __init__(self, queues):
-        self._queues = queues
+class SSHMockup(object):
+    def __init__(self, pbxMockupObject):
+        self.pbxMockupObject = pbxMockupObject
+    def put(self, conf):
+        self.pbxMockupObject.conf = conf
 
 class MongoMockup(object):
     def __init__(self, timetables):
