@@ -50,7 +50,8 @@ taules: # Asignacio de les persones en taules
    jordi:  5
    manel:  6
    tania:  6
-   vic:  6
+   lucia:  6
+   vic:    6
 sempreUnLliure: {}
 randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
 colors:
@@ -69,7 +70,7 @@ colors:
    judit:  'e781e8'
    silvia: '8097fa'
    joan:   'fae080'
-   ana:    '98bdc0'
+   ana:    'ff6600'
    victor: 'ff3333'
    jordi: 'ff9999' 
 extensions:
