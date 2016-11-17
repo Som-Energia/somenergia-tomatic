@@ -32,7 +32,6 @@ taules: # Asignacio de les persones en taules
    marc:   0
    eduard: 1
    pere:   1
-   judit:  1
    david:  2
    aleix:  2
    cesar:  2
@@ -42,7 +41,8 @@ taules: # Asignacio de les persones en taules
    silvia: 3
    victor: 4
    erola:  4
-   lucia:  4
+   sergi:  4
+   judit:  4
    marta:  5
    yaiza:  5
    joan:   5
@@ -95,6 +95,7 @@ extensions:
    jordi:  3183
    lucia:  3184
    vic:    3185
+   sergi:  31XX
 noms: # Els que no només cal posar en majúscules
    silvia: Sílvia
    monica: Mònica

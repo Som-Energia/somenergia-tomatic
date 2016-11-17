@@ -62,7 +62,7 @@ def baixaDades(monday, certificat) :
 
     step('Baixant carrega setmanal...')
 
-    carregaRangeName = 'Carrega_{:02d}_{:02d}_{:02d}'.format(
+    carregaRangeName = 'carregatelefon_{:02d}{:02d}{:02d}'.format(
         *monday.timetuple())
     step("  Descarregant el rang '{}'...".format(carregaRangeName))
     carrega = fetcher.get_range(worksheet_load, carregaRangeName)
