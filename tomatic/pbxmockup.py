@@ -9,21 +9,25 @@ class PbxMockup(object):
     """ """
 
     def __init__(self):
-        self._queue = []
+        self._configuration = ns.loads(u"""
+            timetable: {}
+            hores: []
+            """)
 
     def reconfigure(self, configuration):
+        self._configuration = configuration
+
+    def currentQueue(self):
         from bisect import bisect
         now = datetime.now()
         currentHour = "{:%H:%m}".format(now)
-        turn = bisect(configuration.hores, currentHour)
+        turn = bisect(self._configuration.hores, currentHour)
         if turn == 0: return []
-        self._queue = [
+        if turn >= len(self._configuration.hores): return []
+        return [
             ns( key=who, paused=False)
-            for who in configuration.timetable.dx[turn]
+            for who in self._configuration.timetable.dx[turn]
             ]
-
-    def currentQueue(self):
-        return self._queue
 
 
 class PbxMockup_Test(unittest.TestCase):
@@ -39,7 +43,6 @@ class PbxMockup_Test(unittest.TestCase):
         pbx = PbxMockup()
         result = pbx.currentQueue()
         self.assertEqual(result, [])
-
 
     def test_currentQueue_oneSlot_oneTurn(self):
         pbx = PbxMockup()
