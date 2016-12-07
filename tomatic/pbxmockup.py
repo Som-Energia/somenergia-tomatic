@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from datetime import datetime
+from datetime import datetime, timedelta
 from yamlns import namespace as ns
 
+def weekday(date):
+    weekdays = "dl dm dx dj dv ds dg".split()
+    return weekdays[date.weekday()]
 
 class PbxMockup(object):
     """ """
@@ -18,15 +21,17 @@ class PbxMockup(object):
         self._configuration = configuration
 
     def currentQueue(self):
-        from bisect import bisect
+        timetable = self._configuration.timetable
         now = datetime.now()
+        from bisect import bisect
         currentHour = "{:%H:%m}".format(now)
         turn = bisect(self._configuration.hores, currentHour)
-        if turn == 0: return []
-        if turn >= len(self._configuration.hores): return []
+        wd = weekday(now)
+        if wd not in timetable: return []
+        if turn not in timetable[wd]: return []
         return [
             ns( key=who, paused=False)
-            for who in self._configuration.timetable.dx[turn]
+            for who in timetable[wd][turn]
             ]
 
 
@@ -34,10 +39,10 @@ class PbxMockup_Test(unittest.TestCase):
     ""
 
     def setUp(self):
-        weekdays = "dl dm dx dj dv".split()
         now = datetime.now()
-        self.today = weekdays[now.weekday()]
+        self.today = weekday(now)
         self.currentHour = now.hour
+        self.nextday = weekday(now+timedelta(days=1))
 
     def test_currentQueue_noConfiguration(self):
         pbx = PbxMockup()
@@ -122,6 +127,25 @@ class PbxMockup_Test(unittest.TestCase):
               cesar: 200
             """.format(
                 today=self.today,
+            )))
+        self.assertEqual(pbx.currentQueue(), [
+            ])
+
+    def test_currentQueue_afterSlots(self):
+        pbx = PbxMockup()
+        pbx.reconfigure(ns.loads(u"""\
+            timetable:
+              {nextday}:
+                1:
+                - cesar
+            hores:
+            - '00:00'
+            - '23:59'
+
+            extensions:
+              cesar: 200
+            """.format(
+                nextday=self.nextday,
             )))
         self.assertEqual(pbx.currentQueue(), [
             ])

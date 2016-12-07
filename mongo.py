@@ -24,6 +24,7 @@ class MongoConnector(object):
             return ns.loads(response['yaml'])
         else:
             raise Exception
+
 class FileProvider(object):
     def __init__(self,directory):
         self.directory=directory
