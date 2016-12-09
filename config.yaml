@@ -1,5 +1,5 @@
 nTelefons: 3
-diesCerca: ['dx', 'dl', 'dv',] # Els mes conflictius davant
+diesCerca: ['dv', 'dm', 'dx', 'dj', 'dl',] # Els mes conflictius davant
 diesVisualitzacio: ['dl','dm','dx','dj','dv']
 
 hores:  # La darrera es per tancar
