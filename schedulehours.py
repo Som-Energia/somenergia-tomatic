@@ -10,7 +10,7 @@ from consolemsg import step, error, warn, fail
 import codecs
 import sys
 from sheetfetcher import SheetFetcher
-from htmlgen import HtmlGenFromSolution
+from tomatic.htmlgen import HtmlGenFromSolution
 
 monitoringFile = 'taula.html'
 worksheet_unavailabilities = u'Reunions i altres afers' # 'oyfu0hb'
@@ -44,102 +44,102 @@ def transliterate(word):
 
 def baixaDades(monday, certificat) :
 
-    def table(sheet, name):
-        cells = sheet.range(name)
-        width = cells[-1].col-cells[0].col +1
-        height = cells[-1].row-cells[0].row +1
-        return [ 
-            [cell.value for cell in row]
-            for row in zip( *(iter(cells),)*width)
-            ]
+	def table(sheet, name):
+		cells = sheet.range(name)
+		width = cells[-1].col-cells[0].col +1
+		height = cells[-1].row-cells[0].row +1
+		return [ 
+			[cell.value for cell in row]
+			for row in zip( *(iter(cells),)*width)
+			]
 
 
-    step('Autentificant al Google Drive')
-    fetcher = SheetFetcher(
+	step('Autentificant al Google Drive')
+	fetcher = SheetFetcher(
 		documentName='Quadre de Vacances',
 		credentialFilename=certificat,
 		)
 
-    step('Baixant carrega setmanal...')
+	step('Baixant carrega setmanal...')
 
-    carregaRangeName = 'carregatelefon_{:02d}{:02d}{:02d}'.format(
-        *monday.timetuple())
-    step("  Descarregant el rang '{}'...".format(carregaRangeName))
-    carrega = fetcher.get_range(worksheet_load, carregaRangeName)
-    step("  Guardant-ho com '{}'...".format('carrega.csv'))
-    with open('carrega.csv','w') as phoneload :
-        phoneload.write(
-            "\n".join(
-                '\t'.join(c for c in row)
-                for row in carrega
-                )
-            )
+	carregaRangeName = 'carregatelefon_{:02d}{:02d}{:02d}'.format(
+		*monday.timetuple())
+	step("  Descarregant el rang '{}'...".format(carregaRangeName))
+	carrega = fetcher.get_range(worksheet_load, carregaRangeName)
+	step("  Guardant-ho com '{}'...".format('carrega.csv'))
+	with open('carrega.csv','w') as phoneload :
+		phoneload.write(
+			"\n".join(
+				'\t'.join(c for c in row)
+				for row in carrega
+				)
+			)
 
-    step('Baixant vacances...')
+	step('Baixant vacances...')
 
-    nextFriday = monday+timedelta(days=4)
-    mondayYear = monday.year
-    startingSemester = 1 if monday < date(mondayYear,7,1) else 2
-    startingOffset = (monday - date(mondayYear,1 if startingSemester is 1 else 7,1)).days
+	nextFriday = monday+timedelta(days=4)
+	mondayYear = monday.year
+	startingSemester = 1 if monday < date(mondayYear,7,1) else 2
+	startingOffset = (monday - date(mondayYear,1 if startingSemester is 1 else 7,1)).days
 
-    holidays2SRange = 'Vacances{}Semestre{}'.format(
-        mondayYear,
-        startingSemester,
-        )
-    step("  Baixant vacances de l'interval {}".format(holidays2SRange))
-    holidays2S = fetcher.get_range(0, holidays2SRange)
+	holidays2SRange = 'Vacances{}Semestre{}'.format(
+		mondayYear,
+		startingSemester,
+		)
+	step("  Baixant vacances de l'interval {}".format(holidays2SRange))
+	holidays2S = fetcher.get_range(0, holidays2SRange)
 
 #    endingSemester = 1 if nextFriday < date(mondayYear,7,1) else 2
 #    if startingSemester == endingSemester :
-    who = [row[0] for row in holidays2S ]
-    holidays = [
-        (transliterate(name), [
-            day for day, value in zip(
-                ['dl','dm','dx','dj','dv'],
-                row[startingOffset+1:startingOffset+6]
-                )
-            if value.strip()
-            ])
-        for name, row in zip(who, holidays2S)
-        ]
-    step("  Guardant indisponibilitats per vacances a 'indisponibilitats-vacances.conf'...")
-    with open('indisponibilitats-vacances.conf','w') as holidaysfile:
-        for name, days in holidays:
-            for day in days:
-                holidaysfile.write("{} {} # vacances\n".format(name, day))
-    
+	who = [row[0] for row in holidays2S ]
+	holidays = [
+		(transliterate(name), [
+			day for day, value in zip(
+				['dl','dm','dx','dj','dv'],
+				row[startingOffset+1:startingOffset+6]
+				)
+			if value.strip()
+			])
+		for name, row in zip(who, holidays2S)
+		]
+	step("  Guardant indisponibilitats per vacances a 'indisponibilitats-vacances.conf'...")
+	with open('indisponibilitats-vacances.conf','w') as holidaysfile:
+		for name, days in holidays:
+			for day in days:
+				holidaysfile.write("{} {} # vacances\n".format(name, day))
 
-    step("Baixant altres indisponibilitats setmanals...")
 
-    step("  Baixant el full '{}'...".format(worksheet_unavailabilities))
-    indis = fetcher.get_fullsheet(worksheet_unavailabilities)
-    step("  Guardant indisponibilitats setmanals a 'indisponibilitats-setmana.conf'...")
-    with open('indisponibilitats-setmana.conf','w') as indisfile:
-        for _, who, day, weekday, hours, need, comment in indis[1:] :
-            if weekday and day:
-                fail("Indisponibilitat especifica dia puntual {} i dia de la setmana {}"
-                    .format(day,weekday))
-            if weekday.strip():
-                fail("Hi ha indisponibilitats permaments al drive, afegeix-les a ma i esborra-les")
-            theDay = datetime.datetime.strptime(day, "%d/%m/%Y").date()
-            if theDay < iniciSetmana(): continue
-            if theDay > iniciSetmana()+timedelta(days=6): continue
+	step("Baixant altres indisponibilitats setmanals...")
 
-            startHours = [ h.split(':')[0].strip() for h in hours.split(',')]
-            bitmap = ''.join((
-                ('1' if '9' in startHours else '0'),
-                ('1' if '10' in startHours else '0'),
-                ('1' if '11' in startHours else '0'),
-                ('1' if '12' in startHours else '0'),
-            ))
-            weekdayShort = u'dl dm dx dj dv ds dg'.split()[theDay.weekday()]
+	step("  Baixant el full '{}'...".format(worksheet_unavailabilities))
+	indis = fetcher.get_fullsheet(worksheet_unavailabilities)
+	step("  Guardant indisponibilitats setmanals a 'indisponibilitats-setmana.conf'...")
+	with open('indisponibilitats-setmana.conf','w') as indisfile:
+		for _, who, day, weekday, hours, need, comment in indis[1:] :
+			if weekday and day:
+				fail("Indisponibilitat especifica dia puntual {} i dia de la setmana {}"
+					.format(day,weekday))
+			if weekday.strip():
+				fail("Hi ha indisponibilitats permaments al drive, afegeix-les a ma i esborra-les")
+			theDay = datetime.datetime.strptime(day, "%d/%m/%Y").date()
+			if theDay < iniciSetmana(): continue
+			if theDay > iniciSetmana()+timedelta(days=6): continue
 
-            line = u"{} {} {} # {}\n".format(
-                transliterate(who),
-                weekdayShort,
-                bitmap,
-                comment)
-            indisfile.write(line)
+			startHours = [ h.split(':')[0].strip() for h in hours.split(',')]
+			bitmap = ''.join((
+				('1' if '9' in startHours else '0'),
+				('1' if '10' in startHours else '0'),
+				('1' if '11' in startHours else '0'),
+				('1' if '12' in startHours else '0'),
+			))
+			weekdayShort = u'dl dm dx dj dv ds dg'.split()[theDay.weekday()]
+
+			line = u"{} {} {} # {}\n".format(
+				transliterate(who),
+				weekdayShort,
+				bitmap,
+				comment)
+			indisfile.write(line)
 
 class Backtracker:
 	class ErrorConfiguracio(Exception): pass
@@ -625,37 +625,41 @@ def parseArgs():
 
 	return parser.parse_args()
 
+args=None
 
-import sys
+def main():
+	global args
+	import sys
 
-args = parseArgs()
+	args = parseArgs()
 
-if not args.keep:
-	baixaDades(iniciSetmana(), args.certificate)
+	if not args.keep:
+		baixaDades(iniciSetmana(), args.certificate)
 
-import signal
-import subprocess
+	import signal
+	import subprocess
 
-def signal_handler(signal, frame):
-	print 'You pressed Ctrl-C!'
-	b.terminated = True
+	def signal_handler(signal, frame):
+		print 'You pressed Ctrl-C!'
+		b.terminated = True
 
-signal.signal(signal.SIGINT, signal_handler)
+	signal.signal(signal.SIGINT, signal_handler)
 
-from yamlns import namespace as ns
+	from yamlns import namespace as ns
 
-step('Carregant configuració...')
-try:
-    b = Backtracker(ns.load("config.yaml"))
-except:
-    error("Configuració incorrecta")
-    raise
+	step('Carregant configuració...')
+	try:
+		b = Backtracker(ns.load("config.yaml"))
+	except:
+		error("Configuració incorrecta")
+		raise
 
-step('Generant horari...')
-b.solve()
+	step('Generant horari...')
+	b.solve()
 
 
-
+if __name__ == '__main__':
+	main()
 
 
 

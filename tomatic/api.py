@@ -3,12 +3,22 @@ from flask import Flask
 from htmlgen import HtmlGenFromYaml, HtmlGenFromAsterisk
 from datetime import datetime
 from yamlns import namespace as ns
+
+hs = {}
+
+def pbx(alternative = None):
+    if alternative:
+        pbx.cache = alternative
+    if not hasattr(pbx,'cache'):
+        pbx.cache = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+    return pbx.cache
+
 config=None
 try:
     import config
 except ImportError:
     pass
-if config:
+if config or True:
     import asterisk
     from paramiko import SSHClient,AutoAddPolicy
     from Asterisk.Manager import Manager
@@ -16,9 +26,6 @@ app = Flask(__name__)
 startOfWeek = HtmlGenFromYaml.iniciSetmana(
     datetime.now()
 )
-yaml = ns.load("templateTimetable.yaml")
-yaml.setmana = startOfWeek.strftime("%Y-%m-%d")
-
 def loadYaml(yaml):
     global hs
     parsedYaml = ns.loads(yaml)
@@ -30,7 +37,7 @@ def loadAsterisk(yaml,date=None):
     global hs
     hs[startOfWeek.strftime("%Y_%m_%d")
         ]=HtmlGenFromAsterisk(
-            yaml,pbx.receiveConf()
+            yaml,pbx().receiveConf()
         )
 def setNow(year,month,day,hour,minute):
     global now
@@ -75,7 +82,10 @@ def get_queue(setmana,hour,minute):
         h.htmlFooter()
     )
     return response
-hs = {}
+
+
 now = None
-pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+yaml = ns.load("templateTimetable.yaml")
+yaml.setmana = startOfWeek.strftime("%Y-%m-%d")
 loadAsterisk(yaml)
+

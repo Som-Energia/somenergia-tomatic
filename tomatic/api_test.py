@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
+
 from flask import Flask
-from htmlgen import HtmlGenFromYaml, HtmlGenFromAsterisk
 import b2btest
 import unittest
-import scheduleserver
 import sys
 from yamlns import namespace as ns
 from datetime import datetime
+
+from htmlgen import HtmlGenFromYaml, HtmlGenFromAsterisk
+import api
+
 config=None
 try:
     import config
@@ -15,12 +18,12 @@ except ImportError:
 
 class scheduleServerTest(unittest.TestCase):
     def setUp(self):
-        self.app = scheduleserver.app.test_client()
+        self.app = api.app.test_client()
         self.maxDiff = None
-    
+
     def test_getcurrentqueue(self):
-        
-        scheduleserver.loadYaml("""\
+
+        api.loadYaml("""\
                 setmana: 2016-07-25
                 timetable:
                   dl:
@@ -66,7 +69,7 @@ class scheduleServerTest(unittest.TestCase):
                 - pere
                 """
         )
-        scheduleserver.setNow(
+        api.setNow(
             2016,
             7,
             25,
@@ -78,7 +81,7 @@ class scheduleServerTest(unittest.TestCase):
         self.assertB2BEqual(rv.data)
 
     def test_getqueue_one_tel(self):
-        scheduleserver.loadYaml("""\
+        api.loadYaml("""\
                 setmana: 2016-07-25
                 timetable:
                   dl:
@@ -129,7 +132,7 @@ class scheduleServerTest(unittest.TestCase):
         self.assertB2BEqual(rv.data)
     
     def test_getqueue_many_tt_first_week(self):
-        scheduleserver.loadYaml("""\
+        api.loadYaml("""\
                 setmana: 2016-07-25
                 timetable:
                   dl:
@@ -175,7 +178,7 @@ class scheduleServerTest(unittest.TestCase):
                 - pere
                 """
         )
-        scheduleserver.loadYaml("""\
+        api.loadYaml("""\
                 setmana: 2016-08-01
                 timetable:
                   dl:
@@ -210,7 +213,7 @@ class scheduleServerTest(unittest.TestCase):
         self.assertB2BEqual(rv.data)
     
     def test_getqueue_many_tt_second_week(self):
-        scheduleserver.loadYaml("""\
+        api.loadYaml("""\
                 setmana: 2016-07-25
                 timetable:
                   dl:
@@ -240,7 +243,7 @@ class scheduleServerTest(unittest.TestCase):
                 - ana
                 """
         )
-        scheduleserver.loadYaml("""\
+        api.loadYaml("""\
                 setmana: 2016-08-01
                 timetable:
                   dl:
@@ -275,7 +278,7 @@ class scheduleServerTest(unittest.TestCase):
         self.assertB2BEqual(rv.data)
 
     def test_getqueue_two_tels_intermediate_day(self):
-        scheduleserver.loadYaml("""\
+        api.loadYaml("""\
                 setmana: 2016-07-25
                 timetable:
                   dl:
@@ -326,7 +329,7 @@ class scheduleServerTest(unittest.TestCase):
         self.assertB2BEqual(rv.data)
 
     def test_getDynamicqueue_three_tels_intermediate_day(self):
-        scheduleserver.loadYaml("""\
+        api.loadYaml("""\
                 setmana: 2016-07-25
                 timetable:
                   dl:
@@ -483,7 +486,7 @@ class scheduleServerTest(unittest.TestCase):
                 - tania
                 """
         )
-        scheduleserver.loadAsterisk(yaml,
+        api.loadAsterisk(yaml,
             date=datetime(2016,9,19,9,26))
         self.b2bdatapath = "testcases"
         rv = self.app.get('/getqueue/'
@@ -593,7 +596,7 @@ class scheduleServerTest(unittest.TestCase):
                 - tania
                 """
         )
-        scheduleserver.loadAsterisk(yaml,
+        api.loadAsterisk(yaml,
             date=datetime(2016,9,19,9,26))
         self.b2bdatapath = "testcases"
         rv = self.app.get('/getqueue/'
@@ -605,6 +608,7 @@ if __name__ == "__main__":
     if '--accept' in sys.argv:
         sys.argv.remove('--accept')
         unittest.TestCase.acceptMode = True
-    
+
     unittest.main()
+
 # vim: ts=4 sw=4 et

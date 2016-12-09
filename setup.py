@@ -22,7 +22,11 @@ setup(
         'somutils',
         'yamlns',
         'consolemsg',
-		'parse'
+        'parse',
+        'flask',
+        'py-Asterisk',
+        'paramiko',
+        'scp',
     ],
     classifiers = [
         'Programming Language :: Python',
