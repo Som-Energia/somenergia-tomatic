@@ -16,10 +16,12 @@ try:
 except ImportError:
     pass
 
-class scheduleServerTest(unittest.TestCase):
+class Api_Test(unittest.TestCase):
+
     def setUp(self):
         self.app = api.app.test_client()
         self.maxDiff = None
+        self.b2bdatapath = "testcases"
 
     def test_getcurrentqueue(self):
 
@@ -76,7 +78,6 @@ class scheduleServerTest(unittest.TestCase):
             9,
             15
         )
-        self.b2bdatapath = "testcases"
         rv = self.app.get('/')
         self.assertB2BEqual(rv.data)
 
@@ -127,7 +128,6 @@ class scheduleServerTest(unittest.TestCase):
                 - pere
                 """
         )
-        self.b2bdatapath = "testcases"
         rv = self.app.get('/getqueue/2016_07_25/9/15')
         self.assertB2BEqual(rv.data)
     
@@ -208,7 +208,6 @@ class scheduleServerTest(unittest.TestCase):
                 - victor
                 """
         )
-        self.b2bdatapath = "testcases"
         rv = self.app.get('/getqueue/2016_07_25/9/15')
         self.assertB2BEqual(rv.data)
     
@@ -273,7 +272,6 @@ class scheduleServerTest(unittest.TestCase):
                 - ana
                 """
         )
-        self.b2bdatapath = "testcases"
         rv = self.app.get('/getqueue/2016_08_01/9/15')
         self.assertB2BEqual(rv.data)
 
@@ -324,7 +322,6 @@ class scheduleServerTest(unittest.TestCase):
                 - victor
                 """
         )
-        self.b2bdatapath = "testcases"
         rv = self.app.get('/getqueue/2016_07_26/9/15')
         self.assertB2BEqual(rv.data)
 
@@ -379,7 +376,6 @@ class scheduleServerTest(unittest.TestCase):
                 - tania
                 """
         )
-        self.b2bdatapath = "testcases"
         rv = self.app.get('/getqueue/2016_07_26/9/15')
         self.assertB2BEqual(rv.data)
 
@@ -488,7 +484,6 @@ class scheduleServerTest(unittest.TestCase):
         )
         api.loadAsterisk(yaml,
             date=datetime(2016,9,19,9,26))
-        self.b2bdatapath = "testcases"
         rv = self.app.get('/getqueue/'
         '2016_09_26/9/19')
         self.assertB2BEqual(rv.data)
@@ -598,7 +593,6 @@ class scheduleServerTest(unittest.TestCase):
         )
         api.loadAsterisk(yaml,
             date=datetime(2016,9,19,9,26))
-        self.b2bdatapath = "testcases"
         rv = self.app.get('/getqueue/'
         '2016_09_26/10/20')
         self.assertB2BEqual(rv.data)
