@@ -61,8 +61,8 @@ def index():
 def get_queue(setmana,hour,minute):
     loadAsterisk(yaml)
     year,month,day=(
-        int(tok) 
-        for tok 
+        int(tok)
+        for tok
         in setmana.split('_')
     )
     startOfWeek = HtmlGenFromYaml.iniciSetmana(
@@ -87,5 +87,4 @@ def get_queue(setmana,hour,minute):
 now = None
 yaml = ns.load("templateTimetable.yaml")
 yaml.setmana = startOfWeek.strftime("%Y-%m-%d")
-loadAsterisk(yaml)
 
