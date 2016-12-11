@@ -4,7 +4,7 @@ import datetime
 from yamlns import namespace as ns
 
 class HtmlGen(object):
-    
+
     def iniciSetmana(date=None):
         from datetime import date as dateModule, timedelta
         import datetime
@@ -25,34 +25,47 @@ class HtmlGen(object):
         return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
 
     def partialCoreTable(self,day,turn):
-        return "\n".join([
-                u"""<td class='{name}'>"""
-                u"""{properName}</td>""".format(
-                    name=name,
-                    properName=self.properName(name))
-                    for name in self.yaml.timetable[day][turn+1]])+"\n"
+        return "".join([
+            u"""<td class='{name}'>{properName}</td>\n"""
+            .format(
+                name=name,
+                properName=self.properName(name)
+            )
+            for name in self.yaml.timetable[day][turn+1]
+            ])
+
     def partialCurrentQueue(self,day,turn):
-        hours = ("<tr><th>"+""
-                ""+self.llegeixHores()[turn-1]+""
-                "</th>\n"
-                )
+        hours = (
+            "<tr><th>"+""
+            ""+self.llegeixHores()[turn-1]+""
+            "</th>\n"
+        )
         partialCoreTable = self.partialCoreTable(day,turn-1)
-        header=("""<table>\n"""
-                    """<tr>"""+""
-                    """<td></td><th colspan="100%">{day}</th>""".format(
-                        day=day
-                        )+"</tr>\n"
-                   )
-        headerTlfnos=("""<tr>"""+("""<td></td>"""
-                ""+("".join([
-                             "<th>{}</th>".format(t) 
-                             for t in self.yaml.torns
-                             ])))+#*len(self.yaml.timetable.keys())+""
-                (u'<th colspan="100%">Cua dinàmica</th>' if "dynamic" in self.yaml else "")+
-                "</tr>\n")
+        header=(
+            """<table>\n"""
+            """<tr>"""
+            """<td></td><th colspan="100%">{day}</th>"""
+            """</tr>\n"""
+            .format(
+                 day=day
+                 )
+        )
+        headerTlfnos=''.join(
+            ["""<tr>"""]+[(
+            """<td></td>""" +
+            ("".join(
+                 "<th>{}</th>".format(t)
+                 for t in self.yaml.torns
+                 )
+            )),
+            [u'<th colspan="100%">Cua dinàmica</th>']
+            if "dynamic" in self.yaml else [],
+            ["</tr>\n"]
+        )
         footer= u"""</tr>\n</table>"""
         partialDynamicTable= self.partialDynamicTable() if "dynamic" in self.yaml else ""
         return header+headerTlfnos+hours+partialCoreTable+partialDynamicTable+footer
+
     def partialDynamicTable(self):
         return "\n".join([
                 u"""<td class='{name}'>"""
@@ -60,6 +73,7 @@ class HtmlGen(object):
                     name=name,
                     properName=self.properName(name))
                     for name in self.yaml.dynamic])+"\n"    
+
     def htmlTable(self):
         headerDays=("""<tr>"""+""
                 "".join([
@@ -88,6 +102,7 @@ class HtmlGen(object):
                 ""+headerDays+headerTlfnos+coreTable+""
                 """</table>"""
                 )
+
     def htmlExtensions(self):
         header =(u"""<h3>Extensions</h3>\n"""
                 u"""<div class="extensions">\n""")
@@ -105,7 +120,7 @@ class HtmlGen(object):
         else:
             body = ""
         return header+body+footer
-    
+
     def htmlSetmana(self):
         if 'setmana' in self.yaml:
             setmanaHeader = ("<h1>"
@@ -114,7 +129,7 @@ class HtmlGen(object):
         else:
             setmanaHeader = "<h1>Setmana ???</h1>"
         return setmanaHeader
-    
+
     def htmlColors(self):
         colors= "\n".join(
             ".{} {{ background-color: #{}; }}".format(
@@ -133,8 +148,10 @@ class HtmlGen(object):
             for nom in self.yaml.companys
             )
         return colors
+
     def htmlHeader(self):
-        return  (u"""<!doctype html>\n"""
+        return  (
+            u"""<!doctype html>\n"""
             u"""<html>\n"""
             u"""<head>\n"""
             u"""<meta charset='utf-8' />\n"""
@@ -162,10 +179,13 @@ class HtmlGen(object):
             u""".paused { background-color"""
             u""": #ffffff; }\n"""
             )
+
     def htmlSubHeader(self):
-        return (u"""\n</style>\n</head>\n"""
-                     u"""<body>\n"""
-                     )
+        return (
+            u"""\n</style>\n</head>\n"""
+            u"""<body>\n"""
+            )
+
     def htmlFooter(self):
         return  u"""</body>\n</html>"""
 
@@ -209,7 +229,7 @@ class HtmlGen(object):
         with open("extensions.html") as extensions_html:
             extensions = extensions_html.read()
         return extensions
-    
+
     def nameToExtension(self, name):
         return self.yaml.extensions[name]
 
@@ -273,14 +293,15 @@ class HtmlGen(object):
             if now < hour:
                 break
         return day,turn+1
-        
+
     def getYaml(self):
         return self.yaml
+
 
 class HtmlGenFromYaml(HtmlGen):
     def __init__(self, yaml):
         self.yaml = yaml
-        
+
     def comparePaused(self, other):
         def getPaused(yaml,day,turn):
             if ("paused" 
@@ -328,7 +349,7 @@ class HtmlGenFromYaml(HtmlGen):
         for name in added_dynamic:
             ext = self.nameToExtension(name)
             response.dynamic[ext]="added"
-        
+
         for name in removed_dynamic:
             ext = self.nameToExtension(name)
             response.dynamic[ext]="removed"
@@ -354,6 +375,7 @@ class HtmlGenFromYaml(HtmlGen):
                        response[day][turn][ext]="removed"
 
         return response
+
     def compareDynamic(self, other):
         response = ns()
         if "dynamic" not in other.yaml:
@@ -376,10 +398,10 @@ class HtmlGenFromYaml(HtmlGen):
                 ext = self.nameToExtension(name)
                 response[ext]="removed"
         return response
-        
+
+
 class HtmlGenFromSolution(HtmlGen):
 
-    
     def __init__(self, config, solution, companys=None, date=None):
         y = ns(zip(
             config.diesVisualitzacio,
@@ -404,6 +426,8 @@ class HtmlGenFromSolution(HtmlGen):
         y['noms']=config.noms
         y['companys']=companys
         self.yaml=y
+
+
 
 class HtmlGenFromAsterisk(HtmlGenFromSolution):
     # Only linear queues are implemented at the moment
@@ -492,3 +516,5 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
         y.setmana = yaml.setmana
         y.companys = yaml.companys
         self.yaml=y
+
+# vim: et
