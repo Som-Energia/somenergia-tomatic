@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='utf-8' />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.5/dialog-polyfill.min.css">
+<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.5/dialog-polyfill.min.js"></script>
+<style>
+h1 {
+    color: #560;
+}
+td, th {
+	border:1px solid black;
+	width: 8em;
+	text-align: center;
+}
+td:empty { border:0;}
+td { padding: 1ex;}
+td:hover {
+	opacity: .8;
+}
+.extensions {
+	width: 60%;
+	text-align: center;
+}
+.extension {
+	display: inline-block;
+	padding: 1ex 0ex;
+	width: 14%;
+	text-align: center;
+	margin: 2pt 2pt;
+	border: 1pt solid black;
+	height: 100%;
+	min-width: 5em;
+}
+dialog .extensions {
+	width: 100%;
+}
+dialog .extension {
+	color: black;
+	padding-top: 1ex;
+	width: 10%;
+}
+dialog .extension:hover {
+	opacity: .8;
+}
+.paused { background-color: #ffffff; }
+.vic { background-color: #7ff1f2; }
+.tania { background-color: #c8abf4; }
+.judit { background-color: #e781e8; }
+.ana { background-color: #98bdc0; }
+.pere { background-color: #8f928e; }
+.monica { background-color: #7fada0; }
+.erola { background-color: #8789c8; }
+.joan { background-color: #fae080; }
+.silvia { background-color: #8097fa; }
+.marc { background-color: #fbe8bc; }
+.carles { background-color: #c98e98; }
+.eduard { background-color: #d8b9c5; }
+.aleix { background-color: #eed0eb; }
+.lucia { background-color: #b0bf90; }
+.yaiza { background-color: #90cdb9; }
+.marta { background-color: #eb9481; }
+.jordi { background-color: #ff9999; }
+.manel { background-color: #88dfe3; }
+.david { background-color: #ffd3ac; }
+.judith { background-color: #d8ff94; }
+.victor { background-color: #ff3333; }
+</style>
+</head>
+<body>
+<div id='graella'></div>
+
+<h3>Recordatori desviaments</h3>
+<ul>
+<li>*60 Immediat</li>
+<li>*63 Ocupat o no responem</li>
+<li>*64 Treure desviaments</li>
+<li>*90 Marcar número</li>
+</ul>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/mithril/0.2.5/mithril.min.js"></script>
+<script src="graella.js"></script>
+
+
+</body>
+</html>
