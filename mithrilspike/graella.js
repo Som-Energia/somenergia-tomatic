@@ -2,7 +2,8 @@
 
 var Graella = Graella || {};
 
-Graella.controller = function(model) {
+Graella.controller = function(model, args) {
+	args = args || {};
 	var controller = {
 		formatName: function(name) {
 			function titleCase(str)
@@ -16,7 +17,8 @@ Graella.controller = function(model) {
 			return this.d.names[name] || titleCase(name);
 		},
 		extension: function(name) {
-			return this.formatName(name) + ": " + this.d.extensions[name] || "???";
+			return this.formatName(name) + ": "
+				+ (this.d.extensions[name] || "???");
 		},
 		editCell: function(day, houri, turni) {
 			var dialog = document.querySelector('dialog');
@@ -43,14 +45,15 @@ Graella.controller = function(model) {
 			var self = this;
 			m.request({
 				method: 'GET',
-				url: 'graella-'+date+'.json',
-				}).then(function(newGrid){
-					console.log("Nova grid",newGrid);
-					self.d = newGrid;
-				});
+				url: 'graella-'+date+'.yaml',
+				deserialize: jsyaml.load,
+			}).then(function(newGrid){
+				console.log("Nova grid",newGrid);
+				self.d = newGrid;
+			});
 		},
 	};
-	controller.loadGrid('2016-02-02');
+	controller.loadGrid(args.date ||'2016-02-02');
 	return controller;
 };
 

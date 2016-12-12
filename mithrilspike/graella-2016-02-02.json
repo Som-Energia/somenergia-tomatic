@@ -7,7 +7,7 @@
 		"12:45",
 		"14:00"
 		],
-	"turns": ["T1","T2","T3","T4"],
+	"turns": ["T1","T2","T3"],
 	"days": ["dl","dm","dx","dj","dv"],
 	"timetable": {
 		"dl": [
@@ -29,7 +29,8 @@
 			[
 				"eduard",
 				"victor",
-				"david"
+				"invitado",
+				"silvia"
 			]
 		],
 		"dm": [
