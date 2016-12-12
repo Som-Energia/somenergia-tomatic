@@ -1,10 +1,60 @@
 'use strict';
 
+var PersonPicker = {
+	controller: function(persons, current, peeker) {
+		return {
+			_persons: persons,
+			_currentPerson: current,
+			_peekFunction: peeker,
+
+			show: function(currentPerson) {
+			},
+			close: function() {
+			},
+			personPicked: function(person) {
+				console.log(person);
+				persons.cellEdited(person);
+			},
+		};
+	},
+
+	view: function(controller, c) {
+		return (
+			m('dialog.mdl-dialog',
+				m('h1.mdl-dialog__title', "Qui farà el torn?"),
+				m('.mdl-dialog__content',
+					m('.extensions',
+
+						Object.keys(c.d.extensions).sort().map(function(name) {
+							return m('.extension', {
+								class: name,
+								onclick: function(ev) {
+									controller.personPicked(name);
+								}},
+								c.formatName(name)
+							);
+						})
+					)
+				),
+				m('.mdl-dialog__actions',
+					m('button.mdl-button.close[type=button]', {
+							onclick: c.cancelCellEdition,
+						},
+						"Cancel·lar"
+					)
+				)
+			)
+		)
+	}
+};
+
+
 var Graella = Graella || {};
 
 Graella.controller = function(model, args) {
 	args = args || {};
 	var controller = {
+		_editingCell: m.prop(undefined),
 		formatName: function(name) {
 			function titleCase(str)
 			{
@@ -21,6 +71,11 @@ Graella.controller = function(model, args) {
 				+ (this.d.extensions[name] || "???");
 		},
 		editCell: function(day, houri, turni) {
+			this._editingCell = {
+				day: day,
+				houri: houri,
+				turni: turni
+			};
 			var dialog = document.querySelector('dialog');
 			this.cellSelected = function(newName) {
 				this.d.timetable[day][houri][turni] = newName;
@@ -77,33 +132,8 @@ Graella.view = function(c) {
 		);
 	};
 	return [
-		m('dialog.mdl-dialog[style="min-width:50%"]',
-			m('h1.mdl-dialog__title', "Qui farà el torn"),
-			m('.mdl-dialog__content',
-				m('.extensions', 
-					Object.keys(c.d.extensions).sort().map(function(name) {
-						return m('.extension', {
-							class: name,
-							onclick: function(ev) {
-								console.log("clicking");
-								c.cellEdited(name);
-								ev.preventDefault();
-								},
-							},
-							c.formatName(name)
-						);
-					})
-				)
-			),
-			m('.mdl-dialog__actions',
-				m('button.mdl-button.close[type=button]', {
-						onclick: c.cancelCellEdition,
-					},
-					"Cancel·lar"
-				)
-			)
-		),
-		m('h1', "Setmana "+c.d.date),
+		m.component(PersonPicker, c),
+		m('h1', "Setmana ", c.d.date),
 		m('table', [
 			m('tr', c.d.days.map(function(day) {
 				return [
