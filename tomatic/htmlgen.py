@@ -51,13 +51,10 @@ class HtmlGen(object):
                  )
         )
         headerTlfnos=''.join(
-            ["""<tr>"""]+[(
-            """<td></td>""" +
-            ("".join(
-                 "<th>{}</th>".format(t)
-                 for t in self.yaml.torns
-                 )
-            )),
+            ["""<tr>"""]+[
+            "<th>{}</th>".format(t)
+            for t in self.yaml.torns
+            ]+
             [u'<th colspan="100%">Cua dinàmica</th>']
             if "dynamic" in self.yaml else [],
             ["</tr>\n"]
