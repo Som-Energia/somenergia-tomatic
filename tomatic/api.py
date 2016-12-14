@@ -47,25 +47,27 @@ def trustedStaticFile(path):
     with open(path) as f:
         return f.read()
 
+staticpath = 'tomatic/static'
+
 @app.route('/')
 def tomatic():
-    return trustedStaticFile('mithrilspike/tomatic.html')
+    return trustedStaticFile(staticpath+'/tomatic.html')
     
 @app.route('/graella.js')
 def graella_js():
-    return trustedStaticFile('mithrilspike/graella.js')
+    return trustedStaticFile(staticpath+'/graella.js')
 
 @app.route('/graella-<week>.yaml')
 def graella(week):
     # TODO: ensure week is an iso date
     # TODO: ensure week is monday
-    return trustedStaticFile('mithrilspike/graella-{}.yaml'.format(week))
+    return trustedStaticFile(staticpath+'/graella-{}.yaml'.format(week))
 
 @app.route('/editgraella/<week>/<day>/<int:houri>/'
         '<int:turni>/<name>', methods=['UPDATE'])
 def editSlot(week, day, houri, turni, name):
     # TODO: Same ensures than graella
-    graellafile = 'mithrilspike/graella-{}.yaml'.format(week)
+    graellafile = staticpath+'/graella-{}.yaml'.format(week)
     graella = ns.load(graellafile)
     # TODO: Ensure day, houri, turni and name are in graella
     oldName = graella.timetable[day][int(houri)][int(turni)]
