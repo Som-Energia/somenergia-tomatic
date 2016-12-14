@@ -43,7 +43,53 @@ def setNow(year,month,day,hour,minute):
     global now
     now=datetime(year,month,day,hour,minute)
 
+def trustedStaticFile(path):
+    with open(path) as f:
+        return f.read()
+
 @app.route('/')
+def tomatic():
+    return trustedStaticFile('mithrilspike/tomatic.html')
+    
+@app.route('/graella.js')
+def graella_js():
+    return trustedStaticFile('mithrilspike/graella.js')
+
+@app.route('/graella-<week>.yaml')
+def graella(week):
+    # TODO: ensure week is an iso date
+    # TODO: ensure week is monday
+    return trustedStaticFile('mithrilspike/graella-{}.yaml'.format(week))
+
+@app.route('/editgraella/<week>/<day>/<int:houri>/'
+        '<int:turni>/<name>', methods=['UPDATE'])
+def editSlot(week, day, houri, turni, name):
+    # TODO: Same ensures than graella
+    graellafile = 'mithrilspike/graella-{}.yaml'.format(week)
+    graella = ns.load(graellafile)
+    # TODO: Ensure day, houri, turni and name are in graella
+    oldName = graella.timetable[day][int(houri)][int(turni)]
+    graella.timetable[day][int(houri)][int(turni)] = name
+    logmsg = (
+        "{}: {} ha canviat {} {}-{} {} de {} a {}".format(
+        datetime.now(),
+        "nobody", # TODO: ERP user
+        day,
+        graella.hours[int(houri)], 
+        graella.hours[int(houri)+1], 
+        graella.turns[int(turni)],
+        oldName,
+        name
+        ))
+    graella.setdefault('log',[])
+    print logmsg
+    graella.log.append(logmsg)
+    graella.dump(graellafile)
+    return trustedStaticFile(graellafile)
+
+
+
+@app.route('/boo')
 def index():
     global now
     if not now:
