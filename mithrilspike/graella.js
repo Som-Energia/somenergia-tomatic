@@ -79,6 +79,13 @@ Graella.controller = function(model, args) {
 			var dialog = document.querySelector('dialog');
 			this.cellSelected = function(newName) {
 				this.d.timetable[day][houri][turni] = newName;
+				m.request({
+					method: 'UPDATE',
+					url: 'editgraella/'+([
+						this.d.date,day,houri,turni,newName
+						].join('/')),
+				})
+				.then(function() { this.loadGrid(this.d.date);});
 			}
 			if (! dialog.showModal) {
 			  dialogPolyfill.registerDialog(dialog);
