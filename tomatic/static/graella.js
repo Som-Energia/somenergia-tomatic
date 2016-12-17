@@ -1,44 +1,35 @@
 'use strict';
 
 var PersonPicker = {
-	controller: function(persons, current, peeker) {
+	controller: function(persons) {
 		return {
-			_persons: persons,
-			_currentPerson: current,
-			_peekFunction: peeker,
-
-			show: function(currentPerson) {
-			},
-			close: function() {
-			},
 			personPicked: function(person) {
-				console.log(person);
 				persons.cellEdited(person);
 			},
 		};
 	},
 
-	view: function(controller, c) {
+	view: function(controller, persons) {
 		return (
-			m('dialog.mdl-dialog',
+			m('dialog.mdl-dialog[open]',
 				m('h1.mdl-dialog__title', "Qui farà el torn?"),
 				m('.mdl-dialog__content',
 					m('.extensions',
 
-						Object.keys(c.d.extensions).sort().map(function(name) {
+						Object.keys(persons.d.extensions).sort().map(function(name) {
 							return m('.extension', {
 								class: name,
 								onclick: function(ev) {
 									controller.personPicked(name);
 								}},
-								c.formatName(name)
+								persons.formatName(name)
 							);
 						})
 					)
 				),
 				m('.mdl-dialog__actions',
 					m('button.mdl-button.close[type=button]', {
-							onclick: c.cancelCellEdition,
+							onclick: persons.cancelCellEdition,
 						},
 						"Cancel·lar"
 					)
@@ -71,11 +62,11 @@ Graella.controller = function(model, args) {
 				+ (this.d.extensions[name] || "???");
 		},
 		editCell: function(day, houri, turni) {
-			this._editingCell = {
+			this._editingCell({
 				day: day,
 				houri: houri,
 				turni: turni
-			};
+			});
 			var dialog = document.querySelector('dialog');
 			this.cellSelected = function(newName) {
 				this.d.timetable[day][houri][turni] = newName;
@@ -96,11 +87,13 @@ Graella.controller = function(model, args) {
 			var dialog = document.querySelector('dialog');
 			this.cellSelected(name);
 			this.cellSelected = undefined;
+			this._editingCell(undefined);
 			dialog.close();
 		},
 		cancelCellEdition: function(ev) {
 			var dialog = document.querySelector('dialog');
 			this.cellSelected = undefined;
+			this._editingCell(undefined);
 			dialog.close();
 		},
 		loadGrid: function(date) {
@@ -139,7 +132,7 @@ Graella.view = function(c) {
 		);
 	};
 	return [
-		m.component(PersonPicker, c),
+		c._editingCell() ? m.component(PersonPicker, c):[], 
 		m('h1', "Setmana ", c.d.date),
 		m('table', [
 			m('tr', c.d.days.map(function(day) {
