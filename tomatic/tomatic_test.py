@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 
 import unittest
 import datetime
@@ -51,40 +51,25 @@ class MongoMockup(object):
         ]=timetable_dict['yaml']
 
 class ScheduleHours_Test(unittest.TestCase):
-    def eqOrdDict(self, dict1,dict2,
-         msg=None):
-         if not msg:
-             msg="{}!={}".format(dict1,dict2)
+    def eqOrdDict(self, dict1, dict2, msg=None):
+        def sorteddict(d):
+            if type(d) not in (dict, ns):
+                return d
+            return ns(sorted(
+                (k, sorteddict(v))
+                for k,v in d.items()
+                ))
+        dict1 = sorteddict(dict1)
+        dict2 = sorteddict(dict2)
 
-         if dict1 == None or dict2 == None:
-             raise self.failureException(msg+"\n\n{} or {} is None".format(dict1,dict2))
+        return self.assertMultiLineEqual(dict1.dump(), dict2.dump(), msg)
 
-         if type(dict1) is not ns or type(dict2) is not ns:
-             raise self.failureException(msg+"\n\n{} or {} are not yamlns".format(dict1,dict2))
-
-         shared_keys = set(dict2.keys()) & set(dict2.keys())
-
-         if not ( len(shared_keys) == len(dict1.keys()) and len(shared_keys) == len(dict2.keys())):
-             raise self.failureException(
-                msg+"\n\nLen of keys {} and {} are different".format(
-                    dict1.keys(), dict2.keys()))
-         for key in dict1.keys():
-             if type(dict1[key]) is ns:
-                 if key not in dict2:
-                    raise self.failureException(msg+"\n\n"+("{} is not in the second element".format(dict1[key])))
-                 if not self.eqOrdDict(dict1[key],dict2[key],msg=msg):
-                    raise self.failureException(msg)
-             else:
-                 if not key in dict2:
-                    raise self.failureException(msg+"\n\n"+("{} is not in the second element".format(dict1[key])))
-                 if not dict1[key] == dict2[key]:
-                    raise self.failureException(msg+"\n\n"+("{}!={}".format(dict1[key],dict2[key])))
-         return True
 
     def ns(self,content):
         return ns.loads(content)
 
     def setUp(self):
+        self.maxDiff = None
         self.b2bdatapath = "testdata"
         self.addTypeEqualityFunc(ns,self.eqOrdDict)
 
@@ -125,30 +110,26 @@ class ScheduleHours_Test(unittest.TestCase):
         )
         self.assertEqual(
             h.getYaml(),
-            {'timetable': ns(
-                {'dl': ns(
-                    {1: ['festiu']})
-                }),
-              'hores': [
-                '09:00',
-                '10:15'
-              ],
-              'torns': [
-                'T1'
-              ],
-              'colors': ns(
-                {'ana': '98bdc0'}
-              ),
-              'extensions': ns(
-                {'ana': 3181}
-              ),
-              'noms': ns(
-                {'cesar': u'César'}
-              ),
-              'setmana': datetime.date(
-                2016,7,11),
-              'companys': ['ana']
-            }
+            self.ns("""\
+              setmana: 2016-07-11
+              timetable:
+                dl:
+                   1:
+                   - festiu
+              hores:
+              - '09:00'
+              - '10:15'
+              torns:
+              - 'T1'
+              colors:
+                ana: '98bdc0'
+              extensions:
+                ana: 3181
+              noms:
+                cesar: César
+              companys:
+              - ana
+            """)
         )
     def test_mongoConnector_loadOne(self):
         h=HtmlGenFromSolution(
@@ -331,34 +312,26 @@ class ScheduleHours_Test(unittest.TestCase):
 
         self.assertEqual(
             h.getYaml(),
-            ns(
-                {'timetable': ns(
-                    {'dl': ns(
-                        {1: ['ana']})
-                    }),
-
-                  'hores': [
-                    '09:00',
-                    '10:15'
-                  ],
-                  'torns': [
-                    'T1'
-                  ],
-                  'colors': ns(
-                    {'ana': '98bdc0'}
-                  ),
-                  'extensions': ns(
-                    {'ana': 3181}
-                  ),
-                  'noms': ns(
-                    {'cesar': u'César'}
-                  ),
-                  'setmana': datetime.date(
-                    2016,7,18),
-                  'companys': ['ana']
-                },
-            )
-        )
+            self.ns("""
+                timetable:
+                  dl:
+                    1:
+                    - ana
+                hores:
+                - '09:00'
+                - '10:15'
+                torns:
+                - 'T1'
+                colors:
+                  ana: '98bdc0'
+                extensions:
+                  ana: 3181
+                noms:
+                  cesar: César
+                setmana: 2016-07-18
+                companys:
+                - ana
+            """))
 
     def test_yamlSolution_completeTimetable(self):
         h=HtmlGenFromSolution(
@@ -1100,7 +1073,7 @@ class ScheduleHours_Test(unittest.TestCase):
                 1:
                 - ana
             hores:
-            - 09:00
+            - '09:00'
             - '10:15'
             torns:
             - T1
@@ -1137,7 +1110,7 @@ class ScheduleHours_Test(unittest.TestCase):
                 - ana
                 - jordi
             hores:
-            - 09:00
+            - '09:00'
             - '10:15'
             torns:
             - T1
@@ -1180,7 +1153,7 @@ class ScheduleHours_Test(unittest.TestCase):
                 - jordi
                 - aleix
             hores:
-            - 09:00
+            - '09:00'
             - '10:15'
             - '11:30'
             torns:
@@ -1236,7 +1209,7 @@ class ScheduleHours_Test(unittest.TestCase):
                 - ana
                 - victor
             hores:
-            - 09:00
+            - '09:00'
             - '10:15'
             - '11:30'
             torns:
@@ -1370,7 +1343,7 @@ class ScheduleHours_Test(unittest.TestCase):
                 - carles
                 - aleix
             hores:
-            - 09:00
+            - '09:00'
             - '10:15'
             - '11:30'
             - '12:45'
@@ -1681,7 +1654,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - carles
             - aleix
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         - '11:30'
         - '12:45'
@@ -1850,7 +1823,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - carles
             - aleix
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         - '11:30'
         - '12:45'
@@ -1937,7 +1910,7 @@ class ScheduleHours_Test(unittest.TestCase):
             1:
             - ana
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -2054,7 +2027,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - carles
             - aleix
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         - '11:30'
         - '12:45'
@@ -2482,7 +2455,7 @@ class ScheduleHours_Test(unittest.TestCase):
             1:
             - ana
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -2524,7 +2497,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - jordi
             - pere
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -2581,7 +2554,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - jordi
             - ana
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -2643,7 +2616,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -2701,9 +2674,9 @@ class ScheduleHours_Test(unittest.TestCase):
             - jordi
             - ana
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
-        - 11:30
+        - '11:30'
         torns:
         - T1
         - T2
@@ -2761,7 +2734,7 @@ class ScheduleHours_Test(unittest.TestCase):
             1:
             - ana
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -2801,7 +2774,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -2847,7 +2820,7 @@ class ScheduleHours_Test(unittest.TestCase):
             1:
             - ana
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -2888,7 +2861,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -2935,7 +2908,7 @@ class ScheduleHours_Test(unittest.TestCase):
                 1:
                 - ana
             hores:
-            - 09:00
+            - '09:00'
             - '10:15'
             torns:
             - T1
@@ -2965,7 +2938,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3003,7 +2976,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3040,7 +3013,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3072,7 +3045,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3106,7 +3079,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3155,7 +3128,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3193,7 +3166,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3232,7 +3205,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3270,7 +3243,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3314,7 +3287,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3352,7 +3325,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3384,12 +3357,12 @@ class ScheduleHours_Test(unittest.TestCase):
         h = HtmlGenFromYaml(self.ns(yaml))
         h_paused = HtmlGenFromYaml(self.ns(yaml_paused))
         difference = self.ns("""\
-                                dl:
-                                    1:
-                                        217: removed
-                                dynamic:
-                                    219:  added
-                                """)
+            dl:
+                1:
+                    217: removed
+            dynamic:
+                219:  added
+            """)
 
         self.assertEqual(h.comparePaused(h_paused),difference)
     def test_comparePaused_oneDifference_dynamic(self):
@@ -3401,7 +3374,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3439,7 +3412,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3495,7 +3468,7 @@ class ScheduleHours_Test(unittest.TestCase):
             2:
             - pere
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3536,7 +3509,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3597,7 +3570,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3649,7 +3622,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3683,7 +3656,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         noms: # Els que no només cal posar en majúscules
           silvia: Sílvia
@@ -3728,7 +3701,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3764,7 +3737,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         noms: # Els que no només cal posar en majúscules
           silvia: Sílvia
@@ -3807,7 +3780,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3844,7 +3817,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3891,7 +3864,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3933,7 +3906,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         torns:
         - T1
@@ -3980,7 +3953,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
 
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         - '11:30'
 
@@ -4043,7 +4016,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
 
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         - '11:30'
         - '12:45'
@@ -4106,7 +4079,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
 
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         - '11:30'
         - '12:45'
@@ -4152,7 +4125,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - jordi
 
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
 
         noms: # Els que no només cal posar en majúscules
@@ -4209,7 +4182,7 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - ana
         hores:
-        - 09:00
+        - '09:00'
         - '10:15'
         - '11:30'
 
@@ -4254,11 +4227,16 @@ class ScheduleHours_Test(unittest.TestCase):
              u"""</table>"""
              )
         )
+
+
 if __name__ == "__main__":
 
     if '--accept' in sys.argv:
         sys.argv.remove('--accept')
         unittest.TestCase.acceptMode = True
+    if 'B2BACCEPT' in sys.env:
+        unittest.TestCase.acceptMode = True
 
     unittest.main()
+
 # vim: ts=4 sw=4 et
