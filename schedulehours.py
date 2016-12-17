@@ -28,9 +28,6 @@ def iniciSetmana():
 	givenDate = datetime.datetime.strptime(args.date,"%Y-%m-%d").date()
 	return givenDate - timedelta(days=givenDate.weekday())
 
-def outputFile():
-	return "graella-telefons-{}.html".format(iniciSetmana())
-
 def transliterate(word):
 	word=unicode(word).lower()
 	for old, new in zip(
@@ -145,6 +142,7 @@ class Backtracker:
 	def __init__(self, config) :
 
 		self.config = config
+		self.outputFile = "graella-telefons-{}.html".format(config.monday)
 		self.globalMaxTurnsADay = config.maximHoresDiariesGeneral
 		self.ntelefons = config.nTelefons
 		self.dies = config.diesCerca
@@ -336,7 +334,7 @@ class Backtracker:
 			self.reportSolution((self.bestSolution+['?']*60)[:60] )
 			error("Impossible trobar solució\n{}".format( self.deeperCutLog))
 		else:
-			step("Millor graella grabada a '{}'".format(outputFile()))
+			step("Millor graella grabada a '{}'".format(self.outputFile))
 
 	def solveTorn(self, partial):
 		if self.terminated: return
@@ -553,7 +551,7 @@ class Backtracker:
 			personalColors = htmlgen.htmlColors()
 			header = htmlgen.htmlHeader()
 			subheader = htmlgen.htmlSubHeader()
-			with open(outputFile(),'w') as output:
+			with open(self.outputFile,'w') as output:
 				output.write(
 					header+personalColors+
 					subheader+
@@ -575,7 +573,7 @@ class Backtracker:
 			output.write(penalitzacions)
 		if firstAtCost:
 			graellaFile = "graella-telefons-{}.html".format(self.config.monday)
-			with open(outputFile(),'a') as output:
+			with open(self.outputFile,'a') as output:
 				output.write(htmlgen.htmlTable()+
 					htmlgen.htmlExtensions()+
 					htmlgen.htmlFixExtensions()+
