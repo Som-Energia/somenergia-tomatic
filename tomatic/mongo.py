@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 from yamlns import namespace as ns
+
 class MongoConnector(object):
     def __init__(self,client):
         self.client=client
@@ -47,3 +49,4 @@ class FileProvider(object):
             "w"
         ) as f:
             f.write(arg['yaml'])
+

@@ -130,7 +130,7 @@ class Api_Test(unittest.TestCase):
         )
         rv = self.app.get('/getqueue/2016_07_25/9/15')
         self.assertB2BEqual(rv.data)
-    
+
     def test_getqueue_many_tt_first_week(self):
         api.loadYaml("""\
                 setmana: 2016-07-25
