@@ -21,7 +21,7 @@ class Api_Test(unittest.TestCase):
     def setUp(self):
         self.app = api.app.test_client()
         self.maxDiff = None
-        self.b2bdatapath = "testcases"
+        self.b2bdatapath = "testdata"
 
     def test_getcurrentqueue(self):
 

@@ -5,6 +5,7 @@ from yamlns import namespace as ns
 
 class HtmlGen(object):
 
+    @staticmethod
     def iniciSetmana(date=None):
         from datetime import date as dateModule, timedelta
         import datetime
@@ -14,7 +15,6 @@ class HtmlGen(object):
             return today + timedelta(days=7-today.weekday())
         # take the monday of the week including that date
         return date - timedelta(days=date.weekday())
-    iniciSetmana=staticmethod(iniciSetmana)
 
     def properName(self,name):
         name = self.yaml.noms[name] if name in self.yaml.noms else name
@@ -50,14 +50,18 @@ class HtmlGen(object):
                  day=day
                  )
         )
-        headerTlfnos=''.join(
-            ["""<tr>"""]+[
-            "<th>{}</th>".format(t)
+        headerTlfnos=''.join([
+            '<tr>'
+            '<td></td>'
+            ]+[
+            '<th>{}</th>'.format(t)
             for t in self.yaml.torns
-            ]+
+            ]+(
             [u'<th colspan="100%">Cua dinàmica</th>']
-            if "dynamic" in self.yaml else [],
-            ["</tr>\n"]
+            if "dynamic" in self.yaml else []
+            )+[
+            '</tr>\n'
+            ]
         )
         footer= u"""</tr>\n</table>"""
         partialDynamicTable= self.partialDynamicTable() if "dynamic" in self.yaml else ""
@@ -72,25 +76,35 @@ class HtmlGen(object):
                     for name in self.yaml.dynamic])+"\n"    
 
     def htmlTable(self):
-        headerDays=("""<tr>"""+""
-                "".join([
-                    """<td></td><th colspan={colspan}>{day}</th>""".format(
+        headerDays=(
+            """<tr>"""+
+            "".join([
+                """<td></td><th colspan={colspan}>{day}</th>"""
+                    .format(
                         colspan=len(self.yaml.torns),
                         day=day
                         )
-                    for day in self.yaml.timetable.keys()
-                    ])+""
-                """</tr>\n""")
-        headerTlfnos=("""<tr>"""+("""<td></td>"""
-                ""+("".join([
-                             "<th>{}</th>".format(t) 
-                             for t in self.yaml.torns
-                             ])))*len(self.yaml.timetable.keys())+""
-                "</tr>\n")
+                for day in self.yaml.timetable.keys()
+                ])+
+            """</tr>\n"""
+            )
+        ndays = len(self.yaml.timetable)
+        headerTlfnos="".join([
+            """<tr>""",(
+            """<td></td>"""
+            +(
+                "".join([
+                    "<th>{}</th>".format(t) 
+                    for t in self.yaml.torns
+                ])
+            ))*ndays +
+            "</tr>\n"
+            ])
         coreTable=("</tr>\n".join([
                     """<tr><th>{period}</th>\n""".format(
                         period=period)+"<td>&nbsp;</td>\n".join(
-                            [self.partialCoreTable(day,turn) for day in self.yaml.timetable.keys()
+                            [self.partialCoreTable(day,turn)
+                            for day in self.yaml.timetable.keys()
                             ])
                      for turn,period in enumerate(self.llegeixHores())
                      ])+""

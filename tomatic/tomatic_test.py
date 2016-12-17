@@ -83,8 +83,11 @@ class ScheduleHours_Test(unittest.TestCase):
 
     def ns(self,content):
         return ns.loads(content)
+
     def setUp(self):
+        self.b2bdatapath = "testdata"
         self.addTypeEqualityFunc(ns,self.eqOrdDict)
+
     def tearDown(self):
         return # TODO: Recover this
         if config:
@@ -228,7 +231,7 @@ class ScheduleHours_Test(unittest.TestCase):
         m.saveTimetable(h.getYaml())
         with self.assertRaises(Exception):
             m.saveTimetable(h.getYaml())
-    
+
     def test_mongoConnector_insertForce(self):
         h=HtmlGenFromSolution(
             config=self.ns("""\
@@ -255,7 +258,7 @@ class ScheduleHours_Test(unittest.TestCase):
             m.saveTimetable(h.getYaml(),force=True),
             None
         )
-    
+
     def test_mongoConnector_loadUnexisting(self):
         h=HtmlGenFromSolution(
             config=self.ns("""\
@@ -1755,9 +1758,8 @@ class ScheduleHours_Test(unittest.TestCase):
         - victor
         - jordi""")
        )
-       self.b2bdatapath = "testcases"
        self.assertB2BEqual(h.htmlParse().encode('utf-8'))
-    
+
     def test_htmlParse_completeHtmlWithHoliday(self):
        self.maxDiff = None
        h = HtmlGenFromYaml(self.ns("""\
@@ -1925,7 +1927,6 @@ class ScheduleHours_Test(unittest.TestCase):
         - victor
         - jordi""")
        )
-       self.b2bdatapath = "testcases"
        self.assertB2BEqual(h.htmlParse().encode('utf-8'))
 
     def test_asteriskParse_oneTurnOneLocal(self):
@@ -2511,7 +2512,7 @@ class ScheduleHours_Test(unittest.TestCase):
        self.assertIn('members',queue)
        members = queue['members']
        self.assertIn('SIP/217',members)
-       
+
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskSend_oneTurnManySip(self):
        self.maxDiff = None
@@ -2561,7 +2562,7 @@ class ScheduleHours_Test(unittest.TestCase):
        self.assertIn('SIP/217',members)
        self.assertIn('SIP/210',members)
        self.assertIn('SIP/224',members)
-    
+
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskSend_manyTurnManySip(self):
        self.maxDiff = None
@@ -2630,7 +2631,7 @@ class ScheduleHours_Test(unittest.TestCase):
        members = queue['members']
        self.assertIn('SIP/210',members)
        self.assertIn('SIP/217',members)
-    
+
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskReceive_oneTurnManySip(self):
        self.maxDiff = None
@@ -2992,7 +2993,7 @@ class ScheduleHours_Test(unittest.TestCase):
         """
         h = HtmlGenFromYaml(self.ns(yaml))
         self.assertEqual(h.nameToExtension('ana'),217)
-        
+
     def test_extensionToName_oneSip(self):
         yaml = """\
         timetable:
