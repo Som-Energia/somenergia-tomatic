@@ -1190,7 +1190,6 @@ class ScheduleHours_Test(unittest.TestCase):
             u"""</table>""")
 
     def test_htmlTable_twoTelephonesTwoTurnsTwoDays(self):
-        self.maxDiff = None
         h=HtmlGenFromYaml(self.ns("""\
             setmana: 2016-07-25
             timetable:
@@ -1253,7 +1252,6 @@ class ScheduleHours_Test(unittest.TestCase):
             u"""</table>""")
 
     def test_htmlTable_manyTelephonesmanyTurnsmanyDays(self):
-        self.maxDiff = None
         h=HtmlGenFromYaml(self.ns("""\
             setmana: 2016-07-25
             timetable:
@@ -1565,7 +1563,6 @@ class ScheduleHours_Test(unittest.TestCase):
         )
 
     def test_htmlParse_completeHtml(self):
-       self.maxDiff = None
        h = HtmlGenFromYaml(self.ns("""\
         timetable:
           dl:
@@ -1734,7 +1731,6 @@ class ScheduleHours_Test(unittest.TestCase):
        self.assertB2BEqual(h.htmlParse().encode('utf-8'))
 
     def test_htmlParse_completeHtmlWithHoliday(self):
-       self.maxDiff = None
        h = HtmlGenFromYaml(self.ns("""\
         timetable:
           dl:
@@ -1903,7 +1899,6 @@ class ScheduleHours_Test(unittest.TestCase):
        self.assertB2BEqual(h.htmlParse().encode('utf-8'))
 
     def test_asteriskParse_oneTurnOneLocal(self):
-       self.maxDiff = None
        h = HtmlGenFromYaml(self.ns("""\
         timetable:
           dl:
@@ -1938,7 +1933,6 @@ class ScheduleHours_Test(unittest.TestCase):
 
     @unittest.skip("Blocking itself")
     def test_asteriskParse_manyTurnOneLocal(self):
-       self.maxDiff = None
        h = HtmlGenFromYaml(self.ns("""\
         timetable:
           dl:
@@ -2448,7 +2442,6 @@ class ScheduleHours_Test(unittest.TestCase):
        )
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskSend_oneTurnOneSip(self):
-       self.maxDiff = None
        h = HtmlGenFromYaml(self.ns("""\
         timetable:
           dl:
@@ -2488,7 +2481,6 @@ class ScheduleHours_Test(unittest.TestCase):
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskSend_oneTurnManySip(self):
-       self.maxDiff = None
        h = HtmlGenFromYaml(self.ns("""\
         timetable:
           dl:
@@ -2538,7 +2530,6 @@ class ScheduleHours_Test(unittest.TestCase):
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskSend_manyTurnManySip(self):
-       self.maxDiff = None
        h = HtmlGenFromYaml(self.ns("""\
         timetable:
           dl:
@@ -2607,7 +2598,6 @@ class ScheduleHours_Test(unittest.TestCase):
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskReceive_oneTurnManySip(self):
-       self.maxDiff = None
        yaml = """\
         timetable:
           dl:
@@ -2656,7 +2646,6 @@ class ScheduleHours_Test(unittest.TestCase):
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskReceive_manyTurnManySip(self):
-       self.maxDiff = None
        yaml = """\
         timetable:
           dl:
