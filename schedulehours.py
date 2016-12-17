@@ -13,7 +13,6 @@ from sheetfetcher import SheetFetcher
 from tomatic.htmlgen import HtmlGenFromSolution
 
 monitoringFile = 'taula.html'
-worksheet_unavailabilities = u'Reunions i altres afers' # 'oyfu0hb'
 worksheet_load = 'o9rxhxk' # u'Càrrega setmanal de telèfon'
 
 # Dirty Hack: Behave like python3 open regarding unicode
@@ -62,10 +61,10 @@ def baixaDades(monday, certificat) :
 
 	step('Baixant carrega setmanal...')
 
-	carregaRangeName = 'carregatelefon_{:02d}{:02d}{:02d}'.format(
+	carregaRangeName = config.intervalCarrega.format(
 		*monday.timetuple())
 	step("  Descarregant el rang '{}'...".format(carregaRangeName))
-	carrega = fetcher.get_range(worksheet_load, carregaRangeName)
+	carrega = fetcher.get_range(config.fullCarrega, carregaRangeName)
 	step("  Guardant-ho com '{}'...".format('carrega.csv'))
 	with open('carrega.csv','w') as phoneload :
 		phoneload.write(
@@ -111,8 +110,8 @@ def baixaDades(monday, certificat) :
 
 	step("Baixant altres indisponibilitats setmanals...")
 
-	step("  Baixant el full '{}'...".format(worksheet_unavailabilities))
-	indis = fetcher.get_fullsheet(worksheet_unavailabilities)
+	step("  Baixant el full '{}'...".format(config.fullIndisponibilitats))
+	indis = fetcher.get_fullsheet(config.fullIndisponibilitats)
 	step("  Guardant indisponibilitats setmanals a 'indisponibilitats-setmana.conf'...")
 	with open('indisponibilitats-setmana.conf','w') as indisfile:
 		for _, who, day, weekday, hours, need, comment in indis[1:] :
@@ -122,8 +121,8 @@ def baixaDades(monday, certificat) :
 			if weekday.strip():
 				fail("Hi ha indisponibilitats permaments al drive, afegeix-les a ma i esborra-les")
 			theDay = datetime.datetime.strptime(day, "%d/%m/%Y").date()
-			if theDay < iniciSetmana(): continue
-			if theDay > iniciSetmana()+timedelta(days=6): continue
+			if theDay < monday: continue
+			if theDay > monday+timedelta(days=6): continue
 
 			startHours = [ h.split(':')[0].strip() for h in hours.split(',')]
 			bitmap = ''.join((
@@ -343,6 +342,8 @@ class Backtracker:
 	def solveTorn(self, partial):
 		if self.terminated: return
 
+		# Better solution found? Report and hold it
+		# A more complete solution is always better
 		if (len(self.bestSolution), -self.bestCost) <= (len(partial), -self.cost):
 			if len(partial) == len(self.caselles):
 				print 'Solució trobada amb cost {}.'.format(self.cost)
@@ -352,6 +353,7 @@ class Backtracker:
 			self.bestSolution=partial
 			self.bestCost=self.cost
 
+		# Complete solution? Stop backtracking.
 		if len(partial) == len(self.caselles):
 			self.minimumCost = self.cost
 			self.minimumCostReason = self.penalties
