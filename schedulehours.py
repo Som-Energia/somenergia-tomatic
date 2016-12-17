@@ -13,7 +13,6 @@ from sheetfetcher import SheetFetcher
 from tomatic.htmlgen import HtmlGenFromSolution
 
 monitoringFile = 'taula.html'
-worksheet_load = 'o9rxhxk' # u'Càrrega setmanal de telèfon'
 
 # Dirty Hack: Behave like python3 open regarding unicode
 def open(*args, **kwd):
@@ -41,7 +40,7 @@ def transliterate(word):
 		word = word.replace(old,new)
 	return word
 
-def baixaDades(monday, certificat) :
+def baixaDades(config, certificat) :
 
 	def table(sheet, name):
 		cells = sheet.range(name)
@@ -62,7 +61,7 @@ def baixaDades(monday, certificat) :
 	step('Baixant carrega setmanal...')
 
 	carregaRangeName = config.intervalCarrega.format(
-		*monday.timetuple())
+		*config.monday.timetuple())
 	step("  Descarregant el rang '{}'...".format(carregaRangeName))
 	carrega = fetcher.get_range(config.fullCarrega, carregaRangeName)
 	step("  Guardant-ho com '{}'...".format('carrega.csv'))
@@ -76,10 +75,10 @@ def baixaDades(monday, certificat) :
 
 	step('Baixant vacances...')
 
-	nextFriday = monday+timedelta(days=4)
-	mondayYear = monday.year
-	startingSemester = 1 if monday < date(mondayYear,7,1) else 2
-	startingOffset = (monday - date(mondayYear,1 if startingSemester is 1 else 7,1)).days
+	nextFriday = config.monday+timedelta(days=4)
+	mondayYear = config.monday.year
+	startingSemester = 1 if config.monday < date(mondayYear,7,1) else 2
+	startingOffset = (config.monday - date(mondayYear,1 if startingSemester is 1 else 7,1)).days
 
 	holidays2SRange = 'Vacances{}Semestre{}'.format(
 		mondayYear,
@@ -121,8 +120,8 @@ def baixaDades(monday, certificat) :
 			if weekday.strip():
 				fail("Hi ha indisponibilitats permaments al drive, afegeix-les a ma i esborra-les")
 			theDay = datetime.datetime.strptime(day, "%d/%m/%Y").date()
-			if theDay < monday: continue
-			if theDay > monday+timedelta(days=6): continue
+			if theDay < config.monday: continue
+			if theDay > config.monday+timedelta(days=6): continue
 
 			startHours = [ h.split(':')[0].strip() for h in hours.split(',')]
 			bitmap = ''.join((
@@ -546,11 +545,9 @@ class Backtracker:
 			"""
 			return self.config.noms.get(name, name.title())
 
-		monday = iniciSetmana()
-
 		firstAtCost = self.minimumCost != self.__dict__.get('storedCost', 'resEsComparaAmbMi')
 		solution = dict(zip(self.caselles, solution))
-		htmlgen=HtmlGenFromSolution(self.config,solution,self.companys,monday)
+		htmlgen=HtmlGenFromSolution(self.config,solution,self.companys,self.config.monday)
 		if firstAtCost:
 			self.storedCost = self.minimumCost
 			personalColors = htmlgen.htmlColors()
@@ -577,7 +574,7 @@ class Backtracker:
 			output.write(htmlgen.htmlTable())
 			output.write(penalitzacions)
 		if firstAtCost:
-			graellaFile = "graella-telefons-{}.html".format(monday)
+			graellaFile = "graella-telefons-{}.html".format(self.config.monday)
 			with open(outputFile(),'a') as output:
 				output.write(htmlgen.htmlTable()+
 					htmlgen.htmlExtensions()+
@@ -635,8 +632,17 @@ def main():
 
 	args = parseArgs()
 
+	step('Carregant configuració...')
+	from yamlns import namespace as ns
+	try:
+		config = ns.load("config.yaml")
+	except:
+		error("Configuració incorrecta")
+		raise
+
+	config.monday = iniciSetmana()
 	if not args.keep:
-		baixaDades(iniciSetmana(), args.certificate)
+		baixaDades(config, args.certificate)
 
 	import signal
 	import subprocess
@@ -647,11 +653,9 @@ def main():
 
 	signal.signal(signal.SIGINT, signal_handler)
 
-	from yamlns import namespace as ns
-
-	step('Carregant configuració...')
+	step('Muntant el solucionador...')
 	try:
-		b = Backtracker(ns.load("config.yaml"))
+		b = Backtracker(config)
 	except:
 		error("Configuració incorrecta")
 		raise
