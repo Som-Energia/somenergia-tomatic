@@ -51,7 +51,7 @@ class MongoMockup(object):
         ]=timetable_dict['yaml']
 
 class ScheduleHours_Test(unittest.TestCase):
-    def eqOrdDict(self, dict1,dict2, 
+    def eqOrdDict(self, dict1,dict2,
          msg=None):
          if not msg:
              msg="{}!={}".format(dict1,dict2)
@@ -62,7 +62,7 @@ class ScheduleHours_Test(unittest.TestCase):
          if type(dict1) is not ns or type(dict2) is not ns:
              raise self.failureException(msg+"\n\n{} or {} are not yamlns".format(dict1,dict2))
 
-         shared_keys = set(dict2.keys()) & set(dict2.keys())        
+         shared_keys = set(dict2.keys()) & set(dict2.keys())
 
          if not ( len(shared_keys) == len(dict1.keys()) and len(shared_keys) == len(dict2.keys())):
              raise self.failureException(
@@ -328,15 +328,15 @@ class ScheduleHours_Test(unittest.TestCase):
                 '2016-07-18','%Y-%m-%d').date(),
             companys=['ana']
         )
-        
+
         self.assertEqual(
-            h.getYaml(), 
+            h.getYaml(),
             ns(
                 {'timetable': ns(
                     {'dl': ns(
                         {1: ['ana']})
                     }),
-                  
+
                   'hores': [
                     '09:00',
                     '10:15'
@@ -359,7 +359,7 @@ class ScheduleHours_Test(unittest.TestCase):
                 },
             )
         )
-    
+
     def test_yamlSolution_completeTimetable(self):
         h=HtmlGenFromSolution(
             config=self.ns("""\
@@ -392,7 +392,7 @@ class ScheduleHours_Test(unittest.TestCase):
            joan:   'fae080'
            ana:    '98bdc0'
            victor: 'ff3333'
-           jordi: 'ff9999' 
+           jordi:  'ff9999'
         extensions:
            marta:  3040
            monica: 3041
@@ -412,7 +412,7 @@ class ScheduleHours_Test(unittest.TestCase):
            joan:   3056
            ana:    3181
            victor: 3182
-           jordi:  3183 
+           jordi:  3183
         noms: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -508,54 +508,54 @@ class ScheduleHours_Test(unittest.TestCase):
         )
 
         self.assertEqual(
-            h.getYaml(), 
+            h.getYaml(),
             ns(
                 {'timetable': ns(
                     {'dl': ns(
-                        {1: 
+                        {1:
                             ['jordi',
                              'marta',
                              'tania'
                              ]
                         ,
-                        2: 
+                        2:
                             ['tania',
                              'yaiza',
                              'silvia'
                              ]
                         ,
-                        3: 
+                        3:
                             ['judith',
                              'pere',
                              'ana'
                              ]
                         ,
-                        4: 
+                        4:
                             ['ana',
                              'judith',
                              'erola'
                              ]
                         }),
                      'dm': ns({
-                        1: 
+                        1:
                            ['pere',
                             'jordi',
                             'victor'
                             ]
                         ,
-                        2: 
+                        2:
                            ['carles',
                             'victor',
                             'ana'
                             ]
                         ,
-                        3: 
+                        3:
                            ['joan',
                             'silvia',
                             'eduard'
                             ]
                         ,
-                        4: 
+                        4:
                            ['david',
                             'joan',
                             'monica'
@@ -563,51 +563,51 @@ class ScheduleHours_Test(unittest.TestCase):
                         }),
 
                      'dx': ns({
-                        1: 
+                        1:
                            ['yaiza',
                             'monica',
                             'pere'
                             ]
                         ,
-                        2: 
+                        2:
                            ['erola',
                             'joan',
                             'marta'
                             ]
                         ,
-                        3: 
+                        3:
                            ['victor',
                             'eduard',
                             'jordi'
                             ]
                         ,
-                        4: 
+                        4:
                            ['eduard',
                             'david',
                             'victor'
                             ]
                         }),
-                     
+
                      'dj': ns({
-                        1: 
+                        1:
                            ['judith',
                             'jordi',
                             'carles'
                             ]
                         ,
-                        2: 
+                        2:
                            ['silvia',
                             'tania',
                             'judith'
                             ]
                         ,
-                        3: 
+                        3:
                            ['monica',
                             'ana',
                             'judit'
                             ]
                         ,
-                        4: 
+                        4:
                            ['judit',
                             'erola',
                             'joan'
@@ -615,32 +615,32 @@ class ScheduleHours_Test(unittest.TestCase):
                         }),
 
                      'dv': ns({
-                        1: 
+                        1:
                            ['ana',
                             'judith',
                             'jordi'
                             ]
                         ,
-                        2: 
+                        2:
                            ['jordi',
                             'ana',
                             'judith'
                             ]
                         ,
-                        3: 
+                        3:
                            ['victor',
                             'carles',
                             'yaiza'
                             ]
                         ,
-                        4: 
+                        4:
                            ['marta',
                             'victor',
                             'silvia'
                             ]
                         }),
                     }),
-                  
+
                   'hores': [
                     '09:00',
                     '10:15',
@@ -695,7 +695,7 @@ class ScheduleHours_Test(unittest.TestCase):
                      'joan':   3056,
                      'ana':    3181,
                      'victor': 3182,
-                     'jordi':  3183, 
+                     'jordi':  3183,
                     }
                   ),
                   'noms': ns({
@@ -731,7 +731,7 @@ class ScheduleHours_Test(unittest.TestCase):
                 },
             )
         )
-    
+
     def test_yamlSolution_completeHolidaysTimetable(self):
         h=HtmlGenFromSolution(
             config=self.ns("""\
@@ -764,7 +764,7 @@ class ScheduleHours_Test(unittest.TestCase):
            joan:   'fae080'
            ana:    '98bdc0'
            victor: 'ff3333'
-           jordi: 'ff9999' 
+           jordi:  'ff9999'
         extensions:
            marta:  3040
            monica: 3041
@@ -784,7 +784,7 @@ class ScheduleHours_Test(unittest.TestCase):
            joan:   3056
            ana:    3181
            victor: 3182
-           jordi:  3183 
+           jordi:  3183
         noms: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -868,54 +868,54 @@ class ScheduleHours_Test(unittest.TestCase):
         )
 
         self.assertEqual(
-            h.getYaml(), 
+            h.getYaml(),
             ns(
                 {'timetable': ns(
                     {'dl': ns(
-                        {1: 
+                        {1:
                             ['jordi',
                              'marta',
                              'tania'
                              ]
                         ,
-                        2: 
+                        2:
                             ['tania',
                              'yaiza',
                              'silvia'
                              ]
                         ,
-                        3: 
+                        3:
                             ['judith',
                              'pere',
                              'ana'
                              ]
                         ,
-                        4: 
+                        4:
                             ['ana',
                              'judith',
                              'erola'
                              ]
                         }),
                      'dm': ns({
-                        1: 
+                        1:
                            ['pere',
                             'jordi',
                             'victor'
                             ]
                         ,
-                        2: 
+                        2:
                            ['carles',
                             'victor',
                             'ana'
                             ]
                         ,
-                        3: 
+                        3:
                            ['joan',
                             'silvia',
                             'eduard'
                             ]
                         ,
-                        4: 
+                        4:
                            ['david',
                             'joan',
                             'monica'
@@ -923,51 +923,51 @@ class ScheduleHours_Test(unittest.TestCase):
                         }),
 
                      'dx': ns({
-                        1: 
+                        1:
                            ['yaiza',
                             'monica',
                             'pere'
                             ]
                         ,
-                        2: 
+                        2:
                            ['erola',
                             'joan',
                             'marta'
                             ]
                         ,
-                        3: 
+                        3:
                            ['victor',
                             'eduard',
                             'jordi'
                             ]
                         ,
-                        4: 
+                        4:
                            ['eduard',
                             'david',
                             'victor'
                             ]
                         }),
-                     
+
                      'dj': ns({
-                        1: 
+                        1:
                            ['judith',
                             'jordi',
                             'carles'
                             ]
                         ,
-                        2: 
+                        2:
                            ['silvia',
                             'tania',
                             'judith'
                             ]
                         ,
-                        3: 
+                        3:
                            ['monica',
                             'ana',
                             'judit'
                             ]
                         ,
-                        4: 
+                        4:
                            ['judit',
                             'erola',
                             'joan'
@@ -975,32 +975,32 @@ class ScheduleHours_Test(unittest.TestCase):
                         }),
 
                      'dv': ns({
-                        1: 
+                        1:
                            ['festiu',
                             'festiu',
                             'festiu'
                             ]
                         ,
-                        2: 
+                        2:
                            ['festiu',
                             'festiu',
                             'festiu'
                             ]
                         ,
-                        3: 
+                        3:
                            ['festiu',
                             'festiu',
                             'festiu'
                             ]
                         ,
-                        4: 
+                        4:
                            ['festiu',
                             'festiu',
                             'festiu'
                             ]
                         }),
                     }),
-                  
+
                   'hores': [
                     '09:00',
                     '10:15',
@@ -1055,7 +1055,7 @@ class ScheduleHours_Test(unittest.TestCase):
                      'joan':   3056,
                      'ana':    3181,
                      'victor': 3182,
-                     'jordi':  3183, 
+                     'jordi':  3183,
                     }
                   ),
                   'noms': ns({
@@ -1118,7 +1118,7 @@ class ScheduleHours_Test(unittest.TestCase):
         )
 
         self.assertMultiLineEqual(
-            h.htmlTable(), 
+            h.htmlTable(),
             u"""<table>\n"""
             u"""<tr><td></td><th colspan=1>dl</th></tr>\n"""
             u"""<tr><td></td><th>T1</th>"""
@@ -1127,7 +1127,7 @@ class ScheduleHours_Test(unittest.TestCase):
             u"""<td class='ana'>Ana</td>\n"""
             u"""</tr>\n"""
             u"""</table>""")
-        
+
     def test_htmlTable_twoTelephonesOneTurnOneDay(self):
         h=HtmlGenFromYaml(self.ns("""\
             setmana: 2016-07-25
@@ -1167,7 +1167,7 @@ class ScheduleHours_Test(unittest.TestCase):
             u"""<td class='jordi'>Jordi</td>\n"""
             u"""</tr>\n"""
             u"""</table>""")
-        
+
     def test_htmlTable_twoTelephonesTwoTurnsOneDay(self):
         h=HtmlGenFromYaml(self.ns("""\
             setmana: 2016-07-25
@@ -1197,7 +1197,7 @@ class ScheduleHours_Test(unittest.TestCase):
                monica: Mònica
                tania: Tània
                cesar: César
-               victor: Víctor            
+               victor: Víctor
             """)
         )
         self.assertMultiLineEqual(
@@ -1278,7 +1278,7 @@ class ScheduleHours_Test(unittest.TestCase):
             u"""<td class='victor'>Víctor</td>\n"""
             u"""</tr>\n"""
             u"""</table>""")
-    
+
     def test_htmlTable_manyTelephonesmanyTurnsmanyDays(self):
         self.maxDiff = None
         h=HtmlGenFromYaml(self.ns("""\
@@ -1496,11 +1496,11 @@ class ScheduleHours_Test(unittest.TestCase):
                """)
         )
         self.assertMultiLineEqual(h.htmlExtensions(),
-        """<h3>Extensions</h3>\n""" 
+        """<h3>Extensions</h3>\n"""
         """<div class="extensions">\n"""
         """<div class="extension marta">Marta<br/>3040</div>\n"""
         """</div>""")
-    
+
     def test_htmlExtension_twoExtensions(self):
         h = HtmlGenFromYaml(self.ns("""\
             extensions:
@@ -1511,7 +1511,7 @@ class ScheduleHours_Test(unittest.TestCase):
                """)
         )
         self.assertMultiLineEqual(h.htmlExtensions(),
-        """<h3>Extensions</h3>\n""" 
+        """<h3>Extensions</h3>\n"""
         """<div class="extensions">\n"""
         """<div class="extension aleix">Aleix<br/>3053</div>\n"""
         """<div class="extension marta">Marta<br/>3040</div>\n"""
@@ -1524,7 +1524,7 @@ class ScheduleHours_Test(unittest.TestCase):
                """)
         )
         self.assertMultiLineEqual(h.htmlExtensions(),
-        """<h3>Extensions</h3>\n""" 
+        """<h3>Extensions</h3>\n"""
         """<div class="extensions">\n"""
         """</div>""")
 
@@ -1577,7 +1577,7 @@ class ScheduleHours_Test(unittest.TestCase):
                   )[0],
             '#[0-9a-f]{6};'
         )
-    
+
     def test_htmlColors_randomColor(self):
         h = HtmlGenFromYaml(self.ns("""\
             companys:
@@ -2145,7 +2145,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/217,1\n"""
         u"""member = SIP/210,2\n"""
         u"""member = SIP/224,3\n"""
@@ -2162,7 +2162,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/210,1\n"""
         u"""member = SIP/214,2\n"""
         u"""member = SIP/224,3\n"""
@@ -2179,7 +2179,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/223,1\n"""
         u"""member = SIP/215,2\n"""
         u"""member = SIP/222,3\n"""
@@ -2196,7 +2196,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/205,1\n"""
         u"""member = SIP/215,2\n"""
         u"""member = SIP/222,3\n"""
@@ -2213,7 +2213,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/218,1\n"""
         u"""member = SIP/206,2\n"""
         u"""member = SIP/217,3\n"""
@@ -2230,7 +2230,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/217,1\n"""
         u"""member = SIP/218,2\n"""
         u"""member = SIP/206,3\n"""
@@ -2247,7 +2247,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/207,1\n"""
         u"""member = SIP/222,2\n"""
         u"""member = SIP/216,3\n"""
@@ -2264,7 +2264,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/204,1\n"""
         u"""member = SIP/207,2\n"""
         u"""member = SIP/203,3\n"""
@@ -2281,7 +2281,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/214,1\n"""
         u"""member = SIP/224,2\n"""
         u"""member = SIP/205,3\n"""
@@ -2298,7 +2298,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/224,1\n"""
         u"""member = SIP/214,2\n"""
         u"""member = SIP/223,3\n"""
@@ -2315,7 +2315,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/203,1\n"""
         u"""member = SIP/202,2\n"""
         u"""member = SIP/218,3\n"""
@@ -2332,7 +2332,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/204,1\n"""
         u"""member = SIP/207,2\n"""
         u"""member = SIP/218,3\n"""
@@ -2349,7 +2349,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/202,1\n"""
         u"""member = SIP/210,2\n"""
         u"""member = SIP/223,3\n"""
@@ -2366,7 +2366,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/215,1\n"""
         u"""member = SIP/207,2\n"""
         u"""member = SIP/210,3\n"""
@@ -2383,7 +2383,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/216,1\n"""
         u"""member = SIP/203,2\n"""
         u"""member = SIP/208,3\n"""
@@ -2400,7 +2400,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/208,1\n"""
         u"""member = SIP/216,2\n"""
         u"""member = SIP/203,3\n"""
@@ -2417,7 +2417,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/206,1\n"""
         u"""member = SIP/218,2\n"""
         u"""member = SIP/202,3\n"""
@@ -2434,7 +2434,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/218,1\n"""
         u"""member = SIP/215,2\n"""
         u"""member = SIP/202,3\n"""
@@ -2451,7 +2451,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/222,1\n"""
         u"""member = SIP/205,2\n"""
         u"""member = SIP/210,3\n"""
@@ -2468,7 +2468,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""announce-frequency = 0\n"""
         u"""announce-holdtime = no\n"""
         u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""        
+        u"""context = bustia_veu\n"""
         u"""member = SIP/210,1\n"""
         u"""member = SIP/223,2\n"""
         u"""member = SIP/214,3\n"""
@@ -2677,7 +2677,7 @@ class ScheduleHours_Test(unittest.TestCase):
        self.assertIn('dl',h_asterisk_yaml.timetable)
        self.assertIn(1,h_asterisk_yaml.timetable.dl)
        self.assertEqual(
-           set(h_asterisk.getYaml().timetable.dl[1]), 
+           set(h_asterisk.getYaml().timetable.dl[1]),
            set(self.ns(yaml).timetable.dl[1])
        )
 
@@ -2739,18 +2739,18 @@ class ScheduleHours_Test(unittest.TestCase):
        self.assertIn('dl',h_asterisk_yaml.timetable)
        self.assertIn(1,h_asterisk_yaml.timetable.dl)
        self.assertEqual(
-           set(h_asterisk.getYaml().timetable.dl[1]), 
+           set(h_asterisk.getYaml().timetable.dl[1]),
            set(self.ns(yaml).timetable.dl[1])
        )
        self.assertIn('dm',h_asterisk_yaml.timetable)
        self.assertIn(1,h_asterisk_yaml.timetable.dm)
        self.assertIn(2,h_asterisk_yaml.timetable.dm)
        self.assertEqual(
-           set(h_asterisk.getYaml().timetable.dm[1]), 
+           set(h_asterisk.getYaml().timetable.dm[1]),
            set(self.ns(yaml).timetable.dm[1])
        )
        self.assertEqual(
-           set(h_asterisk.getYaml().timetable.dm[2]), 
+           set(h_asterisk.getYaml().timetable.dm[2]),
            set(self.ns(yaml).timetable.dm[2])
        )
     @unittest.skipIf(not config, "depends on pbx")
@@ -2789,7 +2789,7 @@ class ScheduleHours_Test(unittest.TestCase):
        self.assertIn('paused',h_asterisk_yaml)
        self.assertIn('dl',h_asterisk_yaml.paused)
        self.assertIn(1,h_asterisk_yaml.paused.dl)
-       self.assertEqual(h_asterisk_yaml.paused.dl[1],['ana']) 
+       self.assertEqual(h_asterisk_yaml.paused.dl[1],['ana'])
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskPause_manySipOnePaused(self):
@@ -2837,7 +2837,7 @@ class ScheduleHours_Test(unittest.TestCase):
        self.assertIn('paused',h_asterisk_yaml)
        self.assertIn('dl',h_asterisk_yaml.paused)
        self.assertIn(1,h_asterisk_yaml.paused.dl)
-       self.assertEqual(h_asterisk_yaml.paused.dl[1],['ana']) 
+       self.assertEqual(h_asterisk_yaml.paused.dl[1],['ana'])
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskResume_oneSipOneResumed(self):
@@ -2876,7 +2876,7 @@ class ScheduleHours_Test(unittest.TestCase):
        self.assertIn('paused',h_asterisk_yaml)
        self.assertIn('dl',h_asterisk_yaml.paused)
        self.assertIn(1,h_asterisk_yaml.paused.dl)
-       self.assertEqual(h_asterisk_yaml.paused.dl[1],[]) 
+       self.assertEqual(h_asterisk_yaml.paused.dl[1],[])
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskPause_OnePausedOneResumed(self):
@@ -2926,7 +2926,7 @@ class ScheduleHours_Test(unittest.TestCase):
        self.assertIn('paused',h_asterisk_yaml)
        self.assertIn('dl',h_asterisk_yaml.paused)
        self.assertIn(1,h_asterisk_yaml.paused.dl)
-       self.assertEqual(h_asterisk_yaml.paused.dl[1],['pere']) 
+       self.assertEqual(h_asterisk_yaml.paused.dl[1],['pere'])
 
     def test_nameToExtension_oneSip(self):
         yaml = """\
@@ -3143,7 +3143,7 @@ class ScheduleHours_Test(unittest.TestCase):
                                   1:
                                     217:    added
                                 """)
-                                        
+
         self.assertEqual(h.comparePaused(h_paused),difference)
 
     def test_comparePaused_oneDifference_removed(self):
@@ -3220,9 +3220,9 @@ class ScheduleHours_Test(unittest.TestCase):
                                   1:
                                     217:    removed
                                 """)
-                                        
+
         self.assertEqual(h.comparePaused(h_paused),difference)
-    
+
     def test_comparePaused_oneDifference_changed(self):
         yaml = """\
         timetable:
@@ -3302,7 +3302,7 @@ class ScheduleHours_Test(unittest.TestCase):
                                     217:    removed
                                     219:  added
                                 """)
-                                        
+
         self.assertEqual(h.comparePaused(h_paused),difference)
 
     def test_comparePaused_oneDifference_dynamic(self):
@@ -3390,7 +3390,7 @@ class ScheduleHours_Test(unittest.TestCase):
                                 dynamic:
                                     219:  added
                                 """)
-                                        
+
         self.assertEqual(h.comparePaused(h_paused),difference)
     def test_comparePaused_oneDifference_dynamic(self):
         yaml = """\
@@ -3476,7 +3476,7 @@ class ScheduleHours_Test(unittest.TestCase):
                                     219: added
                                     218: removed
                                 """)
-                                        
+
         self.assertEqual(h.comparePaused(h_paused),difference)
 
     def test_comparePaused_manyDifferences(self):
@@ -3579,7 +3579,7 @@ class ScheduleHours_Test(unittest.TestCase):
                                   1:
                                     219: added
                                 """)
-                                        
+
         self.assertEqual(h.comparePaused(h_paused),difference)
 
     @unittest.skipIf(not config, "depends on pbx")
@@ -3638,7 +3638,8 @@ class ScheduleHours_Test(unittest.TestCase):
        self.assertIn('paused',h_asterisk_yaml)
        self.assertIn('dm',h_asterisk_yaml.paused)
        self.assertIn(1,h_asterisk_yaml.paused.dm)
-       self.assertEqual(h_asterisk_yaml.paused.dm[1],['jordi']) 
+       self.assertEqual(h_asterisk_yaml.paused.dm[1],['jordi'])
+
     def test_compareDynamic_oneDifference_added(self):
         yaml = """\
         timetable:
@@ -3715,9 +3716,9 @@ class ScheduleHours_Test(unittest.TestCase):
         difference = self.ns("""\
                                 217: added
                                 """)
-                                        
+
         self.assertEqual(h.compareDynamic(h_dynamic),difference)
-    
+
     def test_compareDynamic_oneDifference_removed(self):
         yaml = """\
         timetable:
@@ -3794,9 +3795,9 @@ class ScheduleHours_Test(unittest.TestCase):
         difference = self.ns("""\
                                 219: removed
                                 """)
-                                        
+
         self.assertEqual(h.compareDynamic(h_dynamic),difference)
-    
+
     def test_compareDynamic_manyDifferences(self):
         yaml = """\
         timetable:
@@ -3878,9 +3879,9 @@ class ScheduleHours_Test(unittest.TestCase):
                                 217: removed
                                 218: added
                                 """)
-                                        
+
         self.assertEqual(h.compareDynamic(h_dynamic),difference)
-    
+
     def test_getCurrentQueue_getMonday(self):
         yaml = """\
         timetable:
@@ -3982,7 +3983,7 @@ class ScheduleHours_Test(unittest.TestCase):
         - 09:00
         - '10:15'
         - '11:30'
-        
+
         noms: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
@@ -4014,7 +4015,7 @@ class ScheduleHours_Test(unittest.TestCase):
         h = HtmlGenFromYaml(self.ns(yaml))
         _, turn= h.getCurrentQueue(datetime.datetime(2016,9,12,11,29))
         self.assertEqual(turn,2)
-    
+
     def test_getCurrentQueue_getIntermediateTurn(self):
         yaml = """\
         timetable:
@@ -4077,7 +4078,7 @@ class ScheduleHours_Test(unittest.TestCase):
         h = HtmlGenFromYaml(self.ns(yaml))
         _, turn= h.getCurrentQueue(datetime.datetime(2016,9,13,11,29))
         self.assertEqual(turn,2)
-    
+
     def test_getCurrentQueue_getInvalidTurn(self):
         yaml = """\
         timetable:
@@ -4140,7 +4141,7 @@ class ScheduleHours_Test(unittest.TestCase):
         h = HtmlGenFromYaml(self.ns(yaml))
         with self.assertRaises(Exception):
             h.getCurrentQueue(datetime.datetime(2016,9,13,7,29))
-    
+
     def test_partialCurrentQueue_getFirstTurn(self):
         yaml = """\
         timetable:
@@ -4153,7 +4154,7 @@ class ScheduleHours_Test(unittest.TestCase):
         hores:
         - 09:00
         - '10:15'
-        
+
         noms: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -4211,7 +4212,7 @@ class ScheduleHours_Test(unittest.TestCase):
         - 09:00
         - '10:15'
         - '11:30'
-        
+
         noms: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -4258,6 +4259,6 @@ if __name__ == "__main__":
     if '--accept' in sys.argv:
         sys.argv.remove('--accept')
         unittest.TestCase.acceptMode = True
-    
+
     unittest.main()
 # vim: ts=4 sw=4 et
