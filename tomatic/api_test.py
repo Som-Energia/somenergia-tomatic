@@ -32,7 +32,7 @@ class Api_Test(unittest.TestCase):
                     1:
                     - ana
                 hores:
-                - 09:00
+                - '09:00'
                 - '10:15'
                 torns:
                 - T1
@@ -89,7 +89,7 @@ class Api_Test(unittest.TestCase):
                     1:
                     - ana
                 hores:
-                - 09:00
+                - '09:00'
                 - '10:15'
                 torns:
                 - T1
@@ -139,7 +139,7 @@ class Api_Test(unittest.TestCase):
                     1:
                     - ana
                 hores:
-                - 09:00
+                - '09:00'
                 - '10:15'
                 torns:
                 - T1
@@ -185,7 +185,7 @@ class Api_Test(unittest.TestCase):
                     1:
                     - victor
                 hores:
-                - 09:00
+                - '09:00'
                 - '10:15'
                 torns:
                 - T1
@@ -219,7 +219,7 @@ class Api_Test(unittest.TestCase):
                     1:
                     - ana
                 hores:
-                - 09:00
+                - '09:00'
                 - '10:15'
                 torns:
                 - T1
@@ -249,7 +249,7 @@ class Api_Test(unittest.TestCase):
                     1:
                     - victor
                 hores:
-                - 09:00
+                - '09:00'
                 - '10:15'
                 torns:
                 - T1
@@ -295,7 +295,7 @@ class Api_Test(unittest.TestCase):
                     - monica
 
                 hores:
-                - 09:00
+                - '09:00'
                 - '10:15'
                 - '11:30'
                 torns:
@@ -345,7 +345,7 @@ class Api_Test(unittest.TestCase):
                     - monica
 
                 hores:
-                - 09:00
+                - '09:00'
                 - '10:15'
                 - '11:30'
                 torns:
@@ -400,7 +400,7 @@ class Api_Test(unittest.TestCase):
                     - monica
 
                 hores:
-                - 09:00
+                - '09:00'
                 - '10:15'
                 - '11:30'
                 torns:
@@ -509,7 +509,7 @@ class Api_Test(unittest.TestCase):
                     - monica
 
                 hores:
-                - 09:00
+                - '09:00'
                 - '10:15'
                 - '11:30'
                 torns:
