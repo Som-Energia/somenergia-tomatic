@@ -19,7 +19,7 @@ class PbxMockup(object):
             timetable: {}
             hores: []
             """)
-        self._paused = []
+        self._paused = set()
 
     def reconfigure(self, configuration):
         self._configuration = configuration
@@ -40,7 +40,7 @@ class PbxMockup(object):
 
     def pause(self, who):
         "Temporary removes the operator from the queue"
-        self._paused.append(who)
+        self._paused.add(who)
 
     def restore(self, who):
         "Puts back the operator to the queue"
@@ -226,6 +226,29 @@ class PbxMockup_Test(unittest.TestCase):
             """.format(
                 today=self.today
             )))
+        pbx.pause('cesar')
+        pbx.restore('cesar')
+        self.assertEqual(pbx.currentQueue(), [
+            ns( key='cesar', paused=False),
+            ])
+
+    def test_restore_afterDoublePause(self):
+        pbx = PbxMockup()
+        pbx.reconfigure(ns.loads(u"""\
+            timetable:
+              {today}:
+                1:
+                - cesar
+            hores:
+            - '00:00'
+            - '23:59'
+
+            extensions:
+              cesar: 200
+            """.format(
+                today=self.today
+            )))
+        pbx.pause('cesar')
         pbx.pause('cesar')
         pbx.restore('cesar')
         self.assertEqual(pbx.currentQueue(), [
