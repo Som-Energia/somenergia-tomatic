@@ -9,13 +9,17 @@ def weekday(date):
     return weekdays[date.weekday()]
 
 class PbxMockup(object):
-    """ """
+    """
+    A PbxMockup emulates the operations tomatic needs from
+    a Pbx without having real effect on any PBX.
+    """
 
     def __init__(self):
         self._configuration = ns.loads(u"""
             timetable: {}
             hores: []
             """)
+        self._paused = False
 
     def reconfigure(self, configuration):
         self._configuration = configuration
@@ -24,19 +28,20 @@ class PbxMockup(object):
         timetable = self._configuration.timetable
         now = datetime.now()
         from bisect import bisect
-        currentHour = "{:%H:%m}".format(now)
+        currentHour = "{0:%H:%m}".format(now)
         turn = bisect(self._configuration.hores, currentHour)
         wd = weekday(now)
         if wd not in timetable: return []
         if turn not in timetable[wd]: return []
         return [
-            ns( key=who, paused=False)
+            ns( key=who, paused=self._paused)
             for who in timetable[wd][turn]
             ]
 
+    def pause(self, who):
+        self._paused = True
 
 class PbxMockup_Test(unittest.TestCase):
-    ""
 
     def setUp(self):
         now = datetime.now()
@@ -59,7 +64,7 @@ class PbxMockup_Test(unittest.TestCase):
             hores:
             - '00:00'
             - '23:59'
-            
+
             extensions:
               cesar: 200
             """.format(
@@ -67,6 +72,28 @@ class PbxMockup_Test(unittest.TestCase):
             )))
         self.assertEqual(pbx.currentQueue(), [
             ns( key='cesar', paused=False),
+            ])
+
+    def test_currentQueue_oneSlot_twoTurns(self):
+        pbx = PbxMockup()
+        pbx.reconfigure(ns.loads(u"""\
+            timetable:
+              {today}:
+                1:
+                - cesar
+                - eduard
+            hores:
+            - '00:00'
+            - '23:59'
+
+            extensions:
+              cesar: 200
+            """.format(
+                today=self.today
+            )))
+        self.assertEqual(pbx.currentQueue(), [
+            ns( key='cesar', paused=False),
+            ns( key='eduard', paused=False),
             ])
 
     def test_currentQueue_twoSlots(self):
@@ -80,15 +107,17 @@ class PbxMockup_Test(unittest.TestCase):
                 - eduard
             hores:
             - '00:00'
-            - '{splithour}:00'
+            - '{splithour:02d}:00'
             - '23:59'
 
             extensions:
               cesar: 200
+              eduard: 201
             """.format(
                 splithour=self.currentHour,
                 today=self.today,
             )))
+        print(pbx._configuration)
         self.assertEqual(pbx.currentQueue(), [
             ns( key='eduard', paused=False),
             ])
@@ -131,11 +160,12 @@ class PbxMockup_Test(unittest.TestCase):
         self.assertEqual(pbx.currentQueue(), [
             ])
 
-    def test_currentQueue_afterSlots(self):
+
+    def test_pause_withOne(self):
         pbx = PbxMockup()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
-              {nextday}:
+              {today}:
                 1:
                 - cesar
             hores:
@@ -145,11 +175,35 @@ class PbxMockup_Test(unittest.TestCase):
             extensions:
               cesar: 200
             """.format(
-                nextday=self.nextday,
+                today=self.today
             )))
+        pbx.pause('cesar')
         self.assertEqual(pbx.currentQueue(), [
+            ns( key='cesar', paused=True),
             ])
 
+    def _test_pause_withTwoSlots(self):
+        pbx = PbxMockup()
+        pbx.reconfigure(ns.loads(u"""\
+            timetable:
+              {today}:
+                1:
+                - cesar
+                - eduard
+            hores:
+            - '00:00'
+            - '23:59'
+
+            extensions:
+              cesar: 200
+            """.format(
+                today=self.today
+            )))
+        pbx.pause('cesar')
+        self.assertEqual(pbx.currentQueue(), [
+            ns( key='cesar', paused=True),
+            ns( key='eduard', paused=False),
+            ])
 
 
 

@@ -39,6 +39,7 @@ def loadAsterisk(yaml,date=None):
         ]=HtmlGenFromAsterisk(
             yaml,pbx().receiveConf()
         )
+
 def setNow(year,month,day,hour,minute):
     global now
     now=datetime(year,month,day,hour,minute)
@@ -52,7 +53,7 @@ staticpath = 'tomatic/static'
 @app.route('/')
 def tomatic():
     return trustedStaticFile(staticpath+'/tomatic.html')
-    
+
 @app.route('/graella.js')
 def graella_js():
     return trustedStaticFile(staticpath+'/graella.js')
@@ -136,3 +137,4 @@ now = None
 yaml = ns.load("templateTimetable.yaml")
 yaml.setmana = startOfWeek.strftime("%Y-%m-%d")
 
+# vim: et
