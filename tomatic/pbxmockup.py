@@ -34,7 +34,7 @@ class PbxMockup(object):
         if wd not in timetable: return []
         if turn not in timetable[wd]: return []
         return [
-            ns( key=who, paused=bool(self._paused))
+            ns( key=who, paused= who in self._paused)
             for who in timetable[wd][turn]
             ]
 
@@ -182,7 +182,7 @@ class PbxMockup_Test(unittest.TestCase):
             ns( key='cesar', paused=True),
             ])
 
-    def _test_pause_withTwoSlots(self):
+    def test_pause_withTwoSlots(self):
         pbx = PbxMockup()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
