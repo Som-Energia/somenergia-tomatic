@@ -16,16 +16,6 @@ from tomatic.htmlgen import HtmlGenFromSolution
 def open(*args, **kwd):
 	return codecs.open(encoding='utf8', *args, **kwd)
 
-def iniciSetmana():
-	if args.date is None:
-		# If no date provided, take the next monday
-		today = date.today()
-		return today + timedelta(days=7-today.weekday())
-
-	 # take the monday of the week including that date
-	givenDate = datetime.datetime.strptime(args.date,"%Y-%m-%d").date()
-	return givenDate - timedelta(days=givenDate.weekday())
-
 def transliterate(word):
 	word=unicode(word).lower()
 	for old, new in zip(
@@ -636,7 +626,15 @@ def main():
 		error("Configuració incorrecta")
 		raise
 
-	config.monday = iniciSetmana()
+	if args.date is not None:
+		# take the monday of the week including that date
+		givenDate = datetime.datetime.strptime(args.date,"%Y-%m-%d").date()
+		config.monday = givenDate - timedelta(days=givenDate.weekday())
+	else:
+		# If no date provided, take the next monday
+		today = date.today()
+		config.monday = today + timedelta(days=7-today.weekday())
+
 	if not args.keep:
 		baixaDades(config, args.certificate)
 
