@@ -6,9 +6,9 @@ from setuptools import setup
 readme = open("README.rst").read()
 
 setup(
-    name = "schedulehours",
+    name = "tomatic",
     version = "2.0",
-    description = "Phone operator turns scheduler",
+    description = "Phone turns scheduler and shifter",
     author = "David García Garzón",
     author_email = "david.garcia@somenergia.coop",
     url = 'https://github.com/Som-Energia/somenergia-phonehours',
