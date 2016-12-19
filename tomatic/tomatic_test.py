@@ -12,7 +12,6 @@ import datetime
 from htmlgen import HtmlGenFromYaml
 from htmlgen import HtmlGenFromSolution
 from htmlgen import HtmlGenFromAsterisk
-from mongo import MongoConnector, FileProvider
 
 config=None
 try:
