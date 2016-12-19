@@ -249,31 +249,33 @@ class HtmlGen(object):
         return extensions_inv[extension]
 
     def asteriskParse(self):
-        header = (u"""music=default\n"""
-                  u"""strategy=linear\n"""
-                  u"""eventwhencalled=yes\n"""
-                  u"""timeout=15\n"""
-                  u"""retry=1\n"""
-                  u"""wrapuptime=0\n"""
-                  u"""maxlen = 0\n"""
-                  u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-                  u"""Periodic-announce-frequency = 15\n"""
-                  u"""announce-frequency = 0\n"""
-                  u"""announce-holdtime = no\n"""
-                  u"""announce-position =no\n"""
-                  u"""context = bustia_veu\n""")
-        r = u""
+        common = [
+            'music=default',
+            'strategy=linear',
+            'eventwhencalled=yes',
+            'timeout=15',
+            'retry=1',
+            'wrapuptime=0',
+            'maxlen = 0',
+            '; Periodic-announce = /var/lib/asterisk/sounds/bienvenida',
+            'Periodic-announce-frequency = 15',
+            'announce-frequency = 0',
+            'announce-holdtime = no',
+            'announce-position =no',
+            'context = bustia_veu',
+        ]
+        r = []
         tt = self.yaml.timetable
         ext = self.yaml.extensions
         for d in tt.keys():
             for t in tt[d].keys():
-                r+=u"[entrada_cua_{}_{}]\n".format(
-                    d,t)
-                r+=header
+                r+=[u"[entrada_cua_{}_{}]".format(
+                    d,t)]
+                r+=common
                 for index,m in enumerate(tt[d][t]):
-                    r+=(u"member = SIP/{},{}\n"
-                        ).format(ext[m],index+1)
-        return r
+                    r+=[(u"member = SIP/{},{}"
+                        ).format(ext[m],index+1)]
+        return u'\n'.join(r)+u'\n'
 
     def getCurrentQueue(self,now):
         # Supposes ordered "hores" list (less to greater)

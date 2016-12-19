@@ -1719,7 +1719,6 @@ class ScheduleHours_Test(unittest.TestCase):
        )
        self.assertB2BEqual(h.htmlParse().encode('utf-8'))
 
-    @unittest.skip("Not working yet")
     def test_asteriskParse_oneTurnOneLocal(self):
        h = HtmlGenFromYaml(self.ns("""\
         timetable:
@@ -1750,10 +1749,22 @@ class ScheduleHours_Test(unittest.TestCase):
        )
        self.assertMultiLineEqual(h.asteriskParse(),
         u"""[entrada_cua_dl_1]\n"""
-        u"""member = SIP/217\n"""
+        u"""music=default\n"""
+        u"""strategy=linear\n"""
+        u"""eventwhencalled=yes\n"""
+        u"""timeout=15\n"""
+        u"""retry=1\n"""
+        u"""wrapuptime=0\n"""
+        u"""maxlen = 0\n"""
+        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
+        u"""Periodic-announce-frequency = 15\n"""
+        u"""announce-frequency = 0\n"""
+        u"""announce-holdtime = no\n"""
+        u"""announce-position =no\n"""
+        u"""context = bustia_veu\n"""
+        u"""member = SIP/217,1\n"""
        )
 
-    @unittest.skip("Blocking itself")
     def test_asteriskParse_manyTurnOneLocal(self):
        h = HtmlGenFromYaml(self.ns("""\
         timetable:
@@ -2262,6 +2273,7 @@ class ScheduleHours_Test(unittest.TestCase):
         u"""member = SIP/223,2\n"""
         u"""member = SIP/214,3\n"""
        )
+
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskSend_oneTurnOneSip(self):
        h = HtmlGenFromYaml(self.ns("""\
