@@ -12,8 +12,6 @@ import sys
 from sheetfetcher import SheetFetcher
 from tomatic.htmlgen import HtmlGenFromSolution
 
-monitoringFile = 'taula.html'
-
 # Dirty Hack: Behave like python3 open regarding unicode
 def open(*args, **kwd):
 	return codecs.open(encoding='utf8', *args, **kwd)
@@ -556,7 +554,7 @@ class Backtracker:
 					header+personalColors+
 					subheader+
 					htmlgen.htmlSetmana())
-			with open(monitoringFile,'w') as output:
+			with open(self.config.monitoringFile,'w') as output:
 				output.write(
 					header+personalColors+
 					subheader
@@ -568,7 +566,7 @@ class Backtracker:
 				self.minimumCost,
 				self.penalties)
 		)
-		with open(monitoringFile,'a') as output:
+		with open(self.config.monitoringFile,'a') as output:
 			output.write(htmlgen.htmlTable())
 			output.write(penalitzacions)
 		if firstAtCost:
