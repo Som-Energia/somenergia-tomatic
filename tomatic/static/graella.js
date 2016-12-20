@@ -1,5 +1,39 @@
 'use strict';
 
+var WeekList = {
+    weeks: m.prop([]),
+    current: m.prop(),
+    controller: function(onchangelist) {
+        m.request({
+            method: 'GET',
+            url: 'graella/list',
+            deserialize: jsyaml.load,
+        }).then(function(newWeeklist){
+            console.log(newWeeklist);
+            WeekList.weeks(newWeeklist.weeks);
+        });
+        return {
+            model: this,
+            parent: onchangelist,
+            onchangelist: onchangelist || function(week) {
+                console.log("Changing to", week);
+            }
+        };
+    },
+    view: function(c) {
+        return m('',
+            this.weeks().map(function(week){
+                var current = c.model.current === week ? '.current':'';
+                return m('.week'+current, {
+                    onclick: function() {
+                        c.parent.loadGrid(week);
+                        c.model.current = week;
+                    }
+                }, "Setmana del "+week);
+        }));
+    }
+};
+
 var PersonPicker = {
 	controller: function(persons) {
 		return {
@@ -132,7 +166,18 @@ Graella.view = function(c) {
 		);
 	};
 	return [
+        m.component(WeekList, c),
+        m('form', {
+            name: 'upload',
+            action: 'graella',
+            method: 'post',
+            enctype: 'multipart/form-data'
+            },
+            m('input[type="file"][name="yaml"][accept="application/x-yaml"]'),
+            m('input[type="submit"][value="Puja Graella"]')
+            ),
 		c._editingCell() ? m.component(PersonPicker, c):[], 
+
 		m('h1', "Setmana ", c.d.date),
 		m('table', [
 			m('tr', c.d.days.map(function(day) {
