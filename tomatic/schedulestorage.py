@@ -3,6 +3,7 @@
 from yamlns import namespace as ns
 import os
 import datetime
+import glob
 
 class Storage(object):
     "Stores schedules by week"
@@ -29,6 +30,13 @@ class Storage(object):
         value.dump(filename)
 
     def list(self):
-        return []
+        pattern = os.path.join(
+            self._dirname,
+            'graella-*.yaml'
+            )
+        return [
+            filename[-15:-5]
+            for filename in glob.glob(pattern)
+            ]
 
-#vim: et ts=4
+#vim: ts=4 sw=4 et

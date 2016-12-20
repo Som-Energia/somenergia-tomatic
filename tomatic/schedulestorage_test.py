@@ -60,10 +60,27 @@ class ScheduleStorage_Test(unittest.TestCase):
 
     def _test_save_missingDate(self): 'TODO'
     def _test_save_badDateValue(self): 'TODO'
+    def _test_save_overwriting(self): 'TODO'
 
 
     def test_list_whenEmpty(self):
         self.assertEqual(self.storage.list(),[
+            ]
+        )
+
+    def test_list_withOne(self):
+        self.storage.save(ns.loads(yaml20121110))
+        self.assertEqual(self.storage.list(),[
+            '2012-11-10',
+            ]
+        )
+
+    def test_list_withMany(self):
+        self.storage.save(ns.loads(yaml20121110))
+        self.storage.save(ns.loads(yaml20030201))
+        self.assertEqual(self.storage.list(),[
+            '2003-02-01',
+            '2012-11-10',
             ]
         )
 
