@@ -3,7 +3,7 @@ fullCarrega: 'o9rxhxk' # 'Càrrega setmanal de telèfon' # Fulla del drive on es
 intervalCarrega: carregatelefon_{:02d}{:02d}{:02d} # Patró pel nom de l'interval on buscar les càrregues (Y,m,d)
 monitoringFile: taula.html
 
-nTelefons: 3
+nTelefons: 4
 diesCerca: ['dv', 'dm', 'dx', 'dj', 'dl',] # Els mes conflictius davant
 diesVisualitzacio: ['dl','dm','dx','dj','dv']
 
@@ -109,5 +109,31 @@ noms: # Els que no només cal posar en majúscules
    victor: Víctor
    lucia: Lucía
 
+forced:
+  dl:
+    1:
+      3: Null
+    2:
+      3: Null
+  dm:
+    1:
+      3: Null
+    2:
+      3: Null
+  dx:
+    1:
+      3: Null
+    2:
+      3: Null
+  dj:
+    1:
+      3: Null
+    2:
+      3: Null
+  dv:
+    1:
+      3: Null
+    2:
+      3: Null
 
 
