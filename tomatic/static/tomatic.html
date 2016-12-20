@@ -73,6 +73,9 @@ dialog .extension:hover {
 </style>
 </head>
 <body>
+
+<script src="graella.js"></script>
+
 <div id='graella'></div>
 
 <h3>Recordatori desviaments</h3>
@@ -83,7 +86,10 @@ dialog .extension:hover {
 <li>*90 Marcar número</li>
 </ul>
 
-<script src="graella.js"></script>
+<form name='upload' action='graella' method='post' enctype='multipart/form-data'>
+<input type='file' name='yaml' accept='application/x-yaml'></input>
+<input type='submit' value='Puja Graella'></input>
+</form>
 
 
 </body>

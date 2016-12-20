@@ -72,7 +72,7 @@ Graella.controller = function(model, args) {
 				this.d.timetable[day][houri][turni] = newName;
 				m.request({
 					method: 'UPDATE',
-					url: 'editgraella/'+([
+					url: 'graella/'+([
 						this.d.date,day,houri,turni,newName
 						].join('/')),
 				})

@@ -1,10 +1,17 @@
 # -*- coding: utf-8 -*-
-from flask import Flask
+from flask import (
+    Flask, Response, request,
+    redirect, url_for,
+    )
 from htmlgen import HtmlGenFromYaml, HtmlGenFromAsterisk
 from datetime import datetime
 from yamlns import namespace as ns
+from . import schedulestorage
 
 hs = {}
+
+schedules = schedulestorage.Storage('graelles')
+
 
 def pbx(alternative = None):
     if alternative:
@@ -59,17 +66,23 @@ def graella_js():
     return trustedStaticFile(staticpath+'/graella.js')
 
 @app.route('/graella-<week>.yaml')
-def graella(week):
+@app.route('/graella/<week>')
+def graellaYaml(week):
     # TODO: ensure week is an iso date
     # TODO: ensure week is monday
-    return trustedStaticFile(staticpath+'/graella-{}.yaml'.format(week))
 
-@app.route('/editgraella/<week>/<day>/<int:houri>/'
+    schedule = schedules.load(week)
+
+    return Response(
+        schedule.dump(),
+        mimetype = 'application/x-yaml',
+        )
+
+@app.route('/graella/<week>/<day>/<int:houri>/'
         '<int:turni>/<name>', methods=['UPDATE'])
 def editSlot(week, day, houri, turni, name):
     # TODO: Same ensures than graella
-    graellafile = staticpath+'/graella-{}.yaml'.format(week)
-    graella = ns.load(graellafile)
+    graella = schedules.load(week)
     # TODO: Ensure day, houri, turni and name are in graella
     oldName = graella.timetable[day][int(houri)][int(turni)]
     graella.timetable[day][int(houri)][int(turni)] = name
@@ -87,9 +100,38 @@ def editSlot(week, day, houri, turni, name):
     graella.setdefault('log',[])
     print logmsg
     graella.log.append(logmsg)
-    graella.dump(graellafile)
-    return trustedStaticFile(graellafile)
+    schedules.save(graella)
+    return graellaYaml(week)
 
+
+@app.route('/graella/list')
+def listGraelles():
+    return Response(
+        ns(weeks=schedules.list()).dump(),
+        mimetype = 'application/x-yaml')
+
+@app.route('/graella', methods=['POST'])
+def uploadGraella(week=None):
+    print "uploading", request.files
+    if 'yaml' not in request.files:
+        print("Cap graella pujada")
+        return "KO"
+    yaml = request.files['yaml']
+    if yaml.content_length > 30:
+        print("Pujat yaml sospitosament llarg: {} bytes"
+            .format(yaml.content_length))
+        return "KO"
+    graella = ns.load(yaml.stream)
+    logmsg = (
+        "{}: {} ha pujat {} ".format(
+        datetime.now(),
+        "nobody", # TODO: ERP user
+        graella.date,
+        ))
+    graella.setdefault('log',[])
+    print logmsg
+    schedules.save(graella)
+    return redirect(url_for('tomatic'))
 
 
 @app.route('/boo')
