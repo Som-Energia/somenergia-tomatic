@@ -35,7 +35,7 @@ class Storage(object):
             'graella-*.yaml'
             )
         return [
-            filename[-15:-5]
+            filename[-len('yyyy-mm-dd.yaml'):-len('.yaml')]
             for filename in glob.glob(pattern)
             ]
 
