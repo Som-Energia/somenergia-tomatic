@@ -57,6 +57,7 @@ taules: # Asignacio de les persones en taules
    tania:  6
    lucia:  6
    vic:    6
+   ningu:  99
 sempreUnLliure: {}
 randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
 colors:
@@ -78,6 +79,7 @@ colors:
    ana:    'ff6600'
    victor: 'ff3333'
    jordi:  'ff9999'
+   ningu:  'ffffff'
 extensions:
    marta:  3040
    monica: 3041
@@ -108,32 +110,18 @@ noms: # Els que no només cal posar en majúscules
    cesar: César
    victor: Víctor
    lucia: Lucía
+   ningu: "-"
 
 forced:
-  dl:
-    1:
-      3: Null
-    2:
-      3: Null
-  dm:
-    1:
-      3: Null
-    2:
-      3: Null
-  dx:
-    1:
-      3: Null
-    2:
-      3: Null
-  dj:
-    1:
-      3: Null
-    2:
-      3: Null
-  dv:
-    1:
-      3: Null
-    2:
-      3: Null
+  [dl, 1, 4]: ningu
+  [dl, 2, 4]: ningu
+  [dm, 1, 4]: ningu
+  [dm, 2, 4]: ningu
+  [dx, 1, 4]: ningu
+  [dx, 2, 4]: ningu
+  [dj, 1, 4]: ningu
+  [dj, 2, 4]: ningu
+  [dv, 1, 4]: ningu
+  [dv, 2, 4]: ningu
 
 
