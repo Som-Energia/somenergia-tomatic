@@ -277,7 +277,8 @@ class Backtracker:
 
 					if len(affectedTurns)!=self.nhores :
 						raise Backtracker.ErrorConfiguracio(
-							"'{}':{}: Expected busy string of lenght {} containing '1' on busy hours, found '{}'".format(
+							"'{}':{}: Expected busy string of lenght {} "
+							"containing '1' on busy hours, found '{}'".format(
 							filename, linenum+1, self.nhores, affectedTurns))
 					for hora, busy in enumerate(affectedTurns) :
 						if busy!='1': continue
@@ -381,11 +382,14 @@ class Backtracker:
 						.format(company, tornsColocables, tornsPendents))
 					return
 
-		shuffled = list(self.companys)
+		companys = list(self.companys)
 		if self.config.aleatori:
-			random.shuffle(shuffled)
+			random.shuffle(companys)
 
-		for company in shuffled:
+		if (day, hora+1, telefon+1) in self.config.forced:
+			companys = [self.config.forced[(day,hora+1,telefon+1)]]
+
+		for company in companys:
 
 			cost = 0
 			penalties = []
@@ -422,7 +426,8 @@ class Backtracker:
 					if self.lliuresEnGrupDAlliberats[group, day, hora] > 1:
 						continue
 
-					return "El grup {} on pertany {} no te gent el {} a {} hora".format(group, company, day, hora+1)
+					return ("El grup {} on pertany {} no te gent el {} a {} hora"
+						.format(group, company, day, hora+1))
 				return False
 
 			def markIdleGroups(company, day, hora):
