@@ -280,12 +280,13 @@ class HtmlGen(object):
     def getCurrentQueue(self,now):
         # Supposes ordered "hores" list (less to greater)
         dowInt = now.isoweekday()
-        dowDict = {1:'dl',
-               2:'dm',
-               3:'dx',
-               4:'dj',
-               5:'dv'
-               }
+        dowDict = {
+            1:'dl',
+            2:'dm',
+            3:'dx',
+            4:'dj',
+            5:'dv'
+            }
         if dowInt not in dowDict:
             raise Exception
         else:
@@ -411,6 +412,7 @@ class HtmlGenFromYaml(HtmlGen):
                 ext = self.nameToExtension(name)
                 response[ext]="removed"
         return response
+
 
 
 class HtmlGenFromSolution(HtmlGen):
