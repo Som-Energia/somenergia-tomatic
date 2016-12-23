@@ -14,6 +14,7 @@ from htmlgen import HtmlGenFromSolution
 from htmlgen import HtmlGenFromAsterisk
 
 class ScheduleHours_Test(unittest.TestCase):
+
     def eqOrdDict(self, dict1, dict2, msg=None):
         def sorteddict(d):
             if type(d) not in (dict, ns):

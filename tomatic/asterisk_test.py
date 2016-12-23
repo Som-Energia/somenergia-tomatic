@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
+import asterisk
+from paramiko import SSHClient,AutoAddPolicy
+from Asterisk.Manager import Manager
+
 config=None
 try:
     import config
 except ImportError:
     pass
-if config:
-    import asterisk
-    from paramiko import SSHClient,AutoAddPolicy
-    from Asterisk.Manager import Manager
 
 import unittest
 

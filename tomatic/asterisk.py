@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from paramiko import SSHClient, AutoAddPolicy
 from scp import SCPClient
 from tempfile import NamedTemporaryFile as mktmpfile
@@ -51,3 +52,4 @@ class Pbx(object):
                             ext)
 
 
+# vim: ts=4 sw=4 et
