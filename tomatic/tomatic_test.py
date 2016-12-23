@@ -23,12 +23,6 @@ if config:
     from paramiko import SSHClient,AutoAddPolicy
     from Asterisk.Manager import Manager
 
-class SSHMockup(object):
-    def __init__(self, pbxMockupObject):
-        self.pbxMockupObject = pbxMockupObject
-    def put(self, conf):
-        self.pbxMockupObject.conf = conf
-
 class ScheduleHours_Test(unittest.TestCase):
     def eqOrdDict(self, dict1, dict2, msg=None):
         def sorteddict(d):
