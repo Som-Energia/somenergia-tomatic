@@ -60,7 +60,7 @@ class PbxMockup_Test(unittest.TestCase):
             ns( key='eduard', paused=False),
             ])
 
-    def test_currentQueue_twoSlots(self):
+    def test_currentQueue_twoTimes(self):
         pbx = PbxMockup()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
@@ -85,7 +85,7 @@ class PbxMockup_Test(unittest.TestCase):
             ns( key='eduard', paused=False),
             ])
 
-    def test_currentQueue_beforeSlots(self):
+    def test_currentQueue_beforeTime(self):
         pbx = PbxMockup()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
@@ -104,7 +104,7 @@ class PbxMockup_Test(unittest.TestCase):
         self.assertEqual(pbx.currentQueue(), [
             ])
 
-    def test_currentQueue_afterSlots(self):
+    def test_currentQueue_afterTime(self):
         pbx = PbxMockup()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
@@ -145,7 +145,7 @@ class PbxMockup_Test(unittest.TestCase):
             ns( key='cesar', paused=True),
             ])
 
-    def test_pause_withTwoSlots(self):
+    def test_pause_withTwoLines(self):
         pbx = PbxMockup()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
@@ -213,7 +213,93 @@ class PbxMockup_Test(unittest.TestCase):
             ns( key='cesar', paused=False),
             ])
 
+    def test_currentQueue_withListFormat(self):
+        pbx = PbxMockup()
+        pbx.reconfigure(ns.loads(u"""\
+            timetable:
+              {today}:
+              -
+                - cesar
+                - eduard
+            hores:
+            - '00:00'
+            - '23:59'
 
+            extensions:
+              cesar: 200
+            """.format(
+                today=self.today
+            )))
+        self.assertEqual(pbx.currentQueue(), [
+            ns( key='cesar', paused=False),
+            ns( key='eduard', paused=False),
+            ])
+
+
+
+
+    def test_currentQueue_beforeTime_listFormat(self):
+        pbx = PbxMockup()
+        pbx.reconfigure(ns.loads(u"""\
+            timetable:
+              {today}:
+              -
+                - cesar
+            hores:
+            - '23:58'
+            - '23:59'
+
+            extensions:
+              cesar: 200
+            """.format(
+                today=self.today,
+            )))
+        self.assertEqual(pbx.currentQueue(), [
+            ])
+
+    def test_currentQueue_afterTime_listFormat(self):
+        pbx = PbxMockup()
+        pbx.reconfigure(ns.loads(u"""\
+            timetable:
+              {today}:
+              -
+                - cesar
+            hores:
+            - '00:00'
+            - '00:01'
+
+            extensions:
+              cesar: 200
+            """.format(
+                today=self.today,
+            )))
+        self.assertEqual(pbx.currentQueue(), [
+            ])
+
+    @unittest.skip("CURRENT TEST TO PASS")
+    def test_addLine(self):
+        pbx = PbxMockup()
+        pbx.reconfigure(ns.loads(u"""\
+            timetable:
+              {today}:
+              -
+                - cesar
+                - eduard
+            hores:
+            - '00:00'
+            - '23:59'
+
+            extensions:
+              cesar: 200
+            """.format(
+                today=self.today
+            )))
+        pbx.addLine('david')
+        self.assertEqual(pbx.currentQueue(), [
+            ns( key='cesar', paused=True),
+            ns( key='eduard', paused=False),
+            ns( key='david', paused=False),
+            ])
 
 
 unittest.TestCase.__str__ = unittest.TestCase.id
