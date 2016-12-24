@@ -100,23 +100,30 @@ class HtmlGen(object):
             ))*ndays +
             "</tr>\n"
             ])
-        coreTable=("</tr>\n".join([
-                    """<tr><th>{period}</th>\n""".format(
-                        period=period)+"<td>&nbsp;</td>\n".join(
-                            [self.partialCoreTable(day,turn)
-                            for day in self.yaml.timetable.keys()
-                            ])
-                     for turn,period in enumerate(self.llegeixHores())
-                     ])+""
-                """</tr>\n""")
-        return( """<table>\n"""
-                ""+headerDays+headerTlfnos+coreTable+""
-                """</table>"""
-                )
+        coreTable=(
+            "</tr>\n".join(
+                """<tr><th>{period}</th>\n""".format(period=period)+
+                    "<td>&nbsp;</td>\n".join(
+                        self.partialCoreTable(day,turn)
+                        for day in self.yaml.timetable.keys()
+                        )
+                    for turn,period in enumerate(self.llegeixHores()
+                    )
+                )+""
+            """</tr>\n""")
+        return ''.join([
+            """<table>\n""",
+            headerDays,
+            headerTlfnos,
+            coreTable,
+            """</table>""",
+            ])
 
     def htmlExtensions(self):
-        header =(u"""<h3>Extensions</h3>\n"""
-                u"""<div class="extensions">\n""")
+        header =(
+            u"""<h3>Extensions</h3>\n"""
+            u"""<div class="extensions">\n"""
+            )
         footer = u"""</div>"""
         if 'extensions' in self.yaml:
             extensions = sorted(self.yaml.extensions.items(),

@@ -70,7 +70,7 @@ def baixaDades(config, certificat) :
 		startingSemester,
 		)
 	step("  Baixant vacances de l'interval {}".format(holidays2SRange))
-	holidays2S = fetcher.get_range(0, holidays2SRange)
+	holidays2S = fetcher.get_range(1, holidays2SRange)
 
 #    endingSemester = 1 if nextFriday < date(mondayYear,7,1) else 2
 #    if startingSemester == endingSemester :
@@ -131,6 +131,7 @@ class Backtracker:
 
 		self.config = config
 		self.outputFile = "graella-telefons-{}.html".format(config.monday)
+		self.outputYaml = "graella-telefons-{}.yaml".format(config.monday)
 		self.globalMaxTurnsADay = config.maximHoresDiariesGeneral
 		self.ntelefons = config.nTelefons
 		self.dies = config.diesCerca
@@ -324,6 +325,7 @@ class Backtracker:
 			error("Impossible trobar solució\n{}".format( self.deeperCutLog))
 		else:
 			step("Millor graella grabada a '{}'".format(self.outputFile))
+			step("Millor graella grabada a '{}'".format(self.outputYaml))
 
 	def solveTorn(self, partial):
 		if self.terminated: return
@@ -544,6 +546,7 @@ class Backtracker:
 			personalColors = htmlgen.htmlColors()
 			header = htmlgen.htmlHeader()
 			subheader = htmlgen.htmlSubHeader()
+			htmlgen.getYaml().dump(self.outputYaml)
 			with open(self.outputFile,'w') as output:
 				output.write(
 					header+personalColors+
@@ -565,7 +568,7 @@ class Backtracker:
 			output.write(htmlgen.htmlTable())
 			output.write(penalitzacions)
 		if firstAtCost:
-			graellaFile = "graella-telefons-{}.html".format(self.config.monday)
+			htmlgen.getYaml().dump(self.outputYaml)
 			with open(self.outputFile,'a') as output:
 				output.write(htmlgen.htmlTable()+
 					htmlgen.htmlExtensions()+
