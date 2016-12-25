@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from flask import (
     Flask, Response, request,
     redirect, url_for,
@@ -179,4 +180,4 @@ now = None
 yaml = ns.load("templateTimetable.yaml")
 yaml.setmana = startOfWeek.strftime("%Y-%m-%d")
 
-# vim: et
+# vim: ts=4 sw=4 et
