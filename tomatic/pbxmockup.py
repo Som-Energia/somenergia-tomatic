@@ -58,6 +58,7 @@ class PbxMockup(object):
             self._paused.remove(who)
 
     def addLine(self, person):
+        "Adds a new line at the end of the queue"
         self._extraLines.append(person)
 
 

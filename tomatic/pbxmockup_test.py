@@ -13,13 +13,16 @@ class PbxMockup_Test(unittest.TestCase):
         self.currentHour = now.hour
         self.nextday = weekday(now+timedelta(days=1))
 
+    def pbx(self):
+        return PbxMockup()
+
     def test_currentQueue_noConfiguration(self):
-        pbx = PbxMockup()
+        pbx = self.pbx()
         result = pbx.currentQueue()
         self.assertEqual(result, [])
 
     def test_currentQueue_oneSlot_oneTurn(self):
-        pbx = PbxMockup()
+        pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
@@ -39,7 +42,7 @@ class PbxMockup_Test(unittest.TestCase):
             ])
 
     def test_currentQueue_oneSlot_twoTurns(self):
-        pbx = PbxMockup()
+        pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
@@ -61,7 +64,7 @@ class PbxMockup_Test(unittest.TestCase):
             ])
 
     def test_currentQueue_twoTimes(self):
-        pbx = PbxMockup()
+        pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
@@ -86,7 +89,7 @@ class PbxMockup_Test(unittest.TestCase):
             ])
 
     def test_currentQueue_beforeTime(self):
-        pbx = PbxMockup()
+        pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
@@ -105,7 +108,7 @@ class PbxMockup_Test(unittest.TestCase):
             ])
 
     def test_currentQueue_afterTime(self):
-        pbx = PbxMockup()
+        pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
@@ -125,7 +128,7 @@ class PbxMockup_Test(unittest.TestCase):
 
 
     def test_pause_withOne(self):
-        pbx = PbxMockup()
+        pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
@@ -146,7 +149,7 @@ class PbxMockup_Test(unittest.TestCase):
             ])
 
     def test_pause_withTwoLines(self):
-        pbx = PbxMockup()
+        pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
@@ -169,7 +172,7 @@ class PbxMockup_Test(unittest.TestCase):
             ])
 
     def test_restore(self):
-        pbx = PbxMockup()
+        pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
@@ -191,7 +194,7 @@ class PbxMockup_Test(unittest.TestCase):
             ])
 
     def test_restore_afterDoublePause(self):
-        pbx = PbxMockup()
+        pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
@@ -214,7 +217,7 @@ class PbxMockup_Test(unittest.TestCase):
             ])
 
     def test_currentQueue_withListFormat(self):
-        pbx = PbxMockup()
+        pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
@@ -236,7 +239,7 @@ class PbxMockup_Test(unittest.TestCase):
             ])
 
     def test_currentQueue_beforeTime_listFormat(self):
-        pbx = PbxMockup()
+        pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
@@ -255,7 +258,7 @@ class PbxMockup_Test(unittest.TestCase):
             ])
 
     def test_currentQueue_afterTime_listFormat(self):
-        pbx = PbxMockup()
+        pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
@@ -274,7 +277,7 @@ class PbxMockup_Test(unittest.TestCase):
             ])
 
     def test_addLine(self):
-        pbx = PbxMockup()
+        pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
