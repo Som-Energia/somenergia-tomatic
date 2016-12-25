@@ -19,6 +19,7 @@ class PbxMockup(object):
             hores: []
             """)
         self._paused = set()
+        self._extraLines = list()
 
     def reconfigure(self, configuration):
         # TODO: Test later modifications on configuration do not affect inner
@@ -44,7 +45,7 @@ class PbxMockup(object):
 
         return [
             ns( key=who, paused= who in self._paused)
-            for who in timetable[wd][turn]
+            for who in timetable[wd][turn] + self._extraLines
             ]
 
     def pause(self, who):
@@ -56,6 +57,8 @@ class PbxMockup(object):
         if who in self._paused:
             self._paused.remove(who)
 
+    def addLine(self, person):
+        self._extraLines.append(person)
 
 
 # vim: ts=4 sw=4 et

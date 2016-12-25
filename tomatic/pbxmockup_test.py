@@ -235,9 +235,6 @@ class PbxMockup_Test(unittest.TestCase):
             ns( key='eduard', paused=False),
             ])
 
-
-
-
     def test_currentQueue_beforeTime_listFormat(self):
         pbx = PbxMockup()
         pbx.reconfigure(ns.loads(u"""\
@@ -276,7 +273,6 @@ class PbxMockup_Test(unittest.TestCase):
         self.assertEqual(pbx.currentQueue(), [
             ])
 
-    @unittest.skip("CURRENT TEST TO PASS")
     def test_addLine(self):
         pbx = PbxMockup()
         pbx.reconfigure(ns.loads(u"""\
@@ -296,7 +292,7 @@ class PbxMockup_Test(unittest.TestCase):
             )))
         pbx.addLine('david')
         self.assertEqual(pbx.currentQueue(), [
-            ns( key='cesar', paused=True),
+            ns( key='cesar', paused=False),
             ns( key='eduard', paused=False),
             ns( key='david', paused=False),
             ])
