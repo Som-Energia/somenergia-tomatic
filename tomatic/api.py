@@ -28,7 +28,9 @@ def now():
 def now():
     return datetime(2016,12,27,10,23,23)
 
-pbx(PbxMockup(now))
+p = PbxMockup(now)
+p.reconfigure(schedules.load("2016-12-26"))
+pbx(p)
 
 def thisweek():
     return now() - timedelta(days=now().weekday)

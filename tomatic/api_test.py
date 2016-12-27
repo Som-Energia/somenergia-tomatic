@@ -19,7 +19,7 @@ def setNow(year,month,day,hour,minute):
 
 def loadYaml(yaml):
     parsedYaml = ns.loads(yaml)
-    week = str(parsedYaml.setmana)
+    week = str(parsedYaml.date)
     setmana_underscore = week.replace("-","_")
     api.hs[setmana_underscore]=HtmlGenFromYaml(parsedYaml)
 
@@ -45,15 +45,15 @@ class Api_Test(unittest.TestCase):
     def test_getcurrentqueue(self):
 
         loadYaml("""\
-                setmana: 2016-07-25
+                date: 2016-07-25
                 timetable:
                   dl:
                     1:
                     - ana
-                hores:
+                hours:
                 - '09:00'
                 - '10:15'
-                torns:
+                turns:
                 - T1
                 colors:
                    marc:   'fbe8bc'
@@ -96,15 +96,15 @@ class Api_Test(unittest.TestCase):
 
     def test_getqueue_one_tel(self):
         loadYaml("""\
-                setmana: 2016-07-25
+                date: 2016-07-25
                 timetable:
                   dl:
                     1:
                     - ana
-                hores:
+                hours:
                 - '09:00'
                 - '10:15'
-                torns:
+                turns:
                 - T1
                 colors:
                    marc:   'fbe8bc'
@@ -146,15 +146,15 @@ class Api_Test(unittest.TestCase):
 
     def test_getqueue_many_tt_first_week(self):
         loadYaml("""\
-                setmana: 2016-07-25
+                date: 2016-07-25
                 timetable:
                   dl:
                     1:
                     - ana
-                hores:
+                hours:
                 - '09:00'
                 - '10:15'
-                torns:
+                turns:
                 - T1
                 colors:
                    marc:   'fbe8bc'
@@ -192,15 +192,15 @@ class Api_Test(unittest.TestCase):
                 """
         )
         loadYaml("""\
-                setmana: 2016-08-01
+                date: 2016-08-01
                 timetable:
                   dl:
                     1:
                     - victor
-                hores:
+                hours:
                 - '09:00'
                 - '10:15'
-                torns:
+                turns:
                 - T1
                 colors:
                   ana:    '98bdc0'
@@ -226,15 +226,15 @@ class Api_Test(unittest.TestCase):
 
     def test_getqueue_many_tt_second_week(self):
         loadYaml("""\
-                setmana: 2016-07-25
+                date: 2016-07-25
                 timetable:
                   dl:
                     1:
                     - ana
-                hores:
+                hours:
                 - '09:00'
                 - '10:15'
-                torns:
+                turns:
                 - T1
                 colors:
                   ana:    '98bdc0'
@@ -256,15 +256,15 @@ class Api_Test(unittest.TestCase):
                 """
         )
         loadYaml("""\
-                setmana: 2016-08-01
+                date: 2016-08-01
                 timetable:
                   dl:
                     1:
                     - victor
-                hores:
+                hours:
                 - '09:00'
                 - '10:15'
-                torns:
+                turns:
                 - T1
                 colors:
                   ana:    '98bdc0'
@@ -290,7 +290,7 @@ class Api_Test(unittest.TestCase):
 
     def test_getqueue_two_tels_intermediate_day(self):
         loadYaml("""\
-                setmana: 2016-07-25
+                date: 2016-07-25
                 timetable:
                   dl:
                     1:
@@ -307,11 +307,11 @@ class Api_Test(unittest.TestCase):
                     - silvia
                     - monica
 
-                hores:
+                hours:
                 - '09:00'
                 - '10:15'
                 - '11:30'
-                torns:
+                turns:
                 - T1
                 - T2
                 colors:
@@ -340,7 +340,7 @@ class Api_Test(unittest.TestCase):
 
     def test_getDynamicqueue_three_tels_intermediate_day(self):
         loadYaml("""\
-                setmana: 2016-07-25
+                date: 2016-07-25
                 timetable:
                   dl:
                     1:
@@ -357,11 +357,11 @@ class Api_Test(unittest.TestCase):
                     - silvia
                     - monica
 
-                hores:
+                hours:
                 - '09:00'
                 - '10:15'
                 - '11:30'
-                torns:
+                turns:
                 - T1
                 - T2
                 colors:
@@ -395,7 +395,7 @@ class Api_Test(unittest.TestCase):
     @unittest.skipIf(not config, "depends on pbx")
     def test_receiveFromAsterisk_firstTurn(self):
         yaml = ns.loads("""\
-                setmana: 2016-09-26
+                date: 2016-09-26
                 timetable:
                   dl:
                     1:
@@ -412,11 +412,11 @@ class Api_Test(unittest.TestCase):
                     - silvia
                     - monica
 
-                hores:
+                hours:
                 - '09:00'
                 - '10:15'
                 - '11:30'
-                torns:
+                turns:
                 - T1
                 - T2
                 - T3
@@ -504,7 +504,7 @@ class Api_Test(unittest.TestCase):
     @unittest.skipIf(not config, "depends on pbx")
     def test_receiveFromAsterisk_secondTurn(self):
         yaml = ns.loads("""\
-                setmana: 2016-09-26
+                date: 2016-09-26
                 timetable:
                   dl:
                     1:
@@ -521,11 +521,11 @@ class Api_Test(unittest.TestCase):
                     - silvia
                     - monica
 
-                hores:
+                hours:
                 - '09:00'
                 - '10:15'
                 - '11:30'
-                torns:
+                turns:
                 - T1
                 - T2
                 - T3

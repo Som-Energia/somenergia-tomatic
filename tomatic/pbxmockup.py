@@ -16,7 +16,7 @@ class PbxMockup(object):
     def __init__(self,now=None):
         self._configuration = ns.loads(u"""
             timetable: {}
-            hores: []
+            hours: []
             """)
         if now: self._now = now
         self._paused = set()
@@ -29,9 +29,10 @@ class PbxMockup(object):
     def scheduledQueue(self):
         timetable = self._configuration.timetable
         now = self._now()
+        print("Now is {}".format(now))
         from bisect import bisect
         currentHour = "{0:%H:%m}".format(now)
-        turn = bisect(self._configuration.hores, currentHour)
+        turn = bisect(self._configuration.hours, currentHour)
         wd = weekday(now)
         if wd not in timetable: return []
 
