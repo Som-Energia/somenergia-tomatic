@@ -14,17 +14,37 @@ try:
 except ImportError:
     pass
 
-@unittest.skip("Not working as module yet")
+def setNow(year,month,day,hour,minute):
+    api.now=datetime(year,month,day,hour,minute)
+
+def loadYaml(yaml):
+    parsedYaml = ns.loads(yaml)
+    week = str(parsedYaml.setmana)
+    setmana_underscore = week.replace("-","_")
+    api.hs[setmana_underscore]=HtmlGenFromYaml(parsedYaml)
+
+startOfWeek = HtmlGenFromYaml.iniciSetmana(
+    datetime.now()
+)
+
+def loadAsterisk(yaml,date=None):
+    global startOfWeek
+    api.hs[startOfWeek.strftime("%Y_%m_%d")
+        ]=HtmlGenFromAsterisk(
+            yaml,pbx().receiveConf()
+        )
+
 class Api_Test(unittest.TestCase):
 
     def setUp(self):
+        api.app.config['TESTING'] = True
         self.app = api.app.test_client()
         self.maxDiff = None
         self.b2bdatapath = "testdata"
 
     def test_getcurrentqueue(self):
 
-        api.loadYaml("""\
+        loadYaml("""\
                 setmana: 2016-07-25
                 timetable:
                   dl:
@@ -75,7 +95,7 @@ class Api_Test(unittest.TestCase):
         self.assertB2BEqual(rv.data)
 
     def test_getqueue_one_tel(self):
-        api.loadYaml("""\
+        loadYaml("""\
                 setmana: 2016-07-25
                 timetable:
                   dl:
@@ -125,7 +145,7 @@ class Api_Test(unittest.TestCase):
         self.assertB2BEqual(rv.data)
 
     def test_getqueue_many_tt_first_week(self):
-        api.loadYaml("""\
+        loadYaml("""\
                 setmana: 2016-07-25
                 timetable:
                   dl:
@@ -171,7 +191,7 @@ class Api_Test(unittest.TestCase):
                 - pere
                 """
         )
-        api.loadYaml("""\
+        loadYaml("""\
                 setmana: 2016-08-01
                 timetable:
                   dl:
@@ -205,7 +225,7 @@ class Api_Test(unittest.TestCase):
         self.assertB2BEqual(rv.data)
 
     def test_getqueue_many_tt_second_week(self):
-        api.loadYaml("""\
+        loadYaml("""\
                 setmana: 2016-07-25
                 timetable:
                   dl:
@@ -235,7 +255,7 @@ class Api_Test(unittest.TestCase):
                 - ana
                 """
         )
-        api.loadYaml("""\
+        loadYaml("""\
                 setmana: 2016-08-01
                 timetable:
                   dl:
@@ -269,7 +289,7 @@ class Api_Test(unittest.TestCase):
         self.assertB2BEqual(rv.data)
 
     def test_getqueue_two_tels_intermediate_day(self):
-        api.loadYaml("""\
+        loadYaml("""\
                 setmana: 2016-07-25
                 timetable:
                   dl:
@@ -319,7 +339,7 @@ class Api_Test(unittest.TestCase):
         self.assertB2BEqual(rv.data)
 
     def test_getDynamicqueue_three_tels_intermediate_day(self):
-        api.loadYaml("""\
+        loadYaml("""\
                 setmana: 2016-07-25
                 timetable:
                   dl:

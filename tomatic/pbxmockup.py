@@ -13,11 +13,12 @@ class PbxMockup(object):
     a Pbx without having real effect on any PBX.
     """
 
-    def __init__(self):
+    def __init__(self,now=None):
         self._configuration = ns.loads(u"""
             timetable: {}
             hores: []
             """)
+        if now: self._now = now
         self._paused = set()
         self._extraLines = list()
 
@@ -25,9 +26,9 @@ class PbxMockup(object):
         # TODO: Test later modifications on configuration do not affect inner
         self._configuration = ns.loads(configuration.dump())
 
-    def currentQueue(self):
+    def scheduledQueue(self):
         timetable = self._configuration.timetable
-        now = datetime.now()
+        now = self._now()
         from bisect import bisect
         currentHour = "{0:%H:%m}".format(now)
         turn = bisect(self._configuration.hores, currentHour)
@@ -45,14 +46,20 @@ class PbxMockup(object):
 
         return [
             ns( key=who, paused= who in self._paused)
-            for who in timetable[wd][turn] + self._extraLines
+            for who in timetable[wd][turn]
+            ]
+
+    def currentQueue(self):
+        return self.scheduledQueue() + [
+            ns( key=who, paused= who in self._paused)
+            for who in self._extraLines
             ]
 
     def pause(self, who):
         "Temporary removes the operator from the queue"
         self._paused.add(who)
 
-    def restore(self, who):
+    def resume(self, who):
         "Puts back the operator to the queue"
         if who in self._paused:
             self._paused.remove(who)

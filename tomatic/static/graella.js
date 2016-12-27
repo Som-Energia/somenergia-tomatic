@@ -1,75 +1,244 @@
 'use strict';
 
-var WeekList = {
-    weeks: m.prop([]),
-    current: m.prop(),
-    controller: function(onchangelist) {
-        m.request({
-            method: 'GET',
-            url: 'graella/list',
-            deserialize: jsyaml.load,
-        }).then(function(newWeeklist){
-            console.log(newWeeklist);
-            WeekList.weeks(newWeeklist.weeks);
-        });
-        return {
-            model: this,
-            parent: onchangelist,
-            onchangelist: onchangelist || function(week) {
-                console.log("Changing to", week);
-            }
-        };
-    },
-    view: function(c) {
-        return m('',
-            this.weeks().map(function(week){
-                var current = c.model.current === week ? '.current':'';
-                return m('.week'+current, {
-                    onclick: function() {
-                        c.parent.loadGrid(week);
-                        c.model.current = week;
-                    }
-                }, "Setmana del "+week);
-        }));
-    }
+function hex2triplet(hex) {
+	hex = String(hex).replace(/[^0-9a-f]/gi, '');
+	if (hex.length < 6) {
+		hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+	}
+	return [
+		hex.substr(0,2),
+		hex.substr(2,2),
+		hex.substr(4,2)
+		].map(function(part) {
+			return parseInt(part, 16);
+		});
+}
+function triplet2hex(triplet) {
+	var rgb = "#";
+	for (let i in triplet) {
+		let c = triplet[i];
+		let newc = Math.round(Math.min(Math.max(0, c), 255));
+		rgb += ("00"+newc.toString(16)).slice(-2);
+	}
+	return rgb;
+}
+
+function luminance(hex, lum) {
+	var triplet = hex2triplet(hex);
+	lum = lum || 0;
+	return triplet2hex(triplet.map(function(c) {
+		return c + c*lum;
+	}))
+}
+
+
+var Tomatic = {
 };
 
+Tomatic.queue = m.prop([]);
+Tomatic.init = function() {
+	console.log("init",this);
+	this.requestGrid('2016-12-26');
+	this.requestQueue();
+};
+Tomatic.requestQueue = function(suffix) {
+	m.request({
+		method: 'GET',
+		url: 'queue'+(suffix||''),
+		deserialize: jsyaml.load,
+	}).then(function(response){
+		console.log(response);
+		if (response.currentQueue!==undefined) {
+			Tomatic.queue(response.currentQueue);
+		}
+	});
+};
+
+Tomatic.addLine = function(line) {
+	Tomatic.requestQueue('/add/'+line);
+};
+
+Tomatic.pauseLine = function(line) {
+	Tomatic.requestQueue('/pause/'+line);
+};
+
+Tomatic.restoreLine = function(line) {
+	Tomatic.requestQueue('/resume/'+line);
+};
+
+Tomatic.grid = m.prop({});
+Tomatic.requestGrid = function(date) {
+	var self = this;
+	m.request({
+		method: 'GET',
+		url: 'graella-'+date+'.yaml',
+		deserialize: jsyaml.load,
+	}).then(Tomatic.grid);
+};
+Tomatic.formatName = function(name) {
+	function titleCase(str)
+	{
+		return str.replace(/\w\S*/g, function(txt){
+			return txt.charAt(0).toUpperCase()
+				+ txt.substr(1).toLowerCase();
+		});
+	}
+	if (!name) { return "...";}
+	return Tomatic.grid().names[name] || titleCase(name);
+};
+Tomatic.extension = function(name) {
+	return Tomatic.formatName(name) + ": "
+		+ (Tomatic.grid().extensions[name] || "???");
+};
+
+
+var QueueWidget = {
+	controller: function() {
+		var c = {
+			addtoqueue: function(ev) {
+				console.log("opening dialog");
+				console.log('dialog#'+c.dialog.id);
+				var dialog = document.querySelector('dialog#'+c.dialog.controller().id);
+				if (! dialog.showModal) {
+				  dialogPolyfill.registerDialog(dialog);
+				}
+				dialog.showModal();
+			},
+			resume: function(line, ev) {
+				Tomatic.restoreLine(line);
+			},
+			pause: function(line, ev) {
+				Tomatic.pauseLine(line);
+			},
+			dialog: m.component(PersonPicker,{
+				id: "queueeditorpicker",
+				key: "queueeditorpicker",
+				title: "Afegir línia oberta",
+				onpick: function(name) {
+					Tomatic.addLine(name);
+				},
+				onclose: function() {
+				},
+			}),
+		};
+		return c;
+	},
+	view: function(c) {
+		return m('.queueeditor',
+			c.dialog,
+			Tomatic.queue().map(function(line) {
+				return m('.queueitem.'+line.key, {
+					'class': line.paused?'paused':'resumed',
+					onclick: line.paused?
+						c.resume.bind(c,line.key):
+						c.pause.bind(c,line.key),
+					},
+					Tomatic.extension(line.key)
+				);
+			}),
+			m('.queueitem.add', {
+				onclick: c.addtoqueue.bind(c),
+				},
+				"+"
+			)
+		);
+	}
+};
 var PersonPicker = {
-	controller: function(persons) {
-		return {
-			personPicked: function(person) {
-				persons.cellEdited(person);
+	controller: function(args) {
+		var c = {
+			id: args.id || 'id'+Math.random(),
+			title: args.title || "Escull compa",
+			onpick: args.onpick,
+			person: m.prop(undefined),
+
+			picked: function(name, ev) {
+				console.log("piked", name);
+				this.person(name);
+				this.close();
+				if (this.onpick) {
+					this.onpick(name);
+				}
+			},
+			show: function() {
+				var dialog = document.querySelector('dialog#'+c.id);
+				if (! dialog.showModal) {
+					dialogPolyfill.registerDialog(dialog);
+				}
+				this.person(undefined);
+				dialog.showModal()
+			},
+			close: function() {
+				var dialog = document.querySelector('dialog#'+c.id);
+				if (! dialog.showModal) {
+					dialogPolyfill.registerDialog(dialog);
+				}
+				dialog.close()
 			},
 		};
+		return c;
 	},
 
-	view: function(controller, persons) {
+	view: function(controller, args) {
+		var extensions = Tomatic.grid().extensions || {};
 		return (
-			m('dialog.mdl-dialog[open]',
-				m('h1.mdl-dialog__title', "Qui farà el torn?"),
+			m('dialog.mdl-dialog#'+controller.id,
+				m('h1.mdl-dialog__title', controller.title),
 				m('.mdl-dialog__content',
 					m('.extensions',
-
-						Object.keys(persons.d.extensions).sort().map(function(name) {
+						Object.keys(extensions).sort().map(function(name) {
 							return m('.extension', {
 								class: name,
-								onclick: function(ev) {
-									controller.personPicked(name);
-								}},
-								persons.formatName(name)
+								onclick: controller.picked.bind(controller,name),
+								},
+								Tomatic.formatName(name)
 							);
 						})
 					)
 				),
 				m('.mdl-dialog__actions',
 					m('button.mdl-button.close[type=button]', {
-							onclick: persons.cancelCellEdition,
+							onclick: controller.close.bind(controller),
 						},
 						"Cancel·lar"
 					)
 				)
 			)
 		)
+	}
+};
+
+var WeekList = {
+	weeks: m.prop([]),
+	current: m.prop(),
+	controller: function(onchangelist) {
+		m.request({
+			method: 'GET',
+			url: 'graella/list',
+			deserialize: jsyaml.load,
+		}).then(function(newWeeklist){
+			console.log(newWeeklist);
+			WeekList.weeks(newWeeklist.weeks);
+		});
+		return {
+			model: this,
+			parent: onchangelist,
+			onchangelist: onchangelist || function(week) {
+				console.log("Changing to", week);
+			}
+		};
+	},
+	view: function(c) {
+		return m('',
+			this.weeks().map(function(week){
+				var current = c.model.current === week ? '.current':'';
+				return m('.week'+current, {
+					onclick: function() {
+						c.parent.loadGrid(week);
+						c.model.current = week;
+					}
+				}, "Setmana del "+week);
+		}));
 	}
 };
 
@@ -80,69 +249,59 @@ Graella.controller = function(model, args) {
 	args = args || {};
 	var controller = {
 		_editingCell: m.prop(undefined),
-		formatName: function(name) {
-			function titleCase(str)
-			{
-				return str.replace(/\w\S*/g, function(txt){
-					return txt.charAt(0).toUpperCase()
-						+ txt.substr(1).toLowerCase();
-				});
-			}
-			if (!name) { return "...";}
-			return this.d.names[name] || titleCase(name);
-		},
-		extension: function(name) {
-			return this.formatName(name) + ": "
-				+ (this.d.extensions[name] || "???");
-		},
-		editCell: function(day, houri, turni) {
+		startCellEdition: function(day, houri, turni) {
 			this._editingCell({
 				day: day,
 				houri: houri,
 				turni: turni
 			});
-			var dialog = document.querySelector('dialog');
-			this.cellSelected = function(newName) {
-				this.d.timetable[day][houri][turni] = newName;
-				m.request({
-					method: 'UPDATE',
-					url: 'graella/'+([
-						this.d.date,day,houri,turni,newName
-						].join('/')),
-				})
-				.then(function() { this.loadGrid(this.d.date);});
-			}
+			var dialog = document.querySelector('dialog#grideditor');
+			console.log(dialog);
 			if (! dialog.showModal) {
 			  dialogPolyfill.registerDialog(dialog);
 			}
 			dialog.showModal();
 		},
 		cellEdited: function(name) {
-			var dialog = document.querySelector('dialog');
-			this.cellSelected(name);
-			this.cellSelected = undefined;
+			this.editingCell(name);
+			this.editingCell = undefined;
 			this._editingCell(undefined);
+			var dialog = document.querySelector('dialog#grideditor');
 			dialog.close();
 		},
 		cancelCellEdition: function(ev) {
-			var dialog = document.querySelector('dialog');
-			this.cellSelected = undefined;
+			this.editingCell = undefined;
 			this._editingCell(undefined);
+			var dialog = document.querySelector('dialog#grideditor');
 			dialog.close();
 		},
+		dialog: m.component(PersonPicker,{
+			id: "grideditor",
+			key: "grideditor",
+			title: "Editar graella",
+			onpick: function(name) {
+				console.log(controller._editingCell);
+				var day = controller._editingCell().day;
+				var houri = controller._editingCell().houri;
+				var turni = controller._editingCell().turni;
+				Tomatic.grid().timetable[day][houri][turni] = name;
+				m.request({
+					method: 'UPDATE',
+					url: 'graella/'+([
+						Tomatic.grid().date,day,houri,turni,name
+						].join('/')),
+				})
+				.then(function() { this.loadGrid(this.d.date);});
+			},
+			onclose: function() {
+				controller.cancelCellEdition();
+			},
+		}),
 		loadGrid: function(date) {
-			var self = this;
-			m.request({
-				method: 'GET',
-				url: 'graella-'+date+'.yaml',
-				deserialize: jsyaml.load,
-			}).then(function(newGrid){
-				console.log("Nova grid",newGrid);
-				self.d = newGrid;
-			});
+			Tomatic.requestGrid(date)
 		},
 	};
-	controller.loadGrid(args.date ||'2016-02-02');
+	controller.loadGrid(args.date ||'2016-12-26');
 	return controller;
 };
 
@@ -150,58 +309,71 @@ Graella.view = function(c) {
 	var cell = function(day, houri, turni) {
 		var name = '-';
 		try {
-			name = c.d.timetable[day][houri][turni];
+			name = Tomatic.grid().timetable[day][houri][turni];
 		} catch (err) {
 			return m('td','-');
 		}
 		return m('td', {
 				class: name,
-				title: c.extension(name),
+				title: Tomatic.extension(name),
 				onclick: function(ev) {
-					c.editCell(day, houri, turni);
+					c.startCellEdition(day, houri, turni);
 					ev.preventDefault();
 				}
 			},
-			c.formatName(name)
+			Tomatic.formatName(name)
 		);
 	};
+	var grid = Tomatic.grid();
 	return [
-        m.component(WeekList, c),
-        m('form', {
-            name: 'upload',
-            action: 'graella',
-            method: 'post',
-            enctype: 'multipart/form-data'
-            },
-            m('input[type="file"][name="yaml"][accept="application/x-yaml"]'),
-            m('input[type="submit"][value="Puja Graella"]')
-            ),
-		c._editingCell() ? m.component(PersonPicker, c):[], 
+		m('style',
+			Object.keys(grid.colors||{}).map(function(name) {
+				let color = '#'+grid.colors[name];
+				return '.'+name+' {\n' +
+					'  background-color: '+color+';\n' +
+					'  border-color: '+luminance(color,-0.3)+';\n' +
+					'  border-width: 2pt;\n'+
+				'}\n';
+			})
+		),
+		m('h2', 'Línies actives'),
+		m.component(QueueWidget, c),
+		m.component(WeekList, c),
+		m('form', {
+			name: 'upload',
+			action: 'graella',
+			method: 'post',
+			enctype: 'multipart/form-data'
+			},
+			m('input[type="file"][name="yaml"][accept="application/x-yaml"]'),
+			m('input[type="submit"][value="Puja Graella"]')
+			),
+		c.dialog,
 
-		m('h1', "Setmana ", c.d.date),
+		m('h1', "Setmana ", grid.date),
 		m('table', [
-			m('tr', c.d.days.map(function(day) {
+			m('tr', grid.days.map(function(day) {
 				return [
 					m('td'),
-					m('th', {colspan:c.d.turns.length}, day),
+					m('th', {colspan:grid.turns.length}, day),
 				];
 			})),
-			m('tr', c.d.days.map(function(day) {
+			m('tr', grid.days.map(function(day) {
 				return [
 					m('td'),
-					c.d.turns.map(function(turn) {
+					grid.turns.map(function(turn) {
 						return m('th', turn);
 					}),
 				];
 			})),
-			c.d.hours.slice(0,-1).map(function(hour,houri) {
+			grid.hours.slice(0,-1).map(function(hour,houri) {
 				return m('tr', [
-					c.d.days.map(function(day, dayi) {
+					grid.days.map(function(day, dayi) {
 						return [
 							dayi!=0?
-								m('td', m.trust('&nbsp;')) :
-								m('th', c.d.hours[houri]+'-'+c.d.hours[houri+1]),
-							c.d.turns.map(function(turn, turni) {
+								m('td.separator', m.trust('&nbsp;')) :
+								m('th.separator', grid.hours[houri]+'-'+grid.hours[houri+1]),
+							grid.turns.map(function(turn, turni) {
 								return cell(day, houri, turni)
 							}),	
 						];
@@ -211,20 +383,20 @@ Graella.view = function(c) {
 		]),
 		m('h3', 'Extensions'),
 		m('.extensions',
-			Object.keys(c.d.extensions).sort().map(function(name) {
+			Object.keys(grid.extensions).sort().map(function(name) {
 				return m('.extension', {class: name}, [
-					c.formatName(name),
+					Tomatic.formatName(name),
 					m('br'),
-					c.d.extensions[name],
+					grid.extensions[name],
 				]);
 			})
 		),
 		m('.extensions',
-			Object.keys(c.d.otherextensions).sort().map(function(name) {
+			Object.keys(grid.otherextensions || {}).sort().map(function(name) {
 				return m('.extension', {class: name}, [
-					c.formatName(name),
+					Tomatic.formatName(name),
 					m('br'),
-					c.d.otherextensions[name],
+					grid.otherextensions[name],
 				]);
 			})
 		),
@@ -232,6 +404,7 @@ Graella.view = function(c) {
 };
 
 window.onload = function() {
+	Tomatic.init();
 	m.mount(document.getElementById("graella"), Graella);
 };
 

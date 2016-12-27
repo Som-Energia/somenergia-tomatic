@@ -5,9 +5,10 @@ from flask import (
     redirect, url_for,
     )
 from htmlgen import HtmlGenFromYaml, HtmlGenFromAsterisk
-from datetime import datetime
+from datetime import datetime, timedelta
 from yamlns import namespace as ns
 from . import schedulestorage
+from .pbxmockup import PbxMockup
 
 hs = {}
 
@@ -21,7 +22,20 @@ def pbx(alternative = None):
         pbx.cache = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
     return pbx.cache
 
+def now():
+    return datetime.now()
+
+def now():
+    return datetime(2016,12,27,10,23,23)
+
+pbx(PbxMockup(now))
+
+def thisweek():
+    return now() - timedelta(days=now().weekday)
+
+staticpath = 'tomatic/static'
 config=None
+
 try:
     import config
 except ImportError:
@@ -30,33 +44,12 @@ if config or True:
     import asterisk
     from paramiko import SSHClient,AutoAddPolicy
     from Asterisk.Manager import Manager
+
 app = Flask(__name__)
-startOfWeek = HtmlGenFromYaml.iniciSetmana(
-    datetime.now()
-)
-def loadYaml(yaml):
-    global hs
-    parsedYaml = ns.loads(yaml)
-    week = str(parsedYaml.setmana)
-    setmana_underscore = week.replace("-","_")
-    hs[setmana_underscore]=HtmlGenFromYaml(parsedYaml)
-
-def loadAsterisk(yaml,date=None):
-    global hs
-    hs[startOfWeek.strftime("%Y_%m_%d")
-        ]=HtmlGenFromAsterisk(
-            yaml,pbx().receiveConf()
-        )
-
-def setNow(year,month,day,hour,minute):
-    global now
-    now=datetime(year,month,day,hour,minute)
 
 def trustedStaticFile(path):
     with open(path) as f:
         return f.read()
-
-staticpath = 'tomatic/static'
 
 @app.route('/')
 def tomatic():
@@ -134,50 +127,44 @@ def uploadGraella(week=None):
     schedules.save(graella)
     return redirect(url_for('tomatic'))
 
-
-@app.route('/boo')
-def index():
-    global now
-    if not now:
-        now=datetime.now()
-    return get_queue(
-        "_".join([
-            str(now.year),
-            "%02d" % now.month,
-            "%02d" % now.day]),
-        now.hour,
-        now.minute
+@app.route('/queue')
+def get_queue():
+    return Response(ns(
+        currentQueue = pbx().currentQueue()
+        ).dump(),
+        mimetype = 'application/x-yaml',
     )
 
-@app.route('/getqueue/<setmana>/<hour>/<minute>')
-def get_queue(setmana,hour,minute):
-    loadAsterisk(yaml)
-    year,month,day=(
-        int(tok)
-        for tok
-        in setmana.split('_')
+@app.route('/queue/add/<person>')
+def add_to_queue(person):
+    p = pbx()
+    p.addLine(person)
+    print p.currentQueue()
+    return Response(ns(
+        currentQueue = p.currentQueue()
+        ).dump(),
+        mimetype = 'application/x-yaml',
     )
-    startOfWeek = HtmlGenFromYaml.iniciSetmana(
-        datetime(year,month,day)
-    )
-    h = hs[startOfWeek.strftime("%Y_%m_%d")]
-    day,turn = h.getCurrentQueue(
-        datetime(year,month,day,int(hour),int(minute))
-    )
-    response = (h.htmlHeader()+
-        h.htmlColors()+
-        h.htmlSubHeader()+
-        h.htmlSetmana()+
-        h.partialCurrentQueue(day,turn)+
-        h.htmlExtensions()+
-        h.htmlFixExtensions()+
-        h.htmlFooter()
-    )
-    return response
 
+@app.route('/queue/pause/<person>')
+def pause_line(person):
+    p = pbx()
+    p.pause(person)
+    return Response(ns(
+        currentQueue = p.currentQueue()
+        ).dump(),
+        mimetype = 'application/x-yaml',
+    )
 
-now = None
-yaml = ns.load("templateTimetable.yaml")
-yaml.setmana = startOfWeek.strftime("%Y-%m-%d")
+@app.route('/queue/resume/<person>')
+def resume_line(person):
+    p = pbx()
+    p.resume(person)
+    return Response(ns(
+        currentQueue = p.currentQueue()
+        ).dump(),
+        mimetype = 'application/x-yaml',
+    )
+
 
 # vim: ts=4 sw=4 et

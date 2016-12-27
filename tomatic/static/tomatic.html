@@ -26,8 +26,40 @@ td { padding: 1ex;}
 td:hover {
 	opacity: .8;
 }
+.separator {
+	background: #ddd;
+	border: none;
+}
+.queueeditor {
+	margin-left: auto;
+	margin-right: auto;
+	text-align:center;
+}
+.queueitem {
+	width: 10em;
+	text-align: center;
+	display: inline-block;
+	padding: 1em;
+	border: 2pt solid;
+	margin: 2pt;
+}
+.queueitem.paused {
+	color: red;
+	text-decoration: line-through;
+	background-color: #fee;
+	border-color: red;
+}
+.queueitem:hover {
+	opacity: .8;
+}
+.queueitem.add {
+	color: #aaaaff;
+	font-weight: bold;
+	border: 2pt dashed #aaaaff;
+	background: #ddddff;
+}
 .extensions {
-	width: 60%;
+	width: 80%;
 	text-align: center;
 }
 .extension {
@@ -51,28 +83,6 @@ dialog .extension {
 dialog .extension:hover {
 	opacity: .8;
 }
-.paused { background-color: #ffffff; }
-.vic { background-color: #7ff1f2; }
-.tania { background-color: #c8abf4; }
-.judit { background-color: #e781e8; }
-.ana { background-color: #98bdc0; }
-.pere { background-color: #8f928e; }
-.monica { background-color: #7fada0; }
-.erola { background-color: #8789c8; }
-.joan { background-color: #fae080; }
-.silvia { background-color: #8097fa; }
-.marc { background-color: #fbe8bc; }
-.carles { background-color: #c98e98; }
-.eduard { background-color: #d8b9c5; }
-.aleix { background-color: #eed0eb; }
-.lucia { background-color: #b0bf90; }
-.yaiza { background-color: #90cdb9; }
-.marta { background-color: #eb9481; }
-.jordi { background-color: #ff9999; }
-.manel { background-color: #88dfe3; }
-.david { background-color: #ffd3ac; }
-.judith { background-color: #d8ff94; }
-.victor { background-color: #ff3333; }
 </style>
 </head>
 <body>
