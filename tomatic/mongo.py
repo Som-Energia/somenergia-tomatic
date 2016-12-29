@@ -7,14 +7,10 @@ class MongoConnector(object):
         self.client=client
     def saveTimetable(self, tt,force=None):
         if not self.client.find_one(
-            {'week':tt.setmana.strftime(
-                '%Y_%m_%d'
-            )}
+            {'week':tt.week }
         ) or force:
             self.client.insert_one(
-                    {'week':tt.setmana.strftime(
-                        '%Y_%m_%d'
-                     ), 'yaml': tt.dump()}
+                {'week':tt.week, 'yaml': tt.dump()}
             )
         else:
             raise Exception

@@ -139,9 +139,9 @@ class HtmlGen(object):
         return header+body+footer
 
     def htmlSetmana(self):
-        if 'setmana' in self.yaml:
+        if 'week' in self.yaml:
             setmanaHeader = ("<h1>"
-                             "Setmana {}".format(self.yaml.setmana)+""
+                             "Setmana {}".format(self.yaml.week)+""
                              "</h1>")
         else:
             setmanaHeader = "<h1>Setmana ???</h1>"
@@ -456,7 +456,7 @@ class HtmlGenFromSolution(HtmlGen):
         y['turns']= ["T"+str(i+1) for i in range(config.nTelefons)]
         y['colors']=config.colors
         y['extensions']=config.extensions
-        y['setmana']=self.iniciSetmana(date)
+        y['week']=str(self.iniciSetmana(date))
         y['names']=config.names
         y['companys']=companys
         # TODO: include days, remove companys
@@ -549,7 +549,7 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
         y.turns = yaml.turns
         y.colors = yaml.colors
         y.extensions = yaml.extensions
-        y.setmana = yaml.setmana
+        y.week = yaml.week
         y.companys = yaml.companys
         self.yaml=y
 

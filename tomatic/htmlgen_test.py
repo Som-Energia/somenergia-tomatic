@@ -60,7 +60,7 @@ class ScheduleHours_Test(unittest.TestCase):
         self.assertEqual(
             h.getYaml(),
             self.ns("""\
-              setmana: 2016-07-11
+              week: '2016-07-11'
               timetable:
                 dl:
                    1:
@@ -119,7 +119,7 @@ class ScheduleHours_Test(unittest.TestCase):
                   ana: 3181
                 names:
                   cesar: César
-                setmana: 2016-07-18
+                week: '2016-07-18'
                 companys:
                 - ana
             """))
@@ -471,8 +471,7 @@ class ScheduleHours_Test(unittest.TestCase):
                      'cesar':  u'César',
                      'victor': u'Víctor',
                   }),
-                  'setmana': datetime.date(
-                    2016,7,11),
+                  'week': '2016-07-11',
                   'companys': [
                     'aleix',
                     'ana',
@@ -834,8 +833,7 @@ class ScheduleHours_Test(unittest.TestCase):
                      'cesar':  u'César',
                      'victor': u'Víctor',
                   }),
-                  'setmana': datetime.date(
-                    2016,7,11),
+                  'week': '2016-07-11',
                   'companys': [
                     'aleix',
                     'ana',
@@ -863,7 +861,7 @@ class ScheduleHours_Test(unittest.TestCase):
 
     def test_htmlTable_oneslot(self):
         h=HtmlGenFromYaml(self.ns("""\
-            setmana: 2016-07-25
+            week: '2016-07-25'
             timetable:
               dl:
                 1:
@@ -899,7 +897,7 @@ class ScheduleHours_Test(unittest.TestCase):
 
     def test_htmlTable_twoTelephonesOneTurnOneDay(self):
         h=HtmlGenFromYaml(self.ns("""\
-            setmana: 2016-07-25
+            week: '2016-07-25'
             timetable:
               dl:
                 1:
@@ -939,7 +937,7 @@ class ScheduleHours_Test(unittest.TestCase):
 
     def test_htmlTable_twoTelephonesTwoTurnsOneDay(self):
         h=HtmlGenFromYaml(self.ns("""\
-            setmana: 2016-07-25
+            week: '2016-07-25'
             timetable:
               dl:
                 1:
@@ -987,7 +985,7 @@ class ScheduleHours_Test(unittest.TestCase):
 
     def test_htmlTable_twoTelephonesTwoTurnsTwoDays(self):
         h=HtmlGenFromYaml(self.ns("""\
-            setmana: 2016-07-25
+            week: '2016-07-25'
             timetable:
               dl:
                 1:
@@ -1049,7 +1047,7 @@ class ScheduleHours_Test(unittest.TestCase):
 
     def test_htmlTable_manyTelephonesmanyTurnsmanyDays(self):
         h=HtmlGenFromYaml(self.ns("""\
-            setmana: 2016-07-25
+            week: '2016-07-25'
             timetable:
               dl:
                 1:
@@ -1297,7 +1295,7 @@ class ScheduleHours_Test(unittest.TestCase):
 
     def test_htmlHeader_properSetmana(self):
         h = HtmlGenFromYaml(self.ns("""\
-            setmana: 2016-07-25
+            week: '2016-07-25'
                 """)
         )
         self.assertMultiLineEqual(h.htmlSetmana(),"""<h1>Setmana 2016-07-25</h1>""")
@@ -1493,7 +1491,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 3181
           victor: 3182
           jordi: 3183
-        setmana: 2016-07-25
+        week: '2016-07-25'
         names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -1662,7 +1660,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 3181
           victor: 3182
           jordi: 3183
-        setmana: 2016-07-25
+        week: '2016-07-25'
         names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -1709,7 +1707,7 @@ class ScheduleHours_Test(unittest.TestCase):
           jordi: ff9999
         extensions:
           ana: 217
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         names: # Els que no només cal posar en majúscules
@@ -1876,7 +1874,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana:    217
           victor: 218
           jordi:  210
-        setmana: 2016-07-25
+        week: '2016-07-25'
         names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -2268,7 +2266,7 @@ class ScheduleHours_Test(unittest.TestCase):
               ana: 98bdc0
             extensions:
               ana: 217
-            setmana: 2016-07-25
+            week: '2016-07-25'
             companys:
             - ana
             """
@@ -2304,7 +2302,7 @@ class ScheduleHours_Test(unittest.TestCase):
            tania: Tània
            cesar: César
            victor: Víctor
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -2342,7 +2340,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -2373,7 +2371,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -2411,7 +2409,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -2445,7 +2443,7 @@ class ScheduleHours_Test(unittest.TestCase):
            tania: Tània
            cesar: César
            victor: Víctor
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -2488,7 +2486,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -2526,7 +2524,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -2571,7 +2569,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -2603,7 +2601,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -2653,7 +2651,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -2691,7 +2689,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -2734,7 +2732,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
@@ -2778,7 +2776,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -2834,7 +2832,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -2875,7 +2873,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -2930,7 +2928,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -2964,7 +2962,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -3009,7 +3007,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -3045,7 +3043,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -3082,7 +3080,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
@@ -3125,7 +3123,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -3166,7 +3164,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
@@ -3208,7 +3206,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
@@ -3264,7 +3262,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -3327,7 +3325,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -3390,7 +3388,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -3435,7 +3433,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -3493,7 +3491,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere

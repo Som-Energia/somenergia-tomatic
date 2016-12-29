@@ -52,11 +52,11 @@ class MongoConnector_test(unittest.TestCase):
             companys=['ana']
         )
         m = MongoConnector(MongoMockup({
-            '2016_07_18': h.getYaml().dump()
+            '2016-07-18': h.getYaml().dump()
         }))
         self.assertEqual(
             m.loadTimetable(
-                '2016_07_18'
+                '2016-07-18'
             ),
             h.getYaml()
         )
@@ -84,7 +84,7 @@ class MongoConnector_test(unittest.TestCase):
         m.saveTimetable(h.getYaml())
         self.assertEqual(
             m.loadTimetable(
-                '2016_07_18'
+                '2016-07-18'
             ),
             h.getYaml()
         )
@@ -156,14 +156,13 @@ class MongoConnector_test(unittest.TestCase):
                     cesar: César
             """),
             solution={('dl',0,0):'ana'},
-            date=datetime.datetime.strptime(
-                '2016-07-18','%Y-%m-%d').date(),
+            date=ns.loads('2016-07-18'),
             companys=['ana']
         )
         m = MongoConnector(MongoMockup({}))
         m.saveTimetable(h.getYaml())
         with self.assertRaises(Exception):
-            m.loadTimetable('1900_01_02')
+            m.loadTimetable('1900-01-02')
     def test_fileProvider_insert_find(self):
         yaml = """\
                 nTelefons: 1
@@ -180,12 +179,12 @@ class MongoConnector_test(unittest.TestCase):
         """
         f = FileProvider("/tmp")
         f.insert_one({
-           'week':'2016_04_02',
+           'week':'2016-04-02',
            'yaml':yaml
         })
         self.assertEqual(yaml,
             f.find_one({
-               'week':'2016_04_02'
+               'week':'2016-04-02'
             })['yaml']
         )
 

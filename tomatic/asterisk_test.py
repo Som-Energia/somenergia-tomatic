@@ -51,7 +51,7 @@ class Asterisk_Test(unittest.TestCase):
           jordi: ff9999
         extensions:
           ana: 217
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         names: # Els que no només cal posar en majúscules
@@ -96,7 +96,7 @@ class Asterisk_Test(unittest.TestCase):
           ana: 217
           jordi: 210
           pere: 224
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -152,7 +152,7 @@ class Asterisk_Test(unittest.TestCase):
           ana: 217
           jordi: 210
           pere: 224
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -211,7 +211,7 @@ class Asterisk_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -272,7 +272,7 @@ class Asterisk_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -325,7 +325,7 @@ class Asterisk_Test(unittest.TestCase):
           ana: 98bdc0
         extensions:
           ana: 217
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         names: # Els que no només cal posar en majúscules
@@ -371,7 +371,7 @@ class Asterisk_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -411,7 +411,7 @@ class Asterisk_Test(unittest.TestCase):
           ana: 98bdc0
         extensions:
           ana: 217
-        setmana: 2016-07-25
+        week: '2016-07-25'
         names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -464,7 +464,7 @@ class Asterisk_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        setmana: 2016-07-25
+        week: '2016-07-25'
         companys:
         - ana
         - pere
@@ -519,7 +519,7 @@ class Asterisk_Test(unittest.TestCase):
               ana: 217
               pere: 218
               jordi: 219
-            setmana: 2016-07-25
+            week: '2016-07-25'
             companys:
             - ana
             - pere
