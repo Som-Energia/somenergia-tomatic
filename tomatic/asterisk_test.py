@@ -3,6 +3,8 @@
 import asterisk
 from paramiko import SSHClient,AutoAddPolicy
 from Asterisk.Manager import Manager
+from .htmlgen import HtmlGenFromYaml
+from yamlns import namespace as ns
 
 config=None
 try:
@@ -18,7 +20,6 @@ class Asterisk_Test(unittest.TestCase):
         return ns.loads(content)
 
     def tearDown(self):
-        return # TODO: Recover this
         if config:
             sshconfig = config.pbx['scp']
             with SSHClient() as ssh:
