@@ -29,7 +29,7 @@ startOfWeek = HtmlGenFromYaml.iniciSetmana(
 
 def loadAsterisk(yaml,date=None):
     global startOfWeek
-    api.hs[startOfWeek.strftime("%Y_%m_%d")
+    api.hs[startOfWeek.strftime("%Y-%m-%d")
         ]=HtmlGenFromAsterisk(
             yaml,pbx().receiveConf()
         )
@@ -141,7 +141,7 @@ class Api_Test(unittest.TestCase):
                 - pere
                 """
         )
-        rv = self.app.get('/getqueue/2016_07_25/9/15')
+        rv = self.app.get('/getqueue/2016-07-25/9/15')
         self.assertB2BEqual(rv.data)
 
     def test_getqueue_many_tt_first_week(self):
@@ -221,7 +221,7 @@ class Api_Test(unittest.TestCase):
                 - victor
                 """
         )
-        rv = self.app.get('/getqueue/2016_07_25/9/15')
+        rv = self.app.get('/getqueue/2016-07-25/9/15')
         self.assertB2BEqual(rv.data)
 
     def test_getqueue_many_tt_second_week(self):
@@ -285,7 +285,7 @@ class Api_Test(unittest.TestCase):
                 - ana
                 """
         )
-        rv = self.app.get('/getqueue/2016_08_01/9/15')
+        rv = self.app.get('/getqueue/2016-08-01/9/15')
         self.assertB2BEqual(rv.data)
 
     def test_getqueue_two_tels_intermediate_day(self):
@@ -335,7 +335,7 @@ class Api_Test(unittest.TestCase):
                 - victor
                 """
         )
-        rv = self.app.get('/getqueue/2016_07_26/9/15')
+        rv = self.app.get('/getqueue/2016-07-26/9/15')
         self.assertB2BEqual(rv.data)
 
     def test_getDynamicqueue_three_tels_intermediate_day(self):
@@ -389,7 +389,7 @@ class Api_Test(unittest.TestCase):
                 - tania
                 """
         )
-        rv = self.app.get('/getqueue/2016_07_26/9/15')
+        rv = self.app.get('/getqueue/2016-07-26/9/15')
         self.assertB2BEqual(rv.data)
 
     @unittest.skipIf(not config, "depends on pbx")
@@ -498,7 +498,7 @@ class Api_Test(unittest.TestCase):
         api.loadAsterisk(yaml,
             date=datetime(2016,9,19,9,26))
         rv = self.app.get('/getqueue/'
-        '2016_09_26/9/19')
+        '2016-09-26/9/19')
         self.assertB2BEqual(rv.data)
 
     @unittest.skipIf(not config, "depends on pbx")
@@ -607,7 +607,7 @@ class Api_Test(unittest.TestCase):
         api.loadAsterisk(yaml,
             date=datetime(2016,9,19,9,26))
         rv = self.app.get('/getqueue/'
-        '2016_09_26/10/20')
+        '2016-09-26/10/20')
         self.assertB2BEqual(rv.data)
 
 if __name__ == "__main__":
