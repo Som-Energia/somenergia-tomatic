@@ -24,25 +24,26 @@ td { padding: 1ex;}
 	height: 100%;
 }
 .paused { background-color: #ffffff; }
-.marta { background-color: #eb9481; }
-.monica { background-color: #7fada0; }
-.manel { background-color: #88dfe3; }
-.erola { background-color: #8789c8; }
-.yaiza { background-color: #90cdb9; }
-.eduard { background-color: #d8b9c5; }
-.marc { background-color: #fbe8bc; }
-.judit { background-color: #e781e8; }
-.judith { background-color: #cb8a85; }
-.tania { background-color: #c8abf4; }
-.carles { background-color: #c98e98; }
-.pere { background-color: #8f928e; }
-.aleix { background-color: #eed0eb; }
-.david { background-color: #ffd3ac; }
-.silvia { background-color: #8097fa; }
-.joan { background-color: #fae080; }
-.ana { background-color: #98bdc0; }
-.victor { background-color: #ff3333; }
-.jordi { background-color: #ff9999; }
+.aleix    { background-color: #eed0eb; }
+.ana      { background-color: #98bdc0; }
+.carles   { background-color: #c98e98; }
+.cesar    { background-color: #b8e8cb; }
+.david    { background-color: #ffd3ac; }
+.eduard   { background-color: #d8b9c5; }
+.erola    { background-color: #8789c8; }
+.joan     { background-color: #fae080; }
+.jordi    { background-color: #ff9999; }
+.judit    { background-color: #e781e8; }
+.judith   { background-color: #cb8a85; }
+.manel    { background-color: #88dfe3; }
+.marc     { background-color: #fbe8bc; }
+.marta    { background-color: #eb9481; }
+.monica   { background-color: #7fada0; }
+.pere     { background-color: #8f928e; }
+.silvia   { background-color: #8097fa; }
+.tania    { background-color: #c8abf4; }
+.victor   { background-color: #ff3333; }
+.yaiza    { background-color: #90cdb9; }
 </style>
 </head>
 <body>
