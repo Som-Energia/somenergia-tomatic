@@ -22,6 +22,9 @@ class PbxMockup(object):
         self._paused = set()
         self._extraLines = list()
 
+    def _now(self):
+        return datetime.now()
+
     def reconfigure(self, configuration):
         # TODO: Test later modifications on configuration do not affect inner
         self._configuration = ns.loads(configuration.dump())

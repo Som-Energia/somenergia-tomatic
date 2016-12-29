@@ -70,8 +70,9 @@ def baixaDades(config, certificat) :
 		startingSemester,
 		)
 	step("  Baixant vacances de l'interval {}".format(holidays2SRange))
-	holidays2S = fetcher.get_range(1, holidays2SRange)
+	holidays2S = fetcher.get_range(str(mondayYear), holidays2SRange)
 
+	# TODO: Compose from two semesters (won't happen till 2018 Jan)
 #    endingSemester = 1 if nextFriday < date(mondayYear,7,1) else 2
 #    if startingSemester == endingSemester :
 	who = [row[0] for row in holidays2S ]
@@ -142,11 +143,11 @@ class Backtracker:
 				"Aquests dies no son a la llista de visualitzacio: {}".format(diesErronis))
 
 		self.ndies = len(self.dies)
-		self.hores = self.llegeixHores()
-		self.nhores = len(self.hores)
+		self.hours = self.llegeixHores()
+		self.nhours = len(self.hours)
 		self.torns = self.llegeixTorns('carrega.csv', self.ntelefons)
 		self.companys = list(self.torns.keys())
-		self.caselles = list(xproduct(self.dies, range(self.nhores), range(self.ntelefons)))
+		self.caselles = list(xproduct(self.dies, range(self.nhours), range(self.ntelefons)))
 		self.topesDiaris = self.llegeixTopesDiaris(self.companys)
 		self.disponible = self.initBusyTable(
 			*glob.glob('indisponibilitats*.conf'))
@@ -155,13 +156,13 @@ class Backtracker:
 			"""Creates a table with as many cells as the cross product of the iterables"""
 			return dict((keys, defaultValue) for keys in xproduct(*iterables))
 
-		self.teTelefon = createTable(False,  self.dies, range(self.nhores), self.companys)
+		self.teTelefon = createTable(False,  self.dies, range(self.nhours), self.companys)
 		self.tePrincipal = createTable(0,  self.companys, self.dies)
 		self.horesDiaries = createTable(0,  self.companys, self.dies)
 
 		self.taules = config.taules
 		self.telefonsALaTaula = createTable(0,
-			self.dies, range(self.nhores), set(self.taules.values()))
+			self.dies, range(self.nhours), set(self.taules.values()))
 
 		# Number of hours available each day
 		self.disponibilitatDiaria = dict(
@@ -169,7 +170,7 @@ class Backtracker:
 				self.maxTornsDiaris(nom),
 				sum(
 					0 if self.isBusy(nom,dia,hora) else 1
-					for hora in xrange(self.nhores))
+					for hora in xrange(self.nhours))
 				))
 			for nom, dia in xproduct(self.companys, self.dies))
 
@@ -187,7 +188,7 @@ class Backtracker:
 			in xproduct(
 				self.config.sempreUnLliure.items(),
 				self.dies,
-				xrange(self.nhores),
+				xrange(self.nhours),
 				)
 			])
 
@@ -209,7 +210,7 @@ class Backtracker:
 		self.terminated=False
 
 	def llegeixHores(self):
-		lines = [str(h) for h in self.config.hores ]
+		lines = [str(h) for h in self.config.hours ]
 		return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
 
 	def llegeixTorns(self,tornsfile, ntelefons):
@@ -229,11 +230,11 @@ class Backtracker:
 		# checks
 		for telefon in range(ntelefons):
 			horesTelefon = sum(v[telefon] for nom, v in result.items())
-			if horesTelefon == self.ndies*self.nhores:
+			if horesTelefon == self.ndies*self.nhours:
 				continue
 			raise Backtracker.ErrorConfiguracio(
 				"Les hores de T{} sumen {} i no pas {}, revisa {}".format(
-					telefon+1, horesTelefon, self.ndies*self.nhores, tornsfile))
+					telefon+1, horesTelefon, self.ndies*self.nhours, tornsfile))
 		return result
 
 
@@ -257,7 +258,7 @@ class Backtracker:
 	def initBusyTable(self, *filenames) :
 		availability = dict(
 			((dia,hora,nom), True)
-			for nom, dia, hora in xproduct(self.companys, self.dies, range(self.nhores))
+			for nom, dia, hora in xproduct(self.companys, self.dies, range(self.nhours))
 			)
 		for filename in filenames:
 			with open(filename) as thefile:
@@ -274,13 +275,13 @@ class Backtracker:
 							continue
 						affectedDays = [row[1]]
 						remain = row[2:]
-					affectedTurns = remain[0].strip() if remain else '1'*self.nhores
+					affectedTurns = remain[0].strip() if remain else '1'*self.nhours
 
-					if len(affectedTurns)!=self.nhores :
+					if len(affectedTurns)!=self.nhours :
 						raise Backtracker.ErrorConfiguracio(
 							"'{}':{}: Expected busy string of lenght {} "
 							"containing '1' on busy hours, found '{}'".format(
-							filename, linenum+1, self.nhores, affectedTurns))
+							filename, linenum+1, self.nhours, affectedTurns))
 					for hora, busy in enumerate(affectedTurns) :
 						if busy!='1': continue
 						for dia in affectedDays:

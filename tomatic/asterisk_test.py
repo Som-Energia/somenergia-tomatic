@@ -40,10 +40,10 @@ class Asterisk_Test(unittest.TestCase):
           dl:
             1:
             - ana
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         colors:
           pere: 8f928e
@@ -54,7 +54,7 @@ class Asterisk_Test(unittest.TestCase):
         setmana: 2016-07-25
         companys:
         - ana
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -81,10 +81,10 @@ class Asterisk_Test(unittest.TestCase):
             - ana
             - jordi
             - pere
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -101,7 +101,7 @@ class Asterisk_Test(unittest.TestCase):
         - ana
         - pere
         - jordi
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -137,10 +137,10 @@ class Asterisk_Test(unittest.TestCase):
             1:
             - jordi
             - ana
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -157,7 +157,7 @@ class Asterisk_Test(unittest.TestCase):
         - ana
         - pere
         - jordi
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -198,10 +198,10 @@ class Asterisk_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         colors:
           pere: 8f928e
@@ -216,7 +216,7 @@ class Asterisk_Test(unittest.TestCase):
         - ana
         - pere
         - jordi
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -255,11 +255,11 @@ class Asterisk_Test(unittest.TestCase):
             - pere
             - jordi
             - ana
-        hores:
+        hours:
         - '09:00'
         - '10:15'
         - '11:30'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -277,7 +277,7 @@ class Asterisk_Test(unittest.TestCase):
         - ana
         - pere
         - jordi
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -316,10 +316,10 @@ class Asterisk_Test(unittest.TestCase):
           dl:
             1:
             - ana
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         colors:
           ana: 98bdc0
@@ -328,7 +328,7 @@ class Asterisk_Test(unittest.TestCase):
         setmana: 2016-07-25
         companys:
         - ana
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -356,10 +356,10 @@ class Asterisk_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -376,7 +376,7 @@ class Asterisk_Test(unittest.TestCase):
         - ana
         - pere
         - jordi
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -402,17 +402,17 @@ class Asterisk_Test(unittest.TestCase):
           dl:
             1:
             - ana
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         colors:
           ana: 98bdc0
         extensions:
           ana: 217
         setmana: 2016-07-25
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -443,10 +443,10 @@ class Asterisk_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -454,7 +454,7 @@ class Asterisk_Test(unittest.TestCase):
           pere: 8f928e
           ana: 98bdc0
           jordi: ff9999
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -498,14 +498,14 @@ class Asterisk_Test(unittest.TestCase):
                 - ana
                 - pere
                 - jordi
-            hores:
+            hours:
             - '09:00'
             - '10:15'
-            torns:
+            turns:
             - T1
             - T2
             - T3
-            noms: # Els que no només cal posar en majúscules
+            names: # Els que no només cal posar en majúscules
               silvia: Sílvia
               monica: Mònica
               tania: Tània

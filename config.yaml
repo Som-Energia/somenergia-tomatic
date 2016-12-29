@@ -3,11 +3,11 @@ fullCarrega: 'o9rxhxk' # 'Càrrega setmanal de telèfon' # Fulla del drive on es
 intervalCarrega: carregatelefon_{:02d}{:02d}{:02d} # Patró pel nom de l'interval on buscar les càrregues (Y,m,d)
 monitoringFile: taula.html
 
-nTelefons: 4
-diesCerca: ['dv', 'dm', 'dx', 'dj', 'dl',] # Els mes conflictius davant
+nTelefons: 3
+diesCerca: ['dl', 'dm', 'dx', 'dj',] # Els mes conflictius davant
 diesVisualitzacio: ['dl','dm','dx','dj','dv']
 
-hores:  # La darrera es per tancar
+hours:  # La darrera es per tancar
 - '09:00'
 - '10:15'
 - '11:30'
@@ -103,7 +103,7 @@ extensions:
    lucia:  3184
    vic:    3185
    sergi:  3186
-noms: # Els que no només cal posar en majúscules
+names: # Els que no només cal posar en majúscules
    silvia: Sílvia
    monica: Mònica
    tania: Tània

@@ -36,14 +36,14 @@ class MongoConnector_test(unittest.TestCase):
             config=self.ns("""\
                 nTelefons: 1
                 diesVisualitzacio: ['dl']
-                hores:  # La darrera es per tancar
+                hours:  # La darrera es per tancar
                 - '09:00'
                 - '10:15'
                 colors:
                     ana: 98bdc0
                 extensions:
                     ana: 3181
-                noms:
+                names:
                     cesar: César
             """),
             solution={('dl',0,0):'ana'},
@@ -65,14 +65,14 @@ class MongoConnector_test(unittest.TestCase):
             config=self.ns("""\
                 nTelefons: 1
                 diesVisualitzacio: ['dl']
-                hores:  # La darrera es per tancar
+                hours:  # La darrera es per tancar
                 - '09:00'
                 - '10:15'
                 colors:
                     ana: 98bdc0
                 extensions:
                     ana: 3181
-                noms:
+                names:
                     cesar: César
             """),
             solution={('dl',0,0):'ana'},
@@ -93,14 +93,14 @@ class MongoConnector_test(unittest.TestCase):
             config=self.ns("""\
                 nTelefons: 1
                 diesVisualitzacio: ['dl']
-                hores:  # La darrera es per tancar
+                hours:  # La darrera es per tancar
                 - '09:00'
                 - '10:15'
                 colors:
                     ana: 98bdc0
                 extensions:
                     ana: 3181
-                noms:
+                names:
                     cesar: César
             """),
             solution={('dl',0,0):'ana'},
@@ -118,14 +118,14 @@ class MongoConnector_test(unittest.TestCase):
             config=self.ns("""\
                 nTelefons: 1
                 diesVisualitzacio: ['dl']
-                hores:  # La darrera es per tancar
+                hours:  # La darrera es per tancar
                 - '09:00'
                 - '10:15'
                 colors:
                     ana: 98bdc0
                 extensions:
                     ana: 3181
-                noms:
+                names:
                     cesar: César
             """),
             solution={('dl',0,0):'ana'},
@@ -145,14 +145,14 @@ class MongoConnector_test(unittest.TestCase):
             config=self.ns("""\
                 nTelefons: 1
                 diesVisualitzacio: ['dl']
-                hores:  # La darrera es per tancar
+                hours:  # La darrera es per tancar
                 - '09:00'
                 - '10:15'
                 colors:
                     ana: 98bdc0
                 extensions:
                     ana: 3181
-                noms:
+                names:
                     cesar: César
             """),
             solution={('dl',0,0):'ana'},
@@ -168,14 +168,14 @@ class MongoConnector_test(unittest.TestCase):
         yaml = """\
                 nTelefons: 1
                 diesVisualitzacio: ['dl']
-                hores:  # La darrera es per tancar
+                hours:  # La darrera es per tancar
                 - '09:00'
                 - '10:15'
                 colors:
                     ana: 98bdc0
                 extensions:
                     ana: 3181
-                noms:
+                names:
                     cesar: César
         """
         f = FileProvider("/tmp")

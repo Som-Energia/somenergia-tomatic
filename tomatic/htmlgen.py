@@ -17,11 +17,11 @@ class HtmlGen(object):
         return date - timedelta(days=date.weekday())
 
     def properName(self,name):
-        name = self.yaml.noms[name] if name in self.yaml.noms else name
+        name = self.yaml.names[name] if name in self.yaml.names else name
         return name.title()
 
     def llegeixHores(self):
-        lines = [str(h) for h in self.yaml.hores ]
+        lines = [str(h) for h in self.yaml.hours ]
         return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
 
     def partialCoreTable(self,day,turn):
@@ -55,7 +55,7 @@ class HtmlGen(object):
             '<td></td>'
             ]+[
             '<th>{}</th>'.format(t)
-            for t in self.yaml.torns
+            for t in self.yaml.turns
             ]+(
             [u'<th colspan="100%">Cua dinàmica</th>']
             if "dynamic" in self.yaml else []
@@ -81,7 +81,7 @@ class HtmlGen(object):
             "".join([
                 """<td></td><th colspan={colspan}>{day}</th>"""
                     .format(
-                        colspan=len(self.yaml.torns),
+                        colspan=len(self.yaml.turns),
                         day=day
                         )
                 for day in self.yaml.timetable.keys()
@@ -95,7 +95,7 @@ class HtmlGen(object):
             +(
                 "".join([
                     "<th>{}</th>".format(t) 
-                    for t in self.yaml.torns
+                    for t in self.yaml.turns
                 ])
             ))*ndays +
             "</tr>\n"
@@ -126,8 +126,7 @@ class HtmlGen(object):
             )
         footer = u"""</div>"""
         if 'extensions' in self.yaml:
-            extensions = sorted(self.yaml.extensions.items(),
-                key=lambda e:e[0])
+            extensions = sorted(self.yaml.extensions.items())
             body = ("\n".join([(u"""<div class="extension {}">"""
                              u"""{}<br/>{}</div>""").format(
                                 name,
@@ -148,22 +147,32 @@ class HtmlGen(object):
             setmanaHeader = "<h1>Setmana ???</h1>"
         return setmanaHeader
 
-    def htmlColors(self):
-        colors= "\n".join(
-            ".{} {{ background-color: #{}; }}".format(
-                nom,
-                self.yaml.colors[nom]
-                if 'colors' in self.yaml and nom in self.yaml.colors
-                    and not ('randomColors' in self.yaml
-                    and self.yaml.randomColors)
-                else
-                    "{:02x}{:02x}{:02x}".format(
-                    random.randint(127,255),
-                    random.randint(127,255),
-                    random.randint(127,255),
-                    )
+    def colorFor(self, name):
+        def randomColor():
+            return "{:02x}{:02x}{:02x}".format(
+                random.randint(127,255),
+                random.randint(127,255),
+                random.randint(127,255),
                 )
-            for nom in self.yaml.companys
+
+        if 'colors' not in self.yaml:
+            self.yaml.colors=ns()
+
+        if self.yaml.get('randomColors',False):
+            self.yaml.colors[name] = randomColor()
+        elif name not in self.yaml.colors:
+            self.yaml.colors[name] = randomColor()
+
+        return self.yaml.colors[name]
+
+    def htmlColors(self):
+        for name in self.yaml.get('extensions',[]):
+            self.colorFor(name)
+        for name in self.yaml.get('names',[]):
+            self.colorFor(name)
+        colors= "\n".join(
+            ".{:<8} {{ background-color: #{}; }}".format(nom, color)
+            for nom, color in sorted(self.yaml.colors.items())
             )
         return colors
 
@@ -252,7 +261,10 @@ class HtmlGen(object):
         return self.yaml.extensions[name]
 
     def extensionToName(self, extension):
-        extensions_inv = { extension : name for name, extension in self.yaml.extensions.items()}
+        extensions_inv = {
+            extension : name
+            for name, extension in self.yaml.extensions.items()
+            }
         return extensions_inv[extension]
 
     def asteriskParse(self):
@@ -285,7 +297,7 @@ class HtmlGen(object):
         return u'\n'.join(r)+u'\n'
 
     def getCurrentQueue(self,now):
-        # Supposes ordered "hores" list (less to greater)
+        # Supposes ordered "hours" list (less to greater)
         dowInt = now.isoweekday()
         dowDict = {
             1:'dl',
@@ -307,7 +319,7 @@ class HtmlGen(object):
                 int(hour[3:5])
             )
             for hour 
-            in self.yaml.hores]
+            in self.yaml.hours]
         if now < parsedTimeIntervals[0]:
             raise Exception
         for turn,hour in enumerate(parsedTimeIntervals[1:]):
@@ -428,25 +440,27 @@ class HtmlGenFromSolution(HtmlGen):
         y = ns(zip(
             config.diesVisualitzacio,
             [ns() for i in range(len(config.diesVisualitzacio))]))
-        nhores = len(config.hores)-1
+        nhours = len(config.hours)-1
         for d in y:
-            for h in range(nhores):
+            for h in range(nhours):
                 y[d][h+1]=[None]*config.nTelefons 
         for day in config.diesVisualitzacio:
-            for turn in range(nhores):
+            for turn in range(nhours):
                 for tel in range(config.nTelefons):
                     y[day][turn+1][tel]=solution.get(
                         (day,turn,tel),
                         'festiu'
                     ).lower()
         y=ns({'timetable': y})
-        y['hores']=config.hores
-        y['torns']= ["T"+str(i+1) for i in range(config.nTelefons)]
+        y['hours']=config.hours
+        y['turns']= ["T"+str(i+1) for i in range(config.nTelefons)]
         y['colors']=config.colors
         y['extensions']=config.extensions
         y['setmana']=self.iniciSetmana(date)
-        y['noms']=config.noms
+        y['names']=config.names
         y['companys']=companys
+        # TODO: include days, remove companys
+#        y.days="dl dm dx dj dv".split()
         self.yaml=y
 
 
@@ -530,9 +544,9 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
         y.dynamic = dynamic
         y.timetable = tt_asterisk
         y.paused = paused
-        y.noms = yaml.noms
-        y.hores = yaml.hores
-        y.torns = yaml.torns
+        y.names = yaml.names
+        y.hours = yaml.hours
+        y.turns = yaml.turns
         y.colors = yaml.colors
         y.extensions = yaml.extensions
         y.setmana = yaml.setmana

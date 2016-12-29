@@ -28,7 +28,7 @@ class PbxMockup_Test(unittest.TestCase):
               {today}:
                 1:
                 - cesar
-            hores:
+            hours:
             - '00:00'
             - '23:59'
 
@@ -49,7 +49,7 @@ class PbxMockup_Test(unittest.TestCase):
                 1:
                 - cesar
                 - eduard
-            hores:
+            hours:
             - '00:00'
             - '23:59'
 
@@ -72,7 +72,7 @@ class PbxMockup_Test(unittest.TestCase):
                 - cesar
                 2:
                 - eduard
-            hores:
+            hours:
             - '00:00'
             - '{splithour:02d}:00'
             - '23:59'
@@ -95,7 +95,7 @@ class PbxMockup_Test(unittest.TestCase):
               {today}:
                 1:
                 - cesar
-            hores:
+            hours:
             - '23:58'
             - '23:59'
 
@@ -114,7 +114,7 @@ class PbxMockup_Test(unittest.TestCase):
               {today}:
                 1:
                 - cesar
-            hores:
+            hours:
             - '00:00'
             - '00:01'
 
@@ -134,7 +134,7 @@ class PbxMockup_Test(unittest.TestCase):
               {today}:
                 1:
                 - cesar
-            hores:
+            hours:
             - '00:00'
             - '23:59'
 
@@ -156,7 +156,7 @@ class PbxMockup_Test(unittest.TestCase):
                 1:
                 - cesar
                 - eduard
-            hores:
+            hours:
             - '00:00'
             - '23:59'
 
@@ -171,14 +171,14 @@ class PbxMockup_Test(unittest.TestCase):
             ns( key='eduard', paused=False),
             ])
 
-    def test_restore(self):
+    def test_resume(self):
         pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
                 1:
                 - cesar
-            hores:
+            hours:
             - '00:00'
             - '23:59'
 
@@ -188,19 +188,19 @@ class PbxMockup_Test(unittest.TestCase):
                 today=self.today
             )))
         pbx.pause('cesar')
-        pbx.restore('cesar')
+        pbx.resume('cesar')
         self.assertEqual(pbx.currentQueue(), [
             ns( key='cesar', paused=False),
             ])
 
-    def test_restore_afterDoublePause(self):
+    def test_resume_afterDoublePause(self):
         pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
                 1:
                 - cesar
-            hores:
+            hours:
             - '00:00'
             - '23:59'
 
@@ -211,7 +211,7 @@ class PbxMockup_Test(unittest.TestCase):
             )))
         pbx.pause('cesar')
         pbx.pause('cesar')
-        pbx.restore('cesar')
+        pbx.resume('cesar')
         self.assertEqual(pbx.currentQueue(), [
             ns( key='cesar', paused=False),
             ])
@@ -224,7 +224,7 @@ class PbxMockup_Test(unittest.TestCase):
               -
                 - cesar
                 - eduard
-            hores:
+            hours:
             - '00:00'
             - '23:59'
 
@@ -245,7 +245,7 @@ class PbxMockup_Test(unittest.TestCase):
               {today}:
               -
                 - cesar
-            hores:
+            hours:
             - '23:58'
             - '23:59'
 
@@ -264,7 +264,7 @@ class PbxMockup_Test(unittest.TestCase):
               {today}:
               -
                 - cesar
-            hores:
+            hours:
             - '00:00'
             - '00:01'
 
@@ -284,7 +284,7 @@ class PbxMockup_Test(unittest.TestCase):
               -
                 - cesar
                 - eduard
-            hores:
+            hours:
             - '00:00'
             - '23:59'
 

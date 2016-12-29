@@ -42,14 +42,14 @@ class ScheduleHours_Test(unittest.TestCase):
             config=self.ns("""\
                 nTelefons: 1
                 diesVisualitzacio: ['dl']
-                hores:  # La darrera es per tancar
+                hours:  # La darrera es per tancar
                 - '09:00'
                 - '10:15'
                 colors:
                     ana: 98bdc0
                 extensions:
                     ana: 3181
-                noms:
+                names:
                     cesar: César
             """),
             solution={},
@@ -65,16 +65,16 @@ class ScheduleHours_Test(unittest.TestCase):
                 dl:
                    1:
                    - festiu
-              hores:
+              hours:
               - '09:00'
               - '10:15'
-              torns:
+              turns:
               - 'T1'
               colors:
                 ana: '98bdc0'
               extensions:
                 ana: 3181
-              noms:
+              names:
                 cesar: César
               companys:
               - ana
@@ -85,14 +85,14 @@ class ScheduleHours_Test(unittest.TestCase):
             config=self.ns("""\
                 nTelefons: 1
                 diesVisualitzacio: ['dl']
-                hores:  # La darrera es per tancar
+                hours:  # La darrera es per tancar
                 - '09:00'
                 - '10:15'
                 colors:
                     ana: 98bdc0
                 extensions:
                     ana: 3181
-                noms:
+                names:
                     cesar: César
             """),
             solution={('dl',0,0):'ana'},
@@ -108,16 +108,16 @@ class ScheduleHours_Test(unittest.TestCase):
                   dl:
                     1:
                     - ana
-                hores:
+                hours:
                 - '09:00'
                 - '10:15'
-                torns:
+                turns:
                 - 'T1'
                 colors:
                   ana: '98bdc0'
                 extensions:
                   ana: 3181
-                noms:
+                names:
                   cesar: César
                 setmana: 2016-07-18
                 companys:
@@ -131,7 +131,7 @@ class ScheduleHours_Test(unittest.TestCase):
         diesCerca: ['dx','dm','dj', 'dl', 'dv',] # Els mes conflictius davant
         diesVisualitzacio: ['dl','dm','dx','dj','dv']
 
-        hores:  # La darrera es per tancar
+        hours:  # La darrera es per tancar
         - '09:00'
         - '10:15'
         - '11:30'
@@ -149,6 +149,7 @@ class ScheduleHours_Test(unittest.TestCase):
            monica: '7fada0'
            yaiza:  '90cdb9'
            erola:  '8789c8'
+           cesar:  'df7292'
            manel:  '88dfe3'
            tania:  'c8abf4'
            judit:  'e781e8'
@@ -177,7 +178,7 @@ class ScheduleHours_Test(unittest.TestCase):
            ana:    3181
            victor: 3182
            jordi:  3183
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -405,14 +406,14 @@ class ScheduleHours_Test(unittest.TestCase):
                         }),
                     }),
 
-                  'hores': [
+                  'hours': [
                     '09:00',
                     '10:15',
                     '11:30',
                     '12:45',
                     '14:00'
                   ],
-                  'torns': [
+                  'turns': [
                     'T1',
                     'T2',
                     'T3'
@@ -428,6 +429,7 @@ class ScheduleHours_Test(unittest.TestCase):
                      'marta':  'eb9481',
                      'monica': '7fada0',
                      'yaiza':  '90cdb9',
+                     'cesar':  'df7292',
                      'erola':  '8789c8',
                      'manel':  '88dfe3',
                      'tania':  'c8abf4',
@@ -462,7 +464,7 @@ class ScheduleHours_Test(unittest.TestCase):
                      'jordi':  3183,
                     }
                   ),
-                  'noms': ns({
+                  'names': ns({
                      'silvia': u'Sílvia',
                      'monica': u'Mònica',
                      'tania':  u'Tània',
@@ -503,7 +505,7 @@ class ScheduleHours_Test(unittest.TestCase):
         diesCerca: ['dx','dm','dj', 'dl', 'dv',] # Els mes conflictius davant
         diesVisualitzacio: ['dl','dm','dx','dj','dv']
 
-        hores:  # La darrera es per tancar
+        hours:  # La darrera es per tancar
         - '09:00'
         - '10:15'
         - '11:30'
@@ -526,9 +528,11 @@ class ScheduleHours_Test(unittest.TestCase):
            judit:  'e781e8'
            silvia: '8097fa'
            joan:   'fae080'
+           cesar:  'df7292'
            ana:    '98bdc0'
            victor: 'ff3333'
            jordi:  'ff9999'
+           cesar:  '889988'
         extensions:
            marta:  3040
            monica: 3041
@@ -549,7 +553,7 @@ class ScheduleHours_Test(unittest.TestCase):
            ana:    3181
            victor: 3182
            jordi:  3183
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -765,14 +769,14 @@ class ScheduleHours_Test(unittest.TestCase):
                         }),
                     }),
 
-                  'hores': [
+                  'hours': [
                     '09:00',
                     '10:15',
                     '11:30',
                     '12:45',
                     '14:00'
                   ],
-                  'torns': [
+                  'turns': [
                     'T1',
                     'T2',
                     'T3'
@@ -797,6 +801,7 @@ class ScheduleHours_Test(unittest.TestCase):
                      'ana':    '98bdc0',
                      'victor': 'ff3333',
                      'jordi':  'ff9999',
+                     'cesar':  '889988',
                     }
                   ),
                   'extensions': ns(
@@ -822,7 +827,7 @@ class ScheduleHours_Test(unittest.TestCase):
                      'jordi':  3183,
                     }
                   ),
-                  'noms': ns({
+                  'names': ns({
                      'silvia': u'Sílvia',
                      'monica': u'Mònica',
                      'tania':  u'Tània',
@@ -863,16 +868,16 @@ class ScheduleHours_Test(unittest.TestCase):
               dl:
                 1:
                 - ana
-            hores:
+            hours:
             - '09:00'
             - '10:15'
-            torns:
+            turns:
             - T1
             colors:
               ana: 98bdc0
             extensions:
               ana: 3181
-            noms: # Els que no només cal posar en majúscules
+            names: # Els que no només cal posar en majúscules
               silvia: Sílvia
               monica: Mònica
               tania: Tània
@@ -900,10 +905,10 @@ class ScheduleHours_Test(unittest.TestCase):
                 1:
                 - ana
                 - jordi
-            hores:
+            hours:
             - '09:00'
             - '10:15'
-            torns:
+            turns:
             - T1
             - T2
             colors:
@@ -912,7 +917,7 @@ class ScheduleHours_Test(unittest.TestCase):
             extensions:
               ana: 3181
               jordi: 3183
-            noms: # Els que no només cal posar en majúscules
+            names: # Els que no només cal posar en majúscules
               silvia: Sílvia
               monica: Mònica
               tania: Tània
@@ -943,11 +948,11 @@ class ScheduleHours_Test(unittest.TestCase):
                 2:
                 - jordi
                 - aleix
-            hores:
+            hours:
             - '09:00'
             - '10:15'
             - '11:30'
-            torns:
+            turns:
             - T1
             - T2
             colors:
@@ -956,7 +961,7 @@ class ScheduleHours_Test(unittest.TestCase):
             extensions:
               ana: 3181
               jordi: 3183
-            noms: # Els que no només cal posar en majúscules
+            names: # Els que no només cal posar en majúscules
                silvia: Sílvia
                monica: Mònica
                tania: Tània
@@ -998,11 +1003,11 @@ class ScheduleHours_Test(unittest.TestCase):
                 2:
                 - ana
                 - victor
-            hores:
+            hours:
             - '09:00'
             - '10:15'
             - '11:30'
-            torns:
+            turns:
             - T1
             - T2
             colors:
@@ -1011,7 +1016,7 @@ class ScheduleHours_Test(unittest.TestCase):
             extensions:
               ana: 3181
               jordi: 3183
-            noms: # Els que no només cal posar en majúscules
+            names: # Els que no només cal posar en majúscules
                silvia: Sílvia
                monica: Mònica
                tania: Tània
@@ -1131,17 +1136,17 @@ class ScheduleHours_Test(unittest.TestCase):
                 - jordi
                 - carles
                 - aleix
-            hores:
+            hours:
             - '09:00'
             - '10:15'
             - '11:30'
             - '12:45'
             - '14:00'
-            torns:
+            turns:
             - T1
             - T2
             - T3
-            noms: # Els que no només cal posar en majúscules
+            names: # Els que no només cal posar en majúscules
               silvia: Sílvia
               monica: Mònica
               tania: Tània
@@ -1253,7 +1258,7 @@ class ScheduleHours_Test(unittest.TestCase):
         h = HtmlGenFromYaml(self.ns("""\
             extensions:
                marta:  3040
-            noms:
+            names:
                cesar: César
                """)
         )
@@ -1268,7 +1273,7 @@ class ScheduleHours_Test(unittest.TestCase):
             extensions:
                marta:  3040
                aleix:  3053
-            noms:
+            names:
                cesar: César
                """)
         )
@@ -1281,7 +1286,7 @@ class ScheduleHours_Test(unittest.TestCase):
 
     def test_htmlExtension_noExtensions(self):
         h = HtmlGenFromYaml(self.ns("""\
-            noms:
+            names:
                cesar: César
                """)
         )
@@ -1299,7 +1304,7 @@ class ScheduleHours_Test(unittest.TestCase):
 
     def test_htmlHeader_noSetmana(self):
         h = HtmlGenFromYaml(self.ns("""\
-            noms:
+            names:
                cesar: César
                 """)
         )
@@ -1309,13 +1314,13 @@ class ScheduleHours_Test(unittest.TestCase):
         h = HtmlGenFromYaml(self.ns("""\
             colors:
                marc: fbe8bc
-            companys:
-            - marc
+            extensions:
+              marc: 666
                 """)
         )
         self.assertMultiLineEqual(
             h.htmlColors(),
-            """.marc { background-color: #fbe8bc; }"""
+            """.marc     { background-color: #fbe8bc; }"""
         )
 
     def test_htmlColors_forceRandomColor(self):
@@ -1323,35 +1328,31 @@ class ScheduleHours_Test(unittest.TestCase):
             colors:
                marc: fbe8bc
             randomColors: true
-            companys:
-            - marc
+            extensions:
+              cesar: 555
                 """)
         )
         colors = h.htmlColors()
         self.assertNotEqual(
             colors,
-            """.marc { background-color: #fbe8bc; }"""
+            """.marc      { background-color: #fbe8bc; }"""
         )
 
-        self.assertRegexpMatches(parse(
-            """.marc {{ background-color: {} }}""",
-                  colors
-                  )[0],
-            '#[0-9a-f]{6};'
+        self.assertRegexpMatches(
+            colors,
+            r"\.marc    * \{ background-color: #[0-9a-f]{6}; }",
         )
 
     def test_htmlColors_randomColor(self):
         h = HtmlGenFromYaml(self.ns("""\
-            companys:
-            - cesar
+            extensions:
+              cesar: 555
                 """)
         )
-        self.assertRegexpMatches(parse(
-            """.cesar {{ background-color: {} }}""",
-                  h.htmlColors()
-                  )[0],
-            '#[0-9a-f]{6};'
-        )
+        self.assertRegexpMatches(
+            h.htmlColors(),
+            r"\.cesar    *\{ background-color: #[0-9a-f]{6}; \}",
+            )
 
     def test_htmlParse_completeHtml(self):
        h = HtmlGenFromYaml(self.ns("""\
@@ -1441,13 +1442,13 @@ class ScheduleHours_Test(unittest.TestCase):
             - jordi
             - carles
             - aleix
-        hores:
+        hours:
         - '09:00'
         - '10:15'
         - '11:30'
         - '12:45'
         - '14:00'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -1471,6 +1472,7 @@ class ScheduleHours_Test(unittest.TestCase):
           victor: ff3333
           jordi: ff9999
           judith: cb8a85
+          cesar:  '889988'
         extensions:
           marta: 3040
           monica: 3041
@@ -1492,7 +1494,7 @@ class ScheduleHours_Test(unittest.TestCase):
           victor: 3182
           jordi: 3183
         setmana: 2016-07-25
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -1609,13 +1611,13 @@ class ScheduleHours_Test(unittest.TestCase):
             - jordi
             - carles
             - aleix
-        hores:
+        hours:
         - '09:00'
         - '10:15'
         - '11:30'
         - '12:45'
         - '14:00'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -1639,6 +1641,7 @@ class ScheduleHours_Test(unittest.TestCase):
           victor: ff3333
           jordi: ff9999
           judith: cb8a85
+          cesar:  '889988'
         extensions:
           marta: 3040
           monica: 3041
@@ -1660,7 +1663,7 @@ class ScheduleHours_Test(unittest.TestCase):
           victor: 3182
           jordi: 3183
         setmana: 2016-07-25
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -1695,10 +1698,10 @@ class ScheduleHours_Test(unittest.TestCase):
           dl:
             1:
             - ana
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         colors:
           pere: 8f928e
@@ -1709,7 +1712,7 @@ class ScheduleHours_Test(unittest.TestCase):
         setmana: 2016-07-25
         companys:
         - ana
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -1823,13 +1826,13 @@ class ScheduleHours_Test(unittest.TestCase):
             - jordi
             - carles
             - aleix
-        hores:
+        hours:
         - '09:00'
         - '10:15'
         - '11:30'
         - '12:45'
         - '14:00'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -1874,7 +1877,7 @@ class ScheduleHours_Test(unittest.TestCase):
           victor: 218
           jordi:  210
         setmana: 2016-07-25
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -2250,12 +2253,12 @@ class ScheduleHours_Test(unittest.TestCase):
               dl:
                 1:
                 - ana
-            hores:
+            hours:
             - '09:00'
             - '10:15'
-            torns:
+            turns:
             - T1
-            noms: # Els que no només cal posar en majúscules
+            names: # Els que no només cal posar en majúscules
               silvia: Sílvia
               monica: Mònica
               tania: Tània
@@ -2280,10 +2283,10 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -2295,7 +2298,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -2318,14 +2321,14 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -2355,10 +2358,10 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -2387,14 +2390,14 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -2421,10 +2424,10 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -2436,7 +2439,7 @@ class ScheduleHours_Test(unittest.TestCase):
           ana: 217
           pere: 218
           jordi: 219
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -2470,10 +2473,10 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -2486,7 +2489,7 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         setmana: 2016-07-25
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -2508,10 +2511,10 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -2547,10 +2550,10 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -2558,7 +2561,7 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 8f928e
           ana: 98bdc0
           jordi: ff9999
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
@@ -2585,10 +2588,10 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -2629,10 +2632,10 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -2640,7 +2643,7 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 8f928e
           ana: 98bdc0
           jordi: ff9999
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
@@ -2667,14 +2670,14 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
@@ -2716,10 +2719,10 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -2732,7 +2735,7 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         setmana: 2016-07-25
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
@@ -2754,10 +2757,10 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -2765,7 +2768,7 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 8f928e
           ana: 98bdc0
           jordi: ff9999
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
@@ -2810,10 +2813,10 @@ class ScheduleHours_Test(unittest.TestCase):
           dx:
             2:
             - pere
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -2821,7 +2824,7 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 8f928e
           ana: 98bdc0
           jordi: ff9999
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
@@ -2851,14 +2854,14 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
@@ -2906,14 +2909,14 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
@@ -2940,16 +2943,16 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
           cesar: César
           victor: Víctor
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -2985,14 +2988,14 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
@@ -3021,16 +3024,16 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
           cesar: César
           victor: Víctor
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -3064,10 +3067,10 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -3080,7 +3083,7 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         setmana: 2016-07-25
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
@@ -3101,10 +3104,10 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -3112,7 +3115,7 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 8f928e
           ana: 98bdc0
           jordi: ff9999
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
@@ -3148,10 +3151,10 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -3164,7 +3167,7 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         setmana: 2016-07-25
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
@@ -3190,10 +3193,10 @@ class ScheduleHours_Test(unittest.TestCase):
             - ana
             - pere
             - jordi
-        hores:
+        hours:
         - '09:00'
         - '10:15'
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -3206,7 +3209,7 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         setmana: 2016-07-25
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
@@ -3237,19 +3240,19 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - ana
 
-        hores:
+        hours:
         - '09:00'
         - '10:15'
         - '11:30'
 
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
           cesar: César
           victor: Víctor
 
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -3300,19 +3303,19 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - ana
 
-        hores:
+        hours:
         - '09:00'
         - '10:15'
         - '11:30'
         - '12:45'
 
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
           cesar: César
           victor: Víctor
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -3363,19 +3366,19 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - ana
 
-        hores:
+        hours:
         - '09:00'
         - '10:15'
         - '11:30'
         - '12:45'
 
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
           silvia: Sílvia
           monica: Mònica
           tania: Tània
           cesar: César
           victor: Víctor
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -3409,18 +3412,18 @@ class ScheduleHours_Test(unittest.TestCase):
             - pere
             - jordi
 
-        hores:
+        hours:
         - '09:00'
         - '10:15'
 
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
            cesar: César
            victor: Víctor
 
-        torns:
+        turns:
         - T1
         - T2
         - T3
@@ -3466,19 +3469,19 @@ class ScheduleHours_Test(unittest.TestCase):
             - jordi
             - pere
             - ana
-        hores:
+        hours:
         - '09:00'
         - '10:15'
         - '11:30'
 
-        noms: # Els que no només cal posar en majúscules
+        names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
            tania: Tània
            cesar: César
            victor: Víctor
 
-        torns:
+        turns:
         - T1
         - T2
         - T3
