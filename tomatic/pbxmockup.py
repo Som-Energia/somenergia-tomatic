@@ -32,7 +32,6 @@ class PbxMockup(object):
     def scheduledQueue(self):
         timetable = self._configuration.timetable
         now = self._now()
-        print("Now is {}".format(now))
         from bisect import bisect
         currentHour = "{0:%H:%m}".format(now)
         turn = bisect(self._configuration.hours, currentHour)
