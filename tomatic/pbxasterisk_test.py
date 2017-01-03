@@ -11,7 +11,7 @@ try:
 except ImportError:
     pass
 
-class RemoteFiles_Test(unittest.TestCase):
+class Remote_Test(unittest.TestCase):
 
     def test_remoterun(self):
         result = remoterun(
