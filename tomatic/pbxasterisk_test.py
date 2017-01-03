@@ -94,24 +94,36 @@ class Pbx_Test(unittest.TestCase):
             config.pbx.scp.pbxhost,
             )
         self.previousConfig = self.remote.read(config.pbx.scp.path)
+        self._pbx = Pbx(
+            config.pbx.scp.username,
+            config.pbx.scp.pbxhost,
+            config.pbx.scp.path,
+            **config.pbx['pbx']
+            )
+        self._pbx.reconfigure(ns.loads(u"""
+            timetable: {}
+            hours: []
+            extensions: {}
+            """))
         now = datetime.now()
         self.today = weekday(now)
         self.currentHour = now.hour
         self.nextday = weekday(now+timedelta(days=1))
 
     def tearDown(self):
-        if self.previousConfig is None:
+        if self.previousConfig is not None:
+            print self.previousConfig
             self.remote.write(config.pbx.scp.path, self.previousConfig)
 
     def pbx(self):
-        return Pbx()
+        return self._pbx
 
     def test_currentQueue_noConfiguration(self):
         pbx = self.pbx()
         result = pbx.currentQueue()
         self.assertEqual(result, [])
 
-    @unittest.skip("Not yet implemented")
+    @unittest.skip("CURRENT GOAL")
     def test_currentQueue_oneSlot_oneTurn(self):
         pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\

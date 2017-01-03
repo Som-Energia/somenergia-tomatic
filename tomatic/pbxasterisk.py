@@ -3,6 +3,7 @@
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
 from paramiko import SSHClient,AutoAddPolicy, SFTPClient
+from .htmlgen import HtmlGenFromYaml
 
 def weekday(date):
     weekdays = "dl dm dx dj dv ds dg".split()
@@ -48,25 +49,25 @@ def remoterun(user, host, command):
     with Remote(user, host) as remote:
         return remote.run(command)
 
+from Asterisk.Manager import Manager
+
 class Pbx(object):
     """
     Pbx interface implementation based on Asterisk.
     """
 
-    def __init__(self,now=None):
-        self._configuration = ns.loads(u"""
-            timetable: {}
-            hours: []
-            """)
-        if now: self._now = now
-        self._paused = set()
-        self._extraLines = list()
-
-    def _now(self):
-        return datetime.now()
+    def __init__(self, user, host, path, **config):
+        self._manager = Manager(**config)
+        self._user = user
+        self._host = host
+        self._path = path
 
     def reconfigure(self, configuration):
-        return
+        h = HtmlGenFromYaml(configuration)
+        asterisk_conf = h.asteriskParse()
+        with Remote(self._user, self._host) as remote:
+            remote.write(self._path, asterisk_conf)
+        self._manager.Command('reload')
 
     def scheduledQueue(self):
         return
@@ -76,7 +77,8 @@ class Pbx(object):
             ]
 
     def currentQueue(self):
-        return []
+        return self._manager.Queues() or []
+
         return self.scheduledQueue() + [
             ns( key=who, paused= who in self._paused)
             for who in self._extraLines
