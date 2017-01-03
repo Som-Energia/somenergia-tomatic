@@ -131,10 +131,8 @@ def uploadGraella(week=None):
 
 @app.route('/queue')
 def get_queue():
-    return Response(ns(
+    return yamlfy(
         currentQueue = pbx().currentQueue()
-        ).dump(),
-        mimetype = 'application/x-yaml',
     )
 
 @app.route('/queue/add/<person>')
@@ -142,31 +140,31 @@ def add_to_queue(person):
     p = pbx()
     p.addLine(person)
     print p.currentQueue()
-    return Response(ns(
+    return yamlfy(
         currentQueue = p.currentQueue()
-        ).dump(),
-        mimetype = 'application/x-yaml',
     )
 
 @app.route('/queue/pause/<person>')
 def pause_line(person):
     p = pbx()
     p.pause(person)
-    return Response(ns(
+    return yamlfy(
         currentQueue = p.currentQueue()
-        ).dump(),
-        mimetype = 'application/x-yaml',
     )
 
 @app.route('/queue/resume/<person>')
 def resume_line(person):
     p = pbx()
     p.resume(person)
-    return Response(ns(
+    return yamlfy(
         currentQueue = p.currentQueue()
+    )
+
+def yamlfy(data=[], **kwd):
+    return Response(ns(
+        data, **kwd
         ).dump(),
         mimetype = 'application/x-yaml',
     )
-
 
 # vim: ts=4 sw=4 et
