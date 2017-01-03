@@ -389,7 +389,7 @@ class HtmlGenFromYaml(HtmlGen):
 
         for day in self.yaml.timetable:
             for turn in self.yaml.timetable[day]:
-                for name in self.yaml.companys:
+                for name in self.yaml.colors.keys():
                     if (day,turn,name) in added:
                        if day not in response:
                            response[day]=ns()
@@ -422,11 +422,11 @@ class HtmlGenFromYaml(HtmlGen):
                 ) - set(self.yaml.dynamic)
             removed = set(self.yaml.dynamic
                 ) - set(other.yaml.dynamic)
-        for name in self.yaml.companys:
+        for name in self.yaml.colors.keys():
             if name in added:
                 ext = self.nameToExtension(name)
                 response[ext]="added"
-        for name in self.yaml.companys:
+        for name in self.yaml.colors.keys():
             if name in removed:
                 ext = self.nameToExtension(name)
                 response[ext]="removed"
@@ -458,9 +458,8 @@ class HtmlGenFromSolution(HtmlGen):
         y['extensions']=config.extensions
         y['week']=str(self.iniciSetmana(date))
         y['names']=config.names
-        y['companys']=companys
         # TODO: include days, remove companys
-        y.days="dl dm dx dj dv".split()
+        #y.days="dl dm dx dj dv".split()
         self.yaml=y
 
 

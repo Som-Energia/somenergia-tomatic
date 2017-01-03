@@ -53,8 +53,6 @@ class Asterisk_Test(unittest.TestCase):
         extensions:
           ana: 217
         week: '2016-07-25'
-        companys:
-        - ana
         names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -98,10 +96,6 @@ class Asterisk_Test(unittest.TestCase):
           jordi: 210
           pere: 224
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -154,10 +148,6 @@ class Asterisk_Test(unittest.TestCase):
           jordi: 210
           pere: 224
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -213,10 +203,6 @@ class Asterisk_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica

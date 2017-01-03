@@ -55,7 +55,6 @@ class ScheduleHours_Test(unittest.TestCase):
             solution={},
             date=datetime.datetime.strptime(
                 '2016-07-11','%Y-%m-%d').date(),
-            companys=['ana']
         )
         self.assertEqual(
             h.getYaml(),
@@ -76,8 +75,6 @@ class ScheduleHours_Test(unittest.TestCase):
                 ana: 3181
               names:
                 cesar: César
-              companys:
-              - ana
             """)
         )
     def test_yamlSolution_oneslot(self):
@@ -98,7 +95,6 @@ class ScheduleHours_Test(unittest.TestCase):
             solution={('dl',0,0):'ana'},
             date=datetime.datetime.strptime(
                 '2016-07-18','%Y-%m-%d').date(),
-            companys=['ana']
         )
 
         self.assertEqual(
@@ -120,8 +116,6 @@ class ScheduleHours_Test(unittest.TestCase):
                 names:
                   cesar: César
                 week: '2016-07-18'
-                companys:
-                - ana
             """))
 
     def test_yamlSolution_completeTimetable(self):
@@ -249,27 +243,6 @@ class ScheduleHours_Test(unittest.TestCase):
                 },
             date=datetime.datetime.strptime(
                 '2016-07-11','%Y-%m-%d').date(),
-            companys= [
-                'aleix',
-                'ana',
-                'carles',
-                'david',
-                'eduard',
-                'erola',
-                'joan',
-                'jordi',
-                'judit',
-                'judith',
-                'manel',
-                'marc',
-                'marta',
-                'monica',
-                'pere',
-                'silvia',
-                'tania',
-                'victor',
-                'yaiza'
-            ]
         )
 
         self.assertEqual(
@@ -472,27 +445,6 @@ class ScheduleHours_Test(unittest.TestCase):
                      'victor': u'Víctor',
                   }),
                   'week': '2016-07-11',
-                  'companys': [
-                    'aleix',
-                    'ana',
-                    'carles',
-                    'david',
-                    'eduard',
-                    'erola',
-                    'joan',
-                    'jordi',
-                    'judit',
-                    'judith',
-                    'manel',
-                    'marc',
-                    'marta',
-                    'monica',
-                    'pere',
-                    'silvia',
-                    'tania',
-                    'victor',
-                    'yaiza'
-                  ]
                 },
             )
         )
@@ -611,27 +563,6 @@ class ScheduleHours_Test(unittest.TestCase):
                 },
             date=datetime.datetime.strptime(
                 '2016-07-11','%Y-%m-%d').date(),
-            companys= [
-                'aleix',
-                'ana',
-                'carles',
-                'david',
-                'eduard',
-                'erola',
-                'joan',
-                'jordi',
-                'judit',
-                'judith',
-                'manel',
-                'marc',
-                'marta',
-                'monica',
-                'pere',
-                'silvia',
-                'tania',
-                'victor',
-                'yaiza'
-            ]
         )
 
         self.assertEqual(
@@ -834,27 +765,6 @@ class ScheduleHours_Test(unittest.TestCase):
                      'victor': u'Víctor',
                   }),
                   'week': '2016-07-11',
-                  'companys': [
-                    'aleix',
-                    'ana',
-                    'carles',
-                    'david',
-                    'eduard',
-                    'erola',
-                    'joan',
-                    'jordi',
-                    'judit',
-                    'judith',
-                    'manel',
-                    'marc',
-                    'marta',
-                    'monica',
-                    'pere',
-                    'silvia',
-                    'tania',
-                    'victor',
-                    'yaiza'
-                  ]
                 },
             )
         )
@@ -1498,26 +1408,7 @@ class ScheduleHours_Test(unittest.TestCase):
            tania: Tània
            cesar: César
            victor: Víctor
-        companys:
-        - marta
-        - monica
-        - manel
-        - erola
-        - yaiza
-        - eduard
-        - marc
-        - judit
-        - judith
-        - tania
-        - carles
-        - pere
-        - aleix
-        - david
-        - silvia
-        - joan
-        - ana
-        - victor
-        - jordi""")
+        """)
        )
        self.assertB2BEqual(h.htmlParse().encode('utf-8'))
 
@@ -1667,26 +1558,7 @@ class ScheduleHours_Test(unittest.TestCase):
            tania: Tània
            cesar: César
            victor: Víctor
-        companys:
-        - marta
-        - monica
-        - manel
-        - erola
-        - yaiza
-        - eduard
-        - marc
-        - judit
-        - judith
-        - tania
-        - carles
-        - pere
-        - aleix
-        - david
-        - silvia
-        - joan
-        - ana
-        - victor
-        - jordi""")
+        """)
        )
        self.assertB2BEqual(h.htmlParse().encode('utf-8'))
 
@@ -1708,8 +1580,6 @@ class ScheduleHours_Test(unittest.TestCase):
         extensions:
           ana: 217
         week: '2016-07-25'
-        companys:
-        - ana
         names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -1881,26 +1751,7 @@ class ScheduleHours_Test(unittest.TestCase):
            tania: Tània
            cesar: César
            victor: Víctor
-        companys:
-        - marta
-        - monica
-        - manel
-        - erola
-        - yaiza
-        - eduard
-        - marc
-        - judit
-        - judith
-        - tania
-        - carles
-        - pere
-        - aleix
-        - david
-        - silvia
-        - joan
-        - ana
-        - victor
-        - jordi""")
+        """)
        )
        self.assertMultiLineEqual(h.asteriskParse(),
         u"""[entrada_cua_dl_1]\n"""
@@ -2267,8 +2118,6 @@ class ScheduleHours_Test(unittest.TestCase):
             extensions:
               ana: 217
             week: '2016-07-25'
-            companys:
-            - ana
             """
         h = HtmlGenFromYaml(self.ns(yaml))
         self.assertEqual(h.nameToExtension('ana'),217)
@@ -2303,10 +2152,6 @@ class ScheduleHours_Test(unittest.TestCase):
            cesar: César
            victor: Víctor
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         """
         h = HtmlGenFromYaml(self.ns(yaml))
         self.assertEqual(h.nameToExtension('ana'),217)
@@ -2341,10 +2186,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         """
         h = HtmlGenFromYaml(self.ns(yaml))
         self.assertEqual(h.extensionToName(217),'ana')
@@ -2372,10 +2213,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         """
         h = HtmlGenFromYaml(self.ns(yaml))
         self.assertEqual(h.extensionToName(217),'ana')
@@ -2410,10 +2247,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         """
         yaml_paused="""\
         timetable:
@@ -2444,10 +2277,6 @@ class ScheduleHours_Test(unittest.TestCase):
            cesar: César
            victor: Víctor
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         paused:
           dl:
             1:
@@ -2493,10 +2322,6 @@ class ScheduleHours_Test(unittest.TestCase):
            tania: Tània
            cesar: César
            victor: Víctor
-        companys:
-        - ana
-        - pere
-        - jordi
         paused:
           dl:
             1:
@@ -2525,10 +2350,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         """
         h = HtmlGenFromYaml(self.ns(yaml))
         h_paused = HtmlGenFromYaml(self.ns(yaml_paused))
@@ -2570,10 +2391,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         paused:
           dl:
             1:
@@ -2602,10 +2419,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         paused:
           dl:
             1:
@@ -2652,10 +2465,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         paused:
           dl:
             1:
@@ -2690,10 +2499,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         paused:
           dynamic:
             - jordi
@@ -2739,10 +2544,6 @@ class ScheduleHours_Test(unittest.TestCase):
           tania: Tània
           cesar: César
           victor: Víctor
-        companys:
-        - ana
-        - pere
-        - jordi
         paused:
           dynamic:
             - pere
@@ -2777,10 +2578,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         paused:
           dynamic:
             - jordi
@@ -2833,10 +2630,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         paused:
           dl:
             1:
@@ -2874,10 +2667,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         paused:
           dl:
             1:
@@ -2929,10 +2718,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         """
         yaml_dynamic="""\
         timetable:
@@ -2963,10 +2748,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         dynamic:
         - ana
         """
@@ -3008,10 +2789,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         dynamic:
         - jordi
         """
@@ -3044,10 +2821,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         """
         h = HtmlGenFromYaml(self.ns(yaml))
         h_dynamic = HtmlGenFromYaml(self.ns(yaml_dynamic))
@@ -3087,10 +2860,6 @@ class ScheduleHours_Test(unittest.TestCase):
           tania: Tània
           cesar: César
           victor: Víctor
-        companys:
-        - ana
-        - pere
-        - jordi
         dynamic:
         - jordi
         - ana
@@ -3124,10 +2893,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         dynamic:
         - jordi
         - pere
@@ -3171,10 +2936,6 @@ class ScheduleHours_Test(unittest.TestCase):
           tania: Tània
           cesar: César
           victor: Víctor
-        companys:
-        - ana
-        - pere
-        - jordi
         dynamic:
         - jordi
         - ana
@@ -3213,10 +2974,6 @@ class ScheduleHours_Test(unittest.TestCase):
           tania: Tània
           cesar: César
           victor: Víctor
-        companys:
-        - ana
-        - pere
-        - jordi
         dynamic:
         - jordi
         - ana
