@@ -20,12 +20,16 @@ class Remote(object):
     def __exit__(self, *excl):
         return self.ssh.__exit__(*excl)
 
+    def read(self, filename):
+        sftp = self.ssh.open_sftp()
+        with sftp.open(filename, 'r') as f:
+            return f.read()
+        
+
 
 def remoteread(user, host, filename):
     with Remote(user, host) as remote:
-        sftp = remote.ssh.open_sftp()
-        with sftp.open(filename, 'r') as f:
-            return f.read()
+        return remote.read(filename)
 
 
 def remotewrite(user, host, filename, content):
