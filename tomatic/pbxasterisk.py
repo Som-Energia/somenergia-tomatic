@@ -8,12 +8,22 @@ def weekday(date):
     weekdays = "dl dm dx dj dv ds dg".split()
     return weekdays[date.weekday()]
 
+class Remote(object):
+    def __init__(self, username, host):
+        self.ssh = SSHClient()
+        self.ssh.set_missing_host_key_policy(AutoAddPolicy())
+        self.ssh.connect(host, username=username)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *excl):
+        return self.ssh.__exit__(*excl)
+
 
 def remoteread(user, host, filename):
-    with SSHClient() as ssh:
-        ssh.set_missing_host_key_policy(AutoAddPolicy())
-        ssh.connect(host, username=user)
-        sftp = ssh.open_sftp()
+    with Remote(user, host) as remote:
+        sftp = remote.ssh.open_sftp()
         with sftp.open(filename, 'r') as f:
             return f.read()
 
