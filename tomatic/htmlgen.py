@@ -460,7 +460,7 @@ class HtmlGenFromSolution(HtmlGen):
         y['names']=config.names
         y['companys']=companys
         # TODO: include days, remove companys
-#        y.days="dl dm dx dj dv".split()
+        y.days="dl dm dx dj dv".split()
         self.yaml=y
 
 

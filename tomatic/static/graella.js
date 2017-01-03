@@ -73,7 +73,10 @@ Tomatic.requestGrid = function(date) {
 		method: 'GET',
 		url: 'graella-'+date+'.yaml',
 		deserialize: jsyaml.load,
-	}).then(Tomatic.grid);
+	}).then(function(data) {
+		data.days = data.days || 'dl dm dx dj dv'.split(' ');
+		Tomatic.grid(data);
+	});
 };
 Tomatic.formatName = function(name) {
 	function titleCase(str)
