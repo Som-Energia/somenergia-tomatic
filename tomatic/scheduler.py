@@ -541,7 +541,7 @@ class Backtracker:
 
 		firstAtCost = self.minimumCost != self.__dict__.get('storedCost', 'resEsComparaAmbMi')
 		solution = dict(zip(self.caselles, solution))
-		htmlgen=HtmlGenFromSolution(self.config,solution,self.companys,self.config.monday)
+		htmlgen=HtmlGenFromSolution(self.config,solution,self.config.monday)
 		if firstAtCost:
 			self.storedCost = self.minimumCost
 			personalColors = htmlgen.htmlColors()

@@ -260,10 +260,6 @@ class Asterisk_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -313,8 +309,6 @@ class Asterisk_Test(unittest.TestCase):
         extensions:
           ana: 217
         week: '2016-07-25'
-        companys:
-        - ana
         names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -359,10 +353,6 @@ class Asterisk_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -405,8 +395,6 @@ class Asterisk_Test(unittest.TestCase):
            tania: Tània
            cesar: César
            victor: Víctor
-        companys:
-        - ana
         """
        h = HtmlGenFromYaml(self.ns(yaml))
        asterisk_conf = h.asteriskParse()
@@ -452,10 +440,6 @@ class Asterisk_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         """
        h = HtmlGenFromYaml(self.ns(yaml))
        asterisk_conf = h.asteriskParse()
@@ -507,10 +491,6 @@ class Asterisk_Test(unittest.TestCase):
               pere: 218
               jordi: 219
             week: '2016-07-25'
-            companys:
-            - ana
-            - pere
-            - jordi
             """
         difference = self.ns("""\
             dm:

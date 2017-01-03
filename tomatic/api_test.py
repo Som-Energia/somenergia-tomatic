@@ -84,10 +84,6 @@ class Api_Test(unittest.TestCase):
                   tania: Tània
                   cesar: César
                   victor: Víctor
-                companys:
-                - ana
-                - jordi
-                - pere
                 """
         )
         api.setNow(2016, 7, 25, 9, 15)
@@ -135,10 +131,6 @@ class Api_Test(unittest.TestCase):
                   tania: Tània
                   cesar: César
                   victor: Víctor
-                companys:
-                - ana
-                - jordi
-                - pere
                 """
         )
         rv = self.app.get('/getqueue/2016-07-25/9/15')
@@ -185,10 +177,6 @@ class Api_Test(unittest.TestCase):
                   tania: Tània
                   cesar: César
                   victor: Víctor
-                companys:
-                - ana
-                - jordi
-                - pere
                 """
         )
         loadYaml("""\
@@ -217,8 +205,6 @@ class Api_Test(unittest.TestCase):
                   tania: Tània
                   cesar: César
                   victor: Víctor
-                companys:
-                - victor
                 """
         )
         rv = self.app.get('/getqueue/2016-07-25/9/15')
@@ -251,8 +237,6 @@ class Api_Test(unittest.TestCase):
                   tania: Tània
                   cesar: César
                   victor: Víctor
-                companys:
-                - ana
                 """
         )
         loadYaml("""\
@@ -280,9 +264,6 @@ class Api_Test(unittest.TestCase):
                   tania: Tània
                   cesar: César
                   victor: Víctor
-                companys:
-                - victor
-                - ana
                 """
         )
         rv = self.app.get('/getqueue/2016-08-01/9/15')
@@ -328,11 +309,6 @@ class Api_Test(unittest.TestCase):
                   tania: Tània
                   cesar: César
                   victor: Víctor
-                companys:
-                - ana
-                - monica
-                - tania
-                - victor
                 """
         )
         rv = self.app.get('/getqueue/2016-07-26/9/15')
@@ -378,11 +354,6 @@ class Api_Test(unittest.TestCase):
                   tania: Tània
                   cesar: César
                   victor: Víctor
-                companys:
-                - ana
-                - monica
-                - tania
-                - victor
                 dynamic:
                 - ana
                 - monica
@@ -468,27 +439,6 @@ class Api_Test(unittest.TestCase):
                   tania: Tània
                   cesar: César
                   victor: Víctor
-                companys:
-                  - cesar
-                  - marta  
-                  - monica 
-                  - manel  
-                  - erola  
-                  - yaiza  
-                  - eduard 
-                  - marc   
-                  - judit  
-                  - judith 
-                  - tania  
-                  - carles 
-                  - pere   
-                  - aleix  
-                  - david  
-                  - silvia 
-                  - joan   
-                  - ana    
-                  - victor 
-                  - jordi  
                 dynamic:
                 - ana
                 - monica
@@ -577,27 +527,6 @@ class Api_Test(unittest.TestCase):
                   tania: Tània
                   cesar: César
                   victor: Víctor
-                companys:
-                  - marta  
-                  - monica 
-                  - manel  
-                  - erola  
-                  - yaiza  
-                  - eduard 
-                  - marc   
-                  - judit  
-                  - judith 
-                  - tania  
-                  - carles 
-                  - pere   
-                  - aleix  
-                  - david  
-                  - silvia 
-                  - joan   
-                  - ana    
-                  - victor 
-                  - jordi  
-                  - cesar
                 dynamic:
                 - ana
                 - monica

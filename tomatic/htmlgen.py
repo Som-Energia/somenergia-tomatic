@@ -436,7 +436,7 @@ class HtmlGenFromYaml(HtmlGen):
 
 class HtmlGenFromSolution(HtmlGen):
 
-    def __init__(self, config, solution, companys=None, date=None):
+    def __init__(self, config, solution, date=None):
         y = ns(zip(
             config.diesVisualitzacio,
             [ns() for i in range(len(config.diesVisualitzacio))]))
@@ -458,7 +458,7 @@ class HtmlGenFromSolution(HtmlGen):
         y['extensions']=config.extensions
         y['week']=str(self.iniciSetmana(date))
         y['names']=config.names
-        # TODO: include days, remove companys
+        # TODO: include days
         #y.days="dl dm dx dj dv".split()
         self.yaml=y
 
@@ -549,7 +549,6 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
         y.colors = yaml.colors
         y.extensions = yaml.extensions
         y.week = yaml.week
-        y.companys = yaml.companys
         self.yaml=y
 
 # vim: et

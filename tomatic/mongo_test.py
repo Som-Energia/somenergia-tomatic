@@ -49,7 +49,6 @@ class MongoConnector_test(unittest.TestCase):
             solution={('dl',0,0):'ana'},
             date=datetime.datetime.strptime(
                 '2016-07-18','%Y-%m-%d').date(),
-            companys=['ana']
         )
         m = MongoConnector(MongoMockup({
             '2016-07-18': h.getYaml().dump()
@@ -78,7 +77,6 @@ class MongoConnector_test(unittest.TestCase):
             solution={('dl',0,0):'ana'},
             date=datetime.datetime.strptime(
                 '2016-07-18','%Y-%m-%d').date(),
-            companys=['ana']
         )
         m = MongoConnector(MongoMockup({}))
         m.saveTimetable(h.getYaml())
@@ -106,7 +104,6 @@ class MongoConnector_test(unittest.TestCase):
             solution={('dl',0,0):'ana'},
             date=datetime.datetime.strptime(
                 '2016-07-18','%Y-%m-%d').date(),
-            companys=['ana']
         )
         m = MongoConnector(MongoMockup({}))
         m.saveTimetable(h.getYaml())
@@ -131,7 +128,6 @@ class MongoConnector_test(unittest.TestCase):
             solution={('dl',0,0):'ana'},
             date=datetime.datetime.strptime(
                 '2016-07-18','%Y-%m-%d').date(),
-            companys=['ana']
         )
         m = MongoConnector(MongoMockup({}))
         m.saveTimetable(h.getYaml())
@@ -157,7 +153,6 @@ class MongoConnector_test(unittest.TestCase):
             """),
             solution={('dl',0,0):'ana'},
             date=ns.loads('2016-07-18'),
-            companys=['ana']
         )
         m = MongoConnector(MongoMockup({}))
         m.saveTimetable(h.getYaml())

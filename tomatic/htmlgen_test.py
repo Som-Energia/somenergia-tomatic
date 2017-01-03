@@ -3020,10 +3020,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         dynamic:
         - jordi
         - ana
@@ -3083,10 +3079,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         dynamic:
         - jordi
         - ana
@@ -3146,10 +3138,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         dynamic:
         - jordi
         - ana
@@ -3191,10 +3179,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         """
         h = HtmlGenFromYaml(self.ns(yaml))
         self.assertEqual(h.partialCurrentQueue('dl',1),
@@ -3249,10 +3233,6 @@ class ScheduleHours_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        companys:
-        - ana
-        - pere
-        - jordi
         """
         h = HtmlGenFromYaml(self.ns(yaml))
         self.assertEqual(h.partialCurrentQueue('dl',2),
