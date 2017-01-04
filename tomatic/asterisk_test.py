@@ -2,7 +2,11 @@
 
 import asterisk
 from Asterisk.Manager import Manager
-from .htmlgen import HtmlGenFromYaml, HtmlGenFromAsterisk
+from .htmlgen import (
+    HtmlGenFromYaml,
+    HtmlGenFromAsterisk,
+    asteriskConfiguration,
+    )
 from yamlns import namespace as ns
 
 from remote import remoterun
@@ -36,7 +40,7 @@ class Asterisk_Test(unittest.TestCase):
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskSend_oneTurnOneSip(self):
-       h = HtmlGenFromYaml(self.ns("""\
+        asterisk_conf = asteriskConfiguration(self.ns("""\
         timetable:
           dl:
             1:
@@ -60,61 +64,60 @@ class Asterisk_Test(unittest.TestCase):
            cesar: César
            victor: Víctor
         """)
-       )
-       asterisk_conf = h.asteriskParse()
-       pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
-       pbx.sendConfNow(asterisk_conf)
-       queues = pbx.receiveConf()
-       self.assertIn('entrada_cua_dl_1',queues)
-       queue = queues['entrada_cua_dl_1']
-       self.assertIn('members',queue)
-       members = queue['members']
-       self.assertIn('SIP/217',members)
+        )
+        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+        pbx.sendConfNow(asterisk_conf)
+        queues = pbx.receiveConf()
+        self.assertIn('entrada_cua_dl_1',queues)
+        queue = queues['entrada_cua_dl_1']
+        self.assertIn('members',queue)
+        members = queue['members']
+        self.assertIn('SIP/217',members)
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskSend_oneTurnManySip(self):
-       h = HtmlGenFromYaml(self.ns("""\
-        timetable:
-          dl:
-            1:
-            - ana
-            - jordi
-            - pere
-        hours:
-        - '09:00'
-        - '10:15'
-        turns:
-        - T1
-        - T2
-        - T3
-        colors:
-          pere: 8f928e
-          ana: 98bdc0
-          jordi: ff9999
-        extensions:
-          ana: 217
-          jordi: 210
-          pere: 224
-        week: '2016-07-25'
-        names: # Els que no només cal posar en majúscules
-           silvia: Sílvia
-           monica: Mònica
-           tania: Tània
-           cesar: César
-           victor: Víctor
-        """)
-       )
-       asterisk_conf = h.asteriskParse()
-       pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
-       pbx.sendConfNow(asterisk_conf)
-       queues = pbx.receiveConf()
-       self.assertIn('entrada_cua_dl_1',queues)
-       queue = queues['entrada_cua_dl_1']
-       self.assertIn('members',queue)
-       members = queue['members']
-       self.assertIn('SIP/217',members)
-       self.assertIn('SIP/210',members)
-       self.assertIn('SIP/224',members)
+        h = HtmlGenFromYaml(self.ns("""\
+            timetable:
+              dl:
+                1:
+                - ana
+                - jordi
+                - pere
+            hours:
+            - '09:00'
+            - '10:15'
+            turns:
+            - T1
+            - T2
+            - T3
+            colors:
+              pere: 8f928e
+              ana: 98bdc0
+              jordi: ff9999
+            extensions:
+              ana: 217
+              jordi: 210
+              pere: 224
+            week: '2016-07-25'
+            names: # Els que no només cal posar en majúscules
+               silvia: Sílvia
+               monica: Mònica
+               tania: Tània
+               cesar: César
+               victor: Víctor
+            """)
+        )
+        asterisk_conf = h.asteriskParse()
+        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+        pbx.sendConfNow(asterisk_conf)
+        queues = pbx.receiveConf()
+        self.assertIn('entrada_cua_dl_1',queues)
+        queue = queues['entrada_cua_dl_1']
+        self.assertIn('members',queue)
+        members = queue['members']
+        self.assertIn('SIP/217',members)
+        self.assertIn('SIP/210',members)
+        self.assertIn('SIP/224',members)
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskSend_manyTurnManySip(self):

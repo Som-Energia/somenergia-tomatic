@@ -552,7 +552,32 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
         self.yaml=y
 
 def asteriskConfiguration(schedule):
-    h = HtmlGenFromYaml(schedule)
-    return h.asteriskParse()
+        common = [
+            'music=default',
+            'strategy=linear',
+            'eventwhencalled=yes',
+            'timeout=15',
+            'retry=1',
+            'wrapuptime=0',
+            'maxlen = 0',
+            '; Periodic-announce = /var/lib/asterisk/sounds/bienvenida',
+            'Periodic-announce-frequency = 15',
+            'announce-frequency = 0',
+            'announce-holdtime = no',
+            'announce-position =no',
+            'context = bustia_veu',
+        ]
+        r = []
+        tt = schedule.timetable
+        ext = schedule.extensions
+        for d in tt.keys():
+            for t in tt[d].keys():
+                r+=[u"[entrada_cua_{}_{}]".format(
+                    d,t)]
+                r+=common
+                for index,m in enumerate(tt[d][t]):
+                    r+=[(u"member = SIP/{},{}"
+                        ).format(ext[m],index+1)]
+        return u'\n'.join(r)+u'\n'
 
 # vim: et
