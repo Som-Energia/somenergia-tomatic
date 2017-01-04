@@ -27,7 +27,6 @@ setup(
         'flask',
         'py-Asterisk',
         'paramiko',
-        'scp',
     ],
     classifiers = [
         'Programming Language :: Python',
