@@ -15,15 +15,18 @@ body {
 	background: #ded;
 }
 .uploader {
-	text-align: right;
+    width: 100%;
+    text-align: right;
 }
 .weeks {
-	float: left;
 	min-width: 50%;
 }
-.week.current {
+.week.current, .week.current:hover {
     font-weight: bold;
-	background: #966;
+	background: #696;
+}
+.week:hover {
+	background: #9a9;
 }
 .week.current:before {
 	content: "►";
@@ -85,6 +88,8 @@ td:hover {
 .extensions {
 	width: 80%;
 	text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 .extension {
 	color: black;
@@ -107,6 +112,18 @@ dialog .extension {
 }
 dialog .extension:hover {
 	opacity: .8;
+}
+.weeks {
+    display: inline-block;
+    width: 100%;
+}
+.graella {
+    text-align: center;
+    display: inline-block;
+}
+.festiu {
+    color: red;
+    border: red 1pt solid;
 }
 </style>
 </head>
