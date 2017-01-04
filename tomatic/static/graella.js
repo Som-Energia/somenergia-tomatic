@@ -347,21 +347,21 @@ Graella.view = function(c) {
 		m('h2', 'Línies actives'),
 		m.component(QueueWidget, c),
 		m('h2', "Graelles "),
-        m('',
-            m('',{style: 'display: inline-block; width:100%'},
-                m.component(WeekList, c)
-            ),
-            m('form.uploader', {
-                style: 'display: inline-block',
-                name: 'upload',
-                action: 'graella',
-                method: 'post',
-                enctype: 'multipart/form-data'
-                },
-                m('input[type="file"][name="yaml"][accept="application/x-yaml"]'),
-                m('input[type="submit"][value="Puja Graella"]')
-            )
-        ),
+		m('',
+			m('',{style: 'display: inline-block; width:100%'},
+				m.component(WeekList, c)
+			),
+			m('form.uploader', {
+				style: 'display: inline-block',
+				name: 'upload',
+				action: 'graella',
+				method: 'post',
+				enctype: 'multipart/form-data'
+				},
+				m('input[type="file"][name="yaml"][accept="application/x-yaml"]'),
+				m('input[type="submit"][value="Puja Graella"]')
+			)
+		),
 		m('h3', 'Setmana ', grid.date),
 		c.dialog,
 		m('.graella', [
