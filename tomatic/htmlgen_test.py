@@ -14,7 +14,7 @@ from htmlgen import HtmlGenFromSolution
 from htmlgen import HtmlGenFromAsterisk
 from htmlgen import asteriskConfiguration
 
-class ScheduleHours_Test(unittest.TestCase):
+class Schedule_Test(unittest.TestCase):
 
     def eqOrdDict(self, dict1, dict2, msg=None):
         def sorteddict(d):
