@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import asterisk
-from paramiko import SSHClient,AutoAddPolicy
 from Asterisk.Manager import Manager
 from .htmlgen import HtmlGenFromYaml, HtmlGenFromAsterisk
 from yamlns import namespace as ns
