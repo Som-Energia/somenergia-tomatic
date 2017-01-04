@@ -44,7 +44,6 @@ except ImportError:
     pass
 if config or True:
     import asterisk
-    from paramiko import SSHClient,AutoAddPolicy
     from Asterisk.Manager import Manager
 
 app = Flask(__name__)
