@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from remote import remotewrite
+from Asterisk.Manager import Manager
 
 class Pbx(object):
 
-    def __init__(self,pbx,sshconfig):
-        self._pbx = pbx
-        self._sshconfig = sshconfig
+    def __init__(self,pbxconfig):
+        self._sshconfig = pbxconfig['scp']
+        self._pbx = Manager(**pbxconfig['pbx'])
 
     def sendConfNow(self, conf):
         remotewrite(

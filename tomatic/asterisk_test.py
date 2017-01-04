@@ -2,6 +2,7 @@
 
 import asterisk
 from Asterisk.Manager import Manager
+import os
 from .htmlgen import (
     HtmlGenFromYaml,
     HtmlGenFromAsterisk,
@@ -38,8 +39,7 @@ class Asterisk_Test(unittest.TestCase):
             manager.Command('reload')
 
     def setupPbx(self):
-        manager = Manager(**config.pbx['pbx'])
-        return asterisk.Pbx(manager, config.pbx['scp'])
+        return asterisk.Pbx(config.pbx)
 
 
     @unittest.skipIf(not config, "depends on pbx")

@@ -19,7 +19,7 @@ def pbx(alternative = None):
     if alternative:
         pbx.cache = alternative
     if not hasattr(pbx,'cache'):
-        pbx.cache = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+        pbx.cache = asterisk.Pbx(config.pbx)
     return pbx.cache
 
 def now():
@@ -42,9 +42,9 @@ try:
     import config
 except ImportError:
     pass
+
 if config or True:
     import asterisk
-    from Asterisk.Manager import Manager
 
 app = Flask(__name__)
 
