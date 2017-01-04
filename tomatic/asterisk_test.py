@@ -76,7 +76,7 @@ class Asterisk_Test(unittest.TestCase):
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskSend_oneTurnManySip(self):
-        h = HtmlGenFromYaml(self.ns("""\
+        schedule = self.ns("""\
             timetable:
               dl:
                 1:
@@ -106,8 +106,7 @@ class Asterisk_Test(unittest.TestCase):
                cesar: César
                victor: Víctor
             """)
-        )
-        asterisk_conf = h.asteriskParse()
+        asterisk_conf = schedule2asterisk(schedule)
         pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
         pbx.sendConfNow(asterisk_conf)
         queues = pbx.receiveConf()
@@ -121,7 +120,7 @@ class Asterisk_Test(unittest.TestCase):
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskSend_manyTurnManySip(self):
-       h = HtmlGenFromYaml(self.ns("""\
+        schedule = self.ns("""\
         timetable:
           dl:
             1:
@@ -158,34 +157,33 @@ class Asterisk_Test(unittest.TestCase):
            cesar: César
            victor: Víctor
         """)
-       )
-       asterisk_conf = h.asteriskParse()
-       pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
-       pbx.sendConfNow(asterisk_conf)
-       queues = pbx.receiveConf()
-       self.assertIn('entrada_cua_dl_1',queues)
-       queue = queues['entrada_cua_dl_1']
-       self.assertIn('members',queue)
-       members = queue['members']
-       self.assertIn('SIP/217',members)
-       self.assertIn('SIP/210',members)
-       self.assertIn('SIP/224',members)
-       self.assertIn('entrada_cua_dl_2',queues)
-       queue = queues['entrada_cua_dl_2']
-       self.assertIn('members',queue)
-       members = queue['members']
-       self.assertIn('SIP/210',members)
-       self.assertIn('SIP/224',members)
-       self.assertIn('entrada_cua_dm_1',queues)
-       queue = queues['entrada_cua_dm_1']
-       self.assertIn('members',queue)
-       members = queue['members']
-       self.assertIn('SIP/210',members)
-       self.assertIn('SIP/217',members)
+        asterisk_conf = schedule2asterisk(schedule)
+        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+        pbx.sendConfNow(asterisk_conf)
+        queues = pbx.receiveConf()
+        self.assertIn('entrada_cua_dl_1',queues)
+        queue = queues['entrada_cua_dl_1']
+        self.assertIn('members',queue)
+        members = queue['members']
+        self.assertIn('SIP/217',members)
+        self.assertIn('SIP/210',members)
+        self.assertIn('SIP/224',members)
+        self.assertIn('entrada_cua_dl_2',queues)
+        queue = queues['entrada_cua_dl_2']
+        self.assertIn('members',queue)
+        members = queue['members']
+        self.assertIn('SIP/210',members)
+        self.assertIn('SIP/224',members)
+        self.assertIn('entrada_cua_dm_1',queues)
+        queue = queues['entrada_cua_dm_1']
+        self.assertIn('members',queue)
+        members = queue['members']
+        self.assertIn('SIP/210',members)
+        self.assertIn('SIP/217',members)
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskReceive_oneTurnManySip(self):
-       yaml = """\
+        schedule = self.ns("""\
         timetable:
           dl:
             1:
@@ -212,20 +210,19 @@ class Asterisk_Test(unittest.TestCase):
            tania: Tània
            cesar: César
            victor: Víctor
-        """
-       h = HtmlGenFromYaml(self.ns(yaml))
-       asterisk_conf = h.asteriskParse()
-       pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
-       pbx.sendConfNow(asterisk_conf)
-       h_asterisk = HtmlGenFromAsterisk(h.getYaml(),pbx.receiveConf())
-       h_asterisk_yaml = h_asterisk.getYaml()
-       self.assertIn('timetable',h_asterisk_yaml)
-       self.assertIn('dl',h_asterisk_yaml.timetable)
-       self.assertIn(1,h_asterisk_yaml.timetable.dl)
-       self.assertEqual(
-           set(h_asterisk.getYaml().timetable.dl[1]),
-           set(self.ns(yaml).timetable.dl[1])
-       )
+        """)
+        asterisk_conf = schedule2asterisk(schedule)
+        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+        pbx.sendConfNow(asterisk_conf)
+        h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
+        h_asterisk_yaml = h_asterisk.getYaml()
+        self.assertIn('timetable',h_asterisk_yaml)
+        self.assertIn('dl',h_asterisk_yaml.timetable)
+        self.assertIn(1,h_asterisk_yaml.timetable.dl)
+        self.assertEqual(
+            set(h_asterisk.getYaml().timetable.dl[1]),
+            set(schedule.timetable.dl[1])
+        )
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskReceive_manyTurnManySip(self):
