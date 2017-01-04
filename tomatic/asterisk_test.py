@@ -6,6 +6,8 @@ from Asterisk.Manager import Manager
 from .htmlgen import HtmlGenFromYaml, HtmlGenFromAsterisk
 from yamlns import namespace as ns
 
+from remote import remoterun
+
 config=None
 try:
     import config
@@ -22,14 +24,13 @@ class Asterisk_Test(unittest.TestCase):
     def tearDown(self):
         if config:
             sshconfig = config.pbx['scp']
-            with SSHClient() as ssh:
-                ssh.set_missing_host_key_policy(AutoAddPolicy())
-                ssh.connect(sshconfig['pbxhost'],
-                    username=sshconfig['username'],
-                    password=sshconfig['password'])
-                path= "/".join(sshconfig['path'].split("/")[:-1])
-                file = sshconfig['path'].split("/")[-1]
-                ssh.exec_command('cd {}; git checkout {}'.format(path,file))
+            path = "/".join(sshconfig['path'].split("/")[:-1])
+            file = sshconfig['path'].split("/")[-1]
+            remoterun(
+                user = sshconfig['username'],
+                host = sshconfig['pbxhost'],
+                command = 'cd {}; git checkout {}'
+                    .format(path, file))
             pbx = Manager(**config.pbx['pbx'])
             pbx.Command('reload')
 
