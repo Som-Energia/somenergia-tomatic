@@ -54,19 +54,9 @@ class Asterisk_Test(unittest.TestCase):
         - '10:15'
         turns:
         - T1
-        colors:
-          pere: 8f928e
-          ana: 98bdc0
-          jordi: ff9999
         extensions:
           ana: 217
         week: '2016-07-25'
-        names: # Els que no només cal posar en majúscules
-           silvia: Sílvia
-           monica: Mònica
-           tania: Tània
-           cesar: César
-           victor: Víctor
         """)
         )
         pbx = self.setupPbx()
@@ -103,12 +93,6 @@ class Asterisk_Test(unittest.TestCase):
               jordi: 210
               pere: 224
             week: '2016-07-25'
-            names: # Els que no només cal posar en majúscules
-               silvia: Sílvia
-               monica: Mònica
-               tania: Tània
-               cesar: César
-               victor: Víctor
             """)
         asterisk_conf = schedule2asterisk(schedule)
         pbx = self.setupPbx()
@@ -154,12 +138,6 @@ class Asterisk_Test(unittest.TestCase):
           jordi: 210
           pere: 224
         week: '2016-07-25'
-        names: # Els que no només cal posar en majúscules
-           silvia: Sílvia
-           monica: Mònica
-           tania: Tània
-           cesar: César
-           victor: Víctor
         """)
         asterisk_conf = schedule2asterisk(schedule)
         pbx = self.setupPbx()
@@ -199,21 +177,11 @@ class Asterisk_Test(unittest.TestCase):
         - '10:15'
         turns:
         - T1
-        colors:
-          pere: 8f928e
-          ana: 98bdc0
-          jordi: ff9999
         extensions:
           ana: 217
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        names: # Els que no només cal posar en majúscules
-           silvia: Sílvia
-           monica: Mònica
-           tania: Tània
-           cesar: César
-           victor: Víctor
         """)
         asterisk_conf = schedule2asterisk(schedule)
         pbx = self.setupPbx()
@@ -255,21 +223,11 @@ class Asterisk_Test(unittest.TestCase):
         - T2
         - T3
 
-        colors:
-          pere: 8f928e
-          ana: 98bdc0
-          jordi: ff9999
         extensions:
           ana: 217
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        names: # Els que no només cal posar en majúscules
-           silvia: Sílvia
-           monica: Mònica
-           tania: Tània
-           cesar: César
-           victor: Víctor
         """)
        asterisk_conf = schedule2asterisk(schedule)
        pbx = self.setupPbx()
@@ -307,17 +265,9 @@ class Asterisk_Test(unittest.TestCase):
         - '10:15'
         turns:
         - T1
-        colors:
-          ana: 98bdc0
         extensions:
           ana: 217
         week: '2016-07-25'
-        names: # Els que no només cal posar en majúscules
-           silvia: Sílvia
-           monica: Mònica
-           tania: Tània
-           cesar: César
-           victor: Víctor
         """)
        asterisk_conf = schedule2asterisk(schedule)
        pbx = self.setupPbx()
@@ -346,21 +296,11 @@ class Asterisk_Test(unittest.TestCase):
         - T1
         - T2
         - T3
-        colors:
-          pere: 8f928e
-          ana: 98bdc0
-          jordi: ff9999
         extensions:
           ana: 217
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        names: # Els que no només cal posar en majúscules
-           silvia: Sílvia
-           monica: Mònica
-           tania: Tània
-           cesar: César
-           victor: Víctor
         """)
        asterisk_conf = schedule2asterisk(schedule)
        pbx = self.setupPbx()
@@ -385,17 +325,9 @@ class Asterisk_Test(unittest.TestCase):
         - '10:15'
         turns:
         - T1
-        colors:
-          ana: 98bdc0
         extensions:
           ana: 217
         week: '2016-07-25'
-        names: # Els que no només cal posar en majúscules
-           silvia: Sílvia
-           monica: Mònica
-           tania: Tània
-           cesar: César
-           victor: Víctor
         """)
        asterisk_conf = schedule2asterisk(schedule)
        pbx = self.setupPbx()
@@ -425,16 +357,6 @@ class Asterisk_Test(unittest.TestCase):
         - T1
         - T2
         - T3
-        colors:
-          pere: 8f928e
-          ana: 98bdc0
-          jordi: ff9999
-        names: # Els que no només cal posar en majúscules
-           silvia: Sílvia
-           monica: Mònica
-           tania: Tània
-           cesar: César
-           victor: Víctor
         extensions:
           ana: 217
           pere: 218
@@ -475,16 +397,6 @@ class Asterisk_Test(unittest.TestCase):
             - T1
             - T2
             - T3
-            names: # Els que no només cal posar en majúscules
-              silvia: Sílvia
-              monica: Mònica
-              tania: Tània
-              cesar: César
-              victor: Víctor
-            colors:
-              pere: 8f928e
-              ana: 98bdc0
-              jordi: ff9999
             extensions:
               ana: 217
               pere: 218

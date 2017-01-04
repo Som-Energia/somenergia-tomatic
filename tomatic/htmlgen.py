@@ -514,10 +514,10 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
         y.dynamic = dynamic
         y.timetable = tt_asterisk
         y.paused = paused
-        y.names = yaml.names
+        y.names = yaml.get('names',{})
         y.hours = yaml.hours
         y.turns = yaml.turns
-        y.colors = yaml.colors
+        y.colors = yaml.get('colors',{})
         y.extensions = yaml.extensions
         y.week = yaml.week
         self.yaml=y
