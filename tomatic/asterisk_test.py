@@ -5,7 +5,7 @@ from Asterisk.Manager import Manager
 from .htmlgen import (
     HtmlGenFromYaml,
     HtmlGenFromAsterisk,
-    asteriskConfiguration,
+    schedule2asterisk,
     )
 from yamlns import namespace as ns
 
@@ -40,7 +40,7 @@ class Asterisk_Test(unittest.TestCase):
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskSend_oneTurnOneSip(self):
-        asterisk_conf = asteriskConfiguration(self.ns("""\
+        asterisk_conf = schedule2asterisk(self.ns("""\
         timetable:
           dl:
             1:

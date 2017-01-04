@@ -12,7 +12,7 @@ import datetime
 from htmlgen import HtmlGenFromYaml
 from htmlgen import HtmlGenFromSolution
 from htmlgen import HtmlGenFromAsterisk
-from htmlgen import asteriskConfiguration
+from htmlgen import schedule2asterisk
 
 class Schedule_Test(unittest.TestCase):
 
@@ -2718,8 +2718,8 @@ class Schedule_Test(unittest.TestCase):
              )
         )
 
-    def test_asteriskConfiguration_oneTurnOneLocal(self):
-        configuration = asteriskConfiguration(self.ns("""\
+    def test_schedule2asterisk_oneTurnOneLocal(self):
+        configuration = schedule2asterisk(self.ns("""\
             timetable:
               dl:
                 1:
@@ -2761,8 +2761,8 @@ class Schedule_Test(unittest.TestCase):
             u"""member = SIP/217,1\n"""
            )
 
-    def test_asteriskConfiguration_manyTurnOneLocal(self):
-        configuration = asteriskConfiguration(self.ns("""\
+    def test_schedule2asterisk_manyTurnOneLocal(self):
+        configuration = schedule2asterisk(self.ns("""\
             timetable:
               dl:
                 1:

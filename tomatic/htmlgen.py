@@ -551,7 +551,7 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
         y.week = yaml.week
         self.yaml=y
 
-def asteriskConfiguration(schedule):
+def schedule2asterisk(schedule):
         common = [
             'music=default',
             'strategy=linear',
