@@ -27,15 +27,19 @@ class Asterisk_Test(unittest.TestCase):
     def tearDown(self):
         if config:
             sshconfig = config.pbx['scp']
-            path = "/".join(sshconfig['path'].split("/")[:-1])
-            file = sshconfig['path'].split("/")[-1]
+            path = os.path.dirname(sshconfig['path'])
+            file = os.path.basename(sshconfig['path'])
             remoterun(
                 user = sshconfig['username'],
                 host = sshconfig['pbxhost'],
                 command = 'cd {}; git checkout {}'
                     .format(path, file))
-            pbx = Manager(**config.pbx['pbx'])
-            pbx.Command('reload')
+            manager = Manager(**config.pbx['pbx'])
+            manager.Command('reload')
+
+    def setupPbx(self):
+        manager = Manager(**config.pbx['pbx'])
+        return asterisk.Pbx(manager, config.pbx['scp'])
 
 
     @unittest.skipIf(not config, "depends on pbx")
@@ -65,7 +69,7 @@ class Asterisk_Test(unittest.TestCase):
            victor: Víctor
         """)
         )
-        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+        pbx = self.setupPbx()
         pbx.sendConfNow(asterisk_conf)
         queues = pbx.receiveConf()
         self.assertIn('entrada_cua_dl_1',queues)
@@ -107,7 +111,7 @@ class Asterisk_Test(unittest.TestCase):
                victor: Víctor
             """)
         asterisk_conf = schedule2asterisk(schedule)
-        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+        pbx = self.setupPbx()
         pbx.sendConfNow(asterisk_conf)
         queues = pbx.receiveConf()
         self.assertIn('entrada_cua_dl_1',queues)
@@ -158,7 +162,7 @@ class Asterisk_Test(unittest.TestCase):
            victor: Víctor
         """)
         asterisk_conf = schedule2asterisk(schedule)
-        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+        pbx = self.setupPbx()
         pbx.sendConfNow(asterisk_conf)
         queues = pbx.receiveConf()
         self.assertIn('entrada_cua_dl_1',queues)
@@ -212,7 +216,7 @@ class Asterisk_Test(unittest.TestCase):
            victor: Víctor
         """)
         asterisk_conf = schedule2asterisk(schedule)
-        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+        pbx = self.setupPbx()
         pbx.sendConfNow(asterisk_conf)
         h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
         h_asterisk_yaml = h_asterisk.getYaml()
@@ -268,7 +272,7 @@ class Asterisk_Test(unittest.TestCase):
            victor: Víctor
         """)
        asterisk_conf = schedule2asterisk(schedule)
-       pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+       pbx = self.setupPbx()
        pbx.sendConfNow(asterisk_conf)
        h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
        h_asterisk_yaml = h_asterisk.getYaml()
@@ -316,7 +320,7 @@ class Asterisk_Test(unittest.TestCase):
            victor: Víctor
         """)
        asterisk_conf = schedule2asterisk(schedule)
-       pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+       pbx = self.setupPbx()
        pbx.sendConfNow(asterisk_conf)
        pbx.pause('dl',1,217)
        h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
@@ -359,7 +363,7 @@ class Asterisk_Test(unittest.TestCase):
            victor: Víctor
         """)
        asterisk_conf = schedule2asterisk(schedule)
-       pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+       pbx = self.setupPbx()
        pbx.sendConfNow(asterisk_conf)
        pbx.pause('dl',1,217)
        h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
@@ -394,7 +398,7 @@ class Asterisk_Test(unittest.TestCase):
            victor: Víctor
         """)
        asterisk_conf = schedule2asterisk(schedule)
-       pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+       pbx = self.setupPbx()
        pbx.sendConfNow(asterisk_conf)
        pbx.pause('dl',1,217)
        pbx.resume('dl',1,217)
@@ -438,7 +442,7 @@ class Asterisk_Test(unittest.TestCase):
         week: '2016-07-25'
         """)
        asterisk_conf = schedule2asterisk(schedule)
-       pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+       pbx = self.setupPbx()
        pbx.sendConfNow(asterisk_conf)
        pbx.pause('dl',1,217)
        pbx.pause('dl',1,218)
@@ -493,7 +497,7 @@ class Asterisk_Test(unittest.TestCase):
                 219: added
             """)
         asterisk_conf = schedule2asterisk(schedule)
-        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
+        pbx = self.setupPbx()
         pbx.sendConfNow(asterisk_conf)
         pbx.parsePause(difference)
         h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
