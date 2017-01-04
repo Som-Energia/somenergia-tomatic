@@ -402,6 +402,26 @@ Graella.view = function(c) {
 				]);
 			})
 		),
+		m('.graella', [
+			m('h5', 'Darrers canvis'),
+			m('ul.changelog', [
+				grid.log?[]: m('li', 'Cap canvi registrat'),
+				(grid.log || []).slice(-5).reverse().map(function(change) {
+					return m('li',change);
+				}),
+				(grid.log || []).length > 5 ?  m('li', m.trust("&hellip;")) : [],
+			]),
+		]),
+		m('.graella', [
+			m('h5', 'Penalitzacions'),
+			m('ul.penalties', [
+				grid.penalties?[]: m('li', 'La graella no te penalitzacions'),
+				(grid.penalties || []).slice(-5).reverse().map(function(change) {
+					return m('li',change);
+				}),
+				(grid.penalties || []).length > 5 ?  m('li', m.trust("&hellip;")) : [],
+			]),
+		]),
 	];
 };
 
