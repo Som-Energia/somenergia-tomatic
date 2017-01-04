@@ -3,7 +3,7 @@
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
 from paramiko import SSHClient,AutoAddPolicy, SFTPClient
-from .htmlgen import HtmlGenFromYaml
+from .htmlgen import schedule2asterisk
 
 def weekday(date):
     weekdays = "dl dm dx dj dv ds dg".split()
@@ -25,8 +25,7 @@ class Pbx(object):
         self._path = path
 
     def reconfigure(self, configuration):
-        h = HtmlGenFromYaml(configuration)
-        asterisk_conf = h.asteriskParse()
+        asterisk_conf = schedule2asterisk(configuration)
         with Remote(self._user, self._host) as remote:
             remote.write(self._path, asterisk_conf)
         self._manager.Command('reload')
