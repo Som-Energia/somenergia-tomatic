@@ -226,7 +226,7 @@ class Asterisk_Test(unittest.TestCase):
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskReceive_manyTurnManySip(self):
-       yaml = """\
+       schedule = self.ns("""\
         timetable:
           dl:
             1:
@@ -266,35 +266,34 @@ class Asterisk_Test(unittest.TestCase):
            tania: Tània
            cesar: César
            victor: Víctor
-        """
-       h = HtmlGenFromYaml(self.ns(yaml))
-       asterisk_conf = h.asteriskParse()
+        """)
+       asterisk_conf = schedule2asterisk(schedule)
        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
        pbx.sendConfNow(asterisk_conf)
-       h_asterisk = HtmlGenFromAsterisk(h.getYaml(),pbx.receiveConf())
+       h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
        h_asterisk_yaml = h_asterisk.getYaml()
        self.assertIn('timetable',h_asterisk_yaml)
        self.assertIn('dl',h_asterisk_yaml.timetable)
        self.assertIn(1,h_asterisk_yaml.timetable.dl)
        self.assertEqual(
            set(h_asterisk.getYaml().timetable.dl[1]),
-           set(self.ns(yaml).timetable.dl[1])
+           set(schedule.timetable.dl[1])
        )
        self.assertIn('dm',h_asterisk_yaml.timetable)
        self.assertIn(1,h_asterisk_yaml.timetable.dm)
        self.assertIn(2,h_asterisk_yaml.timetable.dm)
        self.assertEqual(
            set(h_asterisk.getYaml().timetable.dm[1]),
-           set(self.ns(yaml).timetable.dm[1])
+           set(schedule.timetable.dm[1])
        )
        self.assertEqual(
            set(h_asterisk.getYaml().timetable.dm[2]),
-           set(self.ns(yaml).timetable.dm[2])
+           set(schedule.timetable.dm[2])
        )
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskPause_oneSipPaused(self):
-       yaml = """\
+       schedule = self.ns("""\
         timetable:
           dl:
             1:
@@ -315,13 +314,12 @@ class Asterisk_Test(unittest.TestCase):
            tania: Tània
            cesar: César
            victor: Víctor
-        """
-       h = HtmlGenFromYaml(self.ns(yaml))
-       asterisk_conf = h.asteriskParse()
+        """)
+       asterisk_conf = schedule2asterisk(schedule)
        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
        pbx.sendConfNow(asterisk_conf)
        pbx.pause('dl',1,217)
-       h_asterisk = HtmlGenFromAsterisk(h.getYaml(),pbx.receiveConf())
+       h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
        h_asterisk_yaml = h_asterisk.getYaml()
        self.assertIn('paused',h_asterisk_yaml)
        self.assertIn('dl',h_asterisk_yaml.paused)
@@ -330,7 +328,7 @@ class Asterisk_Test(unittest.TestCase):
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskPause_manySipOnePaused(self):
-       yaml = """\
+       schedule = self.ns("""\
         timetable:
           dl:
             1:
@@ -359,13 +357,12 @@ class Asterisk_Test(unittest.TestCase):
            tania: Tània
            cesar: César
            victor: Víctor
-        """
-       h = HtmlGenFromYaml(self.ns(yaml))
-       asterisk_conf = h.asteriskParse()
+        """)
+       asterisk_conf = schedule2asterisk(schedule)
        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
        pbx.sendConfNow(asterisk_conf)
        pbx.pause('dl',1,217)
-       h_asterisk = HtmlGenFromAsterisk(h.getYaml(),pbx.receiveConf())
+       h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
        h_asterisk_yaml = h_asterisk.getYaml()
        self.assertIn('paused',h_asterisk_yaml)
        self.assertIn('dl',h_asterisk_yaml.paused)
@@ -374,7 +371,7 @@ class Asterisk_Test(unittest.TestCase):
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskResume_oneSipOneResumed(self):
-       yaml = """\
+       schedule = self.ns("""\
         timetable:
           dl:
             1:
@@ -395,14 +392,13 @@ class Asterisk_Test(unittest.TestCase):
            tania: Tània
            cesar: César
            victor: Víctor
-        """
-       h = HtmlGenFromYaml(self.ns(yaml))
-       asterisk_conf = h.asteriskParse()
+        """)
+       asterisk_conf = schedule2asterisk(schedule)
        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
        pbx.sendConfNow(asterisk_conf)
        pbx.pause('dl',1,217)
        pbx.resume('dl',1,217)
-       h_asterisk = HtmlGenFromAsterisk(h.getYaml(),pbx.receiveConf())
+       h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
        h_asterisk_yaml = h_asterisk.getYaml()
        self.assertIn('paused',h_asterisk_yaml)
        self.assertIn('dl',h_asterisk_yaml.paused)
@@ -411,7 +407,7 @@ class Asterisk_Test(unittest.TestCase):
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_asteriskPause_OnePausedOneResumed(self):
-       yaml = """\
+       schedule = self.ns("""\
         timetable:
           dl:
             1:
@@ -440,15 +436,14 @@ class Asterisk_Test(unittest.TestCase):
           pere: 218
           jordi: 219
         week: '2016-07-25'
-        """
-       h = HtmlGenFromYaml(self.ns(yaml))
-       asterisk_conf = h.asteriskParse()
+        """)
+       asterisk_conf = schedule2asterisk(schedule)
        pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
        pbx.sendConfNow(asterisk_conf)
        pbx.pause('dl',1,217)
        pbx.pause('dl',1,218)
        pbx.resume('dl',1,217)
-       h_asterisk = HtmlGenFromAsterisk(h.getYaml(),pbx.receiveConf())
+       h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
        h_asterisk_yaml = h_asterisk.getYaml()
        self.assertIn('paused',h_asterisk_yaml)
        self.assertIn('dl',h_asterisk_yaml.paused)
@@ -457,7 +452,7 @@ class Asterisk_Test(unittest.TestCase):
 
     @unittest.skipIf(not config, "depends on pbx")
     def test_parsePause_onePaused(self):
-        yaml = """\
+        schedule = self.ns("""\
             timetable:
               dl:
                 1:
@@ -491,18 +486,17 @@ class Asterisk_Test(unittest.TestCase):
               pere: 218
               jordi: 219
             week: '2016-07-25'
-            """
+            """)
         difference = self.ns("""\
             dm:
               1:
                 219: added
             """)
-        h = HtmlGenFromYaml(self.ns(yaml))
-        asterisk_conf = h.asteriskParse()
+        asterisk_conf = schedule2asterisk(schedule)
         pbx = asterisk.Pbx(Manager(**config.pbx['pbx']),config.pbx['scp'])
         pbx.sendConfNow(asterisk_conf)
         pbx.parsePause(difference)
-        h_asterisk = HtmlGenFromAsterisk(h.getYaml(),pbx.receiveConf())
+        h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
         h_asterisk_yaml = h_asterisk.getYaml()
         self.assertIn('paused',h_asterisk_yaml)
         self.assertIn('dm',h_asterisk_yaml.paused)
