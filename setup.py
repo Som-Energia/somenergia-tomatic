@@ -17,6 +17,7 @@ setup(
     test_suite = 'tomatic',
     scripts=[
         'schedulehours.py',
+        'tomatic_api.py',
         ],
     install_requires=[
         'somutils',
