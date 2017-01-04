@@ -232,7 +232,7 @@ var WeekList = {
 		};
 	},
 	view: function(c) {
-		return m('',
+		return m('.weeks',
 			this.weeks().map(function(week){
 				var current = c.model.current === week ? '.current':'';
 				return m('.week'+current, {
@@ -341,8 +341,9 @@ Graella.view = function(c) {
 		),
 		m('h2', 'Línies actives'),
 		m.component(QueueWidget, c),
+		m('h2', "Graelles ", grid.date),
 		m.component(WeekList, c),
-		m('form', {
+		m('form.uploader', {
 			name: 'upload',
 			action: 'graella',
 			method: 'post',
@@ -353,7 +354,6 @@ Graella.view = function(c) {
 			),
 		c.dialog,
 
-		m('h1', "Setmana ", grid.date),
 		m('table', [
 			m('tr', grid.days.map(function(day) {
 				return [
@@ -374,7 +374,7 @@ Graella.view = function(c) {
 					grid.days.map(function(day, dayi) {
 						return [
 							dayi!=0?
-								m('td.separator', m.trust('&nbsp;')) :
+								m('th.separator', m.trust('&nbsp;')) :
 								m('th.separator', grid.hours[houri]+'-'+grid.hours[houri+1]),
 							grid.turns.map(function(turn, turni) {
 								return cell(day, houri, turni)

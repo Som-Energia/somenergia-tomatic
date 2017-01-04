@@ -10,21 +10,38 @@
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.7.0/js-yaml.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mithril/0.2.5/mithril.min.js"></script>
 <style>
-h1 {
-    color: #560;
+body {
+	color: #833;
+	background: #ded;
+}
+.uploader {
+	text-align: right;
+}
+.weeks {
+	float: left;
+	min-width: 50%;
 }
 .week.current {
     font-weight: bold;
+	background: #966;
+}
+.week {
+	text-align: center;
+	padding: 3px;
+	color: black;
+	background: #aaa;
 }
 td, th {
 	border:1px solid black;
 	width: 8em;
 	text-align: center;
+	color: black;
+	background: white;
 }
-td:empty { border:0;}
+td:empty { border:0; background: none; }
 td { padding: 1ex;}
 td:hover {
-	opacity: .8;
+	opacity: .7;
 }
 .separator {
 	background: #ddd;
@@ -36,6 +53,7 @@ td:hover {
 	text-align:center;
 }
 .queueitem {
+	color: black;
 	width: 10em;
 	text-align: center;
 	display: inline-block;
@@ -63,6 +81,7 @@ td:hover {
 	text-align: center;
 }
 .extension {
+	color: black;
 	display: inline-block;
 	padding: 1ex 0ex;
 	width: 14%;
