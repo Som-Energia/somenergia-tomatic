@@ -551,4 +551,8 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
         y.week = yaml.week
         self.yaml=y
 
+def asteriskConfiguration(schedule):
+    h = HtmlGenFromYaml(schedule)
+    return h.asteriskParse()
+
 # vim: et
