@@ -38,7 +38,7 @@ var Tomatic = {
 Tomatic.queue = m.prop([]);
 Tomatic.init = function() {
 	console.log("init",this);
-	this.requestGrid('2016-12-26');
+//	this.requestGrid('2016-12-26');
 	this.requestQueue();
 };
 Tomatic.requestQueue = function(suffix) {
@@ -213,32 +213,37 @@ var PersonPicker = {
 
 var WeekList = {
 	weeks: m.prop([]),
-	current: m.prop(),
-	controller: function(onchangelist) {
-		m.request({
-			method: 'GET',
-			url: 'graella/list',
-			deserialize: jsyaml.load,
-		}).then(function(newWeeklist){
-			console.log(newWeeklist);
-			WeekList.weeks(newWeeklist.weeks);
-		});
-		return {
+	current: m.prop(undefined),
+	controller: function(parentcontroller) {
+		var controller = {
 			model: this,
-			parent: onchangelist,
-			onchangelist: onchangelist || function(week) {
-				console.log("Changing to", week);
-			}
+			parent: parentcontroller,
+			init: function() {
+				self = this;
+				m.request({
+					method: 'GET',
+					url: 'graella/list',
+					deserialize: jsyaml.load,
+				}).then(function(newWeeklist){
+					WeekList.weeks(newWeeklist.weeks.sort().reverse());
+					self.setCurrent(newWeeklist.weeks.sort().reverse()[0]);
+				});
+			},
+			setCurrent: function(week)  {
+				WeekList.current(week);
+				this.parent.loadGrid(week);
+			},
 		};
+		controller.init();
+		return controller;
 	},
 	view: function(c) {
 		return m('.weeks',
 			this.weeks().map(function(week){
-				var current = c.model.current === week ? '.current':'';
+				var current = WeekList.current() === week ? '.current':'';
 				return m('.week'+current, {
 					onclick: function() {
-						c.parent.loadGrid(week);
-						c.model.current = week;
+						c.setCurrent(week);
 					}
 				}, "Setmana del "+week);
 		}));
@@ -360,7 +365,7 @@ Graella.view = function(c) {
 		m('h3', 'Setmana ', grid.date),
 		c.dialog,
 		m('.graella', [
-			grid.days.map(function(day, dayi) {
+			(grid.days||[]).map(function(day, dayi) {
 				return m('.graella', m('table', [
 					m('tr', [
 						m('td'),
