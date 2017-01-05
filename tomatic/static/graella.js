@@ -371,6 +371,19 @@ Graella.view = function(c) {
 				'}\n';
 			})
 		),
+
+		m('.mdl-layout.mdl-js-layout.mdl-layout--fixed-header.mdl-layout--fixed-tabs', [
+			m('header.mdl-layout__header.mdl-layout__hea', [
+				m('.mdl-layout__header-row', [
+					m('span.mdl-layout-title', 'Som Energia - Tomatic'),
+				]),
+			]),
+			m('.mdl-layout__drawer', [
+				m('span.mdl-layout-title', 'Extensions'),
+			]),
+			m('main.mdl-layout__content', [
+		// TODO: indent from here
+       
 		m('h2', 'Línies actives'),
 		m.component(QueueWidget, c),
 		m('h2', "Graelles "),
@@ -428,33 +441,38 @@ Graella.view = function(c) {
 				]);
 			})
 		),
-		m('.graella', [
-			m('h5', 'Recordatori desviaments'),
-			m('ul', [
-				m('li','*60 Immediat'),
-				m('li','*63 Ocupat o no responem'),
-				m('li','*64 Treure desviaments'),
-				m('li','*90 Marcar número'),
+		m('.graella[style="width:100%"]', [
+			m('.graella', [
+				m('h5', 'Codis desviaments'),
+				m('ul.codes', [
+					m('li','*60 Immediat'),
+					m('li','*63 Ocupat o no responem'),
+					m('li','*64 Treure desviaments'),
+					m('li','*90 Marcar número'),
+				]),
+			]),
+			m('.graella', [
+				m('h5', 'Darrers canvis'),
+				m('ul.changelog', [
+					grid.log?[]: m('li', 'Cap canvi registrat'),
+					(grid.log || []).slice(-5).reverse().map(function(change) {
+						return m('li',change);
+					}),
+					(grid.log || []).length > 5 ?  m('li', m.trust("&hellip;")) : [],
+				]),
+			]),
+			m('.graella', [
+				m('h5', 'Penalitzacions'),
+				m('ul.penalties', [
+					grid.penalties?[]: m('li', 'La graella no te penalitzacions'),
+					(grid.penalties || []).slice(-5).reverse().map(function(change) {
+						return m('li',change);
+					}),
+					(grid.penalties || []).length > 5 ?  m('li', m.trust("&hellip;")) : [],
+				]),
 			]),
 		]),
-		m('.graella', [
-			m('h5', 'Darrers canvis'),
-			m('ul.changelog', [
-				grid.log?[]: m('li', 'Cap canvi registrat'),
-				(grid.log || []).slice(-5).reverse().map(function(change) {
-					return m('li',change);
-				}),
-				(grid.log || []).length > 5 ?  m('li', m.trust("&hellip;")) : [],
-			]),
-		]),
-		m('.graella', [
-			m('h5', 'Penalitzacions'),
-			m('ul.penalties', [
-				grid.penalties?[]: m('li', 'La graella no te penalitzacions'),
-				(grid.penalties || []).slice(-5).reverse().map(function(change) {
-					return m('li',change);
-				}),
-				(grid.penalties || []).length > 5 ?  m('li', m.trust("&hellip;")) : [],
+
 			]),
 		]),
 	];
