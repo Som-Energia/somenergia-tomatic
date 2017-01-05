@@ -126,7 +126,7 @@ def uploadGraella(week=None):
     graella.setdefault('log',[])
     print logmsg
     schedules.save(graella)
-    return redirect(url_for('tomatic'))
+    return yamlfy(result='ok')
 
 @app.route('/queue')
 def get_queue():
