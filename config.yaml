@@ -3,8 +3,8 @@ fullCarrega: 'o9rxhxk' # 'Càrrega setmanal de telèfon' # Fulla del drive on es
 intervalCarrega: carregatelefon_{:02d}{:02d}{:02d} # Patró pel nom de l'interval on buscar les càrregues (Y,m,d)
 monitoringFile: taula.html
 
-nTelefons: 3
-diesCerca: ['dl', 'dm', 'dx', 'dj',] # Els mes conflictius davant
+nTelefons: 4
+diesCerca: ['dl', 'dm', 'dv', 'dx', 'dj',] # Els mes conflictius davant
 diesVisualitzacio: ['dl','dm','dx','dj','dv']
 
 hours:  # La darrera es per tancar
@@ -35,6 +35,7 @@ costTaulaSorollosa: 5   # Es multiplica per n·(n-1)/2 on n es el nombre de tele
 costHoraNoDesitjada: 0   # No implementat
 taules: # Asignacio de les persones en taules
    marc:   0
+   joan:   0
    eduard: 1
    pere:   1
    david:  2
@@ -44,19 +45,18 @@ taules: # Asignacio de les persones en taules
    monica: 3
    judith: 3
    silvia: 3
-   victor: 4
    erola:  4
    sergi:  4
    judit:  4
    marta:  5
    yaiza:  5
-   joan:   5
-   ana:    5
-   jordi:  5
-   manel:  6
-   tania:  6
-   lucia:  6
-   vic:    6
+   victor: 5
+   ana:    6
+   jordi:  6
+   manel:  7
+   tania:  7
+   lucia:  7
+   vic:    7
    ningu:  99
 sempreUnLliure: {}
 randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
