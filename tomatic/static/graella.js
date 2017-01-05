@@ -37,8 +37,6 @@ var Tomatic = {
 
 Tomatic.queue = m.prop([]);
 Tomatic.init = function() {
-	console.log("init",this);
-//	this.requestGrid('2016-12-26');
 	this.requestQueue();
 };
 Tomatic.requestQueue = function(suffix) {
@@ -47,7 +45,6 @@ Tomatic.requestQueue = function(suffix) {
 		url: 'queue'+(suffix||''),
 		deserialize: jsyaml.load,
 	}).then(function(response){
-		console.log(response);
 		if (response.currentQueue!==undefined) {
 			Tomatic.queue(response.currentQueue);
 		}
@@ -87,11 +84,47 @@ Tomatic.formatName = function(name) {
 		});
 	}
 	if (!name) { return "...";}
-	return Tomatic.grid().names[name] || titleCase(name);
+	return (Tomatic.grid().names||{})[name] || titleCase(name);
 };
 Tomatic.extension = function(name) {
 	return Tomatic.formatName(name) + ": "
-		+ (Tomatic.grid().extensions[name] || "???");
+		+ ((Tomatic.grid().extensions||{})[name] || "???");
+};
+
+var Uploader = {
+	controller: function(args) {
+		var c = {};
+		c.uploadFile = function(ev) {
+			var formData = new FormData;
+			formData.append("yaml", ev.target.files[0]);
+			m.request({
+				method: "POST",
+				url: args.url,
+				data: formData,
+				serialize: function(value) {return value},
+				deserialize: jsyaml.load,
+			}).then(function(result) {
+				Tomatic.init();
+			}, function(error) {
+				console.log("Upload error:", error);
+			});
+		};
+		return c;
+	},
+	view: function(c, args) {
+		return m('.uploader', {
+			style: 'display: inline-block',
+			},
+			m('.mdl-button .mdl-button--raised .mdl-button-js', [
+				m('input[type="file"]', {
+					onchange: c.uploadFile.bind(c),
+					accept: args.mimetype || "application/x-yaml",
+					}
+				),
+				m('span', args.label || 'Puja fitxer' ),
+			])
+		);
+	},
 };
 
 
@@ -99,8 +132,6 @@ var QueueWidget = {
 	controller: function() {
 		var c = {
 			addtoqueue: function(ev) {
-				console.log("opening dialog");
-				console.log('dialog#'+c.dialog.id);
 				var dialog = document.querySelector('dialog#'+c.dialog.controller().id);
 				if (! dialog.showModal) {
 				  dialogPolyfill.registerDialog(dialog);
@@ -156,7 +187,6 @@ var PersonPicker = {
 			person: m.prop(undefined),
 
 			picked: function(name, ev) {
-				console.log("piked", name);
 				this.person(name);
 				this.close();
 				if (this.onpick) {
@@ -231,7 +261,7 @@ var WeekList = {
 			},
 			setCurrent: function(week)  {
 				WeekList.current(week);
-				this.parent.loadGrid(week);
+				Tomatic.requestGrid(week);
 			},
 		};
 		controller.init();
@@ -264,7 +294,6 @@ Graella.controller = function(model, args) {
 				turni: turni
 			});
 			var dialog = document.querySelector('dialog#grideditor');
-			console.log(dialog);
 			if (! dialog.showModal) {
 			  dialogPolyfill.registerDialog(dialog);
 			}
@@ -288,7 +317,6 @@ Graella.controller = function(model, args) {
 			key: "grideditor",
 			title: "Editar graella",
 			onpick: function(name) {
-				console.log(controller._editingCell);
 				var day = controller._editingCell().day;
 				var houri = controller._editingCell().houri;
 				var turni = controller._editingCell().turni;
@@ -298,18 +326,17 @@ Graella.controller = function(model, args) {
 					url: 'graella/'+([
 						Tomatic.grid().date,day,houri,turni,name
 						].join('/')),
+					deserialize: jsyaml.load,
 				})
-				.then(function() { this.loadGrid(this.d.date);});
+				.then( function(data) {
+					Tomatic.requestGrid(args.date);
+				});
 			},
 			onclose: function() {
 				controller.cancelCellEdition();
 			},
 		}),
-		loadGrid: function(date) {
-			Tomatic.requestGrid(date)
-		},
 	};
-	controller.loadGrid(args.date ||'2016-12-26');
 	return controller;
 };
 
@@ -351,16 +378,10 @@ Graella.view = function(c) {
 			m('',{style: 'display: inline-block; width:100%'},
 				m.component(WeekList, c)
 			),
-			m('form.uploader', {
-				style: 'display: inline-block',
-				name: 'upload',
-				action: 'graella',
-				method: 'post',
-				enctype: 'multipart/form-data'
-				},
-				m('input[type="file"][name="yaml"][accept="application/x-yaml"]'),
-				m('input[type="submit"][value="Puja Graella"]')
-			)
+			m.component(Uploader, {
+				label: 'Puja Nova Graella',
+				url: 'graella',
+			})
 		),
 		m('h3', 'Setmana ', grid.date),
 		c.dialog,
@@ -390,7 +411,7 @@ Graella.view = function(c) {
 		]),
 		m('h3', 'Extensions'),
 		m('.extensions',
-			Object.keys(grid.extensions).sort().map(function(name) {
+			Object.keys(grid.extensions || {}).sort().map(function(name) {
 				return m('.extension', {class: name}, [
 					Tomatic.formatName(name),
 					m('br'),
@@ -407,6 +428,15 @@ Graella.view = function(c) {
 				]);
 			})
 		),
+		m('.graella', [
+			m('h5', 'Recordatori desviaments'),
+			m('ul', [
+				m('li','*60 Immediat'),
+				m('li','*63 Ocupat o no responem'),
+				m('li','*64 Treure desviaments'),
+				m('li','*90 Marcar número'),
+			]),
+		]),
 		m('.graella', [
 			m('h5', 'Darrers canvis'),
 			m('ul.changelog', [

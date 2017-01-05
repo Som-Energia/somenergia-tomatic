@@ -15,8 +15,23 @@ body {
 	background: #ded;
 }
 .uploader {
+
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
     width: 100%;
     text-align: right;
+}
+.uploader input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
 }
 .weeks {
 	min-width: 50%;
@@ -138,15 +153,9 @@ dialog .extension:hover {
 
 <script src="graella.js"></script>
 
-<div id='graella'></div>
-
-<h3>Recordatori desviaments</h3>
-<ul>
-<li>*60 Immediat</li>
-<li>*63 Ocupat o no responem</li>
-<li>*64 Treure desviaments</li>
-<li>*90 Marcar número</li>
-</ul>
+<div id='graella'>
+<div class='mdl-card mdl-shadow--2dp mdl-cell--2-offset mdl-cell--8-col'>Carregant Tomàtic...</div>
+</div>
 
 
 </body>
