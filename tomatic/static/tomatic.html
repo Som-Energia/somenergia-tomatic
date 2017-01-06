@@ -18,16 +18,21 @@ body {
 .pe-header-panel__header-background {
 	background-image: url(http://estaticos.elperiodico.com/resources/jpg/0/1/autentico-tomatic-exposicion-del-club-super-1458137981610.jpg);
 }
-.pe-toolbar .pe-icon {
-	color: #aaa;
-}
-.pe-toolbar {
+.pe-toolbar .pe-icon,
+.pe-toolbar .pe-button--icon,
+.pe-toolbar
+{
 	background-color: transparent;
 	color: #aaa;
-	
 }
 .pe-header-panel__media-dimmer {
     box-shadow: inset 0px 0px 200px rgba(0,0,0,.6);
+}
+#graella .pe-toolbar.pe-header--tall {
+	height: 102px;
+}
+.pe-button--icon {
+    color: red;
 }
 
 body, html, #graella {
@@ -70,6 +75,7 @@ body, html, #graella {
 	content: "◄";
 }
 .week {
+	cursor: pointer;
 	text-align: center;
 	padding: 3px;
 	color: black;

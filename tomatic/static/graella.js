@@ -216,7 +216,6 @@ var QueueWidget = {
 var PersonPicker = {
 	controller: function(args) {
 		var c = {
-			id: args.id || 'id'+Math.random(),
 			onpick: args.onpick,
 			person: m.prop(undefined),
 			picked: function(name, ev) {
@@ -285,7 +284,7 @@ var WeekList = {
 const threeButtons = [
 	"Graelles",
 	"Centraleta",
-	"Indisponibilitats",
+	"Disponibilitat",
 	"Trucada",
 	].map(function(n) {return {label:n};});
 
@@ -293,7 +292,8 @@ const ButtonIcon = function(msvg) {
     return m.component(IconButton, {
         icon: {
             msvg: msvg
-        }
+        },
+		class: 'colored',
     });
 };
 
@@ -311,6 +311,7 @@ var TomaticApp = TomaticApp || {};
 TomaticApp.controller = function(model, args) {
 	args = args || {};
 	var controller = {
+		currentTab: m.prop('Graelles'),
 		editCell: function(day, houri, turni) {
 			var setPerson = function(name) {
 				Tomatic.editCell(day, houri, turni, name)
@@ -373,8 +374,6 @@ TomaticApp.view = function(c) {
 			})
 		),
 		m.component(Dialog),
-
-
 		m.component(HeaderPanel, {
 			mode: 'waterfall-tall',
 			//condenses: true, // condense: 
@@ -394,102 +393,103 @@ TomaticApp.view = function(c) {
 							buttons: threeButtons,
 							centered: true,
 							autofit: true,
-							tabsOpts: {
-								ink: 'red',
-							},
+							getState: function(state) {
+								c.currentTab(state.data.label);
+							}
 						})
 					]),
 				},
 			},
 			content: [
-       
-		m('h2', 'Línies actives'),
-		m.component(QueueWidget, c),
-		m('h2', "Graelles "),
-		m('',
-			m('',{style: 'display: inline-block; width:100%'},
-				m.component(WeekList, c)
+		c.currentTab()=='Centraleta' && [
+			m('h2', "Linies actives actualment"),
+			m.component(QueueWidget, c),
+		] || [],
+		c.currentTab()=='Graelles' && [
+			m('',
+				m('',{style: 'display: inline-block; width:100%'},
+					m.component(WeekList, c)
+				),
+				m.component(Uploader, {
+					label: 'Puja Nova Graella',
+					url: 'graella',
+				})
 			),
-			m.component(Uploader, {
-				label: 'Puja Nova Graella',
-				url: 'graella',
-			})
-		),
-		m('h3', 'Setmana ', grid.date),
-		m('.graella', [
-			(grid.days||[]).map(function(day, dayi) {
-				return m('.graella', m('table', [
-					m('tr', [
+			m('.graella', [
+				(grid.days||[]).map(function(day, dayi) {
+					return m('.graella', m('table', [
+						m('tr', [
+							m('td'),
+							m('th', {colspan:grid.turns.length}, day),
+						]),
 						m('td'),
-						m('th', {colspan:grid.turns.length}, day),
+						grid.turns.map(function(turn) {
+							return m('th', turn);
+						}),
+						grid.hours.slice(0,-1).map(function(hour,houri) {
+							return m('tr', [
+								dayi!=0 && false?
+									m('th.separator', m.trust('&nbsp;')) :
+									m('th.separator', grid.hours[houri]+'-'+grid.hours[houri+1]),
+								grid.turns.map(function(turn, turni) {
+									return cell(day, houri, turni)
+								}),
+							]);
+						}),
+					]))
+				}),
+			]),
+			m('h3', 'Extensions'),
+			m('.extensions',
+				Object.keys(grid.extensions || {}).sort().map(function(name) {
+					return m('.extension', {class: name}, [
+						Tomatic.formatName(name),
+						m('br'),
+						grid.extensions[name],
+					]);
+				})
+			),
+			m('.extensions',
+				Object.keys(grid.otherextensions || {}).sort().map(function(name) {
+					return m('.extension', {class: name}, [
+						Tomatic.formatName(name),
+						m('br'),
+						grid.otherextensions[name],
+					]);
+				})
+			),
+			m('.graella[style="width:100%"]', [
+				m('.graella', [
+					m('h5', 'Codis desviaments'),
+					m('ul.codes', [
+						m('li','*60 Immediat'),
+						m('li','*63 Ocupat o no responem'),
+						m('li','*64 Treure desviaments'),
+						m('li','*90 Marcar número'),
 					]),
-					m('td'),
-					grid.turns.map(function(turn) {
-						return m('th', turn);
-					}),
-					grid.hours.slice(0,-1).map(function(hour,houri) {
-						return m('tr', [
-							dayi!=0 && false?
-								m('th.separator', m.trust('&nbsp;')) :
-								m('th.separator', grid.hours[houri]+'-'+grid.hours[houri+1]),
-							grid.turns.map(function(turn, turni) {
-								return cell(day, houri, turni)
-							}),	
-						]);
-					}),
-				]))
-			}),
-		]),
-		m('h3', 'Extensions'),
-		m('.extensions',
-			Object.keys(grid.extensions || {}).sort().map(function(name) {
-				return m('.extension', {class: name}, [
-					Tomatic.formatName(name),
-					m('br'),
-					grid.extensions[name],
-				]);
-			})
-		),
-		m('.extensions',
-			Object.keys(grid.otherextensions || {}).sort().map(function(name) {
-				return m('.extension', {class: name}, [
-					Tomatic.formatName(name),
-					m('br'),
-					grid.otherextensions[name],
-				]);
-			})
-		),
-		m('.graella[style="width:100%"]', [
-			m('.graella', [
-				m('h5', 'Codis desviaments'),
-				m('ul.codes', [
-					m('li','*60 Immediat'),
-					m('li','*63 Ocupat o no responem'),
-					m('li','*64 Treure desviaments'),
-					m('li','*90 Marcar número'),
+				]),
+				m('.graella', [
+					m('h5', 'Darrers canvis'),
+					m('ul.changelog', [
+						grid.log?[]: m('li', 'Cap canvi registrat'),
+						(grid.log || []).slice(-5).reverse().map(function(change) {
+							return m('li',change);
+						}),
+						(grid.log || []).length > 5 ?  m('li', m.trust("&hellip;")) : [],
+					]),
+				]),
+				m('.graella', [
+					m('h5', 'Penalitzacions'),
+					m('ul.penalties', [
+						grid.penalties?[]: m('li', 'La graella no te penalitzacions'),
+						(grid.penalties || []).slice(-5).reverse().map(function(change) {
+							return m('li',change);
+						}),
+						(grid.penalties || []).length > 5 ?  m('li', m.trust("&hellip;")) : [],
+					]),
 				]),
 			]),
-			m('.graella', [
-				m('h5', 'Darrers canvis'),
-				m('ul.changelog', [
-					grid.log?[]: m('li', 'Cap canvi registrat'),
-					(grid.log || []).slice(-5).reverse().map(function(change) {
-						return m('li',change);
-					}),
-					(grid.log || []).length > 5 ?  m('li', m.trust("&hellip;")) : [],
-				]),
-			]),
-			m('.graella', [
-				m('h5', 'Penalitzacions'),
-				m('ul.penalties', [
-					grid.penalties?[]: m('li', 'La graella no te penalitzacions'),
-					(grid.penalties || []).slice(-5).reverse().map(function(change) {
-						return m('li',change);
-					}),
-					(grid.penalties || []).length > 5 ?  m('li', m.trust("&hellip;")) : [],
-				]),
-			]),
-		]),
+		] || [],
 		]}
 		),
 	];
