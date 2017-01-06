@@ -26,7 +26,7 @@ class Storage(object):
             raise KeyError(week)
 
     def save(self, value):
-        filename = self._filename(value.date)
+        filename = self._filename(value.week)
         value.dump(filename)
 
     def list(self):

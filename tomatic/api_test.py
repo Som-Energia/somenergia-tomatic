@@ -19,7 +19,7 @@ def setNow(year,month,day,hour,minute):
 
 def loadYaml(yaml):
     parsedYaml = ns.loads(yaml)
-    week = str(parsedYaml.date)
+    week = str(parsedYaml.week)
     setmana_underscore = week.replace("-","_")
     api.hs[setmana_underscore]=HtmlGenFromYaml(parsedYaml)
 
@@ -27,7 +27,7 @@ startOfWeek = HtmlGenFromYaml.iniciSetmana(
     datetime.now()
 )
 
-def loadAsterisk(yaml,date=None):
+def loadAsterisk(yaml,week=None):
     global startOfWeek
     api.hs[startOfWeek.strftime("%Y-%m-%d")
         ]=HtmlGenFromAsterisk(
@@ -45,7 +45,7 @@ class Api_Test(unittest.TestCase):
     def test_getcurrentqueue(self):
 
         loadYaml("""\
-                date: 2016-07-25
+                week: 2016-07-25
                 timetable:
                   dl:
                     1:
@@ -92,7 +92,7 @@ class Api_Test(unittest.TestCase):
 
     def test_getqueue_one_tel(self):
         loadYaml("""\
-                date: 2016-07-25
+                week: 2016-07-25
                 timetable:
                   dl:
                     1:
@@ -138,7 +138,7 @@ class Api_Test(unittest.TestCase):
 
     def test_getqueue_many_tt_first_week(self):
         loadYaml("""\
-                date: 2016-07-25
+                week: 2016-07-25
                 timetable:
                   dl:
                     1:
@@ -180,7 +180,7 @@ class Api_Test(unittest.TestCase):
                 """
         )
         loadYaml("""\
-                date: 2016-08-01
+                week: 2016-08-01
                 timetable:
                   dl:
                     1:
@@ -212,7 +212,7 @@ class Api_Test(unittest.TestCase):
 
     def test_getqueue_many_tt_second_week(self):
         loadYaml("""\
-                date: 2016-07-25
+                week: 2016-07-25
                 timetable:
                   dl:
                     1:
@@ -240,7 +240,7 @@ class Api_Test(unittest.TestCase):
                 """
         )
         loadYaml("""\
-                date: 2016-08-01
+                week: 2016-08-01
                 timetable:
                   dl:
                     1:
@@ -271,7 +271,7 @@ class Api_Test(unittest.TestCase):
 
     def test_getqueue_two_tels_intermediate_day(self):
         loadYaml("""\
-                date: 2016-07-25
+                week: 2016-07-25
                 timetable:
                   dl:
                     1:
@@ -316,7 +316,7 @@ class Api_Test(unittest.TestCase):
 
     def test_getDynamicqueue_three_tels_intermediate_day(self):
         loadYaml("""\
-                date: 2016-07-25
+                week: 2016-07-25
                 timetable:
                   dl:
                     1:
@@ -366,7 +366,7 @@ class Api_Test(unittest.TestCase):
     @unittest.skipIf(not config, "depends on pbx")
     def test_receiveFromAsterisk_firstTurn(self):
         yaml = ns.loads("""\
-                date: 2016-09-26
+                week: 2016-09-26
                 timetable:
                   dl:
                     1:
@@ -446,7 +446,7 @@ class Api_Test(unittest.TestCase):
                 """
         )
         api.loadAsterisk(yaml,
-            date=datetime(2016,9,19,9,26))
+            week=datetime(2016,9,19,9,26))
         rv = self.app.get('/getqueue/'
         '2016-09-26/9/19')
         self.assertB2BEqual(rv.data)
@@ -454,7 +454,7 @@ class Api_Test(unittest.TestCase):
     @unittest.skipIf(not config, "depends on pbx")
     def test_receiveFromAsterisk_secondTurn(self):
         yaml = ns.loads("""\
-                date: 2016-09-26
+                week: 2016-09-26
                 timetable:
                   dl:
                     1:
@@ -534,7 +534,7 @@ class Api_Test(unittest.TestCase):
                 """
         )
         api.loadAsterisk(yaml,
-            date=datetime(2016,9,19,9,26))
+            week=datetime(2016,9,19,9,26))
         rv = self.app.get('/getqueue/'
         '2016-09-26/10/20')
         self.assertB2BEqual(rv.data)

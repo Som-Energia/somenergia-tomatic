@@ -77,11 +77,11 @@ Tomatic.restoreLine = function(line) {
 };
 
 Tomatic.grid = m.prop({});
-Tomatic.requestGrid = function(date) {
+Tomatic.requestGrid = function(week) {
 	var self = this;
 	m.request({
 		method: 'GET',
-		url: 'graella-'+date+'.yaml',
+		url: 'graella-'+week+'.yaml',
 		deserialize: jsyaml.load,
 	}).then(function(data) {
 		data.days = data.days || 'dl dm dx dj dv'.split(' ');
@@ -109,12 +109,12 @@ Tomatic.editCell = function(day,houri,turni,name) {
 	m.request({
 		method: 'UPDATE',
 		url: 'graella/'+([
-			Tomatic.grid().date,day,houri,turni,name
+			Tomatic.grid().week,day,houri,turni,name
 			].join('/')),
 		deserialize: jsyaml.load,
 	})
 	.then( function(data) {
-		Tomatic.requestGrid(Tomatic.grid().date);
+		Tomatic.requestGrid(Tomatic.grid().week);
 	});
 };
 

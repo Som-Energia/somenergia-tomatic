@@ -121,7 +121,7 @@ def uploadGraella(week=None):
         "{}: {} ha pujat {} ".format(
         datetime.now(),
         "nobody", # TODO: ERP user
-        graella.date,
+        graella.week,
         ))
     graella.setdefault('log',[])
     print logmsg

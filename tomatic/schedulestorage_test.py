@@ -4,8 +4,8 @@ from . import schedulestorage
 from yamlns import namespace as ns
 import os
 
-yaml20121110 = "date: '2012-11-10'"
-yaml20030201 = "date: '2003-02-01'"
+yaml20121110 = "week: '2012-11-10'"
+yaml20030201 = "week: '2003-02-01'"
 
 class ScheduleStorage_Test(unittest.TestCase):
     
