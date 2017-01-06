@@ -2,6 +2,11 @@
 
 from .remote import remotewrite, remoteread, remoterun, Remote
 import unittest
+import os
+
+# In order to pass these tests you need to have your
+# ssh public key copied as auhtorized key in you own
+# computer.
 
 config=None
 try:
@@ -9,11 +14,17 @@ try:
 except ImportError:
     pass
 
+
+
 class Remote_Test(unittest.TestCase):
 
     def setUp(self):
-        self.user = config.pbx.scp.username
-        self.host = config.pbx.scp.pbxhost
+        if config and 'pbx' in config:
+            self.user = config.pbx.scp.username
+            self.host = config.pbx.scp.pbxhost
+        else:
+            self.user = os.getenv('USER')
+            self.host = 'localhost'
 
     def test_remoterun(self):
         result = remoterun(self.user, self.host, "cat /etc/hosts")
