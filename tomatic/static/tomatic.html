@@ -2,20 +2,40 @@
 <html>
 <head>
 <meta charset='utf-8' />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/polythene/0.2.32/polythene-standalone.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.green-red.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.5/dialog-polyfill.min.css">
-<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.5/dialog-polyfill.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.7.0/js-yaml.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mithril/0.2.5/mithril.min.js"></script>
 <style>
 body {
+	background-color: #242;
+	color: #bbb;
 	color: #833;
-	background: #ded;
+	background-color: #efe;
+}
+.pe-header-panel__header-container {
+	background-color: #522;
+}
+.pe-header-panel__header-background {
+	background-image: url(http://estaticos.elperiodico.com/resources/jpg/0/1/autentico-tomatic-exposicion-del-club-super-1458137981610.jpg);
+}
+.pe-toolbar .pe-icon {
+	color: #aaa;
+}
+.pe-toolbar {
+	background-color: transparent;
+	color: #aaa;
+	
+}
+.pe-header-panel__media-dimmer {
+    box-shadow: inset 0px 0px 200px rgba(0,0,0,.6);
+}
+
+body, html, #graella {
+	height: 100%;
+	margin: 0;
+	padding: 0;
 }
 .uploader {
-
     position: relative;
     overflow: hidden;
     margin: 10px;
@@ -84,6 +104,7 @@ td:hover {
 	padding: 1em;
 	border: 2pt solid;
 	margin: 2pt;
+	cursor: pointer;
 }
 .queueitem.paused {
 	color: red;
@@ -95,10 +116,18 @@ td:hover {
 	opacity: .8;
 }
 .queueitem.add {
-	color: #aaaaff;
 	font-weight: bold;
-	border: 2pt dashed #aaaaff;
-	background: #ddddff;
+	border: 2pt dashed #aae;
+	color: #aae;
+	background-color: #ddf;
+}
+.darktheme .queueitem.add {
+	color: inherit;
+	border-color: inherit;
+	background-color: #454;
+}
+.queueitem.add:hover {
+	opacity: 0.8;
 }
 .extensions {
 	width: 80%;
@@ -157,8 +186,8 @@ dialog .extension:hover {
 
 <script src="graella.js"></script>
 
-<div id='graella'>
-<div class='mdl-card mdl-shadow--2dp mdl-cell--2-offset mdl-cell--8-col'>Carregant Tomàtic...</div>
+<div id='graella' class='main'>
+<div>Carregant Tomàtic...</div>
 </div>
 
 
