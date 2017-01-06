@@ -38,18 +38,18 @@ class Remote_Test(unittest.TestCase):
             remotewrite(
                 self.user,
                 self.host,
-                "borrame",
+                "borrame.remotewritetest",
                 content)
             result = remoteread(
                 self.user,
                 self.host,
-                "borrame")
+                "borrame.remotewritetest")
             self.assertEqual(result, content)
         finally:
             remoterun(
                 self.user,
                 self.host,
-                'rm borrame'
+                'rm borrame.remotewritetest'
                 )
 
     def test_remote_run(self):
@@ -75,11 +75,11 @@ class Remote_Test(unittest.TestCase):
         with Remote(self.user, self.host) as remote:
             try:
                 content = "Some content"
-                remote.write("borrame", content)
-                result = remote.read("borrame")
+                remote.write("borrame.remotewritetest", content)
+                result = remote.read("borrame.remotewritetest")
                 self.assertEqual(result, content)
             finally:
-                remote.run('rm borrame')
+                remote.run('rm borrame.remotewritetest')
 
 
 unittest.TestCase.__str__ = unittest.TestCase.id
