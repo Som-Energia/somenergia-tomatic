@@ -3,6 +3,7 @@ var m = require('mithril');
 require('polythene/theme/theme');
 var Button = require('polythene/button/button');
 var Dialog = require('polythene/dialog/dialog');
+var Ripple = require('polythene/ripple/ripple');
 var Card = require('polythene/card/card');
 var HeaderPanel = require('polythene/header-panel/header-panel');
 var IconButton = require('polythene/icon-button/icon-button');
@@ -301,12 +302,12 @@ const threeButtons = [
 	].map(function(n) {return {label:n};});
 
 const ButtonIcon = function(msvg) {
-    return m.component(IconButton, {
-        icon: {
-            msvg: msvg
-        },
+	return m.component(IconButton, {
+		icon: {
+			msvg: msvg
+		},
 		class: 'colored',
-    });
+	});
 };
 
 const toolbarRow = function(title) {
@@ -363,15 +364,16 @@ TomaticApp.view = function(c) {
 			return m('td','-');
 		}
 		return m('td', {
-				class: name,
-				title: Tomatic.extension(name),
-				onclick: function(ev) {
-					c.editCell(day, houri, turni);
-					ev.preventDefault();
-				}
-			},
-			Tomatic.formatName(name)
-		);
+			class: name,
+			title: Tomatic.extension(name),
+			onclick: function(ev) {
+				c.editCell(day, houri, turni);
+				ev.preventDefault();
+			}
+		}, [
+			Tomatic.formatName(name),
+			m.component(Ripple),
+		]);
 	};
 	var grid = Tomatic.grid();
 	return [

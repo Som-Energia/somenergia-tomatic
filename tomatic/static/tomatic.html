@@ -89,7 +89,10 @@ td, th {
 	background: white;
 }
 td:empty { border:0; background: none; }
-td { padding: 1ex;}
+td {
+	position: relative; /* Ripple needs it */
+	padding: 1ex;
+}
 td:hover {
 	opacity: .7;
 }
@@ -136,7 +139,7 @@ td:hover {
 	opacity: 0.8;
 }
 .extensions {
-	width: 80%;
+	width: 90%;
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
