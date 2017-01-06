@@ -63,26 +63,26 @@ class Remote_Test(unittest.TestCase):
                 'rm borrame.remotewritetest'
                 )
 
-    def test_remote_run(self):
+    def test_run(self):
         with Remote(self.user, self.host) as remote:
             result = remote.run("cat /etc/hosts")
 
         self.assertIn('localhost', result)
 
-    def test_remote_read(self):
+    def test_read(self):
         with Remote(self.user, self.host) as remote:
             content = remote.read("/etc/hosts")
 
         self.assertIn("localhost", content)
 
-    def test_remote_read_badPath(self):
+    def test_read_badPath(self):
         with Remote(self.user, self.host) as remote:
             with self.assertRaises(IOError) as ctx:
                 content = remote.read("/etc/badfile")
         self.assertEqual(str(ctx.exception),
             "[Errno 2] No such file")
 
-    def test_remote_write(self):
+    def test_write(self):
         with Remote(self.user, self.host) as remote:
             try:
                 content = "Some content"
