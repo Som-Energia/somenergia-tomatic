@@ -3,6 +3,7 @@ var m = require('mithril');
 require('polythene/theme/theme');
 var Button = require('polythene/button/button');
 var Dialog = require('polythene/dialog/dialog');
+var Card = require('polythene/card/card');
 var HeaderPanel = require('polythene/header-panel/header-panel');
 var IconButton = require('polythene/icon-button/icon-button');
 var Tabs = require('polythene/tabs/tabs');
@@ -153,6 +154,17 @@ var Uploader = {
 			])
 		);
 	},
+};
+
+var Todo = function(message) {
+	return m.component(Card, {
+		content: [{
+			primary: {
+				title: 'TODO',
+				subtitle: message,
+			},
+		}],
+	});
 };
 
 
@@ -439,6 +451,8 @@ TomaticApp.view = function(c) {
 					]))
 				}),
 			]),
+		] || [],
+		(c.currentTab()=='Graelles' || c.currentTab()=='Centraleta') && [
 			m('h3', 'Extensions'),
 			m('.extensions',
 				Object.keys(grid.extensions || {}).sort().map(function(name) {
@@ -489,6 +503,12 @@ TomaticApp.view = function(c) {
 					]),
 				]),
 			]),
+		] || [],
+		c.currentTab() == 'Disponibilitat' && [
+			Todo("Aquí es podrà veure i modificar les indisponibilitats de cadascú."),
+		] || [],
+		c.currentTab() == 'Trucada' && [
+			Todo("Aquí es podrà veure informació de l'ERP sobre la trucada entrant"),
 		] || [],
 		]}
 		),
