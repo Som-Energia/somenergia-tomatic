@@ -344,12 +344,15 @@ TomaticApp.controller = function(model, args) {
 				Tomatic.editCell(day, houri, turni, name)
 				Dialog.hide('GridCellEditor');
 			};
+			var oldPerson = Tomatic.cell(day,houri,turni);
 			Dialog.show({
 				title: 'Edita posició de la graella:',
 				body: [
 					Tomatic.weekday(day) +' a les '+
 						Tomatic.grid().hours[houri] +
-						', línia '+ (turni+1),
+						', línia '+ (turni+1) +
+						', la tenia ',
+					m('span.extension.'+oldPerson, Tomatic.formatName(oldPerson)),
 					m.component(PersonPicker, {
 						id:'GridCellEditor',
 						onpick: setPerson,
@@ -433,7 +436,7 @@ TomaticApp.view = function(c) {
 			content: [
 		c.currentTab()=='Centraleta' && [
 			Todo("Ara mateix no té efecte a la centraleta però es simula el seu comportament."),
-			m('h2', "Linies actives actualment"),
+			m('h2', "Linies actives"),
 			m.component(QueueWidget, c),
 		] || [],
 		c.currentTab()=='Graelles' && [
