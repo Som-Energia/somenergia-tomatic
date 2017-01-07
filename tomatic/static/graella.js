@@ -89,6 +89,18 @@ Tomatic.requestGrid = function(week) {
 		Tomatic.grid(data);
 	});
 };
+Tomatic.time = function(houri) {
+	return self.grid().hours[houri];
+};
+Tomatic.weekday = function(short) {
+	return {
+		dl: 'Dilluns',
+		dm: 'Dimarts',
+		dx: 'Dimecres',
+		dj: 'Dijous',
+		dv: 'Divendres',
+	}[short] || '??';
+};
 Tomatic.formatName = function(name) {
 	function titleCase(str)
 	{
@@ -103,6 +115,9 @@ Tomatic.formatName = function(name) {
 Tomatic.extension = function(name) {
 	return Tomatic.formatName(name) + ": "
 		+ ((Tomatic.grid().extensions||{})[name] || "???");
+};
+Tomatic.cell = function(day, houri, turni) {
+	return Tomatic.grid().timetable[day][houri][turni];
 };
 Tomatic.editCell = function(day,houri,turni,name) {
 	// Direct edition, just for debug purposes
@@ -174,7 +189,6 @@ var QueueWidget = {
 		var c = {
 			addtoqueue: function(ev) {
 				Dialog.show({
-					backdrop: true,
 					title: 'Obre una nova línia amb:',
 					body: [
 						m.component(PersonPicker, {
@@ -331,9 +345,11 @@ TomaticApp.controller = function(model, args) {
 				Dialog.hide('GridCellEditor');
 			};
 			Dialog.show({
-				backdrop: true,
-				title: "Edita posició de la graella:",
+				title: 'Edita posició de la graella:',
 				body: [
+					Tomatic.weekday(day) +' a les '+
+						Tomatic.grid().hours[houri] +
+						', línia '+ (turni+1),
 					m.component(PersonPicker, {
 						id:'GridCellEditor',
 						onpick: setPerson,
@@ -359,7 +375,7 @@ TomaticApp.view = function(c) {
 	var cell = function(day, houri, turni) {
 		var name = '-';
 		try {
-			name = Tomatic.grid().timetable[day][houri][turni];
+			name = Tomatic.cell(day,houri,turni);
 		} catch (err) {
 			return m('td','-');
 		}
@@ -416,6 +432,7 @@ TomaticApp.view = function(c) {
 			},
 			content: [
 		c.currentTab()=='Centraleta' && [
+			Todo("Ara mateix no té efecte a la centraleta però es simula el seu comportament."),
 			m('h2', "Linies actives actualment"),
 			m.component(QueueWidget, c),
 		] || [],
@@ -434,7 +451,7 @@ TomaticApp.view = function(c) {
 					return m('.graella', m('table', [
 						m('tr', [
 							m('td'),
-							m('th', {colspan:grid.turns.length}, day),
+							m('th', {colspan:grid.turns.length}, Tomatic.weekday(day)),
 						]),
 						m('td'),
 						grid.turns.map(function(turn) {
