@@ -86,6 +86,7 @@ Tomatic.restoreLine = function(line) {
 };
 
 Tomatic.grid = m.prop({});
+
 Tomatic.requestGrid = function(week) {
 	var self = this;
 	m.request({
@@ -118,7 +119,7 @@ Tomatic.formatName = function(name) {
 				+ txt.substr(1).toLowerCase();
 		});
 	}
-	if (!name) { return "...";}
+	if (!name) { return "-";}
 	return (Tomatic.grid().names||{})[name] || titleCase(name);
 };
 Tomatic.extension = function(name) {
@@ -126,7 +127,12 @@ Tomatic.extension = function(name) {
 		+ ((Tomatic.grid().extensions||{})[name] || "???");
 };
 Tomatic.cell = function(day, houri, turni) {
-	return Tomatic.grid().timetable[day][houri][turni];
+	try {
+		return Tomatic.grid().timetable[day][houri][turni];
+	} catch(err) {
+		console.log(err);
+		return undefined;
+	}
 };
 Tomatic.editCell = function(day,houri,turni,name) {
 	// Direct edition, just for debug purposes
@@ -380,13 +386,9 @@ TomaticApp.controller = function(model, args) {
 
 TomaticApp.view = function(c) {
 	var cell = function(day, houri, turni) {
-		var name = '-';
-		try {
-			name = Tomatic.cell(day,houri,turni);
-		} catch (err) {
-		}
+		var name = Tomatic.cell(day,houri,turni);
 		return m('td', {
-			class: name,
+			class: name||'ningu',
 			title: Tomatic.extension(name),
 			onclick: function(ev) {
 				c.editCell(day, houri, turni);
@@ -406,7 +408,12 @@ TomaticApp.view = function(c) {
 					'  background-color: '+color+';\n' +
 					'  border-color: '+luminance(color,-0.3)+';\n' +
 					'  border-width: 2pt;\n'+
-				'}\n';
+					'}\n'+
+					'.pe-dark-theme .'+name+' {\n' +
+					'  background-color: '+luminance(color,-0.3)+';\n' +
+					'  border-color: '+color+';\n' +
+					'  border-width: 2pt;\n'+
+					'}\n';
 			})
 		),
 		m.component(Dialog),

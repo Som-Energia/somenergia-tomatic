@@ -6,9 +6,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.7.0/js-yaml.min.js"></script>
 <style>
-body {
+body.pe-dark-theme {
 	background-color: #242;
 	color: #bbb;
+}
+body {
 	color: #833;
 	background-color: #eee;
 }
@@ -115,7 +117,9 @@ td:hover {
 	margin: 2pt;
 	cursor: pointer;
 }
-.queueitem.paused {
+.queueitem.paused,
+.pe-dark-theme .queueitem.paused
+ {
 	color: red;
 	text-decoration: line-through;
 	background-color: #fee;
@@ -130,7 +134,7 @@ td:hover {
 	color: #aae;
 	background-color: #ddf;
 }
-.darktheme .queueitem.add {
+.pe-dark-theme .queueitem.add {
 	color: inherit;
 	border-color: inherit;
 	background-color: #454;
@@ -191,7 +195,7 @@ dialog .extension:hover {
 
 </style>
 </head>
-<body>
+<body aclass='pe-dark-theme'>
 
 <script src="graella.js"></script>
 
