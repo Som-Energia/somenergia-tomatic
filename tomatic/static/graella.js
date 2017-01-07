@@ -13,6 +13,13 @@ var iconMenu = m.trust('<svg xmlns="http://www.w3.org/2000/svg" width="24" heigh
 //var iconMore = require('mmsvg/google/msvg/navigation/more-vert');
 var iconMore = m.trust('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>');
 
+const applicationPages = [
+	"Graelles",
+	"Centraleta",
+	"Disponibilitat",
+	"Trucada",
+	].map(function(n) {return {label:n};});
+
 
 function hex2triplet(hex) {
 	hex = String(hex).replace(/[^0-9a-f]/gi, '');
@@ -267,7 +274,7 @@ var PersonPicker = {
 				);
 			})
 		);
-	}
+	},
 };
 
 var WeekList = {
@@ -308,13 +315,6 @@ var WeekList = {
 		}));
 	}
 };
-const threeButtons = [
-	"Graelles",
-	"Centraleta",
-	"Disponibilitat",
-	"Trucada",
-	].map(function(n) {return {label:n};});
-
 const ButtonIcon = function(msvg) {
 	return m.component(IconButton, {
 		icon: {
@@ -423,7 +423,7 @@ TomaticApp.view = function(c) {
 					topBar: toolbarRow('Som Energia - Tomàtic'),
 					bottomBar: m('.tabArea.hasToolbar', [
 						m.component(Tabs, {
-							buttons: threeButtons,
+							buttons: applicationPages,
 							centered: true,
 							autofit: true,
 							getState: function(state) {
