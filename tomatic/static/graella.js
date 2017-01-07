@@ -58,6 +58,7 @@ var Tomatic = {
 
 Tomatic.queue = m.prop([]);
 Tomatic.init = function() {
+	this.requestWeeks();
 	this.requestQueue();
 };
 Tomatic.requestQueue = function(suffix) {
@@ -93,6 +94,7 @@ Tomatic.requestGrid = function(week) {
 		deserialize: jsyaml.load,
 	}).then(function(data) {
 		data.days = data.days || 'dl dm dx dj dv'.split(' ');
+		Tomatic.currentWeek(week);
 		Tomatic.grid(data);
 	});
 };
@@ -138,6 +140,23 @@ Tomatic.editCell = function(day,houri,turni,name) {
 	})
 	.then( function(data) {
 		Tomatic.requestGrid(Tomatic.grid().week);
+	});
+};
+
+
+Tomatic.weeks = m.prop([]);
+Tomatic.currentWeek = m.prop(undefined);
+Tomatic.requestWeeks = function() {
+	m.request({
+		method: 'GET',
+		url: 'graella/list',
+		deserialize: jsyaml.load,
+	}).then(function(newWeeklist){
+		let weeks = newWeeklist.weeks.sort().reverse();
+		Tomatic.weeks(weeks);
+		if (Tomatic.currentWeek()===undefined) {
+			Tomatic.requestGrid(weeks[0])
+		}
 	});
 };
 
@@ -278,35 +297,20 @@ var PersonPicker = {
 };
 
 var WeekList = {
-	weeks: m.prop([]),
-	current: m.prop(undefined),
 	controller: function(parentcontroller) {
 		var controller = {
 			model: this,
 			parent: parentcontroller,
-			init: function() {
-				self = this;
-				m.request({
-					method: 'GET',
-					url: 'graella/list',
-					deserialize: jsyaml.load,
-				}).then(function(newWeeklist){
-					WeekList.weeks(newWeeklist.weeks.sort().reverse());
-					self.setCurrent(newWeeklist.weeks.sort().reverse()[0]);
-				});
-			},
 			setCurrent: function(week)  {
-				WeekList.current(week);
 				Tomatic.requestGrid(week);
 			},
 		};
-		controller.init();
 		return controller;
 	},
 	view: function(c) {
 		return m('.weeks',
-			this.weeks().map(function(week){
-				var current = WeekList.current() === week ? '.current':'';
+			Tomatic.weeks().map(function(week){
+				var current = Tomatic.currentWeek() === week ? '.current':'';
 				return m('.week'+current, {
 					onclick: function() {
 						c.setCurrent(week);
@@ -380,7 +384,6 @@ TomaticApp.view = function(c) {
 		try {
 			name = Tomatic.cell(day,houri,turni);
 		} catch (err) {
-			return m('td','-');
 		}
 		return m('td', {
 			class: name,
@@ -449,7 +452,7 @@ TomaticApp.view = function(c) {
 					url: 'graella',
 				})
 			),
-			m('.graella', [
+			m('.graella', [ // TODO: Should not be the same class than inner, is messy
 				(grid.days||[]).map(function(day, dayi) {
 					return m('.graella', m('table', [
 						m('tr', [
