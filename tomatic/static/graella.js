@@ -16,7 +16,7 @@ var iconMore = m.trust('<svg xmlns="http://www.w3.org/2000/svg" width="24" heigh
 const applicationPages = [
 	"Graelles",
 	"Centraleta",
-	"Disponibilitat",
+	"Persones",
 	"Trucada",
 	].map(function(n) {return {label:n};});
 
@@ -445,7 +445,14 @@ TomaticApp.view = function(c) {
 			},
 			content: [
 		c.currentTab()=='Centraleta' && [
-			Todo("Ara mateix no té efecte a la centraleta però es simula el seu comportament."),
+			Todo([
+				"No té efecte fins que no fem servir la centraleta. ",
+				"Aqui podeu veure les línies que reben trucades, ",
+				"pausar-les o afegir-ne de més. ",
+				m('br'),
+				"Més endavant també es podrà veure informació del ",
+				"volum de trucades ateses i perdudes."
+				]),
 			m('h2', "Linies actives"),
 			m.component(QueueWidget, c),
 		] || [],
@@ -536,11 +543,13 @@ TomaticApp.view = function(c) {
 				]),
 			]),
 		] || [],
-		c.currentTab() == 'Disponibilitat' && [
-			Todo("Aquí es podrà veure i modificar les indisponibilitats de cadascú."),
+		c.currentTab() == 'Persones' && [
+			Todo("Aquí es podrà veure i modificar la configuracio personal de cadascú: "+
+				"Indisponibilitats, color, taula, extensió..."),
 		] || [],
 		c.currentTab() == 'Trucada' && [
-			Todo("Aquí es podrà veure informació de l'ERP sobre la trucada entrant"),
+			Todo(
+				"Aquí es podrà veure informació de l'ERP sobre la trucada entrant"),
 		] || [],
 		]}
 		),
