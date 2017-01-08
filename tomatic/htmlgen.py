@@ -20,7 +20,7 @@ class HtmlGen(object):
         name = self.yaml.names[name] if name in self.yaml.names else name
         return name.title()
 
-    def llegeixHores(self):
+    def intervals(self):
         lines = [str(h) for h in self.yaml.hours ]
         return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
 
@@ -37,7 +37,7 @@ class HtmlGen(object):
     def partialCurrentQueue(self,day,time):
         hours = (
             "<tr><th>"+""
-            ""+self.llegeixHores()[time-1]+""
+            ""+self.intervals()[time-1]+""
             "</th>\n"
         )
         partialCoreTable = self.partialCoreTable(day,time-1)
@@ -107,7 +107,7 @@ class HtmlGen(object):
                         self.partialCoreTable(day,time)
                         for day in self.yaml.timetable.keys()
                         )
-                    for time,period in enumerate(self.llegeixHores()
+                    for time,period in enumerate(self.intervals()
                     )
                 )+""
             """</tr>\n""")
