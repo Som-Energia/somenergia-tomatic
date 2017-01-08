@@ -182,9 +182,7 @@ var Uploader = {
 		return c;
 	},
 	view: function(c, args) {
-		return m('.uploader', {
-			style: 'display: inline-block',
-			},
+		return m('.uploader',
 			m('label', [
 				m('input[type="file"]', {
 					onchange: c.uploadFile.bind(c),
@@ -391,6 +389,9 @@ TomaticApp.view = function(c) {
 			}
 		}, [
 			Tomatic.formatName(name),
+			Tomatic.grid().extensions[name]?
+				m('.tooltip', Tomatic.grid().extensions[name]):
+				[],
 			m.component(Ripple),
 		]);
 	};
@@ -448,20 +449,20 @@ TomaticApp.view = function(c) {
 				"Més endavant també es podrà veure informació del ",
 				"volum de trucades ateses i perdudes."
 				]),
-			m('h2', "Linies actives"),
+			m('h2[style=text-align:center]', "Linies en cua"),
 			m.component(QueueWidget, c),
 		] || [],
 		c.currentTab()=='Graelles' && [
-			m('',
-				m('',{style: 'display: inline-block; width:100%'},
-					m.component(WeekList, c)
-				),
-				m.component(Uploader, {
-					label: 'Puja Nova Graella',
-					url: 'graella',
-				})
-			),
-			m('.graella', [ // TODO: Should not be the same class than inner, is messy
+			m('.layout.vertical', [
+				m.component(WeekList, c),
+				m('.layout.end-justified', [
+					m.component(Uploader, {
+						label: 'Puja Nova Graella',
+						url: 'graella',
+					}),
+				]),
+			]),
+			m('.layout.center-center.wrap', [
 				(grid.days||[]).map(function(day, dayi) {
 					return m('.graella', m('table', [
 						m('tr', [

@@ -44,10 +44,10 @@ body, html, #graella {
 	padding: 0;
 }
 .uploader {
+	display: inline-block;
 	position: relative;
 	overflow: hidden;
 	margin: 10px;
-	width: 100%;
 	text-align: right;
 }
 .uploader input[type=file] {
@@ -100,6 +100,20 @@ td {
 }
 td:hover {
 	opacity: .7;
+}
+td .tooltip {
+	visibility: hidden;
+	display: block;
+	position: absolute;
+	padding: 2px;
+	right: -2px; /* border */
+	top: -2px; /* border */
+	background: inherit;
+	border: inherit;
+}
+td:hover .tooltip {
+	visibility: visible;
+	opacity: 1;
 }
 .separator {
 	background: #ddd;
@@ -176,6 +190,7 @@ dialog .extension:hover {
 	vertical-align: top;
 	text-align: center;
 	display: inline-block;
+	margin: 4px;
 }
 .festiu {
 	color: red;
