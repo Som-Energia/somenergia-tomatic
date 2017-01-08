@@ -10,7 +10,6 @@ import random
 import datetime
 
 from htmlgen import HtmlGenFromYaml
-from htmlgen import HtmlGenFromSolution
 from htmlgen import HtmlGenFromAsterisk
 from htmlgen import schedule2asterisk
 from htmlgen import solution2schedule
@@ -61,26 +60,26 @@ class Schedule_Test(unittest.TestCase):
         self.assertEqual(
             result,
             self.ns("""\
-              week: '2016-07-11'
-              timetable:
-                dl:
-                -
-                   - festiu
-              hours:
-              - '09:00'
-              - '10:15'
-              turns:
-              - 'T1'
-              colors:
-                ana: '98bdc0'
-              extensions:
-                ana: 3181
-              names:
-                cesar: César
+                week: '2016-07-11'
+                timetable:
+                  dl:
+                  -
+                     - festiu
+                hours:
+                - '09:00'
+                - '10:15'
+                turns:
+                - 'T1'
+                colors:
+                  ana: '98bdc0'
+                extensions:
+                  ana: 3181
+                names:
+                  cesar: César
             """)
         )
     def test_yamlSolution_oneslot(self):
-        h=HtmlGenFromSolution(
+        result=solution2schedule(
             config=self.ns("""\
                 nTelefons: 1
                 diesVisualitzacio: ['dl']
@@ -99,9 +98,7 @@ class Schedule_Test(unittest.TestCase):
                 '2016-07-18','%Y-%m-%d').date(),
         )
 
-        self.assertEqual(
-            h.getYaml(),
-            self.ns("""
+        self.assertEqual( result, self.ns("""
                 timetable:
                   dl:
                   -
@@ -121,7 +118,7 @@ class Schedule_Test(unittest.TestCase):
             """))
 
     def test_yamlSolution_completeTimetable(self):
-        h=HtmlGenFromSolution(
+        result=solution2schedule(
             config=self.ns("""\
         nTelefons: 3
         diesCerca: ['dx','dm','dj', 'dl', 'dv',] # Els mes conflictius davant
@@ -247,9 +244,7 @@ class Schedule_Test(unittest.TestCase):
                 '2016-07-11','%Y-%m-%d').date(),
         )
 
-        self.assertEqual(
-            h.getYaml(),
-            ns({
+        self.assertEqual( result,ns({
                 'timetable': ns(
                     dl= [[
                         'jordi',
@@ -407,7 +402,7 @@ class Schedule_Test(unittest.TestCase):
             )
 
     def test_yamlSolution_completeHolidaysTimetable(self):
-        h=HtmlGenFromSolution(
+        result=solution2schedule(
             config=self.ns("""\
         nTelefons: 3
         diesCerca: ['dx','dm','dj', 'dl', 'dv',] # Els mes conflictius davant
@@ -522,9 +517,7 @@ class Schedule_Test(unittest.TestCase):
                 '2016-07-11','%Y-%m-%d').date(),
         )
 
-        self.assertEqual(
-            h.getYaml(),
-            ns({
+        self.assertEqual( result,ns({
                 'timetable': ns({
                     'dl': [[
                          'jordi',
