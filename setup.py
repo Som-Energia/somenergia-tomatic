@@ -25,6 +25,7 @@ setup(
         'consolemsg',
         'parse',
         'flask',
+        'flask-assets',
         'py-Asterisk',
         'paramiko',
     ],
