@@ -442,12 +442,9 @@ TomaticApp.view = function(c) {
 			content: [
 		c.currentTab()=='Centraleta' && [
 			Todo([
-				"No té efecte fins que no fem servir la centraleta. ",
+				m('b','Sense cap efecte fins la centraleta.'),
 				"Aqui podeu veure les línies que reben trucades, ",
 				"pausar-les o afegir-ne de més. ",
-				m('br'),
-				"Més endavant també es podrà veure informació del ",
-				"volum de trucades ateses i perdudes."
 				]),
 			m('h2[style=text-align:center]', "Linies en cua"),
 			m.component(QueueWidget, c),
