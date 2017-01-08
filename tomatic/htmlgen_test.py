@@ -118,10 +118,12 @@ class Schedule_Test(unittest.TestCase):
         config = self.config_singleSlot()
 
         result=solution2schedule(
-            config=config,
-            solution={('dl',0,0):'ana'},
             date=datetime.datetime.strptime(
                 '2016-07-18','%Y-%m-%d').date(),
+            config=config,
+            solution={
+                ('dl',0,0):'ana',
+            },
         )
 
         self.assertYamlEqual( result, """
