@@ -349,13 +349,14 @@ TomaticApp.controller = function(model, args) {
 			};
 			var oldPerson = Tomatic.cell(day,houri,turni);
 			Dialog.show({
-				title: 'Edita posició de la graella:',
+				title: 'Edita posició de la graella',
 				body: [
 					Tomatic.weekday(day) +' a les '+
 						Tomatic.grid().hours[houri] +
 						', línia '+ (turni+1) +
-						', la tenia ',
+						', la feia ',
 					m('span.extension.'+oldPerson, Tomatic.formatName(oldPerson)),
+					' qui ho ha de fer?',
 					m.component(PersonPicker, {
 						id:'GridCellEditor',
 						onpick: setPerson,
@@ -382,7 +383,6 @@ TomaticApp.view = function(c) {
 		var name = Tomatic.cell(day,houri,turni);
 		return m('td', {
 			class: name||'ningu',
-			title: Tomatic.extension(name),
 			onclick: function(ev) {
 				c.editCell(day, houri, turni);
 				ev.preventDefault();
@@ -426,12 +426,12 @@ TomaticApp.view = function(c) {
 			header: {
 				toolbar: {
 					class: 'pe-toolbar--tabs.flex',
-					topBar: toolbarRow('Som Energia - Tomàtic'),
+					topBar: toolbarRow('Tomàtic - Som Energia'),
 					bottomBar: m('.tabArea.hasToolbar', [
 						m.component(Tabs, {
 							buttons: applicationPages,
 							centered: true,
-							autofit: true,
+							activeSelected: true,
 							getState: function(state) {
 								c.currentTab(state.data.label);
 							}
@@ -488,16 +488,7 @@ TomaticApp.view = function(c) {
 			]),
 		] || [],
 		(c.currentTab()=='Graelles' || c.currentTab()=='Centraleta') && [
-			m('h3', 'Extensions'),
-			m('.extensions',
-				Object.keys(grid.extensions || {}).sort().map(function(name) {
-					return m('.extension', {class: name}, [
-						Tomatic.formatName(name),
-						m('br'),
-						grid.extensions[name],
-					]);
-				})
-			),
+			Extensions(grid.otherextensions),
 			m('.extensions',
 				Object.keys(grid.otherextensions || {}).sort().map(function(name) {
 					return m('.extension', {class: name}, [
@@ -507,7 +498,7 @@ TomaticApp.view = function(c) {
 					]);
 				})
 			),
-			m('.graella[style="width:100%"]', [
+			m('.layout.around-justified.wrap', [
 				m('.graella', [
 					m('h5', 'Codis desviaments'),
 					m('ul.codes', [
@@ -540,8 +531,9 @@ TomaticApp.view = function(c) {
 			]),
 		] || [],
 		c.currentTab() == 'Persones' && [
-			Todo("Aquí es podrà veure i modificar la configuracio personal de cadascú: "+
-				"Indisponibilitats, color, taula, extensió..."),
+			Todo("Permetre modificar la configuració personal de cadascú: "+
+				"Color, taula, extensió, indisponibilitats..."),
+			Extensions(grid.extensions),
 		] || [],
 		c.currentTab() == 'Trucada' && [
 			Todo(
@@ -551,6 +543,22 @@ TomaticApp.view = function(c) {
 		),
 	];
 };
+
+var Extensions = function(extensions) {
+	return [
+		m('.extensions',
+			Object.keys(extensions || {}).sort().map(function(name) {
+				return m('.extension', {class: name}, [
+					Tomatic.formatName(name),
+					m('br'),
+					extensions[name],
+				]);
+			})
+		),
+	];
+}
+
+
 
 window.onload = function() {
 	Tomatic.init();
