@@ -287,8 +287,8 @@ class Schedule_Test(unittest.TestCase):
               dl:
               - - ana
                 - festiu
-              - - festiu
-                - belen
+              - - belen
+                - festiu
               dm:
               - - festiu
                 - carla
