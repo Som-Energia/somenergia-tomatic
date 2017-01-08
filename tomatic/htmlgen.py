@@ -31,7 +31,7 @@ class HtmlGen(object):
                 name=name,
                 properName=self.properName(name)
             )
-            for name in self.yaml.timetable[day][time+1]
+            for name in self.yaml.timetable[day][time]
             ])
 
     def partialCurrentQueue(self,day,time):
@@ -40,7 +40,7 @@ class HtmlGen(object):
             ""+self.intervals()[time-1]+""
             "</th>\n"
         )
-        partialCoreTable = self.partialCoreTable(day,time-1)
+        partialCoreTable = self.partialCoreTable(day,time)
         header=(
             """<table>\n"""
             """<tr>"""
@@ -73,28 +73,28 @@ class HtmlGen(object):
                 u"""{properName}</td>""".format(
                     name=name,
                     properName=self.properName(name))
-                    for name in self.yaml.dynamic])+"\n"    
+                    for name in self.yaml.dynamic])+"\n"
 
     def htmlTable(self):
         headerDays=(
-            """<tr>"""+
-            "".join([
-                """<td></td><th colspan={colspan}>{day}</th>"""
-                    .format(
-                        colspan=len(self.yaml.turns),
-                        day=day
-                        )
+            "<tr>"+
+            "".join(
+                "<td></td><th colspan={colspan}>{day}</th>"
+                .format(
+                    colspan=len(self.yaml.turns),
+                    day=day,
+                    )
                 for day in self.yaml.timetable.keys()
-                ])+
-            """</tr>\n"""
+                )+
+            "</tr>\n"
             )
         ndays = len(self.yaml.timetable)
         headerTlfnos="".join([
-            """<tr>""",(
-            """<td></td>"""
+            "<tr>",(
+            "<td></td>"
             +(
                 "".join([
-                    "<th>{}</th>".format(t) 
+                    "<th>{}</th>".format(t)
                     for t in self.yaml.turns
                 ])
             ))*ndays +
@@ -102,21 +102,21 @@ class HtmlGen(object):
             ])
         coreTable=(
             "</tr>\n".join(
-                """<tr><th>{period}</th>\n""".format(period=period)+
-                    "<td>&nbsp;</td>\n".join(
-                        self.partialCoreTable(day,time)
-                        for day in self.yaml.timetable.keys()
-                        )
-                    for time,period in enumerate(self.intervals()
+                "<tr><th>{period}</th>\n".format(period=period)+
+                "<td>&nbsp;</td>\n".join(
+                    self.partialCoreTable(day,time)
+                    for day in self.yaml.timetable.keys()
                     )
-                )+""
-            """</tr>\n""")
+                for time,period in enumerate(self.intervals()
+                )
+            )+
+            "</tr>\n")
         return ''.join([
-            """<table>\n""",
+            "<table>\n",
             headerDays,
             headerTlfnos,
             coreTable,
-            """</table>""",
+            "</table>",
             ])
 
     def htmlExtensions(self):
@@ -220,7 +220,8 @@ class HtmlGen(object):
         return (self.htmlHeader()+
             self.htmlColors()+
             self.htmlSubHeader()+
-            self.htmlSetmana()+self.htmlTable()+
+            self.htmlSetmana()+
+            self.htmlTable()+
             self.htmlExtensions()+
             self.htmlFixExtensions()+
             self.htmlFooter()

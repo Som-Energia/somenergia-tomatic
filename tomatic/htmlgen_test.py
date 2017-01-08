@@ -617,13 +617,13 @@ class Schedule_Test(unittest.TestCase):
                    victor: 'Víctor'
         """)
 
+
     def test_htmlTable_oneslot(self):
         h=HtmlGenFromYaml(self.ns("""\
             week: '2016-07-25'
             timetable:
               dl:
-                1:
-                - ana
+              - - ana
             hours:
             - '09:00'
             - '10:15'
@@ -644,22 +644,21 @@ class Schedule_Test(unittest.TestCase):
 
         self.assertMultiLineEqual(
             h.htmlTable(),
-            u"""<table>\n"""
-            u"""<tr><td></td><th colspan=1>dl</th></tr>\n"""
-            u"""<tr><td></td><th>T1</th>"""
-            u"""</tr>\n"""
-            u"""<tr><th>09:00-10:15</th>\n"""
-            u"""<td class='ana'>Ana</td>\n"""
-            u"""</tr>\n"""
-            u"""</table>""")
+            u"<table>\n"
+            u"<tr><td></td><th colspan=1>dl</th></tr>\n"
+            u"<tr><td></td><th>T1</th>"
+            u"</tr>\n"""
+            u"<tr><th>09:00-10:15</th>\n"
+            u"<td class='ana'>Ana</td>\n"
+            u"</tr>\n"
+            u"</table>")
 
     def test_htmlTable_twoTelephonesOneTurnOneDay(self):
         h=HtmlGenFromYaml(self.ns("""\
             week: '2016-07-25'
             timetable:
               dl:
-                1:
-                - ana
+              - - ana
                 - jordi
             hours:
             - '09:00'
@@ -698,11 +697,9 @@ class Schedule_Test(unittest.TestCase):
             week: '2016-07-25'
             timetable:
               dl:
-                1:
-                - ana
+              - - ana
                 - jordi
-                2:
-                - jordi
+              - - jordi
                 - aleix
             hours:
             - '09:00'
@@ -746,17 +743,17 @@ class Schedule_Test(unittest.TestCase):
             week: '2016-07-25'
             timetable:
               dl:
-                1:
+              -
                 - ana
                 - jordi
-                2:
+              -
                 - jordi
                 - aleix
               dm:
-                1:
+              -
                 - victor
                 - marta
-                2:
+              -
                 - ana
                 - victor
             hours:
@@ -808,87 +805,87 @@ class Schedule_Test(unittest.TestCase):
             week: '2016-07-25'
             timetable:
               dl:
-                1:
+              -
                 - ana
                 - jordi
                 - pere
-                2:
+              -
                 - jordi
                 - aleix
                 - pere
-                3:
+              -
                 - carles
                 - joan
                 - eduard
-                4:
+              -
                 - yaiza
                 - joan
                 - eduard
               dm:
-                1:
+              -
                 - victor
                 - marta
                 - ana
-                2:
+              -
                 - ana
                 - victor
                 - marta
-                3:
+              -
                 - silvia
                 - eduard
                 - monica
-                4:
+              -
                 - david
                 - silvia
                 - marc
               dx:
-                1:
+              -
                 - aleix
                 - pere
                 - yaiza
-                2:
+              -
                 - pere
                 - aleix
                 - carles
-                3:
+              -
                 - marc
                 - judit
                 - victor
-                4:
+              -
                 - david
                 - silvia
                 - victor
               dj:
-                1:
+              -
                 - judit
                 - jordi
                 - carles
-                2:
+              -
                 - joan
                 - silvia
                 - jordi
-                3:
+              -
                 - monica
                 - marc
                 - tania
-                4:
+              -
                 - tania
                 - monica
                 - marc
               dv:
-                1:
+              -
                 - marta
                 - victor
                 - judit
-                2:
+              -
                 - victor
                 - joan
                 - judit
-                3:
+              -
                 - eduard
                 - yaiza
                 - jordi
-                4:
+              -
                 - jordi
                 - carles
                 - aleix
@@ -1114,87 +1111,87 @@ class Schedule_Test(unittest.TestCase):
        h = HtmlGenFromYaml(self.ns("""\
         timetable:
           dl:
-            1:
+          -
             - ana
             - jordi
             - pere
-            2:
+          -
             - jordi
             - aleix
             - pere
-            3:
+          -
             - carles
             - joan
             - eduard
-            4:
+          -
             - yaiza
             - joan
             - eduard
           dm:
-            1:
+          -
             - victor
             - marta
             - ana
-            2:
+          -
             - ana
             - victor
             - marta
-            3:
+          -
             - silvia
             - eduard
             - monica
-            4:
+          -
             - david
             - silvia
             - marc
           dx:
-            1:
+          -
             - aleix
             - pere
             - yaiza
-            2:
+          -
             - pere
             - aleix
             - carles
-            3:
+          -
             - marc
             - judit
             - victor
-            4:
+          -
             - david
             - silvia
             - victor
           dj:
-            1:
+          -
             - judit
             - jordi
             - carles
-            2:
+          -
             - joan
             - silvia
             - jordi
-            3:
+          -
             - monica
             - marc
             - tania
-            4:
+          -
             - tania
             - monica
             - marc
           dv:
-            1:
+          -
             - marta
             - victor
             - judit
-            2:
+          -
             - victor
             - joan
             - judit
-            3:
+          -
             - eduard
             - yaiza
             - jordi
-            4:
+          -
             - jordi
             - carles
             - aleix
@@ -1264,87 +1261,87 @@ class Schedule_Test(unittest.TestCase):
        h = HtmlGenFromYaml(self.ns("""\
         timetable:
           dl:
-            1:
+          -
             - festiu
             - festiu
             - festiu
-            2:
+          -
             - festiu
             - festiu
             - festiu
-            3:
+          -
             - festiu
             - festiu
             - festiu
-            4:
+          -
             - festiu
             - festiu
             - festiu
           dm:
-            1:
+          -
             - victor
             - marta
             - ana
-            2:
+          -
             - ana
             - victor
             - marta
-            3:
+          -
             - silvia
             - eduard
             - monica
-            4:
+          -
             - david
             - silvia
             - marc
           dx:
-            1:
+          -
             - aleix
             - pere
             - yaiza
-            2:
+          -
             - pere
             - aleix
             - carles
-            3:
+          -
             - marc
             - judit
             - victor
-            4:
+          -
             - david
             - silvia
             - victor
           dj:
-            1:
+          -
             - judit
             - jordi
             - carles
-            2:
+          -
             - joan
             - silvia
             - jordi
-            3:
+          -
             - monica
             - marc
             - tania
-            4:
+          -
             - tania
             - monica
             - marc
           dv:
-            1:
+          -
             - marta
             - victor
             - judit
-            2:
+          -
             - victor
             - joan
             - judit
-            3:
+          -
             - eduard
             - yaiza
             - jordi
-            4:
+          -
             - jordi
             - carles
             - aleix
