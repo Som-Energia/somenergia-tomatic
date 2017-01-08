@@ -408,17 +408,18 @@ class HtmlGenFromYaml(HtmlGen):
 class HtmlGenFromSolution(HtmlGen):
 
     def __init__(self, config, solution, date=None):
-        y = ns(zip(
-            config.diesVisualitzacio,
-            [ns() for i in range(len(config.diesVisualitzacio))]))
         nhours = len(config.hours)-1
-        for d in y:
-            for h in range(nhours):
-                y[d][h+1]=[None]*config.nTelefons 
+        y = ns(
+            (day, [
+                [None for i in xrange(config.nTelefons)]
+                for j in xrange(nhours)
+            ])
+            for day in config.diesVisualitzacio
+        )
         for day in config.diesVisualitzacio:
             for turn in range(nhours):
                 for tel in range(config.nTelefons):
-                    y[day][turn+1][tel]=solution.get(
+                    y[day][turn][tel]=solution.get(
                         (day,turn,tel),
                         'festiu'
                     ).lower()
