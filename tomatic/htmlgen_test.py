@@ -13,6 +13,7 @@ from htmlgen import HtmlGenFromYaml
 from htmlgen import HtmlGenFromSolution
 from htmlgen import HtmlGenFromAsterisk
 from htmlgen import schedule2asterisk
+from htmlgen import solution2schedule
 
 class Schedule_Test(unittest.TestCase):
 
@@ -39,7 +40,7 @@ class Schedule_Test(unittest.TestCase):
         self.addTypeEqualityFunc(ns,self.eqOrdDict)
 
     def test_yamlSolution_oneholiday(self):
-        h=HtmlGenFromSolution(
+        result=solution2schedule(
             config=self.ns("""\
                 nTelefons: 1
                 diesVisualitzacio: ['dl']
@@ -58,7 +59,7 @@ class Schedule_Test(unittest.TestCase):
                 '2016-07-11','%Y-%m-%d').date(),
         )
         self.assertEqual(
-            h.getYaml(),
+            result,
             self.ns("""\
               week: '2016-07-11'
               timetable:

@@ -404,6 +404,9 @@ class HtmlGenFromYaml(HtmlGen):
         return response
 
 
+def solution2schedule(config, solution, date=None):
+    htmlgen = HtmlGenFromSolution(config,solution,date)
+    return htmlgen.yaml
 
 class HtmlGenFromSolution(HtmlGen):
 
