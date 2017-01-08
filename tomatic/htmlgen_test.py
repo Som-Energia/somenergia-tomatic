@@ -45,21 +45,43 @@ class Schedule_Test(unittest.TestCase):
         self.b2bdatapath = "testdata"
         self.addTypeEqualityFunc(ns,self.eqOrdDict)
 
+    config_singleSlot = """\
+        nTelefons: 1
+        diesVisualitzacio: ['dl']
+        hours:  # La darrera es per tancar
+        - '09:00'
+        - '10:15'
+        colors:
+            ana: aa11aa
+            belen: bb22bb
+        extensions:
+            ana: 1001
+            belen: 1002
+        names: {}
+    """
+    config_twoLines = """\
+        nTelefons: 2
+        diesVisualitzacio: ['dl']
+        hours:  # La darrera es per tancar
+        - '09:00'
+        - '10:15'
+        colors:
+            ana: aa11aa
+            belen: bb22bb
+        extensions:
+            ana: 1001
+            belen: 1002
+        names: {}
+    """
+
     def test_solution2schedule_oneholiday(self):
+        config = self.ns(self.config_singleSlot)
+
         result=solution2schedule(
-            config=self.ns("""\
-                nTelefons: 1
-                diesVisualitzacio: ['dl']
-                hours:  # La darrera es per tancar
-                - '09:00'
-                - '10:15'
-                colors: {}
-                extensions: {}
-                names: {}
-            """),
-            solution={},
             date=datetime.datetime.strptime(
                 '2016-07-11','%Y-%m-%d').date(),
+            config=config,
+            solution={},
         )
         self.assertYamlEqual(result, """\
             week: '2016-07-11'
@@ -74,25 +96,20 @@ class Schedule_Test(unittest.TestCase):
               dl:
               -
                  - festiu
-            colors: {}
-            extensions: {}
+            colors:
+              ana:   aa11aa
+              belen: bb22bb
+            extensions:
+              ana:   1001
+              belen: 1002
             names: {}
             """)
 
     def test_solution2schedule_oneslot(self):
+        config = self.ns(self.config_singleSlot)
+
         result=solution2schedule(
-            config=self.ns("""\
-                nTelefons: 1
-                diesVisualitzacio: ['dl']
-                hours:  # La darrera es per tancar
-                - '09:00'
-                - '10:15'
-                colors:
-                    ana: aa11aa
-                extensions:
-                    ana: 1001
-                names: {}
-            """),
+            config=self.ns(self.config_singleSlot),
             solution={('dl',0,0):'ana'},
             date=datetime.datetime.strptime(
                 '2016-07-18','%Y-%m-%d').date(),
@@ -112,33 +129,26 @@ class Schedule_Test(unittest.TestCase):
               -
                 - ana
             colors:
-              ana: 'aa11aa'
+              ana:   aa11aa
+              belen: bb22bb
             extensions:
-              ana: 1001
+              ana:   1001
+              belen: 1002
             names: {}
         """)
 
     def test_solution2schedule_manyLines(self):
+        config = self.ns(self.config_singleSlot)
+        config.nTelefons = 2
+
         result=solution2schedule(
-            config=self.ns("""\
-                nTelefons: 2
-                diesVisualitzacio: ['dl']
-                hours:  # La darrera es per tancar
-                - '09:00'
-                - '10:15'
-                colors:
-                    ana: aa11aa
-                    belen: bb22bb
-                extensions:
-                    ana: 1001
-                names: {}
-            """),
+            date=datetime.datetime.strptime(
+                '2016-07-18','%Y-%m-%d').date(),
+            config=config,
             solution={
                 ('dl',0,0):'ana',
                 ('dl',0,1):'belen',
             },
-            date=datetime.datetime.strptime(
-                '2016-07-18','%Y-%m-%d').date(),
         )
 
         self.assertYamlEqual( result, """
@@ -160,32 +170,23 @@ class Schedule_Test(unittest.TestCase):
               ana: 'aa11aa'
               belen: 'bb22bb'
             extensions:
-              ana: 1001
+              ana:   1001
+              belen: 1002
             names: {}
         """)
 
     def test_solution2schedule_manyTimes(self):
+        config = self.ns(self.config_singleSlot)
+        config.hours.append('11:30')
+
         result=solution2schedule(
-            config=self.ns("""\
-                nTelefons: 1
-                diesVisualitzacio: ['dl']
-                hours:  # La darrera es per tancar
-                - '09:00'
-                - '10:15'
-                - '11:30'
-                colors:
-                    ana: aa11aa
-                    belen: bb22bb
-                extensions:
-                    ana: 1001
-                names: {}
-            """),
+            date=datetime.datetime.strptime(
+                '2016-07-18','%Y-%m-%d').date(),
+            config=config,
             solution={
                 ('dl',0,0):'ana',
                 ('dl',1,0):'belen',
             },
-            date=datetime.datetime.strptime(
-                '2016-07-18','%Y-%m-%d').date(),
         )
 
         self.assertYamlEqual( result, """
@@ -206,34 +207,26 @@ class Schedule_Test(unittest.TestCase):
               ana: 'aa11aa'
               belen: 'bb22bb'
             extensions:
-              ana: 1001
+              ana:   1001
+              belen: 1002
             names: {}
         """)
 
     def test_solution2schedule_manyDays(self):
+        config = self.ns(self.config_singleSlot)
+        config.diesVisualitzacio.append('dm')
+
         result=solution2schedule(
-            config=self.ns("""\
-                nTelefons: 1
-                diesVisualitzacio: ['dl','dm']
-                hours:  # La darrera es per tancar
-                - '09:00'
-                - '10:15'
-                colors:
-                    ana: aa11aa
-                    belen: bb22bb
-                extensions:
-                    ana: 1001
-                names: {}
-            """),
+            date=datetime.datetime.strptime(
+                '2016-07-18','%Y-%m-%d').date(),
+            config=config,
             solution={
                 ('dl',0,0):'ana',
                 ('dm',0,0):'belen',
             },
-            date=datetime.datetime.strptime(
-                '2016-07-18','%Y-%m-%d').date(),
         )
 
-        self.assertYamlEqual( result, """
+        self.assertYamlEqual(result, """
             week: '2016-07-18'
             days:
             - dl
@@ -252,13 +245,12 @@ class Schedule_Test(unittest.TestCase):
               ana: 'aa11aa'
               belen: 'bb22bb'
             extensions:
-              ana: 1001
+              ana:   1001
+              belen: 1002
             names: {}
         """)
 
-    def test_solution2schedule_completeTimetable(self):
-        result=solution2schedule(
-            config=self.ns("""\
+    completeConfig="""\
         nTelefons: 3
         diesCerca: ['dx','dm','dj', 'dl', 'dv',] # Els mes conflictius davant
         diesVisualitzacio: ['dl','dm','dx','dj','dv']
@@ -281,7 +273,6 @@ class Schedule_Test(unittest.TestCase):
             monica: '7fada0'
             yaiza:  '90cdb9'
             erola:  '8789c8'
-            cesar:  'df7292'
             manel:  '88dfe3'
             tania:  'c8abf4'
             judit:  'e781e8'
@@ -290,6 +281,7 @@ class Schedule_Test(unittest.TestCase):
             ana:    'aa11aa'
             victor: 'ff3333'
             jordi:  'ff9999'
+            cesar:  '889988'
         extensions:
             marta:  3040
             monica: 3041
@@ -316,7 +308,11 @@ class Schedule_Test(unittest.TestCase):
            tania: Tània
            cesar: César
            victor: Víctor
-            """),
+       """
+
+    def test_solution2schedule_completeTimetable(self):
+        result=solution2schedule(
+            config=self.ns(self.completeConfig),
             solution={
                 ('dl',0,0):'jordi',
                 ('dl',0,1):'marta',
@@ -478,7 +474,6 @@ class Schedule_Test(unittest.TestCase):
                   monica: '7fada0'
                   yaiza:  '90cdb9'
                   erola:  '8789c8'
-                  cesar:  'df7292'
                   manel:  '88dfe3'
                   tania:  'c8abf4'
                   judit:  'e781e8'
@@ -487,6 +482,7 @@ class Schedule_Test(unittest.TestCase):
                   ana:    'aa11aa'
                   victor: 'ff3333'
                   jordi:  'ff9999'
+                  cesar:  '889988'
                 extensions:
                   marta:  3040
                   monica: 3041
@@ -517,65 +513,9 @@ class Schedule_Test(unittest.TestCase):
 
     def test_solution2schedule_completeHolidaysTimetable(self):
         result=solution2schedule(
-            config=self.ns("""\
-        nTelefons: 3
-        diesCerca: ['dx','dm','dj', 'dl', 'dv',] # Els mes conflictius davant
-        diesVisualitzacio: ['dl','dm','dx','dj','dv']
-
-        hours:  # La darrera es per tancar
-        - '09:00'
-        - '10:15'
-        - '11:30'
-        - '12:45'
-        - '14:00'
-        randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
-        colors:
-           marc:   'fbe8bc'
-           eduard: 'd8b9c5'
-           pere:   '8f928e'
-           david:  'ffd3ac'
-           aleix:  'eed0eb'
-           carles: 'c98e98'
-           marta:  'eb9481'
-           monica: '7fada0'
-           yaiza:  '90cdb9'
-           erola:  '8789c8'
-           manel:  '88dfe3'
-           tania:  'c8abf4'
-           judit:  'e781e8'
-           silvia: '8097fa'
-           joan:   'fae080'
-           ana:    'aa11aa'
-           victor: 'ff3333'
-           jordi:  'ff9999'
-           cesar:  '889988'
-        extensions:
-           marta:  3040
-           monica: 3041
-           manel:  3042
-           erola:  3043
-           yaiza:  3044
-           eduard: 3045
-           marc:   3046
-           judit:  3047
-           judith: 3057
-           tania:  3048
-           carles: 3051
-           pere:   3052
-           aleix:  3053
-           david:  3054
-           silvia: 3055
-           joan:   3056
-           ana:    1001
-           victor: 3182
-           jordi:  3183
-        names: # Els que no només cal posar en majúscules
-           silvia: Sílvia
-           monica: Mònica
-           tania: Tània
-           cesar: César
-           victor: Víctor
-        """),
+            date=datetime.datetime.strptime(
+                '2016-07-11','%Y-%m-%d').date(),
+            config=self.ns(self.completeConfig),
             solution={
                 ('dl',0,0):'jordi',
                 ('dl',0,1):'marta',
@@ -625,9 +565,7 @@ class Schedule_Test(unittest.TestCase):
                 ('dj',3,0):'judit',
                 ('dj',3,1):'erola',
                 ('dj',3,2):'joan',
-                },
-            date=datetime.datetime.strptime(
-                '2016-07-11','%Y-%m-%d').date(),
+            },
         )
 
         self.assertYamlEqual(result, """\
