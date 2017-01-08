@@ -24,23 +24,23 @@ class HtmlGen(object):
         lines = [str(h) for h in self.yaml.hours ]
         return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
 
-    def partialCoreTable(self,day,turn):
+    def partialCoreTable(self,day,time):
         return "".join([
             u"""<td class='{name}'>{properName}</td>\n"""
             .format(
                 name=name,
                 properName=self.properName(name)
             )
-            for name in self.yaml.timetable[day][turn+1]
+            for name in self.yaml.timetable[day][time+1]
             ])
 
-    def partialCurrentQueue(self,day,turn):
+    def partialCurrentQueue(self,day,time):
         hours = (
             "<tr><th>"+""
-            ""+self.llegeixHores()[turn-1]+""
+            ""+self.llegeixHores()[time-1]+""
             "</th>\n"
         )
-        partialCoreTable = self.partialCoreTable(day,turn-1)
+        partialCoreTable = self.partialCoreTable(day,time-1)
         header=(
             """<table>\n"""
             """<tr>"""
@@ -104,10 +104,10 @@ class HtmlGen(object):
             "</tr>\n".join(
                 """<tr><th>{period}</th>\n""".format(period=period)+
                     "<td>&nbsp;</td>\n".join(
-                        self.partialCoreTable(day,turn)
+                        self.partialCoreTable(day,time)
                         for day in self.yaml.timetable.keys()
                         )
-                    for turn,period in enumerate(self.llegeixHores()
+                    for time,period in enumerate(self.llegeixHores()
                     )
                 )+""
             """</tr>\n""")
@@ -293,10 +293,10 @@ class HtmlGen(object):
             in self.yaml.hours]
         if now < parsedTimeIntervals[0]:
             raise Exception
-        for turn,hour in enumerate(parsedTimeIntervals[1:]):
+        for time,hour in enumerate(parsedTimeIntervals[1:]):
             if now < hour:
                 break
-        return day,turn+1
+        return day,time+1
 
     def getYaml(self):
         return self.yaml
@@ -307,15 +307,15 @@ class HtmlGenFromYaml(HtmlGen):
         self.yaml = yaml
 
     def comparePaused(self, other):
-        def getPaused(yaml,day,turn):
+        def getPaused(yaml,day,time):
             if ("paused" 
                 in yaml and
                 day
                 in yaml.paused and
-                turn
+                time
                 in yaml.paused[day]):
                 return set(
-                    yaml.paused[day][turn])
+                    yaml.paused[day][time])
             else:
                 return set()
         def getDynamicPaused(yaml):
@@ -330,17 +330,17 @@ class HtmlGenFromYaml(HtmlGen):
         added = set()
         removed = set()
         for day in self.yaml.timetable:
-            for turn in self.yaml.timetable[day]:
+            for time in self.yaml.timetable[day]:
                 selfPaused = getPaused(
-                    self.yaml,day,turn)
+                    self.yaml,day,time)
                 otherPaused = getPaused(
-                    other.yaml,day,turn)
+                    other.yaml,day,time)
                 removedInTurn = selfPaused - otherPaused
                 addedInTurn = otherPaused - selfPaused
                 for name in addedInTurn:
-                    added.add((day,turn,name))
+                    added.add((day,time,name))
                 for name in removedInTurn:
-                    removed.add((day,turn,name))
+                    removed.add((day,time,name))
         selfDynamicPaused = getDynamicPaused(
             self.yaml)
         otherDynamicPaused = getDynamicPaused(
@@ -359,24 +359,24 @@ class HtmlGenFromYaml(HtmlGen):
             response.dynamic[ext]="removed"
 
         for day in self.yaml.timetable:
-            for turn in self.yaml.timetable[day]:
+            for time in self.yaml.timetable[day]:
                 for name in self.yaml.colors.keys():
-                    if (day,turn,name) in added:
+                    if (day,time,name) in added:
                        if day not in response:
                            response[day]=ns()
-                       if turn not in response[
+                       if time not in response[
                            day]:
-                           response[day][turn]=ns()
+                           response[day][time]=ns()
                        ext = self.nameToExtension(name)
-                       response[day][turn][ext]="added"
-                    if (day,turn,name) in removed:
+                       response[day][time][ext]="added"
+                    if (day,time,name) in removed:
                        if day not in response:
                            response[day]=ns()
-                       if turn not in response[
+                       if time not in response[
                            day]:
-                           response[day][turn]=ns()
+                           response[day][time]=ns()
                        ext = self.nameToExtension(name)
-                       response[day][turn][ext]="removed"
+                       response[day][time][ext]="removed"
 
         return response
 
@@ -414,10 +414,10 @@ def solution2schedule(config, solution, date=None):
         for day in config.diesVisualitzacio
     )
     for day in config.diesVisualitzacio:
-        for turn in range(nhours):
+        for time in range(nhours):
             for tel in range(config.nTelefons):
-                y[day][turn][tel]=solution.get(
-                    (day,turn,tel),
+                y[day][time][tel]=solution.get(
+                    (day,time,tel),
                     'festiu'
                 ).lower()
     y=ns({'timetable': y})
@@ -491,21 +491,21 @@ class HtmlGenFromAsterisk(HtmlGenFromSolution):
         for day in { k[0] for k in solution_asterisk}:
             tt_asterisk[day] = ns()
             paused[day] = ns()
-            for turn in {k[1] for k in solution_asterisk if k[0]==day}:
-                tt_asterisk[day][turn] = []
-                paused[day][turn] = []
-                for tel in {k[2] for k in solution_asterisk if k[0]==day and k[1]==turn}:
-                    tt_asterisk[day][turn].append(
+            for time in {k[1] for k in solution_asterisk if k[0]==day}:
+                tt_asterisk[day][time] = []
+                paused[day][time] = []
+                for tel in {k[2] for k in solution_asterisk if k[0]==day and k[1]==time}:
+                    tt_asterisk[day][time].append(
                         solution_asterisk.get(
                             (day,
-                            turn,
+                            time,
                             tel),'Error')
                     )
-                    if (day,turn,tel) in solution_paused:
-                        paused[day][turn].append(
+                    if (day,time,tel) in solution_paused:
+                        paused[day][time].append(
                             solution_paused[
                                 (day,
-                                turn,
+                                time,
                                 tel)])
         dynamic = [
             extensions_inv[
