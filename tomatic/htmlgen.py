@@ -405,37 +405,36 @@ class HtmlGenFromYaml(HtmlGen):
 
 
 def solution2schedule(config, solution, date=None):
-    htmlgen = HtmlGenFromSolution(config,solution,date)
-    return htmlgen.yaml
+    nhours = len(config.hours)-1
+    y = ns(
+        (day, [
+            [None for i in xrange(config.nTelefons)]
+            for j in xrange(nhours)
+        ])
+        for day in config.diesVisualitzacio
+    )
+    for day in config.diesVisualitzacio:
+        for turn in range(nhours):
+            for tel in range(config.nTelefons):
+                y[day][turn][tel]=solution.get(
+                    (day,turn,tel),
+                    'festiu'
+                ).lower()
+    y=ns({'timetable': y})
+    y['hours']=config.hours
+    y['turns']= ["T"+str(i+1) for i in range(config.nTelefons)]
+    y['colors']=config.colors
+    y['extensions']=config.extensions
+    y['week']=str(HtmlGen.iniciSetmana(date))
+    y['names']=config.names
+    # TODO: include days
+    #y.days="dl dm dx dj dv".split()
+    return y
 
 class HtmlGenFromSolution(HtmlGen):
 
     def __init__(self, config, solution, date=None):
-        nhours = len(config.hours)-1
-        y = ns(
-            (day, [
-                [None for i in xrange(config.nTelefons)]
-                for j in xrange(nhours)
-            ])
-            for day in config.diesVisualitzacio
-        )
-        for day in config.diesVisualitzacio:
-            for turn in range(nhours):
-                for tel in range(config.nTelefons):
-                    y[day][turn][tel]=solution.get(
-                        (day,turn,tel),
-                        'festiu'
-                    ).lower()
-        y=ns({'timetable': y})
-        y['hours']=config.hours
-        y['turns']= ["T"+str(i+1) for i in range(config.nTelefons)]
-        y['colors']=config.colors
-        y['extensions']=config.extensions
-        y['week']=str(self.iniciSetmana(date))
-        y['names']=config.names
-        # TODO: include days
-        #y.days="dl dm dx dj dv".split()
-        self.yaml=y
+        self.yaml = solution2schedule(config,solution,date)
 
 
 

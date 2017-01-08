@@ -126,7 +126,6 @@ Tomatic.cell = function(day, houri, turni) {
 	try {
 		return Tomatic.grid().timetable[day][houri][turni];
 	} catch(err) {
-		console.log(err);
 		return undefined;
 	}
 };
