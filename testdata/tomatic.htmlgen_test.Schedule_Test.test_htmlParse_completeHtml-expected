@@ -25,7 +25,7 @@ td { padding: 1ex;}
 }
 .paused { background-color: #ffffff; }
 .aleix    { background-color: #eed0eb; }
-.ana      { background-color: #98bdc0; }
+.ana      { background-color: #aa11aa; }
 .carles   { background-color: #c98e98; }
 .cesar    { background-color: #889988; }
 .david    { background-color: #ffd3ac; }
@@ -137,7 +137,7 @@ td { padding: 1ex;}
 </table><h3>Extensions</h3>
 <div class="extensions">
 <div class="extension aleix">Aleix<br/>3053</div>
-<div class="extension ana">Ana<br/>3181</div>
+<div class="extension ana">Ana<br/>1001</div>
 <div class="extension carles">Carles<br/>3051</div>
 <div class="extension david">David<br/>3054</div>
 <div class="extension eduard">Eduard<br/>3045</div>

@@ -53,12 +53,9 @@ class Schedule_Test(unittest.TestCase):
                 hours:  # La darrera es per tancar
                 - '09:00'
                 - '10:15'
-                colors:
-                    ana: 98bdc0
-                extensions:
-                    ana: 3181
-                names:
-                    cesar: César
+                colors: {}
+                extensions: {}
+                names: {}
             """),
             solution={},
             date=datetime.datetime.strptime(
@@ -77,12 +74,9 @@ class Schedule_Test(unittest.TestCase):
               dl:
               -
                  - festiu
-            colors:
-              ana: '98bdc0'
-            extensions:
-              ana: 3181
-            names:
-              cesar: César
+            colors: {}
+            extensions: {}
+            names: {}
             """)
 
     def test_solution2schedule_oneslot(self):
@@ -94,11 +88,10 @@ class Schedule_Test(unittest.TestCase):
                 - '09:00'
                 - '10:15'
                 colors:
-                    ana: 98bdc0
+                    ana: aa11aa
                 extensions:
-                    ana: 3181
-                names:
-                    cesar: César
+                    ana: 1001
+                names: {}
             """),
             solution={('dl',0,0):'ana'},
             date=datetime.datetime.strptime(
@@ -119,11 +112,148 @@ class Schedule_Test(unittest.TestCase):
               -
                 - ana
             colors:
-              ana: '98bdc0'
+              ana: 'aa11aa'
             extensions:
-              ana: 3181
-            names:
-              cesar: César
+              ana: 1001
+            names: {}
+        """)
+
+    def test_solution2schedule_manyLines(self):
+        result=solution2schedule(
+            config=self.ns("""\
+                nTelefons: 2
+                diesVisualitzacio: ['dl']
+                hours:  # La darrera es per tancar
+                - '09:00'
+                - '10:15'
+                colors:
+                    ana: aa11aa
+                    belen: bb22bb
+                extensions:
+                    ana: 1001
+                names: {}
+            """),
+            solution={
+                ('dl',0,0):'ana',
+                ('dl',0,1):'belen',
+            },
+            date=datetime.datetime.strptime(
+                '2016-07-18','%Y-%m-%d').date(),
+        )
+
+        self.assertYamlEqual( result, """
+            week: '2016-07-18'
+            days:
+            - dl
+            hours:
+            - '09:00'
+            - '10:15'
+            turns:
+            - 'T1'
+            - 'T2'
+            timetable:
+              dl:
+              -
+                - ana
+                - belen
+            colors:
+              ana: 'aa11aa'
+              belen: 'bb22bb'
+            extensions:
+              ana: 1001
+            names: {}
+        """)
+
+    def test_solution2schedule_manyTimes(self):
+        result=solution2schedule(
+            config=self.ns("""\
+                nTelefons: 1
+                diesVisualitzacio: ['dl']
+                hours:  # La darrera es per tancar
+                - '09:00'
+                - '10:15'
+                - '11:30'
+                colors:
+                    ana: aa11aa
+                    belen: bb22bb
+                extensions:
+                    ana: 1001
+                names: {}
+            """),
+            solution={
+                ('dl',0,0):'ana',
+                ('dl',1,0):'belen',
+            },
+            date=datetime.datetime.strptime(
+                '2016-07-18','%Y-%m-%d').date(),
+        )
+
+        self.assertYamlEqual( result, """
+            week: '2016-07-18'
+            days:
+            - dl
+            hours:
+            - '09:00'
+            - '10:15'
+            - '11:30'
+            turns:
+            - 'T1'
+            timetable:
+              dl:
+              - - ana
+              - - belen
+            colors:
+              ana: 'aa11aa'
+              belen: 'bb22bb'
+            extensions:
+              ana: 1001
+            names: {}
+        """)
+
+    def test_solution2schedule_manyDays(self):
+        result=solution2schedule(
+            config=self.ns("""\
+                nTelefons: 1
+                diesVisualitzacio: ['dl','dm']
+                hours:  # La darrera es per tancar
+                - '09:00'
+                - '10:15'
+                colors:
+                    ana: aa11aa
+                    belen: bb22bb
+                extensions:
+                    ana: 1001
+                names: {}
+            """),
+            solution={
+                ('dl',0,0):'ana',
+                ('dm',0,0):'belen',
+            },
+            date=datetime.datetime.strptime(
+                '2016-07-18','%Y-%m-%d').date(),
+        )
+
+        self.assertYamlEqual( result, """
+            week: '2016-07-18'
+            days:
+            - dl
+            - dm
+            hours:
+            - '09:00'
+            - '10:15'
+            turns:
+            - 'T1'
+            timetable:
+              dl:
+              - - ana
+              dm:
+              - - belen
+            colors:
+              ana: 'aa11aa'
+              belen: 'bb22bb'
+            extensions:
+              ana: 1001
+            names: {}
         """)
 
     def test_solution2schedule_completeTimetable(self):
@@ -141,45 +271,45 @@ class Schedule_Test(unittest.TestCase):
         - '14:00'
         randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
         colors:
-           marc:   'fbe8bc'
-           eduard: 'd8b9c5'
-           pere:   '8f928e'
-           david:  'ffd3ac'
-           aleix:  'eed0eb'
-           carles: 'c98e98'
-           marta:  'eb9481'
-           monica: '7fada0'
-           yaiza:  '90cdb9'
-           erola:  '8789c8'
-           cesar:  'df7292'
-           manel:  '88dfe3'
-           tania:  'c8abf4'
-           judit:  'e781e8'
-           silvia: '8097fa'
-           joan:   'fae080'
-           ana:    '98bdc0'
-           victor: 'ff3333'
-           jordi:  'ff9999'
+            marc:   'fbe8bc'
+            eduard: 'd8b9c5'
+            pere:   '8f928e'
+            david:  'ffd3ac'
+            aleix:  'eed0eb'
+            carles: 'c98e98'
+            marta:  'eb9481'
+            monica: '7fada0'
+            yaiza:  '90cdb9'
+            erola:  '8789c8'
+            cesar:  'df7292'
+            manel:  '88dfe3'
+            tania:  'c8abf4'
+            judit:  'e781e8'
+            silvia: '8097fa'
+            joan:   'fae080'
+            ana:    'aa11aa'
+            victor: 'ff3333'
+            jordi:  'ff9999'
         extensions:
-           marta:  3040
-           monica: 3041
-           manel:  3042
-           erola:  3043
-           yaiza:  3044
-           eduard: 3045
-           marc:   3046
-           judit:  3047
-           judith: 3057
-           tania:  3048
-           carles: 3051
-           pere:   3052
-           aleix:  3053
-           david:  3054
-           silvia: 3055
-           joan:   3056
-           ana:    3181
-           victor: 3182
-           jordi:  3183
+            marta:  3040
+            monica: 3041
+            manel:  3042
+            erola:  3043
+            yaiza:  3044
+            eduard: 3045
+            marc:   3046
+            judit:  3047
+            judith: 3057
+            tania:  3048
+            carles: 3051
+            pere:   3052
+            aleix:  3053
+            david:  3054
+            silvia: 3055
+            joan:   3056
+            ana:    1001
+            victor: 3182
+            jordi:  3183
         names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -354,7 +484,7 @@ class Schedule_Test(unittest.TestCase):
                   judit:  'e781e8'
                   silvia: '8097fa'
                   joan:   'fae080'
-                  ana:    '98bdc0'
+                  ana:    'aa11aa'
                   victor: 'ff3333'
                   jordi:  'ff9999'
                 extensions:
@@ -374,7 +504,7 @@ class Schedule_Test(unittest.TestCase):
                   david:  3054
                   silvia: 3055
                   joan:   3056
-                  ana:    3181
+                  ana:    1001
                   victor: 3182
                   jordi:  3183
                 names:
@@ -415,7 +545,7 @@ class Schedule_Test(unittest.TestCase):
            judit:  'e781e8'
            silvia: '8097fa'
            joan:   'fae080'
-           ana:    '98bdc0'
+           ana:    'aa11aa'
            victor: 'ff3333'
            jordi:  'ff9999'
            cesar:  '889988'
@@ -436,7 +566,7 @@ class Schedule_Test(unittest.TestCase):
            david:  3054
            silvia: 3055
            joan:   3056
-           ana:    3181
+           ana:    1001
            victor: 3182
            jordi:  3183
         names: # Els que no només cal posar en majúscules
@@ -601,7 +731,7 @@ class Schedule_Test(unittest.TestCase):
                     judit:  'e781e8'
                     silvia: '8097fa'
                     joan:   'fae080'
-                    ana:    '98bdc0'
+                    ana:    'aa11aa'
                     victor: 'ff3333'
                     jordi:  'ff9999'
                     cesar:  '889988'
@@ -622,7 +752,7 @@ class Schedule_Test(unittest.TestCase):
                     david:  3054
                     silvia: 3055
                     joan:   3056
-                    ana:    3181
+                    ana:    1001
                     victor: 3182
                     jordi:  3183
                 names:
@@ -646,9 +776,9 @@ class Schedule_Test(unittest.TestCase):
             turns:
             - T1
             colors:
-              ana: 98bdc0
+              ana: aa11aa
             extensions:
-              ana: 3181
+              ana: 1001
             names: # Els que no només cal posar en majúscules
               silvia: Sílvia
               monica: Mònica
@@ -683,10 +813,10 @@ class Schedule_Test(unittest.TestCase):
             - T1
             - T2
             colors:
-              ana: 98bdc0
+              ana: aa11aa
               jordi: ff9999
             extensions:
-              ana: 3181
+              ana: 1001
               jordi: 3183
             names: # Els que no només cal posar en majúscules
               silvia: Sílvia
@@ -725,10 +855,10 @@ class Schedule_Test(unittest.TestCase):
             - T1
             - T2
             colors:
-              ana: 98bdc0
+              ana: aa11aa
               jordi: ff9999
             extensions:
-              ana: 3181
+              ana: 1001
               jordi: 3183
             names: # Els que no només cal posar en majúscules
                silvia: Sílvia
@@ -780,10 +910,10 @@ class Schedule_Test(unittest.TestCase):
             - T1
             - T2
             colors:
-              ana: 98bdc0
+              ana: aa11aa
               jordi: ff9999
             extensions:
-              ana: 3181
+              ana: 1001
               jordi: 3183
             names: # Els que no només cal posar en majúscules
                silvia: Sílvia
@@ -1237,7 +1367,7 @@ class Schedule_Test(unittest.TestCase):
           judit: e781e8
           silvia: 8097fa
           joan: fae080
-          ana: 98bdc0
+          ana: aa11aa
           victor: ff3333
           jordi: ff9999
           judith: cb8a85
@@ -1259,7 +1389,7 @@ class Schedule_Test(unittest.TestCase):
           david: 3054
           silvia: 3055
           joan: 3056
-          ana: 3181
+          ana: 1001
           victor: 3182
           jordi: 3183
         week: '2016-07-25'
@@ -1387,7 +1517,7 @@ class Schedule_Test(unittest.TestCase):
           judit: e781e8
           silvia: 8097fa
           joan: fae080
-          ana: 98bdc0
+          ana: aa11aa
           victor: ff3333
           jordi: ff9999
           judith: cb8a85
@@ -1409,16 +1539,16 @@ class Schedule_Test(unittest.TestCase):
           david: 3054
           silvia: 3055
           joan: 3056
-          ana: 3181
+          ana: 1001
           victor: 3182
           jordi: 3183
         week: '2016-07-25'
         names: # Els que no només cal posar en majúscules
-           silvia: Sílvia
-           monica: Mònica
-           tania: Tània
-           cesar: César
-           victor: Víctor
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
         """)
        )
        self.assertB2BEqual(h.htmlParse().encode('utf-8'))
@@ -1441,7 +1571,7 @@ class Schedule_Test(unittest.TestCase):
               cesar: César
               victor: Víctor
             colors:
-              ana: 98bdc0
+              ana: aa11aa
             extensions:
               ana: 217
             week: '2016-07-25'
@@ -1466,7 +1596,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -1506,7 +1636,7 @@ class Schedule_Test(unittest.TestCase):
            victor: Víctor
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -1533,7 +1663,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -1567,7 +1697,7 @@ class Schedule_Test(unittest.TestCase):
            victor: Víctor
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -1591,7 +1721,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -1636,7 +1766,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -1670,7 +1800,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -1705,7 +1835,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         names: # Els que no només cal posar en majúscules
            silvia: Sílvia
@@ -1739,7 +1869,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -1779,7 +1909,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         names: # Els que no només cal posar en majúscules
           silvia: Sílvia
@@ -1819,7 +1949,7 @@ class Schedule_Test(unittest.TestCase):
           victor: Víctor
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -1858,7 +1988,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -1892,7 +2022,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         names: # Els que no només cal posar en majúscules
           silvia: Sílvia
@@ -1944,7 +2074,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         names: # Els que no només cal posar en majúscules
           silvia: Sílvia
@@ -1987,7 +2117,7 @@ class Schedule_Test(unittest.TestCase):
           victor: Víctor
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -2038,7 +2168,7 @@ class Schedule_Test(unittest.TestCase):
           victor: Víctor
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -2068,7 +2198,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -2109,7 +2239,7 @@ class Schedule_Test(unittest.TestCase):
           victor: Víctor
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -2141,7 +2271,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -2174,7 +2304,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -2207,7 +2337,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         names: # Els que no només cal posar en majúscules
           silvia: Sílvia
@@ -2250,7 +2380,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -2288,7 +2418,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -2340,7 +2470,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -2399,7 +2529,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -2458,7 +2588,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -2499,7 +2629,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -2553,7 +2683,7 @@ class Schedule_Test(unittest.TestCase):
         - T3
         colors:
           pere: 8f928e
-          ana: 98bdc0
+          ana: aa11aa
           jordi: ff9999
         extensions:
           ana: 217
@@ -2591,7 +2721,7 @@ class Schedule_Test(unittest.TestCase):
             - T1
             colors:
               pere: 8f928e
-              ana: 98bdc0
+              ana: aa11aa
               jordi: ff9999
             extensions:
               ana: 217
@@ -2735,7 +2865,7 @@ class Schedule_Test(unittest.TestCase):
               judit: e781e8
               silvia: 8097fa
               joan: fae080
-              ana: 98bdc0
+              ana: aa11aa
               victor: ff3333
               jordi: ff9999
               judith: cb8a85
