@@ -4,7 +4,6 @@ from flask import (
     Flask, Response, request,
     redirect, url_for,
     )
-from htmlgen import HtmlGenFromYaml, HtmlGenFromAsterisk
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
 from . import schedulestorage
