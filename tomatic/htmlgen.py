@@ -406,7 +406,7 @@ class HtmlGenFromYaml(HtmlGen):
 
 def solution2schedule(config, solution, date=None):
     nhours = len(config.hours)-1
-    y = ns(
+    tt = ns(
         (day, [
             [None for i in xrange(config.nTelefons)]
             for j in xrange(nhours)
@@ -416,20 +416,21 @@ def solution2schedule(config, solution, date=None):
     for day in config.diesVisualitzacio:
         for time in range(nhours):
             for tel in range(config.nTelefons):
-                y[day][time][tel]=solution.get(
+                tt[day][time][tel]=solution.get(
                     (day,time,tel),
                     'festiu'
                 ).lower()
-    y=ns({'timetable': y})
-    y['hours']=config.hours
-    y['turns']= ["T"+str(i+1) for i in range(config.nTelefons)]
-    y['colors']=config.colors
-    y['extensions']=config.extensions
-    y['week']=str(HtmlGen.iniciSetmana(date))
-    y['names']=config.names
+    result=ns()
+    result.week =str(HtmlGen.iniciSetmana(date))
+    result.timetable = tt
     # TODO: include days
-    #y.days="dl dm dx dj dv".split()
-    return y
+    #result.days = "dl dm dx dj dv".split()
+    result.hours = config.hours
+    result.turns = ["T"+str(i+1) for i in range(config.nTelefons)]
+    result.colors = config.colors
+    result.extensions = config.extensions
+    result.names = config.names
+    return result
 
 class HtmlGenFromSolution(HtmlGen):
 
