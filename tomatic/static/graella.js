@@ -88,7 +88,6 @@ Tomatic.restoreLine = function(line) {
 Tomatic.grid = m.prop({});
 
 Tomatic.requestGrid = function(week) {
-	var self = this;
 	m.request({
 		method: 'GET',
 		url: 'graella-'+week+'.yaml',
@@ -98,9 +97,6 @@ Tomatic.requestGrid = function(week) {
 		Tomatic.currentWeek(week);
 		Tomatic.grid(data);
 	});
-};
-Tomatic.time = function(houri) {
-	return self.grid().hours[houri];
 };
 Tomatic.weekday = function(short) {
 	return {
