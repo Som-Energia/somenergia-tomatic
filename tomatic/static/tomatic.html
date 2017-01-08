@@ -62,27 +62,29 @@ body, html, #graella {
 	filter: alpha(opacity=0);
 }
 .weeks {
+	display: inline-block;
+	width: 100%;
 	min-width: 50%;
-}
-.week.current, .week.current:hover {
-	font-weight: bold;
-	background: #696;
-}
-.week:hover {
-	background: #9a9;
-}
-.week.current:before {
-	content: "►";
-}
-.week.current:after {
-	content: "◄";
 }
 .week {
 	cursor: pointer;
 	text-align: center;
 	padding: 3px;
 	color: black;
-	background: #aaa;
+	background: #ccc;
+}
+.week:hover {
+	background: #bcb;
+}
+.week.current, .week.current:hover {
+	font-weight: bold;
+	background: #7a7;
+}
+.week.current:before {
+	content: "►";
+}
+.week.current:after {
+	content: "◄";
 }
 td, th {
 	border:1px solid black;
@@ -169,10 +171,6 @@ dialog .extension {
 }
 dialog .extension:hover {
 	opacity: .8;
-}
-.weeks {
-	display: inline-block;
-	width: 100%;
 }
 .graella {
 	vertical-align: top;
