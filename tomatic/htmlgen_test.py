@@ -66,15 +66,17 @@ class Schedule_Test(unittest.TestCase):
         )
         self.assertYamlEqual(result, """\
             week: '2016-07-11'
-            timetable:
-              dl:
-              -
-                 - festiu
+            days:
+            - dl
             hours:
             - '09:00'
             - '10:15'
             turns:
             - 'T1'
+            timetable:
+              dl:
+              -
+                 - festiu
             colors:
               ana: '98bdc0'
             extensions:
@@ -82,6 +84,7 @@ class Schedule_Test(unittest.TestCase):
             names:
               cesar: César
             """)
+
     def test_solution2schedule_oneslot(self):
         result=solution2schedule(
             config=self.ns("""\
@@ -102,24 +105,26 @@ class Schedule_Test(unittest.TestCase):
                 '2016-07-18','%Y-%m-%d').date(),
         )
 
-        self.assertEqual( result, self.ns("""
-                timetable:
-                  dl:
-                  -
-                    - ana
-                hours:
-                - '09:00'
-                - '10:15'
-                turns:
-                - 'T1'
-                colors:
-                  ana: '98bdc0'
-                extensions:
-                  ana: 3181
-                names:
-                  cesar: César
-                week: '2016-07-18'
-            """))
+        self.assertYamlEqual( result, """
+            week: '2016-07-18'
+            days:
+            - dl
+            hours:
+            - '09:00'
+            - '10:15'
+            turns:
+            - 'T1'
+            timetable:
+              dl:
+              -
+                - ana
+            colors:
+              ana: '98bdc0'
+            extensions:
+              ana: 3181
+            names:
+              cesar: César
+        """)
 
     def test_solution2schedule_completeTimetable(self):
         result=solution2schedule(
@@ -250,129 +255,134 @@ class Schedule_Test(unittest.TestCase):
 
         self.assertYamlEqual(result, """\
                 week: '2016-07-11'
-                timetable:
-                    dl:
-                    -   - jordi
-                        - marta
-                        - tania
-                    -   - tania
-                        - yaiza
-                        - silvia
-                    -   - judith
-                        - pere
-                        - ana
-                    -   - ana
-                        - judith
-                        - erola
-                    dm:
-                    -   - pere
-                        - jordi
-                        - victor
-                    -   - carles
-                        - victor
-                        - ana
-                    -   - joan
-                        - silvia
-                        - eduard
-                    -   - david
-                        - joan
-                        - monica
-
-                    dx:
-                    -   - yaiza
-                        - monica
-                        - pere
-                    -   - erola
-                        - joan
-                        - marta
-                    -   - victor
-                        - eduard
-                        - jordi
-                    -   - eduard
-                        - david
-                        - victor
-                    dj:
-                    -   - judith
-                        - jordi
-                        - carles
-                    -   - silvia
-                        - tania
-                        - judith
-                    -   - monica
-                        - ana
-                        - judit
-                    -   - judit
-                        - erola
-                        - joan
-                    dv:
-                    -   - ana
-                        - judith
-                        - jordi
-                    -   - jordi
-                        - ana
-                        - judith
-                    -   - victor
-                        - carles
-                        - yaiza
-                    -   - marta
-                        - victor
-                        - silvia
+                days:
+                - dl
+                - dm
+                - dx
+                - dj
+                - dv
                 hours:
-                    - '09:00'
-                    - '10:15'
-                    - '11:30'
-                    - '12:45'
-                    - '14:00'
+                - '09:00'
+                - '10:15'
+                - '11:30'
+                - '12:45'
+                - '14:00'
                 turns:
-                    - T1
-                    - T2
-                    - T3
+                - T1
+                - T2
+                - T3
+                timetable:
+                  dl:
+                  - - jordi
+                    - marta
+                    - tania
+                  - - tania
+                    - yaiza
+                    - silvia
+                  - - judith
+                    - pere
+                    - ana
+                  - - ana
+                    - judith
+                    - erola
+                  dm:
+                  - - pere
+                    - jordi
+                    - victor
+                  - - carles
+                    - victor
+                    - ana
+                  - - joan
+                    - silvia
+                    - eduard
+                  - - david
+                    - joan
+                    - monica
+                  dx:
+                  - - yaiza
+                    - monica
+                    - pere
+                  - - erola
+                    - joan
+                    - marta
+                  - - victor
+                    - eduard
+                    - jordi
+                  - - eduard
+                    - david
+                    - victor
+                  dj:
+                  - - judith
+                    - jordi
+                    - carles
+                  - - silvia
+                    - tania
+                    - judith
+                  - - monica
+                    - ana
+                    - judit
+                  - - judit
+                    - erola
+                    - joan
+                  dv:
+                  - - ana
+                    - judith
+                    - jordi
+                  - - jordi
+                    - ana
+                    - judith
+                  - - victor
+                    - carles
+                    - yaiza
+                  - - marta
+                    - victor
+                    - silvia
                 colors:
-                    marc:   'fbe8bc'
-                    eduard: 'd8b9c5'
-                    pere:   '8f928e'
-                    david:  'ffd3ac'
-                    aleix:  'eed0eb'
-                    carles: 'c98e98'
-                    marta:  'eb9481'
-                    monica: '7fada0'
-                    yaiza:  '90cdb9'
-                    erola:  '8789c8'
-                    cesar:  'df7292'
-                    manel:  '88dfe3'
-                    tania:  'c8abf4'
-                    judit:  'e781e8'
-                    silvia: '8097fa'
-                    joan:   'fae080'
-                    ana:    '98bdc0'
-                    victor: 'ff3333'
-                    jordi:  'ff9999'
+                  marc:   'fbe8bc'
+                  eduard: 'd8b9c5'
+                  pere:   '8f928e'
+                  david:  'ffd3ac'
+                  aleix:  'eed0eb'
+                  carles: 'c98e98'
+                  marta:  'eb9481'
+                  monica: '7fada0'
+                  yaiza:  '90cdb9'
+                  erola:  '8789c8'
+                  cesar:  'df7292'
+                  manel:  '88dfe3'
+                  tania:  'c8abf4'
+                  judit:  'e781e8'
+                  silvia: '8097fa'
+                  joan:   'fae080'
+                  ana:    '98bdc0'
+                  victor: 'ff3333'
+                  jordi:  'ff9999'
                 extensions:
-                    marta:  3040
-                    monica: 3041
-                    manel:  3042
-                    erola:  3043
-                    yaiza:  3044
-                    eduard: 3045
-                    marc:   3046
-                    judit:  3047
-                    judith: 3057
-                    tania:  3048
-                    carles: 3051
-                    pere:   3052
-                    aleix:  3053
-                    david:  3054
-                    silvia: 3055
-                    joan:   3056
-                    ana:    3181
-                    victor: 3182
-                    jordi:  3183
+                  marta:  3040
+                  monica: 3041
+                  manel:  3042
+                  erola:  3043
+                  yaiza:  3044
+                  eduard: 3045
+                  marc:   3046
+                  judit:  3047
+                  judith: 3057
+                  tania:  3048
+                  carles: 3051
+                  pere:   3052
+                  aleix:  3053
+                  david:  3054
+                  silvia: 3055
+                  joan:   3056
+                  ana:    3181
+                  victor: 3182
+                  jordi:  3183
                 names:
-                    silvia: 'Sílvia'
-                    monica: 'Mònica'
-                    tania:  'Tània'
-                    cesar:  'César'
-                    victor: 'Víctor'
+                  silvia: Sílvia
+                  monica: Mònica
+                  tania:  Tània
+                  cesar:  César
+                  victor: Víctor
             """)
 
     def test_solution2schedule_completeHolidaysTimetable(self):
@@ -492,6 +502,22 @@ class Schedule_Test(unittest.TestCase):
 
         self.assertYamlEqual(result, """\
                 week: '2016-07-11'
+                days:
+                    - dl
+                    - dm
+                    - dx
+                    - dj
+                    - dv
+                hours:
+                    - '09:00'
+                    - '10:15'
+                    - '11:30'
+                    - '12:45'
+                    - '14:00'
+                turns:
+                    - 'T1'
+                    - 'T2'
+                    - 'T3'
                 timetable:
                     dl:
                     - - jordi
@@ -559,16 +585,6 @@ class Schedule_Test(unittest.TestCase):
                     - - festiu
                       - festiu
                       - festiu
-                hours:
-                    - '09:00'
-                    - '10:15'
-                    - '11:30'
-                    - '12:45'
-                    - '14:00'
-                turns:
-                    - 'T1'
-                    - 'T2'
-                    - 'T3'
                 colors:
                     marc:   'fbe8bc'
                     eduard: 'd8b9c5'

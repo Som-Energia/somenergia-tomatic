@@ -423,11 +423,10 @@ def solution2schedule(config, solution, date=None):
                 ).lower()
     result=ns()
     result.week =str(HtmlGen.iniciSetmana(date))
-    result.timetable = tt
-    # TODO: include days
-    #result.days = "dl dm dx dj dv".split()
+    result.days = config.diesVisualitzacio
     result.hours = config.hours
     result.turns = ["T"+str(i+1) for i in range(config.nTelefons)]
+    result.timetable = tt
     result.colors = config.colors
     result.extensions = config.extensions
     result.names = config.names
