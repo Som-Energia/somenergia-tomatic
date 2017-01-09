@@ -114,6 +114,21 @@ class Schedule_Test(unittest.TestCase):
             names: {}
             """)
 
+    def test_solution2schedule_noWeekNextMonday(self):
+        config = self.config_singleSlot()
+
+        result=solution2schedule(
+            # no date specified
+            config=config,
+            solution={},
+        )
+
+        today = datetime.date.today()
+        week=datetime.datetime.strptime(result.week, "%Y-%m-%d").date()
+        self.assertEqual(week.weekday(),0) # Monday
+        self.assertTrue(week > today) # in the future
+        self.assertTrue(week <= today+datetime.timedelta(days=7)) # A week at most
+
     def test_solution2schedule_oneslot(self):
         config = self.config_singleSlot()
 
@@ -956,6 +971,7 @@ class Schedule_Test(unittest.TestCase):
             u"""<td class='aleix'>Aleix</td>\n"""
             u"""</tr>\n"""
             u"""</table>""")
+
     def test_htmlExtension_oneExtension(self):
         h = HtmlGenFromYaml(self.ns("""\
             extensions:
