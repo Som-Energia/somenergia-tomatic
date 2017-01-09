@@ -87,22 +87,26 @@ body, html, #graella {
 .week.current:after {
 	content: "◄";
 }
-td, th {
+
+.graella td, .graella th {
 	border:1px solid black;
 	width: 8em;
 	text-align: center;
+}
+.graella th {
 	color: black;
 	background: white;
 }
-td:empty { border:0; background: none; }
-td {
+.graella td:empty { border:0; background: none; }
+.graella td {
 	position: relative; /* Ripple needs it */
 	padding: 1ex;
+	cursor: pointer;
 }
-td:hover {
+.graella td:hover {
 	opacity: .7;
 }
-td .tooltip {
+.graella td .tooltip {
 	visibility: hidden;
 	display: block;
 	position: absolute;
@@ -112,11 +116,11 @@ td .tooltip {
 	background: inherit;
 	border: inherit;
 }
-td:hover .tooltip {
+.graella td:hover .tooltip {
 	visibility: visible;
 	opacity: 1;
 }
-.separator {
+.graella .separator {
 	background: #ddd;
 	border: none;
 }
