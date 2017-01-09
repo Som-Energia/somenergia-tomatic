@@ -5,7 +5,8 @@ import unittest
 from yamlns import namespace as ns
 from datetime import datetime
 
-from .htmlgen import HtmlGenFromYaml, HtmlGenFromAsterisk
+from .htmlgen import HtmlGenFromYaml
+from .asterisk import HtmlGenFromAsterisk
 from . import api
 
 config=None
@@ -20,8 +21,7 @@ def setNow(year,month,day,hour,minute):
 def loadYaml(yaml):
     parsedYaml = ns.loads(yaml)
     week = str(parsedYaml.week)
-    setmana_underscore = week.replace("-","_")
-    api.hs[setmana_underscore]=HtmlGenFromYaml(parsedYaml)
+    api.hs[week]=HtmlGenFromYaml(parsedYaml)
 
 startOfWeek = HtmlGenFromYaml.iniciSetmana(
     datetime.now()

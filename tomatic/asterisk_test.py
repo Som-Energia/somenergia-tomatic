@@ -3,11 +3,7 @@
 import asterisk
 from Asterisk.Manager import Manager
 import os
-from .htmlgen import (
-    HtmlGenFromYaml,
-    HtmlGenFromAsterisk,
-    schedule2asterisk,
-    )
+from .htmlgen import schedule2asterisk
 from yamlns import namespace as ns
 
 from remote import remoterun
@@ -186,7 +182,7 @@ class Asterisk_Test(unittest.TestCase):
         asterisk_conf = schedule2asterisk(schedule)
         pbx = self.setupPbx()
         pbx.sendConfNow(asterisk_conf)
-        h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
+        h_asterisk = asterisk.HtmlGenFromAsterisk(schedule,pbx.receiveConf())
         h_asterisk_yaml = h_asterisk.getYaml()
         self.assertIn('timetable',h_asterisk_yaml)
         self.assertIn('dl',h_asterisk_yaml.timetable)
@@ -232,7 +228,7 @@ class Asterisk_Test(unittest.TestCase):
        asterisk_conf = schedule2asterisk(schedule)
        pbx = self.setupPbx()
        pbx.sendConfNow(asterisk_conf)
-       h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
+       h_asterisk = asterisk.HtmlGenFromAsterisk(schedule,pbx.receiveConf())
        h_asterisk_yaml = h_asterisk.getYaml()
        self.assertIn('timetable',h_asterisk_yaml)
        self.assertIn('dl',h_asterisk_yaml.timetable)
@@ -273,7 +269,7 @@ class Asterisk_Test(unittest.TestCase):
        pbx = self.setupPbx()
        pbx.sendConfNow(asterisk_conf)
        pbx.pause('dl',1,217)
-       h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
+       h_asterisk = asterisk.HtmlGenFromAsterisk(schedule,pbx.receiveConf())
        h_asterisk_yaml = h_asterisk.getYaml()
        self.assertIn('paused',h_asterisk_yaml)
        self.assertIn('dl',h_asterisk_yaml.paused)
@@ -306,7 +302,7 @@ class Asterisk_Test(unittest.TestCase):
        pbx = self.setupPbx()
        pbx.sendConfNow(asterisk_conf)
        pbx.pause('dl',1,217)
-       h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
+       h_asterisk = asterisk.HtmlGenFromAsterisk(schedule,pbx.receiveConf())
        h_asterisk_yaml = h_asterisk.getYaml()
        self.assertIn('paused',h_asterisk_yaml)
        self.assertIn('dl',h_asterisk_yaml.paused)
@@ -334,7 +330,7 @@ class Asterisk_Test(unittest.TestCase):
        pbx.sendConfNow(asterisk_conf)
        pbx.pause('dl',1,217)
        pbx.resume('dl',1,217)
-       h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
+       h_asterisk = asterisk.HtmlGenFromAsterisk(schedule,pbx.receiveConf())
        h_asterisk_yaml = h_asterisk.getYaml()
        self.assertIn('paused',h_asterisk_yaml)
        self.assertIn('dl',h_asterisk_yaml.paused)
@@ -369,7 +365,7 @@ class Asterisk_Test(unittest.TestCase):
        pbx.pause('dl',1,217)
        pbx.pause('dl',1,218)
        pbx.resume('dl',1,217)
-       h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
+       h_asterisk = asterisk.HtmlGenFromAsterisk(schedule,pbx.receiveConf())
        h_asterisk_yaml = h_asterisk.getYaml()
        self.assertIn('paused',h_asterisk_yaml)
        self.assertIn('dl',h_asterisk_yaml.paused)
@@ -412,7 +408,7 @@ class Asterisk_Test(unittest.TestCase):
         pbx = self.setupPbx()
         pbx.sendConfNow(asterisk_conf)
         pbx.parsePause(difference)
-        h_asterisk = HtmlGenFromAsterisk(schedule,pbx.receiveConf())
+        h_asterisk = asterisk.HtmlGenFromAsterisk(schedule,pbx.receiveConf())
         h_asterisk_yaml = h_asterisk.getYaml()
         self.assertIn('paused',h_asterisk_yaml)
         self.assertIn('dm',h_asterisk_yaml.paused)

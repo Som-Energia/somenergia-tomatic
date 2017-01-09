@@ -10,7 +10,6 @@ import random
 import datetime
 
 from htmlgen import HtmlGenFromYaml
-from htmlgen import HtmlGenFromAsterisk
 from htmlgen import schedule2asterisk
 from htmlgen import solution2schedule
 
