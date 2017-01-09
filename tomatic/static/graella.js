@@ -1,6 +1,7 @@
 'use strict';
 var m = require('mithril');
 require('polythene/theme/theme');
+var SnackBar = require('polythene/notification/snackbar');
 var Button = require('polythene/button/button');
 var Dialog = require('polythene/dialog/dialog');
 var Ripple = require('polythene/ripple/ripple');
@@ -158,6 +159,23 @@ Tomatic.requestWeeks = function() {
 		if (Tomatic.currentWeek()===undefined) {
 			Tomatic.requestGrid(weeks[0])
 		}
+	});
+};
+
+Tomatic.log = function(message) {
+	console.log("log: ", message);
+	SnackBar.show({
+		containerSelector: '#snackbar',
+		title: message,
+	});
+};
+
+Tomatic.error = function(message) {
+	console.log("error: ", message);
+	SnackBar.show({
+		containerSelector: '#snackbar',
+		title: message,
+		class: 'error',
 	});
 };
 
@@ -536,6 +554,7 @@ TomaticApp.view = function(c) {
 			Todo(
 				"Aquí es podrà veure informació de l'ERP sobre la trucada entrant"),
 		] || [],
+		m('#snackbar',m.component(SnackBar)),
 		]}
 		),
 	];
