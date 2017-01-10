@@ -374,16 +374,17 @@ TomaticApp.view = function(c) {
 		m('style',
 			Object.keys(grid.colors||{}).map(function(name) {
 				let color = '#'+grid.colors[name];
-				return '.'+name+' {\n' +
+				return (
+					'.'+name+', .graella .'+name+' {\n' +
 					'  background-color: '+color+';\n' +
 					'  border-color: '+luminance(color,-0.3)+';\n' +
 					'  border-width: 2pt;\n'+
 					'}\n'+
-					'.pe-dark-theme .'+name+' {\n' +
+					'.pe-dark-theme .'+name+', .pe-dark-theme .graella .'+name+' {\n' +
 					'  background-color: '+luminance(color,-0.3)+';\n' +
 					'  border-color: '+color+';\n' +
 					'  border-width: 2pt;\n'+
-					'}\n';
+					'}\n');
 			})
 		),
 		m.component(HeaderPanel, {

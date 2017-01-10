@@ -1,9 +1,13 @@
 <!doctype html>
 <html>
 <head>
-<title>Tomàtic - Som Energia</title>
-<meta name="viewport" content="width=device-width">
 <meta charset='utf-8' />
+<title>Tomàtic - Som Energia</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="cleartype" content="on">
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/polythene/0.2.32/polythene-standalone.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.7.0/js-yaml.min.js"></script>
@@ -101,6 +105,7 @@ body, html, #graella {
 .graella td:hover:empty {
 	border: none;
 	background: none;
+	cursor: inherit;
 }
 .graella td {
 	position: relative; /* Ripple needs it */
@@ -108,8 +113,7 @@ body, html, #graella {
 	cursor: pointer;
 }
 .graella td:hover {
-	opacitys: .7;
-	border: 1pt #882 solid;
+	opacity: .9;
 }
 .graella td .tooltip {
 	visibility: hidden;
@@ -185,9 +189,7 @@ body, html, #graella {
 	margin: 2pt 2pt;
 	border: 1pt solid black;
 	min-width: 5em;
-}
-dialog .extensions {
-	width: 100%;
+	cursor: pointer;
 }
 dialog .extension {
 	color: black;
