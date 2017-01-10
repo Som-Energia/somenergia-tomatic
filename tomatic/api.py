@@ -24,15 +24,15 @@ def pbx(alternative = None):
 def now():
     return datetime.now()
 
-def now():
+def anow():
     return datetime(2016,12,27,10,23,23)
 
-p = PbxMockup(now)
-p.reconfigure(schedules.load("2016-12-26"))
-pbx(p)
-
 def thisweek():
-    return now() - timedelta(days=now().weekday)
+    return str(now().date() - timedelta(days=now().weekday()))
+
+p = PbxMockup(now)
+#p.reconfigure(schedules.load(thisweek()))
+pbx(p)
 
 staticpath = 'tomatic/static'
 config=None
