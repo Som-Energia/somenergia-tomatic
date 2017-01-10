@@ -364,59 +364,11 @@ TomaticApp.controller = function(model, args) {
 	args = args || {};
 	var controller = {
 		currentTab: m.prop('Graelles'),
-		editCell: function(day, houri, turni) {
-			var setPerson = function(name) {
-				Tomatic.editCell(day, houri, turni, name)
-				Dialog.hide('GridCellEditor');
-			};
-			var oldPerson = Tomatic.cell(day,houri,turni);
-			Dialog.show({
-				title: 'Edita posició de la graella',
-				body: [
-					Tomatic.weekday(day) +' a les '+
-						Tomatic.grid().hours[houri] +
-						', línia '+ (turni+1) +
-						', la feia ',
-					m('span.extension.'+oldPerson, Tomatic.formatName(oldPerson)),
-					' qui ho ha de fer?',
-					m.component(PersonPicker, {
-						id:'GridCellEditor',
-						onpick: setPerson,
-					}),
-				],
-				footer: [
-					m.component(Button, {
-						label: "Cancel·la",
-						events: {
-							onclick: function() {
-								Dialog.hide('GridCellEditor');
-							},
-						},
-					}),
-				],
-			},'GridCellEditor');
-		},
 	};
 	return controller;
 };
 
 TomaticApp.view = function(c) {
-	var cell = function(day, houri, turni) {
-		var name = Tomatic.cell(day,houri,turni);
-		return m('td', {
-			class: name||'ningu',
-			onclick: function(ev) {
-				c.editCell(day, houri, turni);
-				ev.preventDefault();
-			}
-		}, [
-			Tomatic.formatName(name),
-			Tomatic.grid().extensions[name]?
-				m('.tooltip', Tomatic.grid().extensions[name]):
-				[],
-			m.component(Ripple),
-		]);
-	};
 	var grid = Tomatic.grid();
 	return [
 		m('style',
@@ -434,7 +386,6 @@ TomaticApp.view = function(c) {
 					'}\n';
 			})
 		),
-		m.component(Dialog),
 		m.component(HeaderPanel, {
 			mode: 'waterfall-tall',
 			//condenses: true, // condense: 
@@ -481,72 +432,14 @@ TomaticApp.view = function(c) {
 					}),
 				]),
 			]),
-			m('.layout.center-center.wrap', [
-				(grid.days||[]).map(function(day, dayi) {
-					return m('.graella', m('table', [
-						m('tr', [
-							m('td'),
-							m('th', {colspan:grid.turns.length}, Tomatic.weekday(day)),
-						]),
-						m('td'),
-						grid.turns.map(function(turn) {
-							return m('th', turn);
-						}),
-						grid.hours.slice(0,-1).map(function(hour,houri) {
-							return m('tr', [
-								dayi!=0 && false?
-									m('th.separator', m.trust('&nbsp;')) :
-									m('th.separator', grid.hours[houri]+'-'+grid.hours[houri+1]),
-								grid.turns.map(function(turn, turni) {
-									return cell(day, houri, turni)
-								}),
-							]);
-						}),
-					]))
-				}),
-			]),
+			m('.layout.center-center.wrap', Grid(grid)),
 		] || [],
-		(c.currentTab()=='Graelles' || c.currentTab()=='Centraleta') && [
+		(c.currentTab()=='Graelles' ) && [
 			Extensions(grid.otherextensions),
-			m('.extensions',
-				Object.keys(grid.otherextensions || {}).sort().map(function(name) {
-					return m('.extension', {class: name}, [
-						Tomatic.formatName(name),
-						m('br'),
-						grid.otherextensions[name],
-					]);
-				})
-			),
 			m('.layout.around-justified.wrap', [
-				m('.graella', [
-					m('h5', 'Codis desviaments'),
-					m('ul.codes', [
-						m('li','*60 Immediat'),
-						m('li','*63 Ocupat o no responem'),
-						m('li','*64 Treure desviaments'),
-						m('li','*90 Marcar número'),
-					]),
-				]),
-				m('.graella', [
-					m('h5', 'Darrers canvis'),
-					m('ul.changelog', [
-						grid.log?[]: m('li', 'Cap canvi registrat'),
-						(grid.log || []).slice(-5).reverse().map(function(change) {
-							return m('li',change);
-						}),
-						(grid.log || []).length > 5 ?  m('li', m.trust("&hellip;")) : [],
-					]),
-				]),
-				m('.graella', [
-					m('h5', 'Penalitzacions'),
-					m('ul.penalties', [
-						grid.penalties?[]: m('li', 'La graella no te penalitzacions'),
-						(grid.penalties || []).slice(-5).reverse().map(function(change) {
-							return m('li',change);
-						}),
-						(grid.penalties || []).length > 5 ?  m('li', m.trust("&hellip;")) : [],
-					]),
-				]),
+				Forwardings(),
+				Changelog(grid),
+				Penalties(grid),
 			]),
 		] || [],
 		c.currentTab() == 'Persones' && [
@@ -559,8 +452,84 @@ TomaticApp.view = function(c) {
 				"Aquí es podrà veure informació de l'ERP sobre la trucada entrant"),
 		] || [],
 		m('#snackbar',m.component(SnackBar)),
+		m.component(Dialog),
 		]}
 		),
+	];
+};
+
+var Grid = function(grid) {
+	var editCell = function(day, houri, turni) {
+		var setPerson = function(name) {
+			Tomatic.editCell(day, houri, turni, name)
+			Dialog.hide('GridCellEditor');
+		};
+		var oldPerson = Tomatic.cell(day,houri,turni);
+		Dialog.show({
+			title: 'Edita posició de la graella',
+			body: [
+				Tomatic.weekday(day) +' a les '+
+					Tomatic.grid().hours[houri] +
+					', línia '+ (turni+1) +
+					', la feia ',
+				m('span.extension.'+oldPerson, Tomatic.formatName(oldPerson)),
+				' qui ho ha de fer?',
+				m.component(PersonPicker, {
+					id:'GridCellEditor',
+					onpick: setPerson,
+				}),
+			],
+			footer: [
+				m.component(Button, {
+					label: "Cancel·la",
+					events: {
+						onclick: function() {
+							Dialog.hide('GridCellEditor');
+						},
+					},
+				}),
+			],
+		},'GridCellEditor');
+	};
+	var cell = function(day, houri, turni) {
+		var name = Tomatic.cell(day,houri,turni);
+		return m('td', {
+			class: name||'ningu',
+			onclick: function(ev) {
+				editCell(day, houri, turni);
+				ev.preventDefault();
+			}
+		}, [
+			Tomatic.formatName(name),
+			Tomatic.grid().extensions[name]?
+				m('.tooltip', Tomatic.grid().extensions[name]):
+				[],
+			m.component(Ripple),
+		]);
+	};
+ 	return [
+		(grid.days||[]).map(function(day, dayi) {
+			return m('.graella', m('table', [
+				m('tr', [
+					m('td'),
+					m('th', {colspan:grid.turns.length}, Tomatic.weekday(day)),
+				]),
+				m('td'),
+				grid.turns.map(function(turn) {
+					return m('th', turn);
+				}),
+				grid.hours.slice(0,-1).map(function(hour,houri) {
+					return m('tr', [
+						dayi!=0 && false?
+							m('th.separator', m.trust('&nbsp;')) :
+							m('th.separator', grid.hours[houri]+'-'+grid.hours[houri+1]),
+						grid.turns.map(function(turn, turni) {
+							return cell(day, houri, turni)
+						}),
+					]);
+				}),
+			]))
+		}),
 	];
 };
 
@@ -576,8 +545,42 @@ var Extensions = function(extensions) {
 			})
 		),
 	];
-}
-
+};
+var Forwardings = function() {
+	return m('.graella', [
+		m('h5', 'Codis desviaments'),
+		m('ul.codes', [
+			m('li','*60 Immediat'),
+			m('li','*63 Ocupat o no responem'),
+			m('li','*64 Treure desviaments'),
+			m('li','*90 Marcar número'),
+		]),
+	]);
+};
+var Changelog = function(grid) {
+	return m('.graella', [
+		m('h5', 'Darrers canvis'),
+		m('ul.changelog', [
+			grid.log?[]: m('li', 'Cap canvi registrat'),
+			(grid.log || []).slice(-5).reverse().map(function(change) {
+				return m('li',change);
+			}),
+			(grid.log || []).length > 5 ?  m('li', m.trust("&hellip;")) : [],
+		]),
+	]);
+};
+var Penalties = function(grid) {
+	return m('.graella', [
+		m('h5', 'Penalitzacions'),
+		m('ul.penalties', [
+			grid.penalties?[]: m('li', 'La graella no te penalitzacions'),
+			(grid.penalties || []).slice(-5).reverse().map(function(change) {
+				return m('li',change);
+			}),
+			(grid.penalties || []).length > 5 ?  m('li', m.trust("&hellip;")) : [],
+		]),
+	]);
+};
 
 
 window.onload = function() {

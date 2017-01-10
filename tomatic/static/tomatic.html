@@ -97,24 +97,30 @@ body, html, #graella {
 	color: black;
 	background: white;
 }
-.graella td:empty { border:0; background: none; }
+.graella td:empty,
+.graella td:hover:empty {
+	border: none;
+	background: none;
+}
 .graella td {
 	position: relative; /* Ripple needs it */
 	padding: 1ex;
 	cursor: pointer;
 }
 .graella td:hover {
-	opacity: .7;
+	opacitys: .7;
+	border: 1pt #882 solid;
 }
 .graella td .tooltip {
 	visibility: hidden;
 	display: block;
 	position: absolute;
 	padding: 2px;
-	right: -2px; /* border */
-	top: -2px; /* border */
+	right: 1pt; /* border */
+	bottom: 70%; /* border */
 	background: inherit;
 	border: inherit;
+	border-radius: 5px;
 }
 .graella td:hover .tooltip {
 	visibility: visible;
