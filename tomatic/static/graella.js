@@ -142,6 +142,9 @@ Tomatic.editCell = function(day,houri,turni,name) {
 	})
 	.then( function(data) {
 		Tomatic.requestGrid(Tomatic.grid().week);
+	}, function(error) {
+		Tomatic.error("Problemes editant la graella: "+
+			(error.error || "Inexperat"));
 	});
 };
 
@@ -171,7 +174,7 @@ Tomatic.log = function(message) {
 };
 
 Tomatic.error = function(message) {
-	console.log("error: ", message);
+	console.log("error: ", message, ...arguments);
 	SnackBar.show({
 		containerSelector: '#snackbar',
 		title: message,
@@ -195,6 +198,7 @@ var Uploader = {
 				Tomatic.init();
 			}, function(error) {
 				console.log("Upload error:", error);
+				Tomatic.error("Upload error: " + error.error);
 			});
 		};
 		return c;

@@ -51,6 +51,20 @@ def trustedStaticFile(path):
     with open(path) as f:
         return f.read()
 
+from functools import wraps
+
+def yamlerrors(f):
+    @wraps(f)
+    def error_hanlder(*args,**kwd):
+        try:
+            return f(*args,**kwd)
+        except Exception as e:
+            return yamlfy(
+                error=str(e),
+                status=500,
+                )
+    return error_hanlder
+
 @app.route('/')
 def tomatic():
     return trustedStaticFile(staticpath+'/tomatic.html')
@@ -74,6 +88,7 @@ def graellaYaml(week):
 
 @app.route('/graella/<week>/<day>/<int:houri>/'
         '<int:turni>/<name>', methods=['UPDATE'])
+@yamlerrors
 def editSlot(week, day, houri, turni, name):
     # TODO: Same ensures than graella
     graella = schedules.load(week)
@@ -105,6 +120,7 @@ def listGraelles():
         mimetype = 'application/x-yaml')
 
 @app.route('/graella', methods=['POST'])
+@yamlerrors
 def uploadGraella(week=None):
     print "uploading", request.files
     if 'yaml' not in request.files:
@@ -137,7 +153,6 @@ def get_queue():
 def add_to_queue(person):
     p = pbx()
     p.addLine(person)
-    print p.currentQueue()
     return yamlfy(
         currentQueue = p.currentQueue()
     )
@@ -158,10 +173,10 @@ def resume_line(person):
         currentQueue = p.currentQueue()
     )
 
-def yamlfy(data=[], **kwd):
+def yamlfy(status=200, data=[], **kwd):
     return Response(ns(
         data, **kwd
-        ).dump(),
+        ).dump(), status,
         mimetype = 'application/x-yaml',
     )
 
