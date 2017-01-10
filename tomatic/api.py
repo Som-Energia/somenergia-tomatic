@@ -14,14 +14,19 @@ import os
 
 hs = {}
 
-schedules = schedulestorage.Storage('graelles')
+packagedir = os.path.join(os.path.dirname(__file__))
+schedules = schedulestorage.Storage(os.path.join(packagedir,'..','graelles'))
+staticpath = os.path.join(packagedir,'static')
 
 
 def pbx(alternative = None):
     if alternative:
         pbx.cache = alternative
     if not hasattr(pbx,'cache'):
-        pbx.cache = asterisk.Pbx(config.pbx)
+        p = PbxMockup(now)
+        p.reconfigure(schedules.load(thisweek()))
+        pbx.cache = p
+        # pbx.cache = asterisk.Pbx(config.pbx)
     return pbx.cache
 
 def now():
@@ -33,11 +38,6 @@ def anow():
 def thisweek():
     return str(now().date() - timedelta(days=now().weekday()))
 
-p = PbxMockup(now)
-p.reconfigure(schedules.load(thisweek()))
-pbx(p)
-
-staticpath = 'tomatic/static'
 config=None
 
 try:
@@ -67,6 +67,7 @@ def publishStatic(graella):
         gen.htmlParse(),
         )
 
+class ApiError(Exception): pass
 
 from functools import wraps
 
@@ -75,7 +76,7 @@ def yamlerrors(f):
     def error_hanlder(*args,**kwd):
         try:
             return f(*args,**kwd)
-        except Exception as e:
+        except ApiError as e:
             raise
             return yamlfy(
                 error=str(e),
