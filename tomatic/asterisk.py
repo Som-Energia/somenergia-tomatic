@@ -3,6 +3,7 @@
 from remote import remotewrite
 from Asterisk.Manager import Manager
 from htmlgen import HtmlGen
+from yamlns import namespace as ns
 
 class Pbx(object):
 
@@ -50,7 +51,6 @@ class Pbx(object):
 class HtmlGenFromAsterisk(HtmlGen):
     # Only linear queues are implemented at the moment
     def __init__(self, yaml, asteriskConf):
-        return
         asteriskQueues = {
             (k.split('_')[-2], 
                 int(k.split('_')[-1])
