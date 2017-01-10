@@ -19,7 +19,7 @@ except ImportError:
 class Remote_Test(unittest.TestCase):
 
     def setUp(self):
-        if config and 'pbx' in config:
+        if config and 'pbx' in config.__dict__:
             self.user = config.pbx.scp.username
             self.host = config.pbx.scp.pbxhost
         else:
