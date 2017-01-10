@@ -8,6 +8,9 @@ from datetime import datetime, timedelta
 from yamlns import namespace as ns
 from . import schedulestorage
 from .pbxmockup import PbxMockup
+from .htmlgen import HtmlGenFromYaml
+from .remote import remotewrite
+import os
 
 hs = {}
 
@@ -31,7 +34,7 @@ def thisweek():
     return str(now().date() - timedelta(days=now().weekday()))
 
 p = PbxMockup(now)
-#p.reconfigure(schedules.load(thisweek()))
+p.reconfigure(schedules.load(thisweek()))
 pbx(p)
 
 staticpath = 'tomatic/static'
@@ -51,6 +54,20 @@ def trustedStaticFile(path):
     with open(path) as f:
         return f.read()
 
+def publishStatic(graella):
+    if not config: return
+    if not hasattr(config, 'publishStatic'): return
+    params = config.publishStatic
+    gen=HtmlGenFromYaml(graella)
+    remotewrite(
+        params.user,
+        params.host,
+        os.path.join(params.path,
+            'graella-{week}.html'.format(**graella)),
+        gen.htmlParse(),
+        )
+
+
 from functools import wraps
 
 def yamlerrors(f):
@@ -59,6 +76,7 @@ def yamlerrors(f):
         try:
             return f(*args,**kwd)
         except Exception as e:
+            raise
             return yamlfy(
                 error=str(e),
                 status=500,
@@ -110,6 +128,7 @@ def editSlot(week, day, houri, turni, name):
     print logmsg
     graella.log.append(logmsg)
     schedules.save(graella)
+    publishStatic(graella)
     return graellaYaml(week)
 
 
@@ -141,6 +160,7 @@ def uploadGraella(week=None):
     graella.setdefault('log',[])
     print logmsg
     schedules.save(graella)
+    publishStatic(graella)
     return yamlfy(result='ok')
 
 @app.route('/queue')
