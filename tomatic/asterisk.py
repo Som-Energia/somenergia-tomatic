@@ -52,33 +52,31 @@ class HtmlGenFromAsterisk(HtmlGen):
     # Only linear queues are implemented at the moment
     def __init__(self, yaml, asteriskConf):
         asteriskQueues = {
-            (k.split('_')[-2], 
-                int(k.split('_')[-1])
-            ): [ (ext,asteriskConf[k]
-                    ['members'][ext]
-                    ['Penalty']
-                 )  for ext 
-                    in asteriskConf[k][
-                        'members'].keys()
-               ]
+            (k.split('_')[-2], int(k.split('_')[-1])): [
+                (ext,asteriskConf[k]['members'][ext]['Penalty'])
+                for ext in asteriskConf[k]['members'].keys()
+                ]
             for k in asteriskConf.keys() 
-                if 'dinamica' not in k
+            if 'dinamica' not in k
         }
         asteriskPaused = {
-            (k.split('_')[-2], 
-                int(k.split('_')[-1])
-            ): [asterisk_sip for asterisk_sip in
-                asteriskConf[k]['members'].keys()
-                if asteriskConf[k]['members'][asterisk_sip]['Paused']=='1']
+            (k.split('_')[-2], int(k.split('_')[-1])): [
+                asterisk_sip
+                for asterisk_sip in asteriskConf[k]['members'].keys()
+                if asteriskConf[k]['members'][asterisk_sip]['Paused']=='1'
+                ]
             for k in asteriskConf.keys()
-                if 'dinamica' not in k
+            if 'dinamica' not in k
         }
-        asteriskDynamic = [ext
-            for ext 
-            in asteriskConf['entrada_dinamica']['members'].keys()
+        asteriskDynamic = [
+            ext
+            for ext in asteriskConf['entrada_dinamica']['members'].keys()
         ] if 'entrada_dinamica' in asteriskConf else []
 
-        extensions_inv = { extension : name for name, extension in yaml.extensions.items()}
+        extensions_inv = {
+            extension : name
+            for name, extension in yaml.extensions.items()
+            }
         solution_asterisk = {}
         solution_paused = {}
         for q in asteriskQueues:
