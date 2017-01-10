@@ -2530,7 +2530,7 @@ class Schedule_Test(unittest.TestCase):
         configuration = schedule2asterisk(self.ns("""\
             timetable:
               dl:
-                1:
+              -
                 - ana
             hours:
             - '09:00'
@@ -2573,87 +2573,87 @@ class Schedule_Test(unittest.TestCase):
         configuration = schedule2asterisk(self.ns("""\
             timetable:
               dl:
-                1:
+              -
                 - ana
                 - jordi
                 - pere
-                2:
+              -
                 - jordi
                 - aleix
                 - pere
-                3:
+              -
                 - carles
                 - joan
                 - eduard
-                4:
+              -
                 - yaiza
                 - joan
                 - eduard
               dm:
-                1:
+              -
                 - victor
                 - marta
                 - ana
-                2:
+              -
                 - ana
                 - victor
                 - marta
-                3:
+              -
                 - silvia
                 - eduard
                 - monica
-                4:
+              -
                 - david
                 - silvia
                 - marc
               dx:
-                1:
+              -
                 - aleix
                 - pere
                 - yaiza
-                2:
+              -
                 - pere
                 - aleix
                 - carles
-                3:
+              -
                 - marc
                 - judit
                 - victor
-                4:
+              -
                 - david
                 - silvia
                 - victor
               dj:
-                1:
+              -
                 - judit
                 - jordi
                 - carles
-                2:
+              -
                 - joan
                 - silvia
                 - jordi
-                3:
+              -
                 - monica
                 - marc
                 - tania
-                4:
+              -
                 - tania
                 - monica
                 - marc
               dv:
-                1:
+              -
                 - marta
                 - victor
                 - judit
-                2:
+              -
                 - victor
                 - joan
                 - judit
-                3:
+              -
                 - eduard
                 - yaiza
                 - jordi
-                4:
+              -
                 - jordi
                 - carles
                 - aleix

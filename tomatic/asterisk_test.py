@@ -43,7 +43,7 @@ class Asterisk_Test(unittest.TestCase):
         asterisk_conf = schedule2asterisk(self.ns("""\
         timetable:
           dl:
-            1:
+          -
             - ana
         hours:
         - '09:00'
@@ -69,7 +69,7 @@ class Asterisk_Test(unittest.TestCase):
         schedule = self.ns("""\
             timetable:
               dl:
-                1:
+              -
                 - ana
                 - jordi
                 - pere
@@ -107,15 +107,15 @@ class Asterisk_Test(unittest.TestCase):
         schedule = self.ns("""\
         timetable:
           dl:
-            1:
+          -
             - ana
             - jordi
             - pere
-            2:
+          -
             - pere
             - jordi
           dm:
-            1:
+          -
             - jordi
             - ana
         hours:
@@ -164,7 +164,7 @@ class Asterisk_Test(unittest.TestCase):
         schedule = self.ns("""\
         timetable:
           dl:
-            1:
+          -
             - ana
             - pere
             - jordi
@@ -189,7 +189,7 @@ class Asterisk_Test(unittest.TestCase):
         self.assertIn(1,h_asterisk_yaml.timetable.dl)
         self.assertEqual(
             set(h_asterisk.getYaml().timetable.dl[1]),
-            set(schedule.timetable.dl[1])
+            set(schedule.timetable.dl[0])
         )
 
     @unittest.skipIf(not config, "depends on pbx")
@@ -197,16 +197,16 @@ class Asterisk_Test(unittest.TestCase):
        schedule = self.ns("""\
         timetable:
           dl:
-            1:
+          -
             - ana
             - pere
             - jordi
           dm:
-            1:
+          -
             - ana
             - pere
             - jordi
-            2:
+          -
             - pere
             - jordi
             - ana
@@ -235,18 +235,18 @@ class Asterisk_Test(unittest.TestCase):
        self.assertIn(1,h_asterisk_yaml.timetable.dl)
        self.assertEqual(
            set(h_asterisk.getYaml().timetable.dl[1]),
-           set(schedule.timetable.dl[1])
+           set(schedule.timetable.dl[0])
        )
        self.assertIn('dm',h_asterisk_yaml.timetable)
        self.assertIn(1,h_asterisk_yaml.timetable.dm)
        self.assertIn(2,h_asterisk_yaml.timetable.dm)
        self.assertEqual(
            set(h_asterisk.getYaml().timetable.dm[1]),
-           set(schedule.timetable.dm[1])
+           set(schedule.timetable.dm[0])
        )
        self.assertEqual(
            set(h_asterisk.getYaml().timetable.dm[2]),
-           set(schedule.timetable.dm[2])
+           set(schedule.timetable.dm[1])
        )
 
     @unittest.skipIf(not config, "depends on pbx")
@@ -254,7 +254,7 @@ class Asterisk_Test(unittest.TestCase):
        schedule = self.ns("""\
         timetable:
           dl:
-            1:
+          -
             - ana
         hours:
         - '09:00'
@@ -281,7 +281,7 @@ class Asterisk_Test(unittest.TestCase):
        schedule = self.ns("""\
         timetable:
           dl:
-            1:
+          -
             - ana
             - pere
             - jordi
@@ -314,7 +314,7 @@ class Asterisk_Test(unittest.TestCase):
        schedule = self.ns("""\
         timetable:
           dl:
-            1:
+          -
             - ana
         hours:
         - '09:00'
@@ -342,7 +342,7 @@ class Asterisk_Test(unittest.TestCase):
        schedule = self.ns("""\
         timetable:
           dl:
-            1:
+          -
             - ana
             - pere
             - jordi
@@ -377,12 +377,12 @@ class Asterisk_Test(unittest.TestCase):
         schedule = self.ns("""\
             timetable:
               dl:
-                1:
+              -
                 - ana
                 - pere
                 - jordi
               dm:
-                1:
+              -
                 - ana
                 - pere
                 - jordi

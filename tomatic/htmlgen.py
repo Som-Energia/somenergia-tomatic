@@ -444,9 +444,9 @@ def schedule2asterisk(schedule):
     tt = schedule.timetable
     ext = schedule.extensions
     for d in tt.keys():
-        for t in tt[d].keys():
+        for ti, t in enumerate(tt[d]):
             r+=[
-                u'[entrada_cua_{}_{}]'.format(d,t),
+                u'[entrada_cua_{}_{}]'.format(d,ti+1),
                 u'music=default',
                 u'strategy=linear',
                 u'eventwhencalled=yes',
@@ -463,7 +463,7 @@ def schedule2asterisk(schedule):
             ] + [
                 u"member = SIP/{},{}"
                     .format(ext[m],index+1)
-                for index,m in enumerate(tt[d][t])
+                for index,m in enumerate(tt[d][ti])
             ]
     return u'\n'.join(r)+u'\n'
 
