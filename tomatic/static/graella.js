@@ -160,7 +160,18 @@ Tomatic.requestWeeks = function() {
 		let weeks = newWeeklist.weeks.sort().reverse();
 		Tomatic.weeks(weeks);
 		if (Tomatic.currentWeek()===undefined) {
-			Tomatic.requestGrid(weeks[0])
+			let expirationms = 1000*60*60*(24*4 + 18);
+			let oldestWeek = new Date(new Date().getTime()-expirationms);
+			let current = undefined;
+			for (let i in weeks) {
+				if (current!==undefined && new Date(weeks[i])<oldestWeek) {
+					break;
+				}
+				current = weeks[i];
+			}
+			if (current!==undefined) {
+				Tomatic.requestGrid(current);
+			}
 		}
 	});
 };
