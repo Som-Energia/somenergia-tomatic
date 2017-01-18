@@ -302,6 +302,7 @@ var PersonPicker = {
 	controller: function(args) {
 		var c = {
 			onpick: args.onpick,
+			nobodyPickable: args.nobodyPickable,
 			person: m.prop(undefined),
 			picked: function(name, ev) {
 				this.person(name);
@@ -314,17 +315,19 @@ var PersonPicker = {
 	},
 
 	view: function(controller, args) {
+		var pickCell = function(name) {
+			return m('.extension', {
+				class: name,
+				onclick: controller.picked.bind(controller,name),
+				},
+				Tomatic.formatName(name)
+			);
+		};
 		var extensions = Tomatic.grid().extensions || {};
-		return m('.extensions',
-			Object.keys(extensions).sort().map(function(name) {
-				return m('.extension', {
-					class: name,
-					onclick: controller.picked.bind(controller,name),
-					},
-					Tomatic.formatName(name)
-				);
-			})
-		);
+		return m('.extensions', [
+			Object.keys(extensions).sort().map(pickCell),
+			args.nobodyPickable ? pickCell('ningu') : [],
+		]);
 	},
 };
 
@@ -333,7 +336,7 @@ var WeekList = {
 		var controller = {
 			model: this,
 			parent: parentcontroller,
-			setCurrent: function(week)  {
+			setCurrent: function(week) {
 				Tomatic.requestGrid(week);
 			},
 		};
@@ -489,6 +492,7 @@ var Grid = function(grid) {
 				m.component(PersonPicker, {
 					id:'GridCellEditor',
 					onpick: setPerson,
+					nobodyPickable: true,
 				}),
 			],
 			footer: [
