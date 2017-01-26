@@ -4,7 +4,7 @@ intervalCarrega: carrega{:02d}{:02d}{:02d} # Patró pel nom de l'interval on bus
 monitoringFile: taula.html
 
 nTelefons: 4
-diesCerca: ['dl', 'dm', 'dv', 'dx', 'dj',] # Els mes conflictius davant
+diesCerca: ['dm', 'dv', 'dx', 'dl', 'dj',] # Els mes conflictius davant
 diesVisualitzacio: ['dl','dm','dx','dj','dv']
 
 hours:  # La darrera es per tancar
@@ -39,18 +39,16 @@ taules: # Asignacio de les persones en taules
    eduard: 1
    pere:   1
    david:  2
-   aleix:  2
-   cesar:  2
    carles: 3
    monica: 3
    judith: 3
-   silvia: 3
    erola:  4
    sergi:  4
    judit:  4
    marta:  5
    yaiza:  5
    victor: 5
+   silvia: 6
    ana:    6
    jordi:  6
    manel:  7
