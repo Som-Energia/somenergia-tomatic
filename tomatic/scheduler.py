@@ -553,12 +553,15 @@ class Backtracker:
 			htmlgen.getYaml().dump(self.outputYaml)
 			with open(self.outputFile,'w') as output:
 				output.write(
-					header+personalColors+
+					header+
+					personalColors+
 					subheader+
-					htmlgen.htmlSetmana())
+					htmlgen.htmlSetmana()
+				)
 			with open(self.config.monitoringFile,'w') as output:
 				output.write(
-					header+personalColors+
+					header+
+					personalColors+
 					subheader
 				)
 
@@ -566,7 +569,8 @@ class Backtracker:
 		penalitzacions = (
 			htmlgen.htmlPenalizations(
 				self.minimumCost,
-				self.penalties)
+				self.penalties
+			)
 		)
 		with open(self.config.monitoringFile,'a') as output:
 			output.write(htmlgen.htmlTable())
@@ -574,10 +578,12 @@ class Backtracker:
 		if firstAtCost:
 			htmlgen.getYaml().dump(self.outputYaml)
 			with open(self.outputFile,'a') as output:
-				output.write(htmlgen.htmlTable()+
+				output.write(
+					htmlgen.htmlTable()+
 					htmlgen.htmlExtensions()+
 					htmlgen.htmlFixExtensions()+
-					htmlgen.htmlFooter())
+					htmlgen.htmlFooter()
+				)
 
 
 
