@@ -319,10 +319,12 @@ class Backtracker:
 			if self.nbactracks < self.backtrackDepth:
 				break
 
-		if len(self.bestSolution) != len(self.caselles):
+		ncaselles = len(self.caselles)
+
+		if len(self.bestSolution) != ncaselles:
 			self.printCuts()
 			self.minimumCost = self.bestCost
-			self.reportSolution((self.bestSolution+['?']*60)[:60] )
+			self.reportSolution((self.bestSolution+['?']*ncaselles)[:ncaselles] )
 			error("Impossible trobar solució\n{}".format( self.deeperCutLog))
 		else:
 			step("Millor graella grabada a '{}'".format(self.outputFile))
@@ -543,6 +545,7 @@ class Backtracker:
 		solution = dict(zip(self.caselles, solution))
 		htmlgen=HtmlGenFromSolution(self.config,solution,self.config.monday)
 		if firstAtCost:
+			# Is the first that good, start from scratch
 			self.storedCost = self.minimumCost
 			personalColors = htmlgen.htmlColors()
 			header = htmlgen.htmlHeader()
