@@ -587,13 +587,12 @@ var Changelog = function(grid) {
 };
 var Penalties = function(grid) {
 	return m('.graella', [
-		m('h5', 'Penalitzacions'),
+		m('h5', 'Penalitzacions (', grid.cost || 0, ' punts)'),
 		m('ul.penalties', [
 			grid.penalties?[]: m('li', 'La graella no te penalitzacions'),
-			(grid.penalties || []).slice(-5).reverse().map(function(change) {
-				return m('li',change);
+			(grid.penalties || []).map(function(penalty) {
+				return m('li',penalty[0],': ',penalty[1]);
 			}),
-			(grid.penalties || []).length > 5 ?  m('li', m.trust("&hellip;")) : [],
 		]),
 	]);
 };
