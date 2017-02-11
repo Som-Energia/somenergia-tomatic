@@ -133,6 +133,7 @@ class Backtracker:
 		self.config = config
 		self.outputFile = "graella-telefons-{}.html".format(config.monday)
 		self.outputYaml = "graella-telefons-{}.yaml".format(config.monday)
+		self.storedCost = ('uncomparableSize', 'uncomparablePenalty')
 		self.globalMaxTurnsADay = config.maximHoresDiariesGeneral
 		self.ntelefons = config.nTelefons
 		self.dies = config.diesCerca
@@ -197,14 +198,14 @@ class Backtracker:
 		self.backtrackDepth = config.backtrackDepth
 		self.cutLog = {}
 		self.deeperCutDepth = 0
-		self.deeperCutLog = None
+		self.deeperCutLog = set()
 
 		# just for tracking
 		self.bestSolution = []
 		self.bestCost = 1000000000
 
 		self.cost = 0
-		self.minimumCost = config.costLimit
+		self.cutoffCost = config.costLimit
 		self.penalties=[]
 
 		self.terminated=False
@@ -304,12 +305,21 @@ class Backtracker:
 			self.cutLog[len(partial), motiu]+=1
 		except KeyError:
 			self.cutLog[len(partial), motiu]=1
+
 		if motiu in args.verbose:
 			warn(log or motiu)
-		if self.deeperCutLog and len(self.deeperCutLog) > len(partial): return
-		self.deeperCutDepth = len(partial)
-		self.deeperCutLog = log or motiu
-		
+
+		if self.deeperCutLog and self.deeperCutDepth > len(partial): return
+
+		if self.deeperCutDepth < len(partial):
+			self.deeperCutLog = set()
+			self.deeperCutDepth = len(partial)
+
+		if motiu == 'TotColocat':
+			return # Not worth to log
+
+		self.deeperCutLog.add(log or motiu)
+
 
 
 	def solve(self) :
@@ -318,14 +328,15 @@ class Backtracker:
 			self.solveTorn([])
 			if self.nbactracks < self.backtrackDepth:
 				break
+			else:
+				step("Massa estona en aquest camí")
 
 		ncaselles = len(self.caselles)
 
 		if len(self.bestSolution) != ncaselles:
 			self.printCuts()
-			self.minimumCost = self.bestCost
-			self.reportSolution((self.bestSolution+['?']*ncaselles)[:ncaselles] )
-			error("Impossible trobar solució\n{}".format( self.deeperCutLog))
+			error("Impossible trobar solució\n{}"
+				.format( '\n'.join(sorted(self.deeperCutLog))))
 		else:
 			step("Millor graella grabada a '{}'".format(self.outputFile))
 			step("Millor graella grabada a '{}'".format(self.outputYaml))
@@ -341,14 +352,14 @@ class Backtracker:
 			else:
 				print 'Solució incomplerta {}/{} caselles, cost {}'.format(
 					len(partial), len(self.caselles), self.cost)
-			self.bestSolution=partial
+			self.reportSolution(partial, self.cost, self.penalties)
+			self.bestSolution=list(partial)
 			self.bestCost=self.cost
 
 		# Complete solution? Stop backtracking.
 		if len(partial) == len(self.caselles):
-			self.minimumCost = self.cost
-			self.minimumCostReason = self.penalties
-			self.reportSolution(partial)
+			self.cutoffCost = self.cost
+			self.reportSolution(partial, self.cost, self.penalties)
 			return
 
 		day, hora, telefon = self.caselles[len(partial)]
@@ -361,7 +372,7 @@ class Backtracker:
 
 			# TODO: Heuristica que pot tallar bones solucions
 			if self.config.descartaNoPrometedores :
-				if idia and self.cost*self.ndies / idia > self.minimumCost:
+				if idia and self.cost*self.ndies / idia > self.cutoffCost:
 					self.cut("NoEarlyCost", partial,
 						"Tallant una solucio poc prometedora")
 					return
@@ -488,13 +499,13 @@ class Backtracker:
 					"{} te {} persones a la mateixa taula amb telefon a {}a hora del {}".format(
 						company, self.telefonsALaTaula[day, hora, taula], hora+1, day))
 
-			if self.cost + cost > self.minimumCost :
+			if self.cost + cost > self.cutoffCost :
 				self.cut("TooMuchCost", partial,
 					"Solucio masa costosa: {}"
 					.format(self.cost+cost))
 				break
 
-			if self.cost + cost == self.minimumCost and len(partial)<len(self.caselles)*0.7 :
+			if self.cost + cost == self.cutoffCost and len(partial)<len(self.caselles)*0.7 :
 				self.cut("CostEqual", partial,
 					"Solucio segurament massa costosa, no perdem temps: {}"
 					.format(self.cost+cost))
@@ -532,21 +543,24 @@ class Backtracker:
 			self.cost -= cost
 
 			# Si portem massa estona explorant el camí parem i provem un altre
-			if self.config.aleatori and self.nbactracks > self.backtrackDepth: break
+			if self.config.aleatori and self.nbactracks > self.backtrackDepth:
+				break
 
-	def reportSolution(self, solution) :
+	def reportSolution(self, partial, cost, penalties=[]) :
 		def properName(name):
 			"""Capitalizes name unless configuration provides
 			A better alternative, for example with tildes.
 			"""
 			return self.config.noms.get(name, name.title())
 
-		firstAtCost = self.minimumCost != self.__dict__.get('storedCost', 'resEsComparaAmbMi')
-		solution = dict(zip(self.caselles, solution))
+		firstAtCost = self.storedCost != (len(partial), cost)
+		ncaselles = len(self.caselles)
+		paddedPartial = (partial+['?']*ncaselles)[:ncaselles]
+		solution = dict(zip(self.caselles, paddedPartial))
 		htmlgen=HtmlGenFromSolution(self.config,solution,self.config.monday)
 		if firstAtCost:
 			# Is the first that good, start from scratch
-			self.storedCost = self.minimumCost
+			self.storedCost = (len(partial), cost)
 			personalColors = htmlgen.htmlColors()
 			header = htmlgen.htmlHeader()
 			subheader = htmlgen.htmlSubHeader()
@@ -565,18 +579,21 @@ class Backtracker:
 					subheader
 				)
 
-		solution = dict(zip(self.caselles, solution))
 		penalitzacions = (
 			htmlgen.htmlPenalizations(
-				self.minimumCost,
-				self.penalties
+				cost,
+				penalties
 			)
 		)
 		with open(self.config.monitoringFile,'a') as output:
 			output.write(htmlgen.htmlTable())
 			output.write(penalitzacions)
 		if firstAtCost:
-			htmlgen.getYaml().dump(self.outputYaml)
+			yaml = htmlgen.getYaml()
+			yaml.penalties = penalties
+			yaml.cost = cost
+			yaml.dump(self.outputYaml)
+
 			with open(self.outputFile,'a') as output:
 				output.write(
 					htmlgen.htmlTable()+
