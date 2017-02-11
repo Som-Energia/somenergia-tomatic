@@ -306,8 +306,10 @@ class Backtracker:
 		except KeyError:
 			self.cutLog[len(partial), motiu]=1
 
+		message = log or motiu
+
 		if motiu in args.verbose:
-			warn(log or motiu)
+			warn(message)
 
 		if self.deeperCutLog and self.deeperCutDepth > len(partial): return
 
@@ -318,7 +320,16 @@ class Backtracker:
 		if motiu == 'TotColocat':
 			return # Not worth to log
 
-		self.deeperCutLog.add(log or motiu)
+		if message in self.deeperCutLog:
+			return
+
+		warn(message)
+		self.deeperCutLog.add(message)
+
+		with open(self.config.monitoringFile,'a') as output:
+			output.write("<div class='error'>Incompletable: ")
+			output.write(message.decode("utf-8"))
+			output.write("</div>")
 
 
 
@@ -501,8 +512,8 @@ class Backtracker:
 
 			if self.cost + cost > self.cutoffCost :
 				self.cut("TooMuchCost", partial,
-					"Solucio masa costosa: {}"
-					.format(self.cost+cost))
+					"Afegir {} suma masa cost: {}"
+					.format(company, self.cost+cost))
 				break
 
 			if self.cost + cost == self.cutoffCost and len(partial)<len(self.caselles)*0.7 :
