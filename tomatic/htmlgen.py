@@ -241,10 +241,12 @@ class HtmlGen(object):
 
     def htmlFixExtensions(self):
         return (u"""<div class="extensions">\n"""
-                u"""<div class="extension """
-                u"""gijsbert">Inalàmbric<br/>3385</div>\n"""
+                u"""<div class="extension gijsbert">"""
+                u"""Inalàmbric<br/>3385</div>\n"""
                 u"""<div class="extension recepcio">"""
                 u"""Recepcio<br/>3405</div>\n"""
+                u"""<div class="extension contestador">"""
+                u"""Recepcio<br/>3193</div>\n"""
                 u"""</div>\n"""
                 u"""<h3>Recordatori desviaments</h3>\n"""
                 u"""<ul>\n"""
