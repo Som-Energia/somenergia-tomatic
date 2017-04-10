@@ -4,7 +4,7 @@ intervalCarrega: carrega{:02d}{:02d}{:02d} # Patró pel nom de l'interval on bus
 monitoringFile: taula.html
 
 nTelefons: 4
-diesCerca: ['dm', 'dv', 'dx', 'dl', 'dj',] # Els mes conflictius davant
+diesCerca: ['dm', 'dx', 'dl', 'dj',] # Els mes conflictius davant
 diesVisualitzacio: ['dl','dm','dx','dj','dv']
 
 hours:  # La darrera es per tancar
