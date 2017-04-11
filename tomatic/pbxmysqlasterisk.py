@@ -3,6 +3,11 @@
 
 from bisect import bisect
 
+def weekday(date):
+    if not hasattr(weekday, '_weekdays'):
+        weekday._weekdays = "dl dm dx dj dv ds dg".split()
+    return weekday._weekdays[date.weekday()]
+
 
 def peekQueue(schedule, day, hour):
     if schedule is None: return []
@@ -16,27 +21,6 @@ def peekQueue(schedule, day, hour):
         return []
 
 
-
-
-
-
-class Chooser(object):
-    def __init__(self):
-        self._config = None
-
-    def reconfigure(self, config):
-        self._config = config
-
-    def currentQueue(self, today, now):
-        if self._config is None: return []
-        turn = bisect(self._config.hours, now)
-        if turn <=0: return []
-        try:
-            return self._config.timetable[today][turn-1]
-        except IndexError:
-            return []
-        except KeyError:
-            return []
 
 
 # vim: ts=4 sw=4 et

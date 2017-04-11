@@ -2,10 +2,7 @@
 
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
-
-def weekday(date):
-    weekdays = "dl dm dx dj dv ds dg".split()
-    return weekdays[date.weekday()]
+from pbxmysqlasterisk import peekQueue, weekday
 
 class PbxMockup(object):
     """
