@@ -246,7 +246,7 @@ class HtmlGen(object):
                 u"""<div class="extension recepcio">"""
                 u"""Recepcio<br/>3405</div>\n"""
                 u"""<div class="extension contestador">"""
-                u"""Recepcio<br/>3193</div>\n"""
+                u"""Contestador<br/>3193</div>\n"""
                 u"""</div>\n"""
                 u"""<h3>Recordatori desviaments</h3>\n"""
                 u"""<ul>\n"""
