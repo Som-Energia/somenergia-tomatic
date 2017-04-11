@@ -29,10 +29,11 @@ class PbxMockup(object):
     def scheduledQueue(self):
         timetable = self._configuration.timetable
         now = self._now()
-        from bisect import bisect
         currentHour = "{0:%H:%m}".format(now)
-        turn = bisect(self._configuration.hours, currentHour)
         wd = weekday(now)
+
+        from bisect import bisect
+        turn = bisect(self._configuration.hours, currentHour)
         if wd not in timetable: return []
 
         if type(timetable[wd]) is list:

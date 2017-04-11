@@ -6,9 +6,9 @@ import unittest
 import pbxmysqlasterisk
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
-from pbxmysqlasterisk import peekQueue
+from scheduling import peekQueue
 
-class PbxMysqlAsterisk_Test(unittest.TestCase):
+class Scheduling_Test(unittest.TestCase):
 
     def setUp(self):
         now = datetime.now()
