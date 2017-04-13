@@ -3,7 +3,6 @@
 
 from .pbxmockup import weekday
 import unittest
-import pbxmysqlasterisk
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
 from scheduling import peekQueue

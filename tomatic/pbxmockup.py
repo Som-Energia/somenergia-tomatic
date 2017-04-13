@@ -2,7 +2,7 @@
 
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
-from pbxmysqlasterisk import peekQueue, weekday
+from scheduling import peekQueue, weekday
 
 class PbxMockup(object):
     """
