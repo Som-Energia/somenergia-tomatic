@@ -43,8 +43,7 @@ class Asterisk_Test(unittest.TestCase):
         asterisk_conf = schedule2asterisk(self.ns("""\
         timetable:
           dl:
-          -
-            - ana
+          - - ana
         hours:
         - '09:00'
         - '10:15'
@@ -69,8 +68,7 @@ class Asterisk_Test(unittest.TestCase):
         schedule = self.ns("""\
             timetable:
               dl:
-              -
-                - ana
+              - - ana
                 - jordi
                 - pere
             hours:
@@ -107,16 +105,13 @@ class Asterisk_Test(unittest.TestCase):
         schedule = self.ns("""\
         timetable:
           dl:
-          -
-            - ana
+          - - ana
             - jordi
             - pere
-          -
-            - pere
+          - - pere
             - jordi
           dm:
-          -
-            - jordi
+          - - jordi
             - ana
         hours:
         - '09:00'
@@ -197,17 +192,14 @@ class Asterisk_Test(unittest.TestCase):
        schedule = self.ns("""\
         timetable:
           dl:
-          -
-            - ana
+          - - ana
             - pere
             - jordi
           dm:
-          -
-            - ana
+          - - ana
             - pere
             - jordi
-          -
-            - pere
+          - - pere
             - jordi
             - ana
         hours:
@@ -254,8 +246,7 @@ class Asterisk_Test(unittest.TestCase):
        schedule = self.ns("""\
         timetable:
           dl:
-          -
-            - ana
+          - - ana
         hours:
         - '09:00'
         - '10:15'
@@ -281,8 +272,7 @@ class Asterisk_Test(unittest.TestCase):
        schedule = self.ns("""\
         timetable:
           dl:
-          -
-            - ana
+          - - ana
             - pere
             - jordi
         hours:
@@ -314,8 +304,7 @@ class Asterisk_Test(unittest.TestCase):
        schedule = self.ns("""\
         timetable:
           dl:
-          -
-            - ana
+          - - ana
         hours:
         - '09:00'
         - '10:15'
@@ -342,8 +331,7 @@ class Asterisk_Test(unittest.TestCase):
        schedule = self.ns("""\
         timetable:
           dl:
-          -
-            - ana
+          - - ana
             - pere
             - jordi
         hours:
@@ -377,13 +365,11 @@ class Asterisk_Test(unittest.TestCase):
         schedule = self.ns("""\
             timetable:
               dl:
-              -
-                - ana
+              - - ana
                 - pere
                 - jordi
               dm:
-              -
-                - ana
+              - - ana
                 - pere
                 - jordi
             hours:
