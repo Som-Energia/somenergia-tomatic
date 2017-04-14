@@ -14,7 +14,7 @@ setup(
     url = 'https://github.com/Som-Energia/somenergia-phonehours',
     long_description = readme,
     license = 'GNU General Public License v3 or later (GPLv3+)',
-    test_suite = 'tomatic',
+    test_suite = 'nose.collector',
     scripts=[
         'schedulehours.py',
         'tomatic_api.py',
@@ -28,6 +28,10 @@ setup(
         'Flask-Assets',
         'py-Asterisk',
         'paramiko',
+    ],
+    tests_require=[
+        'nose',
+        'rednose',
         'b2btest',
         'lxml',
         'wavefile',
@@ -45,3 +49,4 @@ setup(
     ],
 )
 
+# vim: et ts=4 sw=4
