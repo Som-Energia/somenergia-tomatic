@@ -36,7 +36,7 @@ class Storage(object):
             )
         return [
             filename[-len('yyyy-mm-dd.yaml'):-len('.yaml')]
-            for filename in glob.glob(pattern)
+            for filename in sorted(glob.glob(pattern))
             ]
 
 #vim: ts=4 sw=4 et
