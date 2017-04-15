@@ -102,8 +102,7 @@ class Schedule_Test(unittest.TestCase):
             - 'T1'
             timetable:
               dl:
-              -
-                 - festiu
+              - - festiu
             colors:
               ana:   aa11aa
               belen: bb22bb
@@ -151,8 +150,7 @@ class Schedule_Test(unittest.TestCase):
             - 'T1'
             timetable:
               dl:
-              -
-                - ana
+              - - ana
             colors:
               ana:   aa11aa
               belen: bb22bb
@@ -187,8 +185,7 @@ class Schedule_Test(unittest.TestCase):
             - 'T2'
             timetable:
               dl:
-              -
-                - ana
+              - - ana
                 - belen
             colors:
               ana: 'aa11aa'
