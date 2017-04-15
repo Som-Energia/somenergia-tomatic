@@ -3,8 +3,13 @@
 import unittest
 from callinfo import CallInfo
 import ooop
-import dbconfig
+try:
+    import dbconfig
+except ImportError:
+    dbconfig = None
 
+@unittest.skipIf(not dbconfig or not dbconfig.ooop,
+    "Requires configuring dbconfig.ooop")
 class CallInfo_Test(unittest.TestCase):
 
     def setUp(self):
