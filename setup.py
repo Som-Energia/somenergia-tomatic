@@ -32,6 +32,7 @@ setup(
     tests_require=[
         'nose',
         'rednose',
+        'coverage',
         'b2btest',
         'lxml',
         'wavefile',
