@@ -5,8 +5,12 @@ from .pbxmockup import weekday
 import unittest
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
+<<<<<<< c583ae7a17da0de5f93f41fbb602ee8607f4cc1a
 from yamlns.dateutils import Date
 from scheduling import peekQueue, weekstart, nextweek
+=======
+from scheduling import peekQueue, Scheduling
+>>>>>>> Scheduling.extension,extensionToName
 
 class Scheduling_Test(unittest.TestCase):
 
@@ -172,13 +176,57 @@ class Scheduling_Test(unittest.TestCase):
             'cesar',
             ])
 
+<<<<<<< c583ae7a17da0de5f93f41fbb602ee8607f4cc1a
     @unittest.skip("TODO")
     def test_peekQueue_withNobodySlots(self): "TODO"
+=======
+    def test_extension_existing(self):
+        schedule = Scheduling("""\
+            extensions:
+              cesar: 200
+            """)
+        self.assertEqual(
+            schedule.extension('cesar'),
+            '200')
+>>>>>>> Scheduling.extension,extensionToName
+
+    def test_extension_badExtension(self):
+        schedule = Scheduling("""\
+            extensions:
+              cesar: 200
+            """)
+        self.assertEqual(
+            schedule.extension('notExisting'),
+            None)
+
+    def test_extensionToName_stringExtension(self):
+        schedule = Scheduling("""\
+            extensions:
+              cesar: 200
+            """)
+        self.assertEqual(
+            schedule.extensionToName('200'),
+            'cesar')
+
+    def test_extensionToName_intExtension(self):
+        schedule = Scheduling("""\
+            extensions:
+              cesar: 200
+            """)
+        self.assertEqual(
+            schedule.extensionToName(200),
+            'cesar')
 
 
+
+<<<<<<< c583ae7a17da0de5f93f41fbb602ee8607f4cc1a
+unittest.TestCase.__str__ = unittest.TestCase.id
+
+
+=======
 
 
 unittest.TestCase.__str__ = unittest.TestCase.id
 
-
+>>>>>>> Scheduling.extension,extensionToName
 # vim: ts=4 sw=4 et

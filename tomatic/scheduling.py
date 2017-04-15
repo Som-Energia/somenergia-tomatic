@@ -3,6 +3,7 @@
 
 from bisect import bisect
 from datetime import timedelta
+from yamlns import namespace as ns
 
 def weekday(date):
     "Given a date gives the catalan short for the weekday"
@@ -10,7 +11,6 @@ def weekday(date):
         weekday._weekdays = "dl dm dx dj dv ds dg".split()
 
     return weekday._weekdays[date.weekday()]
-
 
 def weekstart(date):
     "Given a date retunrs the monday of the week"
@@ -30,7 +30,21 @@ def peekQueue(schedule, day, hour):
     except KeyError: # Day not found
         return []
 
+class Scheduling(object):
 
+    def __init__(self, yaml):
+        self._data = ns.loads(yaml)
 
+    def extension(self,name):
+        extensions = self._data.extensions
+        if name not in extensions:
+            return None
+        return str(extensions[name])
+
+    def extensionToName(self, extension):
+        extensions = self._data.extensions
+        inverse = dict(item[::-1]
+            for item in extensions.items())
+        return inverse[int(extension)]
 
 # vim: ts=4 sw=4 et
