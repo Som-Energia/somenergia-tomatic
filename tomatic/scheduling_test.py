@@ -5,7 +5,8 @@ from .pbxmockup import weekday
 import unittest
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
-from scheduling import peekQueue
+from yamlns.dateutils import Date
+from scheduling import peekQueue, weekstart, nextweek
 
 class Scheduling_Test(unittest.TestCase):
 
@@ -14,6 +15,39 @@ class Scheduling_Test(unittest.TestCase):
         self.today = weekday(now)
         self.currentHour = now.hour
         self.nextday = weekday(now+timedelta(days=1))
+
+    def test_weekday_withSunday(self):
+        self.assertEqual(
+            'dg', weekday(Date("2017-10-01")))
+
+    def test_weekday_withMonday(self):
+        self.assertEqual(
+            'dl', weekday(Date("2017-10-02")))
+
+    def test_weekday_withWenesday(self):
+        self.assertEqual(
+            'dx', weekday(Date("2017-10-04")))
+
+    def test_weekstart_withMonday(self):
+        self.assertEqual(
+            weekstart(Date("2017-10-02")),
+            Date("2017-10-02"))
+
+    def test_weekstart_withFriday(self):
+        self.assertEqual(
+            weekstart(Date("2017-10-06")),
+            Date("2017-10-02"))
+
+    def test_nextweek_withMonday(self):
+        self.assertEqual(
+            nextweek(Date("2017-10-02")),
+            Date("2017-10-09"))
+
+    def test_nextweek_withFriday(self):
+        self.assertEqual(
+            nextweek(Date("2017-10-06")),
+            Date("2017-10-09"))
+
 
     def test_peekQueue_oneSlot_oneTurn(self):
         schedule = ns.loads(u"""\
@@ -138,9 +172,13 @@ class Scheduling_Test(unittest.TestCase):
             'cesar',
             ])
 
-        
+    @unittest.skip("TODO")
+    def test_peekQueue_withNobodySlots(self): "TODO"
 
+
+
+
+unittest.TestCase.__str__ = unittest.TestCase.id
 
 
 # vim: ts=4 sw=4 et
-

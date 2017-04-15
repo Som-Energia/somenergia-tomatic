@@ -26,6 +26,8 @@ setup(
         'parse',
         'Flask',
         'Flask-Assets',
+        'Flask-Script',
+        'jsmin',
         'py-Asterisk',
         'paramiko',
     ],
