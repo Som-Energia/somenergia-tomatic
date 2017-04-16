@@ -34,7 +34,10 @@ def choosers(now):
 class Scheduling(object):
 
     def __init__(self, yaml):
-        self._data = ns.loads(yaml)
+        if type(yaml) in (ns, dict):
+            self._data = ns(yaml) # untested
+        else:
+            self._data = ns.loads(yaml)
 
     def extension(self,name):
         extensions = self._data.extensions

@@ -32,7 +32,7 @@ class PbxMockup(object):
         currentHour = "{0:%H:%m}".format(now)
         wd = weekday(now)
 
-        schedule = Scheduling(self._configuration.dump())
+        schedule = Scheduling(self._configuration)
 
         return [
             ns( key=who, paused= who in self._paused)

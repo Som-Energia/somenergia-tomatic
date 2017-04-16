@@ -2,7 +2,7 @@
 import random
 import datetime
 from yamlns import namespace as ns
-from .scheduling import weekday, weekstart, nextweek
+from .scheduling import weekday, weekstart, nextweek, Scheduling
 
 class HtmlGen(object):
 
@@ -14,12 +14,12 @@ class HtmlGen(object):
         return weekstart(date)
 
     def properName(self,name):
-        name = self.yaml.names[name] if name in self.yaml.names else name
-        return name.title()
+        sched = Scheduling(self.yaml)
+        return sched.properName(name)
 
     def intervals(self):
-        lines = [str(h) for h in self.yaml.hours ]
-        return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
+        sched = Scheduling(self.yaml)
+        return sched.intervals()
 
     def partialCoreTable(self,day,time):
         return "".join([
