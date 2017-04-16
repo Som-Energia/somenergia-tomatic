@@ -2422,7 +2422,7 @@ class Schedule_Test(unittest.TestCase):
         yaml = """\
         timetable:
           dl:
-          -
+            1:
             - ana
             - pere
             - jordi
@@ -2472,11 +2472,11 @@ class Schedule_Test(unittest.TestCase):
         yaml = """\
         timetable:
           dl:
-          -
+            1:
             - ana
             - pere
             - jordi
-          -
+            2:
             - jordi
             - pere
             - ana
