@@ -4,9 +4,8 @@
 from .pbxmockup import weekday
 import unittest
 from datetime import datetime, timedelta, time
-from yamlns import namespace as ns
 from yamlns.dateutils import Date
-from scheduling import peekQueue, weekstart, nextweek, choosers, Scheduling
+from scheduling import weekstart, nextweek, choosers, Scheduling
 
 class Scheduling_Test(unittest.TestCase):
 
@@ -272,7 +271,7 @@ class Scheduling_Test(unittest.TestCase):
             ])
 
     def test_peekQueue_twoTimes(self):
-        schedule = ns.loads(u"""\
+        schedule = Scheduling(u"""\
             timetable:
               dl:
               -
@@ -288,12 +287,12 @@ class Scheduling_Test(unittest.TestCase):
               cesar: 200
               eduard: 201
             """)
-        self.assertEqual(peekQueue(schedule,'dl','12:00'), [
+        self.assertEqual(schedule.peekQueue('dl','12:00'), [
             'eduard',
             ])
 
     def test_peekQueue_beforeTime(self):
-        schedule = ns.loads(u"""\
+        schedule = Scheduling(u"""\
             timetable:
               dl:
               -
@@ -305,11 +304,11 @@ class Scheduling_Test(unittest.TestCase):
             extensions:
               cesar: 200
             """)
-        self.assertEqual(peekQueue(schedule,'dl', '12:00'), [
+        self.assertEqual(schedule.peekQueue('dl', '12:00'), [
             ])
 
     def test_peekQueue_afterTime(self):
-        schedule = ns.loads(u"""\
+        schedule = Scheduling(u"""\
             timetable:
               dl:
               -
@@ -321,11 +320,11 @@ class Scheduling_Test(unittest.TestCase):
             extensions:
               cesar: 200
             """)
-        self.assertEqual(peekQueue(schedule,'dl','12:00'), [
+        self.assertEqual(schedule.peekQueue('dl','12:00'), [
             ])
 
     def test_peekQueue_nonExistingDay(self):
-        schedule = ns.loads(u"""\
+        schedule = Scheduling(u"""\
             timetable:
               dm:
               -
@@ -337,11 +336,11 @@ class Scheduling_Test(unittest.TestCase):
             extensions:
               cesar: 200
             """)
-        self.assertEqual(peekQueue(schedule,'dl','12:00'), [
+        self.assertEqual(schedule.peekQueue('dl','12:00'), [
             ])
 
     def test_peekQueue_aDifferentDay(self):
-        schedule = ns.loads(u"""\
+        schedule = Scheduling(u"""\
             timetable:
               dm:
               -
@@ -353,7 +352,7 @@ class Scheduling_Test(unittest.TestCase):
             extensions:
               cesar: 200
             """)
-        self.assertEqual(peekQueue(schedule,'dm','12:00'), [
+        self.assertEqual(schedule.peekQueue('dm','12:00'), [
             'cesar',
             ])
 
