@@ -31,17 +31,6 @@ def choosers(now):
         "{:%H:%M}".format(now)
         )
 
-def peekQueue(schedule, day, hour):
-    if schedule is None: return []
-    turn = bisect(schedule.hours, hour)
-    if turn <=0: return [] # Turn before first hour
-    try:
-        return schedule.timetable[day][turn-1]
-    except IndexError: # Turn after first hour
-        return []
-    except KeyError: # Day not found
-        return []
-
 class Scheduling(object):
 
     def __init__(self, yaml):
@@ -79,7 +68,16 @@ class Scheduling(object):
         return turn-1
 
     def peekQueue(self, day, hour):
-        return peekQueue(self._data, day, hour)
+        schedule = self._data
+        turn = bisect(schedule.hours, hour)
+        if turn <=0: return [] # Turn before first hour
+        try:
+            return schedule.timetable[day][turn-1]
+        except IndexError: # Turn after first hour
+            return []
+        except KeyError: # Day not found
+            return []
+
 
 
 
