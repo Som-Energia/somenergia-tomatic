@@ -2,7 +2,7 @@
 
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
-from scheduling import weekday
+from scheduling import weekday, Scheduling
 
 class PbxMockup(object):
     """
@@ -32,22 +32,11 @@ class PbxMockup(object):
         currentHour = "{0:%H:%m}".format(now)
         wd = weekday(now)
 
-        from bisect import bisect
-        turn = bisect(self._configuration.hours, currentHour)
-        if wd not in timetable: return []
-
-        if type(timetable[wd]) is list:
-            turn-=1
-            if turn<0: return []
-
-        try:
-            lines = timetable[wd][turn]
-        except IndexError: return []
-        except KeyError: return []
+        schedule = Scheduling(self._configuration.dump())
 
         return [
             ns( key=who, paused= who in self._paused)
-            for who in timetable[wd][turn]
+            for who in schedule.peekQueue(wd, currentHour)
             ]
 
     def currentQueue(self):

@@ -69,14 +69,18 @@ class Scheduling(object):
 
     def peekQueue(self, day, hour):
         schedule = self._data
-        turn = bisect(schedule.hours, hour)
-        if turn <=0: return [] # Turn before first hour
-        try:
-            return schedule.timetable[day][turn-1]
-        except IndexError: # Turn after first hour
-            return []
-        except KeyError: # Day not found
-            return []
+        turn = self.peekInterval(hour)
+
+        if day not in schedule.timetable:
+            return [] # Holidays
+
+        if turn is None:
+            return [] # Not in phone hours
+
+        if type(schedule.timetable[day]) is list:
+            return schedule.timetable[day][turn]
+
+        return schedule.timetable[day][turn+1]
 
 
 

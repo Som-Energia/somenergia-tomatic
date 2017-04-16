@@ -26,7 +26,7 @@ class PbxMockup_Test(unittest.TestCase):
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
-                1:
+              -
                 - cesar
             hours:
             - '00:00'
@@ -46,7 +46,7 @@ class PbxMockup_Test(unittest.TestCase):
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
-                1:
+              -
                 - cesar
                 - eduard
             hours:
@@ -68,9 +68,9 @@ class PbxMockup_Test(unittest.TestCase):
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
-                1:
+              -
                 - cesar
-                2:
+              -
                 - eduard
             hours:
             - '00:00'
@@ -93,7 +93,7 @@ class PbxMockup_Test(unittest.TestCase):
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
-                1:
+              -
                 - cesar
             hours:
             - '23:58'
@@ -112,7 +112,7 @@ class PbxMockup_Test(unittest.TestCase):
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
-                1:
+              -
                 - cesar
             hours:
             - '00:00'
@@ -132,7 +132,7 @@ class PbxMockup_Test(unittest.TestCase):
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
-                1:
+              -
                 - cesar
             hours:
             - '00:00'
@@ -153,7 +153,7 @@ class PbxMockup_Test(unittest.TestCase):
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
-                1:
+              -
                 - cesar
                 - eduard
             hours:
@@ -176,7 +176,7 @@ class PbxMockup_Test(unittest.TestCase):
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
-                1:
+              -
                 - cesar
             hours:
             - '00:00'
@@ -198,7 +198,7 @@ class PbxMockup_Test(unittest.TestCase):
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
-                1:
+              -
                 - cesar
             hours:
             - '00:00'
@@ -216,12 +216,12 @@ class PbxMockup_Test(unittest.TestCase):
             ns( key='cesar', paused=False),
             ])
 
-    def test_currentQueue_withListFormat(self):
+    def test_currentQueue_withKeyFormat(self):
         pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\
             timetable:
               {today}:
-              -
+                1:
                 - cesar
                 - eduard
             hours:

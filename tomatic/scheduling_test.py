@@ -323,7 +323,7 @@ class Scheduling_Test(unittest.TestCase):
         self.assertEqual(schedule.peekQueue('dl','12:00'), [
             ])
 
-    def test_peekQueue_nonExistingDay(self):
+    def test_peekQueue_holiday(self):
         schedule = Scheduling(u"""\
             timetable:
               dm:
@@ -353,6 +353,23 @@ class Scheduling_Test(unittest.TestCase):
               cesar: 200
             """)
         self.assertEqual(schedule.peekQueue('dm','12:00'), [
+            'cesar',
+            ])
+
+    def test_peekQueue_dictFormat(self):
+        schedule = Scheduling(u"""\
+            timetable:
+              dl:
+                1:
+                - cesar
+            hours:
+            - '00:00'
+            - '24:00'
+
+            extensions:
+              cesar: 200
+            """)
+        self.assertEqual(schedule.peekQueue('dl','12:00'), [
             'cesar',
             ])
 
