@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- utf8 -*-
+# -*- coding: utf8 -*-
 
 from bisect import bisect
 from datetime import timedelta
@@ -46,5 +46,16 @@ class Scheduling(object):
         inverse = dict(item[::-1]
             for item in extensions.items())
         return inverse[int(extension)]
+
+    def properName(self, name):
+        names = self._data.get('names',{})
+        if name in names:
+            return names[name]
+        return name.title()
+
+    def intervals(self):
+        hours = self._data.hours
+        return ['-'.join((h1,h2)) for h1,h2 in zip(hours,hours[1:]) ]
+
 
 # vim: ts=4 sw=4 et

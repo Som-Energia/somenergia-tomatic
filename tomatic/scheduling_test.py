@@ -1,16 +1,12 @@
 #!/usr/bin/env python
-# -*- utf8 -*-
+# -*- coding: utf8 -*-
 
 from .pbxmockup import weekday
 import unittest
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
-<<<<<<< c583ae7a17da0de5f93f41fbb602ee8607f4cc1a
 from yamlns.dateutils import Date
-from scheduling import peekQueue, weekstart, nextweek
-=======
-from scheduling import peekQueue, Scheduling
->>>>>>> Scheduling.extension,extensionToName
+from scheduling import peekQueue, weekstart, nextweek, Scheduling
 
 class Scheduling_Test(unittest.TestCase):
 
@@ -176,10 +172,10 @@ class Scheduling_Test(unittest.TestCase):
             'cesar',
             ])
 
-<<<<<<< c583ae7a17da0de5f93f41fbb602ee8607f4cc1a
     @unittest.skip("TODO")
-    def test_peekQueue_withNobodySlots(self): "TODO"
-=======
+    def test_peekQueue_withNobodySlots(self): pass
+
+
     def test_extension_existing(self):
         schedule = Scheduling("""\
             extensions:
@@ -188,7 +184,6 @@ class Scheduling_Test(unittest.TestCase):
         self.assertEqual(
             schedule.extension('cesar'),
             '200')
->>>>>>> Scheduling.extension,extensionToName
 
     def test_extension_badExtension(self):
         schedule = Scheduling("""\
@@ -217,16 +212,57 @@ class Scheduling_Test(unittest.TestCase):
             schedule.extensionToName(200),
             'cesar')
 
+    def test_properName_whenPresent(self):
+        schedule = Scheduling("""\
+            names:
+              cesar: César
+            """)
+        self.assertEqual(
+            schedule.properName('cesar'),
+            u'César')
+
+    def test_properName_missing_usesTitle(self):
+        schedule = Scheduling("""\
+            names:
+              cesar: César
+            """)
+        self.assertEqual(
+            schedule.properName('perico'),
+            u'Perico')
+
+    def test_properName_noNamesAtAll(self):
+        schedule = Scheduling("""\
+            otherkey:
+            """)
+        self.assertEqual(
+            schedule.properName('perico'),
+            u'Perico')
+
+    def test_intervals(self):
+        schedule = Scheduling("""\
+            hours:
+            - '09:00'
+            - '10:15'
+            """)
+        self.assertEqual(
+            schedule.intervals(), [
+            '09:00-10:15',
+            ])
+
+    def test_intervals_withMoreThanTwo(self):
+        schedule = Scheduling("""\
+            hours:
+            - '09:00'
+            - '10:15'
+            - '11:30'
+            """)
+        self.assertEqual(
+            schedule.intervals(), [
+            '09:00-10:15',
+            '10:15-11:30',
+            ])
 
 
-<<<<<<< c583ae7a17da0de5f93f41fbb602ee8607f4cc1a
 unittest.TestCase.__str__ = unittest.TestCase.id
 
-
-=======
-
-
-unittest.TestCase.__str__ = unittest.TestCase.id
-
->>>>>>> Scheduling.extension,extensionToName
 # vim: ts=4 sw=4 et

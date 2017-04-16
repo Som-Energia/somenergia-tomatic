@@ -2,6 +2,7 @@
 import random
 import datetime
 from yamlns import namespace as ns
+from .scheduling import weekday, weekstart, nextweek
 
 class HtmlGen(object):
 
