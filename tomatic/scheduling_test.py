@@ -3,18 +3,17 @@
 
 from .pbxmockup import weekday
 import unittest
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from yamlns import namespace as ns
 from yamlns.dateutils import Date
-from scheduling import peekQueue, weekstart, nextweek, Scheduling
+from scheduling import peekQueue, weekstart, nextweek, choosers, Scheduling
 
 class Scheduling_Test(unittest.TestCase):
 
     def setUp(self):
-        now = datetime.now()
-        self.today = weekday(now)
-        self.currentHour = now.hour
-        self.nextday = weekday(now+timedelta(days=1))
+        ''
+
+    # weekday
 
     def test_weekday_withSunday(self):
         self.assertEqual(
@@ -28,6 +27,8 @@ class Scheduling_Test(unittest.TestCase):
         self.assertEqual(
             'dx', weekday(Date("2017-10-04")))
 
+    # weekstart
+
     def test_weekstart_withMonday(self):
         self.assertEqual(
             weekstart(Date("2017-10-02")),
@@ -37,6 +38,8 @@ class Scheduling_Test(unittest.TestCase):
         self.assertEqual(
             weekstart(Date("2017-10-06")),
             Date("2017-10-02"))
+
+    # nextweek
 
     def test_nextweek_withMonday(self):
         self.assertEqual(
@@ -48,9 +51,192 @@ class Scheduling_Test(unittest.TestCase):
             nextweek(Date("2017-10-06")),
             Date("2017-10-09"))
 
+    # extension
+
+    def test_extension_existing(self):
+        schedule = Scheduling("""\
+            extensions:
+              cesar: 200
+            """)
+        self.assertEqual(
+            schedule.extension('cesar'),
+            '200')
+
+    def test_extension_badExtension(self):
+        schedule = Scheduling("""\
+            extensions:
+              cesar: 200
+            """)
+        self.assertEqual(
+            schedule.extension('notExisting'),
+            None)
+
+    # extensionToName
+
+    def test_extensionToName_stringExtension(self):
+        schedule = Scheduling("""\
+            extensions:
+              cesar: 200
+            """)
+        self.assertEqual(
+            schedule.extensionToName('200'),
+            'cesar')
+
+    def test_extensionToName_intExtension(self):
+        schedule = Scheduling("""\
+            extensions:
+              cesar: 200
+            """)
+        self.assertEqual(
+            schedule.extensionToName(200),
+            'cesar')
+
+    # properName
+
+    def test_properName_whenPresent(self):
+        schedule = Scheduling("""\
+            names:
+              cesar: César
+            """)
+        self.assertEqual(
+            schedule.properName('cesar'),
+            u'César')
+
+    def test_properName_missing_usesTitle(self):
+        schedule = Scheduling("""\
+            names:
+              cesar: César
+            """)
+        self.assertEqual(
+            schedule.properName('perico'),
+            u'Perico')
+
+    def test_properName_noNamesAtAll(self):
+        schedule = Scheduling("""\
+            otherkey:
+            """)
+        self.assertEqual(
+            schedule.properName('perico'),
+            u'Perico')
+
+    # intervals
+
+    def test_intervals_withOneDate_notEnough(self):
+        schedule = Scheduling("""\
+            hours:
+            - '09:00'
+            """)
+        self.assertEqual(
+            schedule.intervals(), [
+            ])
+
+    def test_intervals_withTwoDates(self):
+        schedule = Scheduling("""\
+            hours:
+            - '09:00'
+            - '10:15'
+            """)
+        self.assertEqual(
+            schedule.intervals(), [
+            '09:00-10:15',
+            ])
+
+    def test_intervals_withMoreThanTwo(self):
+        schedule = Scheduling("""\
+            hours:
+            - '09:00'
+            - '10:15'
+            - '11:30'
+            """)
+        self.assertEqual(
+            schedule.intervals(), [
+            '09:00-10:15',
+            '10:15-11:30',
+            ])
+
+    # peekInterval
+
+    def test_peekInterval_beforeAnyInterval(self):
+        schedule = Scheduling("""\
+            hours:
+            - '09:00'
+            - '10:15'
+            - '11:30'
+            """)
+        self.assertEqual(
+            schedule.peekInterval("08:59"),None)
+
+    def test_peekInterval_justInFirstInterval(self):
+        schedule = Scheduling("""\
+            hours:
+            - '09:00'
+            - '10:15'
+            - '11:30'
+            """)
+        self.assertEqual(
+            schedule.peekInterval("09:00"),0)
+
+    def test_peekInterval_justBeforeNextInterval(self):
+        schedule = Scheduling("""\
+            hours:
+            - '09:00'
+            - '10:15'
+            - '11:30'
+            """)
+        self.assertEqual(
+            schedule.peekInterval("10:14"),0)
+
+    def test_peekInterval_justInNextInterval(self):
+        schedule = Scheduling("""\
+            hours:
+            - '09:00'
+            - '10:15'
+            - '11:30'
+            """)
+        self.assertEqual(
+            schedule.peekInterval("10:15"),1)
+
+    def test_peekInterval_justAtTheEndOfLastInterval(self):
+        schedule = Scheduling("""\
+            hours:
+            - '09:00'
+            - '10:15'
+            - '11:30'
+            """)
+        self.assertEqual(
+            schedule.peekInterval("11:29"),1)
+
+    def test_peekInterval_pastLastInterval(self):
+        schedule = Scheduling("""\
+            hours:
+            - '09:00'
+            - '10:15'
+            - '11:30'
+            """)
+        self.assertEqual(
+            schedule.peekInterval("11:30"),None)
+
+    def test_peekInterval_withNoHours(self):
+        schedule = Scheduling("""\
+            other:
+            """)
+        with self.assertRaises(Exception) as ctx:
+            schedule.peekInterval("11:30")
+        self.assertEqual(str(ctx.exception),
+            "Schedule with no hours attribute")
+
+    # choosers
+
+    def test_choosers(self):
+        now = datetime(2017,10,20,15,25,35)
+        self.assertEqual(
+            choosers(now),
+            ("2017-10-16", 'dv', "15:25"))
+
+    # peekQueue
 
     def test_peekQueue_oneSlot_oneTurn(self):
-        schedule = ns.loads(u"""\
+        schedule = Scheduling(u"""\
             timetable:
               dl:
               -
@@ -62,12 +248,12 @@ class Scheduling_Test(unittest.TestCase):
             extensions:
               cesar: 200
             """)
-        self.assertEqual(peekQueue(schedule,'dl','12:00'), [
+        self.assertEqual(schedule.peekQueue('dl','12:00'), [
             'cesar',
             ])
 
     def test_peekQueue_oneSlot_twoTurns(self):
-        schedule = ns.loads(u"""\
+        schedule = Scheduling(u"""\
             timetable:
               'dl':
               -
@@ -80,11 +266,10 @@ class Scheduling_Test(unittest.TestCase):
             extensions:
               cesar: 200
             """)
-        self.assertEqual(peekQueue(schedule,'dl','12:00'), [
+        self.assertEqual(schedule.peekQueue('dl','12:00'), [
             'cesar',
             'eduard',
             ])
-
 
     def test_peekQueue_twoTimes(self):
         schedule = ns.loads(u"""\
@@ -174,93 +359,6 @@ class Scheduling_Test(unittest.TestCase):
 
     @unittest.skip("TODO")
     def test_peekQueue_withNobodySlots(self): pass
-
-
-    def test_extension_existing(self):
-        schedule = Scheduling("""\
-            extensions:
-              cesar: 200
-            """)
-        self.assertEqual(
-            schedule.extension('cesar'),
-            '200')
-
-    def test_extension_badExtension(self):
-        schedule = Scheduling("""\
-            extensions:
-              cesar: 200
-            """)
-        self.assertEqual(
-            schedule.extension('notExisting'),
-            None)
-
-    def test_extensionToName_stringExtension(self):
-        schedule = Scheduling("""\
-            extensions:
-              cesar: 200
-            """)
-        self.assertEqual(
-            schedule.extensionToName('200'),
-            'cesar')
-
-    def test_extensionToName_intExtension(self):
-        schedule = Scheduling("""\
-            extensions:
-              cesar: 200
-            """)
-        self.assertEqual(
-            schedule.extensionToName(200),
-            'cesar')
-
-    def test_properName_whenPresent(self):
-        schedule = Scheduling("""\
-            names:
-              cesar: César
-            """)
-        self.assertEqual(
-            schedule.properName('cesar'),
-            u'César')
-
-    def test_properName_missing_usesTitle(self):
-        schedule = Scheduling("""\
-            names:
-              cesar: César
-            """)
-        self.assertEqual(
-            schedule.properName('perico'),
-            u'Perico')
-
-    def test_properName_noNamesAtAll(self):
-        schedule = Scheduling("""\
-            otherkey:
-            """)
-        self.assertEqual(
-            schedule.properName('perico'),
-            u'Perico')
-
-    def test_intervals(self):
-        schedule = Scheduling("""\
-            hours:
-            - '09:00'
-            - '10:15'
-            """)
-        self.assertEqual(
-            schedule.intervals(), [
-            '09:00-10:15',
-            ])
-
-    def test_intervals_withMoreThanTwo(self):
-        schedule = Scheduling("""\
-            hours:
-            - '09:00'
-            - '10:15'
-            - '11:30'
-            """)
-        self.assertEqual(
-            schedule.intervals(), [
-            '09:00-10:15',
-            '10:15-11:30',
-            ])
 
 
 unittest.TestCase.__str__ = unittest.TestCase.id

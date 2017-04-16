@@ -8,14 +8,10 @@ class HtmlGen(object):
 
     @staticmethod
     def iniciSetmana(date=None):
-        from datetime import date as dateModule, timedelta
-        import datetime
         if date is None:
-            # If no date provided, take the next monday
-            today = dateModule.today()
-            return today + timedelta(days=7-today.weekday())
+            return nextweek(datetime.date.today())
         # take the monday of the week including that date
-        return date - timedelta(days=date.weekday())
+        return weekstart(date)
 
     def properName(self,name):
         name = self.yaml.names[name] if name in self.yaml.names else name
