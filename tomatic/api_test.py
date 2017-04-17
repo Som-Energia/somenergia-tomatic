@@ -5,7 +5,7 @@ import unittest
 from yamlns import namespace as ns
 from datetime import datetime
 
-from .htmlgen import HtmlGenFromYaml
+from .htmlgen import HtmlGen
 from .asterisk import HtmlGenFromAsterisk
 from . import api
 
@@ -21,9 +21,9 @@ def setNow(year,month,day,hour,minute):
 def loadYaml(yaml):
     parsedYaml = ns.loads(yaml)
     week = str(parsedYaml.week)
-    api.hs[week]=HtmlGenFromYaml(parsedYaml)
+    api.hs[week]=HtmlGen(parsedYaml)
 
-startOfWeek = HtmlGenFromYaml.iniciSetmana(
+startOfWeek = HtmlGen.iniciSetmana(
     datetime.now()
 )
 

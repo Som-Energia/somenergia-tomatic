@@ -6,6 +6,9 @@ from .scheduling import weekday, weekstart, nextweek, Scheduling
 
 class HtmlGen(object):
 
+    def __init__(self, yaml):
+        self.yaml = yaml
+
     @staticmethod
     def iniciSetmana(date=None):
         if date is None:
@@ -230,8 +233,7 @@ class HtmlGen(object):
 
 
 class HtmlGenFromYaml(HtmlGen):
-    def __init__(self, yaml):
-        self.yaml = yaml
+    ""
 
 class HtmlGenFromSolution(HtmlGen):
 

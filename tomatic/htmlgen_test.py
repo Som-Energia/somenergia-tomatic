@@ -9,7 +9,7 @@ from parse import parse
 import random
 import datetime
 
-from htmlgen import HtmlGenFromYaml
+from htmlgen import HtmlGen
 from htmlgen import schedule2asterisk
 
 class Schedule_Test(unittest.TestCase):
@@ -36,7 +36,7 @@ class Schedule_Test(unittest.TestCase):
         self.addTypeEqualityFunc(ns,self.eqOrdDict)
 
     def test_htmlTable_oneslot(self):
-        h=HtmlGenFromYaml(self.ns("""\
+        h=HtmlGen(self.ns("""\
             week: '2016-07-25'
             timetable:
               dl:
@@ -71,7 +71,7 @@ class Schedule_Test(unittest.TestCase):
             u"</table>")
 
     def test_htmlTable_twoTelephonesOneTurnOneDay(self):
-        h=HtmlGenFromYaml(self.ns("""\
+        h=HtmlGen(self.ns("""\
             week: '2016-07-25'
             timetable:
               dl:
@@ -110,7 +110,7 @@ class Schedule_Test(unittest.TestCase):
             u"""</table>""")
 
     def test_htmlTable_twoTelephonesTwoTurnsOneDay(self):
-        h=HtmlGenFromYaml(self.ns("""\
+        h=HtmlGen(self.ns("""\
             week: '2016-07-25'
             timetable:
               dl:
@@ -156,7 +156,7 @@ class Schedule_Test(unittest.TestCase):
             u"""</table>""")
 
     def test_htmlTable_twoTelephonesTwoTurnsTwoDays(self):
-        h=HtmlGenFromYaml(self.ns("""\
+        h=HtmlGen(self.ns("""\
             week: '2016-07-25'
             timetable:
               dl:
@@ -218,7 +218,7 @@ class Schedule_Test(unittest.TestCase):
             u"""</table>""")
 
     def test_htmlTable_manyTelephonesmanyTurnsmanyDays(self):
-        h=HtmlGenFromYaml(self.ns("""\
+        h=HtmlGen(self.ns("""\
             week: '2016-07-25'
             timetable:
               dl:
@@ -426,7 +426,7 @@ class Schedule_Test(unittest.TestCase):
             u"""</table>""")
 
     def test_htmlExtension_oneExtension(self):
-        h = HtmlGenFromYaml(self.ns("""\
+        h = HtmlGen(self.ns("""\
             extensions:
                marta:  3040
             names:
@@ -440,7 +440,7 @@ class Schedule_Test(unittest.TestCase):
         """</div>""")
 
     def test_htmlExtension_twoExtensions(self):
-        h = HtmlGenFromYaml(self.ns("""\
+        h = HtmlGen(self.ns("""\
             extensions:
                marta:  3040
                aleix:  3053
@@ -456,7 +456,7 @@ class Schedule_Test(unittest.TestCase):
         """</div>""")
 
     def test_htmlExtension_noExtensions(self):
-        h = HtmlGenFromYaml(self.ns("""\
+        h = HtmlGen(self.ns("""\
             names:
                cesar: César
                """)
@@ -467,14 +467,14 @@ class Schedule_Test(unittest.TestCase):
         """</div>""")
 
     def test_htmlHeader_properSetmana(self):
-        h = HtmlGenFromYaml(self.ns("""\
+        h = HtmlGen(self.ns("""\
             week: '2016-07-25'
                 """)
         )
         self.assertMultiLineEqual(h.htmlSetmana(),"""<h1>Setmana 2016-07-25</h1>""")
 
     def test_htmlHeader_noSetmana(self):
-        h = HtmlGenFromYaml(self.ns("""\
+        h = HtmlGen(self.ns("""\
             names:
                cesar: César
                 """)
@@ -482,7 +482,7 @@ class Schedule_Test(unittest.TestCase):
         self.assertMultiLineEqual(h.htmlSetmana(),"""<h1>Setmana ???</h1>""")
 
     def test_htmlColors_oneColor(self):
-        h = HtmlGenFromYaml(self.ns("""\
+        h = HtmlGen(self.ns("""\
             colors:
                marc: fbe8bc
             extensions:
@@ -495,7 +495,7 @@ class Schedule_Test(unittest.TestCase):
         )
 
     def test_htmlColors_forceRandomColor(self):
-        h = HtmlGenFromYaml(self.ns("""\
+        h = HtmlGen(self.ns("""\
             colors:
                marc: fbe8bc
             randomColors: true
@@ -515,7 +515,7 @@ class Schedule_Test(unittest.TestCase):
         )
 
     def test_htmlColors_randomColor(self):
-        h = HtmlGenFromYaml(self.ns("""\
+        h = HtmlGen(self.ns("""\
             extensions:
               cesar: 555
                 """)
@@ -526,7 +526,7 @@ class Schedule_Test(unittest.TestCase):
             )
 
     def test_html_completeHtml(self):
-       h = HtmlGenFromYaml(self.ns("""\
+       h = HtmlGen(self.ns("""\
         timetable:
           dl:
           -
@@ -676,7 +676,7 @@ class Schedule_Test(unittest.TestCase):
        self.assertB2BEqual(h.html().encode('utf-8'))
 
     def test_html_completeHtmlWithHoliday(self):
-       h = HtmlGenFromYaml(self.ns("""\
+       h = HtmlGen(self.ns("""\
         timetable:
           dl:
           -
@@ -848,7 +848,7 @@ class Schedule_Test(unittest.TestCase):
               ana: 217
             week: '2016-07-25'
             """
-        h = HtmlGenFromYaml(self.ns(yaml))
+        h = HtmlGen(self.ns(yaml))
         self.assertEqual(h.nameToExtension('ana'),217)
 
     def test_nameToExtension_manySip(self):
@@ -882,7 +882,7 @@ class Schedule_Test(unittest.TestCase):
            victor: Víctor
         week: '2016-07-25'
         """
-        h = HtmlGenFromYaml(self.ns(yaml))
+        h = HtmlGen(self.ns(yaml))
         self.assertEqual(h.nameToExtension('ana'),217)
 
     def test_extensionToName_oneSip(self):
@@ -916,7 +916,7 @@ class Schedule_Test(unittest.TestCase):
           jordi: 219
         week: '2016-07-25'
         """
-        h = HtmlGenFromYaml(self.ns(yaml))
+        h = HtmlGen(self.ns(yaml))
         self.assertEqual(h.extensionToName(217),'ana')
 
     def test_extensionToName_manySip(self):
@@ -944,7 +944,7 @@ class Schedule_Test(unittest.TestCase):
           jordi: 219
         week: '2016-07-25'
         """
-        h = HtmlGenFromYaml(self.ns(yaml))
+        h = HtmlGen(self.ns(yaml))
         self.assertEqual(h.extensionToName(217),'ana')
 
     def test_partialCoreTable_getFirstTurn(self):
@@ -981,7 +981,7 @@ class Schedule_Test(unittest.TestCase):
           jordi: 219
         week: '2016-07-25'
         """
-        h = HtmlGenFromYaml(self.ns(yaml))
+        h = HtmlGen(self.ns(yaml))
         self.assertEqual(h.partialCoreTable('dl',1), (
              u"""<td class='ana'>Ana</td>\n"""
              u"""<td class='pere'>Pere</td>\n"""
@@ -1026,7 +1026,7 @@ class Schedule_Test(unittest.TestCase):
           jordi: 219
         week: '2016-07-25'
         """
-        h = HtmlGenFromYaml(self.ns(yaml))
+        h = HtmlGen(self.ns(yaml))
         self.assertEqual(h.partialCoreTable('dl',2), (
              u"""<td class='jordi'>Jordi</td>\n"""
              u"""<td class='pere'>Pere</td>\n"""
