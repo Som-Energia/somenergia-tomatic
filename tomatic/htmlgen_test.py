@@ -27,16 +27,8 @@ class Schedule_Test(unittest.TestCase):
 
         return self.assertMultiLineEqual(dict1.dump(), dict2.dump(), msg)
 
-
     def ns(self,content):
         return ns.loads(content)
-
-    def assertYamlEqual(self, expected, result):
-        if type(expected) != ns:
-            expected = ns.loads(expected)
-        if type(result) != ns:
-            result = ns.loads(result)
-        self.assertMultiLineEqual(expected.dump(), result.dump())
 
     def setUp(self):
         self.maxDiff = None
