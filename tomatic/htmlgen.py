@@ -61,10 +61,10 @@ class HtmlGen(object):
             "</tr>\n".join(
                 "<tr><th>{period}</th>\n".format(period=period)+
                 "<td>&nbsp;</td>\n".join(
-                    self.partialCoreTable(day,time)
+                    self.partialCoreTable(day,iturn)
                     for day in self.yaml.timetable.keys()
                     )
-                for time,period in enumerate(self.intervals()
+                for iturn,period in enumerate(self.intervals()
                 )
             )+
             "</tr>\n")
@@ -251,10 +251,10 @@ class HtmlGen(object):
             in self.yaml.hours]
         if now < parsedTimeIntervals[0]:
             raise Exception
-        for time,hour in enumerate(parsedTimeIntervals[1:]):
+        for iturn,hour in enumerate(parsedTimeIntervals[1:]):
             if now < hour:
                 break
-        return day,time+1
+        return day,iturn+1
 
     def getYaml(self):
         return self.yaml
