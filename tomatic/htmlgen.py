@@ -232,9 +232,6 @@ class HtmlGen(object):
         return self.yaml
 
 
-class HtmlGenFromYaml(HtmlGen):
-    ""
-
 class HtmlGenFromSolution(HtmlGen):
 
     def __init__(self, config, solution, date=None):

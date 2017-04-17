@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from yamlns import namespace as ns
 from . import schedulestorage
 from .pbxmockup import PbxMockup
-from .htmlgen import HtmlGenFromYaml
+from .htmlgen import HtmlGen
 from .remote import remotewrite
 import os
 
@@ -58,7 +58,7 @@ def publishStatic(graella):
     if not config: return
     if not hasattr(config, 'publishStatic'): return
     params = config.publishStatic
-    sched=HtmlGenFromYaml(graella)
+    sched=HtmlGen(graella)
     remotewrite(
         params.user,
         params.host,
