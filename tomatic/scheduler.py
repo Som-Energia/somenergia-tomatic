@@ -10,7 +10,7 @@ from consolemsg import step, error, warn, fail
 import codecs
 import sys
 from sheetfetcher import SheetFetcher
-from tomatic.htmlgen import HtmlGenFromSolution
+from tomatic.htmlgen import HtmlGen
 
 # Dirty Hack: Behave like python3 open regarding unicode
 def open(*args, **kwd):
@@ -568,7 +568,7 @@ class Backtracker:
 		ncaselles = len(self.caselles)
 		paddedPartial = (partial+['?']*ncaselles)[:ncaselles]
 		solution = dict(zip(self.caselles, paddedPartial))
-		htmlgen=HtmlGenFromSolution(self.config,solution,self.config.monday)
+		htmlgen=HtmlGen.fromSolution(self.config,solution,self.config.monday)
 		if firstAtCost:
 			# Is the first that good, start from scratch
 			self.storedCost = (len(partial), cost)
