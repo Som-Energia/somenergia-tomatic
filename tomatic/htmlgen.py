@@ -173,7 +173,7 @@ class HtmlGen(object):
     def htmlFooter(self):
         return  u"""</body>\n</html>"""
 
-    def htmlParse(self):
+    def html(self):
         return (self.htmlHeader()+
             self.htmlColors()+
             self.htmlSubHeader()+

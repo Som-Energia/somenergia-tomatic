@@ -525,7 +525,7 @@ class Schedule_Test(unittest.TestCase):
             r"\.cesar    *\{ background-color: #[0-9a-f]{6}; \}",
             )
 
-    def test_htmlParse_completeHtml(self):
+    def test_html_completeHtml(self):
        h = HtmlGenFromYaml(self.ns("""\
         timetable:
           dl:
@@ -673,9 +673,9 @@ class Schedule_Test(unittest.TestCase):
           victor: Víctor
         """)
        )
-       self.assertB2BEqual(h.htmlParse().encode('utf-8'))
+       self.assertB2BEqual(h.html().encode('utf-8'))
 
-    def test_htmlParse_completeHtmlWithHoliday(self):
+    def test_html_completeHtmlWithHoliday(self):
        h = HtmlGenFromYaml(self.ns("""\
         timetable:
           dl:
@@ -823,7 +823,7 @@ class Schedule_Test(unittest.TestCase):
           victor: Víctor
         """)
        )
-       self.assertB2BEqual(h.htmlParse().encode('utf-8'))
+       self.assertB2BEqual(h.html().encode('utf-8'))
 
     def test_nameToExtension_oneSip(self):
         yaml = """\

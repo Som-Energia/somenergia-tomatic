@@ -58,13 +58,13 @@ def publishStatic(graella):
     if not config: return
     if not hasattr(config, 'publishStatic'): return
     params = config.publishStatic
-    gen=HtmlGenFromYaml(graella)
+    sched=HtmlGenFromYaml(graella)
     remotewrite(
         params.user,
         params.host,
         os.path.join(params.path,
             'graella-{week}.html'.format(**graella)),
-        gen.htmlParse(),
+        sched.html(),
         )
 
 class ApiError(Exception): pass
