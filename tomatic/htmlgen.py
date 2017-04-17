@@ -225,37 +225,6 @@ class HtmlGen(object):
             }
         return extensions_inv[extension]
 
-    def getCurrentQueue(self,now):
-        # Supposes ordered "hours" list (less to greater)
-        dowInt = now.isoweekday()
-        dowDict = {
-            1:'dl',
-            2:'dm',
-            3:'dx',
-            4:'dj',
-            5:'dv'
-            }
-        if dowInt not in dowDict:
-            raise Exception
-        else:
-            day = dowDict[dowInt]
-        parsedTimeIntervals = [
-            datetime.datetime(
-                now.year,
-                now.month,
-                now.day,
-                int(hour[0:2]),
-                int(hour[3:5])
-            )
-            for hour 
-            in self.yaml.hours]
-        if now < parsedTimeIntervals[0]:
-            raise Exception
-        for iturn,hour in enumerate(parsedTimeIntervals[1:]):
-            if now < hour:
-                break
-        return day,iturn+1
-
     def getYaml(self):
         return self.yaml
 
