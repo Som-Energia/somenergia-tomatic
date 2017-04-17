@@ -5,10 +5,6 @@ from yamlns import namespace as ns
 from paramiko import SSHClient,AutoAddPolicy, SFTPClient
 from .htmlgen import schedule2asterisk
 
-def weekday(date):
-    weekdays = "dl dm dx dj dv ds dg".split()
-    return weekdays[date.weekday()]
-
 from .remote import Remote, remoteread, remotewrite, remoterun
 
 from Asterisk.Manager import Manager

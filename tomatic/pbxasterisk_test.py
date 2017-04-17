@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from .pbxasterisk import Pbx, weekday, remotewrite, remoteread, remoterun, Remote
+from .pbxasterisk import Pbx, remotewrite, remoteread, remoterun, Remote
+from .scheduling import weekday
 import unittest
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
