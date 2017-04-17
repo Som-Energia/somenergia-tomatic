@@ -85,6 +85,18 @@ class Scheduling(object):
 
         return schedule.timetable[day][turn+1]
 
+    def data(self):
+        return ns(self._data)
+
+    @classmethod
+    def fromSolution(cls, config, solution, date=None):
+        return Scheduling(
+            solution2schedule(
+                config=config,
+                solution=solution,
+                date=date,
+            ))
+
 def solution2schedule(config, solution, date=None):
     nhours = len(config.hours)-1
     tt = ns(
@@ -102,9 +114,12 @@ def solution2schedule(config, solution, date=None):
                     'festiu'
                 ).lower()
     import datetime
-    if not date: date = nextweek(datetime.date.today())
+    if not date:
+        date = nextweek(datetime.date.today())
+    else:
+        date = weekstart(date)
     result=ns()
-    result.week =str(weekstart(date))
+    result.week =str(date)
     result.days = config.diesVisualitzacio
     result.hours = config.hours
     result.turns = ["T"+str(i+1) for i in range(config.nTelefons)]

@@ -6,7 +6,7 @@ import unittest
 from datetime import datetime, timedelta, time
 from yamlns.dateutils import Date
 from yamlns import namespace as ns
-from scheduling import weekstart, nextweek, choosers, Scheduling, solution2schedule
+from scheduling import weekstart, nextweek, choosers, Scheduling
 
 class Scheduling_Test(unittest.TestCase):
 
@@ -397,7 +397,7 @@ class Scheduling_Test(unittest.TestCase):
     @unittest.skip("TODO")
     def test_peekQueue_withNobodySlots(self): pass
 
-    # solution2schedule
+    # fromSolution
 
     def config_singleSlot(self):
         return ns.loads("""\
@@ -438,16 +438,16 @@ class Scheduling_Test(unittest.TestCase):
         return c
 
 
-    def test_solution2schedule_oneholiday(self):
+    def test_fromSolution_oneholiday(self):
         config = self.config_singleSlot()
 
-        result=solution2schedule(
+        result=Scheduling.fromSolution(
             date=datetime.strptime(
                 '2016-07-11','%Y-%m-%d').date(),
             config=config,
             solution={},
         )
-        self.assertNsEqual(result, """\
+        self.assertNsEqual(result.data(), """\
             week: '2016-07-11'
             days:
             - dl
@@ -468,25 +468,25 @@ class Scheduling_Test(unittest.TestCase):
             names: {}
             """)
 
-    def test_solution2schedule_noWeekNextMonday(self):
+    def test_fromSolution_noWeekNextMonday(self):
         config = self.config_singleSlot()
 
-        result=solution2schedule(
+        result=Scheduling.fromSolution(
             # no date specified
             config=config,
             solution={},
         )
 
         today = Date.today()
-        week=datetime.strptime(result.week, "%Y-%m-%d").date()
+        week=datetime.strptime(result.data().week, "%Y-%m-%d").date()
         self.assertEqual(week.weekday(),0) # Monday
         self.assertTrue(week > today) # in the future
         self.assertTrue(week <= today+timedelta(days=7)) # A week at most
 
-    def test_solution2schedule_oneslot(self):
+    def test_fromSolution_oneslot(self):
         config = self.config_singleSlot()
 
-        result=solution2schedule(
+        result=Scheduling.fromSolution(
             date=datetime.strptime(
                 '2016-07-18','%Y-%m-%d').date(),
             config=config,
@@ -495,7 +495,7 @@ class Scheduling_Test(unittest.TestCase):
             },
         )
 
-        self.assertNsEqual( result, """
+        self.assertNsEqual( result.data(), """
             week: '2016-07-18'
             days:
             - dl
@@ -516,10 +516,10 @@ class Scheduling_Test(unittest.TestCase):
             names: {}
         """)
 
-    def test_solution2schedule_manyLines(self):
+    def test_fromSolution_manyLines(self):
         config = self.config_twoLines()
 
-        result=solution2schedule(
+        result=Scheduling.fromSolution(
             date=datetime.strptime(
                 '2016-07-18','%Y-%m-%d').date(),
             config=config,
@@ -529,7 +529,7 @@ class Scheduling_Test(unittest.TestCase):
             },
         )
 
-        self.assertNsEqual( result, """
+        self.assertNsEqual( result.data(), """
             week: '2016-07-18'
             days:
             - dl
@@ -552,10 +552,10 @@ class Scheduling_Test(unittest.TestCase):
             names: {}
         """)
 
-    def test_solution2schedule_manyTimes(self):
+    def test_fromSolution_manyTimes(self):
         config = self.config_twoTimes()
 
-        result=solution2schedule(
+        result=Scheduling.fromSolution(
             date=datetime.strptime(
                 '2016-07-18','%Y-%m-%d').date(),
             config=config,
@@ -565,7 +565,7 @@ class Scheduling_Test(unittest.TestCase):
             },
         )
 
-        self.assertNsEqual( result, """
+        self.assertNsEqual( result.data(), """
             week: '2016-07-18'
             days:
             - dl
@@ -588,10 +588,10 @@ class Scheduling_Test(unittest.TestCase):
             names: {}
         """)
 
-    def test_solution2schedule_manyDays(self):
+    def test_fromSolution_manyDays(self):
         config = self.config_twoDays()
 
-        result=solution2schedule(
+        result=Scheduling.fromSolution(
             date=datetime.strptime(
                 '2016-07-18','%Y-%m-%d').date(),
             config=config,
@@ -601,7 +601,7 @@ class Scheduling_Test(unittest.TestCase):
             },
         )
 
-        self.assertNsEqual(result, """
+        self.assertNsEqual(result.data(), """
             week: '2016-07-18'
             days:
             - dl
@@ -625,10 +625,10 @@ class Scheduling_Test(unittest.TestCase):
             names: {}
         """)
 
-    def test_solution2schedule_manyEverything(self):
+    def test_fromSolution_manyEverything(self):
         config = self.config_twoEverything()
 
-        result=solution2schedule(
+        result=Scheduling.fromSolution(
             date=datetime.strptime(
                 '2016-07-18','%Y-%m-%d').date(),
             config=config,
@@ -640,7 +640,7 @@ class Scheduling_Test(unittest.TestCase):
             },
         )
 
-        self.assertNsEqual(result, """
+        self.assertNsEqual(result.data(), """
             week: '2016-07-18'
             days:
             - dl
@@ -732,8 +732,8 @@ class Scheduling_Test(unittest.TestCase):
            victor: Víctor
        """
 
-    def test_solution2schedule_completeTimetable(self):
-        result=solution2schedule(
+    def test_fromSolution_completeTimetable(self):
+        result=Scheduling.fromSolution(
             config=ns.loads(self.completeConfig),
             solution={
                 ('dl',0,0):'jordi',
@@ -801,7 +801,7 @@ class Scheduling_Test(unittest.TestCase):
                 '2016-07-11','%Y-%m-%d').date(),
         )
 
-        self.assertNsEqual(result, """\
+        self.assertNsEqual(result.data(), """\
                 week: '2016-07-11'
                 days:
                 - dl
