@@ -21,56 +21,16 @@ class HtmlGen(object):
         sched = Scheduling(self.yaml)
         return sched.intervals()
 
-    def partialCoreTable(self,day,time):
+    def partialCoreTable(self,day,itime):
+        sched = Scheduling(self.yaml)
         return "".join([
             u"""<td class='{name}'>{properName}</td>\n"""
             .format(
                 name=name,
                 properName=self.properName(name)
             )
-            for name in self.yaml.timetable[day][time]
+            for name in self.yaml.timetable[day][itime]
             ])
-
-    def partialCurrentQueue(self,day,time):
-        hours = (
-            "<tr><th>"+""
-            ""+self.intervals()[time-1]+""
-            "</th>\n"
-        )
-        partialCoreTable = self.partialCoreTable(day,time)
-        header=(
-            """<table>\n"""
-            """<tr>"""
-            """<td></td><th colspan="100%">{day}</th>"""
-            """</tr>\n"""
-            .format(
-                 day=day
-                 )
-        )
-        headerTlfnos=''.join([
-            '<tr>'
-            '<td></td>'
-            ]+[
-            '<th>{}</th>'.format(t)
-            for t in self.yaml.turns
-            ]+(
-            [u'<th colspan="100%">Cua dinàmica</th>']
-            if "dynamic" in self.yaml else []
-            )+[
-            '</tr>\n'
-            ]
-        )
-        footer= u"""</tr>\n</table>"""
-        partialDynamicTable= self.partialDynamicTable() if "dynamic" in self.yaml else ""
-        return header+headerTlfnos+hours+partialCoreTable+partialDynamicTable+footer
-
-    def partialDynamicTable(self):
-        return "\n".join([
-                u"""<td class='{name}'>"""
-                u"""{properName}</td>""".format(
-                    name=name,
-                    properName=self.properName(name))
-                    for name in self.yaml.dynamic])+"\n"
 
     def htmlTable(self):
         headerDays=(

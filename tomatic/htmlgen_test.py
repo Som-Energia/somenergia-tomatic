@@ -2418,7 +2418,7 @@ class Schedule_Test(unittest.TestCase):
         with self.assertRaises(Exception):
             h.getCurrentQueue(datetime.datetime(2016,9,13,7,29))
 
-    def test_partialCurrentQueue_getFirstTurn(self):
+    def test_partialCoreTable_getFirstTurn(self):
         yaml = """\
         timetable:
           dl:
@@ -2453,22 +2453,13 @@ class Schedule_Test(unittest.TestCase):
         week: '2016-07-25'
         """
         h = HtmlGenFromYaml(self.ns(yaml))
-        self.assertEqual(h.partialCurrentQueue('dl',1),
-            (u"""<table>\n"""
-             u"""<tr><td></td><th colspan="100%">dl"""
-             u"""</th></tr>\n"""
-             u"""<tr><td></td><th>T1</th>"""
-             u"""<th>T2</th><th>T3</th>"""
-             u"""</tr>\n"""
-             u"""<tr><th>09:00-10:15</th>\n"""
+        self.assertEqual(h.partialCoreTable('dl',1), (
              u"""<td class='ana'>Ana</td>\n"""
              u"""<td class='pere'>Pere</td>\n"""
              u"""<td class='jordi'>Jordi</td>\n"""
-             u"""</tr>\n"""
-             u"""</table>"""
              )
         )
-    def test_partialCurrentQueue_getSecondTurn(self):
+    def test_partialCoreTable_getSecondTurn(self):
         yaml = """\
         timetable:
           dl:
@@ -2507,19 +2498,10 @@ class Schedule_Test(unittest.TestCase):
         week: '2016-07-25'
         """
         h = HtmlGenFromYaml(self.ns(yaml))
-        self.assertEqual(h.partialCurrentQueue('dl',2),
-            (u"""<table>\n"""
-             u"""<tr><td></td><th colspan="100%">dl"""
-             u"""</th></tr>\n"""
-             u"""<tr><td></td><th>T1</th>"""
-             u"""<th>T2</th><th>T3</th>"""
-             u"""</tr>\n"""
-             u"""<tr><th>10:15-11:30</th>\n"""
+        self.assertEqual(h.partialCoreTable('dl',2), (
              u"""<td class='jordi'>Jordi</td>\n"""
              u"""<td class='pere'>Pere</td>\n"""
              u"""<td class='ana'>Ana</td>\n"""
-             u"""</tr>\n"""
-             u"""</table>"""
              )
         )
 
