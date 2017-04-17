@@ -361,11 +361,11 @@ class HtmlGenFromYaml(HtmlGen):
                 response[ext]="removed"
         return response
 
-from .scheduling import solution2schedule
 
 class HtmlGenFromSolution(HtmlGen):
 
     def __init__(self, config, solution, date=None):
+        from .scheduling import solution2schedule
         self.yaml = solution2schedule(config,solution,date)
 
 
