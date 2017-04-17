@@ -361,33 +361,7 @@ class HtmlGenFromYaml(HtmlGen):
                 response[ext]="removed"
         return response
 
-
-def solution2schedule(config, solution, date=None):
-    nhours = len(config.hours)-1
-    tt = ns(
-        (day, [
-            [None for i in xrange(config.nTelefons)]
-            for j in xrange(nhours)
-        ])
-        for day in config.diesVisualitzacio
-    )
-    for day in config.diesVisualitzacio:
-        for time in range(nhours):
-            for tel in range(config.nTelefons):
-                tt[day][time][tel]=solution.get(
-                    (day,time,tel),
-                    'festiu'
-                ).lower()
-    result=ns()
-    result.week =str(HtmlGen.iniciSetmana(date))
-    result.days = config.diesVisualitzacio
-    result.hours = config.hours
-    result.turns = ["T"+str(i+1) for i in range(config.nTelefons)]
-    result.timetable = tt
-    result.colors = config.colors
-    result.extensions = config.extensions
-    result.names = config.names
-    return result
+from .scheduling import solution2schedule
 
 class HtmlGenFromSolution(HtmlGen):
 
