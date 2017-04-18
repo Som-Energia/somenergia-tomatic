@@ -30,15 +30,15 @@ setup(
         'jsmin',
         'py-Asterisk',
         'paramiko',
-    ],
-    tests_require=[
+        'ooop', # TODO: Force Gisce Version
+    #],
+    #tests_require=[
         'nose',
         'rednose',
         'coverage',
         'b2btest',
         'lxml',
         'wavefile',
-        'ooop',
     ],
     classifiers = [
         'Programming Language :: Python',
