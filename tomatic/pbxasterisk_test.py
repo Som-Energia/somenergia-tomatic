@@ -12,6 +12,8 @@ try:
 except ImportError:
     pass
 
+
+@unittest.skipIf(not config, "No config.py with pbx info")
 class Pbx_Test(unittest.TestCase):
 
     def setUp(self):

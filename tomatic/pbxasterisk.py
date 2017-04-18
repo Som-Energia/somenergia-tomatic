@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 from yamlns import namespace as ns
 from paramiko import SSHClient,AutoAddPolicy, SFTPClient
 from .htmlgen import schedule2asterisk
-
 from .remote import Remote, remoteread, remotewrite, remoterun
 
 from Asterisk.Manager import Manager
