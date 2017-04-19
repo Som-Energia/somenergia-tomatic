@@ -30,12 +30,37 @@ class CallInfo_Test(unittest.TestCase):
         ids = info.searchAddresByPhone('933730976')
         self.assertEqual(ids, [12073])
 
-    def test_searchAddressByPhone_whenMatchesMoreThanPhone(self):
+    def test_searchAddressByPhone_whenMatchesMoreThanOnePhone(self):
         info = CallInfo(self.O)
         ids = info.searchAddresByPhone('659509872')
         self.assertEqual(ids, [2286, 42055, 43422])
 
+    def test_searchPartnerByAddressId_whenMatchesNone(self):
+        info = CallInfo(self.O)
+        partner_ids = info.searchPartnerByAddressId([999999999])
+        self.assertEqual(partner_ids,[])
 
+    def test_searchPartnerByAddressId_whenMatchesOnePartner(self):
+        info = CallInfo(self.O)
+        partner_ids = info.searchPartnerByAddressId([12073])
+        self.assertEqual(partner_ids, [11709])
+
+    def test_searchPartnerByAddressId_whenEmpty(self):
+        info = CallInfo(self.O)
+        partner_ids = info.searchPartnerByAddressId([])
+        self.assertEqual(partner_ids, [])
+        
+    def test_searchPartnerByAddressId_whenMatchesMoreThanOnePartner(self):
+        info = CallInfo(self.O)
+        partner_ids = info.searchPartnerByAddressId([2286, 42055, 43422])
+        self.assertEqual(partner_ids, [410, 39933, 41193])
+        
+    def test_searchPartnerByAddressId_whenMatchesMoreThanOnePartnerAndNotFound(self):
+        info = CallInfo(self.O)
+        partner_ids = info.searchPartnerByAddressId([2286, 42055, 43422, 999999999])
+        self.assertEqual(partner_ids, [410, 39933, 41193])
+        
+        
 unittest.TestCase.__str__ = unittest.TestCase.id
 
 
