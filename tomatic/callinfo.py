@@ -12,6 +12,9 @@ class CallInfo(object):
     def searchAddresByPhone(self, phone):
         return self.O.ResPartnerAddress.search([('phone','=',phone)])
 
+    def searchAddresByMobile(self, phone):
+        return self.O.ResPartnerAddress.search([('mobile','=',phone)])
+
     def searchPartnerByAddressId(self, address_ids):
         partner_ids = []
         for address_id in address_ids:

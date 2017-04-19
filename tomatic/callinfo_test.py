@@ -7,17 +7,16 @@ try:
     import dbconfig
 except ImportError:
     dbconfig = None
-
+    
 @unittest.skipIf(not dbconfig or not dbconfig.ooop,
     "Requires configuring dbconfig.ooop")
 class CallInfo_Test(unittest.TestCase):
 
     def setUp(self):
-        print "setup"
+        pass
 
     @classmethod
     def setUpClass(cls):
-        print "classSetUp"
         cls.O = ooop.OOOP(**dbconfig.ooop)
 
     def test_searchAddressByPhone_whenMatchesNone(self):
@@ -34,6 +33,21 @@ class CallInfo_Test(unittest.TestCase):
         info = CallInfo(self.O)
         ids = info.searchAddresByPhone('659509872')
         self.assertEqual(ids, [2286, 42055, 43422])
+
+    def test_searchAddressByMobile_whenMatchesNone(self):
+        info = CallInfo(self.O)
+        ids = info.searchAddresByMobile('badphone')
+        self.assertEqual(ids, [])
+
+    def test_searchAddressByMobile_whenMatchesOnePhone(self):
+        info = CallInfo(self.O)
+        ids = info.searchAddresByMobile('699515879')
+        self.assertEqual(ids, [34])
+
+    def test_searchAddressByMobile_whenMatchesMoreThanOnePhone(self):
+        info = CallInfo(self.O)
+        ids = info.searchAddresByMobile('630079522')
+        self.assertEqual(ids, [33,42])
 
     def test_searchPartnerByAddressId_whenMatchesNone(self):
         info = CallInfo(self.O)
