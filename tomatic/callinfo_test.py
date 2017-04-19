@@ -49,18 +49,22 @@ class CallInfo_Test(unittest.TestCase):
         info = CallInfo(self.O)
         partner_ids = info.searchPartnerByAddressId([])
         self.assertEqual(partner_ids, [])
-        
+
+    def test_searchPartnerByAddressId_whenAddreswithNoPartner(self):
+        info = CallInfo(self.O)
+        partner_ids = info.searchPartnerByAddressId([67234])
+        self.assertEqual(partner_ids, [])
+
     def test_searchPartnerByAddressId_whenMatchesMoreThanOnePartner(self):
         info = CallInfo(self.O)
         partner_ids = info.searchPartnerByAddressId([2286, 42055, 43422])
         self.assertEqual(partner_ids, [410, 39933, 41193])
-        
+
     def test_searchPartnerByAddressId_whenMatchesMoreThanOnePartnerAndNotFound(self):
         info = CallInfo(self.O)
         partner_ids = info.searchPartnerByAddressId([2286, 42055, 43422, 999999999])
         self.assertEqual(partner_ids, [410, 39933, 41193])
-        
-        
+
 unittest.TestCase.__str__ = unittest.TestCase.id
 
 
