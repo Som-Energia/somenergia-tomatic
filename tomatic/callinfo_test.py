@@ -30,6 +30,10 @@ class CallInfo_Test(unittest.TestCase):
         ids = info.searchAddresByPhone('933730976')
         self.assertEqual(ids, [12073])
 
+    def test_searchAddressByPhone_whenMatchesMoreThanPhone(self):
+        info = CallInfo(self.O)
+        ids = info.searchAddresByPhone('659509872')
+        self.assertEqual(ids, [2286, 42055, 43422])
 
 
 unittest.TestCase.__str__ = unittest.TestCase.id
