@@ -7,6 +7,7 @@ try:
     import dbconfig
 except ImportError:
     dbconfig = None
+from yamlns import namespace as ns
     
 @unittest.skipIf(not dbconfig or not dbconfig.ooop,
     "Requires configuring dbconfig.ooop")
@@ -14,6 +15,9 @@ class CallInfo_Test(unittest.TestCase):
 
     def setUp(self):
         pass
+
+    def ns(self,content):
+	return ns.loads(content)
 
     @classmethod
     def setUpClass(cls):
@@ -78,6 +82,33 @@ class CallInfo_Test(unittest.TestCase):
         info = CallInfo(self.O)
         partner_ids = info.searchPartnerByAddressId([2286, 42055, 43422, 999999999])
         self.assertEqual(partner_ids, [410, 39933, 41193])
+
+    '''def test_getPartnerData_whenEmpty(self):
+	info = CallInfo(self.O)
+	partner_data = info.getPartnerData([0])
+	self.assertEqual(partner_data, self.ns("""partner: 
+  lang:
+  name:
+  city:
+  email:
+  polisses_ids:
+  provincia:
+ """))'''
+	
+
+    def test_getPartnerData_whenMatchesOne(self):
+	info = CallInfo(self.O, anonimize=True)
+	partner_data = info.getPartnerData([410])
+        self.assertEqual(partner_data, self.ns("""partner:
+  'lang': 'ca_ES' 
+  'name': 'Ju...ol'
+  'city': 'Vilanova de Bellpuig'
+  'email': 'or...op'
+  'polisses_ids': 
+  - 155
+  - 56427
+  'provincia': 'Lleida'
+"""))
 
 unittest.TestCase.__str__ = unittest.TestCase.id
 
