@@ -829,7 +829,7 @@ class Schedule_Test(unittest.TestCase):
         yaml = """\
             timetable:
               dl:
-                1:
+              -
                 - ana
             hours:
             - '09:00'
@@ -855,7 +855,7 @@ class Schedule_Test(unittest.TestCase):
         yaml = """\
         timetable:
           dl:
-            1:
+          -
             - ana
             - pere
             - jordi
@@ -889,7 +889,7 @@ class Schedule_Test(unittest.TestCase):
         yaml = """\
         timetable:
           dl:
-            1:
+          -
             - ana
             - pere
             - jordi
@@ -923,7 +923,7 @@ class Schedule_Test(unittest.TestCase):
         yaml = """\
         timetable:
           dl:
-            1:
+          -
             - ana
             - pere
             - jordi

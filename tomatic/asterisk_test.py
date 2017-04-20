@@ -16,6 +16,7 @@ except ImportError:
 
 import unittest
 
+@unittest.skip("need a working asteris")
 class Asterisk_Test(unittest.TestCase):
 
     def ns(self,content):

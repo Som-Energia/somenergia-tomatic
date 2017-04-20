@@ -9,6 +9,8 @@ var Card = require('polythene/card/card');
 var HeaderPanel = require('polythene/header-panel/header-panel');
 var IconButton = require('polythene/icon-button/icon-button');
 var Tabs = require('polythene/tabs/tabs');
+var Textfield = require('polythene/textfield/textfield');
+var Slider = require('polythene/slider/slider');
 //var iconMenu = require('mmsvg/google/msvg/navigation/menu');
 var iconMenu = m.trust('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>');
 //var iconMore = require('mmsvg/google/msvg/navigation/more-vert');
@@ -460,7 +462,8 @@ TomaticApp.view = function(c) {
 		c.currentTab() == 'Persones' && [
 			Todo("Permetre modificar la configuració personal de cadascú: "+
 				"Color, taula, extensió, indisponibilitats..."),
-			Extensions(grid.extensions),
+			Person(grid.extensions),
+            PersonEditor('david'),
 		] || [],
 		c.currentTab() == 'Trucada' && [
 			Todo(
@@ -471,6 +474,43 @@ TomaticApp.view = function(c) {
 		]}
 		),
 	];
+};
+
+var PersonEditor = function(name) {
+    return m.component(Card, [
+        m.component(Textfield, {
+            label: 'Nom mostrat',
+            floatingLabel: true,
+            value: name,
+            help: 'Enter the name as written on the credit card',
+            required: true
+        }),
+        m.component(Textfield, {
+            label: 'Identificador',
+            floatingLabel: true,
+            pattern: '[a-z]{2,10}$',
+            value: name,
+            help: 'Identificador que es fa servir internament.',
+            error: 'De 3 a 10 carácters. Només lletres en minúscules.',
+            required: true
+        }),
+        m.component(Textfield, {
+            label: 'Actual name',
+            floatingLabel: true,
+            value: name,
+            help: 'Enter the name as written on the credit card',
+            required: true
+        }),
+        m.component(Slider, {
+            min: 0,
+            max: 50,
+            value: 10,
+            step: 10,
+            ticks: true,
+            pin: true
+        }),
+        []
+    ]);
 };
 
 var Grid = function(grid) {
@@ -549,6 +589,20 @@ var Grid = function(grid) {
 	];
 };
 
+var Person = function(extensions) {
+	return [
+		m('.extensions',
+			Object.keys(extensions || {}).sort().map(function(name) {
+				return m('.extension', {class: name}, [
+					Tomatic.formatName(name),
+					m('br'),
+                    Tomatic.grid().extensions[name],
+                    m.component(Ripple),
+				]);
+			})
+		),
+	];
+};
 var Extensions = function(extensions) {
 	return [
 		m('.extensions',

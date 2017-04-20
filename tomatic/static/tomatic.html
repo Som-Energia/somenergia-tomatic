@@ -107,14 +107,17 @@ body, html, #graella {
 	background: none;
 	cursor: inherit;
 }
+.extensions .extension,
 .graella td {
 	position: relative; /* Ripple needs it */
 	padding: 1ex;
 	cursor: pointer;
 }
+.extensions .extension:hover,
 .graella td:hover {
 	opacity: .9;
 }
+.extensions .extension .tooltip,
 .graella td .tooltip {
 	visibility: hidden;
 	display: block;
@@ -126,6 +129,7 @@ body, html, #graella {
 	border: inherit;
 	border-radius: 5px;
 }
+.extensions .extension:hover .tooltip,
 .graella td:hover .tooltip {
 	visibility: visible;
 	opacity: 1;
