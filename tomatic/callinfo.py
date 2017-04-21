@@ -44,7 +44,27 @@ class CallInfo(object):
 
         return result
 
+    def getPartnersData(self, partners_ids):
+        result = ns(partners = [])
+        for partner_id in partners_ids:
+            partner_data = self.getPartnerData([partner_id])
+            result.partners.append(partner_data)
+        return result
+
     def getByPhone(self, phone):
-        return ns(partner=ns())
- 
+        address_ids = self.addressByPhone(phone)
+        partners_ids = self.searchPartnerByAddressId(address_ids)
+        clean_partners_ids = sorted(list(set(partners_ids)))        
+        result = ns()
+        result.callid = phone
+        result.partners = self.getPartnersData(clean_partners_ids)
+        return result
+
+    def getPolisseData(self,polisses_ids):
+        polisse_data = self.O.GiscedataPolissa.read(155,['data_alta','potencia','cups'])
+        print polisse_data
+        result = ns(polisses=[])
+        result.polisses.append(polisse_data)
+        return result
+         
 # vim: ts=4 sw=4 et
