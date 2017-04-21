@@ -107,6 +107,7 @@ class CallInfo_Test(unittest.TestCase):
               'name': 'Ju...ol'
               'city': 'Vilanova de Bellpuig'
               'email': 'fr...op'
+              'id_soci': 'S0...67'
               'polisses_ids': 
               - 155
               - 56427
