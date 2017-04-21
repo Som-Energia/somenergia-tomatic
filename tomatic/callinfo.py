@@ -29,6 +29,9 @@ class CallInfo(object):
             if address and address['partner_id']
             ]
     
+    
+    
+    
     def getPartnerData(self, partner_id):
         partner_data = self.O.ResPartner.read(partner_id, [])
         partner_data = ns(partner_data[0])
@@ -41,16 +44,46 @@ class CallInfo(object):
             polisses_ids = partner_data.polisses_ids,
             provincia = partner_data.www_provincia[1]['name'],
             )
-
         return result
 
-    def getPartnersData(self, partners_ids):
+    def getPartnersData2(self, partners_ids):
         result = ns(partners = [])
         for partner_id in partners_ids:
             partner_data = self.getPartnerData([partner_id])
             result.partners.append(partner_data)
         return result
+    
+    
+    
+    def getPartnersData(self, partners_ids):
+        result = ns(partners = [])
+        partners_data = self.O.ResPartner.read(partners_ids, [])
+        for partner_data in partners_data:
+            partner_data = ns(partner_data)
+            partner_result = ns(partner=ns())
+            partner_result.partner.update(
+                lang = partner_data.lang,
+                name = self.anonymize(partner_data.name),
+                city = partner_data.city,
+                email = self.anonymize(partner_data.www_email),
+                polisses_ids = partner_data.polisses_ids,
+                provincia = partner_data.www_provincia[1]['name'],
+                )
+            result.partners.append(partner_result)
+        return result
+        
+        
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     def getByPhone(self, phone):
         address_ids = self.addressByPhone(phone)
         partners_ids = self.searchPartnerByAddressId(address_ids)

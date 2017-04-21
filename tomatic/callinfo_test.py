@@ -106,18 +106,28 @@ class CallInfo_Test(unittest.TestCase):
               'lang': 'ca_ES' 
               'name': 'Ju...ol'
               'city': 'Vilanova de Bellpuig'
-              'email': 'or...op'
+              'email': 'fr...op'
               'polisses_ids': 
               - 155
               - 56427
               'provincia': 'Lleida'
             """)
 
-    def test_getByPhone(self):
+    def test_getByPhone_onehit(self):
         info = CallInfo(self.O)
         data = info.getByPhone("620471117")
         self.assertB2BEqual(data.dump())
 
+    def test_getByPhone_twohits(self):
+        info = CallInfo(self.O)
+        data = info.getByPhone("630079522")
+        self.assertB2BEqual(data.dump())
+
+    def test_getByPhone_nonehits(self):
+        info = CallInfo(self.O)
+        data = info.getByPhone("badphone")
+        self.assertB2BEqual(data.dump())
+        
     def test_getPolisseData(self):
         info = CallInfo(self.O)
         polisse_data = info.getPolisseData([155,56427])
