@@ -3,6 +3,7 @@
 from flask import (
     Flask, Response, request,
     redirect, url_for,
+    send_from_directory,
     )
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
@@ -16,7 +17,7 @@ hs = {}
 
 packagedir = os.path.join(os.path.dirname(__file__))
 schedules = schedulestorage.Storage(os.path.join(packagedir,'..','graelles'))
-staticpath = os.path.join(packagedir,'static')
+staticpath = os.path.join(packagedir,'dist')
 
 
 def pbx(alternative = None):
@@ -50,10 +51,6 @@ if config or True:
 
 app = Flask(__name__)
 
-def trustedStaticFile(path):
-    with open(path) as f:
-        return f.read()
-
 def publishStatic(graella):
     if not config: return
     if not hasattr(config, 'publishStatic'): return
@@ -69,31 +66,25 @@ def publishStatic(graella):
 
 class ApiError(Exception): pass
 
-from functools import wraps
+import decorator
 
-def yamlerrors(f):
-    @wraps(f)
-    def error_hanlder(*args,**kwd):
-        try:
-            return f(*args,**kwd)
-        except ApiError as e:
-            raise
-            return yamlfy(
-                error=str(e),
-                status=500,
-                )
-    return error_hanlder
+@decorator.decorator
+def yamlerrors(f,*args,**kwd):
+    try:
+        return f(*args,**kwd)
+    except ApiError as e:
+        raise
+        return yamlfy(
+            error=str(e),
+            status=500,
+            )
 
-@app.route('/')
-def tomatic():
-    return trustedStaticFile(staticpath+'/tomatic.html')
+@app.route('/<file>')
+def tomatic(file=None):
+    return send_from_directory(staticpath, file or 'index.html')
 
-@app.route('/graella.js')
-def graella_js():
-    return trustedStaticFile(staticpath+'/graella.js')
-
-@app.route('/graella-<week>.yaml')
-@app.route('/graella/<week>')
+@app.route('/api/graella-<week>.yaml')
+@app.route('/api/graella/<week>')
 def graellaYaml(week):
     # TODO: ensure week is an iso date
     # TODO: ensure week is monday
@@ -105,7 +96,7 @@ def graellaYaml(week):
         mimetype = 'application/x-yaml',
         )
 
-@app.route('/graella/<week>/<day>/<int:houri>/'
+@app.route('/api/graella/<week>/<day>/<int:houri>/'
         '<int:turni>/<name>', methods=['UPDATE'])
 @yamlerrors
 def editSlot(week, day, houri, turni, name):
@@ -133,13 +124,13 @@ def editSlot(week, day, houri, turni, name):
     return graellaYaml(week)
 
 
-@app.route('/graella/list')
+@app.route('/api/graella/list')
 def listGraelles():
     return Response(
         ns(weeks=schedules.list()).dump(),
         mimetype = 'application/x-yaml')
 
-@app.route('/graella', methods=['POST'])
+@app.route('/api/graella', methods=['POST'])
 @yamlerrors
 def uploadGraella(week=None):
     print "uploading", request.files
@@ -164,13 +155,13 @@ def uploadGraella(week=None):
     publishStatic(graella)
     return yamlfy(result='ok')
 
-@app.route('/queue')
+@app.route('/api/queue')
 def get_queue():
     return yamlfy(
         currentQueue = pbx().currentQueue()
     )
 
-@app.route('/queue/add/<person>')
+@app.route('/api/queue/add/<person>')
 def add_to_queue(person):
     p = pbx()
     p.addLine(person)
@@ -178,7 +169,7 @@ def add_to_queue(person):
         currentQueue = p.currentQueue()
     )
 
-@app.route('/queue/pause/<person>')
+@app.route('/api/queue/pause/<person>')
 def pause_line(person):
     p = pbx()
     p.pause(person)
@@ -186,7 +177,7 @@ def pause_line(person):
         currentQueue = p.currentQueue()
     )
 
-@app.route('/queue/resume/<person>')
+@app.route('/api/queue/resume/<person>')
 def resume_line(person):
     p = pbx()
     p.resume(person)

@@ -1,4 +1,5 @@
 config.py
+tomatic/dist
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

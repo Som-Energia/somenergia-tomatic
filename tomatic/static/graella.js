@@ -1,6 +1,7 @@
 'use strict';
 var m = require('mithril');
-require('polythene/theme/theme');
+var jsyaml = require('js-yaml');
+var Layout = require('polythene/layout/theme/theme');
 var SnackBar = require('polythene/notification/snackbar');
 var Button = require('polythene/button/button');
 var Dialog = require('polythene/dialog/dialog');
@@ -15,6 +16,9 @@ var Slider = require('polythene/slider/slider');
 var iconMenu = m.trust('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>');
 //var iconMore = require('mmsvg/google/msvg/navigation/more-vert');
 var iconMore = m.trust('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>');
+
+var theme = require('polythene/theme/theme');
+var customStyle = require('./style.styl');
 
 const applicationPages = [
 	"Graelles",
@@ -67,7 +71,7 @@ Tomatic.init = function() {
 Tomatic.requestQueue = function(suffix) {
 	m.request({
 		method: 'GET',
-		url: 'queue'+(suffix||''),
+		url: '/api/queue'+(suffix||''),
 		deserialize: jsyaml.load,
 	}).then(function(response){
 		if (response.currentQueue!==undefined) {
@@ -93,7 +97,7 @@ Tomatic.grid = m.prop({});
 Tomatic.requestGrid = function(week) {
 	m.request({
 		method: 'GET',
-		url: 'graella-'+week+'.yaml',
+		url: '/api/graella-'+week+'.yaml',
 		deserialize: jsyaml.load,
 	}).then(function(data) {
 		data.days = data.days || 'dl dm dx dj dv'.split(' ');
@@ -137,7 +141,7 @@ Tomatic.editCell = function(day,houri,turni,name) {
 	//Tomatic.grid().timetable[day][houri][turni] = name;
 	m.request({
 		method: 'UPDATE',
-		url: 'graella/'+([
+		url: '/api/graella/'+([
 			Tomatic.grid().week,day,houri,turni,name
 			].join('/')),
 		deserialize: jsyaml.load,
@@ -156,7 +160,7 @@ Tomatic.currentWeek = m.prop(undefined);
 Tomatic.requestWeeks = function() {
 	m.request({
 		method: 'GET',
-		url: 'graella/list',
+		url: '/api/graella/list',
 		deserialize: jsyaml.load,
 	}).then(function(newWeeklist){
 		let weeks = newWeeklist.weeks.sort().reverse();
@@ -445,7 +449,7 @@ TomaticApp.view = function(c) {
 				m('.layout.end-justified', [
 					m.component(Uploader, {
 						label: 'Puja Nova Graella',
-						url: 'graella',
+						url: 'api/graella',
 					}),
 				]),
 			]),
@@ -654,6 +658,6 @@ var Penalties = function(grid) {
 
 window.onload = function() {
 	Tomatic.init();
-	m.mount(document.getElementById("graella"), TomaticApp);
+	m.mount(document.getElementById("tomatic"), TomaticApp);
 };
 
