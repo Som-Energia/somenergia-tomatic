@@ -232,9 +232,10 @@ class HtmlGen(object):
         return self.yaml
 
     @classmethod
-    def fromSolution(self, config, solution, date=None):
+    def fromSolution(cls, config, solution, date=None):
         from .scheduling import solution2schedule
-        self.yaml = solution2schedule(config,solution,date)
+        data = solution2schedule(config,solution,date)
+        return cls(data)
 
 
 
