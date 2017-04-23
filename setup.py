@@ -20,6 +20,7 @@ setup(
         'tomatic_api.py',
         ],
     install_requires=[
+        'setuptools==20.4',
         'somutils',
         'yamlns',
         'consolemsg',
