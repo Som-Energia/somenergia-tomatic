@@ -56,25 +56,18 @@ class CallInfo(object):
                 name = self.anonymize(partner_data.name),
                 city = partner_data.city,
                 email = self.anonymize(partner_data.www_email),
-                polisses_ids = partner_data.polisses_ids,
                 provincia = partner_data.www_provincia[1]['name'],
                 )
+            partner_result.update(self.getPolisseData(partner_data.polisses_ids))            
             partner_block = ns()
             partner_block[self.anonymize(partner_data.name)] = partner_result
             result.partners.append(partner_block)
         return result
 
-    def getByPhone(self, phone):
-        address_ids = self.addressByPhone(phone)
-        partners_ids = self.searchPartnerByAddressId(address_ids)
-        clean_partners_ids = sorted(list(set(partners_ids)))        
-        result = ns()
-        result.callid = phone
-        result.update(self.getPartnersData(clean_partners_ids))
-        return result
-
     def getPolisseData(self,polisses_ids):
-        all_pol_data = self.O.GiscedataPolissa.read(polisses_ids,['data_alta','data_baixa','potencia','cups','state','active','tarifa'])        
+        all_pol_data = self.O.GiscedataPolissa.read(polisses_ids,[
+            'data_alta','data_baixa','potencia','cups','state','active','tarifa'
+            ])        
         result = ns(polisses=[])
         for pol_data in all_pol_data:
             pol_data_ns = ns(polissa=ns())
@@ -88,5 +81,15 @@ class CallInfo(object):
                 )
             result.polisses.append(pol_data_ns)
         return result
+    
+    def getByPhone(self, phone):
+        address_ids = self.addressByPhone(phone)
+        partners_ids = self.searchPartnerByAddressId(address_ids)
+        clean_partners_ids = sorted(list(set(partners_ids)))        
+        result = ns()
+        result.callid = phone
+        result.update(self.getPartnersData(clean_partners_ids))
+        return result
+
     
 # vim: ts=4 sw=4 et
