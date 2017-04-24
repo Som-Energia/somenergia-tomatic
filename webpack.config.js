@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -24,7 +25,7 @@ var config = {
 			{ test: /\.png$/,    loader: "url-loader?prefix=img/&limit=5000" },
 			{ test: /\.jpg$/,    loader: "url-loader?prefix=img/&limit=5000" },
 			{ test: /\.gif$/,    loader: "url-loader?prefix=img/&limit=5000" },
-			{ test: /\.woff$/,   loader: "url-loader?prefix=font/&limit=5000" },
+			{ test: /\.woff$/,   loader: "file-loader?prefix=font/&limit=5000" },
 			{ test: /\.eot$/,    loader: "file-loader?prefix=font/" },
 			{ test: /\.ttf$/,    loader: "file-loader?prefix=font/" },
 			{ test: /\.svg$/,    loader: "file-loader?prefix=font/" },
@@ -48,6 +49,7 @@ var config = {
 		new webpack.optimize.CommonsChunkPlugin({ name: "manifest", }),
 		// Split css included as js into a separate file again
 		new ExtractTextPlugin("styles-[chunkhash].css"),
+		new CleanWebpackPlugin('tomatic/dist/*'),
 	]
 	
 };

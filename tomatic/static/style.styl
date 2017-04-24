@@ -96,14 +96,17 @@ body, html, #tomatic {
 	background: none;
 	cursor: inherit;
 }
+.extensions .extension,
 .graella td {
 	position: relative; /* Ripple needs it */
 	padding: 1ex;
 	cursor: pointer;
 }
+.extensions .extension:hover,
 .graella td:hover {
 	opacity: .9;
 }
+.extensions .extension .tooltip,
 .graella td .tooltip {
 	visibility: hidden;
 	display: block;
@@ -115,6 +118,7 @@ body, html, #tomatic {
 	border: inherit;
 	border-radius: 5px;
 }
+.extensions .extension:hover .tooltip,
 .graella td:hover .tooltip {
 	visibility: visible;
 	opacity: 1;
@@ -220,6 +224,49 @@ dialog .extension:hover {
 	background-color: #e44;
 	border: 1pt solid #faa;
 	border-bottom: none;
+}
+.rgbeditor {
+	fieldwidth = 50px
+	width: 100%;
+	.field {
+		width: 9ex;
+		padding: 1ex;
+		margin: 1ex;
+		text-align: center;
+		vertical-align: middle;
+		display: table-cell;
+		border: black 1pt solid;
+		color: black;
+	}
+	.pe-slider.pe-slider.pe-slider {
+		margin-top:0;
+		margin-bottom:0;
+	}
+	.pe-slider.red {
+		color: #f22;
+	}
+	.pe-slider.green {
+		color: #0a0;
+	}
+	.pe-slider.blue {
+		color: #36a;
+	}
+	.pe-textfield {
+		width: 30px;
+	}
+}
+
+select.pe-textfield__input {
+	background: white;
+	border: None;
+	border-bottom: 1pt solid #ddd;
+	&:focus {
+		border: None;
+		border-bottom: 2pt solid rgb(33, 150, 243);
+	}
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
 }
 
 
