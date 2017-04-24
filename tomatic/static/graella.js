@@ -12,12 +12,13 @@ var IconButton = require('polythene/icon-button/icon-button');
 var Icon = require('polythene/icon/icon');
 var Tabs = require('polythene/tabs/tabs');
 var Textfield = require('polythene/textfield/textfield');
-var Slider = require('polythene/slider/slider');
 var iconMenu = require('mmsvg/google/msvg/navigation/menu');
 var iconMore = require('mmsvg/google/msvg/navigation/more-vert');
+var RgbEditor = require('./components/rgbeditor');
 
 var theme = require('polythene/theme/theme');
 var customStyle = require('./style.styl');
+var luminance = require('./components/colorutils').luminance;
 
 const applicationPages = [
 	"Graelles",
@@ -25,38 +26,6 @@ const applicationPages = [
 	"Persones",
 	"Trucada",
 	].map(function(n) {return {label:n};});
-
-
-function hex2triplet(hex) {
-	hex = String(hex).replace(/[^0-9a-f]/gi, '');
-	if (hex.length < 6) {
-		hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
-	}
-	return [
-		hex.substr(0,2),
-		hex.substr(2,2),
-		hex.substr(4,2)
-		].map(function(part) {
-			return parseInt(part, 16);
-		});
-}
-function triplet2hex(triplet) {
-	var rgb = "";
-	for (let i in triplet) {
-		let c = triplet[i];
-		let newc = Math.round(Math.min(Math.max(0, c), 255));
-		rgb += ("00"+newc.toString(16)).slice(-2);
-	}
-	return rgb;
-}
-
-function luminance(hex, lum) {
-	var triplet = hex2triplet(hex);
-	lum = lum || 0;
-	return triplet2hex(triplet.map(function(c) {
-		return c + c*lum;
-	}))
-}
 
 
 var Tomatic = {
@@ -485,59 +454,6 @@ TomaticApp.view = function(c) {
 		]}
 		),
 	];
-};
-
-var RgbEditor = {};
-RgbEditor.controller = function(attrs) {
-	var ctrl = {};
-	ctrl.fetch=attrs.value;
-	ctrl.onEdit=attrs.onEdit;
-	ctrl.asRgb = function() {
-		var result = triplet2hex([
-			ctrl.red,
-			ctrl.green,
-			ctrl.blue,
-		]);
-		return result;
-	};
-	ctrl.setRgb = function(value) {
-		var components = hex2triplet(value);
-		ctrl.red = components[0];
-		ctrl.green = components[1];
-		ctrl.blue = components[2];
-	};
-	ctrl.edited = function() {
-		var value = ctrl.asRgb();
-		ctrl.onEdit(value);
-	};
-	return ctrl;
-};
-
-RgbEditor.view = function(ctrl, attrs) {
-	ctrl.fetch=attrs.value;
-	ctrl.onEdit=attrs.onEdit;
-	ctrl.setRgb(ctrl.fetch());
-	return m('.rgbeditor.horizontal.layout', [
-		m('.field', {
-			style: 'background: #'+ctrl.asRgb(),
-		}, ctrl.asRgb()),
-		m('.flex.vertical.layout', 
-			['red', 'green','blue'].map(function(cls) {
-				return m.component(Slider, {
-					min: 0,
-					max: 255,
-					class: cls,
-					value: function() {
-						return ctrl[cls];
-					},
-					getValue: function(value) {
-						ctrl[cls]=value;
-						ctrl.edited();
-					},
-				});
-			})
-		)
-	]);
 };
 
 var editPerson = function(name) {
