@@ -79,6 +79,7 @@ def yamlerrors(f,*args,**kwd):
             status=500,
             )
 
+@app.route('/')
 @app.route('/<file>')
 def tomatic(file=None):
     return send_from_directory(staticpath, file or 'index.html')
