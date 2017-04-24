@@ -63,4 +63,59 @@ class DbAsterisk_Test(unittest.TestCase):
         self.assertEqual(a.currentQueue(), [
         ])
 
+    def test_pause_anActiveMember(self):
+        a = self.fixture()
+        a.setQueue(['200', '204', '202' ])
+        a.pause('204')
+        self.assertEqual(a.currentQueue(), [
+            ('200', False),
+            ('204', True),
+            ('202', False),
+        ])
+        
+    def test_pause_missingExtension(self):
+        a = self.fixture()
+        a.setQueue(['200', '204', '202' ])
+        a.pause('bad')
+        self.assertEqual(a.currentQueue(), [
+            ('200', False),
+            ('204', False),
+            ('202', False),
+        ])
+
+    def test_pause_missingExtension(self):
+        a = self.fixture()
+        a.setQueue(['200', '204', '202' ])
+        a.pause('bad')
+        self.assertEqual(a.currentQueue(), [
+            ('200', False),
+            ('204', False),
+            ('202', False),
+        ])
+ 
+    def test_resume(self):
+        a = self.fixture()
+        a.setQueue(['200', '204', '202' ])
+        a.pause('204')
+        a.resume('204')
+        self.assertEqual(a.currentQueue(), [
+            ('200', False),
+            ('204', False),
+            ('202', False),
+        ])
+
+    def test_add(self):
+        a = self.fixture()
+        a.setQueue(['200', '204', '202' ])
+        a.add('400')
+        self.assertEqual(a.currentQueue(), [
+            ('200', False),
+            ('204', False),
+            ('202', False),
+            ('400', False),
+        ])
+
+
+
+
 # vim: ts=4 sw=4 et
