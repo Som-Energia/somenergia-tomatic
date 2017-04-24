@@ -118,11 +118,10 @@ class CallInfo_Test(unittest.TestCase):
         data = info.getByPhone("badphone")
         self.assertB2BEqual(data.dump())
         
-    def test_getPolisseData(self):
+    def test_getPolisseData_whenAskOne(self):
         info = CallInfo(self.O)
-        polisse_data = info.getPolisseData([155,56427])
+        polisse_data = info.getPolisseData(155)
         self.assertB2BEqual(polisse_data.dump())
-
 
 unittest.TestCase.__str__ = unittest.TestCase.id
 

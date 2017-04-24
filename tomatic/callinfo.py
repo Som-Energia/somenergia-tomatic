@@ -101,7 +101,7 @@ class CallInfo(object):
         return result
 
     def getPolisseData(self,polisses_ids):
-        polisse_data = self.O.GiscedataPolissa.read(155,['data_alta','data_baixa','potencia','cups'])
+        polisse_data = self.O.GiscedataPolissa.read(polisses_ids,['data_alta','data_baixa','potencia','cups'])
         print polisse_data
         result = ns(polisses=[])
         result.polisses.append(polisse_data)
