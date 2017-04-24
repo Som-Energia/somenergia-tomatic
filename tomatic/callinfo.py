@@ -29,9 +29,6 @@ class CallInfo(object):
             if address and address['partner_id']
             ]
     
-    
-    
-    
     def getPartnerData(self, partner_id):
         partner_data = self.O.ResPartner.read(partner_id, [])
         partner_data = ns(partner_data[0])
@@ -47,20 +44,13 @@ class CallInfo(object):
             )
         return result
 
-    def getPartnersData0(self, partners_ids):
-        result = ns(partners = [])
-        for partner_id in partners_ids:
-            partner_data = self.getPartnerData([partner_id])
-            result.partners.append(partner_data)
-        return result
-    
-    def getPartnersData2(self, partners_ids):
+    def getPartnersData(self, partners_ids):
         result = ns(partners = [])
         partners_data = self.O.ResPartner.read(partners_ids, [])
         for partner_data in partners_data:
             partner_data = ns(partner_data)
-            partner_result = ns(partner=ns())
-            partner_result.partner.update(
+            partner_result = ns()
+            partner_result.update(
                 id_soci = partner_data.ref,
                 lang = partner_data.lang,
                 name = self.anonymize(partner_data.name),
@@ -69,43 +59,34 @@ class CallInfo(object):
                 polisses_ids = partner_data.polisses_ids,
                 provincia = partner_data.www_provincia[1]['name'],
                 )
-            result.partners.append(partner_result)
+            partner_block = ns()
+            partner_block[self.anonymize(partner_data.name)] = partner_result
+            result.partners.append(partner_block)
         return result
 
-    def getPartnersData(self, partners_ids):
-        def buildPartnerNsFromData(partner_data):
-            result = ns(partner=ns())
-            result.partner.update(
-                id_soci = partner_data.ref,
-                lang = partner_data.lang,
-                name = self.anonymize(partner_data.name),
-                city = partner_data.city,
-                email = self.anonymize(partner_data.www_email),
-                polisses_ids = partner_data.polisses_ids,
-                provincia = partner_data.www_provincia[1]['name'],
-                )
-            return result
-        return ns(partners = [
-            buildPartnerNsFromData(ns(partner_data))
-            for partner_data 
-            in self.O.ResPartner.read(partners_ids, []) 
-            ])
-        
     def getByPhone(self, phone):
         address_ids = self.addressByPhone(phone)
         partners_ids = self.searchPartnerByAddressId(address_ids)
         clean_partners_ids = sorted(list(set(partners_ids)))        
         result = ns()
         result.callid = phone
-        result.partners = self.getPartnersData(clean_partners_ids)
+        result.update(self.getPartnersData(clean_partners_ids))
         return result
 
     def getPolisseData(self,polisses_ids):
-        polisse_data = self.O.GiscedataPolissa.read(polisses_ids,['data_alta','data_baixa','potencia','cups'])
-        print polisse_data
+        all_pol_data = self.O.GiscedataPolissa.read(polisses_ids,['data_alta','data_baixa','potencia','cups','state','active','tarifa'])        
         result = ns(polisses=[])
-        result.polisses.append(polisse_data)
+        for pol_data in all_pol_data:
+            pol_data_ns = ns(polissa=ns())
+            pol_data_ns.polissa.update(
+                alta = pol_data['data_alta'],
+                baixa = pol_data['data_baixa'] if pol_data['data_baixa'] else '',
+                potencia = pol_data['potencia'],
+                cups = pol_data['cups'][1],
+                tarifa = pol_data['tarifa'][1],
+                estat = pol_data['state'],
+                )
+            result.polisses.append(pol_data_ns)
         return result
     
-         
 # vim: ts=4 sw=4 et
