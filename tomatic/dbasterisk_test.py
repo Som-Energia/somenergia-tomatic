@@ -10,17 +10,19 @@ class DbAsterisk_Test(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print 'setupclass'
-        try: os.unlink('demo.sqlite')
-        except: pass
 
     def setUp(self):
+        rollback()
+        try: os.unlink('tomatic/demo.sqlite')
+        except: pass
         self.a = DbAsterisk("sqlite", 'demo.sqlite')
+        self.a.setQueue('aqueue')
         db_session.__enter__()
 
     def tearDown(self):
         rollback()
         db_session.__exit__()
-        try: os.unlink('demo.sqlite')
+        try: os.unlink('tomatic/demo.sqlite')
         except: pass
 
     def fixture(self):

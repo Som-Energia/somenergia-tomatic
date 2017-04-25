@@ -58,7 +58,7 @@ class DbAsterisk(object):
     def add(self, extension):
         self._queueMembers(
             membername='SIP/{}@bustia_veu'.format(extension),
-            queue_name='callcenter_somenergia',
+            queue_name='aqueue',
             interface='SIP/{}'.format(extension),
             penalty=None,
             paused=False,
