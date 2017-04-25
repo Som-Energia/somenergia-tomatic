@@ -6,7 +6,7 @@ import datetime
 import glob
 
 class Storage(object):
-    "Stores schedules by week"
+    "Stores schedules by week into a folder"
 
     def __init__(self, dirname):
         self._dirname = dirname
