@@ -35,12 +35,16 @@ class DbAsterisk(object):
             self.add(extension)
 
     @db_session
-    def currentQueue(self):
+    def currentQueue(self, queue=None):
         return [(
             m.interface.split('/')[-1],
             m.paused,
             )
-            for m in select(q for q in self._queueMembers)
+            for m in select(
+                q for q in self._queueMembers
+                if queue is None
+                or m.queue_name == queue
+                )
             ]
 
     @db_session
