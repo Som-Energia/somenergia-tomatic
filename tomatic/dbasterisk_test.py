@@ -16,7 +16,6 @@ class DbAsterisk_Test(unittest.TestCase):
         try: os.unlink('tomatic/demo.sqlite')
         except: pass
         self.a = DbAsterisk("sqlite", 'demo.sqlite')
-        self.a.setQueue('aqueue')
         db_session.__enter__()
 
     def tearDown(self):
@@ -30,8 +29,8 @@ class DbAsterisk_Test(unittest.TestCase):
 
     def test_setQueue(self):
         a = self.fixture()
-        a.setQueue(['200', '204', '202' ])
-        self.assertEqual(a.currentQueue(), [
+        a.setQueue('aqueue',['200', '204', '202' ])
+        self.assertEqual(a.queue('aqueue'), [
             ('200', False),
             ('204', False),
             ('202', False),
@@ -39,37 +38,36 @@ class DbAsterisk_Test(unittest.TestCase):
 
     def test_setQueue_overwrites(self):
         a = self.fixture()
-        a.setQueue(['200', '204', '202' ])
-        self.assertEqual(a.currentQueue(), [
+        a.setQueue('aqueue',['200', '204', '202' ])
+        self.assertEqual(a.queue('aqueue'), [
             ('200', False),
             ('204', False),
             ('202', False),
         ])
-        a.setQueue(['400', '404', '402' ])
-        self.assertEqual(a.currentQueue(), [
+        a.setQueue('aqueue',['400', '404', '402' ])
+        self.assertEqual(a.queue('aqueue'), [
             ('400', False),
             ('404', False),
             ('402', False),
         ])
-        a.setQueue([])
 
     def test_setQueue_emptyClears(self):
         a = self.fixture()
-        a.setQueue(['200', '204', '202' ])
-        self.assertEqual(a.currentQueue(), [
+        a.setQueue('aqueue',['200', '204', '202' ])
+        self.assertEqual(a.queue('aqueue'), [
             ('200', False),
             ('204', False),
             ('202', False),
         ])
-        a.setQueue([])
-        self.assertEqual(a.currentQueue(), [
+        a.setQueue('aqueue',[])
+        self.assertEqual(a.queue('aqueue'), [
         ])
 
     def test_pause_anActiveMember(self):
         a = self.fixture()
-        a.setQueue(['200', '204', '202' ])
-        a.pause('204')
-        self.assertEqual(a.currentQueue(), [
+        a.setQueue('aqueue',['200', '204', '202' ])
+        a.pause('aqueue','204')
+        self.assertEqual(a.queue('aqueue'), [
             ('200', False),
             ('204', True),
             ('202', False),
@@ -77,30 +75,20 @@ class DbAsterisk_Test(unittest.TestCase):
         
     def test_pause_missingExtension(self):
         a = self.fixture()
-        a.setQueue(['200', '204', '202' ])
-        a.pause('bad')
-        self.assertEqual(a.currentQueue(), [
+        a.setQueue('aqueue',['200', '204', '202' ])
+        a.pause('aqueue','bad')
+        self.assertEqual(a.queue('aqueue'), [
             ('200', False),
             ('204', False),
             ('202', False),
         ])
 
-    def test_pause_missingExtension(self):
-        a = self.fixture()
-        a.setQueue(['200', '204', '202' ])
-        a.pause('bad')
-        self.assertEqual(a.currentQueue(), [
-            ('200', False),
-            ('204', False),
-            ('202', False),
-        ])
- 
     def test_resume(self):
         a = self.fixture()
-        a.setQueue(['200', '204', '202' ])
-        a.pause('204')
-        a.resume('204')
-        self.assertEqual(a.currentQueue(), [
+        a.setQueue('aqueue',['200', '204', '202' ])
+        a.pause('aqueue','204')
+        a.resume('aqueue','204')
+        self.assertEqual(a.queue('aqueue'), [
             ('200', False),
             ('204', False),
             ('202', False),
@@ -108,16 +96,50 @@ class DbAsterisk_Test(unittest.TestCase):
 
     def test_add(self):
         a = self.fixture()
-        a.setQueue(['200', '204', '202' ])
-        a.add('400')
-        self.assertEqual(a.currentQueue(), [
+        a.setQueue('aqueue',['200', '204'])
+        a.add('aqueue', '400')
+        self.assertEqual(a.queue('aqueue'), [
             ('200', False),
             ('204', False),
-            ('202', False),
             ('400', False),
         ])
 
+    def test_setQueue_leavesOtherQueuesAlone(self):
+        a = self.fixture()
+        a.setQueue('aqueue',['200', '204', '202' ])
+        a.setQueue('otherqueue',['400', '404', '402' ])
+        self.assertEqual(a.queue('aqueue'), [
+            ('200', False),
+            ('204', False),
+            ('202', False),
+        ])
 
+    def test_pause_leavesOtherQueuesAlone(self):
+        a = self.fixture()
+        a.setQueue('aqueue',['200'])
+        a.setQueue('otherqueue',['200' ])
+        a.pause('otherqueue', '200')
+        self.assertEqual(a.queue('aqueue'), [
+            ('200', False),
+        ])
+        self.assertEqual(a.queue('otherqueue'), [
+            ('200', True),
+        ])
+
+    def test_resume_leavesOtherQueuesAlone(self):
+        a = self.fixture()
+        a.setQueue('aqueue',['200'])
+        a.setQueue('otherqueue',['200' ])
+        a.pause('aqueue', '200')
+        a.pause('otherqueue', '200')
+        a.resume('otherqueue', '200')
+        self.assertEqual(a.queue('aqueue'), [
+            ('200', True),
+        ])
+        self.assertEqual(a.queue('otherqueue'), [
+            ('200', False),
+        ])
+        
 
 
 # vim: ts=4 sw=4 et
