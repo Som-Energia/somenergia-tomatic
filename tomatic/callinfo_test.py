@@ -98,9 +98,9 @@ class CallInfo_Test(unittest.TestCase):
         partner_ids = info.partnerByAddressId([2286, 42055, 43422, 999999999])
         self.assertEqual(partner_ids, [410, 39933, 41193])
 
-    def test_getPartnerData_whenMatchesOne(self):
+    def test_partnerInfo_whenMatchesOne(self):
         info = CallInfo(self.O, anonymize=True)
-        partner_data = info.getPartnerData([410])
+        partner_data = info.partnerInfo([410])
         self.assertNsEqual(partner_data, """\
             partner:
                 'lang': 'ca_ES' 

@@ -29,7 +29,7 @@ class CallInfo(object):
             if address and address['partner_id']
             ]
     
-    def getPartnerData(self, partner_id):
+    def partnerInfo(self, partner_id):
         partner_data = self.O.ResPartner.read(partner_id, [])
         partner_data = ns(partner_data[0])
         result = ns(partner=ns())
