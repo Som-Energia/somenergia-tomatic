@@ -44,7 +44,7 @@ class CallInfo(object):
             )
         return result
 
-    def getPartnersData(self, partners_ids):
+    def partnersInfo(self, partners_ids):
         result = ns(partners = [])
         partners_data = self.O.ResPartner.read(partners_ids, [])
         for partner_data in partners_data:
@@ -88,7 +88,7 @@ class CallInfo(object):
         clean_partners_ids = sorted(list(set(partners_ids)))        
         result = ns()
         result.callid = phone
-        result.update(self.getPartnersData(clean_partners_ids))
+        result.update(self.partnersInfo(clean_partners_ids))
         return result
 
     
