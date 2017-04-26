@@ -47,9 +47,12 @@ class Scheduling(object):
 
     def extensionToName(self, extension):
         extensions = self._data.extensions
-        inverse = dict(item[::-1]
+        inverse = dict([str(x) for x in item[::-1]]
             for item in extensions.items())
-        return inverse[int(extension)]
+        try:
+            return inverse[str(extension)]
+        except KeyError:
+            return extension
 
     def properName(self, name):
         names = self._data.get('names',{})

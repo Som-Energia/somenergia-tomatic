@@ -111,6 +111,15 @@ class Scheduling_Test(unittest.TestCase):
             schedule.extensionToName(200),
             'cesar')
 
+    def test_extensionToName_missingExtensionReturnsExtension(self):
+        schedule = Scheduling("""\
+            extensions:
+              cesar: 200
+            """)
+        self.assertEqual(
+            schedule.extensionToName('100'),
+            '100')
+
     # properName
 
     def test_properName_whenPresent(self):
