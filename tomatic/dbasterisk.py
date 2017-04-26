@@ -16,6 +16,7 @@ class DbAsterisk(object):
     def __init__(self, *args, **kwds):
         db = Database()
         class QueueMemberTable(db.Entity):
+            _table_ = 'queue_members'
             uniqueid = PrimaryKey(int, auto=True)
             membername = Optional(str) #, size=40)
             queue_name = Optional(str) #, size=128)
