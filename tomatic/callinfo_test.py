@@ -113,6 +113,13 @@ class CallInfo_Test(unittest.TestCase):
                 - 56427
                 'provincia': 'Lleida'
             """)
+
+    def test_polisseInfo_whenAskNone(self):
+        info = CallInfo(self.O, anonymize=True)
+        polisse_data = info.polisseInfo([0])
+        self.assertNsEqual(polisse_data, """\
+            polisses: []
+            """)
         
     def test_polisseInfo_whenAskOne(self):
         info = CallInfo(self.O, anonymize=True)
@@ -127,6 +134,29 @@ class CallInfo_Test(unittest.TestCase):
                  potencia: 3.45
                  tarifa: 2.0DHA
             """)
+
+    def test_polisseInfo_whenAskMore(self):
+        info = CallInfo(self.O, anonymize=True)
+        polisse_data = info.polisseInfo([155,250])
+        self.assertNsEqual(polisse_data, """\
+            polisses:
+             - polissa:
+                 baixa: ''
+                 cups: ...F0F
+                 alta: '2011-11-19'
+                 estat: activa
+                 potencia: 3.45
+                 tarifa: 2.0DHA
+             - polissa:
+                 baixa: ''
+                 cups: ...P0F
+                 alta: '2012-03-29'
+                 estat: activa
+                 potencia: 3.45
+                 tarifa: 2.0A
+            """)
+        
+        
         
     def test_getByPhone_global(self):
         info = CallInfo(self.O)
