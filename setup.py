@@ -17,6 +17,7 @@ setup(
     test_suite = 'nose.collector',
     scripts=[
         'schedulehours.py',
+        'tomatic_rtqueue.py',
         'tomatic_api.py',
         ],
     install_requires=[
@@ -32,6 +33,8 @@ setup(
         'py-Asterisk',
         'paramiko',
         'ooop', # TODO: Force Gisce Version
+        'pony',
+        'click',
     #],
     #tests_require=[
         'nose',
