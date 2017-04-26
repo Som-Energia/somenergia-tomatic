@@ -25,7 +25,8 @@ class DbAsterisk(object):
             paused =  Optional(int) #, size=11)
             # UNIQUE KEY queue_interface (queue_name, interface)
         #sql_debug(True)
-        db.bind(*args, create_db=True, **kwds)
+
+        db.bind(*args, **kwds)
         db.generate_mapping(create_tables=True)
         self._queueMembers = QueueMemberTable
 
