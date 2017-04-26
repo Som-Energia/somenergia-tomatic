@@ -101,27 +101,17 @@ class CallInfo_Test(unittest.TestCase):
     def test_getPartnerData_whenMatchesOne(self):
         info = CallInfo(self.O, anonymize=True)
         partner_data = info.getPartnerData([410])
-        self.assertB2BEqual(partner_data.dump())
-
-    def test_getByPhone_onehit(self):
-        info = CallInfo(self.O)
-        data = info.getByPhone("620471117")
-        self.assertB2BEqual(data.dump())
-
-    def test_getByPhone_twohits(self):
-        info = CallInfo(self.O)
-        data = info.getByPhone("630079522")
-        self.assertB2BEqual(data.dump())
-
-    def test_getByPhone_nonehits(self):
-        info = CallInfo(self.O)
-        data = info.getByPhone("badphone")
-        self.assertB2BEqual(data.dump())
+        self.assertB2BEqual(partner_data.dump())        # TO DO: convertir a assertNs
         
     def test_getPolisseData_whenAskOne(self):
         info = CallInfo(self.O)
         polisse_data = info.getPolisseData([155])
-        self.assertB2BEqual(polisse_data.dump())
+        self.assertB2BEqual(polisse_data.dump())        # TO DO: convertir a assertNs
+
+    def test_getByPhone_global(self):
+        info = CallInfo(self.O)
+        data = info.getByPhone("630079522")
+        self.assertB2BEqual(data.dump())
 
 unittest.TestCase.__str__ = unittest.TestCase.id
 
