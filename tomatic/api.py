@@ -16,7 +16,8 @@ import os
 hs = {}
 
 packagedir = os.path.join(os.path.dirname(__file__))
-schedules = schedulestorage.Storage(os.path.join(packagedir,'..','graelles'))
+schedules_path = os.path.join(packagedir,'..','graelles')
+schedules = schedulestorage.Storage(schedules_path)
 staticpath = os.path.join(packagedir,'dist')
 
 
