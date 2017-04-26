@@ -115,10 +115,19 @@ class CallInfo_Test(unittest.TestCase):
             """)
         
     def test_getPolisseData_whenAskOne(self):
-        info = CallInfo(self.O)
+        info = CallInfo(self.O, anonymize=True)
         polisse_data = info.getPolisseData([155])
-        self.assertB2BEqual(polisse_data.dump())        # TO DO: convertir a assertNs
-
+        self.assertNsEqual(polisse_data, """\
+            polisses:
+             - polissa:
+                 baixa: ''
+                 cups: ...F0F
+                 alta: '2011-11-19'
+                 estat: activa
+                 potencia: 3.45
+                 tarifa: 2.0DHA
+            """)
+        
     def test_getByPhone_global(self):
         info = CallInfo(self.O)
         data = info.getByPhone("630079522")

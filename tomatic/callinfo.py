@@ -75,7 +75,7 @@ class CallInfo(object):
                 alta = pol_data['data_alta'],
                 baixa = pol_data['data_baixa'] if pol_data['data_baixa'] else '',
                 potencia = pol_data['potencia'],
-                cups = pol_data['cups'][1],
+                cups = self.anonymize(pol_data['cups'][1]),
                 tarifa = pol_data['tarifa'][1],
                 estat = pol_data['state'],
                 )
