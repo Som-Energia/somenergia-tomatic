@@ -103,7 +103,7 @@ def set(queue, date, time):
 @cli.command()
 @queue_option
 def clear(queue):
-	"Sets the queue according Tomatic's schedule"
+	"Clears the queue"
 	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
 	db.setQueue(queue, [])
 

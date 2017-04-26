@@ -3,34 +3,55 @@
 Repartidor d'hores d'atenció telefònica
 
 
-## Dependencies
+## Install
 
 
 ```bash
-sudo apt-get install gcc libpython2.7-dev libffi-dev libssl-dev
-pip install PyYaml
-pip install gspread
-pip install oauth2client
-pip install PyOpenSSL
+sudo apt-get install gcc libpython2.7-dev libffi-dev libssl-dev nodejs-legacy npm
+python setup develop
+npm install
+npm run build # for development assets
+npm run deploy # for production assets
 ```
+
+See below "deployment notes" on how deploy the required certificate.
 
 ## Usage
 
-To download availability information from google drive:
+### Scheduler
 
-```bash
-$ ./schedulehours.py get
-```
-
-See bellow how to grant access to the script.
-
-To compute the timetable:
+To compute the timetable for the next week:
 
 ```bash
 $ ./schedulehours.py
 ```
 
-## Deployment
+To skip the downloading of the data from google drive:
+
+```bash
+$ ./schedulehours.py --keep
+```
+
+See bellow how to grant access to the script.
+
+### Web and API
+
+To run the fake version to develop:
+
+```bash
+$ ./tomatic_api.py --debug --fake
+```
+
+To run the version acting on asterisk:
+
+```bash
+$ ./tomatic_api.py
+```
+
+Use `--help` to see other options.
+
+
+## Deployment notes
 
 In order to access the configuration available in the Google Drive SpreadSheet
 you must provide a 
@@ -63,41 +84,6 @@ You can skip steps 5 (already in installation section in this document) and
 step 6 (code related) but **don't skip step 7**.
 
 Create a link named 'certificate.json' pointing to the actual certificate.
-
-
-
-
-
-
-
-## Development notes
-
-
-### PBX config reload policy
-
-Web modifies a schedule, what to do?
-
-- Modified hours belong to next weeks
-    - No action required
-- Modified hours is for the next days
-    - Schedule a reload at noon.
-- Modified hours belong to the current day
-    - A reload is done imnediatelly
-
-### Web interface API
-
-- currentQueue
-    - nombres
-    - estados
-    - extensiones
-- pauseQueueExtension(extension, bool isPaused)
-- addQueueExtension(extension)
-- extensions()
-    - All extensions able to be at phone
-- schedulings()
-    - List of weeks with schedule
-- schedule(week)
-- changeScheduleSlot(d,h,p,extension)
 
 
 
