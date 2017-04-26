@@ -11,7 +11,7 @@ class DbAsterisk_Test(unittest.TestCase):
         rollback()
         try: os.unlink('tomatic/demo.sqlite')
         except: pass
-        self.a = DbAsterisk("sqlite", 'demo.sqlite')
+        self.a = DbAsterisk("sqlite", 'demo.sqlite', create_db=True)
         db_session.__enter__()
 
     def tearDown(self):
