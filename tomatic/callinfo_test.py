@@ -114,6 +114,35 @@ class CallInfo_Test(unittest.TestCase):
                 'provincia': 'Lleida'
             """)
 
+    def test_partnersInfo_whenMatchesOne(self):
+        info = CallInfo(self.O, anonymize=True)
+        partner_data = info.partnersInfo([410])
+        self.assertNsEqual(partner_data, """\
+            partners:
+              - '...iol':
+                  'lang': 'ca_ES'
+                  'city': 'Vilanova de Bellpuig'
+                  'provincia': 'Lleida'
+                  'name': '...iol'
+                  'id_soci': '...367'
+                  'email': '...oop'       
+                  'polisses' :
+                    - 'polissa': 
+                        'baixa': ''
+                        'cups': '...F0F'
+                        'alta': '2011-11-19'
+                        'estat': 'activa'
+                        'potencia': 3.45
+                        'tarifa': '2.0DHA'                    
+                    - 'polissa':
+                        'baixa': ''
+                        'cups': '...H0F'
+                        'alta': '2015-07-17'
+                        'estat': 'activa'
+                        'potencia': 1.15
+                        'tarifa': '2.0A'                    
+            """)
+        
     def test_polisseInfo_whenAskNone(self):
         info = CallInfo(self.O, anonymize=True)
         polisse_data = info.polisseInfo([0])
@@ -155,8 +184,6 @@ class CallInfo_Test(unittest.TestCase):
                  potencia: 3.45
                  tarifa: 2.0A
             """)
-        
-        
         
     def test_getByPhone_global(self):
         info = CallInfo(self.O)
