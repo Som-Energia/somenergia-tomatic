@@ -101,7 +101,18 @@ class CallInfo_Test(unittest.TestCase):
     def test_getPartnerData_whenMatchesOne(self):
         info = CallInfo(self.O, anonymize=True)
         partner_data = info.getPartnerData([410])
-        self.assertB2BEqual(partner_data.dump())        # TO DO: convertir a assertNs
+        self.assertNsEqual(partner_data, """\
+            partner:
+                'lang': 'ca_ES' 
+                'name': '...iol'
+                'city': 'Vilanova de Bellpuig'
+                'email': '...oop'
+                'id_soci': '...367'
+                'polisses_ids': 
+                - 155
+                - 56427
+                'provincia': 'Lleida'
+            """)
         
     def test_getPolisseData_whenAskOne(self):
         info = CallInfo(self.O)

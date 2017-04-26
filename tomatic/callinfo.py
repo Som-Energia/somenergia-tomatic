@@ -12,7 +12,7 @@ class CallInfo(object):
 
     def anonymize(self, string):
         if not self._anonymize: return string
-        return string[:2]+"..."+string[-2:]
+        return "..."+string[-3:]
 
     def addressByPhone(self, phone):
         return self.O.ResPartnerAddress.search([
@@ -34,11 +34,11 @@ class CallInfo(object):
         partner_data = ns(partner_data[0])
         result = ns(partner=ns())
         result.partner.update(
-            id_soci = partner_data.ref,
+            id_soci = self.anonymize(partner_data.ref),
             lang = partner_data.lang,
-            name = partner_data.name,
+            name = self.anonymize(partner_data.name),
             city = partner_data.city,
-            email = partner_data.www_email,
+            email = self.anonymize(partner_data.www_email),
             polisses_ids = partner_data.polisses_ids,
             provincia = partner_data.www_provincia[1]['name'],
             )
@@ -51,7 +51,7 @@ class CallInfo(object):
             partner_data = ns(partner_data)
             partner_result = ns()
             partner_result.update(
-                id_soci = partner_data.ref,
+                id_soci = self.anonymize(partner_data.ref),
                 lang = partner_data.lang,
                 name = self.anonymize(partner_data.name),
                 city = partner_data.city,
