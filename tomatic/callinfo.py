@@ -21,7 +21,7 @@ class CallInfo(object):
             ('mobile','=',phone),
             ])
 
-    def searchPartnerByAddressId(self, address_ids):
+    def partnerByAddressId(self, address_ids):
         return [
             address['partner_id'][0]
             for address
@@ -63,7 +63,7 @@ class CallInfo(object):
             partner_block[self.anonymize(partner_data.name)] = partner_result
             result.partners.append(partner_block)
         return result
-
+    
     def getPolisseData(self,polisses_ids):
         all_pol_data = self.O.GiscedataPolissa.read(polisses_ids,[
             'data_alta','data_baixa','potencia','cups','state','active','tarifa'
@@ -84,7 +84,7 @@ class CallInfo(object):
     
     def getByPhone(self, phone):
         address_ids = self.addressByPhone(phone)
-        partners_ids = self.searchPartnerByAddressId(address_ids)
+        partners_ids = self.partnerByAddressId(address_ids)
         clean_partners_ids = sorted(list(set(partners_ids)))        
         result = ns()
         result.callid = phone

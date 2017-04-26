@@ -68,34 +68,34 @@ class CallInfo_Test(unittest.TestCase):
         ids = info.addressByPhone('630079522')
         self.assertEqual(ids, [33,42])
 
-    def test_searchPartnerByAddressId_whenMatchesNone(self):
+    def test_partnerByAddressId_whenMatchesNone(self):
         info = CallInfo(self.O)
-        partner_ids = info.searchPartnerByAddressId([999999999])
+        partner_ids = info.partnerByAddressId([999999999])
         self.assertEqual(partner_ids,[])
 
-    def test_searchPartnerByAddressId_whenMatchesOnePartner(self):
+    def test_partnerByAddressId_whenMatchesOnePartner(self):
         info = CallInfo(self.O)
-        partner_ids = info.searchPartnerByAddressId([12073])
+        partner_ids = info.partnerByAddressId([12073])
         self.assertEqual(partner_ids, [11709])
 
-    def test_searchPartnerByAddressId_whenEmpty(self):
+    def test_spartnerByAddressId_whenEmpty(self):
         info = CallInfo(self.O)
-        partner_ids = info.searchPartnerByAddressId([])
+        partner_ids = info.partnerByAddressId([])
         self.assertEqual(partner_ids, [])
 
-    def test_searchPartnerByAddressId_whenAddreswithNoPartner(self):
+    def test_partnerByAddressId_whenAddreswithNoPartner(self):
         info = CallInfo(self.O)
-        partner_ids = info.searchPartnerByAddressId([67234])
+        partner_ids = info.partnerByAddressId([67234])
         self.assertEqual(partner_ids, [])
 
-    def test_searchPartnerByAddressId_whenMatchesMoreThanOnePartner(self):
+    def test_partnerByAddressId_whenMatchesMoreThanOnePartner(self):
         info = CallInfo(self.O)
-        partner_ids = info.searchPartnerByAddressId([2286, 42055, 43422])
+        partner_ids = info.partnerByAddressId([2286, 42055, 43422])
         self.assertEqual(partner_ids, [410, 39933, 41193])
 
-    def test_searchPartnerByAddressId_whenMatchesMoreThanOnePartnerAndNotFound(self):
+    def test_partnerByAddressId_whenMatchesMoreThanOnePartnerAndNotFound(self):
         info = CallInfo(self.O)
-        partner_ids = info.searchPartnerByAddressId([2286, 42055, 43422, 999999999])
+        partner_ids = info.partnerByAddressId([2286, 42055, 43422, 999999999])
         self.assertEqual(partner_ids, [410, 39933, 41193])
 
     def test_getPartnerData_whenMatchesOne(self):
