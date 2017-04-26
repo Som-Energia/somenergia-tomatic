@@ -7,10 +7,6 @@ import os
 
 class DbAsterisk_Test(unittest.TestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        print 'setupclass'
-
     def setUp(self):
         rollback()
         try: os.unlink('tomatic/demo.sqlite')
