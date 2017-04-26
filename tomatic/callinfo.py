@@ -58,13 +58,13 @@ class CallInfo(object):
                 email = self.anonymize(partner_data.www_email),
                 provincia = partner_data.www_provincia[1]['name'],
                 )
-            partner_result.update(self.getPolisseData(partner_data.polisses_ids))            
+            partner_result.update(self.polisseInfo(partner_data.polisses_ids))            
             partner_block = ns()
             partner_block[self.anonymize(partner_data.name)] = partner_result
             result.partners.append(partner_block)
         return result
     
-    def getPolisseData(self,polisses_ids):
+    def polisseInfo(self,polisses_ids):
         all_pol_data = self.O.GiscedataPolissa.read(polisses_ids,[
             'data_alta','data_baixa','potencia','cups','state','active','tarifa'
             ])        

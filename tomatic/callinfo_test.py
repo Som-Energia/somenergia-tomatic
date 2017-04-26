@@ -114,9 +114,9 @@ class CallInfo_Test(unittest.TestCase):
                 'provincia': 'Lleida'
             """)
         
-    def test_getPolisseData_whenAskOne(self):
+    def test_polisseInfo_whenAskOne(self):
         info = CallInfo(self.O, anonymize=True)
-        polisse_data = info.getPolisseData([155])
+        polisse_data = info.polisseInfo([155])
         self.assertNsEqual(polisse_data, """\
             polisses:
              - polissa:
