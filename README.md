@@ -1,6 +1,35 @@
-# somenergia-phonetimetable
+# somenergia-tomatic
 
-Repartidor d'hores d'atenció telefònica
+Somenergia Phone Support Helper
+
+This software is used within SomEnergia cooperative to manage phone support to members and clients.
+
+- Distributes turns among the staff.
+
+	Given the ideal load and availability for everyone, and some restrictions
+	to ensure staff wellbeing and service quality,
+	it decides each week a timetable each person must be attending the phone.
+
+- Manual edits of the resulting time table
+
+	Often unscheduled meetings and other issues makes the computed timetable unpractical.
+	The web interface can be used to swap turns and keep track of the changes.
+
+- Program Asterisk queues according the timetable.
+
+	Each turn, the Asterisk queue is reloaded in order to meet the timetable.
+
+- Pause/Resume extensions or adding more lines during service
+
+	In order to adapt to incoming call and temporary unavailabilities,
+	you can pause or resume lines in the running queue or adding
+	new lines.
+
+- Incomming call info
+
+	Call id is used to retrieve information from the ERP useful
+	for resolving calls faster and better.
+
 
 
 ## Install
@@ -15,6 +44,10 @@ npm run deploy # for production assets
 ```
 
 See below "deployment notes" on how deploy the required certificate.
+
+## Configuration
+
+### `config.yaml`
 
 ## Usage
 
