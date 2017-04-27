@@ -51,6 +51,15 @@ $ ./tomatic_api.py
 Use `--help` to see other options.
 
 
+### Direct asterisk rtqueue control
+
+To load the current queue acording to the schedule
+
+```bash
+$ ./tomatic_rtqueue.py set -d 2018-12-26 -t 10:23
+```
+
+
 ## Deployment notes
 
 In order to access the configuration available in the Google Drive SpreadSheet
