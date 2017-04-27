@@ -3,36 +3,67 @@ somenergia-phonetimetable
 
 Repartidor d'hores d'atenció telefònica
 
-Dependencies
-------------
+Install
+-------
 
 .. code:: bash
 
-    sudo apt-get install gcc libpython2.7-dev libffi-dev libssl-dev
-    pip install PyYaml
-    pip install gspread
-    pip install oauth2client
-    pip install PyOpenSSL
+    sudo apt-get install gcc libpython2.7-dev libffi-dev libssl-dev nodejs-legacy npm
+    python setup develop
+    npm install
+    npm run build # for development assets
+    npm run deploy # for production assets
+
+See below "deployment notes" on how deploy the required certificate.
 
 Usage
 -----
 
-To download availability information from google drive:
+Scheduler
+~~~~~~~~~
 
-.. code:: bash
-
-    $ ./schedulehours.py get
-
-See bellow how to grant access to the script.
-
-To compute the timetable:
+To compute the timetable for the next week:
 
 .. code:: bash
 
     $ ./schedulehours.py
 
-Deployment
-----------
+To skip the downloading of the data from google drive:
+
+.. code:: bash
+
+    $ ./schedulehours.py --keep
+
+See bellow how to grant access to the script.
+
+Web and API
+~~~~~~~~~~~
+
+To run the fake version to develop:
+
+.. code:: bash
+
+    $ ./tomatic_api.py --debug --fake
+
+To run the version acting on asterisk:
+
+.. code:: bash
+
+    $ ./tomatic_api.py
+
+Use ``--help`` to see other options.
+
+Direct asterisk rtqueue control
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To load the current queue acording to the schedule
+
+.. code:: bash
+
+    $ ./tomatic_rtqueue.py set -d 2018-12-26 -t 10:23
+
+Deployment notes
+----------------
 
 In order to access the configuration available in the Google Drive
 SpreadSheet you must provide a
