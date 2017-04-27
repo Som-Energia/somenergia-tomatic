@@ -27,7 +27,7 @@ maximsT1PerDia: 1   # maxim nombre de torns primaris diaris per a una persona
 maximHoresDiariesGeneral: 2  # maxim nombre de torns diaris per una persona
 maximHoresDiaries:   # excepcions al maximHoresDiariesGeneral
    manel: 2
-   joan: 2
+   xuanin: 2
    silvia: 2
 costHoresDiscontinues: 40   # Per cada salt que te una persona entre dos hores de telefon un mateix dia
 costHoresConcentrades: 1   # Es multiplica per n·(n-1)/2 on n es el nombre d'hores diaries d'una mateixa persona
@@ -35,7 +35,7 @@ costTaulaSorollosa: 5   # Es multiplica per n·(n-1)/2 on n es el nombre de tele
 costHoraNoDesitjada: 0   # No implementat
 taules: # Asignacio de les persones en taules
    marc:    0
-   joan:    0
+   xuanin:  0
    mariona: 0
    eduard:  1
    pere:    1
@@ -58,62 +58,65 @@ taules: # Asignacio de les persones en taules
    tania:   7
    lucia:   7
    vic:     7
+   joanb:   8 # no se on es
+   miguelanxo: 9 # no se on es
    ningu:  99
 sempreUnLliure: {}
 randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
 colors:
-   marc:    'fbe8bc'
-   eduard:  'd8b9c5'
-   pere:    '8f928e'
-   david:   'ffd3ac'
-   aleix:   'eed0eb'
-   carles:  'c98e98'
-   marta:   'eb9481'
-   monica:  '7fada0'
-   yaiza:   '90cdb9'
-   erola:   '8789c8'
-   manel:   '88dfe3'
-   tania:   'c8abf4'
-   judit:   'e781e8'
-   silvia:  '8097fa'
-   joan:    'fae080'
-   ana:     'ff6600'
-   victor:  'ff3333'
-   jordi:   'ff9999'
-   judith:  'b6f08a'
-   lucia:   '9f24c2'
-   sergi:   '8cf2df'
-   vic:     '96ad88'
-   mariona: 'ff4444'
-   gabriel: 'dd5555'
-   maite:   'bb6666'
-   ningu:   'ffffff'
+  marc:    'fbe8bc'
+  eduard:  'd8b9c5'
+  pere:    '8f928e'
+  david:   'ffd3ac'
+  aleix:   'eed0eb'
+  carles:  'c98e98'
+  marta:   'eb9481'
+  monica:  '7fada0'
+  yaiza:   '90cdb9'
+  erola:   '8789c8'
+  manel:   '88dfe3'
+  tania:   'c8abf4'
+  judit:   'e781e8'
+  silvia:  '8097fa'
+  xuanin:  'fae080'
+  ana:     'ff6600'
+  victor:  'ff3333'
+  jordi:   'ff9999'
+  judith:  'b6f08a'
+  lucia:   '9f24c2'
+  sergi:   '8cf2df'
+  vic:     '96ad88'
+  mariona: 'ff4444'
+  gabriel: 'dd5555'
+  maite:   'bb6666'
+  ningu:   'ffffff'
 extensions:
-   marta:   3040
-   monica:  3041
-   manel:   3042
-   erola:   3043
-   yaiza:   3044
-   eduard:  3045
-   marc:    3046
-   judit:   3047
-   tania:   3048
-   carles:  3051
-   pere:    3052
-   aleix:   3053
-   david:   3054
-   silvia:  3055
-   joan:    3056
-   judith:  3057
-   ana:     3181
-   victor:  3182
-   jordi:   3183
-   lucia:   3184
-   vic:     3185
-   sergi:   3186
-   maite:   3187
-   gabriel: 3188
-   mariona: 3189
+  marta:   3040
+  monica:  3041
+  manel:   3042
+  erola:   3043
+  yaiza:   3044
+  eduard:  3045
+  marc:    3046
+  judit:   3047
+  tania:   3048
+  carles:  3051
+  pere:    3052
+  aleix:   3053
+  david:   3054
+  silvia:  3055
+  xuanin:  3056
+  judith:  3057
+  ana:     3181
+  victor:  3182
+  jordi:   3183
+  lucia:   3184
+  vic:     3185
+  sergi:   3186
+  maite:   3187
+  gabriel: 3188
+  mariona: 3189
+  joanb:   ----
 names: # Els que no només cal posar en majúscules
    silvia: Sílvia
    monica: Mònica
@@ -121,6 +124,7 @@ names: # Els que no només cal posar en majúscules
    cesar: César
    victor: Víctor
    lucia: Lucía
+   joanb: JoanBasagaña
    ningu: "-"
 
 forced:
