@@ -47,9 +47,11 @@ taules: # Asignacio de les persones en taules
    erola:   4
    sergi:   4
    judit:   4
+   joanb:   4
    marta:   5
    yaiza:   5
    victor:  5
+   miguelanxo: 5
    silvia:  6
    ana:     6
    jordi:   6
@@ -116,7 +118,8 @@ extensions:
   maite:   3187
   gabriel: 3188
   mariona: 3189
-  joanb:   ----
+  joanb:   3195
+  miguelanxo: 3194
 names: # Els que no només cal posar en majúscules
    silvia: Sílvia
    monica: Mònica
