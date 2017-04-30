@@ -206,19 +206,14 @@ var Uploader = {
 		var c = {};
 		c.uploadFile = function(ev) {
 			var formData = new FormData;
-			formData.append("yaml", ev.target.files[0]);
+			formData.append(args.name || "file", ev.target.files[0]);
 			m.request({
 				method: "POST",
 				url: args.url,
 				data: formData,
 				serialize: function(value) {return value},
 				deserialize: jsyaml.load,
-			}).then(function(result) {
-				Tomatic.init();
-			}, function(error) {
-				console.log("Upload error:", error);
-				Tomatic.error("Upload error: " + error.error);
-			});
+			}).then(args.onupload, args.onerror);
 		};
 		return c;
 	},
@@ -451,8 +446,16 @@ TomaticApp.view = function(c) {
 				m.component(WeekList, c),
 				m('.layout.end-justified', [
 					m.component(Uploader, {
+						name: 'yaml',
 						label: 'Puja Nova Graella',
 						url: 'api/graella',
+						onupload: function(result) {
+							Tomatic.init();
+						},
+						onerror: function(error) {
+							console.log("Upload error:", error);
+							Tomatic.error("Upload error: " + error.error);
+						},
 					}),
 				]),
 			]),
