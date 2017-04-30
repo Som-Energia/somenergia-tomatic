@@ -32,7 +32,6 @@ var Tomatic = {
 };
 
 Tomatic.queue = m.prop([]);
-Tomatic.editedPerson=m.prop('erola');
 Tomatic.init = function() {
 	this.requestWeeks();
 	this.requestQueue();
@@ -128,6 +127,33 @@ Tomatic.editCell = function(day,houri,turni,name) {
 		Tomatic.error("Problemes editant la graella: "+
 			(error.error || "Inexperat"));
 	});
+};
+Tomatic.setPersonData = function (name, data) {
+	if (name===undefined) {
+		name = data.name;
+	}
+	var grid = Tomatic.grid();
+	for (var key in data) {
+		switch (key) {
+		case 'formatName':
+			delete grid.names[name];
+			var formatName = Tomatic.formatName(name);
+			if (formatName!==data[key]) {
+				grid.names[name] = data[key];
+			}
+			break;
+		case 'extension':
+			grid.extensions[name] = data[key];
+			break;
+		case 'table':
+			grid.tables[name] = parseInt(data[key],10);
+			break;
+		case 'color':
+			grid.colors[name] = data[key];
+			break;
+		}
+	}
+	console.log(grid);
 };
 
 
@@ -457,27 +483,56 @@ TomaticApp.view = function(c) {
 };
 
 var editPerson = function(name) {
-	Tomatic.editedPerson(name);
-	var data = {
-		newone: (name?true:false),
-		name: name,
-		formatName: Tomatic.formatName(name),
-		color: Tomatic.grid().colors[name],
-		extensio: Tomatic.grid().extensions[name],
-		taula: Tomatic.grid().tables[name],
+	var taulaLabel = function(n) {
+		var companys = Tomatic.peopleInTable(n)
+			.filter(function(item) {
+				return item!==name;})
+			.map(function(item) {
+				return Tomatic.formatName(item);})
+			.join(', ')
+			;
+		return "Taula "+n+": amb "+companys;
 	};
+	function getDataFromTomatic(name) {
+		return {
+			newone: (name===undefined?true:false),
+			name: name,
+			formatName: Tomatic.formatName(name),
+			color: Tomatic.grid().colors[name],
+			extension: Tomatic.grid().extensions[name],
+			table: Tomatic.grid().tables[name],
+		};
+	};
+	function setDataOnTomatic(name, data) {
+		var old = getDataFromTomatic(name);
+		var changed = {};
+		for (var k in old) {
+			if (old[k]!==data[k]) {
+				changed[k]=data[k];
+			}
+		}
+		console.log('setDataOnTomatic', name, changed);
+		Tomatic.setPersonData(name, data);
+	};
+
+	var data = getDataFromTomatic(name);
+	data.tables = {};
+	// TODO: Take numbers from structure
+	[0,1,2,3,4,5,6,7,8,9].map(function(n) {
+		data.tables[n] = taulaLabel(n);
+	});
 	Dialog.show({
 		title: 'Edita dades de la persona',
 		body: [
 			"TODO: Els canvis encara no són permanents",
-			PersonEditor(Tomatic.editedPerson),
+			m.component(PersonEditor, data),
 		],
 		footer: [
 			m.component(Button, {
 				label: "Ok",
 				events: {
 					onclick: function() {
-						// TODO: save
+						setDataOnTomatic(name, data);
 						Dialog.hide('PersonEditor');
 					},
 				},
@@ -494,77 +549,73 @@ var editPerson = function(name) {
 	},'PersonEditor');
 };
 
-var PersonEditor = function(name) {
-	var taulaLabel = function(n) {
-		var companys = Tomatic.peopleInTable(n)
-			.filter(function(item) {
-				return item!==name();})
-			.map(function(item) {
-				return Tomatic.formatName(item);})
-			.join(', ')
-			;
-		return "Taula "+n+": amb "+companys;
-	};
+var PersonEditor = {};
+PersonEditor.view = function(ctrl, attrs) {
+	ctrl.name = attrs.name;
 	return m('.personEditor', [
-		m.component(Tabs, {
-			buttons: [
-				{
-					label: 'Info',
-					icon: { msvg: iconMenu },
-				},
-				{
-					label: 'Indis',
-					icon: { msvg: iconMenu },
-				},
-			],
-		}),
 		m.component(Textfield, {
 			label: 'Identificador',
 			floatingLabel: true,
-			pattern: '[a-z]{2,10}$',
-			value: name,
+			pattern: '[a-z]{3,10}$',
 			help: 'Identificador que es fa servir internament.',
 			error: 'De 3 a 10 carácters. Només lletres en minúscules.',
-			required: true
+			required: true,
+			disabled: !attrs.newone,
+			value: attrs.name || '',
+			events: {
+				onchange: function(ev) {
+					attrs.name=ev.target.value;
+				},
+			},
 		}),
 		m.component(Textfield, {
 			label: 'Nom mostrat',
 			floatingLabel: true,
-			value: function() {return Tomatic.formatName(name());},
 			help: 'Nom amb accents, majúscules...',
-			required: true
+			required: true,
+			value: function() {
+				return attrs.formatName;
+			},
+			events: {
+				onchange: function(ev) {
+					attrs.formatName=ev.target.value;
+				},
+			},
 		}),
 		m.component(Textfield, {
 			label: 'Extensio',
 			type: 'number',
 			pattern: '[0-9]{0,4}$',
 			floatingLabel: true,
-			value: function() {return Tomatic.grid().extensions[name()];},
-			help: 'Extensió del telèfon',
 			focusHelp: true,
+			help: 'Extensió del telèfon',
+			value: function() {
+				return attrs.extension;
+			},
+			events: {
+				onchange: function(ev) {
+					attrs.extension=ev.target.value;
+				},
+			},
 		}),
 		m('.pe-textfield.pe-textfield--floating-label.pe-textfield--hide-clear.pe-textfield--dirty', [
 			m('.pe-textfield__input-area', [
 				m('label.pe-textfield__label', 'Taula'),
 				m('select.pe-textfield__input', {
-					value: function() {
-						var result = Tomatic.grid().tables[name()];
-						if (result===undefined) { result = ''; }
-						console.log("select value", result, name());
-						return ''+result;
-					}(),
+					value: ''+attrs.table==='99'?'':attrs.table,
 					onchange: function(ev) {
 						var eventValue = ev.target.value;
-						console.log('select onchange',eventValue, name());
-						if (eventValue==='') {
-							eventValue=99;
-						}
-						Tomatic.grid().tables[name()]=parseInt(eventValue);
-					}
+						console.log("onchange", eventValue);
+						if (eventValue==='') { eventValue='99'; }
+						attrs.table=eventValue;
+					},
 				}, [
 					m('option', {value: ''}, "Sense taula"),
-					[0,1,2,3,4,5,6,7].map(function(n) {
-						return m('option', {value: ''+n }, taulaLabel(n));
+					Object.keys(attrs.tables).map(function(value) {
+						return m('option', {
+							value: value,
+							selected: value == attrs.table,
+						}, attrs.tables[value]);
 					}),
 					m('option', {value: '8'}, "Taula nova"),
 				]),
@@ -575,10 +626,10 @@ var PersonEditor = function(name) {
 				m('label.pe-textfield__label', 'Color'),
 				m.component(RgbEditor, {
 					value: function() {
-						return Tomatic.grid().colors[name()];
+						return attrs.color;
 					},
 					onEdit: function(rgb) {
-						Tomatic.grid().colors[name()]=rgb;
+						attrs.color = rgb;
 					},
 				}),
 			]),
@@ -664,7 +715,7 @@ var Grid = function(grid) {
 
 var Persons = function(extensions) {
 	return [
-		m('.extensions',
+		m('.extensions', [
 			Object.keys(extensions || {}).sort().map(function(name) {
 				return m('.extension', {
 					class: name,
@@ -677,8 +728,15 @@ var Persons = function(extensions) {
 					Tomatic.grid().extensions[name],
 					m.component(Ripple),
 				]);
-			})
-		),
+			}),
+			m('.extension.add', {
+				onclick: function() {
+					editPerson();
+				},
+			}, [
+				'nova', m('br'), 'persona',
+			]),
+		]),
 	];
 };
 var Extensions = function(extensions) {
