@@ -13,8 +13,6 @@ from .htmlgen import HtmlGen
 from .remote import remotewrite
 import os
 
-hs = {}
-
 packagedir = os.path.join(os.path.dirname(__file__))
 schedules_path = os.path.join(packagedir,'..','graelles')
 schedules = schedulestorage.Storage(schedules_path)
@@ -28,7 +26,6 @@ def pbx(alternative = None):
         p = PbxMockup(now)
         p.reconfigure(schedules.load(thisweek()))
         pbx.cache = p
-        # pbx.cache = asterisk.Pbx(config.pbx)
     return pbx.cache
 
 def now():
@@ -46,9 +43,6 @@ try:
     import config
 except ImportError:
     pass
-
-if config or True:
-    import asterisk
 
 app = Flask(__name__)
 
@@ -164,7 +158,7 @@ def get_queue():
     )
 
 @app.route('/api/queue/add/<person>')
-def add_to_queue(person):
+def add_line(person):
     p = pbx()
     p.addLine(person)
     return yamlfy(
