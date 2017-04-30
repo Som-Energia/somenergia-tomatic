@@ -93,16 +93,23 @@ Tomatic.formatName = function(name) {
 	if (!name) { return "-";}
 	return (Tomatic.grid().names||{})[name] || titleCase(name);
 };
-Tomatic.peopleInTable = function(table) {
-	var tables = Tomatic.grid().tables;
-	var result = Object.keys(tables).filter(function(k) {
-		return Tomatic.grid().tables[k]===table;
-		});
-	return result;
-};
 Tomatic.extension = function(name) {
 	return Tomatic.formatName(name) + ": "
 		+ ((Tomatic.grid().extensions||{})[name] || "???");
+};
+Tomatic.table = function(name) {
+	var tables = Tomatic.grid().tables;
+	if (!tables) { Tomatic.grid().tables={}; } // TODO: Move that anywhere else
+	var table = Tomatic.grid().tables[name];
+	if (table == undefined) { return 99; }
+	return table;
+};
+Tomatic.peopleInTable = function(table) {
+	var tables = Tomatic.grid().tables || {};
+	var result = Object.keys(tables).filter(function(k) {
+		return Tomatic.table(k)===table;
+		});
+	return result;
 };
 Tomatic.cell = function(day, houri, turni) {
 	try {
@@ -494,6 +501,7 @@ var editPerson = function(name) {
 				return Tomatic.formatName(item);})
 			.join(', ')
 			;
+		if (!companys) { companys = "ningú més"; }
 		return "Taula "+n+": amb "+companys;
 	};
 	function getDataFromTomatic(name) {
@@ -503,7 +511,7 @@ var editPerson = function(name) {
 			formatName: Tomatic.formatName(name),
 			color: Tomatic.grid().colors[name],
 			extension: Tomatic.grid().extensions[name],
-			table: Tomatic.grid().tables[name],
+			table: Tomatic.table(name),
 		};
 	};
 	function setDataOnTomatic(name, data) {
@@ -590,8 +598,8 @@ PersonEditor.view = function(ctrl, attrs) {
 			type: 'number',
 			pattern: '[0-9]{0,4}$',
 			floatingLabel: true,
-			focusHelp: true,
 			help: 'Extensió del telèfon',
+			required: true,
 			value: function() {
 				return attrs.extension;
 			},
@@ -729,6 +737,10 @@ var Persons = function(extensions) {
 					Tomatic.formatName(name),
 					m('br'),
 					Tomatic.grid().extensions[name],
+					Tomatic.grid().extensions[name]?
+						m('.tooltip',
+							Tomatic.grid().extensions[name]
+						):[],
 					m.component(Ripple),
 				]);
 			}),
