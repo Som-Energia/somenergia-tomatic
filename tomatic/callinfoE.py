@@ -16,12 +16,12 @@ class CallInfo(object):
         return "..."+string[-3:]
 
     def addressByPhone(self, phone):
-        return self.O.ResPartnerAddress.search([
+        return self.E.ResPartnerAddress.search([
             '|',
             ('phone','=',phone),
             ('mobile','=',phone),
             ])
-
+    
     def partnerByAddressId(self, address_ids):
         return [
             address['partner_id'][0]
