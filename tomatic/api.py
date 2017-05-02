@@ -181,6 +181,40 @@ def resume_line(person):
         currentQueue = p.currentQueue()
     )
 
+@app.route('/api/persons/')
+def personInfo():
+    config = ns.load('config.yaml')
+    result = ns(
+        names = config.names,
+        extensions = config.extensions,
+        tables = config.taules,
+        colors = config.colors,
+    )
+    return yamlfy(persons=result)
+
+@app.route('/api/person/<person>', methods=['POST'])
+def setPersonInfo(person):
+    config = ns.load('config.yaml')
+    print(request.data)
+    data = ns.loads(request.data)
+    if 'name' in data:
+        config.names[person] = data.name
+    if 'extension' in data:
+        config.extensions[person] = data.extension
+    if 'table' in data:
+        config.taules[person] = data.table
+    if 'color' in data:
+        config.colors[person] = data.color
+    config.dump('config.yaml')
+    result = ns(
+        names = config.names,
+        extensions = config.extensions,
+        tables = config.taules,
+        colors = config.colors,
+    )
+    return yamlfy(persons=result)
+
+
 def yamlfy(status=200, data=[], **kwd):
     return Response(ns(
         data, **kwd

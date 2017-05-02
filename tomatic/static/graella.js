@@ -12,14 +12,19 @@ var IconButton = require('polythene/icon-button/icon-button');
 var Icon = require('polythene/icon/icon');
 var Tabs = require('polythene/tabs/tabs');
 var Textfield = require('polythene/textfield/textfield');
+
 var iconMenu = require('mmsvg/google/msvg/navigation/menu');
 var iconMore = require('mmsvg/google/msvg/navigation/more-vert');
+var iconEdit = require('mmsvg/google/msvg/editor/mode-edit');
+var iconPalette = require('mmsvg/google/msvg/image/palette');
+var iconDate =  require('mmsvg/google/msvg/action/date-range');
+
 var RgbEditor = require('./components/rgbeditor');
 var Uploader = require('./components/uploader');
+var luminance = require('./components/colorutils').luminance;
 
 var theme = require('polythene/theme/theme');
 var customStyle = require('./style.styl');
-var luminance = require('./components/colorutils').luminance;
 
 const applicationPages = [
 	"Graelles",
@@ -33,9 +38,22 @@ var Tomatic = {
 };
 
 Tomatic.queue = m.prop([]);
+Tomatic.persons = m.prop({});
 Tomatic.init = function() {
 	this.requestWeeks();
 	this.requestQueue();
+	this.requestPersons();
+};
+Tomatic.requestPersons = function() {
+	m.request({
+		method: 'GET',
+		url: '/api/persons',
+		deserialize: jsyaml.load,
+	}).then(function(response){
+		if (response.persons!==undefined) {
+			Tomatic.persons(response.persons);
+		}
+	});
 };
 Tomatic.requestQueue = function(suffix) {
 	m.request({
@@ -70,6 +88,10 @@ Tomatic.requestGrid = function(week) {
 		deserialize: jsyaml.load,
 	}).then(function(data) {
 		data.days = data.days || 'dl dm dx dj dv'.split(' ');
+		delete data.colors;
+		delete data.names;
+		delete data.extensions;
+		delete data.tables; // TODO: This one was never added
 		Tomatic.currentWeek(week);
 		Tomatic.grid(data);
 	});
@@ -92,21 +114,21 @@ Tomatic.formatName = function(name) {
 		});
 	}
 	if (!name) { return "-";}
-	return (Tomatic.grid().names||{})[name] || titleCase(name);
+	return (Tomatic.persons().names||{})[name] || titleCase(name);
 };
 Tomatic.extension = function(name) {
 	return Tomatic.formatName(name) + ": "
-		+ ((Tomatic.grid().extensions||{})[name] || "???");
+		+ ((Tomatic.persons().extensions||{})[name] || "???");
 };
 Tomatic.table = function(name) {
-	var tables = Tomatic.grid().tables;
-	if (!tables) { Tomatic.grid().tables={}; } // TODO: Move that anywhere else
-	var table = Tomatic.grid().tables[name];
+	var tables = Tomatic.persons().tables;
+	if (!tables) { Tomatic.persons().tables={}; } // TODO: Move that anywhere else
+	var table = Tomatic.persons().tables[name];
 	if (table == undefined) { return 99; }
 	return table;
 };
 Tomatic.peopleInTable = function(table) {
-	var tables = Tomatic.grid().tables || {};
+	var tables = Tomatic.persons().tables || {};
 	var result = Object.keys(tables).filter(function(k) {
 		return Tomatic.table(k)===table;
 		});
@@ -140,28 +162,43 @@ Tomatic.setPersonData = function (name, data) {
 	if (name===undefined) {
 		name = data.name;
 	}
-	var grid = Tomatic.grid();
+	var postdata = {};
+
 	for (var key in data) {
+		var value = data[key];
 		switch (key) {
 		case 'formatName':
-			delete grid.names[name];
+			delete Tomatic.persons().names[name];
 			var formatName = Tomatic.formatName(name);
-			if (formatName!==data[key]) {
-				grid.names[name] = data[key];
+			if (formatName!==value) {
+				postdata.name = value;
 			}
 			break;
 		case 'extension':
-			grid.extensions[name] = data[key];
+			postdata.extension = value;
 			break;
 		case 'table':
-			grid.tables[name] = parseInt(data[key],10);
+			postdata.table = parseInt(value,10);
 			break;
 		case 'color':
-			grid.colors[name] = data[key];
+			postdata.color = value;
 			break;
 		}
 	}
-	console.log(grid);
+	console.log("posting",postdata);
+	m.request({
+		method: 'POST',
+		url: '/api/person/'+name,
+		data: postdata,
+		deserialize: jsyaml.load,
+	})
+	.then( function(data) {
+		Tomatic.requestPersons();
+	}, function(error) {
+		console.log(error);
+		Tomatic.error("Problemes editant la persona: "+
+			(error.error || "Inexperat"));
+	});
 };
 
 
@@ -302,7 +339,7 @@ var PersonPicker = {
 				Tomatic.formatName(name)
 			);
 		};
-		var extensions = Tomatic.grid().extensions || {};
+		var extensions = Tomatic.persons().extensions || {};
 		return m('.extensions', [
 			Object.keys(extensions).sort().map(pickCell),
 			args.nobodyPickable ? pickCell('ningu') : [],
@@ -362,11 +399,12 @@ TomaticApp.controller = function(model, args) {
 };
 
 TomaticApp.view = function(c) {
+	var persons = Tomatic.persons();
 	var grid = Tomatic.grid();
 	return [
 		m('style',
-			Object.keys(grid.colors||{}).map(function(name) {
-				let color = '#'+grid.colors[name];
+			Object.keys(persons.colors||{}).map(function(name) {
+				let color = '#'+persons.colors[name];
 				let darker = '#'+luminance(color, -0.3);
 				return (
 					'.'+name+', .graella .'+name+' {\n' +
@@ -448,7 +486,7 @@ TomaticApp.view = function(c) {
 		c.currentTab() === 'Persones' && [
 			Todo("Permetre modificar la configuració personal de cadascú: "+
 				"Color, taula, extensió, indisponibilitats..."),
-			Persons(grid.extensions),
+			Persons(persons.extensions),
 		] || [],
 		c.currentTab() == 'Trucada' && [
 			Todo(
@@ -459,6 +497,36 @@ TomaticApp.view = function(c) {
 		]}
 		),
 	];
+};
+
+var editAvailabilities = function(name) {
+	Dialog.show({
+		title: 'Edita indisponibilitats',
+		body: [
+			"TODO: Els canvis encara no són permanents",
+			m('.busyeditor', [
+			]),
+		],
+		footer: [
+			m.component(Button, {
+				label: "Ok",
+				events: {
+					onclick: function() {
+						setDataOnTomatic(name, data);
+						Dialog.hide('BusyEditor');
+					},
+				},
+			}),
+			m.component(Button, {
+				label: "Cancel·la",
+				events: {
+					onclick: function() {
+						Dialog.hide('BusyEditor');
+					},
+				},
+			}),
+		],
+	},'BusyEditor');
 };
 
 var editPerson = function(name) {
@@ -478,8 +546,8 @@ var editPerson = function(name) {
 			newone: (name===undefined?true:false),
 			name: name,
 			formatName: Tomatic.formatName(name),
-			color: Tomatic.grid().colors[name],
-			extension: Tomatic.grid().extensions[name],
+			color: Tomatic.persons().colors[name],
+			extension: Tomatic.persons().extensions[name],
 			table: Tomatic.table(name),
 		};
 	};
@@ -661,8 +729,8 @@ var Grid = function(grid) {
 			}
 		}, [
 			Tomatic.formatName(name),
-			Tomatic.grid().extensions[name]?
-				m('.tooltip', Tomatic.grid().extensions[name]):
+			Tomatic.persons().extensions[name]?
+				m('.tooltip', Tomatic.persons().extensions[name]):
 				[],
 			m.component(Ripple),
 		]);
@@ -699,18 +767,34 @@ var Persons = function(extensions) {
 			Object.keys(extensions || {}).sort().map(function(name) {
 				return m('.extension', {
 					class: name,
-					onclick: function() {
+					_onclick: function() {
 						editPerson(name);
 					},
 				}, [
 					Tomatic.formatName(name),
 					m('br'),
-					Tomatic.grid().extensions[name],
-					Tomatic.grid().extensions[name]?
-						m('.tooltip',
-							Tomatic.grid().extensions[name]
-						):[],
-					m.component(Ripple),
+					Tomatic.persons().extensions[name],
+					m('.tooltip', [
+						m.component(IconButton, {
+							icon: { msvg: iconDate },
+							compact: true,
+							wash: true,
+							class: 'colored',
+							events: {
+							onclick: function() { editAvailabilities(name); },
+							},
+						}),
+						m.component(IconButton, {
+							icon: { msvg: iconEdit },
+							compact: true,
+							wash: true,
+							class: 'colored',
+							events: {
+							onclick: function() { editPerson(name); },
+							},
+						}),
+					]),
+					//m.component(Ripple),
 				]);
 			}),
 			m('.extension.add', {
