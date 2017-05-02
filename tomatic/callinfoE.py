@@ -21,13 +21,16 @@ class CallInfo(object):
             ('phone','=',phone),
             ('mobile','=',phone),
             ])
-    
+
     def partnerByAddressId(self, address_ids):
+        result = []
+        if len(address_ids) == 0:
+            return result
         return [
-            address['partner_id'][0]
-            for address
-            in self.O.ResPartnerAddress.read(address_ids, ['id', 'partner_id'])
-            if address and address['partner_id']
+            address[0]
+            for address 
+            in self.E.ResPartnerAddress.read(address_ids,'partner_id')
+            if address and address[0]
             ]
     
     def partnerInfo(self, partner_id):
