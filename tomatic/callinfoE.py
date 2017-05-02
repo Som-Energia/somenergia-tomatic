@@ -34,7 +34,7 @@ class CallInfo(object):
             ]
     
     def partnerInfo(self, partner_id):
-        partner_data = self.O.ResPartner.read(partner_id, [])
+        partner_data = self.E.ResPartner.read(partner_id)
         partner_data = ns(partner_data[0])
         result = ns(partner=ns())
         result.partner.update(
@@ -50,7 +50,7 @@ class CallInfo(object):
 
     def partnersInfo(self, partners_ids):
         result = ns(partners = [])
-        partners_data = self.O.ResPartner.read(partners_ids, [])
+        partners_data = self.E.ResPartner.read(partners_ids)
         for partner_data in partners_data:
             partner_data = ns(partner_data)
             partner_result = ns()
