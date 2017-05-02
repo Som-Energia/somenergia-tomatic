@@ -147,7 +147,7 @@ class CallInfo_Test(unittest.TestCase):
         
     def test_polisseInfo_whenAskNone(self):
         info = CallInfo(self.O ,self.E, anonymize=True)
-        polisse_data = info.polisseInfo([0])
+        polisse_data = info.polisseInfo([])
         self.assertNsEqual(polisse_data, """\
             polisses: []
             """)

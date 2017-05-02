@@ -69,9 +69,11 @@ class CallInfo(object):
         return result
     
     def polisseInfo(self,polisses_ids):
-        all_pol_data = self.O.GiscedataPolissa.read(polisses_ids,[
-            'data_alta','data_baixa','potencia','cups','state','active','tarifa'
-            ])        
+        all_pol_data = []
+        if len(polisses_ids) != 0:
+            all_pol_data = self.E.GiscedataPolissa.read(polisses_ids,[
+                'data_alta','data_baixa','potencia','cups','state','active','tarifa'
+                ])
         result = ns(polisses=[])
         for pol_data in all_pol_data:
             pol_data_ns = ns(polissa=ns())
