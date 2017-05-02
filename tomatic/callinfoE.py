@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import ooop
 import dbconfig
 from yamlns import namespace as ns 
 
 class CallInfo(object):
 
-    def __init__(self, O, E, anonymize=False):
-        self.O = O
+    def __init__(self, E, anonymize=False):
         self.E = E
         self._anonymize = anonymize
 

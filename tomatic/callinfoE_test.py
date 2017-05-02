@@ -2,7 +2,6 @@
 
 import unittest
 from callinfoE import CallInfo
-import ooop
 import erppeek
 try:
     import dbconfig
@@ -42,66 +41,65 @@ class CallInfo_Test(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.O = ooop.OOOP(**dbconfig.ooop)
         cls.E = erppeek.Client(**dbconfig.erppeek)
                 
     def test_addressByPhone_whenMatchesNone(self):
-        info = CallInfo(self.O, self.E)
+        info = CallInfo(self.E)
         ids = info.addressByPhone('badphone')
         self.assertEqual(ids, [])
 
     def test_addressByPhone_whenMatchesOnePhone(self):
-        info = CallInfo(self.O, self.E)
+        info = CallInfo(self.E)
         ids = info.addressByPhone('933730976')
         self.assertEqual(ids, [12073])
 
     def test_addressByPhone_whenMatchesMoreThanOnePhone(self):
-        info = CallInfo(self.O, self.E)
+        info = CallInfo(self.E)
         ids = info.addressByPhone('659509872')
         self.assertEqual(ids, [2286, 42055, 43422])
 
     def test_addressByPhone_whenMatchesOneMobile(self):
-        info = CallInfo(self.O, self.E)
+        info = CallInfo(self.E)
         ids = info.addressByPhone('699515879')
         self.assertEqual(ids, [34])
 
     def test_addressByPhone_whenMatchesMoreThanOneMobile(self):
-        info = CallInfo(self.O, self.E)
+        info = CallInfo(self.E)
         ids = info.addressByPhone('630079522')
         self.assertEqual(ids, [33,42])
 
     def test_partnerByAddressId_whenMatchesNone(self):
-        info = CallInfo(self.O, self.E)
+        info = CallInfo(self.E)
         partner_ids = info.partnerByAddressId([999999999])
         self.assertEqual(partner_ids,[])
 
     def test_partnerByAddressId_whenMatchesOnePartner(self):
-        info = CallInfo(self.O, self.E)
+        info = CallInfo(self.E)
         partner_ids = info.partnerByAddressId([12073])
         self.assertEqual(partner_ids, [11709])
 
     def test_spartnerByAddressId_whenEmpty(self):
-        info = CallInfo(self.O, self.E)
+        info = CallInfo(self.E)
         partner_ids = info.partnerByAddressId([])
         self.assertEqual(partner_ids, [])
 
     def test_partnerByAddressId_whenAddreswithNoPartner(self):
-        info = CallInfo(self.O, self.E)
+        info = CallInfo(self.E)
         partner_ids = info.partnerByAddressId([67234])
         self.assertEqual(partner_ids, [])
 
     def test_partnerByAddressId_whenMatchesMoreThanOnePartner(self):
-        info = CallInfo(self.O, self.E)
+        info = CallInfo(self.E)
         partner_ids = info.partnerByAddressId([2286, 42055, 43422])
         self.assertEqual(partner_ids, [410, 39933, 41193])
 
     def test_partnerByAddressId_whenMatchesMoreThanOnePartnerAndNotFound(self):
-        info = CallInfo(self.O, self.E)
+        info = CallInfo(self.E)
         partner_ids = info.partnerByAddressId([2286, 42055, 43422, 999999999])
         self.assertEqual(partner_ids, [410, 39933, 41193])
 
     def test_partnerInfo_whenMatchesOne(self):
-        info = CallInfo(self.O, self.E, anonymize=True)
+        info = CallInfo(self.E, anonymize=True)
         partner_data = info.partnerInfo([410])
         self.assertNsEqual(partner_data, """\
             partner:
@@ -117,7 +115,7 @@ class CallInfo_Test(unittest.TestCase):
             """)
 
     def test_partnersInfo_whenMatchesOne(self):
-        info = CallInfo(self.O, self.E, anonymize=True)
+        info = CallInfo(self.E, anonymize=True)
         partner_data = info.partnersInfo([410])
         self.assertNsEqual(partner_data, """\
             partners:
@@ -146,14 +144,14 @@ class CallInfo_Test(unittest.TestCase):
             """)
         
     def test_polisseInfo_whenAskNone(self):
-        info = CallInfo(self.O ,self.E, anonymize=True)
+        info = CallInfo(self.E, anonymize=True)
         polisse_data = info.polisseInfo([])
         self.assertNsEqual(polisse_data, """\
             polisses: []
             """)
         
     def test_polisseInfo_whenAskOne(self):
-        info = CallInfo(self.O, self.E, anonymize=True)
+        info = CallInfo(self.E, anonymize=True)
         polisse_data = info.polisseInfo([155])
         self.assertNsEqual(polisse_data, """\
             polisses:
@@ -167,7 +165,7 @@ class CallInfo_Test(unittest.TestCase):
             """)
 
     def test_polisseInfo_whenAskMore(self):
-        info = CallInfo(self.O, self.E, anonymize=True)
+        info = CallInfo(self.E, anonymize=True)
         polisse_data = info.polisseInfo([155,250])
         self.assertNsEqual(polisse_data, """\
             polisses:
@@ -188,7 +186,7 @@ class CallInfo_Test(unittest.TestCase):
             """)
         
     def test_getByPhone_global(self):
-        info = CallInfo(self.O ,self.E)
+        info = CallInfo(self.E)
         data = info.getByPhone("630079522")
         self.assertB2BEqual(data.dump())
 
