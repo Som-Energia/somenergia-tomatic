@@ -60,8 +60,6 @@ taules: # Asignacio de les persones en taules
    tania:   7
    lucia:   7
    vic:     7
-   joanb:   8 # no se on es
-   miguelanxo: 9 # no se on es
    ningu:  99
 sempreUnLliure: {}
 randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
