@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from tomatic.api import app, pbx
-from tomatic.pbxasterisk import PbxAsterisk
 import click
 import dbconfig
 from consolemsg import warn
@@ -38,6 +37,7 @@ def main(fake, debug, host, port, printrules):
         warn("Using fake pbx")
     else:
         warn("Using real pbx")
+        from tomatic.pbxasterisk import PbxAsterisk
         pbx(PbxAsterisk(
             dbconfig.tomatic.storagepath,
             *dbconfig.tomatic.dbasterisk.args,
