@@ -32,7 +32,7 @@ setup(
         'jsmin',
         'py-Asterisk',
         'paramiko',
-        'ooop', # TODO: Force Gisce Version
+        'ooop==0.2.2-xt',
         'pony',
         'click',
     #],
