@@ -1,0 +1,143 @@
+fullIndisponibilitats: 'Reunions i altres afers' # 'oyfu0hb' # Fulla del drive on estan les indisponibilitats
+fullCarrega: 'o9rxhxk' # 'Càrrega setmanal de telèfon' # Fulla del drive on estan les càrregues
+intervalCarrega: carrega{:02d}{:02d}{:02d} # Patró pel nom de l'interval on buscar les càrregues (Y,m,d)
+monitoringFile: taula.html
+
+nTelefons: 4
+diesCerca: ['dm', 'dv', 'dx', 'dl', 'dj',] # Els mes conflictius davant
+diesVisualitzacio: ['dl','dm','dx','dj','dv']
+
+hours:  # La darrera es per tancar
+- '09:00'
+- '10:15'
+- '11:30'
+- '12:45'
+- '14:00'
+mostraCami:  false   # mostra el cami de cerca que va fent (molt lent)
+maximCamiAMostrar: 60   # fins a quin nivell mostra el camí de cerca
+aleatori: true   # si l'ordre de provar entre els companys a cada casella es aleatori
+backtrackDepth: 10000   # Comprovacions a una via abans de rendir-se i provar una altra
+costLimit: 100   # No et molestis en comprobar solucions que no sigui millors
+descartaNoPrometedores: true # Pot descartar solucions bones, pero agilitza molt
+deixaEsmorzar: true     # Si hom ha de tenir una de les hores d'esmorzar lliures
+noVolenEsmorzar:
+- david
+maximPerTaula: 2   # maxim nombre de telefons simultanis a una mateixa taula
+maximsT1PerDia: 1   # maxim nombre de torns primaris diaris per a una persona
+maximHoresDiariesGeneral: 2  # maxim nombre de torns diaris per una persona
+maximHoresDiaries:   # excepcions al maximHoresDiariesGeneral
+   manel: 2
+   xuanin: 2
+   silvia: 2
+costHoresDiscontinues: 40   # Per cada salt que te una persona entre dos hores de telefon un mateix dia
+costHoresConcentrades: 1   # Es multiplica per n·(n-1)/2 on n es el nombre d'hores diaries d'una mateixa persona
+costTaulaSorollosa: 5   # Es multiplica per n·(n-1)/2 on n es el nombre de telefons simultanis a una taula
+costHoraNoDesitjada: 0   # No implementat
+taules: # Asignacio de les persones en taules
+   marc:    0
+   xuanin:  0
+   mariona: 0
+   eduard:  1
+   pere:    1
+   david:   2
+   carles:  3
+   monica:  3
+   judith:  3
+   maite:   3
+   erola:   4
+   sergi:   4
+   judit:   4
+   joanb:   4
+   marta:   5
+   yaiza:   5
+   victor:  5
+   miguelanxo: 5
+   silvia:  6
+   ana:     6
+   jordi:   6
+   gabriel: 6
+   manel:   7
+   tania:   7
+   lucia:   7
+   vic:     7
+   ningu:  99
+sempreUnLliure: {}
+randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
+colors:
+  marc:    'fbe8bc'
+  eduard:  'd8b9c5'
+  pere:    '8f928e'
+  david:   'ffd3ac'
+  aleix:   'eed0eb'
+  carles:  'c98e98'
+  marta:   'eb9481'
+  monica:  '7fada0'
+  yaiza:   '90cdb9'
+  erola:   '8789c8'
+  manel:   '88dfe3'
+  tania:   'c8abf4'
+  judit:   'e781e8'
+  silvia:  '8097fa'
+  xuanin:  'fae080'
+  ana:     'ff6600'
+  victor:  'ff3333'
+  jordi:   'ff9999'
+  judith:  'b6f08a'
+  lucia:   '9f24c2'
+  sergi:   '8cf2df'
+  vic:     '96ad88'
+  mariona: 'ff4444'
+  gabriel: 'dd5555'
+  maite:   'bb6666'
+  ningu:   'ffffff'
+extensions:
+  marta:   3040
+  monica:  3041
+  manel:   3042
+  erola:   3043
+  yaiza:   3044
+  eduard:  3045
+  marc:    3046
+  judit:   3047
+  tania:   3048
+  carles:  3051
+  pere:    3052
+  aleix:   3053
+  david:   3054
+  silvia:  3055
+  xuanin:  3056
+  judith:  3057
+  ana:     3181
+  victor:  3182
+  jordi:   3183
+  lucia:   3184
+  vic:     3185
+  sergi:   3186
+  maite:   3187
+  gabriel: 3188
+  mariona: 3189
+  joanb:   3195
+  miguelanxo: 3194
+names: # Els que no només cal posar en majúscules
+   silvia: Sílvia
+   monica: Mònica
+   tania: Tània
+   cesar: César
+   victor: Víctor
+   lucia: Lucía
+   joanb: JoanBasagaña
+   ningu: "-"
+
+forced:
+  [dl, 1, 4]: ningu
+  [dl, 2, 4]: ningu
+  [dm, 1, 4]: ningu
+  [dm, 2, 4]: ningu
+  [dx, 1, 4]: ningu
+  [dx, 2, 4]: ningu
+  [dj, 1, 4]: ningu
+  [dj, 2, 4]: ningu
+  [dv, 1, 4]: ningu
+  [dv, 2, 4]: ningu
+
+
