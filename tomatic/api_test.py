@@ -7,12 +7,6 @@ from datetime import datetime
 
 from . import api
 
-config=None
-try:
-    import config
-except ImportError:
-    pass
-
 def setNow(year,month,day,hour,minute):
     api.now=lambda:datetime(year,month,day,hour,minute)
 
