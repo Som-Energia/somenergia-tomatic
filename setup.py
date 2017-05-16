@@ -34,7 +34,9 @@ setup(
         'paramiko',
         'ooop==0.2.2-xt',
         'pony',
+        'PyMySQL',
         'click',
+        'decorator',
     #],
     #tests_require=[
         'nose',
