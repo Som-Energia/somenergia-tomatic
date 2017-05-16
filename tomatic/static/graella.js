@@ -33,7 +33,6 @@ const applicationPages = [
 	"Trucada",
 	].map(function(n) {return {label:n};});
 
-
 var Tomatic = {
 };
 
@@ -398,6 +397,41 @@ TomaticApp.controller = function(model, args) {
 	return controller;
 };
 
+var Header = function(onchange, content) {
+    return m.component(HeaderPanel, {
+        mode: 'waterfall-tall',
+        //condenses: true, // condense:
+        //noReveal: true, // reveal: remove header when scroll down
+        fixed: true,
+        keepCondensedHeader: true,
+        //animated: true,
+        //disolve: true,
+        headerHeight: 10,
+        class: 'pe-header-panel--fit background-tomatic',
+        header: {
+            toolbar: {
+                class: 'pe-toolbar--tabs.flex',
+                topBar: toolbarRow('Tomàtic - Som Energia'),
+                bottomBar: m('.tabArea.hasToolbar', [
+                    m.component(Tabs, {
+                        buttons: applicationPages,
+                        centered: true,
+                        activeSelected: true,
+                        getState: function(state) {
+                            onchange(state.data.label);
+                        }
+                    })
+                ]),
+            },
+        },
+        content: [
+            content,
+            m('#snackbar',m.component(SnackBar)),
+            m.component(Dialog),
+        ],
+    });
+};
+
 TomaticApp.view = function(c) {
 	var persons = Tomatic.persons();
 	var grid = Tomatic.grid();
@@ -419,33 +453,7 @@ TomaticApp.view = function(c) {
 					'}\n');
 			})
 		),
-		m.component(HeaderPanel, {
-			mode: 'waterfall-tall',
-			//condenses: true, // condense: 
-			//noReveal: true, // reveal: remove header when scroll down
-			fixed: true,
-			keepCondensedHeader: true,
-			//animated: true,
-			//disolve: true,
-			headerHeight: 10,
-			class: 'pe-header-panel--fit background-tomatic',
-			header: {
-				toolbar: {
-					class: 'pe-toolbar--tabs.flex',
-					topBar: toolbarRow('Tomàtic - Som Energia'),
-					bottomBar: m('.tabArea.hasToolbar', [
-						m.component(Tabs, {
-							buttons: applicationPages,
-							centered: true,
-							activeSelected: true,
-							getState: function(state) {
-								c.currentTab(state.data.label);
-							}
-						})
-					]),
-				},
-			},
-			content: [
+        Header(c.currentTab, [
 		c.currentTab()==='Centraleta' && [
 			Todo([
 				m('b','Sense cap efecte fins que tinguem la centraleta.'),
@@ -492,10 +500,7 @@ TomaticApp.view = function(c) {
 			Todo(
 				"Aquí es podrà veure informació de l'ERP sobre la trucada entrant"),
 		] || [],
-		m('#snackbar',m.component(SnackBar)),
-		m.component(Dialog),
-		]}
-		),
+		]),
 	];
 };
 
@@ -855,9 +860,10 @@ var Penalties = function(grid) {
 	]);
 };
 
-
 window.onload = function() {
 	Tomatic.init();
-	m.mount(document.getElementById("tomatic"), TomaticApp);
+	m.route(document.getElementById("tomatic"), '/graella', {
+        '/graella': TomaticApp,
+    });
 };
 
