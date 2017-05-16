@@ -37,19 +37,20 @@ def anow():
 def thisweek():
     return str(now().date() - timedelta(days=now().weekday()))
 
-config=None
+dbconfig=None
 
 try:
-    import config
+    import dbconfig
 except ImportError:
     pass
 
 app = Flask(__name__)
 
 def publishStatic(graella):
-    if not config: return
-    if not hasattr(config, 'publishStatic'): return
-    params = config.publishStatic
+    if not dbconfig: return
+    if not hasattr(dbconfig, 'tomatic'): return
+    if not hasattr(dbconfig.tomatic, 'publishStatic'): return
+    params = dbconfig.tomatic.publishStatic
     sched=HtmlGen(graella)
     remotewrite(
         params.user,
