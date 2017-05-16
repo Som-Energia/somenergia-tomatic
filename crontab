@@ -1,0 +1,10 @@
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# m h dom mon dow user  command
+00  9   * * 1-5  somenergia    tomatic_rtqueue.py set
+15 10   * * 1-5  somenergia    tomatic_rtqueue.py set
+30 11   * * 1-5  somenergia    tomatic_rtqueue.py set
+45 12   * * 1-5  somenergia    tomatic_rtqueue.py set
+00 14   * * 1-5  somenergia    tomatic_rtqueue.py set
+
