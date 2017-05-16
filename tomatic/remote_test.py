@@ -6,25 +6,14 @@ import os
 
 # In order to pass these tests you need to have your
 # ssh public key copied as auhtorized key in you own
-# computer.
-
-config=None
-try:
-    import config
-except ImportError:
-    pass
-
+# computer. And sshd installed and running!
 
 
 class Remote_Test(unittest.TestCase):
 
     def setUp(self):
-        if config and 'pbx' in config.__dict__:
-            self.user = config.pbx.scp.username
-            self.host = config.pbx.scp.pbxhost
-        else:
-            self.user = os.getenv('USER')
-            self.host = 'localhost'
+        self.user = os.getenv('USER')
+        self.host = 'localhost'
 
     def test_remoterun(self):
         result = remoterun(self.user, self.host, "cat /etc/hosts")
