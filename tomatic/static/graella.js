@@ -26,13 +26,6 @@ var luminance = require('./components/colorutils').luminance;
 var theme = require('polythene/theme/theme');
 var customStyle = require('./style.styl');
 
-const applicationPages = [
-	"Graelles",
-	"Centraleta",
-	"Persones",
-	"Trucada",
-	].map(function(n) {return {label:n};});
-
 var Tomatic = {
 };
 
@@ -347,10 +340,9 @@ var PersonPicker = {
 };
 
 var WeekList = {
-	controller: function(parentcontroller) {
+	controller: function() {
 		var controller = {
 			model: this,
-			parent: parentcontroller,
 			setCurrent: function(week) {
 				Tomatic.requestGrid(week);
 			},
@@ -386,123 +378,6 @@ const toolbarRow = function(title) {
 	];
 }
 
-
-var TomaticApp = TomaticApp || {};
-
-TomaticApp.controller = function(model, args) {
-	args = args || {};
-	var controller = {
-		currentTab: m.prop('Graelles'),
-	};
-	return controller;
-};
-
-var Header = function(onchange, content) {
-    return m.component(HeaderPanel, {
-        mode: 'waterfall-tall',
-        //condenses: true, // condense:
-        //noReveal: true, // reveal: remove header when scroll down
-        fixed: true,
-        keepCondensedHeader: true,
-        //animated: true,
-        //disolve: true,
-        headerHeight: 10,
-        class: 'pe-header-panel--fit background-tomatic',
-        header: {
-            toolbar: {
-                class: 'pe-toolbar--tabs.flex',
-                topBar: toolbarRow('Tomàtic - Som Energia'),
-                bottomBar: m('.tabArea.hasToolbar', [
-                    m.component(Tabs, {
-                        buttons: applicationPages,
-                        centered: true,
-                        activeSelected: true,
-                        getState: function(state) {
-                            onchange(state.data.label);
-                        }
-                    })
-                ]),
-            },
-        },
-        content: [
-            content,
-            m('#snackbar',m.component(SnackBar)),
-            m.component(Dialog),
-        ],
-    });
-};
-
-TomaticApp.view = function(c) {
-	var persons = Tomatic.persons();
-	var grid = Tomatic.grid();
-	return [
-		m('style',
-			Object.keys(persons.colors||{}).map(function(name) {
-				let color = '#'+persons.colors[name];
-				let darker = '#'+luminance(color, -0.3);
-				return (
-					'.'+name+', .graella .'+name+' {\n' +
-					'  background-color: '+color+';\n' +
-					'  border-color: '+darker+';\n' +
-					'  border-width: 2pt;\n'+
-					'}\n'+
-					'.pe-dark-theme .'+name+', .pe-dark-theme .graella .'+name+' {\n' +
-					'  background-color: '+darker+';\n' +
-					'  border-color: '+color+';\n' +
-					'  border-width: 2pt;\n'+
-					'}\n');
-			})
-		),
-        Header(c.currentTab, [
-		c.currentTab()==='Centraleta' && [
-			Todo([
-				m('b','Sense cap efecte fins que tinguem la centraleta.'),
-				" Aqui podeu veure les línies que reben trucades en cada moment, ",
-				"podreu també pausar-les o afegir-ne de més. ",
-				]),
-			m('h2[style=text-align:center]', "Linies en cua"),
-			m.component(QueueWidget, c),
-		] || [],
-		c.currentTab()==='Graelles' && [
-			m('.layout.vertical', [
-				m.component(WeekList, c),
-				m('.layout.end-justified', [
-					m.component(Uploader, {
-						name: 'yaml',
-						label: 'Puja Nova Graella',
-						url: 'api/graella',
-						onupload: function(result) {
-							Tomatic.init();
-						},
-						onerror: function(error) {
-							console.log("Upload error:", error);
-							Tomatic.error("Upload error: " + error.error);
-						},
-					}),
-				]),
-			]),
-			m('.layout.center-center.wrap', Grid(grid)),
-		] || [],
-		c.currentTab()==='Graelles' && [
-			Extensions(grid.otherextensions),
-			m('.layout.around-justified.wrap', [
-				Forwardings(),
-				Changelog(grid),
-				Penalties(grid),
-			]),
-		] || [],
-		c.currentTab() === 'Persones' && [
-			Todo("Permetre modificar la configuració personal de cadascú: "+
-				"Color, taula, extensió, indisponibilitats..."),
-			Persons(persons.extensions),
-		] || [],
-		c.currentTab() == 'Trucada' && [
-			Todo(
-				"Aquí es podrà veure informació de l'ERP sobre la trucada entrant"),
-		] || [],
-		]),
-	];
-};
 
 var editAvailabilities = function(name) {
 	Dialog.show({
@@ -860,10 +735,195 @@ var Penalties = function(grid) {
 	]);
 };
 
+var GridsPage = {
+    view: function() {
+        var grid = Tomatic.grid();
+        return m('',[
+			m('.layout.vertical', [
+				m.component(WeekList),
+				m('.layout.end-justified', [
+					m.component(Uploader, {
+						name: 'yaml',
+						label: 'Puja Nova Graella',
+						url: 'api/graella',
+						onupload: function(result) {
+							Tomatic.init();
+						},
+						onerror: function(error) {
+							console.log("Upload error:", error);
+							Tomatic.error("Upload error: " + error.error);
+						},
+					}),
+				]),
+			]),
+			m('.layout.center-center.wrap', Grid(grid)),
+			Extensions(grid.otherextensions),
+			m('.layout.around-justified.wrap', [
+				Forwardings(),
+				Changelog(grid),
+				Penalties(grid),
+			]),
+        ]);
+    },
+};
+
+var PbxPage = {
+    view: function() {
+        return m('', [
+			Todo([
+				m('b','Sense cap efecte fins que tinguem la centraleta.'),
+				" Aqui podeu veure les línies que reben trucades en cada moment, ",
+				"podreu també pausar-les o afegir-ne de més. ",
+				]),
+			m('h2[style=text-align:center]', "Linies en cua"),
+			m.component(QueueWidget),
+        ]);
+    },
+};
+
+var PersonsPage = {
+    view: function() {
+        return m('', [
+			Todo("Permetre modificar la configuració personal de cadascú: "+
+				"Color, taula, extensió, indisponibilitats..."),
+			Persons(Tomatic.persons().extensions),
+        ]);
+    },
+};
+
+var CallInfoPage = {
+    view: function() {
+        return m('',[
+			Todo(
+				"Aquí es podrà veure informació de l'ERP sobre la trucada entrant"
+            ),
+        ]);
+    },
+};
+
+var PersonStyles = function() {
+	var persons = Tomatic.persons();
+    return m('style',
+        Object.keys(persons.colors||{}).map(function(name) {
+            let color = '#'+persons.colors[name];
+            let darker = '#'+luminance(color, -0.3);
+            return (
+                '.'+name+', .graella .'+name+' {\n' +
+                '  background-color: '+color+';\n' +
+                '  border-color: '+darker+';\n' +
+                '  border-width: 2pt;\n'+
+                '}\n'+
+                '.pe-dark-theme .'+name+', .pe-dark-theme .graella .'+name+' {\n' +
+                '  background-color: '+darker+';\n' +
+                '  border-color: '+color+';\n' +
+                '  border-width: 2pt;\n'+
+                '}\n');
+        })
+    );
+};
+
+const applicationPages = [
+	"Graelles",
+	"Centraleta",
+	"Persones",
+	"Trucada",
+	];
+
+var tabs = applicationPages.map(function(name) {
+    return {
+        label: name,
+        url: {
+            config: m.route,
+            href: '!/'+name
+        },
+    };
+});
+const indexForRoute = function(route) {
+    return tabs.reduce(function(previousValue, tab, index) {
+        if (route === tab.url.href) {
+            return index;
+        } else {
+            return previousValue;
+        }
+    }, 0);
+};
+
+var Page = function(content) {
+    var currentTabIndex = indexForRoute(m.route());
+
+
+    console.log("Page", currentTabIndex, tabs);
+	return m.component(HeaderPanel, {
+        mode: 'waterfall-tall',
+        //condenses: true, // condense:
+        //noReveal: true, // reveal: remove header when scroll down
+        fixed: true,
+        keepCondensedHeader: true,
+        //animated: true,
+        //disolve: true,
+        headerHeight: 10,
+        class: 'pe-header-panel--fit background-tomatic',
+        header: {
+            toolbar: {
+                class: 'pe-toolbar--tabs.flex',
+                topBar: toolbarRow('Tomàtic - Som Energia'),
+                bottomBar: m('.tabArea.hasToolbar', [
+                    m.component(Tabs, {
+                        buttons: tabs,
+                        centered: true,
+                        activeSelected: true,
+                        //hideIndicator: true,
+                        selectedTab: currentTabIndex,
+                    })
+                ]),
+            },
+        },
+        content: [
+            content,
+            m('#snackbar',m.component(SnackBar)),
+            m.component(Dialog),
+        ],
+    });
+};
+
+
+var TomaticApp = {}
+TomaticApp.controller = function() {
+    return {
+    };
+}
+TomaticApp.view = function(c) {
+    var pages = {
+        'Graelles': GridsPage,
+        'Centraleta': PbxPage,
+        'Persones': PersonsPage,
+        'Trucada': CallInfoPage,
+    };
+    console.log('route', m.route());
+    var currentTabIndex = indexForRoute(m.route());
+    var current = pages[tabs[currentTabIndex].label];
+    console.log("TomaticApp.view", current,m.route());
+    return [
+        PersonStyles(),
+        Page(m.component(current)),
+    ];
+};
+
+
+
 window.onload = function() {
 	Tomatic.init();
-	m.route(document.getElementById("tomatic"), '/graella', {
-        '/graella': TomaticApp,
+    m.route.mode = 'hash';
+    m.redraw.strategy('diff');
+    console.log('inited route', m.route())
+	m.mount(document.getElementById("tomatic"), TomaticApp);
+/*  // Not working
+	m.route(document.getElementById("tomatic"), '/Graelles', {
+        '/Graelles': TomaticApp,
+        '/Centraleta': TomaticApp,
+        '/Persones': TomaticApp,
+        '/Trucada': TomaticApp,
     });
+*/
 };
 
