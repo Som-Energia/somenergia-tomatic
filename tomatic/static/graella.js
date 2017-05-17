@@ -452,7 +452,6 @@ var editPerson = function(name) {
 	Dialog.show({
 		title: 'Edita dades de la persona',
 		body: [
-			"TODO: Els canvis encara no són permanents",
 			m.component(PersonEditor, data),
 		],
 		footer: [
