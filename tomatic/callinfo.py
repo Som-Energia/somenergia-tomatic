@@ -5,8 +5,8 @@ from yamlns import namespace as ns
 
 class CallInfo(object):
 
-    def __init__(self, E, anonymize=False):
-        self.E = E
+    def __init__(self, O, anonymize=False):
+        self.O = O
         self._anonymize = anonymize
 
     def anonymize(self, string):
@@ -14,7 +14,7 @@ class CallInfo(object):
         return "..."+string[-3:]
 
     def addressByPhone(self, phone):
-        return self.E.ResPartnerAddress.search([
+        return self.O.ResPartnerAddress.search([
             '|',
             ('phone','=',phone),
             ('mobile','=',phone),
@@ -27,12 +27,12 @@ class CallInfo(object):
         return [
             address[0]
             for address 
-            in self.E.ResPartnerAddress.read(address_ids,'partner_id')
+            in self.O.ResPartnerAddress.read(address_ids,'partner_id')
             if address and address[0]
             ]
     
     def partnerInfo(self, partner_id):
-        partner_data = self.E.ResPartner.read(partner_id)
+        partner_data = self.O.ResPartner.read(partner_id)
         partner_data = ns(partner_data[0])
         result = ns(partner=ns())
         result.partner.update(
@@ -48,7 +48,7 @@ class CallInfo(object):
 
     def partnersInfo(self, partners_ids):
         result = ns(partners = [])
-        partners_data = self.E.ResPartner.read(partners_ids)
+        partners_data = self.O.ResPartner.read(partners_ids)
         for partner_data in partners_data:
             partner_data = ns(partner_data)
             partner_result = ns()
@@ -69,7 +69,7 @@ class CallInfo(object):
     def polisseInfo(self,polisses_ids):
         all_pol_data = []
         if len(polisses_ids) != 0:
-            all_pol_data = self.E.GiscedataPolissa.read(polisses_ids,[
+            all_pol_data = self.O.GiscedataPolissa.read(polisses_ids,[
                 'data_alta','data_baixa','potencia','cups','state','active','tarifa'
                 ])
         result = ns(polisses=[])
