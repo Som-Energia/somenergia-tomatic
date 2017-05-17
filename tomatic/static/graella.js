@@ -852,7 +852,6 @@ var Page = function(content) {
     var currentTabIndex = indexForRoute(m.route());
 
 
-    console.log("Page", currentTabIndex, tabs);
 	return m.component(HeaderPanel, {
         mode: 'waterfall-tall',
         //condenses: true, // condense:
@@ -899,10 +898,8 @@ TomaticApp.view = function(c) {
         'Persones': PersonsPage,
         'Trucada': CallInfoPage,
     };
-    console.log('route', m.route());
     var currentTabIndex = indexForRoute(m.route());
     var current = pages[tabs[currentTabIndex].label];
-    console.log("TomaticApp.view", current,m.route());
     return [
         PersonStyles(),
         Page(m.component(current)),
@@ -915,7 +912,6 @@ window.onload = function() {
 	Tomatic.init();
     m.route.mode = 'hash';
     m.redraw.strategy('diff');
-    console.log('inited route', m.route())
 	m.mount(document.getElementById("tomatic"), TomaticApp);
 /*  // Not working
 	m.route(document.getElementById("tomatic"), '/Graelles', {
