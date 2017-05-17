@@ -2,7 +2,7 @@
 
 import unittest
 from callinfo import CallInfo
-import ooop
+import erppeek
 try:
     import dbconfig
 except ImportError:
@@ -10,8 +10,8 @@ except ImportError:
 from yamlns import namespace as ns
 import b2btest
     
-@unittest.skipIf(not dbconfig or not dbconfig.ooop,
-    "Requires configuring dbconfig.ooop")
+@unittest.skipIf(not dbconfig or not dbconfig.erppeek,
+    "Requires configuring dbconfig.erppeek")
 class CallInfo_Test(unittest.TestCase):
 
     def assertNsEqual(self, dict1, dict2):
@@ -41,7 +41,7 @@ class CallInfo_Test(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.O = ooop.OOOP(**dbconfig.ooop)
+        cls.O = erppeek.Client(**dbconfig.erppeek)
 
     def test_addressByPhone_whenMatchesNone(self):
         info = CallInfo(self.O)

@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import ooop
 import dbconfig
 from yamlns import namespace as ns 
 
 class CallInfo(object):
 
-    def __init__(self, O, anonymize=False):
-        self.O = O
+    def __init__(self, E, anonymize=False):
+        self.E = E
         self._anonymize = anonymize
 
     def anonymize(self, string):
@@ -15,22 +14,25 @@ class CallInfo(object):
         return "..."+string[-3:]
 
     def addressByPhone(self, phone):
-        return self.O.ResPartnerAddress.search([
+        return self.E.ResPartnerAddress.search([
             '|',
             ('phone','=',phone),
             ('mobile','=',phone),
             ])
 
     def partnerByAddressId(self, address_ids):
+        result = []
+        if len(address_ids) == 0:
+            return result
         return [
-            address['partner_id'][0]
-            for address
-            in self.O.ResPartnerAddress.read(address_ids, ['id', 'partner_id'])
-            if address and address['partner_id']
+            address[0]
+            for address 
+            in self.E.ResPartnerAddress.read(address_ids,'partner_id')
+            if address and address[0]
             ]
     
     def partnerInfo(self, partner_id):
-        partner_data = self.O.ResPartner.read(partner_id, [])
+        partner_data = self.E.ResPartner.read(partner_id)
         partner_data = ns(partner_data[0])
         result = ns(partner=ns())
         result.partner.update(
@@ -46,7 +48,7 @@ class CallInfo(object):
 
     def partnersInfo(self, partners_ids):
         result = ns(partners = [])
-        partners_data = self.O.ResPartner.read(partners_ids, [])
+        partners_data = self.E.ResPartner.read(partners_ids)
         for partner_data in partners_data:
             partner_data = ns(partner_data)
             partner_result = ns()
@@ -65,9 +67,11 @@ class CallInfo(object):
         return result
     
     def polisseInfo(self,polisses_ids):
-        all_pol_data = self.O.GiscedataPolissa.read(polisses_ids,[
-            'data_alta','data_baixa','potencia','cups','state','active','tarifa'
-            ])        
+        all_pol_data = []
+        if len(polisses_ids) != 0:
+            all_pol_data = self.E.GiscedataPolissa.read(polisses_ids,[
+                'data_alta','data_baixa','potencia','cups','state','active','tarifa'
+                ])
         result = ns(polisses=[])
         for pol_data in all_pol_data:
             pol_data_ns = ns(polissa=ns())
