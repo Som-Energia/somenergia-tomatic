@@ -99,6 +99,7 @@ def set(queue, date, time):
 	db.setQueue(queue, [
 		sched.extension(name)
 		for name in sched.peekQueue(dow, time)
+		if sched.extension(name)
 	])
 
 
