@@ -137,5 +137,44 @@ class DbAsterisk_Test(unittest.TestCase):
         ])
         
 
+    def test_extensions_empty(self):
+        a = self.fixture()
+        self.assertEqual(a.extensions(), [
+        ])
+ 
+    def test_extensions_withOne(self):
+        a = self.fixture()
+        a.addExtension('201', 'Perico Palotes')
+        self.assertEqual(a.extensions(), [
+            ('201','Perico Palotes <201>'),
+        ])
+ 
+    def test_extensions_withMany(self):
+        a = self.fixture()
+        a.addExtension('201', 'Perico Palotes')
+        a.addExtension('202', 'Juana Calamidad')
+        self.assertEqual(a.extensions(), [
+            ('201','Perico Palotes <201>'),
+            ('202','Juana Calamidad <202>'),
+        ])
+ 
+
+    def test_clearExtensions(self):
+        a = self.fixture()
+        a.addExtension('201', 'Perico Palotes')
+        a.clearExtensions()
+        self.assertEqual(a.extensions(), [
+        ])
+ 
+    def test_removeExtensions(self):
+        a = self.fixture()
+        a.addExtension('201', 'Perico Palotes')
+        a.addExtension('202', 'Juana Calamidad')
+        a.removeExtension('201')
+        self.assertEqual(a.extensions(), [
+            ('202','Juana Calamidad <202>'),
+        ])
+ 
+
 
 # vim: ts=4 sw=4 et

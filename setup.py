@@ -18,6 +18,7 @@ setup(
     scripts=[
         'schedulehours.py',
         'tomatic_rtqueue.py',
+        'tomatic_extensions.py',
         'tomatic_api.py',
         ],
     install_requires=[

@@ -51,6 +51,7 @@ def show(queue):
 	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
 	click.echo(table(db.queue(queue)))
 
+
 @cli.command()
 @queue_option
 def clear(queue):
@@ -100,12 +101,6 @@ def set(queue, date, time):
 		for name in sched.peekQueue(dow, time)
 	])
 
-@cli.command()
-@queue_option
-def clear(queue):
-	"Clears the queue"
-	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
-	db.setQueue(queue, [])
 
 if __name__=='__main__':
 	cli()
