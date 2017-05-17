@@ -13,9 +13,9 @@ function hex2triplet(hex) {
 }
 function triplet2hex(triplet) {
 	var rgb = "";
-	for (let i in triplet) {
-		let c = triplet[i];
-		let newc = Math.round(Math.min(Math.max(0, c), 255));
+	for (var i in triplet) {
+		var c = triplet[i];
+		var newc = Math.round(Math.min(Math.max(0, c), 255));
 		rgb += ("00"+newc.toString(16)).slice(-2);
 	}
 	return rgb;
@@ -29,7 +29,7 @@ function luminance(hex, lum) {
 	}))
 }
 module.exports = {
-	luminance,
-	triplet2hex,
-	hex2triplet,
+	luminance: luminance,
+	triplet2hex: triplet2hex,
+	hex2triplet: hex2triplet,
 };

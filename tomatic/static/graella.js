@@ -202,13 +202,13 @@ Tomatic.requestWeeks = function() {
 		url: '/api/graella/list',
 		deserialize: jsyaml.load,
 	}).then(function(newWeeklist){
-		let weeks = newWeeklist.weeks.sort().reverse();
+		var weeks = newWeeklist.weeks.sort().reverse();
 		Tomatic.weeks(weeks);
 		if (Tomatic.currentWeek()===undefined) {
-			let expirationms = 1000*60*60*(24*4 + 18);
-			let oldestWeek = new Date(new Date().getTime()-expirationms);
-			let current = undefined;
-			for (let i in weeks) {
+			var expirationms = 1000*60*60*(24*4 + 18);
+			var oldestWeek = new Date(new Date().getTime()-expirationms);
+			var current = undefined;
+			for (var i in weeks) {
 				if (current!==undefined && new Date(weeks[i])<oldestWeek) {
 					break;
 				}
@@ -230,7 +230,7 @@ Tomatic.log = function(message) {
 };
 
 Tomatic.error = function(message) {
-	console.log("error: ", message, ...arguments);
+	console.log("error: ", message);
 	SnackBar.show({
 		containerSelector: '#snackbar',
 		title: message,
@@ -804,8 +804,8 @@ var PersonStyles = function() {
 	var persons = Tomatic.persons();
     return m('style',
         Object.keys(persons.colors||{}).map(function(name) {
-            let color = '#'+persons.colors[name];
-            let darker = '#'+luminance(color, -0.3);
+            var color = '#'+persons.colors[name];
+            var darker = '#'+luminance(color, -0.3);
             return (
                 '.'+name+', .graella .'+name+' {\n' +
                 '  background-color: '+color+';\n' +
