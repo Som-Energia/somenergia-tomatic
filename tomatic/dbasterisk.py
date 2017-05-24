@@ -64,7 +64,7 @@ class DbAsterisk(object):
                 q for q in self._queueMembers
                 if queue is None
                 or q.queue_name == queue
-                )
+                ).order_by("q.uniqueid")
             ]
 
     @db_session
