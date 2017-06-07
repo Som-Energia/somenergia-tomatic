@@ -43,7 +43,7 @@ costTaulaSorollosa: 5
 costHoraNoDesitjada: 0
 taules:
   marc: 0
-  xuanin: 0
+  xuanin: 5
   mariona: 0
   eduard: 1
   pere: 1
@@ -57,16 +57,16 @@ taules:
   judit: 4
   joanb: 4
   marta: 5
-  yaiza: 5
+  yaiza: 7
   victor: 5
-  miguelanxo: 5
+  miguelanxo: 8
   silvia: 6
   ana: 6
   jordi: 6
   gabriel: 6
   manel: 7
   tania: 7
-  lucia: 4
+  lucia: 8
   vic: 7
   ningu: 99
 sempreUnLliure: {}
@@ -74,7 +74,7 @@ randomColors: false
 colors:
   marc: fbe8bc
   eduard: d8b9c5
-  pere: 8f928e
+  pere: ef2eff
   david: ffb300
   aleix: eed0eb
   carles: c98e98
@@ -88,13 +88,13 @@ colors:
   silvia: 8097fa
   xuanin: fae080
   ana: ff6600
-  victor: ff3333
+  victor: ff3233
   jordi: ff9999
   judith: b6f08a
   lucia: 9f24c2
   sergi: 8cf2df
-  vic: 96ad88
-  mariona: ff4444
+  vic: 165fff
+  mariona: bcbb46
   gabriel: dd5555
   maite: bb6666
   ningu: ffffff
@@ -127,13 +127,13 @@ extensions:
   gabriel: 3188
   mariona: 3189
   joanb: 3195
-  miguelanxo: 3194
+  miguelanxo: '3049'
 names:
   silvia: Sílvia
   monica: Mònica
   tania: Tània
   cesar: César
-  victor: Víctor
+  victor: VíctorNA
   lucia: Lucía
   joanb: JoanB
   ningu: '-'
