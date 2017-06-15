@@ -66,7 +66,7 @@ taules:
   gabriel: 6
   manel: 7
   tania: 7
-  lucia: 8
+  lucia: 4
   vic: 7
   ningu: 99
 sempreUnLliure: {}
@@ -89,13 +89,13 @@ colors:
   xuanin: fae080
   ana: ff6600
   victor: ff3233
-  jordi: ff9999
-  judith: b6f08a
+  jordi: 34af33
+  judith: 00ff00
   lucia: 9f24c2
   sergi: 8cf2df
   vic: 165fff
-  mariona: bcbb46
-  gabriel: dd5555
+  mariona: e1ff46
+  gabriel: 1f7a00
   maite: bb6666
   ningu: ffffff
   joanb: 8af47d
@@ -127,7 +127,7 @@ extensions:
   gabriel: 3188
   mariona: 3189
   joanb: 3195
-  miguelanxo: '3049'
+  miguelanxo: '3194'
 names:
   silvia: Sílvia
   monica: Mònica
