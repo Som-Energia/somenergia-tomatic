@@ -69,6 +69,7 @@ taules:
   lucia: 4
   vic: 7
   ningu: 99
+  maria: 7
 sempreUnLliure: {}
 randomColors: false
 colors:
@@ -100,6 +101,7 @@ colors:
   ningu: ffffff
   joanb: 8af47d
   miguelanxo: 2cc4ff
+  maria: 3f4eff
 extensions:
   marta: 3040
   monica: 3041
@@ -128,6 +130,7 @@ extensions:
   mariona: 3189
   joanb: 3195
   miguelanxo: '3194'
+  maria: '3001'
 names:
   silvia: Sílvia
   monica: Mònica
