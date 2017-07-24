@@ -70,6 +70,8 @@ taules:
   vic: 7
   ningu: 99
   maria: 7
+  pau: 0
+  carol: 5
 sempreUnLliure: {}
 randomColors: false
 colors:
@@ -102,6 +104,8 @@ colors:
   joanb: 8af47d
   miguelanxo: 2cc4ff
   maria: 3f4eff
+  pau: 7dc8ff
+  carol: 944a49
 extensions:
   marta: 3040
   monica: 3041
@@ -131,6 +135,8 @@ extensions:
   joanb: 3195
   miguelanxo: '3194'
   maria: '3001'
+  pau: '3002'
+  carol: '3003'
 names:
   silvia: Sílvia
   monica: Mònica
@@ -142,6 +148,7 @@ names:
   ningu: '-'
   xuanin: Joan
   miguelanxo: MiguelAnxo
+  carol: Càrol
 forced: {}
 commented_forced:
   ? - dl
