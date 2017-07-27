@@ -53,7 +53,10 @@ class DbAsterisk(object):
             if m.queue_name == queue
             )
         for extension in extensions:
+            print queue, extension
             self.add(queue, extension)
+            # KLUDGE: Let asterisk do its stuff so the wueue gets ordered
+            time.sleep(2)
 
     @db_session
     def queue(self, queue):
@@ -82,11 +85,12 @@ class DbAsterisk(object):
 
     @db_session
     def add(self, queue, extension):
+        penalty = len(self.queue(queue))
         self._queueMembers(
             membername='SIP/{}@bustia_veu'.format(extension),
             queue_name=queue,
             interface='SIP/{}'.format(extension),
-            penalty=None,
+            penalty=penalty,
             paused=False,
         )
 
