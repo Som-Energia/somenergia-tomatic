@@ -72,6 +72,9 @@ taules:
   maria: 7
   pau: 0
   carol: 5
+  undefined: 99
+  viktu: 0
+  albert: 99
 sempreUnLliure: {}
 randomColors: false
 colors:
@@ -104,8 +107,11 @@ colors:
   joanb: 8af47d
   miguelanxo: 2cc4ff
   maria: 3f4eff
-  pau: 7dc8ff
-  carol: 944a49
+  pau: e6f214
+  carol: 94c703
+  undefined: ddeeff
+  viktu: ddeeff
+  albert: ddeeff
 extensions:
   marta: 3040
   monica: 3041
@@ -115,7 +121,7 @@ extensions:
   eduard: 3045
   marc: 3046
   judit: 3047
-  tania: 3048
+  tania: '3001'
   carles: 3051
   pere: 3052
   aleix: 3053
@@ -134,9 +140,11 @@ extensions:
   mariona: 3189
   joanb: 3195
   miguelanxo: '3194'
-  maria: '3001'
-  pau: '3002'
-  carol: '3003'
+  maria: '3039'
+  pau: '3048'
+  carol: '3049'
+  viktu: '3006'
+  albert: '3004'
 names:
   silvia: Sílvia
   monica: Mònica
@@ -149,6 +157,7 @@ names:
   xuanin: Joan
   miguelanxo: MiguelAnxo
   carol: Càrol
+  undefined: Belen
 forced: {}
 commented_forced:
   ? - dl

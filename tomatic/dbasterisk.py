@@ -11,6 +11,7 @@ from pony.orm import (
     db_session,
     composite_index,
 )
+import time
 
 class DbAsterisk(object):
 
