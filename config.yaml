@@ -65,7 +65,7 @@ taules:
   gabriel: 6
   manel: 7
   tania: 7
-  lucia: 4
+  lucia: 8
   vic: 7
   ningu: 99
   maria: 7
@@ -79,6 +79,11 @@ taules:
   miguelanxo: 8
   belen: 9
   fcasadella: 0
+  gijsbert: 9
+  nuri: 9
+  fcots: 8
+  annarodon: 1
+  alberto: 2
 sempreUnLliure: {}
 randomColors: false
 colors:
@@ -109,17 +114,22 @@ colors:
   maite: bb6666
   ningu: ffffff
   joanb: 8af47d
-  maria: 3f4eff
+  maria: 00594d
   pau: e6f214
   carol: 94c703
   undefined: ddeeff
   viktu: ddeeff
   albert: ddeeff
-  oriol: 65c79b
+  oriol: b60c0c
   fran: 621bf1
   miguelanxo: bdaa1c
   belen: 2892ff
   fcasadella: 10ee30
+  gijsbert: 00eeff
+  nuri: 17ef6f
+  fcots: ff5a60
+  annarodon: 0e91ff
+  alberto: 0074f0
 extensions:
   marta: 3040
   monica: 3041
@@ -157,6 +167,11 @@ extensions:
   miguelanxo: '3194'
   belen: '3009'
   fcasadella: '3002'
+  gijsbert: '3003'
+  nuri: '3004'
+  fcots: '3005'
+  annarodon: '3010'
+  alberto: '3011'
 names:
   silvia: Sílvia
   monica: Mònica
@@ -172,6 +187,8 @@ names:
   miguelanxo: MiguelAnxo
   belen: Belén
   fcasadella: FrancescCasadellà
+  fcots: FrancescCots
+  annarodon: AnnaRodon
 forced: {}
 commented_forced:
   ? - dl
