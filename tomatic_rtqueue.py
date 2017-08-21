@@ -93,7 +93,7 @@ def add(queue,member):
 def set(queue, date, time):
 	"Sets the queue according Tomatic's schedule"
 	week, dow, time = choosers(now(date,time))
-	storage =Storage(dbconfig.tomatic.storagepath)
+	storage = Storage(dbconfig.tomatic.storagepath)
 	sched = Scheduling(storage.load(week))
 	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
 	db.setQueue(queue, [
@@ -101,6 +101,21 @@ def set(queue, date, time):
 		for name in sched.peekQueue(dow, time)
 		if sched.extension(name)
 	])
+
+@cli.command()
+@queue_option
+@date_option
+@time_option
+def preview(queue, date, time):
+	"Tells the queue according Tomatic's schedule, does no set"
+	week, dow, time = choosers(now(date,time))
+	storage = Storage(dbconfig.tomatic.storagepath)
+	sched = Scheduling(storage.load(week))
+	click.echo(', '.join((
+		name
+		for name in sched.peekQueue(dow, time)
+		if sched.extension(name)
+	)))
 
 
 if __name__=='__main__':
