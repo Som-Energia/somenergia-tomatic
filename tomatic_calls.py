@@ -13,10 +13,22 @@ from pony.orm import (
     sum as ag_sum,
     count as ag_count,
 )
+from yamlns import namespace as ns
 import dbconfig
 args = dbconfig.tomatic.dbasterisk
 db=Database()
 db.bind(*args.args, **args.kwds)
+
+import click
+
+__version__='1.2.0'
+
+@click.group()
+@click.help_option()
+@click.version_option(__version__)
+def cli():
+    'Extract information from the Asterisk call log'
+
 
 class Calls(db.Entity):
     _table_ = 'cdr'
@@ -42,56 +54,136 @@ class Calls(db.Entity):
 
 db.generate_mapping(create_tables=False)
 
+date_option = click.option('--date', '-d',
+    help="Data a simular en comptes d'avui"
+    )
 
-def calls():
-    return select((
-        c.dstchannel[4:8],
-        #c.dstchannel[4:8],
-        ag_count(c.duration),
-        ag_sum(c.billsec),
-        c.clid,
-        )
-        for c in Calls
-        if c.calldate.date() == datetime.today().date()
-        and c.dst=='s'
-        ).order_by(-2)
+def dateOrToday(date=None):
+    from yamlns.dateutils import Date
+    import datetime
+    if date is None:
+        return datetime.date.today()
+    date = Date(date)
+    return datetime.datetime(*date.timetuple()[:3])
 
-with db_session():
-	for x in db.execute("show create table cdr"): print x[1]
+def properNameByExtension(config, extension):
+    extensions2names = dict(t[::-1] for t in config.extensions.items())
+    name = extensions2names.get(int(extension),extension)
+    names = config.get('names',{})
+    if name in names:
+        return names[name]
+    return name.title()
 
-sql_debug(True)
-step("trucades no servides")
-with db_session():
-    today=datetime.today().date()
-    for x in db.execute("select * from cdr where dstchannel='' and dst='s' and date(calldate)=$today order by calldate"):
-        print '\t'.join(str(a) for a in x)
+@cli.command()
+def dumpschema():
+    "Dumps the db schema, for debug purposes"
+    with db_session():
+        for x in db.execute("show create table cdr"): print x[1]
 
-step("Trucades contestades")
-with db_session():
-    print '\t'.join('extensio trucades minuts'.split())
-    for call in calls():
-        extension, trucades, segons, callid = call
-        minuts="{:02}:{:02} min".format(*divmod(segons,60))
-        #if len(extension)!=4: continue
-        print '\t'.join([
-            extension, str(trucades), minuts, callid
-            ])
-step("Trucades perdudes")
-with db_session():
-    print '\t'.join('origen n'.split())
-    for x in select((
-        c.src,
-        c.dcontext,
-        c.lastapp,
-        c.lastdata,
-        ag_count(c),
-        )
-        for c in Calls
-        if c.calldate.date() == datetime.today().date()
-        and c.dcontext == 'atencio'
-        and c.lastdata == '/var/lib/asterisk/sounds/custom/liniesocupades'
-    ):
-        print '\t'.join(str(s) for s in x)
+
+@cli.command()
+@date_option
+def summary(date):
+    adate = dateOrToday(date)
+    step("Trucades ateses")
+    with db_session():
+        calls = select((
+            c.dstchannel[4:8],
+            ag_count(c.duration),
+            ag_sum(c.billsec),
+            c.clid,
+            c.lastapp,
+            c.lastdata,
+            c.disposition,
+            )
+            for c in Calls
+            if c.calldate.date() == adate
+            and c.dst=='s'
+            ).order_by(-3)
+        print '\t'.join('trucades minuts extensio '.split())
+        for call in calls:
+            extension, trucades, segons, callid, lastapp, lastdata, disposition = call
+            minuts="{:02}:{:02} min".format(*divmod(segons,60))
+            lastdata = ''.join(lastdata.split('/')[-1:])
+            #if len(extension)!=4: continue
+            if extension:
+                config = ns.load('config.yaml')
+                header = u"{} {}".format(extension, properNameByExtension(config, extension))
+            elif lastapp == 'Hangup':
+                header = lastapp
+            elif lastapp == 'Playback':
+                header = ''.join(lastdata.split('/')[-1:])
+            elif disposition in ('NO ANSWER', 'BUSY'):
+                header = disposition
+            else:
+                header = '???'
+            print '\t'.join([
+                str(trucades), minuts, header
+                ])
+
+@cli.command()
+@date_option
+def unanswered(date):
+    adate = dateOrToday(date)
+    step("trucades no servides")
+    with db_session():
+        for x in db.execute("select * from cdr where dstchannel='' and dst='s' and date(calldate)=$adate order by calldate"):
+            print '\t'.join(str(a) for a in x)
+
+
+    with db_session():
+        for c in select(((
+                ag_count(c),
+                c.disposition,
+                c.lastapp,
+                c.lastdata,
+                )
+                for c in Calls
+                if c.dstchannel==''
+                and c.dst=='s'
+                and c.calldate.date()==adate
+        )).order_by("c.calldate"):
+            n, disposition, lastapp, lastdata = c
+            if lastapp == 'Hangup':
+                print "Penjades:", n
+                continue
+            if lastapp == 'Playback':
+                print "Contestador {}: {}".format(''.join(lastdata.split('/')[-1:]), n)
+                continue
+            if disposition == 'NO ANSWER':
+                print "Sense resposta:", n
+                continue
+            if disposition == 'BUSY':
+                print "Ocupades:", n
+                continue
+            print c
+
+
+@cli.command()
+@date_option
+def missed(date):
+    adate = dateOrToday(date)
+    step("Trucades perdudes")
+    with db_session():
+        print '\t'.join('origen n'.split())
+        for x in select((
+            c.src,
+            c.dcontext,
+            c.lastapp,
+            c.lastdata,
+            ag_count(c),
+            )
+            for c in Calls
+            if c.calldate.date() == adate
+            and c.dcontext == 'atencio'
+            and c.lastdata == '/var/lib/asterisk/sounds/custom/liniesocupades'
+        ):
+            print '\t'.join(str(s) for s in x)
+
+
+if __name__=='__main__':
+    #sql_debug(True)
+    cli()
 
 
 # vim: et ts=4 sw=4
