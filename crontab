@@ -11,3 +11,8 @@ TOMATIC_CRONLOG=/home/somenergia/tomatic-canvitorn.log
 00 14   * * 1-5  somenergia    (echo "$(date -Iseconds) Updating queue"; cd $TOMATIC_PATH; tomatic_rtqueue.py set ; tomatic_rtqueue.py show) >> $TOMATIC_CRONLOG 2>&1
 00 15   * * 5    somenergia    (echo "$(date -Iseconds) Updating extensions"; cd $TOMATIC_PATH; tomatic_extensions.py load;tomatic_extensions.py show) >> $TOMATIC_CRONLOG 2>&1
 
+55  8   * * 1-5  somenergia    (echo "$(date -Iseconds) Notify queue"; cd $TOMATIC_PATH; ./crontab-warnturn.sh ) >> $TOMATIC_CRONLOG 2>&1
+10 10   * * 1-5  somenergia    (echo "$(date -Iseconds) Notify queue"; cd $TOMATIC_PATH; ./crontab-warnturn.sh ) >> $TOMATIC_CRONLOG 2>&1
+25 11   * * 1-5  somenergia    (echo "$(date -Iseconds) Notify queue"; cd $TOMATIC_PATH; ./crontab-warnturn.sh ) >> $TOMATIC_CRONLOG 2>&1
+40 12   * * 1-5  somenergia    (echo "$(date -Iseconds) Notify queue"; cd $TOMATIC_PATH; ./crontab-warnturn.sh ) >> $TOMATIC_CRONLOG 2>&1
+#20 14   * * 1-5  somenergia    (echo "$(date -Iseconds) Daily report"; cd $TOMATIC_PATH; ./crontab-dailyreport.sh ) >> $TOMATIC_CRONLOG 2>&1
