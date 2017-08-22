@@ -8,12 +8,14 @@ import appdirs
 import os
 import dbconfig
 
-CONVERSATION_ID = 'UgzYiKUaJZ1yCpn3R4J4AaABAQ' # petit dejuner
 CONVERSATION_ID = 'UgwbNDnElaQHezX-qXN4AaABAQ' # it
+CONVERSATION_ID = 'UgzYiKUaJZ1yCpn3R4J4AaABAQ' # petit dejuner
 MESSAGE = ' '.join(sys.argv[1:])
+if not MESSAGE:
+    MESSAGE = sys.stdin.read()
 dirs = appdirs.AppDirs('hangups', 'hangups')
 REFRESH_TOKEN_PATH = os.path.join(dirs.user_cache_dir, 'refresh_token.txt')
-
+print(MESSAGE)
 @asyncio.coroutine
 def send_message(client):
     request = _.SendChatMessageRequest(
