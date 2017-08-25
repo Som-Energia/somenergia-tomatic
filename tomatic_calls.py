@@ -120,6 +120,14 @@ def summary(date):
             print '\t'.join([
                 str(trucades), minuts, header
                 ])
+@cli.command()
+@date_option
+def all(date):
+    """Prints all the registers for the day"""
+    adate = dateOrToday(date)
+    with db_session():
+        for x in db.execute("select * from cdr where date(calldate)=$adate order by calldate"):
+            print '\t'.join(str(a) for a in x)
 
 @cli.command()
 @date_option
