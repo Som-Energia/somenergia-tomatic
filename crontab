@@ -15,4 +15,4 @@ TOMATIC_CRONLOG=/home/somenergia/tomatic-canvitorn.log
 10 10   * * 1-5  somenergia    (echo "$(date -Iseconds) Notify queue"; cd $TOMATIC_PATH; ./crontab-warnturn.sh ) >> $TOMATIC_CRONLOG 2>&1
 25 11   * * 1-5  somenergia    (echo "$(date -Iseconds) Notify queue"; cd $TOMATIC_PATH; ./crontab-warnturn.sh ) >> $TOMATIC_CRONLOG 2>&1
 40 12   * * 1-5  somenergia    (echo "$(date -Iseconds) Notify queue"; cd $TOMATIC_PATH; ./crontab-warnturn.sh ) >> $TOMATIC_CRONLOG 2>&1
-#20 14   * * 1-5  somenergia    (echo "$(date -Iseconds) Daily report"; cd $TOMATIC_PATH; ./crontab-dailyreport.sh ) >> $TOMATIC_CRONLOG 2>&1
+10 14   * * 1-5  somenergia    (echo "$(date -Iseconds) Daily report"; cd $TOMATIC_PATH; ./crontab-dailyreport.sh ) >> $TOMATIC_CRONLOG 2>&1
