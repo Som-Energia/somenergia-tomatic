@@ -139,7 +139,7 @@ extensions:
   eduard: 3045
   marc: 3046
   judit: 3047
-  tania: '3001'
+  tania: 3001
   carles: 3051
   pere: 3052
   aleix: 3053
@@ -157,21 +157,21 @@ extensions:
   gabriel: 3188
   mariona: 3189
   joanb: 3195
-  maria: '3039'
-  pau: '3048'
-  carol: '3049'
-  viktu: '3006'
-  albert: '3038'
-  oriol: '3007'
-  fran: '3008'
-  miguelanxo: '3194'
-  belen: '3009'
-  fcasadella: '3002'
-  gijsbert: '3003'
-  nuri: '3004'
-  fcots: '3005'
-  annarodon: '3010'
-  alberto: '3011'
+  maria: 3039
+  pau: 3048
+  carol: 3049
+  viktu: 3006
+  albert: 3038
+  oriol: 3007
+  fran: 3008
+  miguelanxo: 3194
+  belen: 3009
+  fcasadella: 3002
+  gijsbert: 3003
+  nuri: 3004
+  fcots: 3005
+  annarodon: 3010
+  alberto: 3011
 names:
   silvia: Sílvia
   monica: Mònica
