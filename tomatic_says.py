@@ -16,6 +16,7 @@ if not MESSAGE:
 dirs = appdirs.AppDirs('hangups', 'hangups')
 REFRESH_TOKEN_PATH = os.path.join(dirs.user_cache_dir, 'refresh_token.txt')
 print(MESSAGE)
+
 @asyncio.coroutine
 def send_message(client):
     request = _.SendChatMessageRequest(
