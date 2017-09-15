@@ -127,7 +127,7 @@ def all(date):
     adate = dateOrToday(date)
     with db_session():
         for x in db.execute("select * from cdr where date(calldate)=$adate order by calldate"):
-            print '\t'.join(str(a) for a in x)
+            print u'\t'.join(unicode(a) for a in x)
 
 @cli.command()
 @date_option
@@ -136,7 +136,7 @@ def unanswered(date):
     step("trucades no servides")
     with db_session():
         for x in db.execute("select * from cdr where dstchannel='' and dst='s' and date(calldate)=$adate order by calldate"):
-            print '\t'.join(str(a) for a in x)
+            print '\t'.join(unicode(a) for a in x)
 
 
     with db_session():
