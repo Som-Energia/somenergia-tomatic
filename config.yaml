@@ -35,7 +35,7 @@ maximsT1PerDia: 1
 maximHoresDiariesGeneral: 2
 maximHoresDiaries:
   manel: 2
-  xuanin: 2
+  joan: 2
   silvia: 2
 costHoresDiscontinues: 40
 costHoresConcentrades: 1
@@ -43,7 +43,7 @@ costTaulaSorollosa: 5
 costHoraNoDesitjada: 0
 taules:
   marc: 0
-  xuanin: 5
+  joan: 5
   mariona: 0
   eduard: 1
   pere: 1
@@ -97,20 +97,20 @@ colors:
   monica: 7fada0
   yaiza: fcffff
   erola: 876dd8
-  manel: 88dfe3
+  manel: ff0084
   tania: c8abf4
   judit: e781e8
   silvia: 8097fa
-  xuanin: fae080
+  joan: fae080
   ana: ff6600
   victor: ff3233
   jordi: 34af33
   judith: 00ff00
   lucia: 9f24c2
   sergi: 8cf2df
-  vic: 165fff
+  vic: 164aff
   mariona: '623500'
-  gabriel: 1f7a00
+  gabriel: ffff00
   maite: bb6666
   ningu: ffffff
   joanb: 8af47d
@@ -145,7 +145,7 @@ extensions:
   aleix: 3053
   david: 3054
   silvia: 3055
-  xuanin: 3056
+  joan: 3056
   judith: 3057
   ana: 3181
   victor: 3182
@@ -165,7 +165,7 @@ extensions:
   oriol: 3007
   fran: 3008
   miguelanxo: 3194
-  belen: 3009
+  belen: '3191'
   fcasadella: 3002
   gijsbert: 3003
   nuri: 3004
@@ -181,7 +181,7 @@ names:
   lucia: Lucía
   joanb: JoanB
   ningu: '-'
-  xuanin: Joan
+  joan: Joan
   carol: Càrol
   undefined: Belen
   miguelanxo: MiguelAnxo
