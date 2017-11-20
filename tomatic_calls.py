@@ -13,6 +13,14 @@ from pony.orm import (
     sum as ag_sum,
     count as ag_count,
 )
+import sys
+import codecs
+sys.stdout = codecs.getwriter('utf8')(sys.stdout)
+
+import os
+srcpath = os.path.dirname(os.path.abspath(__file__))
+yamlconfigpath = os.path.join(srcpath,'config.yaml')
+
 from yamlns import namespace as ns
 import dbconfig
 args = dbconfig.tomatic.dbasterisk
@@ -107,7 +115,7 @@ def summary(date):
             lastdata = ''.join(lastdata.split('/')[-1:])
             #if len(extension)!=4: continue
             if extension:
-                config = ns.load('config.yaml')
+                config = ns.load(yamlconfigpath)
                 header = u"{} {}".format(extension, properNameByExtension(config, extension))
             elif lastapp == 'Hangup':
                 header = lastapp
