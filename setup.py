@@ -11,7 +11,7 @@ setup(
     description = "Phone turns scheduler and shifter",
     author = "David García Garzón",
     author_email = "david.garcia@somenergia.coop",
-    url = 'https://github.com/Som-Energia/somenergia-phonehours',
+    url = 'https://github.com/Som-Energia/somenergia-tomatic',
     long_description = readme,
     license = 'GNU General Public License v3 or later (GPLv3+)',
     test_suite = 'nose.collector',
