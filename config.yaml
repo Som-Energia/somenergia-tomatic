@@ -1,8 +1,9 @@
 fullIndisponibilitats: Reunions i altres afers
-fullCarrega: o9rxhxk
-intervalCarrega: carrega{:02d}{:02d}{:02d}
+#fullCarrega: o9rxhxk  #Càrrega setmanal de telèfon
+fullCarrega: opm82es  #Carrega_5t_telefon
+intervalCarrega: carrega{:02d}{:02d}{:02d}_5t
 monitoringFile: taula.html
-nTelefons: 4
+nTelefons: 5
 diesCerca:
 - dm
 - dv
@@ -25,7 +26,7 @@ mostraCami: false
 maximCamiAMostrar: 60
 aleatori: true
 backtrackDepth: 10000
-costLimit: 100
+costLimit: 200
 descartaNoPrometedores: true
 deixaEsmorzar: true
 noVolenEsmorzar:
@@ -189,8 +190,29 @@ names:
   fcasadella: FrancescCasadellà
   fcots: FrancescCots
   annarodon: AnnaRodon
-forced: {}
-commented_forced:
+forced:
+  ? - dl
+    - 1
+    - 5
+  : ningu
+  ? - dm
+    - 1
+    - 5
+  : ningu
+  ? - dx
+    - 1
+    - 5
+  : ningu
+  ? - dj
+    - 1
+    - 5
+  : ningu
+  ? - dv
+    - 1
+    - 5
+  : ningu
+commented_forced: {}
+commented2_forced:
   ? - dl
     - 1
     - 4
