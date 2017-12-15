@@ -46,7 +46,7 @@ taules:
   marc: 0
   joan: 5
   mariona: 0
-  eduard: 1
+  eduard: 8
   pere: 1
   david: 2
   carles: 3
@@ -55,14 +55,14 @@ taules:
   maite: 3
   erola: 4
   sergi: 4
-  judit: 4
+  judit: 6
   joanb: 4
   marta: 5
   yaiza: 7
-  victor: 5
-  silvia: 6
+  victor: 8
+  silvia: 9
   ana: 6
-  jordi: 6
+  jordi: 9
   gabriel: 6
   manel: 7
   tania: 7
@@ -75,16 +75,17 @@ taules:
   undefined: 99
   viktu: 0
   albert: 6
-  oriol: 2
+  oriol: 1
   fran: 2
-  miguelanxo: 8
+  miguelanxo: 9
   belen: 9
   fcasadella: 0
   gijsbert: 9
   nuri: 9
   fcots: 8
-  annarodon: 1
+  annarodon: 5
   alberto: 2
+  juanpe: 1
 sempreUnLliure: {}
 randomColors: false
 colors:
@@ -131,6 +132,7 @@ colors:
   fcots: ff5a60
   annarodon: 0e91ff
   alberto: 0074f0
+  juanpe: ddeeff
 extensions:
   marta: 3040
   monica: 3041
@@ -173,6 +175,7 @@ extensions:
   fcots: 3005
   annarodon: 3010
   alberto: 3011
+  juanpe: '0000'
 names:
   silvia: Sílvia
   monica: Mònica
@@ -190,6 +193,7 @@ names:
   fcasadella: FrancescCasadellà
   fcots: FrancescCots
   annarodon: AnnaRodon
+  juanpe: Juanpe
 forced:
   ? - dl
     - 1
@@ -211,8 +215,7 @@ forced:
     - 1
     - 5
   : ningu
-commented_forced: {}
-commented2_forced:
+commented_forced:
   ? - dl
     - 1
     - 4
