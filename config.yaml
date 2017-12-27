@@ -62,7 +62,6 @@ taules:
   victor: 8
   silvia: 9
   ana: 6
-  jordi: 9
   gabriel: 6
   manel: 7
   tania: 7
@@ -93,7 +92,6 @@ colors:
   eduard: d8b9c5
   pere: f20aa3
   david: ffb300
-  aleix: eed0eb
   carles: c98e98
   marta: eb9481
   monica: 7fada0
@@ -106,7 +104,6 @@ colors:
   joan: fae080
   ana: ff6600
   victor: ff3233
-  jordi: 34af33
   judith: 00ff00
   lucia: 9f24c2
   sergi: 8cf2df
@@ -145,14 +142,14 @@ extensions:
   tania: 3001
   carles: 3051
   pere: 3052
-  aleix: 3053
+  fran: 3053
   david: 3054
   silvia: 3055
   joan: 3056
   judith: 3057
   ana: 3181
   victor: 3182
-  jordi: 3183
+  #jordi: 3183
   lucia: 3184
   vic: 3185
   sergi: 3186
