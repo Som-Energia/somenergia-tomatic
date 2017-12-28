@@ -5,6 +5,9 @@ var Layout = require('polythene/layout/theme/theme');
 var SnackBar = require('polythene/notification/snackbar');
 var Button = require('polythene/button/button');
 var Dialog = require('polythene/dialog/dialog');
+var Checkbox = require('polythene/checkbox/checkbox');
+var List = require('polythene/list/list');
+var ListTile = require('polythene/list-tile/list-tile');
 var Ripple = require('polythene/ripple/ripple');
 var Card = require('polythene/card/card');
 var HeaderPanel = require('polythene/header-panel/header-panel');
@@ -18,6 +21,7 @@ var iconMore = require('mmsvg/google/msvg/navigation/more-vert');
 var iconEdit = require('mmsvg/google/msvg/editor/mode-edit');
 var iconPalette = require('mmsvg/google/msvg/image/palette');
 var iconDate =  require('mmsvg/google/msvg/action/date-range');
+var iconDelete =  require('mmsvg/google/msvg/action/delete');
 
 var RgbEditor = require('./components/rgbeditor');
 var Uploader = require('./components/uploader');
@@ -380,11 +384,112 @@ const toolbarRow = function(title) {
 
 
 var editAvailabilities = function(name) {
+	var data = {
+		'oneshot': [
+			{
+				'date': '2013-06-23',
+				'slot': '0011',
+				'optional': true,
+				'reason': 'motivo 0',
+			},
+			{
+				'date': '2013-12-23',
+				'slot': '0110',
+				'optional': false,
+				'reason': 'motivo 1',
+			},
+			{
+				'date': '2017-02-23',
+				'slot': '1100',
+				'optional': true,
+				'reason': 'motivo 2',
+			},
+			{
+				'date': '2019-12-25',
+				'slot': '1111',
+				'optional': false,
+				'reason': 'me quedo en casa rascandome los gatos',
+			},
+		],
+		'weekly': [
+			{
+				'weekday': 'dm',
+				'slot': '1111',
+				'optional': false,
+				'reason': 'motivo 3',
+			},
+			{
+				'weekday': null,
+				'slot': '0011',
+				'optional': false,
+				'reason': 'me quedo en casa rascandome los gatos',
+			},
+		],
+	};
 	Dialog.show({
 		title: 'Edita indisponibilitats',
 		body: [
 			"TODO: Els canvis encara no són permanents",
 			m('.busyeditor', [
+				m.component(List, {
+					tiles: data.oneshot.map(function(entry) {
+						var slots = Array.from('1010').map(function(e) {
+							return e-0?m.trust('&#x2610;'):m.trust('&#x2612;');
+						});
+						return m.component(ListTile, {
+							title: m('.layout.justified', [
+								entry.date,
+								m('.slots',slots)
+							]),
+							subtitle: entry.reason,
+							secondary: {
+								icon: { msvg: iconDelete },
+								events: {
+									onclick: function() {
+										alert("hola");
+									},
+								},
+							},
+							front: m('.optionallabel',
+								entry.optional?'Opcional':''),
+							ink: true,
+						});
+					}),
+					borders: true,
+				}),
+				m.component(List, {
+					tiles: data.weekly.map(function(entry) {
+						var weekdays = {
+							dl: 'Dilluns',
+							dm: 'Dimarts',
+							dx: 'Dimecres',
+							dj: 'Dijous',
+							dv: 'Divendres',
+						};
+						var slots = Array.from('1010').map(function(e) {
+							return e-0?m.trust('&#x2610;'):m.trust('&#x2612;');
+						});
+						return m.component(ListTile, {
+							title: m('.layout.justified', [
+								weekdays[entry.weekday]||'Tots',
+								m('.slots',slots)
+							]),
+							subtitle: entry.reason,
+							secondary: {
+								icon: { msvg: iconDelete },
+								events: {
+									onclick: function() {
+										alert("hola");
+									},
+								},
+							},
+							front: m('.optionallabel',
+								entry.optional?'[Opcional]':''),
+							ink: true,
+						});
+					}),
+					borders: true,
+				}),
 			]),
 		],
 		footer: [
@@ -928,4 +1033,4 @@ window.onload = function() {
     });
 */
 };
-
+// vim: noet ts=4 sw=4
