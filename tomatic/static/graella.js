@@ -382,12 +382,14 @@ const toolbarRow = function(title) {
 	];
 }
 
-const busyList = function(entries) {
+const busyList = function(title, entries) {
 	return [
 		m.component(List, {
-			tiles: entries.map(function(entry) {
+			header: { title: title },
+			//compact: true,
+			tiles: entries.map(function(entry, index) {
 				var slots = Array.from('1010').map(function(e) {
-					return e-0?m.trust('&#x2610;'):m.trust('&#x2612;');
+					return m.trust(e-0?'&#x2610;':'&#x2612;');
 				});
 				var weekdays = {
 					dl: 'Dilluns',
@@ -399,25 +401,36 @@ const busyList = function(entries) {
 				var day = entry.date || weekdays[entry.weekday] || 'Tots';
 
 				return m.component(ListTile, {
+					front: m('.optionallabel',
+						entry.optional?'Opcional':''),
 					title: m('.layout.justified', [
 						day,
 						m('.slots',slots)
 					]),
 					subtitle: entry.reason,
 					secondary: {
-						icon: { msvg: iconDelete },
-						events: {
-							onclick: function() {
-								alert("hola");
+						content: m.component(IconButton, {
+							icon: { msvg: iconDelete },
+							compact: true,
+							wash: true,
+							class: 'colored',
+							events: {
+								onclick: function() {
+									entries.splice(index, 1);
+									console.log(entries);
+								},
 							},
+						}),
+					},
+					events: {
+						onclick: function() {
+							alert("edit");
 						},
 					},
-					front: m('.optionallabel',
-						entry.optional?'Opcional':''),
-					ink: true,
 				});
 			}),
 			borders: true,
+			hoverable: true,
 		}),
 	];
 };
@@ -467,7 +480,7 @@ Tomatic.retrieveBusyData = function(name, callback) {
 				},
 			],
 		});
-	},4000);
+	},1000);
 };
 
 
@@ -476,15 +489,15 @@ var editAvailabilities = function(name) {
 		title: 'Obtenint indisponibilitats...',
 	}, 'BusyRetriever');
 
-	var data = Tomatic.retrieveBusyData(name, function(data) {
+	Tomatic.retrieveBusyData(name, function(data) {
 		Dialog.hide('BusyRetriever');
 		Dialog.show({
 			title: 'Edita indisponibilitats',
 			body: [
 				"TODO: Les dades encara son de MENTIDA!",
 				m('.busyeditor', [
-					busyList(data.oneshot),
-					busyList(data.weekly),
+					busyList('Puntuals', data.oneshot),
+					busyList('Setmanals', data.weekly),
 				]),
 			],
 			footer: [
@@ -494,6 +507,7 @@ var editAvailabilities = function(name) {
 						onclick: function() {
 							// TODO: Send new busy data to the API
 							//Tomatic.setBusyData(name, data);
+							console.log("Final data:\n",data);
 							Dialog.hide('BusyEditor');
 						},
 					},
