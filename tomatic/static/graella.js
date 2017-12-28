@@ -442,12 +442,19 @@ var editPerson = function(name) {
 		console.log('setDataOnTomatic', name, changed);
 		Tomatic.setPersonData(name, data);
 	};
+    function maxValue(object) {
+        var keys = Object.keys(object);
+        var values = keys.map(function(key) { return object[key]; })
+        return Math.max.apply(null, values);
+    }
+    function range(n) {
+        return Array.apply(null, Array(n)).map(function (_, i) {return i;});
+    }
 
 	var data = getDataFromTomatic(name);
 	data.tables = {};
-	// TODO: Take numbers from structure
-        // TODO: Add tables manually here to be available
-	[0,1,2,3,4,5,6,7,8,9,10,11].map(function(n) {
+	var tablesToFill = range(maxValue(Tomatic.persons().tables)+2);
+	tablesToFill.map(function(n) {
 		data.tables[n] = taulaLabel(n);
 	});
 	Dialog.show({
@@ -530,11 +537,11 @@ PersonEditor.view = function(ctrl, attrs) {
 			m('.pe-textfield__input-area', [
 				m('label.pe-textfield__label', 'Taula'),
 				m('select.pe-textfield__input', {
-					value: ''+attrs.table==='99'?'':attrs.table,
+					value: ''+attrs.table==='-1'?'':attrs.table,
 					onchange: function(ev) {
 						var eventValue = ev.target.value;
 						console.log("onchange", eventValue);
-						if (eventValue==='') { eventValue='99'; }
+						if (eventValue==='') { eventValue='-1'; }
 						attrs.table=eventValue;
 					},
 				}, [
