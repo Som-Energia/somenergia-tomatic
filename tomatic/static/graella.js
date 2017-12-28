@@ -422,78 +422,94 @@ const busyList = function(entries) {
 	];
 };
 
+Tomatic.retrieveBusyData = function(name, callback) {
+	console.log("retrieving", name);
+	setTimeout(function () {
+		callback( {
+			'oneshot': [
+				{
+					'date': '2013-06-23',
+					'slot': '0011',
+					'optional': true,
+					'reason': 'motivo 0',
+				},
+				{
+					'date': '2013-12-23',
+					'slot': '0110',
+					'optional': false,
+					'reason': 'motivo 1',
+				},
+				{
+					'date': '2017-02-23',
+					'slot': '1100',
+					'optional': true,
+					'reason': 'motivo 2',
+				},
+				{
+					'date': '2019-12-25',
+					'slot': '1111',
+					'optional': false,
+					'reason': 'me quedo en casa rascandome los gatos',
+				},
+			],
+			'weekly': [
+				{
+					'weekday': 'dm',
+					'slot': '1111',
+					'optional': false,
+					'reason': 'motivo 3',
+				},
+				{
+					'weekday': null,
+					'slot': '0011',
+					'optional': false,
+					'reason': 'me quedo en casa rascandome los gatos',
+				},
+			],
+		});
+	},4000);
+};
+
+
 var editAvailabilities = function(name) {
-	var data = {
-		'oneshot': [
-			{
-				'date': '2013-06-23',
-				'slot': '0011',
-				'optional': true,
-				'reason': 'motivo 0',
-			},
-			{
-				'date': '2013-12-23',
-				'slot': '0110',
-				'optional': false,
-				'reason': 'motivo 1',
-			},
-			{
-				'date': '2017-02-23',
-				'slot': '1100',
-				'optional': true,
-				'reason': 'motivo 2',
-			},
-			{
-				'date': '2019-12-25',
-				'slot': '1111',
-				'optional': false,
-				'reason': 'me quedo en casa rascandome los gatos',
-			},
-		],
-		'weekly': [
-			{
-				'weekday': 'dm',
-				'slot': '1111',
-				'optional': false,
-				'reason': 'motivo 3',
-			},
-			{
-				'weekday': null,
-				'slot': '0011',
-				'optional': false,
-				'reason': 'me quedo en casa rascandome los gatos',
-			},
-		],
-	};
 	Dialog.show({
-		title: 'Edita indisponibilitats',
-		body: [
-			"TODO: Els canvis encara no són permanents",
-			m('.busyeditor', [
-				busyList(data.oneshot),
-				busyList(data.weekly),
-			]),
-		],
-		footer: [
-			m.component(Button, {
-				label: "Ok",
-				events: {
-					onclick: function() {
-						setDataOnTomatic(name, data);
-						Dialog.hide('BusyEditor');
+		title: 'Obtenint indisponibilitats...',
+	}, 'BusyRetriever');
+
+	var data = Tomatic.retrieveBusyData(name, function(data) {
+		Dialog.hide('BusyRetriever');
+		Dialog.show({
+			title: 'Edita indisponibilitats',
+			body: [
+				"TODO: Les dades encara son de MENTIDA!",
+				m('.busyeditor', [
+					busyList(data.oneshot),
+					busyList(data.weekly),
+				]),
+			],
+			footer: [
+				m.component(Button, {
+					label: "Ok",
+					events: {
+						onclick: function() {
+							// TODO: Send new busy data to the API
+							//Tomatic.setBusyData(name, data);
+							Dialog.hide('BusyEditor');
+						},
 					},
-				},
-			}),
-			m.component(Button, {
-				label: "Cancel·la",
-				events: {
-					onclick: function() {
-						Dialog.hide('BusyEditor');
+				}),
+				m.component(Button, {
+					label: "Cancel·la",
+					events: {
+						onclick: function() {
+							Dialog.hide('BusyEditor');
+						},
 					},
-				},
-			}),
-		],
-	},'BusyEditor');
+				}),
+			],
+		},'BusyEditor');
+		m.redraw();
+	});
 };
 
 var editPerson = function(name) {
