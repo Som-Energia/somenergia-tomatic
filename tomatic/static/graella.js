@@ -22,6 +22,7 @@ var iconEdit = require('mmsvg/google/msvg/editor/mode-edit');
 var iconPalette = require('mmsvg/google/msvg/image/palette');
 var iconDate =  require('mmsvg/google/msvg/action/date-range');
 var iconDelete =  require('mmsvg/google/msvg/action/delete');
+var iconPlus =  require('mmsvg/templarian/msvg/plus');
 
 var RgbEditor = require('./components/rgbeditor');
 var Uploader = require('./components/uploader');
@@ -382,57 +383,82 @@ const toolbarRow = function(title) {
 	];
 }
 
-const busyList = function(title, entries) {
-	return [
-		m.component(List, {
-			header: { title: title },
-			//compact: true,
-			tiles: entries.map(function(entry, index) {
-				var slots = Array.from('1010').map(function(e) {
-					return m.trust(e-0?'&#x2610;':'&#x2612;');
-				});
-				var weekdays = {
-					dl: 'Dilluns',
-					dm: 'Dimarts',
-					dx: 'Dimecres',
-					dj: 'Dijous',
-					dv: 'Divendres',
-				};
-				var day = entry.date || weekdays[entry.weekday] || 'Tots';
 
-				return m.component(ListTile, {
-					front: m('.optionallabel',
-						entry.optional?'Opcional':''),
-					title: m('.layout.justified', [
-						day,
-						m('.slots',slots)
-					]),
-					subtitle: entry.reason,
-					secondary: {
-						content: m.component(IconButton, {
-							icon: { msvg: iconDelete },
+var BusyList = {
+	view: function(ctrl, attrs) {
+		return m('',[
+			m.component(List, {
+				header: {
+					title: m('.layout.justified.center', [
+						attrs.title,
+						m.component(IconButton, {
+							icon: { msvg: iconPlus, },
 							compact: true,
 							wash: true,
 							class: 'colored',
 							events: {
-								onclick: function() {
-									entries.splice(index, 1);
-									console.log(entries);
+								onclick: function () {
+									alert("Adding new");
+									// TODO: implement dialog
+									attrs.entries.push({
+										date: '2017-12-20',
+										reason: 'No reason',
+										optional: false,
+										slot: '1100',
+									});
 								},
-							},
+							}
 						}),
-					},
-					events: {
-						onclick: function() {
-							alert("edit");
+					]),
+				},
+				//compact: true,
+				tiles: attrs.entries.map(function(entry, index) {
+					var slots = Array.from(entry.slot).map(function(e) {
+						return m.trust(e-0?'&#x2610;':'&#x2612;');
+					});
+					var weekdays = {
+						dl: 'Dilluns',
+						dm: 'Dimarts',
+						dx: 'Dimecres',
+						dj: 'Dijous',
+						dv: 'Divendres',
+					};
+					var day = entry.date || weekdays[entry.weekday] || 'Tots';
+
+					return m.component(ListTile, {
+						front: m('.optionallabel',
+							entry.optional?'Opcional':''),
+						title: m('.layout.justified', [
+							day,
+							m('.slots',slots)
+						]),
+						subtitle: entry.reason,
+						secondary: {
+							content: m.component(IconButton, {
+								icon: { msvg: iconDelete },
+								compact: true,
+								wash: true,
+								class: 'colored',
+								events: {
+									onclick: function() {
+										attrs.entries.splice(index, 1);
+										console.log(attrs.entries);
+									},
+								},
+							}),
 						},
-					},
-				});
+						events: {
+							onclick: function() {
+								alert("edit");
+							},
+						},
+					});
+				}),
+				borders: true,
+				hoverable: true,
 			}),
-			borders: true,
-			hoverable: true,
-		}),
-	];
+		]);
+	},
 };
 
 Tomatic.retrieveBusyData = function(name, callback) {
@@ -496,8 +522,14 @@ var editAvailabilities = function(name) {
 			body: [
 				"TODO: Les dades encara son de MENTIDA!",
 				m('.busyeditor', [
-					busyList('Puntuals', data.oneshot),
-					busyList('Setmanals', data.weekly),
+					m.component(BusyList, {
+						title: 'Puntuals',
+						entries: data.oneshot
+					}),
+					m.component(BusyList, {
+						title: 'Setmanals',
+						entries: data.weekly,
+					}),
 				]),
 			],
 			footer: [
