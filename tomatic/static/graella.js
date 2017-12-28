@@ -382,7 +382,7 @@ const toolbarRow = function(title) {
 	];
 }
 
-const busyEditor = function(entries) {
+const busyList = function(entries) {
 	return [
 		m.component(List, {
 			tiles: entries.map(function(entry) {
@@ -462,7 +462,7 @@ var editAvailabilities = function(name) {
 		body: [
 			"TODO: Els canvis encara no són permanents",
 			m('.busyeditor', [
-				busyEditor(data.oneshot),
+				busyList(data.oneshot),
 				m.component(List, {
 					tiles: data.weekly.map(function(entry) {
 						var weekdays = {
