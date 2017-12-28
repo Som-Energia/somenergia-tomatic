@@ -382,6 +382,37 @@ const toolbarRow = function(title) {
 	];
 }
 
+const busyEditor = function(entries) {
+	return [
+		m.component(List, {
+			tiles: entries.map(function(entry) {
+				var slots = Array.from('1010').map(function(e) {
+					return e-0?m.trust('&#x2610;'):m.trust('&#x2612;');
+				});
+				var day = entry.date;
+				return m.component(ListTile, {
+					title: m('.layout.justified', [
+						day,
+						m('.slots',slots)
+					]),
+					subtitle: entry.reason,
+					secondary: {
+						icon: { msvg: iconDelete },
+						events: {
+							onclick: function() {
+								alert("hola");
+							},
+						},
+					},
+					front: m('.optionallabel',
+						entry.optional?'Opcional':''),
+					ink: true,
+				});
+			}),
+			borders: true,
+		}),
+	];
+};
 
 var editAvailabilities = function(name) {
 	var data = {
@@ -431,32 +462,7 @@ var editAvailabilities = function(name) {
 		body: [
 			"TODO: Els canvis encara no són permanents",
 			m('.busyeditor', [
-				m.component(List, {
-					tiles: data.oneshot.map(function(entry) {
-						var slots = Array.from('1010').map(function(e) {
-							return e-0?m.trust('&#x2610;'):m.trust('&#x2612;');
-						});
-						return m.component(ListTile, {
-							title: m('.layout.justified', [
-								entry.date,
-								m('.slots',slots)
-							]),
-							subtitle: entry.reason,
-							secondary: {
-								icon: { msvg: iconDelete },
-								events: {
-									onclick: function() {
-										alert("hola");
-									},
-								},
-							},
-							front: m('.optionallabel',
-								entry.optional?'Opcional':''),
-							ink: true,
-						});
-					}),
-					borders: true,
-				}),
+				busyEditor(data.oneshot),
 				m.component(List, {
 					tiles: data.weekly.map(function(entry) {
 						var weekdays = {
