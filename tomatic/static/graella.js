@@ -389,7 +389,15 @@ const busyList = function(entries) {
 				var slots = Array.from('1010').map(function(e) {
 					return e-0?m.trust('&#x2610;'):m.trust('&#x2612;');
 				});
-				var day = entry.date;
+				var weekdays = {
+					dl: 'Dilluns',
+					dm: 'Dimarts',
+					dx: 'Dimecres',
+					dj: 'Dijous',
+					dv: 'Divendres',
+				};
+				var day = entry.date || weekdays[entry.weekday] || 'Tots';
+
 				return m.component(ListTile, {
 					title: m('.layout.justified', [
 						day,
@@ -463,39 +471,7 @@ var editAvailabilities = function(name) {
 			"TODO: Els canvis encara no són permanents",
 			m('.busyeditor', [
 				busyList(data.oneshot),
-				m.component(List, {
-					tiles: data.weekly.map(function(entry) {
-						var weekdays = {
-							dl: 'Dilluns',
-							dm: 'Dimarts',
-							dx: 'Dimecres',
-							dj: 'Dijous',
-							dv: 'Divendres',
-						};
-						var slots = Array.from('1010').map(function(e) {
-							return e-0?m.trust('&#x2610;'):m.trust('&#x2612;');
-						});
-						return m.component(ListTile, {
-							title: m('.layout.justified', [
-								weekdays[entry.weekday]||'Tots',
-								m('.slots',slots)
-							]),
-							subtitle: entry.reason,
-							secondary: {
-								icon: { msvg: iconDelete },
-								events: {
-									onclick: function() {
-										alert("hola");
-									},
-								},
-							},
-							front: m('.optionallabel',
-								entry.optional?'[Opcional]':''),
-							ink: true,
-						});
-					}),
-					borders: true,
-				}),
+				busyList(data.weekly),
 			]),
 		],
 		footer: [
