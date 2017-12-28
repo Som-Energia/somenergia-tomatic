@@ -67,11 +67,9 @@ taules:
   tania: 7
   lucia: 8
   vic: 7
-  ningu: 99
   maria: 7
   pau: 0
   carol: 5
-  undefined: 99
   viktu: 0
   albert: 6
   oriol: 1
@@ -184,7 +182,6 @@ names:
   ningu: '-'
   joan: Joan
   carol: Càrol
-  undefined: Belen
   miguelanxo: MiguelAnxo
   belen: Belén
   fcasadella: FrancescCasadellà
