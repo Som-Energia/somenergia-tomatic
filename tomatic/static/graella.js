@@ -446,7 +446,8 @@ var editPerson = function(name) {
 	var data = getDataFromTomatic(name);
 	data.tables = {};
 	// TODO: Take numbers from structure
-	[0,1,2,3,4,5,6,7,8,9].map(function(n) {
+        // TODO: Add tables manually here to be available
+	[0,1,2,3,4,5,6,7,8,9,10,11].map(function(n) {
 		data.tables[n] = taulaLabel(n);
 	});
 	Dialog.show({
@@ -544,7 +545,6 @@ PersonEditor.view = function(ctrl, attrs) {
 							selected: value == attrs.table,
 						}, attrs.tables[value]);
 					}),
-					m('option', {value: '8'}, "Taula nova"),
 				]),
 			]),
 		]),
