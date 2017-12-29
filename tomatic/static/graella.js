@@ -6,6 +6,7 @@ var SnackBar = require('polythene/notification/snackbar');
 var Button = require('polythene/button/button');
 var Dialog = require('polythene/dialog/dialog');
 var Checkbox = require('polythene/checkbox/checkbox');
+var RadioButton = require('polythene/radio-button/radio-button');
 var List = require('polythene/list/list');
 var ListTile = require('polythene/list-tile/list-tile');
 var Ripple = require('polythene/ripple/ripple');
@@ -254,6 +255,34 @@ var Todo = function(message) {
 	});
 };
 
+var Select = {
+	controller: function(attrs) {
+		return {
+			value: m.prop(attrs.value),
+		};
+	},
+	view: function(ctrl, attrs) {
+		console.debug("Select view: ", attrs.value, ctrl.value());
+		return m('.pe-textfield.pe-textfield--floating-label.pe-textfield--hide-clear.pe-textfield--dirty', [
+			m('.pe-textfield__input-area', [
+				m('label.pe-textfield__label', attrs.label),
+				m('select.pe-textfield__input', {
+					value: ctrl.value(),
+					onchange: function(ev) {
+						console.debug("Inner onchange:", ev.target.value);
+						ctrl.value(ev.target.value);
+						attrs.onChange(ev);
+					},
+				},
+				Object.keys(attrs.options).map(function(value) {
+					return m('option', {
+						value: value,
+					}, attrs.options[value]);
+				})),
+			]),
+		]);
+	},
+};
 
 var QueueWidget = {
 	controller: function() {
@@ -414,7 +443,7 @@ var BusyList = {
 				//compact: true,
 				tiles: attrs.entries.map(function(entry, index) {
 					var slots = Array.from(entry.slot).map(function(e) {
-						return m.trust(e-0?'&#x2610;':'&#x2612;');
+						return m.trust(e-0?'&#x2612;':'&#x2610;');
 					});
 					var weekdays = {
 						dl: 'Dilluns',
@@ -423,7 +452,7 @@ var BusyList = {
 						dj: 'Dijous',
 						dv: 'Divendres',
 					};
-					var day = entry.date || weekdays[entry.weekday] || 'Tots';
+					var day = entry.date || weekdays[entry.weekday] || 'Tots els dies';
 
 					return m.component(ListTile, {
 						front: m('.optionallabel',
@@ -449,7 +478,7 @@ var BusyList = {
 						},
 						events: {
 							onclick: function() {
-								alert("edit");
+								editAvailability(entry);
 							},
 						},
 					});
@@ -462,7 +491,7 @@ var BusyList = {
 };
 
 Tomatic.retrieveBusyData = function(name, callback) {
-	console.log("retrieving", name);
+	console.log("simulating retrieval", name);
 	setTimeout(function () {
 		callback( {
 			'oneshot': [
@@ -499,7 +528,7 @@ Tomatic.retrieveBusyData = function(name, callback) {
 					'reason': 'motivo 3',
 				},
 				{
-					'weekday': null,
+					'weekday': '',
 					'slot': '0011',
 					'optional': false,
 					'reason': 'me quedo en casa rascandome los gatos',
@@ -509,6 +538,119 @@ Tomatic.retrieveBusyData = function(name, callback) {
 	},1000);
 };
 
+var editAvailability = function(data) {
+	var weekdays = {
+		dl: 'Dilluns',
+		dm: 'Dimarts',
+		dx: 'Dimecres',
+		dj: 'Dijous',
+		dv: 'Divendres',
+	};
+	console.debug("building dialog", data.weekday);
+	Dialog.show({
+		title: 'Edita indisponibilitats',
+		body: [
+			m.component(Textfield, {
+				label: 'Motiu',
+				floatingLabel: true,
+				help: 'Explica el motiu, com a referència',
+				required: true,
+				value: function() {
+					return data.reason;
+				},
+				events: {
+					onchange: function(ev) {
+						data.reason=ev.target.value;
+					},
+				},
+			}),
+			m('p.label', "Es pot descartar si estem apurats?"),
+			m.component(RadioButton, {
+				name: 'optional',
+				label: 'Sí',
+				checked: data.optional,
+				getState: function(state) { data.optional = state.checked; },
+			}),
+			m.component(RadioButton, {
+				name: 'optional',
+				label: 'No',
+				checked: !data.optional,
+				getState: function(state) { data.optional = !state.checked; },
+			}),
+			data.weekday !== undefined ?
+				m.component(Select, {
+					label: 'Dia de la setmana',
+					value: data.weekday,
+					options: {
+						'': 'Tots els dies',
+						dl: 'Dilluns',
+						dm: 'Dimarts',
+						dx: 'Dimecres',
+						dj: 'Dijous',
+						dv: 'Divendres',
+						undefined: 'Dia concret',
+					},
+					onChange: function(ev) {
+						console.log("Upper onChange", ev.target.value);
+						data.weekday = ev.target.value;
+						console.log("Upper onChange changed", data.weekday);
+					},
+				}):[],
+			data.weekday === undefined ?
+				m.component(Textfield, {
+					label: 'Data',
+					pattern: '20[0-9]{2}-[01][0-9]-[0-3][0-9]$',
+					error: 'Data en format ISO YYYY-MM-DD',
+					floatingLabel: true,
+					help: 'Especifica la data concreta de la indisponibilitat',
+					required: true,
+					validate: function(value) {
+						if (!isNaN(Date.parse(value))) {return;}
+						return {
+							valid: false,
+							error: 'Data en format ISO YYYY-MM-DD',
+						};
+					},
+					value: function() {
+						return data.date;
+					},
+					events: {
+						onchange: function(ev) {
+							data.date=ev.target.value;
+						},
+					},
+				}):[],
+			m('p.label', "Marca les hores que no estaràs disponible:"),
+			Tomatic.grid().hours.map(function(hour, i, hours) {
+				if (i+1>=hours.length) { return undefined; }
+				console.log(i, data.slot[i], data.slot[i]==='1');
+				return m('', m.component(Checkbox, {
+					label: hour+' - '+hours[i+1],
+					checked: data.slot[i]==='1',
+					getState: function(state) {
+						var newval = state.checked?'1':'0';
+						data.slot = (
+							data.slot.substr(0,i)+
+							newval+
+							data.slot.substr(i+1)
+						);
+					},
+				}));
+			}),
+		],
+		footer: [
+			m.component(Button, {
+				label: "Ok",
+				events: {
+					onclick: function() {
+						Dialog.hide('BusyEditor');
+					},
+				},
+			}),
+		],
+	},'BusyEditor');
+	m.redraw();
+};
 
 var editAvailabilities = function(name) {
 	Dialog.show({
@@ -521,7 +663,7 @@ var editAvailabilities = function(name) {
 			title: 'Edita indisponibilitats',
 			body: [
 				"TODO: Les dades encara son de MENTIDA!",
-				m('.busyeditor', [
+				m('.busylist', [
 					m.component(BusyList, {
 						title: 'Puntuals',
 						entries: data.oneshot
@@ -540,7 +682,7 @@ var editAvailabilities = function(name) {
 							// TODO: Send new busy data to the API
 							//Tomatic.setBusyData(name, data);
 							console.log("Final data:\n",data);
-							Dialog.hide('BusyEditor');
+							Dialog.hide('BusyListEditor');
 						},
 					},
 				}),
@@ -548,12 +690,12 @@ var editAvailabilities = function(name) {
 					label: "Cancel·la",
 					events: {
 						onclick: function() {
-							Dialog.hide('BusyEditor');
+							Dialog.hide('BusyListEditor');
 						},
 					},
 				}),
 			],
-		},'BusyEditor');
+		},'BusyListEditor');
 		m.redraw();
 	});
 };
@@ -686,7 +828,7 @@ PersonEditor.view = function(ctrl, attrs) {
 			m('.pe-textfield__input-area', [
 				m('label.pe-textfield__label', 'Taula'),
 				m('select.pe-textfield__input', {
-					value: ''+attrs.table==='-1'?'':attrs.table,
+					value: attrs.table,
 					onchange: function(ev) {
 						var eventValue = ev.target.value;
 						console.log("onchange", eventValue);
@@ -698,7 +840,7 @@ PersonEditor.view = function(ctrl, attrs) {
 					Object.keys(attrs.tables).map(function(value) {
 						return m('option', {
 							value: value,
-							selected: value == attrs.table,
+							selected: value === attrs.table,
 						}, attrs.tables[value]);
 					}),
 				]),
