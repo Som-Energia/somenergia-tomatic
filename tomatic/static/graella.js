@@ -25,6 +25,7 @@ var iconDate =  require('mmsvg/google/msvg/action/date-range');
 var iconDelete =  require('mmsvg/google/msvg/action/delete');
 var iconPlus =  require('mmsvg/templarian/msvg/plus');
 
+var Select = require('./components/select');
 var RgbEditor = require('./components/rgbeditor');
 var Uploader = require('./components/uploader');
 var luminance = require('./components/colorutils').luminance;
@@ -253,35 +254,6 @@ var Todo = function(message) {
 			},
 		}],
 	});
-};
-
-var Select = {
-	controller: function(attrs) {
-		return {
-			value: m.prop(attrs.value),
-		};
-	},
-	view: function(ctrl, attrs) {
-		console.debug("Select view: ", attrs.value, ctrl.value());
-		return m('.pe-textfield.pe-textfield--floating-label.pe-textfield--hide-clear.pe-textfield--dirty', [
-			m('.pe-textfield__input-area', [
-				m('label.pe-textfield__label', attrs.label),
-				m('select.pe-textfield__input', {
-					value: ctrl.value(),
-					onchange: function(ev) {
-						console.debug("Inner onchange:", ev.target.value);
-						ctrl.value(ev.target.value);
-						attrs.onChange(ev);
-					},
-				},
-				Object.keys(attrs.options).map(function(value) {
-					return m('option', {
-						value: value,
-					}, attrs.options[value]);
-				})),
-			]),
-		]);
-	},
 };
 
 var QueueWidget = {
