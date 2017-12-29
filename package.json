@@ -27,8 +27,13 @@
   "homepage": "https://github.com/Som-Energia/somenergia-tomatic#readme",
   "dependencies": {
     "js-yaml": "^3.8.3",
-    "mithril": "^0.2.5",
-    "polythene": "^0.2.35",
+    "mithril": "^1.0.0",
+    "mithril-datepicker": "*",
+    "polythene-core": "^1.0.0-rc",
+    "polythene-css": "^1.0.0-rc.9",
+    "polythene-mithril": "^1.0.0-rc.9",
+    "polythene-mithril-dialog": "^1.0.0-rc",
+    "polythene-utilities": "^1.0.0-rc.9",
     "webpack-roboto": "^1.0.0"
   },
   "devDependencies": {

@@ -1,21 +1,26 @@
 'use strict';
 var m = require('mithril');
+
+m.prop = require('mithril/stream');
+
 var jsyaml = require('js-yaml');
-var Layout = require('polythene/layout/theme/theme');
-var SnackBar = require('polythene/notification/snackbar');
-var Button = require('polythene/button/button');
-var Dialog = require('polythene/dialog/dialog');
-var Checkbox = require('polythene/checkbox/checkbox');
-var RadioButton = require('polythene/radio-button/radio-button');
-var List = require('polythene/list/list');
-var ListTile = require('polythene/list-tile/list-tile');
-var Ripple = require('polythene/ripple/ripple');
-var Card = require('polythene/card/card');
-var HeaderPanel = require('polythene/header-panel/header-panel');
-var IconButton = require('polythene/icon-button/icon-button');
-var Icon = require('polythene/icon/icon');
-var Tabs = require('polythene/tabs/tabs');
-var Textfield = require('polythene/textfield/textfield');
+//var Layout = require('polythene-css/polythene-layout-styles');
+var SnackBar = require('polythene-mithril-snackbar');
+var Button = require('polythene-mithril-button');
+var Dialog = require('polythene-mithril-dialog');
+var Checkbox = require('polythene-mithril-checkbox');
+var RadioButton = require('polythene-mithril-radio-button');
+var List = require('polythene-mithril-list');
+var ListTile = require('polythene-mithril-list-tile');
+var Ripple = require('polythene-mithril-ripple');
+var Card = require('polythene-mithril-card');
+//var HeaderPanel = require('polythene-mithril-header-panel');
+var IconButton = require('polythene-mithril-icon-button');
+var Icon = require('polythene-mithril-icon');
+var Tabs = require('polythene-mithril-tabs');
+var Textfield = require('polythene-mithril-textfield');
+var DatePicker = require('mithril-datepicker/mithril-datepicker')
+
 
 var iconMenu = require('mmsvg/google/msvg/navigation/menu');
 var iconMore = require('mmsvg/google/msvg/navigation/more-vert');
@@ -30,7 +35,7 @@ var RgbEditor = require('./components/rgbeditor');
 var Uploader = require('./components/uploader');
 var luminance = require('./components/colorutils').luminance;
 
-var theme = require('polythene/theme/theme');
+//var theme = require('polythene/theme/theme');
 var customStyle = require('./style.styl');
 
 var weekdays = {
@@ -248,7 +253,7 @@ Tomatic.error = function(message) {
 };
 
 var Todo = function(message) {
-	return m.component(Card, {
+	return m(Card, {
 		content: [{
 			primary: {
 				title: 'TODO',
@@ -262,10 +267,11 @@ var QueueWidget = {
 	controller: function() {
 		var c = {
 			addtoqueue: function(ev) {
+				console.debug(Dialog);
 				Dialog.show({
 					title: 'Obre una nova línia amb:',
 					body: [
-						m.component(PersonPicker, {
+						m(PersonPicker, {
 							id:'QueuePersonPicker',
 							onpick: function(name) {
 								Dialog.hide('QueuePersonPicker');
@@ -274,7 +280,7 @@ var QueueWidget = {
 						}),
 					],
 					footer: [
-						m.component(Button, {
+						m(Button, {
 							label: "Cancel·la",
 							events: {
 								onclick: function() {
@@ -370,7 +376,7 @@ var WeekList = {
 	}
 };
 const ButtonIcon = function(msvg) {
-	return m.component(IconButton, {
+	return m(IconButton, {
 		icon: {
 			msvg: msvg
 		},
@@ -379,21 +385,21 @@ const ButtonIcon = function(msvg) {
 };
 
 const toolbarRow = function(title) {
-	return [
+	return m('',[
 		ButtonIcon(iconMenu),
 		m('span.flex', title),
 		ButtonIcon(iconMore)
-	];
+	]);
 }
 
 var BusyList = {
 	view: function(ctrl, attrs) {
 		return m('',[
-			m.component(List, {
+			m(List, {
 				header: {
 					title: m('.layout.justified.center', [
 						attrs.title,
-						m.component(IconButton, {
+						m(IconButton, {
 							icon: { msvg: iconPlus, },
 							compact: true,
 							wash: true,
@@ -421,7 +427,7 @@ var BusyList = {
 					});
 					var day = entry.date || weekdays[entry.weekday] || 'Tots els dies';
 
-					return m.component(ListTile, {
+					return m(ListTile, {
 						front: m('.optionallabel',
 							entry.optional?'Opcional':''),
 						title: m('.layout.justified', [
@@ -430,7 +436,7 @@ var BusyList = {
 						]),
 						subtitle: entry.reason,
 						secondary: {
-							content: m.component(IconButton, {
+							content: m(IconButton, {
 								icon: { msvg: iconDelete },
 								compact: true,
 								wash: true,
@@ -510,7 +516,7 @@ var editAvailability = function(data) {
 	Dialog.show({
 		title: 'Edita indisponibilitats',
 		body: [
-			m.component(Textfield, {
+			m(Textfield, {
 				label: 'Motiu',
 				floatingLabel: true,
 				help: 'Explica el motiu, com a referència',
@@ -527,13 +533,13 @@ var editAvailability = function(data) {
 			m('', [
 				m('label[for=optional]', "Es pot descartar si estem apurats?"),
 				m('', [
-					m.component(RadioButton, {
+					m(RadioButton, {
 						name: 'optional',
 						label: 'Sí',
 						checked: data.optional,
 						getState: function(state) { data.optional = state.checked; },
 					}),
-					m.component(RadioButton, {
+					m(RadioButton, {
 						name: 'optional',
 						label: 'No',
 						checked: !data.optional,
@@ -542,7 +548,7 @@ var editAvailability = function(data) {
 				]),
 			]),
 			data.weekday !== undefined ?
-				m.component(Select, {
+				m(Select, {
 					label: 'Dia de la setmana',
 					value: data.weekday,
 					options: {
@@ -561,7 +567,9 @@ var editAvailability = function(data) {
 					},
 				}):[],
 			data.weekday === undefined ?
-				m.component(Textfield, {
+				m(DatePicker):[],
+			data.weekday === undefined ?
+				m(Textfield, {
 					label: 'Data',
 					pattern: '20[0-9]{2}-[01][0-9]-[0-3][0-9]$',
 					error: 'Data en format ISO YYYY-MM-DD',
@@ -588,7 +596,7 @@ var editAvailability = function(data) {
 			Tomatic.grid().hours.map(function(hour, i, hours) {
 				if (i+1>=hours.length) { return undefined; }
 				console.log(i, data.slot[i], data.slot[i]==='1');
-				return m('', m.component(Checkbox, {
+				return m('', m(Checkbox, {
 					label: hour+' - '+hours[i+1],
 					checked: data.slot[i]==='1',
 					getState: function(state) {
@@ -603,7 +611,7 @@ var editAvailability = function(data) {
 			}),
 		],
 		footer: [
-			m.component(Button, {
+			m(Button, {
 				label: "Ok",
 				events: {
 					onclick: function() {
@@ -628,12 +636,12 @@ var editAvailabilities = function(name) {
 			body: [
 				"TODO: Les dades encara son de MENTIDA!",
 				m('.busylist', [
-					m.component(BusyList, {
+					m(BusyList, {
 						title: 'Puntuals',
 						entries: data.oneshot,
 						isOneShot: true,
 					}),
-					m.component(BusyList, {
+					m(BusyList, {
 						title: 'Setmanals',
 						entries: data.weekly,
 						isOneShot: false,
@@ -641,7 +649,7 @@ var editAvailabilities = function(name) {
 				]),
 			],
 			footer: [
-				m.component(Button, {
+				m(Button, {
 					label: "Ok",
 					events: {
 						onclick: function() {
@@ -652,7 +660,7 @@ var editAvailabilities = function(name) {
 						},
 					},
 				}),
-				m.component(Button, {
+				m(Button, {
 					label: "Cancel·la",
 					events: {
 						onclick: function() {
@@ -717,10 +725,10 @@ var editPerson = function(name) {
 	Dialog.show({
 		title: 'Edita dades de la persona',
 		body: [
-			m.component(PersonEditor, data),
+			m(PersonEditor, data),
 		],
 		footer: [
-			m.component(Button, {
+			m(Button, {
 				label: "Ok",
 				events: {
 					onclick: function() {
@@ -729,7 +737,7 @@ var editPerson = function(name) {
 					},
 				},
 			}),
-			m.component(Button, {
+			m(Button, {
 				label: "Cancel·la",
 				events: {
 					onclick: function() {
@@ -745,7 +753,7 @@ var PersonEditor = {};
 PersonEditor.view = function(ctrl, attrs) {
 	ctrl.name = attrs.name;
 	return m('.personEditor', [
-		m.component(Textfield, {
+		m(Textfield, {
 			label: 'Identificador',
 			floatingLabel: true,
 			pattern: '[a-z]{3,10}$',
@@ -760,7 +768,7 @@ PersonEditor.view = function(ctrl, attrs) {
 				},
 			},
 		}),
-		m.component(Textfield, {
+		m(Textfield, {
 			label: 'Nom mostrat',
 			floatingLabel: true,
 			help: 'Nom amb accents, majúscules...',
@@ -774,7 +782,7 @@ PersonEditor.view = function(ctrl, attrs) {
 				},
 			},
 		}),
-		m.component(Textfield, {
+		m(Textfield, {
 			label: 'Extensio',
 			type: 'number',
 			pattern: '[0-9]{0,4}$',
@@ -790,7 +798,7 @@ PersonEditor.view = function(ctrl, attrs) {
 				},
 			},
 		}),
-		m.component(Select, {
+		m(Select, {
 			label: 'Taula',
 			value: attrs.table,
 			options: Object.keys(attrs.tables).reduce(function(d, k) {
@@ -804,7 +812,7 @@ PersonEditor.view = function(ctrl, attrs) {
 		m('.pe-textfield.pe-textfield--floating-label.pe-textfield--hide-clear.pe-textfield--dirty', [
 			m('.pe-textfield__input-area', [
 				m('label.pe-textfield__label', 'Color'),
-				m.component(RgbEditor, {
+				m(RgbEditor, {
 					value: function() {
 						return attrs.color;
 					},
@@ -833,14 +841,14 @@ var Grid = function(grid) {
 					', la feia ',
 				m('span.extension.'+oldPerson, Tomatic.formatName(oldPerson)),
 				' qui ho ha de fer?',
-				m.component(PersonPicker, {
+				m(PersonPicker, {
 					id:'GridCellEditor',
 					onpick: setPerson,
 					nobodyPickable: true,
 				}),
 			],
 			footer: [
-				m.component(Button, {
+				m(Button, {
 					label: "Cancel·la",
 					events: {
 						onclick: function() {
@@ -864,7 +872,7 @@ var Grid = function(grid) {
 			Tomatic.persons().extensions[name]?
 				m('.tooltip', Tomatic.persons().extensions[name]):
 				[],
-			m.component(Ripple),
+			m(Ripple),
 		]);
 	};
  	return [
@@ -907,7 +915,7 @@ var Persons = function(extensions) {
 					m('br'),
 					Tomatic.persons().extensions[name],
 					m('.tooltip', [
-						m.component(IconButton, {
+						m(IconButton, {
 							icon: { msvg: iconDate },
 							compact: true,
 							wash: true,
@@ -916,7 +924,7 @@ var Persons = function(extensions) {
 							onclick: function() { editAvailabilities(name); },
 							},
 						}),
-						m.component(IconButton, {
+						m(IconButton, {
 							icon: { msvg: iconEdit },
 							compact: true,
 							wash: true,
@@ -926,7 +934,7 @@ var Persons = function(extensions) {
 							},
 						}),
 					]),
-					//m.component(Ripple),
+					//m(Ripple),
 				]);
 			}),
 			m('.extension.add', {
@@ -992,9 +1000,9 @@ var GridsPage = {
         var grid = Tomatic.grid();
         return m('',[
 			m('.layout.vertical', [
-				m.component(WeekList),
+				m(WeekList),
 				m('.layout.end-justified', [
-					m.component(Uploader, {
+					m(Uploader, {
 						name: 'yaml',
 						label: 'Puja Nova Graella',
 						url: 'api/graella',
@@ -1028,7 +1036,7 @@ var PbxPage = {
 				"podreu també pausar-les o afegir-ne de més. ",
 				]),
 			m('h2[style=text-align:center]', "Linies en cua"),
-			m.component(QueueWidget),
+			m(QueueWidget),
         ]);
     },
 };
@@ -1101,10 +1109,10 @@ const indexForRoute = function(route) {
 };
 
 var Page = function(content) {
-    var currentTabIndex = indexForRoute(m.route());
+    var currentTabIndex = indexForRoute(m.route.get());
 
 
-	return m.component(HeaderPanel, {
+	return m('div', {
         mode: 'waterfall-tall',
         //condenses: true, // condense:
         //noReveal: true, // reveal: remove header when scroll down
@@ -1117,9 +1125,10 @@ var Page = function(content) {
         header: {
             toolbar: {
                 class: 'pe-toolbar--tabs.flex',
-                topBar: toolbarRow('Tomàtic - Som Energia'),
+                //topBar: toolbarRow('Tomàtic - Som Energia'),
+                topBar: ('Tomàtic - Som Energia'),
                 bottomBar: m('.tabArea.hasToolbar', [
-                    m.component(Tabs, {
+                    m(Tabs, {
                         buttons: tabs,
                         centered: true,
                         activeSelected: true,
@@ -1131,8 +1140,8 @@ var Page = function(content) {
         },
         content: [
             content,
-            m('#snackbar',m.component(SnackBar)),
-            m.component(Dialog),
+            m('#snackbar',m(SnackBar)),
+            m(Dialog),
         ],
     });
 };
@@ -1150,28 +1159,30 @@ TomaticApp.view = function(c) {
         'Persones': PersonsPage,
         'Trucada': CallInfoPage,
     };
-    var currentTabIndex = indexForRoute(m.route());
+    var currentTabIndex = indexForRoute(m.route.get());
     var current = pages[tabs[currentTabIndex].label];
-    return [
+    return m('',[
         PersonStyles(),
-        Page(m.component(current)),
-    ];
+        Page(m(current)),
+    ]);
 };
 
 
 
 window.onload = function() {
 	Tomatic.init();
-    m.route.mode = 'hash';
-    m.redraw.strategy('diff');
-	m.mount(document.getElementById("tomatic"), TomaticApp);
-/*  // Not working
+//    m.route.mode = 'hash';
+//    m.redraw.strategy('diff');
+//	m.mount(document.getElementById("tomatic"), TomaticApp);
+	// Not working
+	var element = document.getElementById("tomatic");
+	console.debug(element);
 	m.route(document.getElementById("tomatic"), '/Graelles', {
         '/Graelles': TomaticApp,
         '/Centraleta': TomaticApp,
         '/Persones': TomaticApp,
         '/Trucada': TomaticApp,
     });
-*/
+
 };
 // vim: noet ts=4 sw=4

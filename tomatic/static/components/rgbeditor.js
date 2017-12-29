@@ -1,7 +1,7 @@
 module.exports = function() {
 	var color = require('./colorutils.js');
 	var m = require('mithril');
-	var Slider = require('polythene/slider/slider');
+	var Slider = require('polythene-mithril-slider');
 
 	var RgbEditor = {};
 	RgbEditor.controller = function(attrs) {

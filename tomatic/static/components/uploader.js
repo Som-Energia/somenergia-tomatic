@@ -1,7 +1,7 @@
 module.exports = function() {
 
 var m = require('mithril');
-var Button = require('polythene/button/button');
+var Button = require('polythene-mithril-button');
 var jsyaml = require('js-yaml');
 
 var Uploader = {
