@@ -400,14 +400,15 @@ var BusyList = {
 							class: 'colored',
 							events: {
 								onclick: function () {
-									alert("Adding new");
-									// TODO: implement dialog
-									attrs.entries.push({
-										date: '2017-12-20',
-										reason: 'No reason',
+									var newEntry = {
+										weekday: attrs.isOneShot?undefined:'',
+										date: attrs.isOneShot?'YYYY-MM-DD':undefined,
+										reason: '',
 										optional: false,
-										slot: '1100',
-									});
+										slot: '1111',
+									};
+									attrs.entries.push(newEntry);
+									editAvailability(newEntry);
 								},
 							}
 						}),
@@ -523,19 +524,23 @@ var editAvailability = function(data) {
 					},
 				},
 			}),
-			m('p.label', "Es pot descartar si estem apurats?"),
-			m.component(RadioButton, {
-				name: 'optional',
-				label: 'Sí',
-				checked: data.optional,
-				getState: function(state) { data.optional = state.checked; },
-			}),
-			m.component(RadioButton, {
-				name: 'optional',
-				label: 'No',
-				checked: !data.optional,
-				getState: function(state) { data.optional = !state.checked; },
-			}),
+			m('', [
+				m('label[for=optional]', "Es pot descartar si estem apurats?"),
+				m('', [
+					m.component(RadioButton, {
+						name: 'optional',
+						label: 'Sí',
+						checked: data.optional,
+						getState: function(state) { data.optional = state.checked; },
+					}),
+					m.component(RadioButton, {
+						name: 'optional',
+						label: 'No',
+						checked: !data.optional,
+						getState: function(state) { data.optional = !state.checked; },
+					}),
+				]),
+			]),
 			data.weekday !== undefined ?
 				m.component(Select, {
 					label: 'Dia de la setmana',
@@ -547,7 +552,7 @@ var editAvailability = function(data) {
 						dx: 'Dimecres',
 						dj: 'Dijous',
 						dv: 'Divendres',
-						undefined: 'Dia concret',
+						//undefined: 'Dia concret',
 					},
 					onChange: function(ev) {
 						console.log("Upper onChange", ev.target.value);
@@ -625,11 +630,13 @@ var editAvailabilities = function(name) {
 				m('.busylist', [
 					m.component(BusyList, {
 						title: 'Puntuals',
-						entries: data.oneshot
+						entries: data.oneshot,
+						isOneShot: true,
 					}),
 					m.component(BusyList, {
 						title: 'Setmanals',
 						entries: data.weekly,
+						isOneShot: false,
 					}),
 				]),
 			],
