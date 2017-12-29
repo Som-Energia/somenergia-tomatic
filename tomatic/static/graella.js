@@ -33,6 +33,14 @@ var luminance = require('./components/colorutils').luminance;
 var theme = require('polythene/theme/theme');
 var customStyle = require('./style.styl');
 
+var weekdays = {
+	dl: 'Dilluns',
+	dm: 'Dimarts',
+	dx: 'Dimecres',
+	dj: 'Dijous',
+	dv: 'Divendres',
+};
+
 var Tomatic = {
 };
 
@@ -96,13 +104,7 @@ Tomatic.requestGrid = function(week) {
 	});
 };
 Tomatic.weekday = function(short) {
-	return {
-		dl: 'Dilluns',
-		dm: 'Dimarts',
-		dx: 'Dimecres',
-		dj: 'Dijous',
-		dv: 'Divendres',
-	}[short] || '??';
+	return weekdays[short] || '??';
 };
 Tomatic.formatName = function(name) {
 	function titleCase(str)
@@ -384,7 +386,6 @@ const toolbarRow = function(title) {
 	];
 }
 
-
 var BusyList = {
 	view: function(ctrl, attrs) {
 		return m('',[
@@ -417,13 +418,6 @@ var BusyList = {
 					var slots = Array.from(entry.slot).map(function(e) {
 						return m.trust(e-0?'&#x2612;':'&#x2610;');
 					});
-					var weekdays = {
-						dl: 'Dilluns',
-						dm: 'Dimarts',
-						dx: 'Dimecres',
-						dj: 'Dijous',
-						dv: 'Divendres',
-					};
 					var day = entry.date || weekdays[entry.weekday] || 'Tots els dies';
 
 					return m.component(ListTile, {
@@ -511,13 +505,6 @@ Tomatic.retrieveBusyData = function(name, callback) {
 };
 
 var editAvailability = function(data) {
-	var weekdays = {
-		dl: 'Dilluns',
-		dm: 'Dimarts',
-		dx: 'Dimecres',
-		dj: 'Dijous',
-		dv: 'Divendres',
-	};
 	console.debug("building dialog", data.weekday);
 	Dialog.show({
 		title: 'Edita indisponibilitats',
