@@ -824,28 +824,17 @@ PersonEditor.view = function(ctrl, attrs) {
 				},
 			},
 		}),
-		m('.pe-textfield.pe-textfield--floating-label.pe-textfield--hide-clear.pe-textfield--dirty', [
-			m('.pe-textfield__input-area', [
-				m('label.pe-textfield__label', 'Taula'),
-				m('select.pe-textfield__input', {
-					value: attrs.table,
-					onchange: function(ev) {
-						var eventValue = ev.target.value;
-						console.log("onchange", eventValue);
-						if (eventValue==='') { eventValue='-1'; }
-						attrs.table=eventValue;
-					},
-				}, [
-					m('option', {value: ''}, "Sense taula"),
-					Object.keys(attrs.tables).map(function(value) {
-						return m('option', {
-							value: value,
-							selected: value === attrs.table,
-						}, attrs.tables[value]);
-					}),
-				]),
-			]),
-		]),
+		m.component(Select, {
+			label: 'Taula',
+			value: attrs.table,
+			options: Object.keys(attrs.tables).reduce(function(d, k) {
+				d[k] = attrs.tables[k];
+				return d;
+			}, { "-1": "Sense taula" }),
+			onChange: function(ev) {
+				attrs.table = ev.target.value;
+			},
+		}),
 		m('.pe-textfield.pe-textfield--floating-label.pe-textfield--hide-clear.pe-textfield--dirty', [
 			m('.pe-textfield__input-area', [
 				m('label.pe-textfield__label', 'Color'),
