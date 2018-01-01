@@ -27,7 +27,6 @@ var Uploader = {
 					accept: vnode.attrs.mimetype || "application/x-yaml",
 				}),
 				m(RaisedButton, {
-					raised: true,
 					label: vnode.attrs.label || 'Upload a file...',
 				}),
 			])
@@ -37,4 +36,4 @@ var Uploader = {
 return Uploader;
 }();
 
-
+// vim: noet ts=4 sw=4
