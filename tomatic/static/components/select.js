@@ -11,7 +11,7 @@ module.exports = function() {
 		oninit: function(vnode) {
 			vnode.state.value = m.prop(vnode.attrs.value);
 		},
-        view: function(vnodes) {
+        view: function(vnode) {
             console.debug("Select view: ", vnode.attrs.value, vnode.value());
             return m('.pe-textfield.pe-textfield--floating-label'+
                     '.pe-textfield--hide-clear.pe-textfield--dirty', [
