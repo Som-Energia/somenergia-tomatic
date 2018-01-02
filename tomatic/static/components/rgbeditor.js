@@ -1,58 +1,58 @@
 module.exports = function() {
 	var color = require('./colorutils.js');
 	var m = require('mithril');
-	var Slider = require('polythene-mithril-slider');
+
+	var Slider = require('polythene-mithril-slider').Slider;
 
 	var RgbEditor = {};
-	RgbEditor.controller = function(attrs) {
-		var ctrl = {};
-		ctrl.fetch=attrs.value;
-		ctrl.onEdit=attrs.onEdit;
-		ctrl.asRgb = function() {
+	RgbEditor.oninit = function(vnode) {
+		var state = vnode.state;
+		state.red = m.prop();
+		state.green = m.prop();
+		state.blue = m.prop();
+		state.setRgb = function() {
+			var components = color.hex2triplet(vnode.attrs.value);
+			this.red(components[0]);
+			this.green(components[1]);
+			this.blue(components[2]);
+		};
+		state.edited = function() {
 			var result = color.triplet2hex([
-				ctrl.red,
-				ctrl.green,
-				ctrl.blue,
+				this.red(),
+				this.green(),
+				this.blue(),
 			]);
-			return result;
+			vnode.attrs.value=result;
+			vnode.attrs.onChange({value: result});
 		};
-		ctrl.setRgb = function(value) {
-			var components = color.hex2triplet(value);
-			ctrl.red = components[0];
-			ctrl.green = components[1];
-			ctrl.blue = components[2];
-		};
-		ctrl.edited = function() {
-			var value = ctrl.asRgb();
-			ctrl.onEdit(value);
-		};
-		return ctrl;
+		state.setRgb();
+		console.debug("init: ", vnode.state);
 	};
 
-	RgbEditor.view = function(ctrl, attrs) {
-		ctrl.fetch=attrs.value;
-		ctrl.onEdit=attrs.onEdit;
-		ctrl.setRgb(ctrl.fetch());
+	var borrame = m.prop(30);
+	RgbEditor.view = function(vnode) {
+		console.debug("view: ", vnode.state);
 		return m('.rgbeditor.horizontal.layout', [
 			m('.field', {
-				style: 'background: #'+ctrl.asRgb(),
-			}, ctrl.asRgb()),
+				style: {
+					'background-color': '#'+vnode.attrs.value,
+					color: color.contrast(vnode.attrs.value),
+				},
+			}, vnode.attrs.value),
 			m('.flex.vertical.layout', 
-				['red', 'green','blue'].map(function(cls) {
-					return m.component(Slider, {
+				['red', 'green','blue'].map(function(color) {
+					return m(Slider, {
 						min: 0,
 						max: 255,
-						class: cls,
-						value: function() {
-							return ctrl[cls];
-						},
-						getValue: function(value) {
-							ctrl[cls]=value;
-							ctrl.edited();
+						class: color,
+						value: vnode.state[color],
+						onChange: function(state) {
+							vnode.state[color](state.value);
+							vnode.state.edited();
 						},
 					});
 				})
-			)
+			),
 		]);
 	};
 	return RgbEditor;
