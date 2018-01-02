@@ -4,22 +4,22 @@ var m = require('mithril');
 m.prop = require('mithril/stream');
 
 var jsyaml = require('js-yaml');
-//var Layout = require('polythene-css/polythene-layout-styles');
-var SnackBar = require('polythene-mithril-snackbar');
-var Button = require('polythene-mithril-button');
-var Dialog = require('polythene-mithril-dialog');
-var Checkbox = require('polythene-mithril-checkbox');
-var RadioButton = require('polythene-mithril-radio-button');
-var List = require('polythene-mithril-list');
-var ListTile = require('polythene-mithril-list-tile');
-var Ripple = require('polythene-mithril-ripple');
-var Card = require('polythene-mithril-card');
+var Snackbar = require('polythene-mithril-snackbar').Snackbar;
+var Button = require('polythene-mithril-button').Button;
+var Dialog = require('polythene-mithril-dialog').Dialog;
+var Checkbox = require('polythene-mithril-checkbox').Checkbox;
+var RadioButton = require('polythene-mithril-radio-button').RadioButton;
+var List = require('polythene-mithril-list').List;
+var ListTile = require('polythene-mithril-list-tile').ListTile;
+var Ripple = require('polythene-mithril-ripple').Ripple;
+var Card = require('polythene-mithril-card').Card;
 //var HeaderPanel = require('polythene-mithril-header-panel');
-var IconButton = require('polythene-mithril-icon-button');
-var Icon = require('polythene-mithril-icon');
-var Tabs = require('polythene-mithril-tabs');
-var Textfield = require('polythene-mithril-textfield');
+var IconButton = require('polythene-mithril-icon-button').IconButton;
+var Icon = require('polythene-mithril-icon').Icon;
+var Tabs = require('polythene-mithril-tabs').Tabs;
+var Textfield = require('polythene-mithril-textfield').TextField;
 var DatePicker = require('mithril-datepicker/mithril-datepicker')
+var datePickerStyle = require('mithril-datepicker/src/style.css');
 
 
 var iconMenu = require('mmsvg/google/msvg/navigation/menu');
@@ -35,8 +35,11 @@ var RgbEditor = require('./components/rgbeditor');
 var Uploader = require('./components/uploader');
 var luminance = require('./components/colorutils').luminance;
 
-//var theme = require('polythene/theme/theme');
+var css = require('polythene-css');
 var customStyle = require('./style.styl');
+
+css.addLayoutStyles();
+css.addTypography();
 
 var weekdays = {
 	dl: 'Dilluns',
