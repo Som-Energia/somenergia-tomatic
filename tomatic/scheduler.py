@@ -11,6 +11,7 @@ import codecs
 import sys
 from sheetfetcher import SheetFetcher
 from tomatic.htmlgen import HtmlGen
+import busy
 
 # Dirty Hack: Behave like python3 open regarding unicode
 def open(*args, **kwd):
@@ -99,31 +100,15 @@ def baixaDades(config, certificat) :
 	indis = fetcher.get_fullsheet(config.fullIndisponibilitats)
 	step("  Guardant indisponibilitats setmanals a 'indisponibilitats-setmana.conf'...")
 	with open('indisponibilitats-setmana.conf','w') as indisfile:
-		for _, who, day, weekday, hours, need, comment in indis[1:] :
-			if weekday and day:
-				fail("Indisponibilitat especifica dia puntual {} i dia de la setmana {}"
-					.format(day,weekday))
-			if weekday.strip():
-				fail("Hi ha indisponibilitats permaments al drive, afegeix-les a ma i esborra-les")
-			theDay = datetime.datetime.strptime(day, "%d/%m/%Y").date()
-			if theDay < config.monday: continue
-			if theDay > config.monday+timedelta(days=6): continue
+		singulars = busy.gform2Singular(indis)
+		weeklyOnes = busy.singular2Weekly(singulars, config.monday)
+		try:
+			for weeklyOne in weeklyOnes:
+				line = busy.formatWeekly(weeklyOne)
+				indisfile.write(line)
+		except busy.GFormError as e:
+			fail(format(e))
 
-			startHours = [ h.split(':')[0].strip() for h in hours.split(',')]
-			bitmap = ''.join((
-				('1' if '9' in startHours else '0'),
-				('1' if '10' in startHours else '0'),
-				('1' if '11' in startHours else '0'),
-				('1' if '12' in startHours else '0'),
-			))
-			weekdayShort = u'dl dm dx dj dv ds dg'.split()[theDay.weekday()]
-
-			line = u"{} {} {} # {}\n".format(
-				transliterate(who),
-				weekdayShort,
-				bitmap,
-				comment)
-			indisfile.write(line)
 
 class Backtracker:
 	class ErrorConfiguracio(Exception): pass
@@ -708,5 +693,4 @@ if __name__ == '__main__':
 	main()
 
 
-
-# vim: noet
+# vim: noet ts=4 sw=4
