@@ -54,5 +54,10 @@ def formatWeekly(weekly):
 	# TODO: Manage no days, multiple days and no hours
 	return u"{} {} {} # {}\n".format(*weekly)
 
+def parseBusy(lines):
+	"Parses weekly events from lines"
+	if False: yield
+
+
 
 # vim: noet ts=4 sw=4

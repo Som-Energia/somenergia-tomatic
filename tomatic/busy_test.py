@@ -49,6 +49,7 @@ class BusyTest(unittest.TestCase):
 		self.assertEqual(result,
 			('maria', isodate('2017-07-11'), '1101', u'reunió POL'))
 
+
 	def test_gform2Singular_firstIgnored(self):
 		gform=[
 			['headers ignored']*7,
@@ -64,6 +65,7 @@ class BusyTest(unittest.TestCase):
 		self.assertEqual(list(busy.gform2Singular(gform)), [
 			('maria', isodate('2017-07-11'), '1101', u'reunió POL'),
 			])
+
 
 	def test_singular2Weekly_oneOnMonday(self):
 		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
@@ -95,9 +97,12 @@ class BusyTest(unittest.TestCase):
 		self.assertEqual(list(sequence), [
 		])
 
+	def test_parseBusy(self):
+		lines = []
+		self.assertEqual(list(busy.parseBusy(lines)), [
+			])
+			
 
-
-	# TODO: accents
 
 
 # vim: noet ts=4 sw=4
