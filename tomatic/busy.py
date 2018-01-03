@@ -42,7 +42,7 @@ def gformDataLine(line):
 def gform2Singular(lines):
 	return ( gformDataLine(l) for l in lines[1:] )
 
-def singular2Weekly(singularBusies, monday):
+def singular2Weekly(monday, singularBusies):
 	sunday = monday+datetime.timedelta(days=6)
 	for who, day, bitmap, comment in singularBusies:
 		if day < monday: continue

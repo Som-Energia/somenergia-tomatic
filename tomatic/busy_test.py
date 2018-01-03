@@ -65,6 +65,35 @@ class BusyTest(unittest.TestCase):
 			('maria', isodate('2017-07-11'), '1101', u'reunió POL'),
 			])
 
+	def test_singular2Weekly_oneOnMonday(self):
+		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
+			('maria', isodate('2018-01-01'), '1101', u'reunió POL'),
+			])
+		self.assertEqual(list(sequence), [
+			('maria', u'dl', '1101', u'reuni\xf3 POL'),
+		])
+
+	def test_singular2Weekly_oneOnSunday(self):
+		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
+			('maria', isodate('2018-01-07'), '1101', u'reunió POL'),
+			])
+		self.assertEqual(list(sequence), [
+			('maria', u'dg', '1101', u'reuni\xf3 POL'),
+		])
+
+	def test_singular2Weekly_previousIgnored(self):
+		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
+			('maria', isodate('2017-12-31'), '1101', u'reunió POL'),
+			])
+		self.assertEqual(list(sequence), [
+		])
+
+	def test_singular2Weekly_laterIgnored(self):
+		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
+			('maria', isodate('2018-01-08'), '1101', u'reunió POL'),
+			])
+		self.assertEqual(list(sequence), [
+		])
 
 
 

@@ -101,7 +101,7 @@ def baixaDades(config, certificat) :
 	step("  Guardant indisponibilitats setmanals a 'indisponibilitats-setmana.conf'...")
 	with open('indisponibilitats-setmana.conf','w') as indisfile:
 		singulars = busy.gform2Singular(indis)
-		weeklyOnes = busy.singular2Weekly(singulars, config.monday)
+		weeklyOnes = busy.singular2Weekly(config.monday, singulars)
 		try:
 			for weeklyOne in weeklyOnes:
 				line = busy.formatWeekly(weeklyOne)
