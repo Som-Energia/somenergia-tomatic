@@ -229,7 +229,7 @@ class BusyTest(unittest.TestCase):
 			"containing '1' on busy hours, found '0bad'"
 			"Added")
 
-	def test_parseBusy_customErrorHandler(self):
+	def test_parseBusy_continueAfterErrors(self):
 		lines = [
 			"someone dl 0bad # Reason",
 			"someone dl 111 # Reason",
