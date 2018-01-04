@@ -156,20 +156,6 @@ def personBusyness(person, entries, extra):
 		result.append(entry)
 	return result
 
-def personSingulars(person, lines, extra):
-	result=[]
-	for aperson, date, turns, reason in lines:
-		if aperson != person:
-			continue
-		entry = ns(
-			date=date,
-			turns=turns,
-			reason=reason,
-			**extra
-			)
-		result.append(entry)
-	return result
-
 def busy(person):
 	import busy
 	from sheetfetcher import SheetFetcher
