@@ -19,14 +19,25 @@ body, html, #tomatic {
 }
 .pe-header-panel__header-background {
 	background-image: url(./autentico-tomatic-exposicion-del-club-super.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: right;
+	background-color: black;
+}
+
+.pe-tabs .pe-tabs__tab.pe-button--selected .pe-tabs__tab-content {
+	color: rgb(33, 150, 243);
 }
 
 .pe-toolbar .pe-icon,
 .pe-toolbar .pe-button--icon,
-.pe-toolbar
+.pe-toolbar,
+.pe-tabs__tab-content
 {
 	background-color: transparent;
 	color: #aaa;
+	height:55px;
+	line-height: 7ex;
 }
 .pe-header-panel__media-dimmer {
 	box-shadow: inset 0px 0px 200px rgba(0,0,0,.6);
@@ -34,10 +45,12 @@ body, html, #tomatic {
 .pe-toolbar.pe-header--tall {
 	height: 102px;
 }
+.pe-header-panel .pe-toolbar {
+	font-size: 20px;
+}
 .main .pe-button-icon {
 	color: red;
 }
-
 .uploader {
 	display: inline-block
 	position: relative
@@ -273,7 +286,7 @@ select.pe-textfield__input {
 
 
 .busylist {
-    .slots {
+    .turns {
         font-size: 120%;
         color: #a44;
         float: right;
