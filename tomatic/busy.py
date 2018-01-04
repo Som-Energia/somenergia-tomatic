@@ -80,8 +80,8 @@ def parseBusy(lines):
 		else:
 			weekday = ''
 			turns = items[1:]
-		turns = turns[0] if turns else '1'*nturns
-		if len(turns)!=nturns:
+		turns = turns[0].strip() if turns else '1'*nturns
+		if len(turns)!=nturns or any(t not in '01' for t in turns):
 			raise Exception(
 				"{}: Expected busy string of lenght {} "
 				"containing '1' on busy hours, found '{}'"

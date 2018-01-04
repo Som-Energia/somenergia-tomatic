@@ -191,7 +191,7 @@ class BusyTest(unittest.TestCase):
 			"1: Your have to specify a reason "
 			"for the busy event after a # sign")
 
-	def test_parseBusy_badTurns(self):
+	def test_parseBusy_shortTurns(self):
 		lines = [
 			"someone dl 111 # Reason"
 		]
@@ -201,6 +201,17 @@ class BusyTest(unittest.TestCase):
 		self.assertEqual(format(ctx.exception),
 			"1: Expected busy string of lenght 4 "
 			"containing '1' on busy hours, found '111'")
+
+	def test_parseBusy_badTurns(self):
+		lines = [
+			"someone dl 0bad # Reason"
+		]
+		with self.assertRaises(Exception) as ctx:
+			list(busy.parseBusy(lines))
+
+		self.assertEqual(format(ctx.exception),
+			"1: Expected busy string of lenght 4 "
+			"containing '1' on busy hours, found '0bad'")
 
 
 
