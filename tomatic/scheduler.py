@@ -247,31 +247,18 @@ class Backtracker:
 			for nom, dia, hora in xproduct(self.companys, self.dies, range(self.nhours))
 			)
 		for filename in filenames:
-			with open(filename) as thefile:
-				for linenum,row in enumerate(thefile) :
-					row = row.split('#')[0]
-					row = row.split()
-					if not row: continue
-					row = [col.strip() for col in row]
-					company = row[0]
-					affectedDays = self.dies
-					remain = row[1:]
-					if row[1] in self.diesVisualitzacio:
-						if row[1] not in self.dies: # holyday
-							continue
-						affectedDays = [row[1]]
-						remain = row[2:]
-					affectedTurns = remain[0].strip() if remain else '1'*self.nhours
 
-					if len(affectedTurns)!=self.nhours :
-						raise Backtracker.ErrorConfiguracio(
-							"'{}':{}: Expected busy string of lenght {} "
-							"containing '1' on busy hours, found '{}'".format(
-							filename, linenum+1, self.nhours, affectedTurns))
-					for hora, busy in enumerate(affectedTurns) :
-						if busy!='1': continue
-						for dia in affectedDays:
-							availability[dia, hora, company] = False
+			def errorHandler(msg):
+				raise Backtracker.ErrorConfiguracio(
+					"{}:{}".format(filename, msg))
+
+			with open(filename) as thefile:	
+				for entry in busy.parseBusy(thefile, errorHandler):
+					for hora, isBusy in enumerate(entry.turns):
+						if isBusy!='1': continue
+						weekdays = [entry.weekday] if entry.weekday else self.dies
+						for dia in weekdays:
+							availability[dia, hora, entry.person] = False
 		return availability
 
 	def isBusy(self, person, day, hour):

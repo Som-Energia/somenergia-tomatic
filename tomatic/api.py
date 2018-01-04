@@ -215,6 +215,11 @@ def setPersonInfo(person):
     )
     return yamlfy(persons=result)
 
+@app.route('/api/busy/<person>', methods=['GET'])
+def busy(person):
+    import busy
+    return yamlfy(**busy.busy(person))
+
 
 def yamlfy(status=200, data=[], **kwd):
     return Response(ns(
