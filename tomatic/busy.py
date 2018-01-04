@@ -54,9 +54,45 @@ def formatWeekly(weekly):
 	# TODO: Manage no days, multiple days and no hours
 	return u"{} {} {} # {}\n".format(*weekly)
 
+from yamlns import namespace as ns
+
 def parseBusy(lines):
 	"Parses weekly events from lines"
-	if False: yield
+	nturns = 4
+	for i, l in enumerate(lines,1):
+		if not l.strip(): continue
+		if '#' not in l:
+			raise Exception(
+				"{}: Your have to specify a reason "
+				"for the busy event after a # sign"
+				.format(i))
+		row, comment = l.split('#',1)
+		if not row: continue
+		if not comment.strip():
+			raise Exception(
+				"{}: Your have to specify a reason "
+				"for the busy event after a # sign"
+				.format(i))
+		items = row.split()
+		if items[1:] and items[1] in 'dl dm dx dj dv'.split():
+			weekday = items[1]
+			turns = items[2:]
+		else:
+			weekday = ''
+			turns = items[1:]
+		turns = turns[0] if turns else '1'*nturns
+		if len(turns)!=nturns:
+			raise Exception(
+				"{}: Expected busy string of lenght {} "
+				"containing '1' on busy hours, found '{}'"
+				.format(i, nturns, turns))
+		yield ns(
+			person=items[0],
+			weekday=weekday,
+			turns=turns,
+			reason=comment.strip(),
+			)
+
 
 
 

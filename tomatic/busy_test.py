@@ -97,11 +97,111 @@ class BusyTest(unittest.TestCase):
 		self.assertEqual(list(sequence), [
 		])
 
-	def test_parseBusy(self):
-		lines = []
+	def test_parseBusy_whenEmpty(self):
+		lines = [
+		]
 		self.assertEqual(list(busy.parseBusy(lines)), [
 			])
-			
+
+	def test_parseBusy_commentsIgnored(self):
+		lines = [
+			"# comment"
+		]
+		self.assertEqual(list(busy.parseBusy(lines)), [
+			])
+
+	def test_parseBusy_emptyLineIgnored(self):
+		lines = [
+			" "
+		]
+		self.assertEqual(list(busy.parseBusy(lines)), [
+			])
+
+	def test_parseBusy_singleDay(self):
+		lines = [
+			"someone dx 0101 # Reason"
+		]
+		self.assertEqual(list(busy.parseBusy(lines)), [
+			ns(
+				person='someone',
+				weekday='dx',
+				turns='0101',
+				reason='Reason'
+				),
+			])
+
+	def test_parseBusy_allDays(self):
+		lines = [
+			"someone 0101 # Reason"
+		]
+		self.assertEqual(list(busy.parseBusy(lines)), [
+			ns(
+				person='someone',
+				weekday='',
+				turns='0101',
+				reason='Reason'
+				),
+			])
+
+	def test_parseBusy_allTurns(self):
+		lines = [
+			"someone dl # Reason"
+		]
+		self.assertEqual(list(busy.parseBusy(lines)), [
+			ns(
+				person='someone',
+				weekday='dl',
+				turns='1111',
+				reason='Reason'
+				),
+			])
+
+	def test_parseBusy_allTurnsAndDays(self):
+		lines = [
+			"someone  # Reason"
+		]
+		self.assertEqual(list(busy.parseBusy(lines)), [
+			ns(
+				person='someone',
+				weekday='',
+				turns='1111',
+				reason='Reason'
+				),
+			])
+
+	def test_parseBusy_missingReason(self):
+		lines = [
+			"someone dl 1111"
+		]
+		with self.assertRaises(Exception) as ctx:
+			list(busy.parseBusy(lines))
+
+		self.assertEqual(format(ctx.exception),
+			"1: Your have to specify a reason "
+			"for the busy event after a # sign")
+
+	def test_parseBusy_emtpyReason(self):
+		lines = [
+			"someone dl 1111 # "
+		]
+		with self.assertRaises(Exception) as ctx:
+			list(busy.parseBusy(lines))
+
+		self.assertEqual(format(ctx.exception),
+			"1: Your have to specify a reason "
+			"for the busy event after a # sign")
+
+	def test_parseBusy_badTurns(self):
+		lines = [
+			"someone dl 111 # Reason"
+		]
+		with self.assertRaises(Exception) as ctx:
+			list(busy.parseBusy(lines))
+
+		self.assertEqual(format(ctx.exception),
+			"1: Expected busy string of lenght 4 "
+			"containing '1' on busy hours, found '111'")
+
 
 
 
