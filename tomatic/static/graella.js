@@ -479,14 +479,12 @@ var BusyList = {
 Tomatic.sendBusyData = function(name, data) {
 	console.log("retrieving", name,  '/api/busy/'+name);
 	m.request({
-		method: 'GET',
+		method: 'POST',
 		url: '/api/busy/'+name,
 		data: data,
 		deserialize: jsyaml.load,
 	}).then(function(response){
 		console.debug("Busy Response: ",response);
-		callback(response);
-		//m.redraw();
 	}, function(error) {
 		console.debug('apicall failed:', error);
 		Tomatic.error("Problemes actualitzant les indisponibilitats: "+
@@ -504,7 +502,6 @@ Tomatic.retrieveBusyData = function(name, callback) {
 	}).then(function(response){
 		console.debug("Busy Response: ",response);
 		callback(response);
-		//m.redraw();
 	}, function(error) {
 		console.debug('apicall failed:', error);
 		Tomatic.error("Problemes accedint a les indisponibilitats: "+
@@ -714,6 +711,7 @@ var editAvailabilities = function(name) {
 							// TODO: Send new busy data to the API
 							//Tomatic.setBusyData(name, data);
 							console.log("Final data:\n",data);
+							Tomatic.sendBusyData(name, data);
 							Dialog.hide({id:'BusyListEditor'});
 						},
 					},

@@ -174,5 +174,9 @@ def busy(person):
 		errors=errors,
 		)
 
+def update_busy(person, data):
+	# TODO: Implement this
+    print data.dump()
+
 
 # vim: noet ts=4 sw=4
