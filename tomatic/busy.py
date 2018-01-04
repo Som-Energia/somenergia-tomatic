@@ -59,6 +59,7 @@ from yamlns import namespace as ns
 def parseBusy(lines):
 	"Parses weekly events from lines"
 	nturns = 4
+	weekdays = 'dl dm dx dj dv'.split()
 	for i, l in enumerate(lines,1):
 		if not l.strip(): continue
 		if '#' not in l:
@@ -74,7 +75,7 @@ def parseBusy(lines):
 				"for the busy event after a # sign"
 				.format(i))
 		items = row.split()
-		if items[1:] and items[1] in 'dl dm dx dj dv'.split():
+		if items[1:] and items[1] in weekdays:
 			weekday = items[1]
 			turns = items[2:]
 		else:
