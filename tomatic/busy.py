@@ -56,24 +56,29 @@ def formatWeekly(weekly):
 
 from yamlns import namespace as ns
 
-def parseBusy(lines):
+def parseBusy(lines, errorHandler=None):
 	"Parses weekly events from lines"
+	def error(msg):
+		raise Exception(msg)
+	if errorHandler: error = errorHandler
 	nturns = 4
 	weekdays = 'dl dm dx dj dv'.split()
 	for i, l in enumerate(lines,1):
 		if not l.strip(): continue
 		if '#' not in l:
-			raise Exception(
+			error(
 				"{}: Your have to specify a reason "
 				"for the busy event after a # sign"
 				.format(i))
+			continue
 		row, comment = l.split('#',1)
 		if not row: continue
 		if not comment.strip():
-			raise Exception(
+			error(
 				"{}: Your have to specify a reason "
 				"for the busy event after a # sign"
 				.format(i))
+			continue
 		items = row.split()
 		if items[1:] and items[1] in weekdays:
 			weekday = items[1]
@@ -83,10 +88,11 @@ def parseBusy(lines):
 			turns = items[1:]
 		turns = turns[0].strip() if turns else '1'*nturns
 		if len(turns)!=nturns or any(t not in '01' for t in turns):
-			raise Exception(
+			error(
 				"{}: Expected busy string of lenght {} "
 				"containing '1' on busy hours, found '{}'"
 				.format(i, nturns, turns))
+			continue
 		yield ns(
 			person=items[0],
 			weekday=weekday,

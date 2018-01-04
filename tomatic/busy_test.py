@@ -214,6 +214,54 @@ class BusyTest(unittest.TestCase):
 			"containing '1' on busy hours, found '0bad'")
 
 
+	def test_parseBusy_customErrorHandler(self):
+		lines = [
+			"someone dl 0bad # Reason"
+		]
+		def handler(msg):
+			raise Exception(msg+"Added")
+
+		with self.assertRaises(Exception) as ctx:
+			list(busy.parseBusy(lines,handler))
+
+		self.assertEqual(format(ctx.exception),
+			"1: Expected busy string of lenght 4 "
+			"containing '1' on busy hours, found '0bad'"
+			"Added")
+
+	def test_parseBusy_customErrorHandler(self):
+		lines = [
+			"someone dl 0bad # Reason",
+			"someone dl 111 # Reason",
+			"someone dl 1111",
+			"someone dl 1111 # ",
+			"someone dm 1111 # Reason ",
+		]
+		errors=[]
+		def handler(msg):
+			errors.append(msg)
+
+		self.assertEqual(list(busy.parseBusy(lines, handler)), [
+			ns(
+				person='someone',
+				weekday='dm',
+				turns='1111',
+				reason='Reason'
+				),
+			])
+
+		self.assertEqual(errors, [
+			"1: Expected busy string of lenght 4 "
+			"containing '1' on busy hours, found '0bad'",
+			"2: Expected busy string of lenght 4 "
+			"containing '1' on busy hours, found '111'",
+			"3: Your have to specify a reason "
+			"for the busy event after a # sign",
+			"4: Your have to specify a reason "
+			"for the busy event after a # sign",
+		])
+
+
 
 
 # vim: noet ts=4 sw=4
