@@ -168,9 +168,8 @@ def busy(person):
 			return busy.personBusyness(person, tipus(f, handler), dict(
 				optional=False,
 				))
-
 	return ns(
-		weekly = indisponibilitats('indisponibilitats.conf'), parseBusy),
+		weekly = indisponibilitats('indisponibilitats.conf', parseBusy),
 		oneshot = indisponibilitats('indisponibilitats-oneshot.conf', parseOneshotBusy),
 		errors=errors,
 		)
