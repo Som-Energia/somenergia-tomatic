@@ -16,8 +16,8 @@ t11='11:30 - 12:45'
 t12='12:45 - 14:00'
 def turns(*ts):
 	return ', '.join(ts)
-needed=u'Necess\xe0ria'
-reason=u'reuni\xf3 POL'
+needed=u'Necessària'
+reason=u'reunió POL'
 
 class BusyTest(unittest.TestCase):
 
