@@ -3,11 +3,8 @@
 
 import unittest
 from . import busy
+from .busy import isodate
 from yamlns import namespace as ns
-import datetime
-
-def isodate(datestr):
-	return datetime.datetime.strptime(datestr, "%Y-%m-%d").date()
 
 dl='Dilluns'
 date='11/07/2017'
