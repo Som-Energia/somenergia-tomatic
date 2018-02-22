@@ -17,6 +17,7 @@ t12='12:45 - 14:00'
 def turns(*ts):
 	return ', '.join(ts)
 needed=u'Necessària'
+optional=u'Descartable'
 reason=u'reunió POL'
 
 class BusyTest(unittest.TestCase):
@@ -41,19 +42,19 @@ class BusyTest(unittest.TestCase):
 		line = [ts, user, date, '', t11, needed, reason]
 		result = busy.gformDataLine(line)
 		self.assertEqual(result,
-			('mate', isodate('2017-07-11'), '0010', u'reunió POL'))
+			('F', 'mate', isodate('2017-07-11'), '0010', u'reunió POL'))
 
 	def test_gformDataLine_manyHours(self):
 		line = [ts, user, date, '', turns(t9,t10,t12), needed, reason]
 		result = busy.gformDataLine(line)
 		self.assertEqual(result,
-			('mate', isodate('2017-07-11'), '1101', u'reunió POL'))
+			('F', 'mate', isodate('2017-07-11'), '1101', u'reunió POL'))
 
 	def test_gformDataLine_transliteratesNames(self):
 		line = [ts, u'María', date, '', turns(t9,t10,t11,t12), needed, reason]
 		result = busy.gformDataLine(line)
 		self.assertEqual(result,
-			(u'maria', isodate('2017-07-11'), '1111', u'reunió POL'))
+			('F', 'maria', isodate('2017-07-11'), '1111', u'reunió POL'))
 
 
 	def test_gform2Singular_firstIgnored(self):
@@ -69,7 +70,7 @@ class BusyTest(unittest.TestCase):
 			[ts, u'María', date, '', turns(t9,t10,t12), needed, u'reuni\xf3 POL']
 		]
 		self.assertEqual(list(busy.gform2Singular(gform)), [
-			('maria', isodate('2017-07-11'), '1101', u'reunió POL'),
+			('F', 'maria', isodate('2017-07-11'), '1101', u'reunió POL'),
 			])
 
 

@@ -40,7 +40,7 @@ def gformDataLine(line):
 		('1' if '11' in startHours else '0'),
 		('1' if '12' in startHours else '0'),
 	))
-	return transliterate(who), theDay, bitmap, comment
+	return 'F', transliterate(who), theDay, bitmap, comment
 
 def gform2Singular(lines):
 	return ( gformDataLine(l) for l in lines[1:] )
