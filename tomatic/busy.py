@@ -40,22 +40,24 @@ def gformDataLine(line):
 		('1' if '11' in startHours else '0'),
 		('1' if '12' in startHours else '0'),
 	))
-	return 'F', transliterate(who), theDay, bitmap, comment
+	optional = 'F' if need == u'Necessària' else 'O'
+	return optional, transliterate(who), theDay, bitmap, comment
 
 def gform2Singular(lines):
 	return ( gformDataLine(l) for l in lines[1:] )
 
 def singular2Weekly(monday, singularBusies):
 	sunday = monday+datetime.timedelta(days=6)
-	for who, day, bitmap, comment in singularBusies:
+	for optional, who, day, bitmap, comment in singularBusies:
 		if day < monday: continue
 		if day > sunday: continue
 		weekdayShort = u'dl dm dx dj dv ds dg'.split()[day.weekday()]
-		yield who, weekdayShort, bitmap, comment
+		forced = '' if optional=='O' else '+'
+		yield forced, who, weekdayShort, bitmap, comment
 
 def formatWeekly(weekly):
 	# TODO: Manage no days, multiple days and no hours
-	return u"{} {} {} # {}\n".format(*weekly)
+	return u"{}{} {} {} # {}\n".format(*weekly)
 
 from yamlns import namespace as ns
 
@@ -96,11 +98,15 @@ def parseBusy(lines, errorHandler=None):
 				"containing '1' on busy hours, found '{}'"
 				.format(i, nturns, turns))
 			continue
+		name = items[0]
+		forced = name[0:1] == '+'
+		if forced: name = name[1:]
 		yield ns(
-			person=items[0],
+			person=name,
 			weekday=weekday,
 			turns=turns,
 			reason=comment.strip(),
+			forced=forced,
 			)
 
 def parseOneshotBusy(lines, errorHandler=None):

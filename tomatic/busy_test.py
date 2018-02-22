@@ -56,6 +56,12 @@ class BusyTest(unittest.TestCase):
 		self.assertEqual(result,
 			('F', 'maria', isodate('2017-07-11'), '1111', u'reunió POL'))
 
+	def test_gformDataLine_withOptional(self):
+		line = [ts, 'Mate', date, '', turns(t9,t10,t11,t12), optional, reason]
+		result = busy.gformDataLine(line)
+		self.assertEqual(result,
+			('O', 'mate', isodate('2017-07-11'), '1111', u'reunió POL'))
+
 
 	def test_gform2Singular_firstIgnored(self):
 		gform=[
@@ -76,33 +82,42 @@ class BusyTest(unittest.TestCase):
 
 	def test_singular2Weekly_oneOnMonday(self):
 		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
-			('maria', isodate('2018-01-01'), '1101', u'reunió POL'),
+			('F', 'maria', isodate('2018-01-01'), '1101', u'reunió POL'),
 			])
 		self.assertEqual(list(sequence), [
-			('maria', u'dl', '1101', u'reuni\xf3 POL'),
+			('+', 'maria', u'dl', '1101', u'reuni\xf3 POL'),
 		])
 
 	def test_singular2Weekly_oneOnSunday(self):
 		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
-			('maria', isodate('2018-01-07'), '1101', u'reunió POL'),
+			('F','maria', isodate('2018-01-07'), '1101', u'reunió POL'),
 			])
 		self.assertEqual(list(sequence), [
-			('maria', u'dg', '1101', u'reuni\xf3 POL'),
+			('+','maria', u'dg', '1101', u'reuni\xf3 POL'),
 		])
 
-	def test_singular2Weekly_previousIgnored(self):
+	def test_singular2Weekly_optional(self):
 		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
-			('maria', isodate('2017-12-31'), '1101', u'reunió POL'),
+			('O', 'maria', isodate('2018-01-01'), '1101', u'reunió POL'),
+			])
+		self.assertEqual(list(sequence), [
+			('', 'maria', u'dl', '1101', u'reuni\xf3 POL'),
+		])
+
+	def test_singular2Weekly_earlyDateIgnored(self):
+		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
+			('F','maria', isodate('2017-12-31'), '1101', u'reunió POL'),
 			])
 		self.assertEqual(list(sequence), [
 		])
 
-	def test_singular2Weekly_laterIgnored(self):
+	def test_singular2Weekly_lateDateIgnored(self):
 		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
-			('maria', isodate('2018-01-08'), '1101', u'reunió POL'),
+			('F','maria', isodate('2018-01-08'), '1101', u'reunió POL'),
 			])
 		self.assertEqual(list(sequence), [
 		])
+
 
 	def test_parseBusy_whenEmpty(self):
 		lines = [
@@ -133,7 +148,22 @@ class BusyTest(unittest.TestCase):
 				person='someone',
 				weekday='dx',
 				turns='0101',
-				reason='Reason'
+				reason='Reason',
+				forced=False,
+				),
+			])
+
+	def test_parseBusy_forced(self):
+		lines = [
+			"+someone dx 0101 # Reason" # a plus behind
+		]
+		self.assertEqual(list(busy.parseBusy(lines)), [
+			ns(
+				person='someone',
+				weekday='dx',
+				turns='0101',
+				reason='Reason',
+				forced=True,
 				),
 			])
 
@@ -146,7 +176,8 @@ class BusyTest(unittest.TestCase):
 				person='someone',
 				weekday='',
 				turns='0101',
-				reason='Reason'
+				reason='Reason',
+				forced=False,
 				),
 			])
 
@@ -159,7 +190,8 @@ class BusyTest(unittest.TestCase):
 				person='someone',
 				weekday='dl',
 				turns='1111',
-				reason='Reason'
+				reason='Reason',
+				forced=False,
 				),
 			])
 
@@ -172,7 +204,8 @@ class BusyTest(unittest.TestCase):
 				person='someone',
 				weekday='',
 				turns='1111',
-				reason='Reason'
+				reason='Reason',
+				forced=False,
 				),
 			])
 
@@ -253,7 +286,8 @@ class BusyTest(unittest.TestCase):
 				person='someone',
 				weekday='dm',
 				turns='1111',
-				reason='Reason'
+				reason='Reason',
+				forced=False,
 				),
 			])
 
