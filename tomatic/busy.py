@@ -21,6 +21,7 @@ def isodate(datestr):
 def gformDataLine(line):
 	"""
 	Turns an entry from the gform into a proper singular busy date.
+	Weekly busies are considered errors.
 	"""
 	_, who, day, weekday, hours, need, comment = line
 	if weekday and day:
@@ -54,9 +55,9 @@ def gform2Singular(lines):
 
 def onWeek(monday, singularBusies):
 	"""
-	Generator that takes fixed date busies,
+	Generator that takes a serie of fixed date busies,
 	filters outs the ones outside the week starting
-	on monday, and turns the date into weekday.
+	on monday, and turns the date into a weekday.
 	"""
 	sunday = monday+datetime.timedelta(days=6)
 	for b in singularBusies:
@@ -66,9 +67,6 @@ def onWeek(monday, singularBusies):
 		result = ns(b, weekday = weekday)
 		del result.date
 		yield result
-
-def formatWeekly(weekly):
-	return u"{}{} {} {} # {}\n".format(*weekly)
 
 def formatItem(item):
 	# TODO: Manage no days, multiple days and no hours
