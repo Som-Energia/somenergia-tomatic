@@ -85,70 +85,43 @@ def parseBusy(lines, errorHandler=None):
 				.format(i))
 			continue
 		items = row.split()
-		if items[1:] and items[1] in weekdays:
-			weekday = items[1]
-			turns = items[2:]
-		else:
-			weekday = ''
-			turns = items[1:]
-		turns = turns[0].strip() if turns else '1'*nturns
-		if len(turns)!=nturns or any(t not in '01' for t in turns):
-			error(
-				"{}: Expected busy string of lenght {} "
-				"containing '1' on busy hours, found '{}'"
-				.format(i, nturns, turns))
-			continue
-		name = items[0]
+
+		name = items and items.pop(0)
 		forced = name[0:1] == '+'
 		if forced: name = name[1:]
-		yield ns(
-			person=name,
-			weekday=weekday,
-			turns=turns,
-			reason=comment.strip(),
-			forced=forced,
-			)
 
-def parseOneshotBusy(lines, errorHandler=None):
-	"Parses weekly events from lines"
-	def error(msg):
-		raise Exception(msg)
-	if errorHandler: error = errorHandler
-	nturns = 4
-	weekdays = 'dl dm dx dj dv'.split()
-	for i, l in enumerate(lines,1):
-		if not l.strip(): continue
-		if '#' not in l:
-			error(
-				"{}: Your have to specify a reason "
-				"for the busy event after a # sign"
-				.format(i))
-			continue
-		row, comment = l.split('#',1)
-		if not row: continue
-		if not comment.strip():
-			error(
-				"{}: Your have to specify a reason "
-				"for the busy event after a # sign"
-				.format(i))
-			continue
-		items = row.split()
-		date = isodate(items[1])
-		turns = items[2:]
-		turns = turns[0].strip() if turns else '1'*nturns
+		date = None
+		weekday = ''
+		if items and items[0] in weekdays:
+			weekday = items.pop(0)
+		elif items:
+			try: date = isodate(items[0])
+			except ValueError: pass
+			else: items.pop(0)
+
+		turns = items[0].strip() if items else '1'*nturns
 		if len(turns)!=nturns or any(t not in '01' for t in turns):
 			error(
 				"{}: Expected busy string of lenght {} "
 				"containing '1' on busy hours, found '{}'"
 				.format(i, nturns, turns))
 			continue
-		yield ns(
-			person=items[0],
-			date=date,
-			turns=turns,
-			reason=comment.strip(),
-			)
-
+		if date:
+			yield ns(
+				person=name,
+				date=date,
+				turns=turns,
+				reason=comment.strip(),
+				optional=not forced,
+				)
+		else:
+			yield ns(
+				person=name,
+				weekday=weekday,
+				turns=turns,
+				reason=comment.strip(),
+				optional=not forced,
+				)
 
 def personBusyness(person, entries, extra):
 	result=[]
@@ -163,20 +136,18 @@ def personBusyness(person, entries, extra):
 	return result
 
 def busy(person):
-	import busy
-	from sheetfetcher import SheetFetcher
 	config = ns.load('config.yaml')
 	errors = []
 	def indisponibilitats(filename, tipus):
 		def handler(m):
 			errors.append(filename+':'+m)
 		with open(filename) as f:
-			return busy.personBusyness(person, tipus(f, handler), dict(
+			return personBusyness(person, tipus(f, handler), dict(
 				optional=False,
 				))
 	return ns(
 		weekly = indisponibilitats('indisponibilitats.conf', parseBusy),
-		oneshot = indisponibilitats('indisponibilitats-oneshot.conf', parseOneshotBusy),
+		oneshot = indisponibilitats('indisponibilitats-oneshot.conf', parseBusy),
 		errors=errors,
 		)
 

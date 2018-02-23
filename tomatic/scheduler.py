@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from itertools import product as xproduct
-import random
 from datetime import date, timedelta
+import random
 import datetime
 import glob
 from consolemsg import step, error, warn, fail

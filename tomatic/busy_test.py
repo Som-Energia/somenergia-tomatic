@@ -139,7 +139,7 @@ class BusyTest(unittest.TestCase):
 		self.assertEqual(list(busy.parseBusy(lines)), [
 			])
 
-	def test_parseBusy_singleDay(self):
+	def test_parseBusy_singleWeekDay(self):
 		lines = [
 			"someone dx 0101 # Reason"
 		]
@@ -149,7 +149,7 @@ class BusyTest(unittest.TestCase):
 				weekday='dx',
 				turns='0101',
 				reason='Reason',
-				forced=False,
+				optional=True,
 				),
 			])
 
@@ -163,11 +163,11 @@ class BusyTest(unittest.TestCase):
 				weekday='dx',
 				turns='0101',
 				reason='Reason',
-				forced=True,
+				optional=False,
 				),
 			])
 
-	def test_parseBusy_allDays(self):
+	def test_parseBusy_allWeek(self):
 		lines = [
 			"someone 0101 # Reason"
 		]
@@ -177,7 +177,21 @@ class BusyTest(unittest.TestCase):
 				weekday='',
 				turns='0101',
 				reason='Reason',
-				forced=False,
+				optional=True,
+				),
+			])
+
+	def test_parseBusy_singleDay(self):
+		lines = [
+			"someone 2015-01-02 0101 # Reason"
+		]
+		self.assertEqual(list(busy.parseBusy(lines)), [
+			ns(
+				person='someone',
+				date=isodate('2015-01-02'),
+				turns='0101',
+				reason='Reason',
+				optional=True,
 				),
 			])
 
@@ -191,7 +205,7 @@ class BusyTest(unittest.TestCase):
 				weekday='dl',
 				turns='1111',
 				reason='Reason',
-				forced=False,
+				optional=True,
 				),
 			])
 
@@ -205,7 +219,7 @@ class BusyTest(unittest.TestCase):
 				weekday='',
 				turns='1111',
 				reason='Reason',
-				forced=False,
+				optional=True,
 				),
 			])
 
@@ -287,7 +301,7 @@ class BusyTest(unittest.TestCase):
 				weekday='dm',
 				turns='1111',
 				reason='Reason',
-				forced=False,
+				optional=True,
 				),
 			])
 
@@ -301,6 +315,45 @@ class BusyTest(unittest.TestCase):
 			"4: Your have to specify a reason "
 			"for the busy event after a # sign",
 		])
+
+	def test_formatItem_withWeekday(self):
+		item = ns(
+			person='someone',
+			weekday='dm',
+			turns='1111',
+			reason=u'La razón',
+			optional=True,
+			)
+		self.assertEqual(
+			busy.formatItem(item),
+			u"someone dm 1111 # La razón"
+			)
+
+	def test_formatItem_withDate(self):
+		item = ns(
+			person='someone',
+			date=isodate('2015-02-03'),
+			turns='1111',
+			reason=u'La razón',
+			optional=True,
+			)
+		self.assertEqual(
+			busy.formatItem(item),
+			u"someone 2015-02-03 1111 # La razón"
+			)
+
+	def test_formatItem_forced(self):
+		item = ns(
+			person='someone',
+			weekday='dm',
+			turns='1111',
+			reason=u'La razón',
+			optional=False,
+			)
+		self.assertEqual(
+			busy.formatItem(item),
+			u"+someone dm 1111 # La razón"
+			)
 
 
 
