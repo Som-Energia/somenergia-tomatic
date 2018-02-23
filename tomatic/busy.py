@@ -89,20 +89,21 @@ def parseBusy(lines, errorHandler=None):
 	for i, l in enumerate(lines,1):
 		if not l.strip(): continue
 		row, comment = l.split('#',1) if '#' in l else (l,'')
-		if not row.strip(): continue
+		items = row.split()
+		if not items: continue
 		if not comment.strip():
 			error(
 				"{}: Your have to specify a reason "
 				"for the busy event after a # sign"
 				.format(i))
-		items = row.split()
+			# non fatal if a handler is provided
 
-		name = items and items.pop(0)
+		name = items.pop(0)
 		forced = name[0:1] == '+'
 		if forced: name = name[1:]
 
 		date = None
-		weekday = ''
+		weekday = '' # all weekdays
 		if items and items[0] in weekdays:
 			weekday = items.pop(0)
 		elif items:
