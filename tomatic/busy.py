@@ -88,20 +88,13 @@ def parseBusy(lines, errorHandler=None):
 	weekdays = 'dl dm dx dj dv'.split()
 	for i, l in enumerate(lines,1):
 		if not l.strip(): continue
-		if '#' not in l:
-			error(
-				"{}: Your have to specify a reason "
-				"for the busy event after a # sign"
-				.format(i))
-			continue
-		row, comment = l.split('#',1)
-		if not row: continue
+		row, comment = l.split('#',1) if '#' in l else (l,'')
+		if not row.strip(): continue
 		if not comment.strip():
 			error(
 				"{}: Your have to specify a reason "
 				"for the busy event after a # sign"
 				.format(i))
-			continue
 		items = row.split()
 
 		name = items and items.pop(0)

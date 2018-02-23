@@ -22,6 +22,9 @@ reason=u'reunió POL'
 
 class BusyTest(unittest.TestCase):
 
+	def setUp(self):
+		self.maxDiff=None
+
 	def test_gformDataLine_whenBothModesActivated(self):
 		line = [ts, user, date, dl, turns(t11,t12), needed, reason]
 		with self.assertRaises(busy.GFormError) as ctx:
@@ -312,27 +315,53 @@ class BusyTest(unittest.TestCase):
 			"containing '1' on busy hours, found '0bad'"
 			"Added")
 
-	def test_parseBusy_continueAfterErrors(self):
+	def test_parseBusy_spacesConsideredEmpty(self):
 		lines = [
-			"someone dl 0bad # Reason",
-			"someone dl 111 # Reason",
-			"someone dl 1111",
-			"someone dl 1111 # ",
-			"someone dm 1111 # Reason ",
+			"  # Reason",
 		]
 		errors=[]
 		def handler(msg):
 			errors.append(msg)
 
-		self.assertEqual(list(busy.parseBusy(lines, handler)), [
+		self.assertBusyListEqual(list(busy.parseBusy(lines, handler)), [
+		])
+		self.assertEqual(errors, [])
+
+	def test_parseBusy_continueAfterErrors(self):
+		lines = [
+			"someone dl 0bad # Reason",
+			"someone dm 111 # Reason",
+			"someone dx 1011",
+			"someone dj 1101 # ",
+			"someone dv 1110 # Reason ",
+		]
+		errors=[]
+		def handler(msg):
+			errors.append(msg)
+
+		self.assertNsEqual(ns(caca=list(busy.parseBusy(lines, handler))), ns(caca=[
 			ns(
 				person='someone',
-				weekday='dm',
-				turns='1111',
+				weekday='dx',
+				turns='1011',
+				reason='',
+				optional=True,
+				),
+			ns(
+				person='someone',
+				weekday='dj',
+				turns='1101',
+				reason='',
+				optional=True,
+				),
+			ns(
+				person='someone',
+				weekday='dv',
+				turns='1110',
 				reason='Reason',
 				optional=True,
 				),
-			])
+			]))
 
 		self.assertEqual(errors, [
 			"1: Expected busy string of lenght 4 "
