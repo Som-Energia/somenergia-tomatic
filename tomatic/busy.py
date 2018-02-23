@@ -52,20 +52,20 @@ def gformDataLine(line):
 def gform2Singular(lines):
 	return ( gformDataLine(l) for l in lines[1:] )
 
-def singular2Weekly(monday, singularBusies):
+def onWeek(monday, singularBusies):
+	"""
+	Generator that takes fixed date busies,
+	filters outs the ones outside the week starting
+	on monday, and turns the date into weekday.
+	"""
 	sunday = monday+datetime.timedelta(days=6)
 	for b in singularBusies:
 		if b.date < monday: continue
 		if b.date > sunday: continue
-		weekdayShort = u'dl dm dx dj dv ds dg'.split()[b.date.weekday()]
-		forced = '' if b.optional else '+'
-		yield ns(
-			optional=b.optional,
-			person=b.person,
-			weekday=weekdayShort,
-			turns=b.turns,
-			reason=b.reason,
-		)
+		weekday = u'dl dm dx dj dv ds dg'.split()[b.date.weekday()]
+		result = ns(b, weekday = weekday)
+		del result.date
+		yield result
 
 def formatWeekly(weekly):
 	return u"{}{} {} {} # {}\n".format(*weekly)
