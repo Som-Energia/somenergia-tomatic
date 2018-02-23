@@ -118,12 +118,13 @@ def parseBusy(lines, errorHandler=None):
 				"containing '1' on busy hours, found '{}'"
 				.format(i, nturns, turns))
 			continue
+		when = ns(date=date) if date else ns(weekday=weekday)
 		yield ns(
 			person=name,
 			turns=turns,
 			reason=comment.strip(),
 			optional=not forced,
-			**(ns(date=date) if date else ns(weekday=weekday))
+			**when
 			)
 
 def personBusyness(person, entries, extra):
