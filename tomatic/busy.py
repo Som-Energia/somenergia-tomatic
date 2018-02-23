@@ -72,7 +72,7 @@ def formatWeekly(weekly):
 
 def formatItem(item):
 	# TODO: Manage no days, multiple days and no hours
-	return u"{forcedmark}{person} {dateorweekday} {turns} # {reason}".format(
+	return u"{forcedmark}{person} {dateorweekday} {turns} # {reason}\n".format(
 		dateorweekday = item.get('date') or item.get('weekday'),
 		forcedmark = '' if item.optional else '+',
 		**item)

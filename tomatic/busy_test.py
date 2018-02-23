@@ -355,7 +355,7 @@ class BusyTest(unittest.TestCase):
 			)
 		self.assertEqual(
 			busy.formatItem(item),
-			u"someone dm 1111 # La razón"
+			u"someone dm 1111 # La razón\n"
 			)
 
 	def test_formatItem_withDate(self):
@@ -368,7 +368,7 @@ class BusyTest(unittest.TestCase):
 			)
 		self.assertEqual(
 			busy.formatItem(item),
-			u"someone 2015-02-03 1111 # La razón"
+			u"someone 2015-02-03 1111 # La razón\n"
 			)
 
 	def test_formatItem_forced(self):
@@ -381,7 +381,7 @@ class BusyTest(unittest.TestCase):
 			)
 		self.assertEqual(
 			busy.formatItem(item),
-			u"+someone dm 1111 # La razón"
+			u"+someone dm 1111 # La razón\n"
 			)
 
 
