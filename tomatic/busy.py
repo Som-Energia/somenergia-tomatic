@@ -59,13 +59,19 @@ def singular2Weekly(monday, singularBusies):
 		if b.date > sunday: continue
 		weekdayShort = u'dl dm dx dj dv ds dg'.split()[b.date.weekday()]
 		forced = '' if b.optional else '+'
-		yield forced, b.person, weekdayShort, b.turns, b.reason
+		yield ns(
+			optional=b.optional,
+			person=b.person,
+			weekday=weekdayShort,
+			turns=b.turns,
+			reason=b.reason,
+		)
 
 def formatWeekly(weekly):
-	# TODO: Manage no days, multiple days and no hours
 	return u"{}{} {} {} # {}\n".format(*weekly)
 
 def formatItem(item):
+	# TODO: Manage no days, multiple days and no hours
 	return u"{forcedmark}{person} {dateorweekday} {turns} # {reason}".format(
 		dateorweekday = item.get('date') or item.get('weekday'),
 		forcedmark = '' if item.optional else '+',

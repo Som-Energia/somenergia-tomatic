@@ -113,38 +113,38 @@ class BusyTest(unittest.TestCase):
 		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
 			self.tupleToNs('F', 'maria', isodate('2018-01-01'), '1101', u'reunió POL'),
 			])
-		self.assertEqual(list(sequence), [
-			('+', 'maria', u'dl', '1101', u'reuni\xf3 POL'),
+		self.assertBusyListEqual(list(sequence), [
+			('F', 'maria', u'dl', '1101', u'reuni\xf3 POL'),
 		])
 
 	def test_singular2Weekly_oneOnSunday(self):
 		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
 			self.tupleToNs('F','maria', isodate('2018-01-07'), '1101', u'reunió POL'),
 			])
-		self.assertEqual(list(sequence), [
-			('+','maria', u'dg', '1101', u'reuni\xf3 POL'),
+		self.assertBusyListEqual(list(sequence), [
+			('F','maria', u'dg', '1101', u'reuni\xf3 POL'),
 		])
 
 	def test_singular2Weekly_optional(self):
 		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
 			self.tupleToNs('O', 'maria', isodate('2018-01-01'), '1101', u'reunió POL'),
 			])
-		self.assertEqual(list(sequence), [
-			('', 'maria', u'dl', '1101', u'reuni\xf3 POL'),
+		self.assertBusyListEqual(list(sequence), [
+			('O', 'maria', u'dl', '1101', u'reuni\xf3 POL'),
 		])
 
 	def test_singular2Weekly_earlyDateIgnored(self):
 		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
 			self.tupleToNs('F','maria', isodate('2017-12-31'), '1101', u'reunió POL'),
 			])
-		self.assertEqual(list(sequence), [
+		self.assertBusyListEqual(list(sequence), [
 		])
 
 	def test_singular2Weekly_lateDateIgnored(self):
 		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
 			self.tupleToNs('F','maria', isodate('2018-01-08'), '1101', u'reunió POL'),
 			])
-		self.assertEqual(list(sequence), [
+		self.assertBusyListEqual(list(sequence), [
 		])
 
 
