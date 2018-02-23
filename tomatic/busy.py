@@ -59,6 +59,12 @@ def formatWeekly(weekly):
 	# TODO: Manage no days, multiple days and no hours
 	return u"{}{} {} {} # {}\n".format(*weekly)
 
+def formatItem(item):
+	return u"{forcedmark}{person} {dateorweekday} {turns} # {reason}".format(
+		dateorweekday = item.get('date') or item.get('weekday'),
+		forcedmark = '' if item.optional else '+',
+		**item)
+
 from yamlns import namespace as ns
 
 def parseBusy(lines, errorHandler=None):
