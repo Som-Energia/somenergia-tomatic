@@ -38,28 +38,57 @@ class BusyTest(unittest.TestCase):
 			"Hi ha indisponibilitats permaments al drive, "
 			"afegeix-les a ma i esborra-les del drive")
 
+	def tupleToNs(self, opcional, person, when, turns, reason):
+		import datetime
+		if type(when) == datetime.date:
+			when = dict(date=when)
+		else:
+			when = dict(weekday=when)
+		return ns(
+			optional = opcional!='F',
+			person = person,
+			turns = turns,
+			reason = reason,
+			**when)
+
+	from testutils import assertNsEqual
+	def assertBusyEqual(self, result, expected):
+		self.assertNsEqual(result, self.tupleToNs(*expected))
+
+	def assertBusyListEqual(self, result, expected):
+		result = ns(lines=[
+			entry
+			for entry in result
+			])
+		expected = ns(lines=[
+			self.tupleToNs(*entry)
+			for entry in expected
+			])
+
+		self.assertNsEqual(result, expected)
+
 	def test_gformDataLine_singleHour(self):
 		line = [ts, user, date, '', t11, needed, reason]
 		result = busy.gformDataLine(line)
-		self.assertEqual(result,
+		self.assertBusyEqual(result,
 			('F', 'mate', isodate('2017-07-11'), '0010', u'reunió POL'))
 
 	def test_gformDataLine_manyHours(self):
 		line = [ts, user, date, '', turns(t9,t10,t12), needed, reason]
 		result = busy.gformDataLine(line)
-		self.assertEqual(result,
+		self.assertBusyEqual(result,
 			('F', 'mate', isodate('2017-07-11'), '1101', u'reunió POL'))
 
 	def test_gformDataLine_transliteratesNames(self):
 		line = [ts, u'María', date, '', turns(t9,t10,t11,t12), needed, reason]
 		result = busy.gformDataLine(line)
-		self.assertEqual(result,
+		self.assertBusyEqual(result,
 			('F', 'maria', isodate('2017-07-11'), '1111', u'reunió POL'))
 
 	def test_gformDataLine_withOptional(self):
 		line = [ts, 'Mate', date, '', turns(t9,t10,t11,t12), optional, reason]
 		result = busy.gformDataLine(line)
-		self.assertEqual(result,
+		self.assertBusyEqual(result,
 			('O', 'mate', isodate('2017-07-11'), '1111', u'reunió POL'))
 
 
@@ -75,14 +104,14 @@ class BusyTest(unittest.TestCase):
 			['headers ignored']*7,
 			[ts, u'María', date, '', turns(t9,t10,t12), needed, u'reuni\xf3 POL']
 		]
-		self.assertEqual(list(busy.gform2Singular(gform)), [
+		self.assertBusyListEqual(list(busy.gform2Singular(gform)), [
 			('F', 'maria', isodate('2017-07-11'), '1101', u'reunió POL'),
 			])
 
 
 	def test_singular2Weekly_oneOnMonday(self):
 		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
-			('F', 'maria', isodate('2018-01-01'), '1101', u'reunió POL'),
+			self.tupleToNs('F', 'maria', isodate('2018-01-01'), '1101', u'reunió POL'),
 			])
 		self.assertEqual(list(sequence), [
 			('+', 'maria', u'dl', '1101', u'reuni\xf3 POL'),
@@ -90,7 +119,7 @@ class BusyTest(unittest.TestCase):
 
 	def test_singular2Weekly_oneOnSunday(self):
 		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
-			('F','maria', isodate('2018-01-07'), '1101', u'reunió POL'),
+			self.tupleToNs('F','maria', isodate('2018-01-07'), '1101', u'reunió POL'),
 			])
 		self.assertEqual(list(sequence), [
 			('+','maria', u'dg', '1101', u'reuni\xf3 POL'),
@@ -98,7 +127,7 @@ class BusyTest(unittest.TestCase):
 
 	def test_singular2Weekly_optional(self):
 		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
-			('O', 'maria', isodate('2018-01-01'), '1101', u'reunió POL'),
+			self.tupleToNs('O', 'maria', isodate('2018-01-01'), '1101', u'reunió POL'),
 			])
 		self.assertEqual(list(sequence), [
 			('', 'maria', u'dl', '1101', u'reuni\xf3 POL'),
@@ -106,14 +135,14 @@ class BusyTest(unittest.TestCase):
 
 	def test_singular2Weekly_earlyDateIgnored(self):
 		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
-			('F','maria', isodate('2017-12-31'), '1101', u'reunió POL'),
+			self.tupleToNs('F','maria', isodate('2017-12-31'), '1101', u'reunió POL'),
 			])
 		self.assertEqual(list(sequence), [
 		])
 
 	def test_singular2Weekly_lateDateIgnored(self):
 		sequence = busy.singular2Weekly(isodate('2018-01-01'), [
-			('F','maria', isodate('2018-01-08'), '1101', u'reunió POL'),
+			self.tupleToNs('F','maria', isodate('2018-01-08'), '1101', u'reunió POL'),
 			])
 		self.assertEqual(list(sequence), [
 		])

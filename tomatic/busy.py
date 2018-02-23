@@ -40,20 +40,26 @@ def gformDataLine(line):
 		('1' if '11' in startHours else '0'),
 		('1' if '12' in startHours else '0'),
 	))
-	optional = 'F' if need == u'Necessària' else 'O'
-	return optional, transliterate(who), theDay, bitmap, comment
+	optional = need != u'Necessària'
+	return ns(
+		optional = optional,
+		person = transliterate(who),
+		turns = bitmap,
+		reason = comment,
+		date = theDay,
+		)
 
 def gform2Singular(lines):
 	return ( gformDataLine(l) for l in lines[1:] )
 
 def singular2Weekly(monday, singularBusies):
 	sunday = monday+datetime.timedelta(days=6)
-	for optional, who, day, bitmap, comment in singularBusies:
-		if day < monday: continue
-		if day > sunday: continue
-		weekdayShort = u'dl dm dx dj dv ds dg'.split()[day.weekday()]
-		forced = '' if optional=='O' else '+'
-		yield forced, who, weekdayShort, bitmap, comment
+	for b in singularBusies:
+		if b.date < monday: continue
+		if b.date > sunday: continue
+		weekdayShort = u'dl dm dx dj dv ds dg'.split()[b.date.weekday()]
+		forced = '' if b.optional else '+'
+		yield forced, b.person, weekdayShort, b.turns, b.reason
 
 def formatWeekly(weekly):
 	# TODO: Manage no days, multiple days and no hours
