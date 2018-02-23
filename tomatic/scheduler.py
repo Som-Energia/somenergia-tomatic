@@ -104,7 +104,7 @@ def baixaDades(config, certificat) :
 		weeklyOnes = busy.singular2Weekly(config.monday, singulars)
 		try:
 			for weeklyOne in weeklyOnes:
-				line = busy.formatWeekly(weeklyOne)
+				line = busy.formatItem(weeklyOne)
 				indisfile.write(line)
 		except busy.GFormError as e:
 			fail(format(e))
