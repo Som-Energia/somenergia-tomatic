@@ -19,7 +19,7 @@ indis = fetcher.get_fullsheet(config.fullIndisponibilitats)
 singulars = busy.gform2Singular(indis)
 with open('indisponibilitats-oneshot.conf', 'w') as f:
 	for singular in singulars:
-		line = busy.formatWeekly(singular)
+		line = busy.formatItem(singular)
 		print (line)
 		f.write(line)
 
