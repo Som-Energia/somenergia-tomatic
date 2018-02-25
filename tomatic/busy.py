@@ -150,12 +150,17 @@ def update(filename, person, newPersonEntries, handler=None):
 	with open(filename) as ifile:
 		oldEntries = [e for e in parseBusy(ifile.readlines(), handler)]
 
+	content = [
+		formatItem(entry)
+		for entry in oldEntries
+		if entry.person != person
+		] + [
+		formatItem(ns(entry, person=person))
+		for entry in newPersonEntries
+		]
+
 	with open(filename,'w') as ofile:
-		for entry in oldEntries:
-			if entry.person == person: continue
-			ofile.write(formatItem(entry))
-		for personalized in newPersonEntries:
-			ofile.write(formatItem(ns(personalized, person=person)))
+		ofile.write(''.join(content))
 
 def busy(person):
 	config = ns.load('config.yaml')

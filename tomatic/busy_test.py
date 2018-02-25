@@ -564,5 +564,23 @@ class BusyTest(unittest.TestCase):
 			)
 
 
+	def test_updateFile_badEntries_keepsOldContent(self):
+		self.write('testfile',
+			"someone dl 0001 # comment\n"
+			"somebody dm 1001 # comment\n"
+			)
+
+		with self.assertRaises(AttributeError) as ctx: # TODO: Custom exception
+			busy.update('testfile','someone', [
+				ns() # bad
+				])
+		self.assertEqual(format(ctx.exception),
+			'optional')
+
+		self.assertContentEqual('testfile',
+			"someone dl 0001 # comment\n"
+			"somebody dm 1001 # comment\n"
+			)
+
 
 # vim: noet ts=4 sw=4
