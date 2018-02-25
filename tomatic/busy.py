@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+from yamlns import namespace as ns
 
 class GFormError(Exception): pass
 
@@ -14,6 +15,7 @@ def transliterate(word):
 	) :
 		word = word.replace(old,new)
 	return word
+
 def isodate(datestr):
 	return datetime.datetime.strptime(datestr, "%Y-%m-%d").date()
 
@@ -51,6 +53,9 @@ def gformDataLine(line):
 		)
 
 def gform2Singular(lines):
+	"""
+	Takes the collected google froms table of
+	"""
 	return ( gformDataLine(l) for l in lines[1:] )
 
 def onWeek(monday, singularBusies):
@@ -74,8 +79,6 @@ def formatItem(item):
 		dateorweekday = item.get('date') or item.get('weekday'),
 		forcedmark = '' if item.optional else '+',
 		**item)
-
-from yamlns import namespace as ns
 
 def parseBusy(lines, errorHandler=None):
 	"Parses weekly events from lines"
