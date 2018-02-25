@@ -487,11 +487,10 @@ Tomatic.sendBusyData = function(name, data) {
 		console.debug("Busy Response: ",response);
 	}, function(error) {
 		console.debug('apicall failed:', error);
-		Tomatic.error("Problemes actualitzant les indisponibilitats: "+
+		Tomatic.error("Problemes desant les indisponibilitats: "+
 			(error.name || "Inexperat"));
 	});
-
-}
+};
 
 Tomatic.retrieveBusyData = function(name, callback) {
 	console.log("retrieving", name,  '/api/busy/'+name);
@@ -689,7 +688,7 @@ var editAvailabilities = function(name) {
 			id: 'BusyListEditor',
 			title: 'Edita indisponibilitats',
 			body: [
-				"TODO: Les accions encara son de MENTIDA!",
+				"TODO: Els canvis no tenen efecte!",
 				m('.busylist', [
 					m(BusyList, {
 						title: 'Puntuals',
