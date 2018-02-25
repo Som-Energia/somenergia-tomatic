@@ -717,7 +717,7 @@ class BusyTest(unittest.TestCase):
 				optional=True,
 				))
 		self.assertEqual(format(ctx.exception),
-			"Bad weekday 'bad', should be dl, dm, dx, dj or d")
+			"Bad weekday 'bad', should be dl, dm, dx, dj, dv or empty")
 
 	def test_checkEntry_badOptional(self):
 		with self.assertRaises(Exception) as ctx:
@@ -800,7 +800,7 @@ class BusyTest(unittest.TestCase):
 
 	def test_checkEntry_oneShot(self):
 		busy.checkEntry('oneshot', ns(
-			date=isodate('2015-02-12'), # added
+			date='2015-02-12', # added
 			reason='A reason',
 			turns='1000',
 			optional=True,

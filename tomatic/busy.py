@@ -138,7 +138,7 @@ def justPerson(person, entries):
 	def wrap(entry):
 		entry = ns(entry)
 		# TODO: how necessary is that?
-		if 'date' in entry: entry.date=str(entry.date)
+		if 'date' in entry: entry.date=format(entry.date)
 		del entry.person
 		return entry
 	return [
@@ -189,12 +189,15 @@ def checkEntry(kind, entry):
 	for a in fields:
 		if a not in entry.keys():
 			raise Exception("Missing field '{}'".format(a))
-	if 'weekday' in entry and entry.weekday not in "dl dm dx dj dv ds dg".split():
-		raise Exception(
-			"Bad weekday '{}', should be dl, dm, dx, dj or d"
-			.format(entry.weekday))
+	if 'weekday' in entry:
+		if entry.weekday and entry.weekday not in "dl dm dx dj dv ds dg".split():
+			raise Exception(
+				"Bad weekday '{}', should be dl, dm, dx, dj, dv or empty"
+				.format(entry.weekday))
 	if 'date' in entry:
-		if type(entry.date)!=datetime.date:
+		try:
+			entry.date = isodate(entry.date)
+		except ValueError:
 			raise Exception(
 				"Field 'date' should be a date but was '{}'"
 				.format(entry.date))
@@ -203,7 +206,7 @@ def checkEntry(kind, entry):
 			"Bad value for 'optional'. Expected a boolean but was '{}'"
 			.format(entry.optional))
 
-	if type(entry.reason) != type(u''):
+	if not isinstance(entry.reason, basestring):
 		raise Exception(
 			"Invalid type '{}' for field 'reason'"
 			.format(type(entry.reason).__name__))
@@ -235,7 +238,7 @@ def update_busy(person, data):
 			with open(filename,'w') as f:
 				f.write(output[attribute])
 	except Exception as e:
-		print e
+		print e, entry
 		return ns(
 			status='error',
 			error=format(e),
