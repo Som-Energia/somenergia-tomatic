@@ -150,19 +150,17 @@ def update(filename, person, newPersonEntries, handler=None):
 	with open(filename) as ifile:
 		oldEntries = [e for e in parseBusy(ifile.readlines(), handler)]
 
-	content = [
+	return ''.join([
 		formatItem(entry)
 		for entry in oldEntries
 		if entry.person != person
 		] + [
 		formatItem(ns(entry, person=person))
 		for entry in newPersonEntries
-		]
-
-	with open(filename,'w') as ofile:
-		ofile.write(''.join(content))
+		])
 
 def busy(person):
+	"""API Entry point to obtain person's busy"""
 	config = ns.load('config.yaml')
 	errors = []
 	def indisponibilitats(filename, tipus):
@@ -174,13 +172,30 @@ def busy(person):
 				))
 	return ns(
 		weekly = indisponibilitats('indisponibilitats.conf', parseBusy),
-		oneshot = indisponibilitats('indisponibilitats-oneshot.conf', parseBusy),
+		oneshot = indisponibilitats('oneshot.conf', parseBusy),
 		errors=errors,
 		)
 
 def update_busy(person, data):
-	# TODO: Implement this
-	print data.dump()
+	"""API Entry point to update person's busy"""
+	files = [
+		('indisponibilitats.conf', 'weekly'),
+		('oneshot.conf', 'oneshot'),
+	]
+	output=dict()
+	try:
+		for filename, attribute in files:
+			def handler(error):
+				raise Exception("{}: {}".format(filename, error))
+			output[attribute] = update(filename, person, data[attribute], handler)
+		for filename, attribute in files:
+			with open(filename,'w') as f:
+				f.write(output[attribute])
+	except Exception as e:
+		return ns(
+			status='error',
+			error=format(e),
+			)
 	return ns(status='ok')
 
 

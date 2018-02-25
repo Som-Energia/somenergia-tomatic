@@ -437,7 +437,7 @@ class BusyTest(unittest.TestCase):
 
 	def test_updateFile_noPreviousEntries(self):
 		self.write('testfile', '')
-		busy.update('testfile','someone', [
+		result = busy.update('testfile','someone', [
 			ns(
 				weekday='dl',
 				turns='1111',
@@ -446,7 +446,7 @@ class BusyTest(unittest.TestCase):
 				),
 			])
 				
-		self.assertContentEqual('testfile',
+		self.assertMultiLineEqual(result,
 			"+someone dl 1111 # La razón\n"
 			)
 
@@ -454,7 +454,7 @@ class BusyTest(unittest.TestCase):
 	def test_updateFile_appendMany(self):
 		self.write('testfile','')
 
-		busy.update('testfile','someone', [
+		result = busy.update('testfile','someone', [
 			ns(
 				weekday='dl',
 				turns='1111',
@@ -469,7 +469,7 @@ class BusyTest(unittest.TestCase):
 				),
 			])
 				
-		self.assertContentEqual('testfile',
+		self.assertMultiLineEqual(result,
 			"+someone dl 1111 # La razón\n"
 			"someone dm 0001 # Otra razón\n"
 			)
@@ -479,7 +479,7 @@ class BusyTest(unittest.TestCase):
 			"someother dx 1000 # Another reason\n"
 			)
 
-		busy.update('testfile','someone', [
+		result = busy.update('testfile','someone', [
 			ns(
 				weekday='dl',
 				turns='1111',
@@ -488,7 +488,7 @@ class BusyTest(unittest.TestCase):
 				),
 			])
 				
-		self.assertContentEqual('testfile',
+		self.assertMultiLineEqual(result,
 			"someother dx 1000 # Another reason\n"
 			"+someone dl 1111 # La razón\n"
 			)
@@ -499,7 +499,7 @@ class BusyTest(unittest.TestCase):
 			"someother dx 1000 # Another reason\n"
 			)
 
-		busy.update('testfile','someone', [
+		result = busy.update('testfile','someone', [
 			ns(
 				weekday='dl',
 				turns='1111',
@@ -508,7 +508,7 @@ class BusyTest(unittest.TestCase):
 				),
 			])
 				
-		self.assertContentEqual('testfile',
+		self.assertMultiLineEqual(result,
 			"someother dx 1000 # Another reason\n"
 			"+someone dl 1111 # La razón\n"
 			)
@@ -519,10 +519,10 @@ class BusyTest(unittest.TestCase):
 			"someother dx 1000 # Another reason\n"
 			)
 
-		busy.update('testfile','someone', [
+		result = busy.update('testfile','someone', [
 			])
 
-		self.assertContentEqual('testfile',
+		self.assertMultiLineEqual(result,
 			"someother dx 1000 # Another reason\n"
 			)
 
@@ -536,10 +536,6 @@ class BusyTest(unittest.TestCase):
 				])
 		self.assertEqual(format(ctx.exception),
 			"1: Expected busy string of lenght 4 containing '1' on busy hours, found 'caca'")
-
-		self.assertContentEqual('testfile',
-			"badfile caca # comment\n"
-			)
 
 	def test_updateFile_badOriginal_customHandler(self):
 		self.write('testfile',
@@ -559,12 +555,7 @@ class BusyTest(unittest.TestCase):
 			"1: Expected busy string of lenght 4 containing '1' on busy hours, found 'caca'",
 			])
 
-		self.assertContentEqual('testfile',
-			"badfile caca # comment\n"
-			)
-
-
-	def test_updateFile_badEntries_keepsOldContent(self):
+	def test_updateFile_badNewEntries(self):
 		self.write('testfile',
 			"someone dl 0001 # comment\n"
 			"somebody dm 1001 # comment\n"
@@ -576,11 +567,6 @@ class BusyTest(unittest.TestCase):
 				])
 		self.assertEqual(format(ctx.exception),
 			'optional')
-
-		self.assertContentEqual('testfile',
-			"someone dl 0001 # comment\n"
-			"somebody dm 1001 # comment\n"
-			)
 
 
 # vim: noet ts=4 sw=4
