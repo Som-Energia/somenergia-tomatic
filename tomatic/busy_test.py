@@ -513,6 +513,34 @@ class BusyTest(unittest.TestCase):
 			"+someone dl 1111 # La razón\n"
 			)
 
+	def test_updateFile_emptyUpdateClears(self):
+		self.write('testfile',
+			"+someone dm 0100 # A reason\n"
+			"someother dx 1000 # Another reason\n"
+			)
+
+		busy.update('testfile','someone', [
+			])
+
+		self.assertContentEqual('testfile',
+			"someother dx 1000 # Another reason\n"
+			)
+
+	def test_updateFile_badInput(self):
+		self.write('testfile',
+			"badfile caca # comment\n"
+			)
+
+		with self.assertRaises(Exception) as ctx:
+			busy.update('testfile','someone', [
+				])
+		self.assertEqual(format(ctx.exception),
+			"1: Expected busy string of lenght 4 containing '1' on busy hours, found 'caca'")
+
+		self.assertContentEqual('testfile',
+			"badfile caca # comment\n"
+			)
+
 
 
 # vim: noet ts=4 sw=4

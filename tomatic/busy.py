@@ -146,8 +146,10 @@ def personBusyness(person, entries, extra):
 	return result
 
 def update(filename, person, newPersonEntries):
+
 	with open(filename) as ifile:
-		oldEntries = parseBusy(ifile.readlines())
+		oldEntries = [e for e in parseBusy(ifile.readlines())]
+
 	with open(filename,'w') as ofile:
 		for entry in oldEntries:
 			if entry.person == person: continue
