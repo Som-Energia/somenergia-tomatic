@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 import datetime
 from yamlns import namespace as ns
@@ -175,6 +176,47 @@ def busy(person):
 		errors=errors,
 		)
 
+def checkEntry(kind, entry):
+	fields = set((
+		'reason',
+		'optional',
+		'turns',
+		'weekday' if kind == 'weekly' else 'date',
+	))
+	for a in entry.keys():
+		if a not in fields:
+			raise Exception("Unexpected field '{}'".format(a))
+	for a in fields:
+		if a not in entry.keys():
+			raise Exception("Missing field '{}'".format(a))
+	if 'weekday' in entry and entry.weekday not in "dl dm dx dj dv ds dg".split():
+		raise Exception(
+			"Bad weekday '{}', should be dl, dm, dx, dj or d"
+			.format(entry.weekday))
+	if 'date' in entry:
+		if type(entry.date)!=datetime.date:
+			raise Exception(
+				"Field 'date' should be a date but was '{}'"
+				.format(entry.date))
+	if type(entry.optional) != bool:
+		raise Exception(
+			"Bad value for 'optional'. Expected a boolean but was '{}'"
+			.format(entry.optional))
+
+	if type(entry.reason) != type(u''):
+		raise Exception(
+			"Invalid type '{}' for field 'reason'"
+			.format(type(entry.reason).__name__))
+
+	if len(entry.turns) != 4 or not all(x in '01' for x in entry.turns):
+		raise Exception(
+			"Attribute 'turns' should be a text with {} ones or zeroes, "
+			"but was '{}'"
+			.format(4, entry.turns))
+
+	if not entry.reason.strip():
+		raise Exception("Empty reason")
+
 def update_busy(person, data):
 	"""API Entry point to update person's busy"""
 	files = [
@@ -184,6 +226,8 @@ def update_busy(person, data):
 	output=dict()
 	try:
 		for filename, attribute in files:
+			for entry in data[attribute]:
+				checkEntry(attribute, entry)
 			def handler(error):
 				raise Exception("{}: {}".format(filename, error))
 			output[attribute] = updatePerson(filename, person, data[attribute], handler)
@@ -191,6 +235,7 @@ def update_busy(person, data):
 			with open(filename,'w') as f:
 				f.write(output[attribute])
 	except Exception as e:
+		print e
 		return ns(
 			status='error',
 			error=format(e),

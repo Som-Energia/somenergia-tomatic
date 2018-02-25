@@ -660,5 +660,152 @@ class BusyTest(unittest.TestCase):
 			)
 
 
+	def test_checkEntry_whenOk(self):
+		busy.checkEntry('weekly', ns(
+			weekday='dl',
+			reason="A reason",
+			turns='1000',
+			optional=True,
+			))
+
+	def test_checkEntry_missingWeekday(self):
+		with self.assertRaises(Exception) as ctx:
+			busy.checkEntry('weekly', ns(
+				reason="A reason",
+				turns='1000',
+				optional=True,
+				))
+		self.assertEqual(format(ctx.exception),
+			"Missing field 'weekday'")
+
+	def test_checkEntry_missingReason(self):
+		with self.assertRaises(Exception) as ctx:
+			busy.checkEntry('weekly', ns(
+				weekday='dl',
+				turns='1000',
+				optional=True,
+				))
+		self.assertEqual(format(ctx.exception),
+			"Missing field 'reason'")
+
+	def test_checkEntry_missingTurns(self):
+		with self.assertRaises(Exception) as ctx:
+			busy.checkEntry('weekly', ns(
+				weekday='dl',
+				reason="A reason",
+				optional=True,
+				))
+		self.assertEqual(format(ctx.exception),
+			"Missing field 'turns'")
+
+	def test_checkEntry_missingReason(self):
+		with self.assertRaises(Exception) as ctx:
+			busy.checkEntry('weekly', ns(
+				weekday='dl',
+				reason="A reason",
+				turns='1000',
+				))
+		self.assertEqual(format(ctx.exception),
+			"Missing field 'optional'")
+
+	def test_checkEntry_badWeekday(self):
+		with self.assertRaises(Exception) as ctx:
+			busy.checkEntry('weekly', ns(
+				weekday='bad', # changed
+				reason="A reason",
+				turns='1000',
+				optional=True,
+				))
+		self.assertEqual(format(ctx.exception),
+			"Bad weekday 'bad', should be dl, dm, dx, dj or d")
+
+	def test_checkEntry_badOptional(self):
+		with self.assertRaises(Exception) as ctx:
+			busy.checkEntry('weekly', ns(
+				weekday='dl',
+				reason="A reason",
+				turns='1000',
+				optional=None, # changed
+				))
+		self.assertEqual(format(ctx.exception),
+			"Bad value for 'optional'. Expected a boolean but was 'None'")
+
+	def test_checkEntry_badReasonType(self):
+		with self.assertRaises(Exception) as ctx:
+			busy.checkEntry('weekly', ns(
+				weekday='dl',
+				reason=None, # changed
+				turns='1000',
+				optional=True,
+				))
+		self.assertEqual(format(ctx.exception),
+			"Invalid type 'NoneType' for field 'reason'")
+
+	def test_checkEntry_emptyReason(self):
+		with self.assertRaises(Exception) as ctx:
+			busy.checkEntry('weekly', ns(
+				weekday='dl',
+				reason='  ', # changed
+				turns='1000',
+				optional=True,
+				))
+		self.assertEqual(format(ctx.exception),
+			"Empty reason")
+
+	def test_checkEntry_badTurns(self):
+		with self.assertRaises(Exception) as ctx:
+			busy.checkEntry('weekly', ns(
+				weekday='dl',
+				reason='A reason',
+				turns='bad', # changed
+				optional=True,
+				))
+		self.assertEqual(format(ctx.exception),
+			"Attribute 'turns' should be a text with 4 ones or zeroes, but was 'bad'")
+
+	def test_checkEntry_unexpectedField(self):
+		with self.assertRaises(Exception) as ctx:
+			busy.checkEntry('weekly', ns(
+				date='2015-02-12', # added
+				weekday='dl',
+				reason='A reason',
+				turns='1000',
+				optional=True,
+				))
+		self.assertEqual(format(ctx.exception),
+			"Unexpected field 'date'")
+
+	def test_checkEntry_oneshot_withWeekday(self):
+		with self.assertRaises(Exception) as ctx:
+			busy.checkEntry('oneshot', ns(
+				weekday='dl', # added
+				reason='A reason',
+				turns='1000',
+				optional=True,
+				))
+		self.assertEqual(format(ctx.exception),
+			"Unexpected field 'weekday'")
+
+	def test_checkEntry_oneShot_baddate(self):
+		with self.assertRaises(Exception) as ctx:
+			busy.checkEntry('oneshot', ns(
+				date='bad', # added
+				reason='A reason',
+				turns='1000',
+				optional=True,
+				))
+		self.assertEqual(format(ctx.exception),
+			"Field 'date' should be a date but was 'bad'")
+			#"Field 'date' should be a date in ISO format YYYY-MM-DD")
+
+	def test_checkEntry_oneShot(self):
+		busy.checkEntry('oneshot', ns(
+			date=isodate('2015-02-12'), # added
+			reason='A reason',
+			turns='1000',
+			optional=True,
+			))
+
+
 
 # vim: noet ts=4 sw=4
