@@ -159,9 +159,14 @@ def personalize(person, entries):
 	]
 
 def update(filename, person, newPersonEntries):
-	with open(filename,'w') as of:
+	with open(filename) as ifile:
+		oldEntries = parseBusy(ifile.readlines())
+	with open(filename,'w') as ofile:
+		for entry in oldEntries:
+			if entry.person == person: continue
+			ofile.write(formatItem(entry))
 		for personalized in personalize(person, newPersonEntries):
-			of.write(formatItem(personalized))
+			ofile.write(formatItem(personalized))
 
 def busy(person):
 	config = ns.load('config.yaml')

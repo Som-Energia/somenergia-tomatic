@@ -540,7 +540,7 @@ class BusyTest(unittest.TestCase):
 			"someone dm 0001 # Otra razón\n"
 			)
 
-	def _test_updateFile_keepOtherPeopleEntries(self):
+	def test_updateFile_keepsOtherPeopleEntries(self):
 		self.write('testfile',
 			"someother dx 1000 # Another reason\n"
 			)
@@ -559,7 +559,7 @@ class BusyTest(unittest.TestCase):
 			"+someone dl 1111 # La razón\n"
 			)
 
-	def _test_updateFile_removeExistingOfSamePerson(self):
+	def test_updateFile_removeExistingOfSamePerson(self):
 		self.write('testfile',
 			"+someone dm 0100 # A reason\n"
 			"someother dx 1000 # Another reason\n"
