@@ -698,14 +698,14 @@ var editAvailabilities = function(name) {
 				"TODO: Els canvis no tenen efecte!",
 				m('.busylist', [
 					m(BusyList, {
-						title: 'Puntuals',
-						entries: data.oneshot,
-						isOneShot: true,
-					}),
-					m(BusyList, {
 						title: 'Setmanals',
 						entries: data.weekly,
 						isOneShot: false,
+					}),
+					m(BusyList, {
+						title: 'Puntuals',
+						entries: data.oneshot,
+						isOneShot: true,
 					}),
 				]),
 			],
