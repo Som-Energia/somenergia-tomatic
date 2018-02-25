@@ -251,7 +251,8 @@ Tomatic.error = function(message) {
 	Snackbar.show({
 		containerSelector: '#snackbar',
 		title: message,
-		class: 'error',
+		className: 'error',
+		timeout: 20,
 	});
 };
 
@@ -485,6 +486,10 @@ Tomatic.sendBusyData = function(name, data) {
 		deserialize: jsyaml.load,
 	}).then(function(response){
 		console.debug("Busy Response: ",response);
+		if (response.status=='ok') { return; }
+		console.debug('apicall failed:', response.error);
+		Tomatic.error("Problemes desant les indisponibilitats: "+
+			(response.error));
 	}, function(error) {
 		console.debug('apicall failed:', error);
 		Tomatic.error("Problemes desant les indisponibilitats: "+
@@ -503,10 +508,11 @@ Tomatic.retrieveBusyData = function(name, callback) {
 		callback(response);
 	}, function(error) {
 		console.debug('apicall failed:', error);
-		Tomatic.error("Problemes accedint a les indisponibilitats: "+
+		Tomatic.error("Problemes carregant a les indisponibilitats: "+
 			(error.name || "Inexperat"));
 	});
-	return;
+};
+Tomatic.retrieveBusyDataFake = function(name, callback) {
 	console.log("simulating retrieval", name);
 	setTimeout(function () {
 		callback( {
