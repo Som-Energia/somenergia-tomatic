@@ -136,6 +136,7 @@ def parseBusy(lines, errorHandler=None):
 def justPerson(person, entries):
 	def wrap(entry):
 		entry = ns(entry)
+		# TODO: how necessary is that?
 		if 'date' in entry: entry.date=str(entry.date)
 		del entry.person
 		return entry
