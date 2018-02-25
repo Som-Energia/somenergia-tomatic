@@ -692,7 +692,7 @@ var editAvailabilities = function(name) {
 	Tomatic.retrieveBusyData(name, function(data) {
 		Dialog.show(function () { return {
 			id: 'BusyListEditor',
-			title: 'Edita indisponibilitats',
+			title: 'Edita indisponibilitats '+Tomatic.formatName(name),
 			body: [
 				"TODO: Els canvis no tenen efecte!",
 				m('.busylist', [
@@ -784,7 +784,7 @@ var editPerson = function(name) {
 		data.tables[n] = taulaLabel(n);
 	});
 	Dialog.show(function() { return {
-		title: 'Edita dades de la persona',
+		title: 'Edita dades de la persona '+Tomatic.formatName(name),
 		body: [
 			m(PersonEditor, data),
 		],
