@@ -19,6 +19,8 @@ indis = fetcher.get_fullsheet(config.fullIndisponibilitats)
 singulars = busy.gform2Singular(indis)
 with open('oneshot.conf', 'w') as f:
 	for singular in singulars:
+		if not singular.reason:
+			singular.reason="Motiu sense especificar"
 		line = busy.formatItem(singular)
 		print (line)
 		f.write(line)
