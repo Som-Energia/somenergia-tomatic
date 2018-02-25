@@ -140,6 +140,9 @@ def personBusyness(person, entries, extra):
 		result.append(entry)
 	return result
 
+def filterPerson(person, entries):
+	return entries
+
 def busy(person):
 	config = ns.load('config.yaml')
 	errors = []
