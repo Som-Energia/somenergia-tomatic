@@ -526,7 +526,7 @@ class BusyTest(unittest.TestCase):
 			"someother dx 1000 # Another reason\n"
 			)
 
-	def test_updateFile_badInput(self):
+	def test_updateFile_badOriginal(self):
 		self.write('testfile',
 			"badfile caca # comment\n"
 			)
@@ -536,6 +536,28 @@ class BusyTest(unittest.TestCase):
 				])
 		self.assertEqual(format(ctx.exception),
 			"1: Expected busy string of lenght 4 containing '1' on busy hours, found 'caca'")
+
+		self.assertContentEqual('testfile',
+			"badfile caca # comment\n"
+			)
+
+	def test_updateFile_badOriginal_customHandler(self):
+		self.write('testfile',
+			"badfile caca # comment\n"
+			)
+		errors=[]
+		def handler(error):
+			errors.append(error)
+			raise Exception(error)
+
+		with self.assertRaises(Exception) as ctx:
+			busy.update('testfile','someone', [
+				], handler)
+		self.assertEqual(format(ctx.exception),
+			"1: Expected busy string of lenght 4 containing '1' on busy hours, found 'caca'")
+		self.assertEqual(errors, [
+			"1: Expected busy string of lenght 4 containing '1' on busy hours, found 'caca'",
+			])
 
 		self.assertContentEqual('testfile',
 			"badfile caca # comment\n"

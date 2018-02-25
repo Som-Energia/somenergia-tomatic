@@ -145,10 +145,10 @@ def personBusyness(person, entries, extra):
 		result.append(entry)
 	return result
 
-def update(filename, person, newPersonEntries):
+def update(filename, person, newPersonEntries, handler=None):
 
 	with open(filename) as ifile:
-		oldEntries = [e for e in parseBusy(ifile.readlines())]
+		oldEntries = [e for e in parseBusy(ifile.readlines(), handler)]
 
 	with open(filename,'w') as ofile:
 		for entry in oldEntries:
