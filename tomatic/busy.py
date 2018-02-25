@@ -145,12 +145,6 @@ def personBusyness(person, entries, extra):
 		result.append(entry)
 	return result
 
-def personalize(person, entries):
-	return [
-		ns(entry, person=person)
-		for entry in entries
-	]
-
 def update(filename, person, newPersonEntries):
 	with open(filename) as ifile:
 		oldEntries = parseBusy(ifile.readlines())
@@ -158,8 +152,8 @@ def update(filename, person, newPersonEntries):
 		for entry in oldEntries:
 			if entry.person == person: continue
 			ofile.write(formatItem(entry))
-		for personalized in personalize(person, newPersonEntries):
-			ofile.write(formatItem(personalized))
+		for personalized in newPersonEntries:
+			ofile.write(formatItem(ns(personalized, person=person)))
 
 def busy(person):
 	config = ns.load('config.yaml')
