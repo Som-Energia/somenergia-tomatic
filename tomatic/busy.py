@@ -133,19 +133,19 @@ def parseBusy(lines, errorHandler=None):
 			**when
 			)
 
-def personBusyness(person, entries, extra):
-	result=[]
-	for entry in entries:
-		if entry.person != person:
-			continue
+def justPerson(person, entries):
+	def wrap(entry):
+		entry = ns(entry)
+		if 'date' in entry: entry.date=str(entry.date)
 		del entry.person
-		entry.update(extra)
-		if 'date' in entry:
-			entry.date=str(entry.date)
-		result.append(entry)
-	return result
+		return entry
+	return [
+		wrap(entry)
+		for entry in entries
+		if entry.person == person
+	]
 
-def update(filename, person, newPersonEntries, handler=None):
+def updatePerson(filename, person, newPersonEntries, handler=None):
 
 	with open(filename) as ifile:
 		oldEntries = [e for e in parseBusy(ifile.readlines(), handler)]
@@ -163,16 +163,14 @@ def busy(person):
 	"""API Entry point to obtain person's busy"""
 	config = ns.load('config.yaml')
 	errors = []
-	def indisponibilitats(filename, tipus):
+	def indisponibilitats(filename):
 		def handler(m):
 			errors.append(filename+':'+m)
 		with open(filename) as f:
-			return personBusyness(person, tipus(f, handler), dict(
-				optional=False,
-				))
+			return justPerson(person, parseBusy(f, handler))
 	return ns(
-		weekly = indisponibilitats('indisponibilitats.conf', parseBusy),
-		oneshot = indisponibilitats('oneshot.conf', parseBusy),
+		weekly = indisponibilitats('indisponibilitats.conf'),
+		oneshot = indisponibilitats('oneshot.conf'),
 		errors=errors,
 		)
 
@@ -187,7 +185,7 @@ def update_busy(person, data):
 		for filename, attribute in files:
 			def handler(error):
 				raise Exception("{}: {}".format(filename, error))
-			output[attribute] = update(filename, person, data[attribute], handler)
+			output[attribute] = updatePerson(filename, person, data[attribute], handler)
 		for filename, attribute in files:
 			with open(filename,'w') as f:
 				f.write(output[attribute])

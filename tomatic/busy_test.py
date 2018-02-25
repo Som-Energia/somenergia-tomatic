@@ -433,11 +433,9 @@ class BusyTest(unittest.TestCase):
 			"+someone dm 1111 # La razón\n"
 			)
 
-	#def test_updateFile_fileDoesNotExist(self):
-
-	def test_updateFile_noPreviousEntries(self):
+	def test_updatePerson_noPreviousEntries(self):
 		self.write('testfile', '')
-		result = busy.update('testfile','someone', [
+		result = busy.updatePerson('testfile','someone', [
 			ns(
 				weekday='dl',
 				turns='1111',
@@ -450,11 +448,10 @@ class BusyTest(unittest.TestCase):
 			"+someone dl 1111 # La razón\n"
 			)
 
-
-	def test_updateFile_appendMany(self):
+	def test_updatePerson_appendMany(self):
 		self.write('testfile','')
 
-		result = busy.update('testfile','someone', [
+		result = busy.updatePerson('testfile','someone', [
 			ns(
 				weekday='dl',
 				turns='1111',
@@ -474,12 +471,32 @@ class BusyTest(unittest.TestCase):
 			"someone dm 0001 # Otra razón\n"
 			)
 
-	def test_updateFile_keepsOtherPeopleEntries(self):
+	def test_updatePerson_keepsOtherPeopleEntries(self):
 		self.write('testfile',
 			"someother dx 1000 # Another reason\n"
 			)
 
-		result = busy.update('testfile','someone', [
+		result = busy.updatePerson('testfile','someone', [
+			ns(
+				weekday='dl',
+				turns='1111',
+				reason=u'La razón',
+				optional=False,
+				),
+			])
+
+		self.assertMultiLineEqual(result,
+			"someother dx 1000 # Another reason\n"
+			"+someone dl 1111 # La razón\n"
+			)
+
+	def test_updatePerson_removeExistingOfSamePerson(self):
+		self.write('testfile',
+			"+someone dm 0100 # A reason\n"
+			"someother dx 1000 # Another reason\n"
+			)
+
+		result = busy.updatePerson('testfile','someone', [
 			ns(
 				weekday='dl',
 				turns='1111',
@@ -493,51 +510,31 @@ class BusyTest(unittest.TestCase):
 			"+someone dl 1111 # La razón\n"
 			)
 
-	def test_updateFile_removeExistingOfSamePerson(self):
+	def test_updatePerson_emptyUpdateClears(self):
 		self.write('testfile',
 			"+someone dm 0100 # A reason\n"
 			"someother dx 1000 # Another reason\n"
 			)
 
-		result = busy.update('testfile','someone', [
-			ns(
-				weekday='dl',
-				turns='1111',
-				reason=u'La razón',
-				optional=False,
-				),
-			])
-				
-		self.assertMultiLineEqual(result,
-			"someother dx 1000 # Another reason\n"
-			"+someone dl 1111 # La razón\n"
-			)
-
-	def test_updateFile_emptyUpdateClears(self):
-		self.write('testfile',
-			"+someone dm 0100 # A reason\n"
-			"someother dx 1000 # Another reason\n"
-			)
-
-		result = busy.update('testfile','someone', [
+		result = busy.updatePerson('testfile','someone', [
 			])
 
 		self.assertMultiLineEqual(result,
 			"someother dx 1000 # Another reason\n"
 			)
 
-	def test_updateFile_badOriginal(self):
+	def test_updatePerson_badOriginal(self):
 		self.write('testfile',
 			"badfile caca # comment\n"
 			)
 
 		with self.assertRaises(Exception) as ctx:
-			busy.update('testfile','someone', [
+			busy.updatePerson('testfile','someone', [
 				])
 		self.assertEqual(format(ctx.exception),
 			"1: Expected busy string of lenght 4 containing '1' on busy hours, found 'caca'")
 
-	def test_updateFile_badOriginal_customHandler(self):
+	def test_updatePerson_badOriginal_customHandler(self):
 		self.write('testfile',
 			"badfile caca # comment\n"
 			)
@@ -547,7 +544,7 @@ class BusyTest(unittest.TestCase):
 			raise Exception(error)
 
 		with self.assertRaises(Exception) as ctx:
-			busy.update('testfile','someone', [
+			busy.updatePerson('testfile','someone', [
 				], handler)
 		self.assertEqual(format(ctx.exception),
 			"1: Expected busy string of lenght 4 containing '1' on busy hours, found 'caca'")
@@ -555,18 +552,113 @@ class BusyTest(unittest.TestCase):
 			"1: Expected busy string of lenght 4 containing '1' on busy hours, found 'caca'",
 			])
 
-	def test_updateFile_badNewEntries(self):
+	def test_updatePerson_badNewEntries(self):
 		self.write('testfile',
 			"someone dl 0001 # comment\n"
 			"somebody dm 1001 # comment\n"
 			)
 
 		with self.assertRaises(AttributeError) as ctx: # TODO: Custom exception
-			busy.update('testfile','someone', [
+			busy.updatePerson('testfile','someone', [
 				ns() # bad
 				])
 		self.assertEqual(format(ctx.exception),
 			'optional')
+
+	def test_justPerson_whenNoEntries(self):
+		result = busy.justPerson('someone', [
+			])
+		self.assertNsEqual(ns(d=result),
+			"d: []\n"
+			)
+
+	def test_justPerson_removesPersonField(self):
+		result = busy.justPerson('someone', [
+			ns(
+				person='someone',
+				weekday='dl',
+				turns='1111',
+				reason=u'La razón',
+				optional=False,
+				),
+			])
+		self.assertNsEqual(ns(d=result),
+			"d:\n"
+			"- weekday: dl\n"
+			"  turns: '1111'\n"
+			"  reason: La razón\n"
+			"  optional: false\n"
+			)
+
+	def test_justPerson_otherPersons(self):
+		result = busy.justPerson('someone', [
+			ns(
+				person='other',
+				weekday='dl',
+				turns='1111',
+				reason=u'La razón',
+				optional=False,
+				),
+			])
+		self.assertNsEqual(ns(d=result),
+			"d: []\n"
+			)
+
+	def test_justPerson_many(self):
+		result = busy.justPerson('someone', [
+			ns(
+				person='someone',
+				weekday='dl',
+				turns='1000',
+				reason=u'La razón 1',
+				optional=False,
+				),
+			ns(
+				person='other',
+				weekday='dx',
+				turns='0100',
+				reason=u'La razón 2',
+				optional=False,
+				),
+			ns(
+				person='someone',
+				weekday='dm',
+				turns='0010',
+				reason=u'La razón 3',
+				optional=True,
+				),
+			])
+		self.assertNsEqual(ns(d=result),
+			"d:\n"
+			"- weekday: dl\n"
+			"  turns: '1000'\n"
+			"  reason: La razón 1\n"
+			"  optional: false\n"
+			"- weekday: dm\n"
+			"  turns: '0010'\n"
+			"  reason: La razón 3\n"
+			"  optional: true\n"
+			)
+
+
+	def test_justPerson_returnsStringDate(self):
+		result = busy.justPerson('someone', [
+			ns(
+				person='someone',
+				date=isodate('2015-01-23'),
+				turns='1111',
+				reason=u'La razón',
+				optional=False,
+				),
+			])
+		self.assertNsEqual(ns(d=result),
+			"d:\n"
+			"- date: '2015-01-23'\n"
+			"  turns: '1111'\n"
+			"  reason: La razón\n"
+			"  optional: false\n"
+			)
+
 
 
 # vim: noet ts=4 sw=4
