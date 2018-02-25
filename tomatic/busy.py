@@ -145,13 +145,6 @@ def personBusyness(person, entries, extra):
 		result.append(entry)
 	return result
 
-def filterPerson(person, entries):
-	return [
-		entry
-		for entry in entries
-		if entry.person is not person
-		]
-
 def personalize(person, entries):
 	return [
 		ns(entry, person=person)
