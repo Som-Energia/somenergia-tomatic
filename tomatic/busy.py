@@ -4,6 +4,11 @@
 import datetime
 from yamlns import namespace as ns
 
+def open(*args, **kwd):
+	import codecs
+	return codecs.open(encoding='utf8', *args, **kwd)
+
+
 class GFormError(Exception): pass
 
 # TODO: Move it to a utility module and test it
@@ -152,6 +157,11 @@ def personalize(person, entries):
 		ns(entry, person=person)
 		for entry in entries
 	]
+
+def update(filename, person, newPersonEntries):
+	with open(filename,'w') as of:
+		for personalized in personalize(person, newPersonEntries):
+			of.write(formatItem(personalized))
 
 def busy(person):
 	config = ns.load('config.yaml')

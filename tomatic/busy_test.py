@@ -1,10 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 import unittest
+import os
 from . import busy
 from .busy import isodate
 from yamlns import namespace as ns
+
+def open(*args, **kwd):
+	import io
+	return io.open(encoding='utf8', *args, **kwd)
 
 dl='Dilluns'
 date='11/07/2017'
@@ -24,6 +29,21 @@ class BusyTest(unittest.TestCase):
 
 	def setUp(self):
 		self.maxDiff=None
+		self.todelete=[]
+
+	def tearDown(self):
+		for filename in self.todelete:
+			os.remove(filename)
+
+	def write(self, filename, content):
+		with open(filename,'w') as f:
+			f.write(content)
+		self.todelete.append(filename)
+
+	def assertContentEqual(self, filename, content):
+		with open(filename) as f:
+			actual = f.read()
+		self.assertMultiLineEqual(content, actual)
 
 	def test_gformDataLine_whenBothModesActivated(self):
 		line = [ts, user, date, dl, turns(t11,t12), needed, reason]
@@ -384,7 +404,7 @@ class BusyTest(unittest.TestCase):
 			)
 		self.assertEqual(
 			busy.formatItem(item),
-			u"someone dm 1111 # La razón\n"
+			"someone dm 1111 # La razón\n"
 			)
 
 	def test_formatItem_withDate(self):
@@ -397,7 +417,7 @@ class BusyTest(unittest.TestCase):
 			)
 		self.assertEqual(
 			busy.formatItem(item),
-			u"someone 2015-02-03 1111 # La razón\n"
+			"someone 2015-02-03 1111 # La razón\n"
 			)
 
 	def test_formatItem_forced(self):
@@ -410,7 +430,7 @@ class BusyTest(unittest.TestCase):
 			)
 		self.assertEqual(
 			busy.formatItem(item),
-			u"+someone dm 1111 # La razón\n"
+			"+someone dm 1111 # La razón\n"
 			)
 
 	def test_filterPerson_withOtherPerson_passes(self):
@@ -478,6 +498,87 @@ class BusyTest(unittest.TestCase):
 				ns(result[0], person='someone'),
 				ns(result[1], person='someone'),
 			]))
+
+	#def test_updateFile_fileDoesNotExist(self):
+
+	def test_updateFile_noPreviousEntries(self):
+		self.write('testfile', '')
+		busy.update('testfile','someone', [
+			ns(
+				weekday='dl',
+				turns='1111',
+				reason=u'La razón',
+				optional=False,
+				),
+			])
+				
+		self.assertContentEqual('testfile',
+			"+someone dl 1111 # La razón\n"
+			)
+
+
+	def test_updateFile_appendMany(self):
+		self.write('testfile','')
+
+		busy.update('testfile','someone', [
+			ns(
+				weekday='dl',
+				turns='1111',
+				reason=u'La razón',
+				optional=False,
+				),
+			ns(
+				weekday='dm',
+				turns='0001',
+				reason=u'Otra razón',
+				optional=True,
+				),
+			])
+				
+		self.assertContentEqual('testfile',
+			"+someone dl 1111 # La razón\n"
+			"someone dm 0001 # Otra razón\n"
+			)
+
+	def _test_updateFile_keepOtherPeopleEntries(self):
+		self.write('testfile',
+			"someother dx 1000 # Another reason\n"
+			)
+
+		busy.update('testfile','someone', [
+			ns(
+				weekday='dl',
+				turns='1111',
+				reason=u'La razón',
+				optional=False,
+				),
+			])
+				
+		self.assertContentEqual('testfile',
+			"someother dx 1000 # Another reason\n"
+			"+someone dl 1111 # La razón\n"
+			)
+
+	def _test_updateFile_removeExistingOfSamePerson(self):
+		self.write('testfile',
+			"+someone dm 0100 # A reason\n"
+			"someother dx 1000 # Another reason\n"
+			)
+
+		busy.update('testfile','someone', [
+			ns(
+				weekday='dl',
+				turns='1111',
+				reason=u'La razón',
+				optional=False,
+				),
+			])
+				
+		self.assertContentEqual('testfile',
+			"someother dx 1000 # Another reason\n"
+			"+someone dl 1111 # La razón\n"
+			)
+
 
 
 # vim: noet ts=4 sw=4
