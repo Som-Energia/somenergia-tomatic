@@ -17,7 +17,7 @@ fetcher = SheetFetcher(
 	)
 indis = fetcher.get_fullsheet(config.fullIndisponibilitats)
 singulars = busy.gform2Singular(indis)
-with open('indisponibilitats-oneshot.conf', 'w') as f:
+with open('oneshot.conf', 'w') as f:
 	for singular in singulars:
 		line = busy.formatItem(singular)
 		print (line)
