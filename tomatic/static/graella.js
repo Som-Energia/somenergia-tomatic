@@ -641,8 +641,9 @@ var editAvailability = function(receivedData) {
 			data.weekday === undefined ?
 				m(DatePicker, {
 					date: Date.parse(data.date),
-					onChange: function(newDate) {
-						data.date=newDate+'';
+					onchange: function(newDate) {
+						data.date=newDate.toISOString().substr(0,10)+'';
+						console.debug("date:",data.date);
 					},
 					locale: 'ca',
 					weekstart: 1,
