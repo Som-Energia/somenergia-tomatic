@@ -413,7 +413,7 @@ class BusyTest(unittest.TestCase):
 			u"+someone dm 1111 # La razón\n"
 			)
 
-	def test_filterPerson_withOtherPerson(self):
+	def test_filterPerson_withOtherPerson_passes(self):
 		original = [
 			ns(
 				person='someone',
@@ -425,6 +425,19 @@ class BusyTest(unittest.TestCase):
 			]
 		result = busy.filterPerson('other', original)
 		self.assertNsEqual(ns(d=result), ns(d=original))
+
+	def test_filterPerson_withSamePerson_filters(self):
+		original = [
+			ns(
+				person='someone',
+				weekday='dm',
+				turns='1111',
+				reason=u'La razón',
+				optional=False,
+				),
+			]
+		result = busy.filterPerson('someone', original)
+		self.assertNsEqual(ns(d=result), ns(d=[]))
 
 
 # vim: noet ts=4 sw=4

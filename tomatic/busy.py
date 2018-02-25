@@ -141,7 +141,11 @@ def personBusyness(person, entries, extra):
 	return result
 
 def filterPerson(person, entries):
-	return entries
+	return [
+		entry
+		for entry in entries
+		if entry.person is not person
+		]
 
 def busy(person):
 	config = ns.load('config.yaml')
