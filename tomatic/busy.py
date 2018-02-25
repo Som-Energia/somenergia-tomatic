@@ -147,6 +147,12 @@ def filterPerson(person, entries):
 		if entry.person is not person
 		]
 
+def personalize(person, entries):
+	return [
+		ns(entry, person=person)
+		for entry in entries
+	]
+
 def busy(person):
 	config = ns.load('config.yaml')
 	errors = []

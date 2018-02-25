@@ -440,4 +440,44 @@ class BusyTest(unittest.TestCase):
 		self.assertNsEqual(ns(d=result), ns(d=[]))
 
 
+	def test_personalizeBusy_single(self):
+		entries = [
+			ns(
+				weekday='dm',
+				turns='1111',
+				reason=u'La razón',
+				optional=False,
+				),
+			]
+		result=busy.personalize('someone', entries)
+		self.assertNsEqual(
+			ns(d=result),
+			ns(d=[
+				ns(result[0], person='someone'),
+			]))
+
+	def test_personalizeBusy_many(self):
+		entries = [
+			ns(
+				weekday='dl',
+				turns='1111',
+				reason=u'La razón',
+				optional=False,
+				),
+			ns(
+				weekday='dm',
+				turns='1111',
+				reason=u'Otra razón',
+				optional=False,
+				),
+			]
+		result=busy.personalize('someone', entries)
+		self.assertNsEqual(
+			ns(d=result),
+			ns(d=[
+				ns(result[0], person='someone'),
+				ns(result[1], person='someone'),
+			]))
+
+
 # vim: noet ts=4 sw=4
