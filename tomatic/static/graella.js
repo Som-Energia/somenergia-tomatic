@@ -624,7 +624,6 @@ var editAvailability = function(receivedData, updateCallback) {
 						dx: 'Dimecres',
 						dj: 'Dijous',
 						dv: 'Divendres',
-						//undefined: 'Dia concret',
 					},
 					onChange: function(ev) {
 						data.weekday = ev.target.value;
@@ -639,7 +638,7 @@ var editAvailability = function(receivedData, updateCallback) {
 					floatingLabel: true,
 					help: 'Especifica la data concreta de la indisponibilitat',
 					required: true,
-					valiate: function(value) {
+					validate: function(value) {
 						console.debug("Validating: ", value);
 						if (!isNaN(Date.parse(value))) {return {valid: true};}
 						return {
@@ -712,7 +711,6 @@ var editAvailabilities = function(name) {
 			id: 'BusyListEditor',
 			title: 'Edita indisponibilitats '+Tomatic.formatName(name),
 			body: [
-				"TODO: Els canvis no tenen efecte!",
 				m('.busylist', [
 					m(BusyList, {
 						title: 'Setmanals',
