@@ -684,7 +684,7 @@ var editAvailability = function(receivedData, updateCallback) {
 		],
 		footer: [
 			m(Button, {
-				label: "Acepta",
+				label: "Accepta",
 				events: {
 					onclick: function() {
 						updateCallback(data);
@@ -726,7 +726,7 @@ var editAvailabilities = function(name) {
 			],
 			footer: [
 				m(Button, {
-					label: "Acepta",
+					label: "Accepta",
 					events: {
 						onclick: function() {
 							// TODO: Send new busy data to the API
@@ -806,7 +806,7 @@ var editPerson = function(name) {
 		],
 		footer: [
 			m(Button, {
-				label: "Acepta",
+				label: "Accepta",
 				events: {
 					onclick: function() {
 						setDataOnTomatic(name, data);

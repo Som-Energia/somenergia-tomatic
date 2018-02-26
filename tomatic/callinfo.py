@@ -60,7 +60,7 @@ class CallInfo(object):
                 email = self.anonymize(partner_data.www_email),
                 provincia = partner_data.www_provincia[1]['name'],
                 )
-            partner_result.update(self.polisseInfo(partner_data.polisses_ids))            
+            partner_result.update(self.polisseInfo(partner_data.polisses_ids))
             partner_block = ns()
             partner_block[self.anonymize(partner_data.name)] = partner_result
             result.partners.append(partner_block)
