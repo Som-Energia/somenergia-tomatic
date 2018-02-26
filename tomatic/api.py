@@ -215,6 +215,17 @@ def setPersonInfo(person):
     )
     return yamlfy(persons=result)
 
+@app.route('/api/busy/<person>', methods=['GET'])
+def busy(person):
+    import busy
+    return yamlfy(**busy.busy(person))
+
+@app.route('/api/busy/<person>', methods=['POST'])
+def busy_post(person):
+    import busy
+    data = ns.loads(request.data)
+    return yamlfy(**busy.update_busy(person, data))
+
 
 def yamlfy(status=200, data=[], **kwd):
     return Response(ns(

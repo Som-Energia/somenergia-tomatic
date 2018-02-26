@@ -20,7 +20,12 @@ function triplet2hex(triplet) {
 	}
 	return rgb;
 }
-
+function contrast(hexrgb) {
+	var cs = hex2triplet(hexrgb);
+	return cs.reduce(function(c,a) {
+		return c+a;
+	}, 0)/3 > 127? 'black':'white';
+}
 function luminance(hex, lum) {
 	var triplet = hex2triplet(hex);
 	lum = lum || 0;
@@ -32,4 +37,5 @@ module.exports = {
 	luminance: luminance,
 	triplet2hex: triplet2hex,
 	hex2triplet: hex2triplet,
+	contrast: contrast,
 };

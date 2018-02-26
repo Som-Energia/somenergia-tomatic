@@ -1,35 +1,33 @@
 module.exports = function() {
 
 var m = require('mithril');
-var Button = require('polythene/button/button');
+var RaisedButton = require('polythene-mithril-raised-button').RaisedButton;
 var jsyaml = require('js-yaml');
 
 var Uploader = {
-	controller: function(args) {
-		var c = {};
+	oninit: function(vnode) {
+		var c = vnode.state;
 		c.uploadFile = function(ev) {
 			var formData = new FormData;
-			formData.append(args.name || "file", ev.target.files[0]);
+			formData.append(vnode.attrs.name || "file", ev.target.files[0]);
 			m.request({
 				method: "POST",
-				url: args.url,
+				url: vnode.attrs.url,
 				data: formData,
 				serialize: function(value) {return value},
 				deserialize: jsyaml.load,
-			}).then(args.onupload, args.onerror);
+			}).then(vnode.attrs.onupload, vnode.attrs.onerror);
 		};
-		return c;
 	},
-	view: function(c, args) {
+	view: function(vnode) {
 		return m('.uploader',
 			m('label', [
 				m('input[type="file"]', {
-					onchange: c.uploadFile.bind(c),
-					accept: args.mimetype || "application/x-yaml",
+					onchange: vnode.state.uploadFile.bind(vnode.state),
+					accept: vnode.attrs.mimetype || "application/x-yaml",
 				}),
-				m.component(Button, {
-					raised: true,
-					label: args.label || 'Upload a file...',
+				m(RaisedButton, {
+					label: vnode.attrs.label || 'Upload a file...',
 				}),
 			])
 		);
@@ -38,4 +36,4 @@ var Uploader = {
 return Uploader;
 }();
 
-
+// vim: noet ts=4 sw=4
