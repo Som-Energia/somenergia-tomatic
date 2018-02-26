@@ -89,7 +89,7 @@ randomColors: false
 colors:
   marc: fbe8bc
   eduard: d8b9c5
-  pere: f20aa3
+  pere: f200ff
   david: ffb300
   carles: c98e98
   marta: eb9481
@@ -138,10 +138,10 @@ extensions:
   eduard: 3045
   marc: 3046
   judit: 3047
-  tania: 3001
+  tania: '3183'
   carles: 3051
   pere: 3052
-  fran: 3053
+  fran: 3008
   david: 3054
   silvia: 3055
   joan: 3056
@@ -162,7 +162,6 @@ extensions:
   viktu: 3006
   albert: 3038
   oriol: 3007
-  fran: 3008
   miguelanxo: 3194
   belen: '3191'
   fcasadella: 3002
