@@ -218,7 +218,7 @@ def checkEntry(kind, entry):
 			.format(4, entry.turns))
 
 	if not entry.reason.strip():
-		raise Exception("Empty reason")
+		raise Exception("No heu indicat el motiu de la indisponibilitat")
 
 def update_busy(person, data):
 	"""API Entry point to update person's busy"""
@@ -240,10 +240,10 @@ def update_busy(person, data):
 	except Exception as e:
 		print e, entry
 		return ns(
-			status='error',
-			error=format(e),
+			result='error',
+			message=format(e),
 			)
-	return ns(status='ok')
+	return ns(result='ok')
 
 
 # vim: noet ts=4 sw=4

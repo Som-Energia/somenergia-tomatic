@@ -252,7 +252,7 @@ Tomatic.error = function(message) {
 		containerSelector: '#snackbar',
 		title: message,
 		className: 'error',
-		timeout: 20,
+		timeout: 10,
 	});
 };
 
@@ -406,6 +406,13 @@ const toolbarRow = function(title) {
 	]);
 }
 
+function nextMonday() {
+	// TODO: Review this
+	var d = new Date();
+	d.setDate(d.getDate() + 7 + (8-d.getDay()));
+	return d.toISOString().substr(0,10);
+}
+
 var BusyList = {
 	view: function(vnode, attrs) {
 		return m('',[
@@ -422,13 +429,14 @@ var BusyList = {
 								onclick: function () {
 									var newEntry = {
 										weekday: vnode.attrs.isOneShot?undefined:'',
-										date: vnode.attrs.isOneShot?'YYYY-MM-DD':undefined,
+										date: vnode.attrs.isOneShot?nextMonday():undefined,
 										reason: '',
-										optional: false,
+										optional: true,
 										turns: '1111',
 									};
-									vnode.attrs.entries.push(newEntry);
-									editAvailability(newEntry);
+									editAvailability(newEntry, function(entry) {
+										vnode.attrs.entries.push(entry);
+									});
 								},
 							}
 						}),
@@ -455,6 +463,7 @@ var BusyList = {
 								compact: true,
 								wash: true,
 								class: 'colored',
+								enable: false,
 								events: {
 									onclick: function() {
 										vnode.attrs.entries.splice(index, 1);
@@ -465,7 +474,9 @@ var BusyList = {
 						},
 						events: {
 							onclick: function() {
-								editAvailability(entry);
+								editAvailability(entry, function(modifiedEntry) {
+									Object.assign(entry, modifiedEntry);
+								});
 							},
 						},
 					});
@@ -485,15 +496,15 @@ Tomatic.sendBusyData = function(name, data) {
 		data: data,
 		deserialize: jsyaml.load,
 	}).then(function(response){
-		console.debug("Busy Response: ",response);
-		if (response.status=='ok') { return; }
+		console.debug("Busy POST Response: ",response);
+		if (response.result==='ok') { return; }
 		console.debug('apicall failed:', response.error);
 		Tomatic.error("Problemes desant les indisponibilitats: "+
-			(response.error));
+			(response.message));
 	}, function(error) {
-		console.debug('apicall failed:', error);
+		console.debug('Busy POST apicall failed:', error);
 		Tomatic.error("Problemes desant les indisponibilitats: "+
-			(error.name || "Inexperat"));
+			(error || "Inexperat"));
 	});
 };
 
@@ -504,12 +515,16 @@ Tomatic.retrieveBusyData = function(name, callback) {
 		url: '/api/busy/'+name,
 		deserialize: jsyaml.load,
 	}).then(function(response){
-		console.debug("Busy Response: ",response);
+		console.debug("Busy GET Response: ",response);
 		callback(response);
+		if (response.errors && response.errors.lenght ) {
+			Tomatic.error("Problemes carregant a les indisponibilitats:\n"+
+				response.errors.join("\n"));
+		}
 	}, function(error) {
-		console.debug('apicall failed:', error);
+		console.debug('Busy GET apicall failed:', error);
 		Tomatic.error("Problemes carregant a les indisponibilitats: "+
-			(error.name || "Inexperat"));
+			(error || "Inexperat"));
 	});
 };
 Tomatic.retrieveBusyDataFake = function(name, callback) {
@@ -560,7 +575,7 @@ Tomatic.retrieveBusyDataFake = function(name, callback) {
 	},1000);
 };
 
-var editAvailability = function(receivedData) {
+var editAvailability = function(receivedData, updateCallback) {
 	var data = Object.assign({}, receivedData);
 	Dialog.show(function () { return {
 		id: 'BusyEditor',
@@ -616,6 +631,7 @@ var editAvailability = function(receivedData) {
 						data.weekday = ev.target.value;
 					},
 				}):[],
+			/*
 			data.weekday === undefined ?
 				m(Textfield, {
 					label: 'Data',
@@ -624,20 +640,21 @@ var editAvailability = function(receivedData) {
 					floatingLabel: true,
 					help: 'Especifica la data concreta de la indisponibilitat',
 					required: true,
-					validate: function(value) {
-						if (!isNaN(Date.parse(value))) {return;}
+					valiate: function(value) {
+						console.debug("Validating: ", value);
+						if (!isNaN(Date.parse(value))) {return {valid: true};}
 						return {
 							valid: false,
 							error: 'Data en format ISO YYYY-MM-DD',
 						};
 					},
 					value: data.date,
-					events: {
-						onchange: function(ev) {
-							data.date=ev.target.value;
-						},
+					onChange: function(state) {
+						console.debug("Changing date:",data.date, "->", state.value);
+						data.date=state.value;
 					},
 				}):[],
+			*/
 			data.weekday === undefined ?
 				m(DatePicker, {
 					date: Date.parse(data.date),
@@ -669,16 +686,16 @@ var editAvailability = function(receivedData) {
 		],
 		footer: [
 			m(Button, {
-				label: "Ok",
+				label: "Acepta",
 				events: {
 					onclick: function() {
-						Object.assign(receivedData, data);
+						updateCallback(data);
 						Dialog.hide({id:'BusyEditor'});
 					},
 				},
 			}),
 			m(Button, {
-				label: "Cancel",
+				label: "Cancel·la",
 				events: {
 					onclick: function() {
 						Dialog.hide({id:'BusyEditor'});
@@ -711,7 +728,7 @@ var editAvailabilities = function(name) {
 			],
 			footer: [
 				m(Button, {
-					label: "Ok",
+					label: "Acepta",
 					events: {
 						onclick: function() {
 							// TODO: Send new busy data to the API
@@ -791,7 +808,7 @@ var editPerson = function(name) {
 		],
 		footer: [
 			m(Button, {
-				label: "Ok",
+				label: "Acepta",
 				events: {
 					onclick: function() {
 						setDataOnTomatic(name, data);

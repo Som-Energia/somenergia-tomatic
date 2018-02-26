@@ -750,7 +750,7 @@ class BusyTest(unittest.TestCase):
 				optional=True,
 				))
 		self.assertEqual(format(ctx.exception),
-			"Empty reason")
+			"No heu indicat el motiu de la indisponibilitat")
 
 	def test_checkEntry_badTurns(self):
 		with self.assertRaises(Exception) as ctx:
