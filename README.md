@@ -134,7 +134,7 @@ Create a link named 'certificate.json' pointing to the actual certificate.
 # TODO's
 
 - Busy:
-	- Disable ok until all fields are valid
+	- [x] Disable ok until all fields are valid
 	- [x] If cancel remove items
 	- [x] Poner el nombre de personas en el dialogo
 	- Default date next monday

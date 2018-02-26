@@ -463,7 +463,6 @@ var BusyList = {
 								compact: true,
 								wash: true,
 								class: 'colored',
-								enable: false,
 								events: {
 									onclick: function() {
 										vnode.attrs.entries.splice(index, 1);
@@ -693,6 +692,7 @@ var editAvailability = function(receivedData, updateCallback) {
 						Dialog.hide({id:'BusyEditor'});
 					},
 				},
+				disabled: !data.reason,
 			}),
 			m(Button, {
 				label: "Cancel·la",
