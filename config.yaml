@@ -55,13 +55,13 @@ taules:
   maite: 3
   erola: 4
   sergi: 4
-  judit: 6
+  judit: 1
   joanb: 4
   marta: 5
   yaiza: 7
   victor: 8
   silvia: 9
-  ana: 6
+  ana: 0
   gabriel: 6
   manel: 7
   tania: 7
@@ -76,7 +76,7 @@ taules:
   fran: 2
   miguelanxo: 9
   belen: 9
-  fcasadella: 0
+  fcasadella: 10
   gijsbert: 9
   nuri: 9
   fcots: 8
@@ -137,7 +137,7 @@ extensions:
   yaiza: 3044
   eduard: 3045
   marc: 3046
-  judit: 3047
+  judit: '3047'
   tania: '3183'
   carles: 3051
   pere: 3052
@@ -146,9 +146,8 @@ extensions:
   silvia: 3055
   joan: 3056
   judith: 3057
-  ana: 3181
+  ana: '3181'
   victor: 3182
-  #jordi: 3183
   lucia: 3184
   vic: 3185
   sergi: 3186
@@ -164,7 +163,7 @@ extensions:
   oriol: 3007
   miguelanxo: 3194
   belen: '3191'
-  fcasadella: 3002
+  fcasadella: '3002'
   gijsbert: 3003
   nuri: 3004
   fcots: 3005
