@@ -219,7 +219,7 @@ var BusyList = {
 										date: vnode.attrs.isOneShot?nextMonday():undefined,
 										reason: '',
 										optional: true,
-										turns: '1111',
+										turns: '0000',
 									};
 									editAvailability(newEntry, function(entry) {
 										vnode.attrs.entries.push(entry);
