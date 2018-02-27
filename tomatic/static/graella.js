@@ -7,6 +7,7 @@ var Snackbar = require('polythene-mithril-snackbar').Snackbar;
 var Button = require('polythene-mithril-button').Button;
 var Dialog = require('polythene-mithril-dialog').Dialog;
 var Checkbox = require('polythene-mithril-checkbox').Checkbox;
+var RadioGroup = require('polythene-mithril-radio-group').RadioGroup;
 var RadioButton = require('polythene-mithril-radio-button').RadioButton;
 var List = require('polythene-mithril-list').List;
 var ListTile = require('polythene-mithril-list-tile').ListTile;
@@ -284,6 +285,7 @@ var editAvailability = function(receivedData, updateCallback) {
 			m(Textfield, {
 				label: 'Motiu',
 				floatingLabel: true,
+				autofocus: 1,
 				help: 'Explica el motiu, com a referència',
 				required: true,
 				value: data.reason,
@@ -291,28 +293,36 @@ var editAvailability = function(receivedData, updateCallback) {
 					data.reason=state.value;
 				},
 			}),
-			m('', [
-				m('label[for=optional]', "Es pot descartar si estem apurats?"),
-				m('.layout', [
-					m(RadioButton, {
-						class: 'flex',
+			m('.pe-textfield.pe-textfield--dirty.pe-textfield--floating-label', [
+				m('.pe-textfield__input-area', [
+					m('label[for=optional].pe-textfield__label',
+						"Opcional?"),
+					m(RadioGroup, {
 						name: 'optional',
-						label: 'Sí',
-						checked: data.optional,
+						id: 'optional',
 						onChange: function(state) {
-							data.optional = true;
+							data.optional = state.value;
 						},
-					}),
-					m(RadioButton, {
-						class: 'flex',
-						name: 'optional',
-						label: 'No',
-						checked: !data.optional,
-						onChange: function(state) {
-							data.optional = false;
+						className: 'layout.pe-textfield__input',
+						all: {
+							className: 'flex',
 						},
+						buttons: [
+							{
+								label: 'Sí',
+								value: true,
+								checked: data.optional,
+							},
+							{
+								label: 'No',
+								value: false,
+								checked: !data.optional,
+							},
+						],
 					}),
-				]),
+					m('.pe-textfield__help',
+						"Es pot descartar si estem apurats?"),
+				])
 			]),
 			data.weekday !== undefined ?
 				m(Select, {

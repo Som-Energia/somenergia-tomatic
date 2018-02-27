@@ -142,6 +142,7 @@ Create a link named 'certificate.json' pointing to the actual certificate.
 	- [x] If cancel remove items
 	- [x] Poner el nombre de personas en el dialogo
 	- [x] Save changes as they are done
+	- [x] Reason field not clear a field
 	- Mejorar el selector de fecha
 	- Revisar default date next monday
 	- ESC en el busy entry editor cierra los dos dialogos
@@ -149,6 +150,7 @@ Create a link named 'certificate.json' pointing to the actual certificate.
 	- Filter out old oneshot entries
 - Person:
 	- Disable ok until all fields are valid
+	- Check extension not taken already
 - Move config data to its own private repo
 - Commit interactive changes to config files
 - Callinfo
