@@ -6,8 +6,7 @@ from tomatic.scheduling import choosers, Scheduling
 import dbconfig
 import sys
 import click
-
-__version__='1.2.0'
+from tomatic import __version__
 
 def table(data):
 	return '\n'.join('\t'.join(str(c) for c in row) for row in data)

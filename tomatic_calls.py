@@ -29,7 +29,7 @@ db.bind(*args.args, **args.kwds)
 
 import click
 
-__version__='1.2.0'
+from tomatic import __version__
 
 @click.group()
 @click.help_option()

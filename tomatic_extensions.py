@@ -7,8 +7,7 @@ import dbconfig
 import sys
 import click
 from yamlns import namespace as ns
-
-__version__='1.2.0'
+from tomatic import __version__
 
 def table(data):
 	return u'\n'.join(u'\t'.join(unicode(c) for c in row) for row in data)

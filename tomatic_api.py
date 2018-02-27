@@ -5,9 +5,11 @@ from tomatic.api import app, pbx
 import click
 import dbconfig
 from consolemsg import warn
+from tomatic import __version__
 
 @click.command()
 @click.help_option()
+@click.version_option(__version__)
 
 @click.option('--fake',
     is_flag=True,
