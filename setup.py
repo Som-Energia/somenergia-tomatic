@@ -2,12 +2,12 @@
 # -*- encoding: utf8 -*-
 
 from setuptools import setup
-
+from tomatic import __version__
 readme = open("README.rst").read()
 
 setup(
     name = "tomatic",
-    version = "2.0",
+    version = __version__,
     description = "Phone turns scheduler and shifter",
     author = "David García Garzón",
     author_email = "david.garcia@somenergia.coop",
