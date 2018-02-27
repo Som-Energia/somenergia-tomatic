@@ -294,9 +294,9 @@ var QueueWidget = {
 							}
 						}),
 					],
-					footer: [
+					footerButtons: [
 						m(Button, {
-							label: "Cancel·la",
+							label: "Tanca",
 							events: {
 								onclick: function() {
 									Dialog.hide({id: 'QueuePersonPicker'});
@@ -436,6 +436,7 @@ var BusyList = {
 									};
 									editAvailability(newEntry, function(entry) {
 										vnode.attrs.entries.push(entry);
+										vnode.attrs.onChange && vnode.attrs.onChange();
 									});
 								},
 							}
@@ -467,6 +468,7 @@ var BusyList = {
 									onclick: function() {
 										vnode.attrs.entries.splice(index, 1);
 										console.log(vnode.attrs.entries);
+										vnode.attrs.onChange && vnode.attrs.onChange();
 									},
 								},
 							}),
@@ -475,6 +477,7 @@ var BusyList = {
 							onclick: function() {
 								editAvailability(entry, function(modifiedEntry) {
 									Object.assign(entry, modifiedEntry);
+									vnode.attrs.onChange && vnode.attrs.onChange();
 								});
 							},
 						},
@@ -682,7 +685,7 @@ var editAvailability = function(receivedData, updateCallback) {
 				}));
 			}),
 		],
-		footer: [
+		footerButtons: [
 			m(Button, {
 				label: "Accepta",
 				events: {
@@ -716,29 +719,25 @@ var editAvailabilities = function(name) {
 						title: 'Setmanals',
 						entries: data.weekly,
 						isOneShot: false,
+						onChange: function() {
+							console.log("Updating data:\n",data);
+							Tomatic.sendBusyData(name, data);
+						},
 					}),
 					m(BusyList, {
 						title: 'Puntuals',
 						entries: data.oneshot,
 						isOneShot: true,
+						onChange: function() {
+							console.log("Updating data:\n",data);
+							Tomatic.sendBusyData(name, data);
+						},
 					}),
 				]),
 			],
-			footer: [
+			footerButtons: [
 				m(Button, {
-					label: "Accepta",
-					events: {
-						onclick: function() {
-							// TODO: Send new busy data to the API
-							//Tomatic.setBusyData(name, data);
-							console.log("Final data:\n",data);
-							Tomatic.sendBusyData(name, data);
-							Dialog.hide({id:'BusyListEditor'});
-						},
-					},
-				}),
-				m(Button, {
-					label: "Cancel·la",
+					label: "Tanca",
 					events: {
 						onclick: function() {
 							Dialog.hide({id:'BusyListEditor'});
@@ -804,7 +803,7 @@ var editPerson = function(name) {
 		body: [
 			m(PersonEditor, data),
 		],
-		footer: [
+		footerButtons: [
 			m(Button, {
 				label: "Accepta",
 				events: {
@@ -918,7 +917,7 @@ var Grid = function(grid) {
 					nobodyPickable: true,
 				}),
 			],
-			footer: [
+			footerButtons: [
 				m(Button, {
 					label: "Cancel·la",
 					events: {
