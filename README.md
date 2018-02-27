@@ -143,8 +143,8 @@ Create a link named 'certificate.json' pointing to the actual certificate.
 	- [x] Poner el nombre de personas en el dialogo
 	- [x] Save changes as they are done
 	- [x] Reason field not clear a field
+	- [x] Revisar default date next monday
 	- Mejorar el selector de fecha
-	- Revisar default date next monday
 	- ESC en el busy entry editor cierra los dos dialogos
 	- Sort busy entries on file
 	- Filter out old oneshot entries

@@ -193,10 +193,9 @@ const toolbarRow = function(title) {
 	]);
 }
 
-function nextMonday() {
-	// TODO: Review this
-	var d = new Date();
-	d.setDate(d.getDate() + 7 + (8-d.getDay()));
+function nextMonday(date) {
+	var d = d || new Date();
+	d.setDate(d.getDate() + 14 - (6+d.getDay())%7);
 	return d.toISOString().substr(0,10);
 }
 
