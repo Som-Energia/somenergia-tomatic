@@ -94,22 +94,6 @@ def baixaDades(config, certificat) :
 				holidaysfile.write("{} {} # vacances\n".format(name, day))
 
 
-	step("Baixant altres indisponibilitats setmanals...")
-
-	step("  Baixant el full '{}'...".format(config.fullIndisponibilitats))
-	indis = fetcher.get_fullsheet(config.fullIndisponibilitats)
-	step("  Guardant indisponibilitats setmanals a 'indisponibilitats-setmana.conf'...")
-	with open('indisponibilitats-setmana.conf','w') as indisfile:
-		singulars = busy.gform2Singular(indis)
-		weeklyOnes = busy.onWeek(config.monday, singulars)
-		try:
-			for weeklyOne in weeklyOnes:
-				line = busy.formatItem(weeklyOne)
-				indisfile.write(line)
-		except busy.GFormError as e:
-			fail(format(e))
-
-
 class Backtracker:
 	class ErrorConfiguracio(Exception): pass
 
@@ -136,6 +120,7 @@ class Backtracker:
 		self.caselles = list(xproduct(self.dies, range(self.nhours), range(self.ntelefons)))
 		self.topesDiaris = self.llegeixTopesDiaris(self.companys)
 		self.disponible = self.initBusyTable(
+			'oneshot.conf',
 			*glob.glob('indisponibilitats*.conf'))
 
 		def createTable(defaultValue, *iterables) :
@@ -253,7 +238,9 @@ class Backtracker:
 					"{}:{}".format(filename, msg))
 
 			with open(filename) as thefile:	
-				for entry in busy.parseBusy(thefile, errorHandler):
+				allentries = busy.parseBusy(thefile, errorHandler)
+				thisweekentries = busy.onWeek(self.config.monday, allentries)
+				for entry in thisweekentries:
 					for hora, isBusy in enumerate(entry.turns):
 						if isBusy!='1': continue
 						weekdays = [entry.weekday] if entry.weekday else self.dies
