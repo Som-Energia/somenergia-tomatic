@@ -71,6 +71,7 @@ var QueueWidget = {
 				Dialog.show({
 					id: 'QueuePersonPicker',
 					title: 'Obre una nova línia amb:',
+					backdrop: true,
 					body: [
 						m(PersonPicker, {
 							id:'QueuePersonPicker',
@@ -281,6 +282,7 @@ var editAvailability = function(receivedData, updateCallback) {
 	Dialog.show(function () { return {
 		id: 'BusyEditor',
 		title: 'Edita indisponibilitat',
+		backdrop: true,
 		body: [
 			m(Textfield, {
 				label: 'Motiu',
@@ -421,6 +423,7 @@ var editAvailabilities = function(name) {
 		Dialog.show(function () { return {
 			id: 'BusyListEditor',
 			title: 'Edita indisponibilitats '+Tomatic.formatName(name),
+			backdrop: true,
 			body: [
 				m('.busylist', [
 					m(BusyList, {
@@ -508,6 +511,7 @@ var editPerson = function(name) {
 	});
 	Dialog.show(function() { return {
 		title: 'Edita dades de la persona '+Tomatic.formatName(name),
+		backdrop: true,
 		body: [
 			m(PersonEditor, data),
 		],
@@ -612,6 +616,7 @@ var Grid = function(grid) {
 		Dialog.show({
 			id: 'GridCellEditor',
 			title: 'Edita posició de la graella',
+			backdrop: true,
 			body: [
 				Tomatic.weekday(day) +' a les '+
 					Tomatic.grid().hours[houri] +
