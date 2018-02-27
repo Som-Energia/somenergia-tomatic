@@ -133,16 +133,35 @@ Create a link named 'certificate.json' pointing to the actual certificate.
 
 # TODO's
 
+
+- Scheduler:
+	- Do not read busy entries from gdrive, just holidays and load
 - Quitar segundo return del Panel
 - Busy:
 	- [x] Disable ok until all fields are valid
 	- [x] If cancel remove items
 	- [x] Poner el nombre de personas en el dialogo
+	- [x] Save changes as they are done
 	- Mejorar el selector de fecha
 	- Revisar default date next monday
 	- ESC en el busy entry editor cierra los dos dialogos
 - Person:
 	- Disable ok until all fields are valid
+- Callinfo
+	- Simplify yaml structure
+	- Refactor tests
+	- Link in a new window to helpscout last emails
+	- Missing field:
+		- contract number
+		- contract address
+		- contract persons (payer, owner, host)
+			- Email and helpscout link
+			- DNI
+			- Phone
+	- Alerts:
+		- Delayed invoicing
+		- Pending or recent ATR cases
+		- Unpaid invoices
 
 
 
