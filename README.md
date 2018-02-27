@@ -145,8 +145,12 @@ Create a link named 'certificate.json' pointing to the actual certificate.
 	- Mejorar el selector de fecha
 	- Revisar default date next monday
 	- ESC en el busy entry editor cierra los dos dialogos
+	- Sort busy entries on file
+	- Filter out old oneshot entries
 - Person:
 	- Disable ok until all fields are valid
+- Move config data to its own private repo
+- Commit interactive changes to config files
 - Callinfo
 	- Simplify yaml structure
 	- Refactor tests
