@@ -72,6 +72,9 @@ def onWeek(monday, singularBusies):
 	"""
 	sunday = monday+datetime.timedelta(days=6)
 	for b in singularBusies:
+		if 'weekday' in b:
+			yield b
+			continue
 		if b.date < monday: continue
 		if b.date > sunday: continue
 		weekday = u'dl dm dx dj dv ds dg'.split()[b.date.weekday()]

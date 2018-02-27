@@ -170,6 +170,14 @@ class BusyTest(unittest.TestCase):
 		self.assertBusyListEqual(list(sequence), [
 		])
 
+	def test_onWeek_weekdayPasses(self):
+		sequence = busy.onWeek(isodate('2018-01-01'), [
+			self.tupleToNs('F','maria', 'dl', '1101', u'reunió POL'),
+			])
+		self.assertBusyListEqual(list(sequence), [
+			('F', 'maria', u'dl', '1101', u'reunió POL'),
+			])
+
 
 	def test_parseBusy_whenEmpty(self):
 		lines = [
