@@ -140,12 +140,12 @@ class BusyTest(unittest.TestCase):
 			('F', 'maria', u'dl', '1101', u'reuni\xf3 POL'),
 		])
 
-	def test_onWeek_oneOnSunday(self):
+	def test_onWeek_oneOnFriday(self):
 		sequence = busy.onWeek(isodate('2018-01-01'), [
-			self.tupleToNs('F','maria', isodate('2018-01-07'), '1101', u'reunió POL'),
+			self.tupleToNs('F','maria', isodate('2018-01-05'), '1101', u'reunió POL'),
 			])
 		self.assertBusyListEqual(list(sequence), [
-			('F','maria', u'dg', '1101', u'reuni\xf3 POL'),
+			('F','maria', u'dv', '1101', u'reuni\xf3 POL'),
 		])
 
 	def test_onWeek_optional(self):
@@ -165,7 +165,7 @@ class BusyTest(unittest.TestCase):
 
 	def test_onWeek_lateDateIgnored(self):
 		sequence = busy.onWeek(isodate('2018-01-01'), [
-			self.tupleToNs('F','maria', isodate('2018-01-08'), '1101', u'reunió POL'),
+			self.tupleToNs('F','maria', isodate('2018-01-06'), '1101', u'reunió POL'),
 			])
 		self.assertBusyListEqual(list(sequence), [
 		])

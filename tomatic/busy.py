@@ -12,6 +12,9 @@ def open(*args, **kwd):
 
 class GFormError(Exception): pass
 
+nturns = 4
+weekdays = 'dl dm dx dj dv'.split()
+
 # TODO: Move it to a utility module and test it
 def transliterate(word):
 	word=unicode(word).lower()
@@ -70,14 +73,14 @@ def onWeek(monday, singularBusies):
 	filters outs the ones outside the week starting
 	on monday, and turns the date into a weekday.
 	"""
-	sunday = monday+datetime.timedelta(days=6)
+	friday = monday+datetime.timedelta(days=4)
 	for b in singularBusies:
 		if 'weekday' in b:
 			yield b
 			continue
 		if b.date < monday: continue
-		if b.date > sunday: continue
-		weekday = u'dl dm dx dj dv ds dg'.split()[b.date.weekday()]
+		if b.date > friday: continue
+		weekday = weekdays[b.date.weekday()]
 		result = ns(b, weekday = weekday)
 		del result.date
 		yield result
@@ -94,8 +97,6 @@ def parseBusy(lines, errorHandler=None):
 	def error(msg):
 		raise Exception(msg)
 	if errorHandler: error = errorHandler
-	nturns = 4
-	weekdays = 'dl dm dx dj dv'.split()
 	for i, l in enumerate(lines,1):
 		if not l.strip(): continue
 		row, comment = l.split('#',1) if '#' in l else (l,'')
@@ -214,11 +215,11 @@ def checkEntry(kind, entry):
 			"Invalid type '{}' for field 'reason'"
 			.format(type(entry.reason).__name__))
 
-	if len(entry.turns) != 4 or not all(x in '01' for x in entry.turns):
+	if len(entry.turns) != nturns or not all(x in '01' for x in entry.turns):
 		raise Exception(
 			"Attribute 'turns' should be a text with {} ones or zeroes, "
 			"but was '{}'"
-			.format(4, entry.turns))
+			.format(nturns, entry.turns))
 
 	if not entry.reason.strip():
 		raise Exception("No heu indicat el motiu de la indisponibilitat")
