@@ -277,22 +277,26 @@ var BusyList = {
 	},
 };
 
-var editAvailability = function(receivedData, updateCallback) {
-	var data = Object.assign({}, receivedData);
-	Dialog.show(function () { return {
-		id: 'BusyEditor',
-		title: 'Edita indisponibilitat',
-		backdrop: true,
-		body: [
+var BusyEntryEditor = {
+	oncreate: function(vnode) {
+		// TODO: Focus on Motiu
+		console.debug(vnode.children);
+	},
+	oninit: function(vnode) {
+		vnode.state.busy = vnode.attrs.busy;
+	},
+	view: function(vnode) {
+		var busy = vnode.attrs.busy;
+		return m('.busyentryeditor', [
 			m(Textfield, {
 				label: 'Motiu',
 				floatingLabel: true,
 				autofocus: 1,
 				help: 'Explica el motiu, com a referència',
 				required: true,
-				value: data.reason,
+				value: busy.reason,
 				onChange: function(state) {
-					data.reason=state.value;
+					busy.reason=state.value;
 				},
 			}),
 			m('.pe-textfield.pe-textfield--dirty.pe-textfield--floating-label', [
@@ -303,7 +307,7 @@ var editAvailability = function(receivedData, updateCallback) {
 						name: 'optional',
 						id: 'optional',
 						onChange: function(state) {
-							data.optional = state.value;
+							busy.optional = state.value;
 						},
 						className: 'layout.pe-textfield__input',
 						all: {
@@ -313,12 +317,12 @@ var editAvailability = function(receivedData, updateCallback) {
 							{
 								label: 'Sí',
 								value: true,
-								checked: data.optional,
+								checked: busy.optional,
 							},
 							{
 								label: 'No',
 								value: false,
-								checked: !data.optional,
+								checked: !busy.optional,
 							},
 						],
 					}),
@@ -326,10 +330,10 @@ var editAvailability = function(receivedData, updateCallback) {
 						"Es pot descartar si estem apurats?"),
 				])
 			]),
-			data.weekday !== undefined ?
+			busy.weekday !== undefined ?
 				m(Select, {
 					label: 'Dia de la setmana',
-					value: data.weekday,
+					value: busy.weekday,
 					options: {
 						'': 'Tots els dies',
 						dl: 'Dilluns',
@@ -339,11 +343,11 @@ var editAvailability = function(receivedData, updateCallback) {
 						dv: 'Divendres',
 					},
 					onChange: function(ev) {
-						data.weekday = ev.target.value;
+						busy.weekday = ev.target.value;
 					},
 				}):[],
 			/*
-			data.weekday === undefined ?
+			busy.weekday === undefined ?
 				m(Textfield, {
 					label: 'Data',
 					pattern: '20[0-9]{2}-[01][0-9]-[0-3][0-9]$',
@@ -359,52 +363,64 @@ var editAvailability = function(receivedData, updateCallback) {
 							error: 'Data en format ISO YYYY-MM-DD',
 						};
 					},
-					value: data.date,
+					value: busy.date,
 					onChange: function(state) {
-						console.debug("Changing date:",data.date, "->", state.value);
-						data.date=state.value;
+						console.debug("Changing date:",busy.date, "->", state.value);
+						busy.date=state.value;
 					},
 				}):[],
 			*/
-			data.weekday === undefined ?
+			busy.weekday === undefined ?
 				m(DatePicker, {
-					date: Date.parse(data.date),
+					date: Date.parse(busy.date),
 					onchange: function(newDate) {
-						data.date=newDate.toISOString().substr(0,10)+'';
-						console.debug("date:",data.date);
+						busy.date=newDate.toISOString().substr(0,10)+'';
+						console.debug("date:",busy.date);
 					},
 					locale: 'ca',
 					weekstart: 1,
 				}):[],
 			m('p.label', "Marca les hores que no estaràs disponible:"),
-			Array.from(data.turns).map(function(active, i) {
+			Array.from(busy.turns).map(function(active, i) {
 				var hours = Tomatic.grid().hours;
 				return m('', m(Checkbox, {
 					label: hours[i]+' - '+hours[i+1],
 					checked: active==='1',
 					onChange: function(state) {
 						console.debug("onchange:",state);
-						console.debug('Before:',data.turns);
-						data.turns = (
-							data.turns.substr(0,i)+
-							((data.turns[i]==='1')?'0':'1')+
-							data.turns.substr(i+1)
+						console.debug('Before:',busy.turns);
+						busy.turns = (
+							busy.turns.substr(0,i)+
+							((busy.turns[i]==='1')?'0':'1')+
+							busy.turns.substr(i+1)
 						);
-						console.debug('After:',data.turns);
+						console.debug('After:',busy.turns);
 					},
 				}));
 			}),
-		],
+		]);
+	},
+};
+
+var editAvailability = function(receivedData, updateCallback) {
+	var busy = Object.assign({}, receivedData);
+	Dialog.show(function () { return {
+		id: 'BusyEditor',
+		title: 'Edita indisponibilitat',
+		backdrop: true,
+		body: m(BusyEntryEditor, {
+			busy: busy,
+		}),
 		footerButtons: [
 			m(Button, {
 				label: "Accepta",
 				events: {
 					onclick: function() {
-						updateCallback(data);
+						updateCallback(busy);
 						Dialog.hide({id:'BusyEditor'});
 					},
 				},
-				disabled: !data.reason,
+				disabled: !busy.reason,
 			}),
 			m(Button, {
 				label: "Cancel·la",
