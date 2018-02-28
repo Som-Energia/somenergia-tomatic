@@ -186,7 +186,7 @@ const ButtonIcon = function(msvg) {
 };
 
 const toolbarRow = function(title) {
-	return m('.flex.layout',[
+	return m('.pe-toolbar.flex.layout',[
 		ButtonIcon(iconMenu),
 		m('.flex', title),
 		ButtonIcon(iconMore)
@@ -908,71 +908,21 @@ const indexForRoute = function(route) {
 };
 
 
-var HeaderPanel = {};
-HeaderPanel.view = function(vnode) {
-	return m(
-		'.pe-header-panel'+
-		'.layout.justified.vertical'+
-		'', [
-			m('.layout.flex.vertical'+
-			//'.pe-header-panel--header-container'+
-			//'.pe-header-panel--fit'+
-			//'.pe-header-panel__fixed'+
-			'.pe-header-panel__header-background'+
-			'.pe-header-panel__media-dimmer'+
-			'', [
-				m('', [
-					m('.pe-toolbar', vnode.attrs.header.toolbar.topBar),
-					m('.pe-toolbar', vnode.attrs.header.toolbar.bottomBar),
-				]),
-		]),
-		vnode.attrs.content,
-	]);
-};
-
 var Page = {};
 Page.view = function(vnode) {
     var currentTabIndex = indexForRoute(m.route.get());
-
-	return m(HeaderPanel, {
-        mode: 'waterfall-tall',
-        //condenses: true, // condense:
-        //noReveal: true, // reveal: remove header when scroll down
-        fixed: true,
-        keepCondensedHeader: true,
-        //animated: true,
-        //disolve: true,
-        headerHeight: 10,
-        class: 'pe-header-panel--fit',
-        header: {
-            toolbar: {
-                class: 'pe-toolbar--tabs.flex',
-                topBar: toolbarRow('Tomàtic - Som Energia'),
-                bottomBar: m('.tabArea.hasToolbar',
-                    m(Tabs, {
-                        tabs: tabs,
-                        centered: true,
-                        activeSelected: true,
-                        //hideIndicator: true,
-                        selectedTab: currentTabIndex,
-                    })
-                ),
-            },
-        },
-        content: [
-            vnode.attrs.content,
-            m('#snackbar',m(Snackbar)),
-            m(Dialog),
-        ],
-    });
-	return m('.background-tomatic', [
-		m(Tabs, {
-			tabs: tabs,
-			centered: true,
-			activeSelected: true,
-			//hideIndicator: true,
-			selectedTab: currentTabIndex,
-		}),
+	return m('', [
+		m('.tmt-header', [
+			m('.tmt-header__dimmer'),
+            toolbarRow('Tomàtic - Som Energia'),
+			m(Tabs, {
+				tabs: tabs,
+				//centered: true,
+				activeSelected: true,
+				//hideIndicator: true,
+				selectedTab: currentTabIndex,
+			}),
+		]),
 		vnode.attrs.content,
 		m('#snackbar',m(Snackbar)),
 		m(Dialog),

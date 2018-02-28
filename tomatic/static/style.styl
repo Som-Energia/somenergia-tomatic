@@ -14,40 +14,40 @@ body, html, #tomatic {
 
 #tomatic.main.main.main { // to overwrite defaut styles
 
-.pe-header-panel__header-container {
-	background-color: #522;
-}
-.pe-header-panel__header-background {
+.tmt-header {
 	background-image: url(./autentico-tomatic-exposicion-del-club-super.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: right;
 	background-color: black;
+	position: relative;
 }
-
+.tmt-header__dimmer {
+    background-color: rgba(34, 34, 34, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.pe-tabs .pe-tabs__tab .pe-tabs__tab-content {
+	color: rgb(243, 243, 243);
+}
 .pe-tabs .pe-tabs__tab.pe-button--selected .pe-tabs__tab-content {
 	color: rgb(33, 150, 243);
 }
-
 .pe-toolbar .pe-icon,
 .pe-toolbar .pe-button--icon,
 .pe-toolbar,
 .pe-tabs__tab-content
 {
 	background-color: transparent;
-	color: #aaa;
+	color: #fff;
+	font-size: 120%;
 	height:55px;
 	line-height: 7ex;
 }
-.pe-header-panel__media-dimmer {
-	box-shadow: inset 0px 0px 200px rgba(0,0,0,.6);
-}
-.pe-toolbar.pe-header--tall {
-	height: 102px;
-}
-.pe-header-panel .pe-toolbar {
-	font-size: 20px;
-}
+
 .main .pe-button-icon {
 	color: red;
 }
