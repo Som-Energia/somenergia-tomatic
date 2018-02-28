@@ -144,6 +144,7 @@ Create a link named 'certificate.json' pointing to the actual certificate.
 	- [x] Save changes as they are done
 	- [x] Reason field not clear a field
 	- [x] Revisar default date next monday
+	- Validate one turn selected
 	- Mejorar el selector de fecha
 	- ESC en el busy entry editor cierra los dos dialogos
 	- Sort busy entries on file
