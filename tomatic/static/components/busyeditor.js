@@ -7,6 +7,7 @@ var List = require('polythene-mithril-list').List;
 var ListTile = require('polythene-mithril-list-tile').ListTile;
 var Textfield = require('polythene-mithril-textfield').TextField;
 var RadioGroup = require('polythene-mithril-radio-group').RadioGroup;
+var RadioButton = require('polythene-mithril-radio-button').RadioButton;
 var IconButton = require('polythene-mithril-icon-button').IconButton;
 var Checkbox = require('polythene-mithril-checkbox').Checkbox;
 var DatePicker = require('mithril-datepicker/mithril-datepicker')
@@ -130,7 +131,7 @@ var BusyEntryEditor = {
 						name: 'optional',
 						id: 'optional',
 						onChange: function(state) {
-							busy.optional = state.value;
+							busy.optional = state.value=='y';
 						},
 						className: 'layout.pe-textfield__input',
 						all: {
@@ -139,12 +140,12 @@ var BusyEntryEditor = {
 						buttons: [
 							{
 								label: 'Sí',
-								value: true,
+								value: 'y',
 								checked: busy.optional,
 							},
 							{
 								label: 'No',
-								value: false,
+								value: 'n',
 								checked: !busy.optional,
 							},
 						],

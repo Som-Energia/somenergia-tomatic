@@ -135,8 +135,10 @@ Create a link named 'certificate.json' pointing to the actual certificate.
 
 
 - Scheduler:
-	- Do not read busy entries from gdrive, just holidays and load
-- Quitar segundo return del Panel
+	- [x] Do not read busy entries from gdrive, just holidays and load
+- Page:
+	- [x] Quitar segundo return del Panel
+	- [x] Header funcionando en Chrome
 - Busy:
 	- [x] Disable ok until all fields are valid
 	- [x] If cancel remove items
@@ -149,9 +151,11 @@ Create a link named 'certificate.json' pointing to the actual certificate.
 	- ESC en el busy entry editor cierra los dos dialogos
 	- Sort busy entries on file
 	- Filter out old oneshot entries
+	- Focus on first item
 - Person:
 	- Disable ok until all fields are valid
 	- Check extension not taken already
+	- Focus on first item
 - Move config data to its own private repo
 - Commit interactive changes to config files
 - Callinfo
