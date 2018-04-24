@@ -103,7 +103,7 @@ colors:
   carles: c98e98
   marta: eb9481
   monica: 7fada0
-  yaiza: fcffff
+  yaiza: ffffff
   erola: 876dd8
   manel: ff0084
   tania: c8abf4
@@ -135,26 +135,35 @@ colors:
   gijsbert: 00eeff
   nuri: 17ef6f
   fcots: ff5a60
-  annarodon: 0e91ff
+  annarodon: 009e7d
   alberto: 0074f0
   juanpe: ddeeff
+  olga: ddeeff
+  mar: d77400
+  joanm: 2d93f2
+  roger: 367c0f
+  vane: 7d00ff
+  eloi: 757f88
+  annab: c1f3d7
+  vero: ff0041
+  projectes: ffffe7
 extensions:
   marta: 3040
   monica: 3041
   manel: 3042
   erola: 3043
-  yaiza: 3044
+  yaiza: '3044'
   eduard: '3045'
-  marc: 3046
+  marc: '3046'
   judit: '3047'
   tania: '3183'
-  carles: 3051
+  carles: '3051'
   pere: '3052'
   fran: 3008
   david: 3054
   silvia: 3055
   joan: 3056
-  judith: 3057
+  judith: '3057'
   ana: '3181'
   victor: 3182
   lucia: 3184
@@ -167,18 +176,27 @@ extensions:
   maria: 3039
   pau: 3048
   carol: 3049
-  viktu: 3006
+  viktu: '3006'
   albert: 3038
   oriol: 3007
   miguelanxo: 3194
-  belen: '3191'
+  belen: '3889'
   fcasadella: '3002'
-  gijsbert: 3003
-  nuri: 3004
-  fcots: 3005
-  annarodon: 3010
+  gijsbert: '3003'
+  nuri: '3889'
+  fcots: '3005'
+  annarodon: '3196'
   alberto: 3011
   juanpe: '0000'
+  olga: '3088'
+  mar: '3087'
+  joanm: '3086'
+  roger: '3085'
+  vane: '3084'
+  eloi: '3083'
+  annab: '3082'
+  vero: '3081'
+  projectes: '3089'
 names:
   silvia: Sílvia
   monica: Mònica
@@ -196,6 +214,10 @@ names:
   fcots: FrancescCots
   annarodon: AnnaRodon
   juanpe: Juanpe
+  joanm: Joan Marquès
+  annab: Anna B
+  eloi: 'Eloi '
+  projectes: PROJECTES
 forced:
   ? - dl
     - 1
