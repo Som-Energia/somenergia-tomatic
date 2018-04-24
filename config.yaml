@@ -43,19 +43,19 @@ costHoresConcentrades: 1
 costTaulaSorollosa: 5
 costHoraNoDesitjada: 0
 taules:
-  marc: 0
+  marc: 10
   joan: 5
   mariona: 0
   eduard: 8
   pere: 1
   david: 2
-  carles: 3
+  carles: 8
   monica: 3
-  judith: 3
+  judith: 4
   maite: 3
   erola: 4
   sergi: 4
-  judit: 1
+  judit: 10
   joanb: 4
   marta: 5
   yaiza: 7
@@ -70,20 +70,29 @@ taules:
   maria: 7
   pau: 0
   carol: 5
-  viktu: 0
+  viktu: -1
   albert: 6
   oriol: 1
   fran: 2
   miguelanxo: 9
-  belen: 9
+  belen: 12
   fcasadella: 10
-  gijsbert: 9
-  nuri: 9
-  fcots: 8
-  annarodon: 5
+  gijsbert: 12
+  nuri: 12
+  fcots: 11
+  annarodon: 11
   alberto: 2
   juanpe: 1
   ningu: -1
+  olga: -1
+  mar: -1
+  joanm: 7
+  roger: -1
+  vane: -1
+  eloi: 6
+  annab: -1
+  vero: 6
+  projectes: 12
 sempreUnLliure: {}
 randomColors: false
 colors:
