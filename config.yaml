@@ -31,13 +31,12 @@ descartaNoPrometedores: true
 deixaEsmorzar: true
 noVolenEsmorzar:
 - david
+- ningu
 maximPerTaula: 2
 maximsT1PerDia: 1
 maximHoresDiariesGeneral: 2
 maximHoresDiaries:
-  manel: 2
-  joan: 2
-  silvia: 2
+  ningu: 4
 costHoresDiscontinues: 40
 costHoresConcentrades: 1
 costTaulaSorollosa: 5
@@ -218,25 +217,22 @@ names:
   annab: Anna B
   eloi: 'Eloi '
   projectes: PROJECTES
-forced:
+forced: {}
+also_commented_forced:
   ? - dl
     - 1
     - 5
   : ningu
-  ? - dm
-    - 1
+  ? - dl
+    - 2
     - 5
   : ningu
-  ? - dx
-    - 1
+  ? - dl
+    - 3
     - 5
   : ningu
-  ? - dj
-    - 1
-    - 5
-  : ningu
-  ? - dv
-    - 1
+  ? - dl
+    - 4
     - 5
   : ningu
 commented_forced:
