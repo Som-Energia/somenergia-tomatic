@@ -87,7 +87,7 @@ taules:
   olga: -1
   mar: -1
   joanm: 7
-  roger: -1
+  roger: 5
   vane: -1
   eloi: 6
   annab: -1
@@ -139,11 +139,11 @@ colors:
   alberto: 0074f0
   juanpe: ddeeff
   olga: ddeeff
-  mar: d77400
+  mar: 00fcff
   joanm: 2d93f2
   roger: 367c0f
-  vane: 7d00ff
-  eloi: 757f88
+  vane: bd00ff
+  eloi: 9baec4
   annab: c1f3d7
   vero: ff0041
   projectes: ffffe7
