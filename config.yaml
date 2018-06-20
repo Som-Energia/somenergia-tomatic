@@ -92,6 +92,8 @@ taules:
   annab: -1
   vero: 6
   projectes: 12
+  jordi: 2
+  xavi: -1
 sempreUnLliure: {}
 randomColors: false
 colors:
@@ -146,6 +148,8 @@ colors:
   annab: c1f3d7
   vero: ff0048
   projectes: ffffe7
+  jordi: 2756ff
+  xavi: ddeeff
 extensions:
   marta: 3040
   monica: 3041
@@ -195,6 +199,8 @@ extensions:
   eloi: '3083'
   annab: '3082'
   vero: '3081'
+  jordi: '3004'
+  xavi: '3009'
 names:
   silvia: Sílvia
   monica: Mònica
@@ -216,6 +222,8 @@ names:
   annab: Anna B
   eloi: 'Eloi '
   projectes: PROJECTES
+  jordi: Jordi Pons
+  xavi: XaviDolz
 forced: {}
 also_commented_forced:
   ? - dl
