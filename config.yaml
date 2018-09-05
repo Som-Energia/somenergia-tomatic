@@ -46,32 +46,32 @@ taules:
   joan: 5
   mariona: 0
   eduard: 8
-  pere: 1
+  pere: -1
   david: 2
   carles: 8
-  monica: 3
+  monica: 4
   judith: 4
-  maite: 3
-  erola: 4
-  sergi: 4
-  judit: 10
+  maite: 9
+  erola: 1
+  sergi: 3
+  judit: 13
   joanb: 4
   marta: 5
   yaiza: 7
   victor: 8
-  silvia: 9
-  ana: 0
+  silvia: 13
+  ana: 5
   gabriel: 6
-  manel: 7
-  tania: 7
-  lucia: 8
+  manel: 1
+  tania: 3
+  lucia: 3
   vic: 7
-  maria: 7
-  pau: 0
+  maria: 1
+  pau: 1
   carol: 5
   viktu: -1
   albert: 6
-  oriol: 1
+  oriol: -1
   fran: 2
   miguelanxo: 9
   belen: 12
@@ -81,7 +81,7 @@ taules:
   fcots: 11
   annarodon: 11
   alberto: 2
-  juanpe: 1
+  juanpe: -1
   ningu: -1
   olga: -1
   mar: -1
@@ -94,6 +94,7 @@ taules:
   projectes: 12
   jordi: 2
   xavi: -1
+  joana: 2
 sempreUnLliure: {}
 randomColors: false
 colors:
@@ -128,7 +129,7 @@ colors:
   undefined: ddeeff
   viktu: ddeeff
   albert: ddeeff
-  oriol: b60c0c
+  oriol: a52513
   fran: 621bf1
   miguelanxo: bdaa1c
   belen: 2892ff
@@ -150,40 +151,41 @@ colors:
   projectes: ffffe7
   jordi: 2756ff
   xavi: ddeeff
+  joana: c9ec80
 extensions:
   marta: 3040
-  monica: 3041
-  manel: 3042
-  erola: 3043
+  monica: '3041'
+  manel: '3042'
+  erola: '3043'
   yaiza: '3044'
-  eduard: '3045'
+  eduard: '3182'
   marc: '3046'
   judit: '3047'
   tania: '3183'
-  carles: '3051'
+  carles: '3045'
   pere: '3052'
   fran: 3008
   david: 3054
-  silvia: 3055
+  silvia: '3055'
   joan: 3056
   judith: '3057'
   ana: '3181'
   victor: 3182
-  lucia: 3184
+  lucia: '3184'
   vic: 3185
-  sergi: 3186
+  sergi: '3186'
   maite: '3187'
   gabriel: 3188
   mariona: '3189'
   joanb: 3195
-  maria: 3039
-  pau: 3048
+  maria: '3039'
+  pau: '3048'
   carol: 3049
   viktu: '3006'
   albert: 3038
-  oriol: 3007
+  oriol: '3089'
   miguelanxo: 3194
-  belen: '3089'
+  belen: '3007'
   fcasadella: '3002'
   gijsbert: '3003'
   nuri: '3889'
@@ -201,6 +203,7 @@ extensions:
   vero: '3081'
   jordi: '3004'
   xavi: '3009'
+  joana: '4001'
 names:
   silvia: Sílvia
   monica: Mònica
