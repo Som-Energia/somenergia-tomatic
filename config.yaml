@@ -72,7 +72,7 @@ taules:
   viktu: -1
   albert: 6
   oriol: -1
-  fran: 2
+  fran: -1
   miguelanxo: 9
   belen: 12
   fcasadella: 10
@@ -164,7 +164,7 @@ extensions:
   tania: '3183'
   carles: '3045'
   pere: '3052'
-  fran: 3008
+  fran: '3008'
   david: 3054
   silvia: '3055'
   joan: 3056
