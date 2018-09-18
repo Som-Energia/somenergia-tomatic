@@ -2,6 +2,7 @@ language: python
 python:
 - "2.7"
 install:
+- ./setup.py develop
 - pip install coveralls
 script:
 - coverage run nosetests
