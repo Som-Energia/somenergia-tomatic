@@ -42,55 +42,55 @@ costHoresConcentrades: 1
 costTaulaSorollosa: 5
 costHoraNoDesitjada: 0
 taules:
-  marc: 10
+  marc: 16
   joan: 5
-  mariona: 0
-  eduard: 8
+  mariona: 17
+  eduard: 6
   pere: -1
-  david: 2
+  david: 5
   carles: 8
-  monica: 4
-  judith: 4
-  maite: 9
+  monica: 15
+  judith: 14
+  maite: 2
   erola: 1
   sergi: 3
   judit: 13
-  joanb: 4
-  marta: 5
-  yaiza: 7
-  victor: 8
+  joanb: 14
+  marta: 15
+  yaiza: 15
+  victor: 6
   silvia: 13
-  ana: 5
-  gabriel: 6
+  ana: 18
+  gabriel: 9
   manel: 1
   tania: 3
   lucia: 3
-  vic: 7
+  vic: 15
   maria: 1
   pau: 1
-  carol: 5
+  carol: 18
   viktu: -1
-  albert: 6
+  albert: 3
   oriol: -1
   fran: -1
-  miguelanxo: 9
+  miguelanxo: 14
   belen: 12
   fcasadella: 10
-  gijsbert: 12
+  gijsbert: 16
   nuri: 12
-  fcots: 11
-  annarodon: 11
+  fcots: 16
+  annarodon: 16
   alberto: 2
   juanpe: -1
   ningu: -1
   olga: -1
-  mar: -1
-  joanm: 7
+  mar: 14
+  joanm: 6
   roger: 5
-  vane: -1
-  eloi: 6
+  vane: 17
+  eloi: 9
   annab: -1
-  vero: 6
+  vero: 9
   projectes: 12
   jordi: 2
   xavi: -1
@@ -134,7 +134,7 @@ colors:
   miguelanxo: bdaa1c
   belen: 2892ff
   fcasadella: 10ee30
-  gijsbert: 00eeff
+  gijsbert: 00adff
   nuri: 17ef6f
   fcots: ff5a60
   annarodon: 009e7d
@@ -153,7 +153,7 @@ colors:
   xavi: ddeeff
   joana: c9ec80
 extensions:
-  marta: 3040
+  marta: '3040'
   monica: '3041'
   manel: '3042'
   erola: '3043'
@@ -165,32 +165,32 @@ extensions:
   carles: '3045'
   pere: '3052'
   fran: '3008'
-  david: 3054
+  david: '3054'
   silvia: '3055'
   joan: 3056
   judith: '3057'
   ana: '3181'
-  victor: 3182
+  victor: '3182'
   lucia: '3184'
-  vic: 3185
+  vic: '3185'
   sergi: '3186'
   maite: '3187'
-  gabriel: 3188
+  gabriel: '3188'
   mariona: '3189'
-  joanb: 3195
+  joanb: '3195'
   maria: '3039'
   pau: '3048'
-  carol: 3049
+  carol: '3049'
   viktu: '3006'
-  albert: 3038
+  albert: '3038'
   oriol: '3089'
-  miguelanxo: 3194
+  miguelanxo: '3194'
   belen: '3007'
   fcasadella: '3002'
   gijsbert: '3003'
   nuri: '3889'
   fcots: '0000'
-  annarodon: '3196'
+  annarodon: '3197'
   alberto: 3011
   juanpe: '0000'
   olga: '3088'
@@ -227,6 +227,8 @@ names:
   projectes: PROJECTES
   jordi: Jordi Pons
   xavi: XaviDolz
+  david: David G.
+  gijsbert: Salomé
 forced: {}
 also_commented_forced:
   ? - dl
