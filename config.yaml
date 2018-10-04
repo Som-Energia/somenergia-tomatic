@@ -52,7 +52,7 @@ taules:
   monica: 15
   judith: 14
   maite: 2
-  erola: 1
+  erola: 12
   sergi: 3
   judit: 13
   joanb: 14
@@ -62,25 +62,25 @@ taules:
   silvia: 13
   ana: 18
   gabriel: 9
-  manel: 1
+  manel: 12
   tania: 3
   lucia: 3
   vic: 15
-  maria: 1
-  pau: 1
+  maria: 12
+  pau: 12
   carol: 18
   viktu: -1
   albert: 3
-  oriol: -1
-  fran: -1
+  oriol: 10
+  fran: 10
   miguelanxo: 14
-  belen: 12
-  fcasadella: 10
+  belen: 3
+  fcasadella: 8
   gijsbert: 16
-  nuri: 12
+  nuri: 3
   fcots: 16
   annarodon: 16
-  alberto: 2
+  alberto: 10
   juanpe: -1
   ningu: -1
   olga: -1
@@ -191,7 +191,7 @@ extensions:
   nuri: '3889'
   fcots: '0000'
   annarodon: '3197'
-  alberto: 3011
+  alberto: '3011'
   juanpe: '0000'
   olga: '3088'
   mar: '3087'
