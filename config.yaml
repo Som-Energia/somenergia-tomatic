@@ -98,6 +98,15 @@ taules:
   rogerlf: 14
   gemma: 8
   aram: -1
+  benjami: 99
+  guifre: 8
+  Núria: 99
+  carme: 99
+  merce: 99
+  Albert G: 99
+  adria: 99
+  Monica G: 99
+  otilia: 99
 sempreUnLliure: {}
 randomColors: false
 colors:
@@ -131,10 +140,10 @@ colors:
   carol: 94c703
   undefined: ddeeff
   viktu: ddeeff
-  albert: ddeeff
+  albert: ffa32e
   oriol: a52513
   fran: 621bf1
-  miguelanxo: bdaa1c
+  miguelanxo: 00b986
   belen: 2892ff
   fcasadella: 10ee30
   gijsbert: 00adff
@@ -144,7 +153,7 @@ colors:
   alberto: 0074f0
   juanpe: ddeeff
   olga: ddeeff
-  mar: 00fcff
+  mar: 00ffff
   joanm: 2d93f2
   roger: 367c0f
   vane: bd00ff
@@ -158,13 +167,22 @@ colors:
   rogerlf: 00517d
   gemma: a6ba8c
   aram: 614d02
+  benjami: 31ff14
+  guifre: ff000e
+  Núria: 004e12
+  carme: 0000bc
+  merce: f5447f
+  Albert G: fcdc05
+  adria: b68f2f
+  Monica G: 2b3e3a
+  otilia: 5d7fca
 extensions:
   marta: '3040'
   monica: '3041'
   manel: '3042'
   erola: '3043'
   yaiza: '3044'
-  eduard: '3182'
+  eduard: '3978'
   marc: '3046'
   judit: '3047'
   tania: '3183'
@@ -195,7 +213,7 @@ extensions:
   fcasadella: '3002'
   gijsbert: '3003'
   nuri: '3889'
-  fcots: '0000'
+  fcots: '0001'
   annarodon: '3197'
   alberto: '3011'
   juanpe: '0000'
@@ -213,6 +231,15 @@ extensions:
   rogerlf: '2902'
   gemma: '2903'
   aram: '2905'
+  benjami: '3012'
+  guifre: '2911'
+  Núria: '2909'
+  carme: '2904'
+  merce: '2908'
+  Albert G: '2901'
+  adria: '2907'
+  Monica G: '2906'
+  otilia: '2910'
 names:
   silvia: Sílvia
   monica: Mònica
@@ -230,15 +257,22 @@ names:
   fcots: FrancescCots
   annarodon: AnnaRodon
   juanpe: Juanpe
-  joanm: Joan Marquès
+  joanm: JoanM
   annab: Anna B
   eloi: 'Eloi '
   projectes: PROJECTES
-  jordi: Jordi Pons
+  jordi: JordiP
   xavi: XaviDolz
   david: David G.
   gijsbert: Salomé
   rogerlf: RogerLF
+  guifre: Guifré
+  merce: Mercè
+  adria: Adrià
+  Monica G: Mònica Gifreu
+  Albert G: Albert GS
+  albert: Albert M
+  otilia: otilia
 forced: {}
 also_commented_forced:
   ? - dl
