@@ -100,12 +100,12 @@ taules:
   aram: -1
   benjami: 99
   guifre: 8
-  Núria: 99
+  nuria: 99
   carme: 99
   merce: 99
-  Albert G: 99
+  albertg: 99
   adria: 99
-  Monica G: 99
+  monicag: 99
   otilia: 99
 sempreUnLliure: {}
 randomColors: false
@@ -169,12 +169,12 @@ colors:
   aram: 614d02
   benjami: 31ff14
   guifre: ff000e
-  Núria: 004e12
+  nuria: 004e12
   carme: 0000bc
   merce: f5447f
-  Albert G: fcdc05
+  albertg: fcdc05
   adria: b68f2f
-  Monica G: 2b3e3a
+  monicag: 2b3e3a
   otilia: 5d7fca
 extensions:
   marta: '3040'
@@ -233,12 +233,12 @@ extensions:
   aram: '2905'
   benjami: '3012'
   guifre: '2911'
-  Núria: '2909'
+  nuria: '2909'
   carme: '2904'
   merce: '2908'
-  Albert G: '2901'
+  albertg: '2901'
   adria: '2907'
-  Monica G: '2906'
+  monicag: '2906'
   otilia: '2910'
 names:
   silvia: Sílvia
@@ -269,8 +269,8 @@ names:
   guifre: Guifré
   merce: Mercè
   adria: Adrià
-  Monica G: Mònica Gifreu
-  Albert G: Albert GS
+  monicag: Mònica Gifreu
+  albertg: Albert GS
   albert: Albert M
   otilia: otilia
 forced: {}
