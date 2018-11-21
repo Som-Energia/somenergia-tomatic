@@ -102,11 +102,11 @@ taules:
   guifre: 8
   nuria: 99
   carme: 99
-  merce: 99
+  merce: 13
   albertg: 99
-  adria: 99
+  adria: 13
   monicag: 99
-  otilia: 99
+  otilia: 17
 sempreUnLliure: {}
 randomColors: false
 colors:
@@ -122,7 +122,7 @@ colors:
   manel: ff0084
   tania: c8abf4
   judit: e781e8
-  silvia: 8097fa
+  silvia: 8097b8
   joan: fae080
   ana: ff6600
   victor: ff3233
@@ -140,7 +140,7 @@ colors:
   carol: 94c703
   undefined: ddeeff
   viktu: ddeeff
-  albert: ffa32e
+  albert: f4f4f4
   oriol: a52513
   fran: 621bf1
   miguelanxo: 00b986
@@ -170,12 +170,12 @@ colors:
   benjami: 31ff14
   guifre: ff000e
   nuria: 004e12
-  carme: 0000bc
+  carme: 0000ff
   merce: f5447f
   albertg: fcdc05
   adria: b68f2f
-  monicag: 2b3e3a
-  otilia: 5d7fca
+  monicag: ff4d3c
+  otilia: 96b0ff
 extensions:
   marta: '3040'
   monica: '3041'
@@ -269,10 +269,10 @@ names:
   guifre: Guifré
   merce: Mercè
   adria: Adrià
-  monicag: Mònica Gifreu
+  monicag: Mònica G
   albertg: Albert GS
   albert: Albert M
-  otilia: otilia
+  otilia: 'Otilia '
 forced: {}
 also_commented_forced:
   ? - dl
