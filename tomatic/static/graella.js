@@ -274,6 +274,21 @@ PersonEditor.view = function(vnode) {
 			required: true,
 			disabled: !vnode.attrs.newone,
 			value: vnode.attrs.name || '',
+			events: {
+				oninput: function(ev) {
+					ev.target.value = ev.target.value
+						.toLowerCase()
+						.replace(/[óòôö]/g,'o')
+						.replace(/[àáâä]/g,'a')
+						.replace(/[íìîï]/g,'i')
+						.replace(/[úûûü]/g,'u')
+						.replace(/[éèêë]/g,'e')
+						.replace(/[ç]/g,'c')
+						.replace(/[ñ]/g,'n')
+						.replace(/[^a-z]/g,'')
+						.slice(0,10);
+				},
+			},
 			onChange: function(state) {
 				vnode.attrs.name=state.value;
 			},
