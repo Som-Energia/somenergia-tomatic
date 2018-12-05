@@ -1,9 +1,10 @@
 fullIndisponibilitats: Reunions i altres afers
-fullCarrega_antic: o9rxhxk  #Càrrega setmanal de telèfon
-fullCarrega: opm82es  #Carrega_5t_telefon
+fullCarrega_4: o9rxhxk  #Càrrega setmanal de telèfon
+fullCarrega_5: opm82es  #Càrrega_5t_telefon
+fullCarrega: om1qfyn  #Càrrega_6t_telefon
 intervalCarrega: carrega{:02d}{:02d}{:02d}
 monitoringFile: taula.html
-nTelefons: 5
+nTelefons: 6
 diesCerca:
 - dm
 - dv
