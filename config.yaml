@@ -115,6 +115,55 @@ taules:
   clara: 99
   jaume: 99
 sempreUnLliure: {}
+groups:
+  ramat:
+  - judit
+  - judith
+  - javier
+  - marc
+  - joan
+  - mariona
+  - eduard
+  - pere
+  - david
+  - carles
+  - monica
+  - judith
+  - maite
+  - erola
+  - sergi
+  - judit
+  - joanb
+  - marta
+  - yaiza
+  - victor
+  - silvia
+  - ana
+  - gabriel
+  - manel
+  - tania
+  - lucia
+  - vic
+  - maria
+  - pau
+  - carol
+  - albert
+  - oriol
+  - fran
+  - miguelanxo
+  it:
+  - alberto
+  - david
+  - fran
+  - oriol
+  - juanpe
+  - jordi
+  - xavi
+  - benjami
+maxPhoningInGroup:
+  nouramat: 1
+minIdleInGroup:
+  it: 4
 randomColors: false
 colors:
   marc: fbe8bc

@@ -205,19 +205,49 @@ class Backtracker:
 				))
 			for nom, dia in xproduct(self.companys, self.dies))
 
-		self.grupsAlliberats = dict([
+		# Groups by person
+		self.personGroups = dict([
 			(company, [
 				group 
-				for group, companysDelGrup in self.config.sempreUnLliure.items()
+				for group, companysDelGrup in self.config.groups.items()
 				if company in companysDelGrup])
 			for company in self.companys
 			])
 
-		self.lliuresEnGrupDAlliberats = dict([
-			((group, dia, hora), len(companysDelGrup))
-			for (group, companysDelGrupa), dia, hora
+		# Checking group definitions
+		for group, persons in self.config.groups.items():
+			for person in persons:
+				if person not in self.companys:
+					warn("'{}' es al grup '{}', però no es al fitxer de càrrega",
+						person, group)
+		for groupConfig in (
+				'minIdleInGroup',
+				'maxPhoningInGroup',
+				):
+			for group in self.config[groupConfig]:
+				if group not in self.config.groups:
+					warn("Configuration '{}' uses group '{}' not defined in 'groups'",
+						groupConfig, group)
+
+		# Persons on phone in each group
+		self.phoningOnGroup = createTable(0,
+			self.config.groups.keys(),
+			self.dies,
+			xrange(self.nhours),
+			)
+
+		# Idle persons in each group (not busy nor on phone)
+		self.idleInGroup = dict([
+			(
+				(group, dia, hora),
+				sum(
+					0 if self.isBusy(person,dia,hora) else 1
+					for person in persons
+					if person in self.companys
+				))
+			for (group, persons), dia, hora
 			in xproduct(
-				self.config.sempreUnLliure.items(),
+				self.config.groups.items(),
 				self.dies,
 				xrange(self.nhours),
 				)
@@ -467,26 +497,42 @@ class Backtracker:
 					.format(company, self.telefonsALaTaula[day, hora, taula], hora+1, day))
 				continue
 
-			def lastInIdleGroup():
-				for group in self.grupsAlliberats[company] :
-					if self.lliuresEnGrupDAlliberats[group, day, hora] > 1:
+			def notEnoughIdleInGroup(company):
+				for group in self.personGroups[company] :
+					if group not in self.config.minIdleInGroup: continue
+					minIdle = self.config.minIdleInGroup[group]
+					if self.idleInGroup[group, day, hora] > minIdle+1:
 						continue
-
-					return ("El grup {} on pertany {} no te gent el {} a {} hora"
+					return ("Al grup {} on pertany {} no li quedaria prou gent el {} a {} hora"
 						.format(group, company, day, hora+1))
 				return False
 
-			def markIdleGroups(company, day, hora):
-				for g in self.grupsAlliberats[company] :
-					self.lliuresEnGrupDAlliberats[g, day, hora] -= 1
-				
-			def unmarkIdleGroups(company, day, hora):
-				for g in self.grupsAlliberats[company] :
-					self.lliuresEnGrupDAlliberats[g, day, hora] += 1
-				
+			def tooManyPhoningOnGroup(company):
+				for group in self.personGroups[company] :
+					if group not in self.config.maxPhoningInGroup: continue
+					maxPhoning = self.config.maxPhoningInGroup[group]
+					if self.phoningOnGroup[group, day, hora] > maxPhoning:
+						continue
+					return ("Al grup {} on pertany {} hi ha massa gent al telèfon el {} a {} hora"
+						.format(group, company, day, hora+1))
+				return False
 
-			if lastInIdleGroup():
-				self.cut("IdleGroupViolated", partial, lastInIdleGroup())
+			def markGroups(company, day, hora):
+				for g in self.personGroups[company] :
+					self.idleInGroup[g, day, hora] -= 1
+					self.phoningOnGroup[g, day, hora] +=1
+				
+			def unmarkGroups(company, day, hora):
+				for g in self.personGroups[company] :
+					self.idleInGroup[g, day, hora] += 1
+					self.phoningOnGroup[g, day, hora] -=1
+
+			if notEnoughIdleInGroup(company):
+				self.cut("NotEnoughIdleInGroup", partial, notEnoughIdleInGroup(company))
+				continue
+
+			if tooManyPhoningOnGroup(company):
+				self.cut("TooManyLinesForGroup", partial, tooManyPhoningOnGroup(company))
 				continue
 
 			if self.horesDiaries[company, day] >= self.maxTornsDiaris(company):
@@ -554,14 +600,14 @@ class Backtracker:
 			self.horesDiaries[company,day]+=1
 			self.torns[company][telefon]-=1
 			self.telefonsALaTaula[day,hora,taula]+=1
-			markIdleGroups(company,day,hora)
+			markGroups(company,day,hora)
 
 			# Provem amb la seguent casella
 			self.solveTorn(partial+[company])
 			self.nbactracks += 1
 
 			# Desanotem la casella
-			unmarkIdleGroups(company,day,hora)
+			unmarkGroups(company,day,hora)
 			self.telefonsALaTaula[day,hora,taula]-=1
 			self.torns[company][telefon]+=1
 			self.horesDiaries[company,day]-=1
