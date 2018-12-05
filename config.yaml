@@ -70,7 +70,7 @@ taules:
   pau: 12
   carol: 18
   viktu: -1
-  albert: 3
+  albert: 17
   oriol: 10
   fran: 10
   miguelanxo: 14
@@ -273,6 +273,7 @@ names:
   albertg: Albert GS
   albert: Albert M
   otilia: 'Otilia '
+  nuria: Núria
 forced: {}
 also_commented_forced:
   ? - dl
