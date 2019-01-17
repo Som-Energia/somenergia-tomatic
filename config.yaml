@@ -108,6 +108,7 @@ taules:
   adria: 13
   monicag: 99
   otilia: 17
+  contestado: 99
 sempreUnLliure: {}
 randomColors: false
 colors:
@@ -170,13 +171,14 @@ colors:
   aram: 614d02
   benjami: 31ff14
   guifre: ff000e
-  nuria: 004e12
+  nuria: 00662a
   carme: 0000ff
   merce: f5447f
   albertg: fcdc05
   adria: b68f2f
   monicag: ff4d3c
   otilia: 96b0ff
+  contestado: 333c3a
 extensions:
   marta: '3040'
   monica: '3041'
@@ -192,7 +194,7 @@ extensions:
   fran: '3008'
   david: '3054'
   silvia: '3055'
-  joan: 3056
+  joan: '3056'
   judith: '3057'
   ana: '3181'
   victor: '3182'
@@ -241,6 +243,7 @@ extensions:
   adria: '2907'
   monicag: '2906'
   otilia: '2910'
+  contestado: '3193'
 names:
   silvia: Sílvia
   monica: Mònica
@@ -275,6 +278,7 @@ names:
   albert: Albert M
   otilia: 'Otilia '
   nuria: Núria
+  contestado: '>CONTESTADOR<'
 forced: {}
 also_commented_forced:
   ? - dl
