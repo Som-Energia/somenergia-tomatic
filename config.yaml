@@ -109,6 +109,8 @@ taules:
   monicag: 99
   otilia: 17
   contestado: 99
+  alex: 99
+  javi: 99
 sempreUnLliure: {}
 randomColors: false
 colors:
@@ -179,6 +181,8 @@ colors:
   monicag: ff4d3c
   otilia: 96b0ff
   contestado: 333c3a
+  alex: ce6108
+  javi: 79eeff
 extensions:
   marta: '3040'
   monica: '3041'
@@ -244,6 +248,8 @@ extensions:
   monicag: '2906'
   otilia: '2910'
   contestado: '3193'
+  alex: '3050'
+  javi: '3383'
 names:
   silvia: Sílvia
   monica: Mònica
