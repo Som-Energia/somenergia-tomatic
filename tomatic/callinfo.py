@@ -30,61 +30,63 @@ class CallInfo(object):
             in self.O.ResPartnerAddress.read(address_ids,'partner_id')
             if address and address[0]
             ]
-    
-    def partnerInfo(self, partner_id):
-        partner_data = self.O.ResPartner.read(partner_id)
-        partner_data = ns(partner_data[0])
-        result = ns(partner=ns())
-        result.partner.update(
+
+    def partnerInfo(self, partner_data):
+        result = ns(
             id_soci = self.anonymize(partner_data.ref),
             lang = partner_data.lang,
             name = self.anonymize(partner_data.name),
             city = partner_data.city,
             email = self.anonymize(partner_data.www_email),
-            polisses_ids = partner_data.polisses_ids,
-            provincia = partner_data.www_provincia[1]['name'],
+            contracts_ids = partner_data.polisses_ids,
+            state = partner_data.www_provincia[1]['name'],
             )
         return result
 
+
     def partnersInfo(self, partners_ids):
         result = ns(partners = [])
-        partners_data = self.O.ResPartner.read(partners_ids)
-        for partner_data in partners_data:
+        partners_data = self.O.ResPartner.read(partners_ids, [
+            'city',
+            'www_email',
+            'www_provincia',
+            'polisses_ids',
+            'name',
+            'ref',
+            'lang',
+        ])
+        for partner_data in partners_data or []:
             partner_data = ns(partner_data)
-            partner_result = ns()
-            partner_result.update(
-                id_soci = self.anonymize(partner_data.ref),
-                lang = partner_data.lang,
-                name = self.anonymize(partner_data.name),
-                city = partner_data.city,
-                email = self.anonymize(partner_data.www_email),
-                provincia = partner_data.www_provincia[1]['name'],
-                )
-            partner_result.update(self.polisseInfo(partner_data.polisses_ids))
-            partner_block = ns()
-            partner_block[self.anonymize(partner_data.name)] = partner_result
-            result.partners.append(partner_block)
+            partner_result = self.partnerInfo(partner_data)
+            partner_result.update(self.contractInfo(partner_data.polisses_ids))
+            del partner_result.contracts_ids
+            result.partners.append(partner_result)
         return result
     
-    def polisseInfo(self,polisses_ids):
-        all_pol_data = []
-        if len(polisses_ids) != 0:
-            all_pol_data = self.O.GiscedataPolissa.read(polisses_ids,[
-                'data_alta','data_baixa','potencia','cups','state','active','tarifa'
-                ])
-        result = ns(polisses=[])
-        for pol_data in all_pol_data:
-            pol_data_ns = ns(polissa=ns())
-            pol_data_ns.polissa.update(
-                alta = pol_data['data_alta'],
-                baixa = pol_data['data_baixa'] if pol_data['data_baixa'] else '',
-                potencia = pol_data['potencia'],
-                cups = self.anonymize(pol_data['cups'][1]),
-                tarifa = pol_data['tarifa'][1],
-                estat = pol_data['state'],
+    def contractInfo(self,contracts_ids):
+        if not contracts_ids:
+            return ns(polisses=[])
+
+        contracts = self.O.GiscedataPolissa.read(contracts_ids,[
+            'data_alta',
+            'data_baixa',
+            'potencia',
+            'cups',
+            'state',
+            'active',
+            'tarifa',
+            ])
+        return ns(contracts=[
+            ns(
+                start_date = contract['data_alta'],
+                end_date = contract['data_baixa'] if contract['data_baixa'] else '',
+                power = contract['potencia'],
+                cups = self.anonymize(contract['cups'][1]),
+                fare = contract['tarifa'][1],
+                state = contract['state'],
                 )
-            result.polisses.append(pol_data_ns)
-        return result
+            for contract in contracts
+            ])
     
     def getByPhone(self, phone):
         address_ids = self.addressByPhone(phone)

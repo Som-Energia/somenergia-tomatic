@@ -84,18 +84,26 @@ class CallInfo_Test(unittest.TestCase):
 
     def test_partnerInfo_whenMatchesOne(self):
         info = CallInfo(self.O, anonymize=True)
-        partner_data = info.partnerInfo([410])
+        data = self.O.ResPartner.read([410],[
+            'city',
+            'www_email',
+            'www_provincia',
+            'polisses_ids',
+            'name',
+            'ref',
+            'lang',
+        ])[0]
+        partner_data = info.partnerInfo(ns(data))
         self.assertNsEqual(partner_data, """\
-            partner:
-                'lang': 'ca_ES' 
-                'name': '...iol'
-                'city': 'Vilanova de Bellpuig'
-                'email': '...oop'
-                'id_soci': '...367'
-                'polisses_ids': 
-                - 155
-                - 56427
-                'provincia': 'Lleida'
+            lang: ca_ES
+            name: ...iol
+            city: Vilanova de Bellpuig
+            email: ...oop
+            id_soci: ...367
+            contracts_ids:
+            - 155
+            - 56427
+            state: Lleida
             """)
 
     def test_partnersInfo_whenMatchesOne(self):
@@ -103,72 +111,72 @@ class CallInfo_Test(unittest.TestCase):
         partner_data = info.partnersInfo([410])
         self.assertNsEqual(partner_data, """\
             partners:
-              - '...iol':
-                  'lang': 'ca_ES'
-                  'city': 'Vilanova de Bellpuig'
-                  'provincia': 'Lleida'
-                  'name': '...iol'
-                  'id_soci': '...367'
-                  'email': '...oop'       
-                  'polisses' :
-                    - 'polissa': 
-                        'baixa': ''
-                        'cups': '...F0F'
-                        'alta': '2011-11-19'
-                        'estat': 'activa'
-                        'potencia': 3.45
-                        'tarifa': '2.0DHA'                    
-                    - 'polissa':
-                        'baixa': ''
-                        'cups': '...H0F'
-                        'alta': '2015-07-17'
-                        'estat': 'activa'
-                        'potencia': 1.15
-                        'tarifa': '2.0A'                    
-            """)
-        
-    def test_polisseInfo_whenAskNone(self):
-        info = CallInfo(self.O, anonymize=True)
-        polisse_data = info.polisseInfo([0])
-        self.assertNsEqual(polisse_data, """\
-            polisses: []
-            """)
-        
-    def test_polisseInfo_whenAskOne(self):
-        info = CallInfo(self.O, anonymize=True)
-        polisse_data = info.polisseInfo([155])
-        self.assertNsEqual(polisse_data, """\
-            polisses:
-             - polissa:
-                 baixa: ''
-                 cups: ...F0F
-                 alta: '2011-11-19'
-                 estat: activa
-                 potencia: 3.45
-                 tarifa: 2.0DHA
+            -
+              lang: ca_ES
+              city: Vilanova de Bellpuig
+              state: Lleida
+              name: ...iol
+              id_soci: ...367
+              email: ...oop
+              contracts:
+              - 
+                end_date: ''
+                cups: ...F0F
+                start_date: '2011-11-19'
+                state: activa
+                power: 3.45
+                fare: 2.0DHA
+              -
+                end_date: ''
+                cups: ...H0F
+                start_date: '2015-07-17'
+                state: activa
+                power: 1.15
+                fare: 2.0A
             """)
 
-    def test_polisseInfo_whenAskMore(self):
+    def test_contractInfo_whenAskNone(self):
         info = CallInfo(self.O, anonymize=True)
-        polisse_data = info.polisseInfo([155,250])
-        self.assertNsEqual(polisse_data, """\
-            polisses:
-             - polissa:
-                 baixa: ''
-                 cups: ...F0F
-                 alta: '2011-11-19'
-                 estat: activa
-                 potencia: 3.45
-                 tarifa: 2.0DHA
-             - polissa:
-                 baixa: ''
-                 cups: ...P0F
-                 alta: '2012-03-29'
-                 estat: activa
-                 potencia: 3.45
-                 tarifa: 2.0A
+        contractsData = info.contractInfo([0])
+        self.assertNsEqual(contractsData, """\
+            contracts: []
             """)
-        
+
+    def test_contractInfo_whenAskOne(self):
+        info = CallInfo(self.O, anonymize=True)
+        contractsData = info.contractInfo([155])
+        self.assertNsEqual(contractsData, """\
+            contracts:
+            -
+              end_date: ''
+              cups: ...F0F
+              start_date: '2011-11-19'
+              state: activa
+              power: 3.45
+              fare: 2.0DHA
+            """)
+
+    def test_contractInfo_whenAskMore(self):
+        info = CallInfo(self.O, anonymize=True)
+        contractsData = info.contractInfo([155,250])
+        self.assertNsEqual(contractsData, """\
+            contracts:
+            -
+              start_date: '2011-11-19'
+              end_date: ''
+              cups: ...F0F
+              state: activa
+              power: 3.45
+              fare: 2.0DHA
+            -
+              start_date: '2012-03-29'
+              end_date: ''
+              cups: ...P0F
+              state: activa
+              power: 3.45
+              fare: 2.0A
+            """)
+
     def test_getByPhone_global(self):
         info = CallInfo(self.O)
         data = info.getByPhone("630079522")
