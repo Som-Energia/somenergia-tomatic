@@ -62,7 +62,7 @@ class CallInfo_Test(unittest.TestCase):
         partner_ids = info.partnerByAddressId([12073])
         self.assertEqual(partner_ids, [11709])
 
-    def test_spartnerByAddressId_whenEmpty(self):
+    def test_partnerByAddressId_whenEmpty(self):
         info = CallInfo(self.O)
         partner_ids = info.partnerByAddressId([])
         self.assertEqual(partner_ids, [])
