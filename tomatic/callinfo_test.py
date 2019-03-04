@@ -9,28 +9,12 @@ except ImportError:
     dbconfig = None
 from yamlns import namespace as ns
 import b2btest
-    
+
 @unittest.skipIf(not dbconfig or not dbconfig.erppeek,
     "Requires configuring dbconfig.erppeek")
 class CallInfo_Test(unittest.TestCase):
 
-    def assertNsEqual(self, dict1, dict2):
-        def parseIfString(nsOrString):
-            if type(nsOrString) in (dict, ns):
-                return nsOrString
-            return ns.loads(nsOrString)
-
-        def sorteddict(d):
-            if type(d) not in (dict, ns):
-                return d
-            return ns(sorted(
-                (k, sorteddict(v))
-                for k,v in d.items()
-                ))
-        dict1 = sorteddict(parseIfString(dict1))
-        dict2 = sorteddict(parseIfString(dict2))
-
-        return self.assertMultiLineEqual(dict1.dump(), dict2.dump())
+    from testutils import assertNsEqual
 
     def setUp(self):
         self.maxDiff = None
