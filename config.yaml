@@ -189,7 +189,7 @@ extensions:
   manel: '3042'
   erola: '3043'
   yaiza: '3044'
-  eduard: '3978'
+  eduard: '3051'
   marc: '3046'
   judit: '3047'
   tania: '3183'
@@ -284,7 +284,7 @@ names:
   albert: Albert M
   otilia: 'Otilia '
   nuria: Núria
-  contestado: '>CONTESTADOR<'
+  contestado: '>>>CONTESTADOR<<<'
 forced: {}
 also_commented_forced:
   ? - dl
