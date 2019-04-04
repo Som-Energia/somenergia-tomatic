@@ -23,7 +23,7 @@ packagedir = os.path.join(os.path.dirname(__file__))
 schedules_path = os.path.join(packagedir,'..','graelles')
 schedules = schedulestorage.Storage(schedules_path)
 staticpath = os.path.join(packagedir,'dist')
-
+images_path = os.path.join(packagedir,'..','trucades')
 
 def pbx(alternative = None):
     if alternative:
@@ -246,6 +246,11 @@ def phoneInfo(phone):
         message=message,
     )
     return yamlfy(info=result)
+
+
+@app.route('/img/<filename>')
+def image(filename):
+    return send_from_directory(images_path, filename)
 
 
 def yamlfy(status=200, data=[], **kwd):
