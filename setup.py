@@ -47,6 +47,7 @@ setup(
         'b2btest',
         'lxml',
         'wavefile',
+        'erppeek',
     ],
     classifiers = [
         'Programming Language :: Python',

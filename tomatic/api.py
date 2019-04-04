@@ -12,6 +12,11 @@ from .pbxmockup import PbxMockup
 from .htmlgen import HtmlGen
 from .remote import remotewrite
 import os
+import erppeek
+try:
+    import dbconfig
+except ImportError:
+    dbconfig = None
 
 packagedir = os.path.join(os.path.dirname(__file__))
 schedules_path = os.path.join(packagedir,'..','graelles')
