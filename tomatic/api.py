@@ -7,6 +7,7 @@ from flask import (
     )
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
+from callinfo import CallInfo
 from . import schedulestorage
 from .pbxmockup import PbxMockup
 from .htmlgen import HtmlGen
@@ -230,6 +231,21 @@ def busy_post(person):
     import busy
     data = ns.loads(request.data)
     return yamlfy(**busy.update_busy(person, data))
+
+
+@app.route('/api/info/<phone>', methods=['GET'])
+def phoneInfo(phone):
+    message = 'ok'
+    o = erppeek.Client(**dbconfig.erppeek)
+    info = CallInfo(o)
+    data = info.getByPhone(phone)
+    if (not data.partners):
+        message = 'El número no està a la base de dades.'
+    result = ns(
+        info=data,
+        message=message,
+    )
+    return yamlfy(info=result)
 
 
 def yamlfy(status=200, data=[], **kwd):

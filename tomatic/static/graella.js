@@ -30,6 +30,8 @@ var editAvailabilities = require('./components/busyeditor');
 var css = require('polythene-css');
 var customStyle = require('./style.styl');
 
+var CallInfo = require('./components/callinfo');
+
 css.addLayoutStyles();
 css.addTypography();
 
@@ -573,15 +575,15 @@ var PersonsPage = {
     },
 };
 
+
 var CallInfoPage = {
     view: function() {
-        return m('',[
-			Todo(
-				"Aquí es podrà veure informació de l'ERP sobre la trucada entrant"
-            ),
-        ]);
-    },
+        return m('.callinfo',[
+             CallInfo.mainPage()
+             ]);
+    }
 };
+
 
 var PersonStyles = function() {
 	var persons = Tomatic.persons();
