@@ -11,6 +11,7 @@ var Card = require('polythene-mithril-card').Card;
 var ListTile = require('polythene-mithril-list-tile').ListTile;
 var List = require ('polythene-mithril-list').List;
 var Icon = require ('polythene-mithril-icon').Icon;
+var Spinner = require('polythene-mithril-material-design-spinner').MaterialDesignSpinner;
 
 var CallInfo = {};
 
@@ -27,7 +28,7 @@ CallInfo.infoPhone = function (name) {
         return m("body", 'No hi ha informació.')
     }
     else if (CallInfo.file_info[1]==="empty"){
-        return m("body", 'Cercant informació.')
+        return m(Spinner, { show: "true" } );
     } else {
         return m('', CallInfo.listOfPartners());
     }
@@ -261,7 +262,7 @@ CallInfo.mainPage = function(name) {
                     },
                 },
             }),
-            m('center', CallInfo.infoPhone()),
+            m("div", CallInfo.infoPhone()),
     ]);
 }
 
