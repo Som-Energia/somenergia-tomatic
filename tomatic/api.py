@@ -248,6 +248,24 @@ def phoneInfo(phone):
     return yamlfy(info=result)
 
 
+@app.route('/api/info/ringring', methods=['POST'])
+def callingPhone():
+    prova = ns.load('prova.yaml')
+
+    data = request.form.to_dict()
+    phone = data['phone']
+    ext = data['ext']
+    prova.phone.update({int(ext): phone})
+
+    prova.dump('prova.yaml')
+
+    result = ns(
+        phone=prova.phone[int(ext)],
+        ext=int(ext),
+    )
+    return yamlfy(info=result)
+
+
 @app.route('/img/<filename>')
 def image(filename):
     return send_from_directory(images_path, filename)
