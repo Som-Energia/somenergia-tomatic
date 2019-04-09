@@ -111,7 +111,7 @@ CallInfo.generateGraphics = function(partner) {
 }
 
 
-CallInfo.showContract = function(partner, contract) {
+CallInfo.contractInfo = function(partner, contract) {
     var from_til = CallInfo.file_info.partners[partner].contracts[contract].start_date;
     from_til +=  " ~ ";
     var aux = CallInfo.file_info.partners[partner].contracts[contract].end_date;
@@ -149,7 +149,7 @@ CallInfo.showContracts = function(partner){
 
     if(aux[0]==="ini"){
         for (contract; contract < numOfContracts; contract++) {
-            aux[contract] = CallInfo.showContract(partner, contract);
+            aux[contract] = CallInfo.contractInfo(partner, contract);
         }
     }
 
