@@ -20,6 +20,7 @@ setup(
         'tomatic_rtqueue.py',
         'tomatic_extensions.py',
         'tomatic_api.py',
+        'tomatic_callinfo.py',
         ],
     install_requires=[
         'setuptools==20.4',
