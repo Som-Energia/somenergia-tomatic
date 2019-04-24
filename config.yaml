@@ -111,6 +111,8 @@ taules:
   contestado: 99
   alex: 99
   javi: 99
+  albertsimo: 99
+  clara: 99
 sempreUnLliure: {}
 randomColors: false
 colors:
@@ -183,6 +185,8 @@ colors:
   contestado: 333c3a
   alex: ce6108
   javi: 79eeff
+  albertsimo: cc00ff
+  clara: 602fa7
 extensions:
   marta: '3040'
   monica: '3041'
@@ -250,6 +254,8 @@ extensions:
   contestado: '3193'
   alex: '3050'
   javi: '3383'
+  albertsimo: '3013'
+  clara: '3014'
 names:
   silvia: Sílvia
   monica: Mònica
@@ -285,6 +291,7 @@ names:
   otilia: 'Otilia '
   nuria: Núria
   contestado: '>>>CONTESTADOR<<<'
+  albertsimo: AlbertSi
 forced: {}
 also_commented_forced:
   ? - dl
