@@ -76,7 +76,7 @@ def dateOrToday(date=None):
 
 def properNameByExtension(config, extension):
     extensions2names = dict(t[::-1] for t in config.extensions.items())
-    name = extensions2names.get(int(extension),extension)
+    name = extensions2names.get(extension,extension)
     names = config.get('names',{})
     if name in names:
         return names[name]
