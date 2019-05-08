@@ -4,6 +4,7 @@ module.exports = function() {
 var m = require('mithril');
 var jsyaml = require('js-yaml');
 
+var Ripple = require('polythene-mithril-ripple').Ripple;
 var Dialog = require('polythene-mithril-dialog').Dialog;
 var Button = require('polythene-mithril-button').Button;
 var Textfield = require('polythene-mithril-textfield').TextField;
@@ -70,7 +71,7 @@ function isEmpty(obj) {
 }
 
 
-CallInfo.infoPhone = function (name) {
+CallInfo.infoPhone = function () {
     if (isEmpty(CallInfo.file_info)) {
         return m("body", 'No hi ha informació.')
     }
@@ -82,12 +83,10 @@ CallInfo.infoPhone = function (name) {
 };
 
 
-CallInfo.listOfPartners = function (name) {
+CallInfo.listOfPartners = function () {
     var partner = 0;
     var numOfPartners = CallInfo.file_info.partners.length;
-
     var aux = [];
-
     for (partner; partner < numOfPartners; partner++) {
         aux[partner] = CallInfo.allInfo(partner);
     }
@@ -101,11 +100,6 @@ CallInfo.listOfPartners = function (name) {
 
 
 CallInfo.allInfo = function (partner) {
-    var style = {
-        maxWidth: "500px",
-        backgroundColor: "#FFFFFF",
-        marginBottom: '20px',
-    }
     var header = {
         title: CallInfo.file_info.partners[partner].name,
         subtitle: CallInfo.file_info.partners[partner].id_soci,
@@ -119,7 +113,7 @@ CallInfo.allInfo = function (partner) {
         subtitle: CallInfo.file_info.partners[partner].email,
     };
     var content = [
-        m(Button, { // centrar
+        m(Button, {
             label: "Contractes",
             events: {
                 onclick: function() {
@@ -131,7 +125,7 @@ CallInfo.allInfo = function (partner) {
     var city = CallInfo.file_info.partners[partner].city;
 
     return m(Card, {
-        style: style,
+        class: 'card-contracts',
         content: [
             { header: header },
             { media: media },
@@ -172,14 +166,11 @@ CallInfo.contractInfo = function(partner, contract) {
     var power = CallInfo.file_info.partners[partner].contracts[contract].power;
 
     return m(ListTile, {
+        class: 'tile-contracts',
         title: cups,
         subtitle: "Data: " + from_til,
         highSubtitle: "Potència: " + power,
         front: m(Icon, getIcon()),
-        style: {
-          color: "#502300",
-          backgroundColor: "#F6F6F6"
-        }
     });
 }
 
@@ -204,11 +195,7 @@ CallInfo.showContracts = function(partner){
         title: 'Contractes:',
         backdrop: true,
         body: [
-            m(List, {
-              tiles: [
-                aux,
-              ],
-            }),
+            m(List, { tiles: aux }),
         ],
         footerButtons: [
             m(Button, {
