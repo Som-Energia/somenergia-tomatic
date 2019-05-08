@@ -8,6 +8,7 @@ from flask import (
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
 from callinfo import CallInfo
+from websocket_server import WebsocketServer
 from . import schedulestorage
 from .pbxmockup import PbxMockup
 from .htmlgen import HtmlGen
@@ -24,6 +25,8 @@ schedules_path = os.path.join(packagedir,'..','graelles')
 schedules = schedulestorage.Storage(schedules_path)
 staticpath = os.path.join(packagedir,'dist')
 images_path = os.path.join(packagedir,'..','trucades')
+websockets = {}
+
 
 def pbx(alternative = None):
     if alternative:
@@ -51,6 +54,8 @@ except ImportError:
     pass
 
 app = Flask(__name__)
+app.wserver = None
+
 
 def publishStatic(graella):
     if not dbconfig: return
@@ -234,13 +239,16 @@ def busy_post(person):
 
 
 @app.route('/api/info/<phone>', methods=['GET'])
-def phoneInfo(phone):
-    message = 'ok'
-    o = erppeek.Client(**dbconfig.erppeek)
-    info = CallInfo(o)
-    data = info.getByPhone(phone)
-    if (not data.partners):
-        message = 'El número no està a la base de dades.'
+def phoneInfo_byNumber(phone):
+    message = 'err'
+    data = None
+    if phone != '0':
+        message = 'ok'
+        o = erppeek.Client(**dbconfig.erppeek)
+        info = CallInfo(o)
+        data = info.getByPhone(phone)
+        if (not data.partners):
+            message = 'El número no està a la base de dades.'
     result = ns(
         info=data,
         message=message,
@@ -250,17 +258,16 @@ def phoneInfo(phone):
 
 @app.route('/api/info/ringring', methods=['POST'])
 def callingPhone():
-    prova = ns.load('prova.yaml')
-
     data = request.form.to_dict()
     phone = data['phone']
     ext = data['ext']
-    prova.phone.update({int(ext): phone})
-
-    prova.dump('prova.yaml')
-
+    try:
+        client = websockets[ext]
+        app.wserver.send_message(client, phone)
+    except:
+        print(ext + " sense identificar.")
     result = ns(
-        phone=prova.phone[int(ext)],
+        phone=phone,
         ext=int(ext),
     )
     return yamlfy(info=result)
@@ -271,11 +278,53 @@ def image(filename):
     return send_from_directory(images_path, filename)
 
 
+# def new_client(client, server):
+#     print("client++")
+
+
+def initialize_client(client, server, message):
+    # print(message)
+    if message in websockets:
+        app.wserver.send_message(client, "warning")
+    else:
+        websockets[message] = client
+
+
+def client_left(client, server):
+    # print("client--")
+    for ws in websockets:
+        if websockets[ws] == client:
+            del websockets[ws]
+            break
+    # for wb in websockets:
+    #     print(wb)
+
+
+@app.route('/api/info/openSock', methods=['GET'])
+def obreConnexio():
+    port = 4556
+    message = 'err'
+    if not app.wserver:
+        app.wserver = WebsocketServer(port, host="192.168.35.11")
+        # app.wserver.set_fn_new_client(new_client)
+        app.wserver.set_fn_message_received(initialize_client)
+        app.wserver.set_fn_client_left(client_left)
+        app.wserver.run_forever()
+        message = 'ok'
+    else:
+        message = 'done'
+    result = ns(
+        message=message,
+    )
+    return yamlfy(info=result)
+
+
 def yamlfy(status=200, data=[], **kwd):
     return Response(ns(
         data, **kwd
         ).dump(), status,
         mimetype = 'application/x-yaml',
     )
+
 
 # vim: ts=4 sw=4 et

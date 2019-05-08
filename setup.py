@@ -49,6 +49,7 @@ setup(
         'lxml',
         'wavefile',
         'erppeek',
+        'websocket-server',
     ],
     classifiers = [
         'Programming Language :: Python',

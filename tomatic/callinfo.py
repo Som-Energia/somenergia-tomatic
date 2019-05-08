@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import dbconfig
 from yamlns import namespace as ns 
 
 class CallInfo(object):
