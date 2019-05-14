@@ -15,6 +15,7 @@ var Icon = require ('polythene-mithril-icon').Icon;
 var Spinner = require('polythene-mithril-material-design-spinner').MaterialDesignSpinner;
 
 var Login = require('./login');
+var Proves = require('./proves');
 var styleCallinfo = require('./callinfo_style.styl');
 var CallInfo = {};
 
@@ -73,143 +74,14 @@ function isEmpty(obj) {
 
 CallInfo.infoPhone = function () {
     if (isEmpty(CallInfo.file_info)) {
-        return m("body", 'No hi ha informació.')
+        return m('center', m("body", 'No hi ha informació.'));
     }
     else if (CallInfo.file_info[1]==="empty"){
-        return m(Spinner, { show: "true" } );
+        return m('center',m(Spinner, { show: "true" } ));
     } else {
-        return m('', CallInfo.listOfPartners());
+        return m('', Proves.allInfo(CallInfo.file_info));
     }
 };
-
-
-CallInfo.listOfPartners = function () {
-    var partner = 0;
-    var numOfPartners = CallInfo.file_info.partners.length;
-    var aux = [];
-    for (partner; partner < numOfPartners; partner++) {
-        aux[partner] = CallInfo.allInfo(partner);
-    }
-
-    return m(List, {
-      header: { title: "Partners:" },
-      tiles: [ aux ],
-      style: { marginBottom: '20px' }
-    });
-}
-
-
-CallInfo.allInfo = function (partner) {
-    var header = {
-        title: CallInfo.file_info.partners[partner].name,
-        subtitle: CallInfo.file_info.partners[partner].id_soci,
-        //icon: getIcon(),
-    };
-    var media = { // TODO: Grafica generada a partir de la info
-        content: CallInfo.generateGraphics(partner),
-    }
-    var primary = {
-        title: CallInfo.file_info.partners[partner].lang,
-        subtitle: CallInfo.file_info.partners[partner].email,
-    };
-    var content = [
-        m(Button, {
-            label: "Contractes",
-            events: {
-                onclick: function() {
-                    CallInfo.showContracts(partner);
-                },
-            },
-        })
-    ];
-    var city = CallInfo.file_info.partners[partner].city;
-
-    return m(Card, {
-        class: 'card-contracts',
-        content: [
-            { header: header },
-            { media: media },
-            { primary: primary },
-            { actions: { content: content } },
-            { text: { content: city } }
-        ]
-    });
-}
-
-
-// TODO
-function getIcon() {
-    // Mirem estat del client
-    var image = "img/avatar.png";
-    return {size: "large", avatar: "true", src: image};
-}
-
-
-// TODO
-CallInfo.generateGraphics = function(partner) {
-    // gestio amb la info del partner per generar imatge
-    return m("img", { src: "img/large.png", style: { maxWidth: "360px" } })
-}
-
-
-CallInfo.contractInfo = function(partner, contract) {
-    var from_til = CallInfo.file_info.partners[partner].contracts[contract].start_date;
-    from_til +=  " ~ ";
-    var aux = CallInfo.file_info.partners[partner].contracts[contract].end_date;
-    if (aux == "") {
-        from_til += "ND"
-    }
-    else {
-        from_til += aux;
-    }
-    var cups = CallInfo.file_info.partners[partner].contracts[contract].cups;
-    var power = CallInfo.file_info.partners[partner].contracts[contract].power;
-
-    return m(ListTile, {
-        class: 'tile-contracts',
-        title: cups,
-        subtitle: "Data: " + from_til,
-        highSubtitle: "Potència: " + power,
-        front: m(Icon, getIcon()),
-    });
-}
-
-
-CallInfo.showContracts = function(partner){
-    var contract = 0;
-    var aux = ["ini"];
-    try{
-      var numOfContracts = CallInfo.file_info.partners[partner].contracts.length;
-    }
-    catch(error) {
-        aux[0] = "No hi ha contractes.";
-    }
-
-    if(aux[0]==="ini"){
-        for (contract; contract < numOfContracts; contract++) {
-            aux[contract] = CallInfo.contractInfo(partner, contract);
-        }
-    }
-
-    Dialog.show(function() { return {
-        title: 'Contractes:',
-        backdrop: true,
-        body: [
-            m(List, { tiles: aux }),
-        ],
-        footerButtons: [
-            m(Button, {
-                label: "Tanca",
-                events: {
-                    onclick: function() {
-                        Dialog.hide({id:'contracts'});
-                    },
-                },
-            }),
-        ],
-        didHide: function() {m.redraw();}
-    };},{id:'contracts'});
-}
 
 
 CallInfo.connectWebSocket = function() {
@@ -319,9 +191,7 @@ CallInfo.mainPage = function() {
                 }, m(Ripple)),
             ]),
             m("div", " "),
-            m("center",
-                m("div", CallInfo.infoPhone())
-            ),
+            m("div", CallInfo.infoPhone())
     ]);
 }
 

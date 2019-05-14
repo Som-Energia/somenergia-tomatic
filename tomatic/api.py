@@ -253,6 +253,7 @@ def phoneInfo_byNumber(phone):
         info=data,
         message=message,
     )
+    # result.save("resultat.yaml")
     return yamlfy(info=result)
 
 

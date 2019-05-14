@@ -91,7 +91,7 @@ Login.askWhoAreYou = function() {
         title: 'Qui ets?',
         backdrop: true,
         body: [
-            Login.listOfPersons(),
+            Login.listOfPersons()
         ],
         footerButtons: [
             m(Button, {
