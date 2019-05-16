@@ -263,8 +263,9 @@ def callingPhone():
     phone = data['phone']
     ext = data['ext']
     try:
-        client = websockets[ext]
-        app.wserver.send_message(client, phone)
+        clients = websockets[ext]
+        for client in clients:
+            app.wserver.send_message(client, phone)
     except:
         print(ext + " sense identificar.")
     result = ns(
@@ -279,26 +280,17 @@ def image(filename):
     return send_from_directory(images_path, filename)
 
 
-# def new_client(client, server):
-#     print("client++")
-
-
-def initialize_client(client, server, message):
-    # print(message)
-    if message in websockets:
-        app.wserver.send_message(client, "warning")
-    else:
-        websockets[message] = client
+def initialize_client(client, server, extension):
+    if extension not in websockets:
+        websockets[extension] = []
+    websockets[extension].append(client)
 
 
 def client_left(client, server):
-    # print("client--")
-    for ws in websockets:
-        if websockets[ws] == client:
-            del websockets[ws]
+    for ext in websockets:
+        if client in websockets[ext]:
+            websockets[ext].remove(client)
             break
-    # for wb in websockets:
-    #     print(wb)
 
 
 @app.route('/api/info/openSock', methods=['GET'])
@@ -307,7 +299,6 @@ def obreConnexio():
     message = 'err'
     if not app.wserver:
         app.wserver = WebsocketServer(port, host="192.168.35.11")
-        # app.wserver.set_fn_new_client(new_client)
         app.wserver.set_fn_message_received(initialize_client)
         app.wserver.set_fn_client_left(client_left)
         app.wserver.run_forever()
