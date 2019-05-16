@@ -7,11 +7,64 @@ var jsyaml = require('js-yaml');
 var Dialog = require('polythene-mithril-dialog').Dialog;
 var Button = require('polythene-mithril-button').Button;
 var List = require ('polythene-mithril-list').List;
+var Ripple = require('polythene-mithril-ripple').Ripple;
 
+var styleCallinfo = require('./callinfo_style.styl');
 var Tomatic = require('./tomatic');
-var Login = {};
+var Callinfo = require('./callinfo');
 
-Login.first = 0;
+var Login = {};
+var first = 0;
+var iden = "0";
+var websock = null;
+
+
+var openServerSock = function() {
+    m.request({
+        method: 'GET',
+        url: '/api/info/openSock',
+        deserialize: jsyaml.load,
+    }).then(function(response){
+        console.debug("Info GET Response: ",response);
+        if (response.info.message === "ok" ) {
+            console.debug("WebSocket created at @IP=192.168.35.11 #port=4556");
+        } else if (response.info.message === "done") {
+            console.debug("WebSocket was already oppened.");
+        } else{
+            console.debug("Error get data: ", response.info.message);
+        }
+    }, function(error) {
+        console.debug('Info GET apicall failed WebSock: ', error);
+    });
+}
+
+
+var connectWebSocket = function() {
+    var addr = 'ws://192.168.35.11:4556/';
+    if(websock !== null) {
+        clearInfo();
+    }
+    websock = new WebSocket(addr);
+    var ws = websock;
+    ws.onopen = function(event) {
+        var ext = getMyExt();
+        ws.send(ext);
+    }
+    ws.onmessage = function (event) {
+        var content = event.data;
+        Callinfo.refreshInfo(content);
+    }
+}
+
+
+var clearInfo = function() {
+    Callinfo.refreshInfo("");
+    if(websock !== null){
+        var ws = websock;
+        ws.close();
+        websock = null;
+    }
+}
 
 
 Date.prototype.addHours = function(h) {
@@ -19,26 +72,21 @@ Date.prototype.addHours = function(h) {
    return this;
 }
 
-Login.disconnect = function(){
+
+var disconnect = function(){
     document.cookie = "; expires = Thu, 01 Jan 1970 00:00:00 GMT;path=/";
 }
 
-Login.getName = function(id) {
-    return Tomatic.formatName(id);
-}
 
-Login.getColor = function(id) {
-    return Tomatic.persons().colors[id];
-}
-
-Login.getMyExt = function() {
+var getMyExt = function() {
     var x = document.cookie;
     var aux = x.split(":");
     var ext = aux[1].toString();
     return ext;
 }
 
-Login.setCookieInfo = function(vnode){
+
+var setCookieInfo = function(vnode){
     var aux = vnode.attributes;
     var name_button = aux["0"].ownerElement.innerText;
     var persons = Tomatic.persons().extensions;
@@ -51,7 +99,6 @@ Login.setCookieInfo = function(vnode){
             break;
         }
     }
-
     if(found){
         var value = id + ":" + Tomatic.persons().extensions[id] + ":" + Tomatic.persons().colors[id];
         var exp = new Date().addHours(3);
@@ -61,7 +108,7 @@ Login.setCookieInfo = function(vnode){
 }
 
 
-Login.listOfPersons = function() {
+var listOfPersons = function() {
     var aux = [];
     var persons = Tomatic.persons().extensions;
 
@@ -75,7 +122,7 @@ Login.listOfPersons = function() {
                 style: { backgroundColor: color, margin: '4px' },
                 events: {
                     onclick: function() {
-                        Login.setCookieInfo(this);
+                        setCookieInfo(this);
                         Dialog.hide({id:'whoAreYou'});
                     },
                 },
@@ -86,17 +133,17 @@ Login.listOfPersons = function() {
 }
 
 
-Login.askWhoAreYou = function() {
+var askWhoAreYou = function() {
     Dialog.show(function() { return {
+        //class: 'dialog-login',
         title: 'Qui ets?',
         backdrop: true,
         body: [
-            Login.listOfPersons()
+            listOfPersons()
         ],
         footerButtons: [
             m(Button, {
                 label: "Cancel·la",
-                style: { center: true },
                 events: {
                     onclick: function() {
                         Dialog.hide({id:'whoAreYou'});
@@ -110,7 +157,7 @@ Login.askWhoAreYou = function() {
 }
 
 
-Login.whoAreYou = function() {
+var whoAreYou = function() {
     var info = ":";
     var x = document.cookie;
     if (x !== "") {
@@ -118,6 +165,60 @@ Login.whoAreYou = function() {
     }
     return info;
 }
+
+
+Login.identification = function() {
+    var info = whoAreYou();
+    var nom = "IDENTIFICAR";
+    var color = 'rgba(255, 255, 255, 0.7)';
+
+    if (info !== ":") {
+        var aux = info.split(":");
+        var id = aux[0];
+        nom = Tomatic.formatName(id);
+        color = "#" + aux[2];
+        if(iden !== nom || websock === null){
+            connectWebSocket();
+            iden = nom;
+        }
+    }
+
+    return m('', [
+        m(Button, {
+            label: nom,
+            border: true,
+            events: {
+                onclick: function() {
+                    if(first == "0"){
+                        openServerSock();
+                        first = "";
+                    }
+                    askWhoAreYou();
+                },
+            },
+            style: { backgroundColor: color },
+        }, m(Ripple)),
+        m(Button, {
+            //class: 'btn-disconnect',
+            label: '❌',
+            events: {
+                onclick: function() {
+                    clearInfo();
+                    disconnect();
+                }
+            },
+            style: {
+                backgroundColor: '#E1232C',
+                color: '#A0D8BC',
+                marginLeft: '10px',
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%'
+            },
+        }, m(Ripple)),
+    ]);
+}
+
 
 
 return Login;

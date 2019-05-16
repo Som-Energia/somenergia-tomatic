@@ -26,6 +26,7 @@ var RgbEditor = require('./components/rgbeditor');
 var Uploader = require('./components/uploader');
 var luminance = require('./components/colorutils').luminance;
 var editAvailabilities = require('./components/busyeditor');
+var Login = require('./components/login');
 
 var css = require('polythene-css');
 var customStyle = require('./style.styl');
@@ -182,7 +183,8 @@ const toolbarRow = function(title) {
 	return m('.pe-toolbar.flex.layout',[
 		ButtonIcon(iconMenu),
 		m('.flex', title),
-		ButtonIcon(iconMore)
+		Login.identification(),
+        ButtonIcon(iconMore)
 	]);
 }
 
