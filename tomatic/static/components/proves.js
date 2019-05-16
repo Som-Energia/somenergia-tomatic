@@ -14,9 +14,7 @@ var styleCallinfo = require('./callinfo_style.styl');
 
 var Proves = {};
 
-Proves.file_info = {};
-
-var main_partner = 0;
+Proves.main_partner = 0;
 var reason = [];
 var reasons = ["prova1", "prova2", "prova3"];
 
@@ -134,7 +132,7 @@ var buttons = function(info) {
             events: {
                 onclick: function() {
                     var id = this.attributes.id.value;
-                    main_partner = id;
+                    Proves.main_partner = id;
                 },
             },
             border: 'true',
@@ -157,7 +155,7 @@ var listOfPartners = function(partners, button) {
     }
 
     return m(List, {
-      tiles: [ aux[main_partner] ],
+      tiles: [ aux[Proves.main_partner] ],
     });
 }
 
