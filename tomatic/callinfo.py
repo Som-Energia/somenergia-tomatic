@@ -42,6 +42,17 @@ class CallInfo(object):
             )
         return result
 
+    def getPartnerRelatedContracts(self,partner_id):
+        contract_titular_ids = self.O.GiscedataPolissa.search([
+            ('titular.id','=',partner_id),
+            ])
+        contract_pagador_ids = self.O.GiscedataPolissa.search([
+            ('pagador.id','=',partner_id),
+            ])
+        contract_soci_ids = self.O.GiscedataPolissa.search([
+            ('soci.id','=',partner_id),
+            ])
+        return sorted(list(set(contract_titular_ids + contract_pagador_ids + contract_soci_ids)))
 
     def partnersInfo(self, partners_ids):
         result = ns(partners = [])
@@ -57,16 +68,26 @@ class CallInfo(object):
         for partner_data in partners_data or []:
             partner_data = ns(partner_data)
             partner_result = self.partnerInfo(partner_data)
-            partner_result.update(self.contractInfo(partner_data.polisses_ids))
+            contracts_ids = self.getPartnerRelatedContracts(partner_data.id)
+            partner_result.update(self.contractInfo(contracts_ids,partner_data.id))
             del partner_result.contracts_ids
             result.partners.append(partner_result)
         return result
-    
-    def contractInfo(self,contracts_ids):
+
+    def contractInfo(self, contracts_ids, partner_id):
+
+        def hasOpenATR(contract_id, case):
+            cases = self.O.GiscedataSwitching.search([
+                ('cups_polissa_id', '=', contract_id),
+                ('proces_id.name', '=', case),
+                ('state', '!=', 'done')
+            ])
+            return len(cases) > 0
+
         if not contracts_ids:
             return ns(polisses=[])
 
-        contracts = self.O.GiscedataPolissa.read(contracts_ids,[
+        contracts = self.O.GiscedataPolissa.read(contracts_ids, [
             'data_alta',
             'data_baixa',
             'potencia',
@@ -74,7 +95,14 @@ class CallInfo(object):
             'state',
             'active',
             'tarifa',
-            ])
+            'name',
+            'data_ultima_lectura',
+            'facturacio_suspesa',
+            'pending_state',
+            'titular',
+            'soci',
+            'pagador',
+        ])
         return ns(contracts=[
             ns(
                 start_date = contract['data_alta'],
@@ -83,6 +111,14 @@ class CallInfo(object):
                 cups = self.anonymize(contract['cups'][1]),
                 fare = contract['tarifa'][1],
                 state = contract['state'],
+                number = contract['name'],
+                last_invoiced = contract['data_ultima_lectura'],
+                suspended_invoicing = contract['facturacio_suspesa'],
+                pending_state = contract['pending_state'],
+                has_open_r1s = hasOpenATR(contract['id'],'R1'),
+                has_open_bs = hasOpenATR(contract['id'],'B1'),
+                is_titular = contract['titular'][0] == partner_id,
+                is_partner = contract['soci'][0] == partner_id,
                 )
             for contract in contracts
             ])
