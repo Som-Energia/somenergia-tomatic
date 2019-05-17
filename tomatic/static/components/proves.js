@@ -69,16 +69,17 @@ var contractCard = function(info) {
                 } },
                 [
                     m("div", [
-                        m("b", "Número: "),
+                        m("b", "Número: ", info.number),
                         m("b",{style:{float: 'right', marginRight: '20px'}}, from_til)
                     ]),
                     m("div", "CUPS: ", info.cups),
                     m("div", "Potència: ", info.power),
                     m("div", "Tarifa: ", info.fare),
-                    m("div", "R Obertes ATR: "),
-                    m("div", "Última data facturació: "),
-                    m("div", "Facturació suspesa:"),
-                    m("div", "Estat: ", info.state),
+                    m("div", "Última data facturació: ", info.last_invoiced),
+                    m("div", {style:{color: '#E1232C'}} ,(info.has_open_r1s ? "Casos ATR R1 oberts." : "")),
+                    m("div", {style:{color: '#E1232C'}} ,(info.has_open_bs ? "Cas ATR B1 obert." : "")),
+                    m("div", "Facturació suspesa: ", (info.suspended_invoicing ? "Sí" : "No")),
+                    m("div", "Estat: ", info.pending_state),
                 ]
             )
         ]
@@ -106,6 +107,7 @@ var contractsField = function(info){
             width: '540px',
             height: '450px',
             overflow: 'auto',
+            borderRadius: '2%',
         } },
         [
             m(List, {
@@ -124,7 +126,8 @@ var buttons = function(info) {
         var name = info[partner].name;
         var aux2 = name.split(',');
         if (!aux2[1]){
-            aux2[1] = 'ORG';
+            aux2 = name.split(' ');
+            aux2[1] = aux2[0];
         }
         aux[partner] = m(Button, {
             id: partner,
