@@ -6,7 +6,6 @@ var jsyaml = require('js-yaml');
 var Ripple = require('polythene-mithril-ripple').Ripple;
 var List = require ('polythene-mithril-list').List;
 var ListTile = require('polythene-mithril-list-tile').ListTile;
-var Checkbox = require('polythene-mithril-checkbox').Checkbox;
 var Card = require('polythene-mithril-card').Card;
 var Button = require('polythene-mithril-button').Button;
 
@@ -15,27 +14,28 @@ var styleCallinfo = require('./callinfo_style.styl');
 var Proves = {};
 
 Proves.main_partner = 0;
-var reason = [];
-var reasons = ["prova1", "prova2", "prova3"];
+
 
 var infoPartner = function(info){
     // var lang = info.lang;
     // var id = info.id_soci;
+    var url = "https://secure.helpscout.net/search/?query=" + info.email;
+    var dni = (info.dni.slice(0,2) === 'ES' ? info.dni.slice(2) : info.dni)
     return m("div", { 
         style: {
             marginTop: '10px',
-            marginBottom: '10px'
+            marginBottom: '10px',
         } },
         [
-            m("", {style: {color: '#000'}} ,[
-                m("b", info.name), 
-                m("b",{style:{float: 'right', marginRight: '20px'}},"S | T")
+            m("div", [
+                m("b", {style: {color: '#000'}} , info.name), 
+                m("b",{style:{float: 'right', marginRight: '20px'}}, info.id_soci),
             ]),
-            m("", "DNI"),
+            m("", dni),
             m("", info.state),
             m("", info.email),
-            m("", "Ha obert OV?"),
-            m("a", {"href":"url"}, "helpscout"),
+            m("", "Ha obert OV? ", (info.ov ? "Sí" : "No")),
+            m("a", {"href":url}, "Helpscout"),
         ]
     );
 }
@@ -79,7 +79,15 @@ var contractCard = function(info) {
                     m("div", {style:{color: '#E1232C'}} ,(info.has_open_r1s ? "Casos ATR R1 oberts." : "")),
                     m("div", {style:{color: '#E1232C'}} ,(info.has_open_bs ? "Cas ATR B1 obert." : "")),
                     m("div", "Facturació suspesa: ", (info.suspended_invoicing ? "Sí" : "No")),
-                    m("div", "Estat: ", info.pending_state),
+                    m("div", [
+                        m("b", "Estat: ", info.pending_state),
+                        m("b",{style:{float: 'right', marginRight: '20px'}}, [
+                            (info.is_titular ? "T " : ""),
+                            (info.is_partner ? "S " : ""),
+                            (info.is_payer ? "P " : ""),
+                            (info.is_notifier ? "N " : ""),
+                        ])
+                    ]),
                 ]
             )
         ]
@@ -198,81 +206,9 @@ var mainInfoCards = function(info) {
 }
 
 
-var llistaMotius = function() {
-    var aux = [];
-    for(var i = 0; i<reasons.length; i++) {
-        aux[i] = m(ListTile, {
-            selectable: 'true',
-            ink: 'true',
-            ripple: {
-              opacityDecayVelocity: '0.5',
-            },
-            subtitle: reasons[i],
-            secondary: {
-                content: m(Checkbox, {
-                    value: '100',
-                    style: { color: "#ff9800" },
-                    onChange: state => {
-                        var r = state.event.path[5].textContent;
-                        var index = reason.indexOf(r);
-                        if (index > -1) {
-                           reason.splice(index, 1);
-                        }
-                        else {
-                            reason.push(r);
-                        }
-                    },
-                })
-            },
-        });
-    }
-
-    return m("div", {
-        style: {
-            backgroundColor: '#EEEEEE',
-            width: '400px',
-            height: '200px',
-            overflow: 'auto',
-        } },
-        [
-            m(List, {
-                tiles: [ aux ],
-            })
-        ]
-    );
-
-    return 
-}
-
-
-var motiu = function() {
-    var text = {
-        content: m('', [
-            llistaMotius()
-            ])
-    };
-    return m(Card, {
-        //class: 'card-contracts',
-        style: {
-            maxWidth: '470px',
-            maxHeight: '400px',
-            position: 'absolute',
-            right: '0',
-            marginRight: '40px',
-            display: 'inline-block',
-        },
-        content: [
-            { primary: { title: 'Motiu:', subtitle: 'Selecciona la raó de la trucada'} },
-            { text: text  },
-        ]
-    });
-}
-
-
-Proves.allInfo = function(info) {
-    return m("", [
+Proves.allInfo = function(info, phone) {
+    return m("", {style:{display: 'inline-block',}}, [
         mainInfoCards(info),
-        motiu(),
     ]);
 }
 

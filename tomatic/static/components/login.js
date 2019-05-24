@@ -27,7 +27,7 @@ var openServerSock = function() {
     }).then(function(response){
         console.debug("Info GET Response: ",response);
         if (response.info.message === "ok" ) {
-            console.debug("WebSocket created at @IP=192.168.35.11 #port=4556");
+            console.debug("WebSocket created.");
         } else if (response.info.message === "done") {
             console.debug("WebSocket was already oppened.");
         } else{
@@ -52,13 +52,13 @@ var connectWebSocket = function() {
     }
     ws.onmessage = function (event) {
         var content = event.data;
-        Callinfo.refreshInfo(content);
+        Callinfo.refreshInfo(content,iden);
     }
 }
 
 
 var clearInfo = function() {
-    Callinfo.refreshInfo("");
+    Callinfo.refreshInfo("","");
     if(websock !== null){
         var ws = websock;
         ws.close();

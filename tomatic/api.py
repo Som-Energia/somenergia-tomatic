@@ -253,7 +253,6 @@ def phoneInfo_byNumber(phone):
         info=data,
         message=message,
     )
-    # result.save("resultat.yaml")
     return yamlfy(info=result)
 
 
@@ -307,6 +306,53 @@ def obreConnexio():
         message = 'done'
     result = ns(
         message=message,
+    )
+    return yamlfy(info=result)
+
+
+@app.route('/api/reasons', methods=['GET'])
+def reasonsInfo():
+    message = 'ok'
+    try:
+        info = ns.load('trucades/reasons.yaml')
+        reasons = info.reasons
+        print(reasons)
+    except:
+        reasons = []
+        message = 'err'
+    result = ns(
+        info=reasons,
+        message=message,
+    )
+    print(result)
+    return yamlfy(info=result)
+
+
+@app.route('/api/reasons/<phone>', methods=['POST'])
+def savePhoneLog(phone):
+    log = ns.load('trucades/log_reasons.yaml')
+    if int(phone) not in log.phone:
+        log.phone.update({int(phone): []})
+    log.phone[int(phone)].insert(0, request.data)
+    log.dump('trucades/log_reasons.yaml')
+    result = ns(
+        message='ok'
+    )
+    return yamlfy(info=result)
+
+
+@app.route('/api/log/<phone>', methods=['GET'])
+def getPhoneLog(phone):
+    log = ns.load('trucades/log_reasons.yaml')
+    msg = "ok"
+    inf = []
+    if int(phone) not in log.phone:
+        msg = "not"
+    else:
+        inf = log.phone[int(phone)]
+    result = ns(
+        message=msg,
+        info=inf
     )
     return yamlfy(info=result)
 
