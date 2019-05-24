@@ -39,6 +39,8 @@ class CallInfo(object):
             email = self.anonymize(partner_data.www_email),
             contracts_ids = partner_data.polisses_ids,
             state = partner_data.www_provincia[1]['name'],
+            dni = self.anonymize(partner_data.vat),
+            ov = partner_data.empowering_token != False,
             )
         return result
 
@@ -64,6 +66,8 @@ class CallInfo(object):
             'name',
             'ref',
             'lang',
+            'vat',
+            'empowering_token',
         ])
         for partner_data in partners_data or []:
             partner_data = ns(partner_data)
@@ -84,6 +88,10 @@ class CallInfo(object):
             ])
             return len(cases) > 0
 
+        def getPartnerId(address_id):
+            partner_ids = self.O.ResPartnerAddress.read([address_id],['partner_id'])
+            return partner_ids[0]['partner_id'][0]
+
         if not contracts_ids:
             return ns(polisses=[])
 
@@ -102,6 +110,7 @@ class CallInfo(object):
             'titular',
             'soci',
             'pagador',
+            'direccio_notificacio',
         ])
         return ns(contracts=[
             ns(
@@ -119,6 +128,8 @@ class CallInfo(object):
                 has_open_bs = hasOpenATR(contract['id'],'B1'),
                 is_titular = contract['titular'][0] == partner_id,
                 is_partner = contract['soci'][0] == partner_id,
+                is_notifier = getPartnerId(contract['direccio_notificacio'][0]) == partner_id,
+                is_payer = contract['pagador'][0] == partner_id,
                 )
             for contract in contracts
             ])

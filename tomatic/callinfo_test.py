@@ -107,6 +107,8 @@ class CallInfo_Test(unittest.TestCase):
             'name',
             'ref',
             'lang',
+            'vat',
+            'empowering_token',
         ])[0]
         partner_data = info.partnerInfo(ns(data))
         self.assertNsEqual(partner_data, """\
@@ -119,6 +121,35 @@ class CallInfo_Test(unittest.TestCase):
             - 155
             - 56427
             state: Lleida
+            dni: ...82V
+            ov: True
+            """)
+
+    def test_partnerInfo_whenMatchesOne_noOV(self):
+        info = CallInfo(self.O, anonymize=True)
+        data = self.O.ResPartner.read([51444],[
+            'city',
+            'www_email',
+            'www_provincia',
+            'polisses_ids',
+            'name',
+            'ref',
+            'lang',
+            'vat',
+            'empowering_token',
+        ])[0]
+        partner_data = info.partnerInfo(ns(data))
+        self.assertNsEqual(partner_data, """\
+            lang: es_ES
+            name: ...avo
+            city: Barcelona
+            email: ...oop
+            id_soci: ...225
+            contracts_ids:
+            - 75498
+            state: Barcelona
+            dni: ...36L
+            ov: False
             """)
 
     def test_partnersInfo_whenMatchesOne(self):
@@ -133,6 +164,8 @@ class CallInfo_Test(unittest.TestCase):
               name: ...iol
               id_soci: ...367
               email: ...oop
+              dni: ...82V
+              ov: True
               contracts:
               -
                 end_date: ''
@@ -149,6 +182,8 @@ class CallInfo_Test(unittest.TestCase):
                 has_open_bs: False
                 is_titular: True
                 is_partner: True
+                is_notifier: True
+                is_payer: True
               -
                 end_date: ''
                 cups: ...H0F
@@ -164,7 +199,9 @@ class CallInfo_Test(unittest.TestCase):
                 has_open_bs: False
                 is_titular: False
                 is_partner: True
-              - 
+                is_notifier: True
+                is_payer: True
+              -
                 end_date: ''
                 cups: ...A0F
                 start_date: '2015-10-21'
@@ -179,6 +216,8 @@ class CallInfo_Test(unittest.TestCase):
                 has_open_bs: false
                 is_titular: false
                 is_partner: true
+                is_notifier: false
+                is_payer: false
               -
                 end_date: ''
                 cups: ...V0F
@@ -194,6 +233,8 @@ class CallInfo_Test(unittest.TestCase):
                 has_open_bs: false
                 is_titular: false
                 is_partner: true
+                is_notifier: false
+                is_payer: false
               -
                 end_date: ''
                 cups: ...Y0F
@@ -209,6 +250,8 @@ class CallInfo_Test(unittest.TestCase):
                 has_open_bs: false
                 is_titular: false
                 is_partner: true
+                is_notifier: false
+                is_payer: false
             """)
 
     def test_contractInfo_whenAskNone(self):
@@ -238,6 +281,8 @@ class CallInfo_Test(unittest.TestCase):
               has_open_bs: False
               is_titular: True
               is_partner: True
+              is_notifier: True
+              is_payer: True
             """)
 
     def test_contractInfo_whenAskOne_withR1(self):
@@ -260,6 +305,8 @@ class CallInfo_Test(unittest.TestCase):
               has_open_bs: False
               is_titular: True
               is_partner: True
+              is_notifier: False
+              is_payer: False
             """)
 
     def test_contractInfo_whenAskOne_withB1(self):
@@ -282,6 +329,8 @@ class CallInfo_Test(unittest.TestCase):
               has_open_bs: True
               is_titular: True
               is_partner: True
+              is_notifier: True
+              is_payer: True
             """)
 
     def test_contractInfo_whenAskOne_titular_not_partner(self):
@@ -304,6 +353,8 @@ class CallInfo_Test(unittest.TestCase):
               has_open_bs: False
               is_titular: True
               is_partner: False
+              is_notifier: True
+              is_payer: True
             """)
 
     def test_contractInfo_whenAskMore(self):
@@ -326,6 +377,8 @@ class CallInfo_Test(unittest.TestCase):
               has_open_bs: False
               is_titular: True
               is_partner: True
+              is_notifier: True
+              is_payer: True
             -
               start_date: '2012-03-29'
               end_date: ''
@@ -341,6 +394,8 @@ class CallInfo_Test(unittest.TestCase):
               has_open_bs: False
               is_titular: False
               is_partner: False
+              is_notifier: False
+              is_payer: False
             """)
 
     def test_getByPhone_global(self):
