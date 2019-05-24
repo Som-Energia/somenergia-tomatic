@@ -18,7 +18,6 @@ Proves.main_partner = 0;
 
 var infoPartner = function(info){
     // var lang = info.lang;
-    // var id = info.id_soci;
     var url = "https://secure.helpscout.net/search/?query=" + info.email;
     var dni = (info.dni.slice(0,2) === 'ES' ? info.dni.slice(2) : info.dni)
     return m("div", { 

@@ -172,7 +172,7 @@ var motiu = function() {
         class: 'card-motius',
         content: [
             { primary: { 
-                title: 'Motiu:', 
+                title: 'Motiu:',
                 subtitle: 'Selecciona la raó de la trucada'
             } },
             { text: text  },
@@ -198,7 +198,7 @@ var llistaLog = function() {
     if (log.length === 0) {
         aux[0] = m(ListTile, {
             style: { fontSize: '14px' },
-            title: "No hi ha cap registre", 
+            title: "No hi ha cap registre",
         });
     }
     return m("div", {class:'logs'}, m(List, {tiles: aux}));
