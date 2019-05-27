@@ -144,6 +144,24 @@ var llistaMotius = function() {
 }
 
 
+var date2str = function (x, y) {
+    var z = {
+        M: x.getMonth() + 1,
+        d: x.getDate(),
+        h: x.getHours(),
+        m: x.getMinutes(),
+        s: x.getSeconds()
+    };
+    y = y.replace(/(M+|d+|h+|m+|s+)/g, function(v) {
+        return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1))).slice(-2)
+    });
+
+    return y.replace(/(y+)/g, function(v) {
+        return x.getFullYear().toString().slice(-v.length)
+    });
+}
+
+
 var motiu = function() {
     var text = {
         content: m('', [ llistaMotius() ])
@@ -155,7 +173,8 @@ var motiu = function() {
                 var person = (id === "" ? "Unknown" : id)
                 var time = new Date();
                 time.getTime();
-                var moment = time.toString().slice(0,21)
+                var moment = date2str(time, "dd-MM-yyyy hh:mm:ss")
+                console.log(moment)
                 for( i in reason) {
                     saveLogCalls(moment +'¬'+person+'¬'+reason[i]);
                 }
@@ -180,9 +199,9 @@ var motiu = function() {
 
 var llistaLog = function() {
     var aux = []
-    for(var i = 0; i<log.length; i++) {
+    for(var i = log.length-1; i>=0; i--) {
         var missatge = log[i][2]+" ("+log[i][0]+"): "+log[i][3];
-        aux[i] = m(ListTile, {
+        aux.push(m(ListTile, {
             style: { fontSize: '14px' },
             selectable: 'true',
             ink: 'true',
@@ -190,7 +209,7 @@ var llistaLog = function() {
               opacityDecayVelocity: '0.5',
             },
             title: missatge,
-        });
+        }));
     }
     if (log.length === 0) {
         aux[0] = m(ListTile, {
