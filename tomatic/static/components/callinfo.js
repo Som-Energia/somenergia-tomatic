@@ -88,11 +88,11 @@ var getLog = function () {
 };
 
 
-var saveLogCalls = function(msg) {
+var saveLogCalls = function(info) {
     m.request({
         method: 'POST',
         url: '/api/reasons/'+CallInfo.phone,
-        data: msg,
+        data: info,
         deserialize: jsyaml.load,
     }).then(function(response){
         console.debug("Info POST Response: ",response);
@@ -152,17 +152,13 @@ var motiu = function() {
         label: "Desa",
         events: {
             onclick: function() {
-                var message = (id === "" ? "Unknown" : id)
+                var person = (id === "" ? "Unknown" : id)
                 var time = new Date();
                 time.getTime();
-                message += (' ('+time.toString().slice(0,21)+'): ')
-                for(var i=0; i<reason.length; i++){
-                    message += (reason[i])
-                    if (i < reason.length-1) {
-                        message += ', '
-                    }
+                var moment = time.toString().slice(0,21)
+                for( i in reason) {
+                    saveLogCalls(moment +'¬'+person+'¬'+reason[i]);
                 }
-                saveLogCalls(message);
             },
         },
         border: 'true',
@@ -183,8 +179,9 @@ var motiu = function() {
 
 
 var llistaLog = function() {
-    var aux = [];
+    var aux = []
     for(var i = 0; i<log.length; i++) {
+        var missatge = log[i][2]+" ("+log[i][0]+"): "+log[i][3];
         aux[i] = m(ListTile, {
             style: { fontSize: '14px' },
             selectable: 'true',
@@ -192,7 +189,7 @@ var llistaLog = function() {
             ripple: {
               opacityDecayVelocity: '0.5',
             },
-            title: log[i].split("\"")[1],
+            title: missatge,
         });
     }
     if (log.length === 0) {

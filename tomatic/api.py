@@ -15,6 +15,7 @@ from .htmlgen import HtmlGen
 from .remote import remotewrite
 import os
 import erppeek
+from sheetfetcher import SheetFetcher
 try:
     import dbconfig
 except ImportError:
@@ -265,8 +266,8 @@ def callingPhone():
         clients = websockets[ext]
         for client in clients:
             app.wserver.send_message(client, phone)
-    except:
-        print(ext + " sense identificar.")
+    except Exception as e:
+        print(ext + " sense identificar. ")
     result = ns(
         phone=phone,
         ext=int(ext),
@@ -314,45 +315,58 @@ def obreConnexio():
 def reasonsInfo():
     message = 'ok'
     try:
-        info = ns.load('trucades/reasons.yaml')
-        reasons = info.reasons
-        print(reasons)
-    except:
+        fetcher = SheetFetcher(
+            documentName='Trucades_3354',
+            credentialFilename='drive-certificate.json',
+        )
+        reasons = fetcher.get_fullsheet(1)
+    except Exception as e:
         reasons = []
-        message = 'err'
+        message = 'err: '
     result = ns(
         info=reasons,
         message=message,
     )
-    print(result)
     return yamlfy(info=result)
 
 
 @app.route('/api/reasons/<phone>', methods=['POST'])
 def savePhoneLog(phone):
-    log = ns.load('trucades/log_reasons.yaml')
-    if int(phone) not in log.phone:
-        log.phone.update({int(phone): []})
-    log.phone[int(phone)].insert(0, request.data)
-    log.dump('trucades/log_reasons.yaml')
+    msg = 'ok'
+    try:
+        aux = request.data.split('"')
+        info = aux[1].split("¬")
+        fetcher = SheetFetcher(
+            documentName='Trucades_3354',
+            credentialFilename='drive-certificate.json',
+        )
+        reason = info[2].decode(encoding='UTF-8', errors='strict')
+        row = [info[0], phone, info[1], reason]
+        fetcher.add_to_last_row(0, row)
+    except Exception as e:
+        msg = 'err: '
     result = ns(
-        message='ok'
+        message=msg
     )
     return yamlfy(info=result)
 
 
 @app.route('/api/log/<phone>', methods=['GET'])
 def getPhoneLog(phone):
-    log = ns.load('trucades/log_reasons.yaml')
-    msg = "ok"
-    inf = []
-    if int(phone) not in log.phone:
-        msg = "not"
-    else:
-        inf = log.phone[int(phone)]
+    message = 'ok'
+    try:
+        fetcher = SheetFetcher(
+            documentName='Trucades_3354',
+            credentialFilename='drive-certificate.json',
+        )
+        log = fetcher.get_fullsheet(0)
+    except Exception as e:
+        log = []
+        message = 'err: '
+    reasons = filter(lambda x: x[1] == phone, log)
     result = ns(
-        message=msg,
-        info=inf
+        info=reasons,
+        message=message,
     )
     return yamlfy(info=result)
 
