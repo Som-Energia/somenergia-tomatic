@@ -16,6 +16,7 @@ from .remote import remotewrite
 import os
 import erppeek
 from sheetfetcher import SheetFetcher
+from threading import Semaphore
 try:
     import dbconfig
 except ImportError:
@@ -56,7 +57,7 @@ except ImportError:
 
 app = Flask(__name__)
 app.wserver = None
-
+app.drive_semaphore = Semaphore()
 
 def publishStatic(graella):
     if not dbconfig: return
@@ -342,7 +343,8 @@ def savePhoneLog(phone):
         )
         reason = info[2].decode(encoding='UTF-8', errors='strict')
         row = [info[0], phone, info[1], reason]
-        fetcher.add_to_last_row(0, row)
+        with app.drive_semaphore:
+            fetcher.add_to_last_row(0, row)
     except Exception as e:
         msg = 'err: '
     result = ns(
