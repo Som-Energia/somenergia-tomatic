@@ -200,7 +200,7 @@ var motiu = function() {
 var llistaLog = function() {
     var aux = []
     for(var i = log.length-1; i>=0; i--) {
-        var missatge = log[i][2]+" ("+log[i][0]+"): "+log[i][3];
+        var missatge = log[i][5]+" ("+log[i][0]+"): "+log[i][2];
         aux.push(m(ListTile, {
             style: { fontSize: '14px' },
             selectable: 'true',

@@ -342,7 +342,8 @@ def savePhoneLog(phone):
             credentialFilename='drive-certificate.json',
         )
         reason = info[2].decode(encoding='UTF-8', errors='strict')
-        row = [info[0], phone, info[1], reason]
+        email = '=FILTER(Adreces!B:B;Adreces!A:A="' + info[1] + '")'
+        row = [info[0], email, reason, "", phone, info[1]]
         with app.drive_semaphore:
             fetcher.add_to_last_row(0, row)
     except Exception as e:
@@ -365,7 +366,7 @@ def getPhoneLog(phone):
     except Exception as e:
         log = []
         message = 'err: '
-    reasons = filter(lambda x: x[1] == phone, log)
+    reasons = filter(lambda x: x[4] == phone, log)
     result = ns(
         info=reasons,
         message=message,
