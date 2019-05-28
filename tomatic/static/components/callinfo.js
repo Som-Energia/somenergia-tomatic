@@ -26,6 +26,7 @@ var id = "";
 var reason = [];
 var reasons = [];
 var log = [];
+var desar = "Desa";
 
 var getInfo = function () {
     var data = CallInfo.phone;
@@ -89,6 +90,7 @@ var getLog = function () {
 
 
 var saveLogCalls = function(info) {
+    desar = 'Desant';
     m.request({
         method: 'POST',
         url: '/api/reasons/'+CallInfo.phone,
@@ -98,6 +100,9 @@ var saveLogCalls = function(info) {
         console.debug("Info POST Response: ",response);
         if (response.info.message !== "ok" ) {
             console.debug("Error al fer log dels motius: ", response.info.message)
+        }
+        else {
+            desar='Desa';
         }
     }, function(error) {
         console.debug('Info POST apicall failed: ', error);
@@ -167,20 +172,20 @@ var motiu = function() {
         content: m('', [ llistaMotius() ])
     };
     var save = m(Button, {
-        label: "Desa",
+        label: desar,
         events: {
             onclick: function() {
                 var person = (id === "" ? "Unknown" : id)
                 var time = new Date();
                 time.getTime();
                 var moment = date2str(time, "dd-MM-yyyy hh:mm:ss")
-                console.log(moment)
                 for( i in reason) {
                     saveLogCalls(moment +'¬'+person+'¬'+reason[i]);
                 }
             },
         },
         border: 'true',
+        disabled: (desar === "Desa" ? false : true),
     }, m(Ripple));
 
     return m(Card, {
