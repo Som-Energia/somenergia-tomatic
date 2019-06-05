@@ -28,6 +28,8 @@ var log = [];
 var desar = "Desa";
 var reason_filter = ""
 var extra = ""
+var refresh = true
+var calling_phone = ""
 
 var getInfo = function () {
     var data = CallInfo.phone;
@@ -312,19 +314,129 @@ var infoPhone = function () {
 };
 
 
-CallInfo.refreshInfo = function(phone,iden) {
-    CallInfo.phone = phone;
-    id = iden;
+CallInfo.refreshInfo = function(phone) {
     if (phone == "") {
         CallInfo.file_info = {};
     }
-    else {
+    else if (refresh) {
+        CallInfo.phone = phone;
         CallInfo.file_info = { 1: "empty" }
         Proves.main_partner = 0;
         getInfo();
-        reason = [];
         log = [];
         getLog();
+    }
+    else {
+        calling_phone = phone;
+    }
+}
+
+
+var lookForPhoneInfo = function() {
+    if(CallInfo.phone!==0 && CallInfo.phone!==""){
+        CallInfo.file_info = { 1: "empty" }
+        Proves.main_partner = 0;
+        getInfo();
+        //reason = [];
+        log = [];
+        getLog();
+    } 
+    else {
+         CallInfo.file_info = {}
+    }
+}
+
+var bloquejarTrucada = function() {
+    var block = m(Button, {
+        label: (refresh ? "Block" : "Blocked"),
+        events: {
+            onclick: function() {
+                refresh = !refresh
+            },
+        },
+        border: 'true',
+        style: {
+            position: 'absolute',
+            right: 0,
+            marginRight: '40px',
+            marginTop: '-15px',
+        },
+    }, m(Ripple));
+
+    var refresh_button = m(Button, {
+        label: 'R',
+        events: {
+            onclick: function() {
+                refresh = true
+                var num = calling_phone
+                calling_phone = ""
+                CallInfo.refreshInfo(num)
+            },
+        },
+        border: 'true',
+        disabled: calling_phone === "",
+        style: {
+            position: 'absolute',
+            right: 0,
+            marginRight: '10px',
+            marginTop: '-15px',
+        },
+    }, m(Ripple));
+
+    return m(Card, {
+        class: 'num-entrant',
+        content: [
+            { primary: { 
+                title: m("p", [
+                    m("strong", "Número entrant: "),
+                    CallInfo.phone,
+                    block,
+                    refresh_button,
+                ]),
+            } },
+        ]
+    });
+}
+
+var cercaInformacio = function() {
+    var cerca = m("p", {style:{display: 'flex', alignItems: 'baseline', marginTop: '-15px'}}, [    
+                m("strong", "Número: "),
+                m(Textfield, {
+                    class: 'txtf-phone',
+                    onChange: function(state) {
+                        CallInfo.phone = state.value;
+                    },
+                    events: {
+                        onkeypress: function(event){
+                            uniCharCode(event)
+                        }
+                    },
+                }),
+                m(Button, {
+                    class: 'btn-search',
+                    label: "🔎",
+                    events: {
+                        onclick: function() {
+                            lookForPhoneInfo();
+                        },
+                    }
+                }, m(Ripple)),
+            ]);
+
+    return m(Card, {
+        class: 'busca-info',
+        content: [
+            { primary: {
+                title: cerca,
+            } },
+        ]
+    });
+}
+
+function uniCharCode(event) {
+    var char = event.which || event.keyCode;
+    if (char === 13) {
+        lookForPhoneInfo();
     }
 }
 
@@ -332,29 +444,8 @@ CallInfo.refreshInfo = function(phone,iden) {
 CallInfo.mainPage = function() {
     return m( '', [
             m("div", { class: 'info' }, [
-                "Número: ",
-                m(Textfield, {
-                    class: 'txtf-phone',
-                    onChange: function(state) {
-                        CallInfo.phone = state.value;
-                    }
-                }),
-                m(Button, {
-                    class: 'btn-search',
-                    label: "🔎",
-                    events: {
-                        onclick: function() {
-                            if(CallInfo.phone!==0 && CallInfo.phone!==""){
-                                CallInfo.file_info = { 1: "empty" }
-                                getInfo();
-                                getLog();
-                            } 
-                            else {
-                                 CallInfo.file_info = {}
-                            }
-                        },
-                    }
-                }, m(Ripple)),
+                cercaInformacio(),
+                bloquejarTrucada(),
             ]),
             m("div", " "),
             m("div", infoPhone())
