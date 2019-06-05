@@ -9,7 +9,7 @@ var ListTile = require('polythene-mithril-list-tile').ListTile;
 var Card = require('polythene-mithril-card').Card;
 var Button = require('polythene-mithril-button').Button;
 
-var styleCallinfo = require('./callinfo_style.styl');
+var styleProves = require('./proves_style.styl');
 
 var Proves = {};
 
@@ -20,7 +20,7 @@ var infoPartner = function(info){
     // var lang = info.lang;
     var url = "https://secure.helpscout.net/search/?query=" + info.email;
     var dni = (info.dni.slice(0,2) === 'ES' ? info.dni.slice(2) : info.dni)
-    return m("div", { 
+    return m("div", { //class: 'partner-card' },
         style: {
             marginTop: '10px',
             marginBottom: '10px',
@@ -32,24 +32,27 @@ var infoPartner = function(info){
             ]),
             m("", dni),
             m("", info.state),
-            m("", info.email),
+            m("a", {"href":url, target:"_blank"}, info.email),
             m("", "Ha obert OV? ", (info.ov ? "Sí" : "No")),
-            m("a", {"href":url}, "Helpscout"),
         ]
     );
 }
 
 
 var contractCard = function(info) {
-    var from_til = info.start_date + " ~ ";
+    var from_til = (info.start_date !== false ? info.start_date : "No especificat");
     var aux = info.end_date;
-    if (aux == "") {
-        from_til += "ND"
+    var num = info.number
+    var s_num = num+"";
+    var last_invoiced = (info.last_invoiced != "" ? info.last_invoiced : "No especificada")
+    while (s_num.length < 7) s_num = "0" + s_num;
+    if (aux == "" && from_til !== "No especificat") {
+        from_til += " ⇨ Actualitat"
     }
-    else {
-        from_til += aux;
+    else if (from_til !== "No especificat") {
+        from_til += (" ⇨ " + aux);
     }
-    return m("div", {
+    return m("div", { //class: 'contract-card-main' },
         style: {
             border: '2px solid #9aa000',
             marginLeft: '10px',
@@ -59,7 +62,7 @@ var contractCard = function(info) {
         } },
         [
             m("div", { 
-                style: {
+                style: { //class: 'contract-card-son' },
                     marginTop: '5px',
                     marginLeft: '10px',
                     width: '500px',
@@ -68,18 +71,18 @@ var contractCard = function(info) {
                 } },
                 [
                     m("div", [
-                        m("b", "Número: ", info.number),
+                        m("b", "Número: ", s_num),
                         m("b",{style:{float: 'right', marginRight: '20px'}}, from_til)
                     ]),
                     m("div", "CUPS: ", info.cups),
                     m("div", "Potència: ", info.power),
                     m("div", "Tarifa: ", info.fare),
-                    m("div", "Última data facturació: ", info.last_invoiced),
+                    m("div", "Data última lectura facturada: ", last_invoiced),
                     m("div", {style:{color: '#E1232C'}} ,(info.has_open_r1s ? "Casos ATR R1 oberts." : "")),
                     m("div", {style:{color: '#E1232C'}} ,(info.has_open_bs ? "Cas ATR B1 obert." : "")),
                     m("div", "Facturació suspesa: ", (info.suspended_invoicing ? "Sí" : "No")),
                     m("div", [
-                        m("b", "Estat: ", info.pending_state),
+                        m("b", "Estat pendent: ", info.pending_state),
                         m("b",{style:{float: 'right', marginRight: '20px'}}, [
                             (info.is_titular ? "T " : ""),
                             (info.is_partner ? "S " : ""),
@@ -109,7 +112,7 @@ var contractsField = function(info){
         }
     }
     return m("div", {
-        style: {
+        style: { //class: 'contract-field' },
             backgroundColor: '#EEEEEE',
             width: '540px',
             height: '450px',
@@ -191,7 +194,7 @@ var specificPartnerCard = function(partner, button) {
 
 var mainInfoCards = function(info) {
     return m("div", 
-        { 
+        { //class: 'main-card' },
         style: {
             marginLeft: '30px',
             height: '680px',
