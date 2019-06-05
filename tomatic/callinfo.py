@@ -118,25 +118,28 @@ class CallInfo(object):
 
         ret = ns(contracts=[])
 
+        all_contracts = self.O.GiscedataPolissa.read(contracts_ids, [
+            'data_alta',
+            'data_baixa',
+            'potencia',
+            'cups',
+            'state',
+            'active',
+            'tarifa',
+            'name',
+            'data_ultima_lectura',
+            'facturacio_suspesa',
+            'pending_state',
+            'titular',
+            'soci',
+            'pagador',
+            'direccio_notificacio',
+        ])
+
+        all_contracts_dict = {c['id']:c for c in all_contracts if c}
         for contract_id in contracts_ids:
-            contract = self.O.GiscedataPolissa.read(contract_id, [
-                'data_alta',
-                'data_baixa',
-                'potencia',
-                'cups',
-                'state',
-                'active',
-                'tarifa',
-                'name',
-                'data_ultima_lectura',
-                'facturacio_suspesa',
-                'pending_state',
-                'titular',
-                'soci',
-                'pagador',
-                'direccio_notificacio',
-            ])
-            if contract:
+            if contract_id in all_contracts_dict:
+                contract = all_contracts_dict[contract_id]
                 ret.contracts.append(
                     ns(
                         start_date = contract['data_alta'],
