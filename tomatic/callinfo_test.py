@@ -117,9 +117,6 @@ class CallInfo_Test(unittest.TestCase):
             city: Vilanova de Bellpuig
             email: ...oop
             id_soci: ...367
-            contracts_ids:
-            - 155
-            - 56427
             state: Lleida
             dni: ...82V
             ov: True
@@ -145,8 +142,6 @@ class CallInfo_Test(unittest.TestCase):
             city: Barcelona
             email: ...oop
             id_soci: ...225
-            contracts_ids:
-            - 75498
             state: Barcelona
             dni: ...36L
             ov: False
@@ -398,10 +393,23 @@ class CallInfo_Test(unittest.TestCase):
               is_payer: False
             """)
 
+    def test_getPartnerRelatedContracts_ordered(self):
+        info = CallInfo(self.O, anonymize=True)
+        contracts_ids = info.getPartnerRelatedContracts(17465)
+        self.assertEqual(contracts_ids,
+            [21112, 169183, 29925, 37069, 38127]
+            )
+
     def test_getByPhone_global(self):
         info = CallInfo(self.O)
         data = info.getByPhone("630079522")
         self.assertB2BEqual(data.dump())
+
+    def test_getByPhone_global2(self):
+        info = CallInfo(self.O)
+        data = info.getByPhone("935514714")
+        self.assertB2BEqual(data.dump())
+
 
 unittest.TestCase.__str__ = unittest.TestCase.id
 
