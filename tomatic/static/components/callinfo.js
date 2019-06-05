@@ -22,11 +22,12 @@ var CallInfo = {};
 
 CallInfo.file_info = {};
 CallInfo.phone = "";
-var id = "";
 var reason = [];
-var reasons = [];
+var reasons = {};
 var log = [];
 var desar = "Desa";
+var reason_filter = ""
+var extra = ""
 
 var getInfo = function () {
     var data = CallInfo.phone;
@@ -61,7 +62,10 @@ CallInfo.getReasons = function () {
             console.debug("Error al obtenir els motius: ", response.info.message)
         }
         else{
-            reasons=response.info.info;
+            aux = response.info.info;
+            for (var i=0; i<aux.length; i++) {
+                reasons[aux[i][0]] = false;
+            }
         }
     }, function(error) {
         console.debug('Info GET apicall failed: ', error);
@@ -103,49 +107,73 @@ var saveLogCalls = function(info) {
         }
         else {
             desar='Desa';
+            getLog();
+
         }
     }, function(error) {
         console.debug('Info POST apicall failed: ', error);
     });
 }
 
-
 function isEmpty(obj) {
   return Object.keys(obj).length === 0;
 }
 
+function conte(value) {
+    return value.toLowerCase().includes(reason_filter.toLowerCase());
+}
+
+var selectReason = function(r) {
+    reasons[r] = !reasons[r]
+
+    var index = reason.indexOf(r);
+    if (index > -1) {
+        reason.splice(index, 1);
+    }
+    else {
+        reason.push(r);
+    }
+}
 
 var llistaMotius = function() {
     var aux = [];
-    for(var i = 0; i<reasons.length; i++) {
+    var list_reasons = Object.keys(reasons);
+    if (reason_filter !== "") {
+        var filtered = list_reasons.filter(reason => conte(reason));
+    }
+    else {
+        var filtered = list_reasons;
+    }
+    for(var i = 0; i<filtered.length; i++) {
         aux[i] = m(ListTile, {
-            style: { fontSize: '14px' },
-            selectable: 'true',
+            style: { fontSize: '14px'},
+            compact: true,
+            selectable: true,
             ink: 'true',
             ripple: {
               opacityDecayVelocity: '0.5',
             },
-            title: reasons[i],
+            title: filtered[i],
             secondary: {
-                content: m(Checkbox, {
-                    defautCheked: false,
-                    value: '100',
+                content:
+                m(Checkbox, {
+                    name: 'checkbox',
+                    checked: reasons[filtered[i]],
                     style: { color: "#ff9800" },
+                    value: filtered[i],
                     onChange: newState => {
-                        var r = newState.event.path[5].textContent;
-                        var index = reason.indexOf(r);
-                        if (index > -1) {
-                           reason.splice(index, 1);
-                        }
-                        else {
-                            reason.push(r);
-                        }
-                    },
-                })
+                        selectReason(newState.event.target.value)
+                    }
+                }),
+            },
+            events: {
+                onclick: function(vnode) {
+                    selectReason(vnode.srcElement.innerText);
+                }
             },
         });
     }
-    return m("div", {class:'motius'}, m(List, {tiles: aux}));
+    return m("div", {class:'motius'}, m(List, {compact: true, tiles: aux}));
 }
 
 
@@ -168,35 +196,61 @@ var date2str = function (x, y) {
 
 
 var motiu = function() {
-    var text = {
-        content: m('', [ llistaMotius() ])
-    };
     var save = m(Button, {
         label: desar,
         events: {
             onclick: function() {
-                var person = (id === "" ? "Unknown" : id)
+                var person = document.cookie.split(":")[0]
                 var time = new Date();
                 time.getTime();
                 var moment = date2str(time, "dd-MM-yyyy hh:mm:ss")
+                console.log(extra)
                 for( i in reason) {
                     saveLogCalls(moment +'¬'+person+'¬'+reason[i]);
+                    reasons[reason[i]] = false;
                 }
+                reason = []
             },
         },
         border: 'true',
-        disabled: (desar === "Desa" ? false : true),
+        disabled: ((desar === "Desa" && document.cookie !== "") ? false : true),
     }, m(Ripple));
+
+    var filter = m(Textfield, {
+        label: "Escriure per filtrar",
+        dense: true,
+        style: { width: '400px', },
+        onChange: newValue => reason_filter = newValue.value,
+    });
+
+    var observacions = m(Textfield, {
+        label: "Algun comentari?",
+        floatingLabel: true,
+        dense: true,
+        style: {marginTop: '-5px', width: '680px'},
+        onChange: newValue => extra = newValue.value,
+    });
+
+    var text = {
+        content: m('', [
+            llistaMotius(),
+            observacions,
+        ])
+    };
 
     return m(Card, {
         class: 'card-motius',
         content: [
             { primary: { 
-                title: 'Motiu:',
-                subtitle: 'Selecciona la raó de la trucada'
+                title: m("div",{style:{display: 'flex', alignItems: 'baseline'}}, [ 
+                    m("b",{style:{marginTop: '5px'}}, 'Motiu:'),
+                    m("p",{style:{marginLeft: '10px'}}, filter),
+                    m("b", {style:{marginLeft: '80px'}}, save),
+                ]),
+                //subtitle: 'Selecciona la raó de la trucada'
             } },
-            { text: text  },
-            { actions: { content: save } }
+            { text: text },
+            //{ actions: { content: save } }
         ]
     });
 }
@@ -208,6 +262,7 @@ var llistaLog = function() {
         var missatge = log[i][5]+" ("+log[i][0]+"): "+log[i][2];
         aux.push(m(ListTile, {
             style: { fontSize: '14px' },
+            compact: true,
             selectable: 'true',
             ink: 'true',
             ripple: {
@@ -219,10 +274,11 @@ var llistaLog = function() {
     if (log.length === 0) {
         aux[0] = m(ListTile, {
             style: { fontSize: '14px' },
+            compact: true,
             title: "No hi ha cap registre",
         });
     }
-    return m("div", {class:'logs'}, m(List, {tiles: aux}));
+    return m("div", {class:'logs'}, m(List, {compact: true, tiles: aux}));
 }
 
 
@@ -233,7 +289,7 @@ var logCalls = function() {
     return m(Card, {
         class: 'card-log',
         content: [
-            { primary: { title: 'Històric:' } },
+            { primary: { title: m("b",'Històric:') } },
             { text: text  },
         ]
     });
