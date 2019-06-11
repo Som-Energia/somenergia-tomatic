@@ -148,7 +148,7 @@ var llistaMotius = function() {
     }
     for(var i = 0; i<filtered.length; i++) {
         aux[i] = m(ListTile, {
-            style: { fontSize: '14px'},
+            class: "llista-motius",
             compact: true,
             selectable: true,
             ink: 'true',
@@ -159,9 +159,9 @@ var llistaMotius = function() {
             secondary: {
                 content:
                 m(Checkbox, {
+                    class: "checkbox-motius",
                     name: 'checkbox',
                     checked: reasons[filtered[i]],
-                    style: { color: "#ff9800" },
                     value: filtered[i],
                     onChange: newState => {
                         selectReason(newState.event.target.value)
@@ -175,7 +175,7 @@ var llistaMotius = function() {
             },
         });
     }
-    return m("div", {class:'motius'}, m(List, {compact: true, tiles: aux}));
+    return m(".motius", m(List, {compact: true, tiles: aux}));
 }
 
 
@@ -198,61 +198,52 @@ var date2str = function (x, y) {
 
 
 var motiu = function() {
-    var save = m(Button, {
-        label: desar,
-        events: {
-            onclick: function() {
-                var person = document.cookie.split(":")[0]
-                var time = new Date();
-                time.getTime();
-                var moment = date2str(time, "dd-MM-yyyy hh:mm:ss")
-                console.log(extra)
-                for( i in reason) {
-                    saveLogCalls(moment +'¬'+person+'¬'+reason[i]);
-                    reasons[reason[i]] = false;
-                }
-                reason = []
-            },
-        },
-        border: 'true',
-        disabled: ((desar === "Desa" && document.cookie !== "") ? false : true),
-    }, m(Ripple));
-
-    var filter = m(Textfield, {
-        label: "Escriure per filtrar",
-        dense: true,
-        style: { width: '400px', },
-        onChange: newValue => reason_filter = newValue.value,
-    });
-
-    var observacions = m(Textfield, {
-        label: "Algun comentari?",
-        floatingLabel: true,
-        dense: true,
-        style: {marginTop: '-5px', width: '680px'},
-        onChange: newValue => extra = newValue.value,
-    });
-
-    var text = {
-        content: m('', [
-            llistaMotius(),
-            observacions,
-        ])
-    };
-
     return m(Card, {
         class: 'card-motius',
         content: [
             { primary: { 
-                title: m("div",{style:{display: 'flex', alignItems: 'baseline'}}, [ 
-                    m("b",{style:{marginTop: '5px'}}, 'Motiu:'),
-                    m("p",{style:{marginLeft: '10px'}}, filter),
-                    m("b", {style:{marginLeft: '80px'}}, save),
+                title: m(".card-motius-title", [ 
+                    m(".motiu", 'Motiu:'),
+                    m(".filter", m(Textfield, {
+                        class: "textfield-filter",
+                        label: "Escriure per filtrar",
+                        dense: true,
+                        onChange: newValue => reason_filter = newValue.value,
+                    })),
+                    m(".save", m(Button, {
+                        label: desar,
+                        events: {
+                            onclick: function() {
+                                var person = document.cookie.split(":")[0]
+                                var time = new Date();
+                                time.getTime();
+                                var moment = date2str(time, "dd-MM-yyyy hh:mm:ss")
+                                console.log(extra)
+                                for( i in reason) {
+                                    saveLogCalls(moment +'¬'+person+'¬'+reason[i]);
+                                    reasons[reason[i]] = false;
+                                }
+                                reason = []
+                            },
+                        },
+                        border: 'true',
+                        disabled: ((desar === "Desa" && document.cookie !== "") ? false : true),
+                    }, m(Ripple))),
                 ]),
-                //subtitle: 'Selecciona la raó de la trucada'
             } },
-            { text: text },
-            //{ actions: { content: save } }
+            { text: {
+                content: m("", [
+                        llistaMotius(),
+                        m(Textfield, {
+                            class: "textfield-comentaris",
+                            label: "Algun comentari?",
+                            floatingLabel: true,
+                            dense: true,
+                            onChange: newValue => extra = newValue.value,
+                        }),
+                    ])
+                }
+            },
         ]
     });
 }
@@ -263,7 +254,7 @@ var llistaLog = function() {
     for(var i = log.length-1; i>=0; i--) {
         var missatge = log[i][5]+" ("+log[i][0]+"): "+log[i][2];
         aux.push(m(ListTile, {
-            style: { fontSize: '14px' },
+            class: "registres",
             compact: true,
             selectable: 'true',
             ink: 'true',
@@ -275,24 +266,23 @@ var llistaLog = function() {
     }
     if (log.length === 0) {
         aux[0] = m(ListTile, {
-            style: { fontSize: '14px' },
+            class: "registres",
             compact: true,
             title: "No hi ha cap registre",
         });
     }
-    return m("div", {class:'logs'}, m(List, {compact: true, tiles: aux}));
+    return m(".logs", m(List, {compact: true, tiles: aux}));
 }
 
 
 var logCalls = function() {
-    var text = {
-        content: m('', [ llistaLog() ])
-    };
     return m(Card, {
         class: 'card-log',
         content: [
-            { primary: { title: m("b",'Històric:') } },
-            { text: text  },
+            { primary: { title: m(".title",'Històric:') } },
+            { text: {
+                content: llistaLog()
+            }},
         ]
     });
 }
@@ -399,8 +389,12 @@ var bloquejarTrucada = function() {
 }
 
 var cercaInformacio = function() {
-    var cerca = m("p", {style:{display: 'flex', alignItems: 'baseline', marginTop: '-15px'}}, [    
-                m("strong", "Número: "),
+    return m(Card, {
+        class: 'busca-info',
+        content: [
+            { primary: {
+                title: m(".busca-info-title", [
+                m(".label", "Número: "),
                 m(Textfield, {
                     class: 'txtf-phone',
                     onChange: function(state) {
@@ -421,13 +415,7 @@ var cercaInformacio = function() {
                         },
                     }
                 }, m(Ripple)),
-            ]);
-
-    return m(Card, {
-        class: 'busca-info',
-        content: [
-            { primary: {
-                title: cerca,
+            ]),
             } },
         ]
     });
@@ -443,7 +431,7 @@ function uniCharCode(event) {
 
 CallInfo.mainPage = function() {
     return m( '', [
-            m("div", { class: 'info' }, [
+            m(".info", [
                 cercaInformacio(),
                 bloquejarTrucada(),
             ]),

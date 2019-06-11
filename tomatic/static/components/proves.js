@@ -8,6 +8,7 @@ var List = require ('polythene-mithril-list').List;
 var ListTile = require('polythene-mithril-list-tile').ListTile;
 var Card = require('polythene-mithril-card').Card;
 var Button = require('polythene-mithril-button').Button;
+var Tabs = require('polythene-mithril-tabs').Tabs;
 
 var styleProves = require('./proves_style.styl');
 
@@ -20,20 +21,16 @@ var infoPartner = function(info){
     // var lang = info.lang;
     var url = "https://secure.helpscout.net/search/?query=" + info.email;
     var dni = (info.dni.slice(0,2) === 'ES' ? info.dni.slice(2) : info.dni)
-    return m("div", { //class: 'partner-card' },
-        style: {
-            marginTop: '10px',
-            marginBottom: '10px',
-        } },
+    return m(".partner-info",
         [
-            m("div", [
-                m("b", {style: {color: '#000'}} , info.name), 
-                m("b",{style:{float: 'right', marginRight: '20px'}}, info.id_soci),
+            m(".partner-info-item", [
+                m("", m(".label-right",info.id_soci)),
+                m("", m(".label",info.name))
             ]),
-            m("", dni),
-            m("", info.state),
-            m("a", {"href":url, target:"_blank"}, info.email),
-            m("", "Ha obert OV? ", (info.ov ? "Sí" : "No")),
+            m(".partner-info-item", dni),
+            m(".partner-info-item", info.state),
+            m(".partner-info-item", m("a", {"href":url, target:"_blank"}, info.email)),
+            m(".partner-info-item", m(".label","Ha obert OV? "), (info.ov ? "Sí" : "No")),
         ]
     );
 }
@@ -52,43 +49,27 @@ var contractCard = function(info) {
     else if (from_til !== "No especificat") {
         from_til += (" ⇨ " + aux);
     }
-    return m("div", { //class: 'contract-card-main' },
-        style: {
-            border: '2px solid #9aa000',
-            marginLeft: '10px',
-            marginRight: '10px',
-            marginBottom: '10px',
-            width: '515px',
-        } },
-        [
-            m("div", { 
-                style: { //class: 'contract-card-son' },
-                    marginTop: '5px',
-                    marginLeft: '10px',
-                    width: '500px',
-                    marginBottom: '5px',
-                    color: '#000'
-                } },
-                [
-                    m("div", [
-                        m("b", "Número: ", s_num),
-                        m("b",{style:{float: 'right', marginRight: '20px'}}, from_til)
+    return m(".contract-info", [
+            m(".contract-info-box", [
+                    m(".contract-info-item", [
+                        m("", m(".label-right", from_til)),
+                        m("", m(".label","Número: "), s_num),
                     ]),
-                    m("div", "CUPS: ", info.cups),
-                    m("div", "Potència: ", info.power),
-                    m("div", "Tarifa: ", info.fare),
-                    m("div", "Data última lectura facturada: ", last_invoiced),
-                    m("div", {style:{color: '#E1232C'}} ,(info.has_open_r1s ? "Casos ATR R1 oberts." : "")),
-                    m("div", {style:{color: '#E1232C'}} ,(info.has_open_bs ? "Cas ATR B1 obert." : "")),
-                    m("div", "Facturació suspesa: ", (info.suspended_invoicing ? "Sí" : "No")),
-                    m("div", [
-                        m("b", "Estat pendent: ", info.pending_state),
-                        m("b",{style:{float: 'right', marginRight: '20px'}}, [
+                    m(".contract-info-item", m('.label', "CUPS: "), info.cups),
+                    m(".contract-info-item", m('.label', "Potència: "), info.power),
+                    m(".contract-info-item", m('.label', "Tarifa: "), info.fare),
+                    m(".contract-info-item", m('.label', "Data última lectura facturada: "), last_invoiced),
+                    m(".contract-info-item", (info.has_open_r1s ? m(".label-alert","Casos ATR R1 oberts.") : "")),
+                    m(".contract-info-item", (info.has_open_bs ? m(".label-alert","Cas ATR B1 obert.") : "")),
+                    m(".contract-info-item", m('.label', "Facturació suspesa: "), (info.suspended_invoicing ? "Sí" : "No")),
+                    m(".contract-info-item", [
+                        m(".label-right", [
                             (info.is_titular ? "T " : ""),
                             (info.is_partner ? "S " : ""),
                             (info.is_payer ? "P " : ""),
                             (info.is_notifier ? "N " : ""),
-                        ])
+                        ]),
+                        m("", m('.label', "Estat pendent: "), info.pending_state),
                     ]),
                 ]
             )
@@ -111,14 +92,7 @@ var contractsField = function(info){
             aux[contract] = contractCard(info[contract]);
         }
     }
-    return m("div", {
-        style: { //class: 'contract-field' },
-            backgroundColor: '#EEEEEE',
-            width: '540px',
-            height: '450px',
-            overflow: 'auto',
-            borderRadius: '2%',
-        } },
+    return m(".contract-field",
         [
             m(List, {
                 tiles: [ aux ],
@@ -139,22 +113,10 @@ var buttons = function(info) {
             aux2 = name.split(' ');
             aux2[1] = aux2[0];
         }
-        aux[partner] = m(Button, {
-            id: partner,
-            label: aux2[1],
-            events: {
-                onclick: function() {
-                    var id = this.attributes.id.value;
-                    Proves.main_partner = id;
-                },
-            },
-            border: 'true',
-            style: {
-                borderColor: '#9aa000'
-            }
-        }, m(Ripple));
+        aux[partner] = {label: aux2[1]};
     }
-    return m(List, { tiles: [ aux ] });
+
+    return aux;
 }
 
 
@@ -174,44 +136,37 @@ var listOfPartners = function(partners, button) {
 
 
 var specificPartnerCard = function(partner, button) {
-    var text = {
-        content: m('', [
-            infoPartner(partner),
-            contractsField(partner.contracts)
-            ])
-    };
-
-    return m(Card, {
-        class: 'card-contracts',
-        style: {maxWidth: '570px'},
-        content: [
-            { text: text  },
-            { actions: { content: button } }
-        ]
-    });
-}
-
-
-var mainInfoCards = function(info) {
-    return m("div", 
-        { //class: 'main-card' },
-        style: {
-            marginLeft: '30px',
-            height: '680px',
-            display: 'inline-block',
-            marginRight: '10px'
-        } }, 
-        [
-            listOfPartners(info.partners, buttons(info.partners))
-        ]
-    );
+    return m(".partner-card", [
+        m(Tabs, {
+            class: 'partner-tabs',
+            selected: "true",
+            autofit: "true",
+            all: {
+                activeSelected: "true",
+                ink: "true",
+            },
+            tabs: button,
+            onChange: ({ index }) => {
+                Proves.main_partner = index
+            }
+        }),
+        m(Card, {
+            class: 'card-info',
+            content: [
+                { text: {
+                    content: m("", [
+                        infoPartner(partner),
+                        contractsField(partner.contracts)
+                    ])
+                }},
+            ]
+        })
+    ]);
 }
 
 
 Proves.allInfo = function(info, phone) {
-    return m("", {style:{display: 'inline-block',}}, [
-        mainInfoCards(info),
-    ]);
+    return m(".main-info-card", listOfPartners(info.partners, buttons(info.partners)));
 }
 
 return Proves;

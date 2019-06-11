@@ -15,11 +15,6 @@
         margin-left: 10px
         color: #9a0000
 
-    .card-contracts
-        max-width: 500px
-        background-color: #FFFFFF
-        margin-bottom: 20px
-
     .tile-contracts
         color: #502300
         background-color: #F6F6F6
@@ -41,12 +36,18 @@
         width: 630px
         height: 260px
         overflow: auto
+        .llista-motius
+            font-size: 14px
+            .checkbox-motius
+                color: #8FBC8F
 
     .logs
         background-color: #EEEEEE
         width: 630px
         height: 155px
         overflow: auto
+        .registres
+            font-size: 14px
 
     .card-motius
         display: inline-block
@@ -56,6 +57,22 @@
         right: 0
         margin-right: 40px
         margin-top: 8px
+        .card-motius-title
+            display: flex
+            alignItems: baseline
+            .motiu
+                font-weight: bold
+                margin-top: 5px
+            .filter
+                margin-left: 10px
+                .textfield-filter
+                    width: 400px
+            .save
+                margin-left: 80px
+
+    .textfield-comentaris
+        margin-top: -5px
+        width: 680px
 
     .card-log
         display: inline-block
@@ -66,6 +83,8 @@
         position: absolute
         right: 0
         width: 700px
+        .title
+            font-weight: bold
 
     .num-entrant
         display: inline-block
@@ -78,10 +97,17 @@
 
     .busca-info
         display: inline-block
-        width: 300px
+        width: 280px
         height: 70px
         margin-top: -15px
         margin-right: 40px
+        .busca-info-title
+            .label
+                font-size: 14px
+                font-weight: bold
+            display: flex
+            align-items: baseline
+            margin-top: -15px
 
     ::-webkit-scrollbar
         width: 8px
@@ -94,6 +120,74 @@
 
     ::-webkit-scrollbar-thumb:hover
         background: #555
+
+    .partner-info
+        margin-top: 10px
+        margin-bottom: 10px
+        color: #000
+        .partner-info-item
+            .label
+                display: inline-block
+                margin-right: 5px
+                font-weight: bold
+            .label-right
+                display: inline-block
+                float: right
+                margin-right: 15px
+            
+    .partner-card
+        margin-bottom: 20px
+        .partner-tabs
+            background-color: #8FBC8F
+        .card-info
+            background-color: #FFFFFF
+            max-width: 570px
+
+
+    .contract-info
+        border: 2px solid #8FBC8F
+        margin-left: 10px
+        margin-right: 10px
+        margin-bottom: 10px
+        width: 515px
+        .contract-info-box
+            margin-top: 5px
+            margin-left: 10px
+            width: 500px
+            margin-bottom: 5px
+            color: #000
+            .contract-info-item
+                .label
+                    display: inline-block
+                    font-weight: bold
+                    margin-right: 5px
+                .label-right
+                    display: inline-block
+                    font-weight: bold
+                    float: right
+                    margin-right: 15px
+                .label-alert
+                    display: inline-block
+                    font-weight: bold
+                    margin-right: 5px
+                    color: #E1232C
+    .contract-field
+        background-color: #EEEEEE
+        width: 540px
+        height: 450px
+        overflow: auto
+        border-radius: 2%
+
+    .main-info-card
+        margin-left: 30px
+        height: 680px
+        display: inline-block
+        margin-right: 10px
+
+    .all-info
+        display: inline-block
+
+
 
 .login
     .btn-disconnect
