@@ -17,7 +17,26 @@ var Login = {};
 var first = 0;
 var iden = "0";
 var websock = null;
+var ip = "";
+var port = 0;
 
+var getServerSockInfo = function() {
+    m.request({
+        method: 'GET',
+        url: '/api/socketInfo',
+        deserialize: jsyaml.load,
+    }).then(function(response){
+        console.debug("Info GET Response: ",response);
+        if (response.info.message === "ok" ) {
+            ip = response.info.ip
+            port = response.info.port
+        } else{
+            console.debug("Error get data: ", response.info.message);
+        }
+    }, function(error) {
+        console.debug('Info GET apicall failed WebSock: ', error);
+    });
+}
 
 var openServerSock = function() {
     m.request({
@@ -38,9 +57,8 @@ var openServerSock = function() {
     });
 }
 
-
 var connectWebSocket = function() {
-    var addr = 'ws://192.168.35.11:4556/';
+    var addr = 'ws://'+ip+':'+port+'/';
     if(websock !== null) {
         clearInfo();
     }
@@ -191,6 +209,9 @@ Login.identification = function() {
                 onclick: function() {
                     if(first == "0"){
                         openServerSock();
+                        if( ip === "" && port === 0){
+                            getServerSockInfo();
+                        }
                         first = "";
                     }
                     askWhoAreYou();

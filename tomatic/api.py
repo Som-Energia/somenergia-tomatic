@@ -294,12 +294,27 @@ def client_left(client, server):
             break
 
 
+@app.route('/api/socketInfo', methods=['GET'])
+def getConnectionInfo():
+    config = ns.load('config_connection.yaml')
+    result = ns(
+        ip = config.ip,
+        port = config.port,
+        message = "ok"
+    )
+    return yamlfy(info=result)
+
+
 @app.route('/api/info/openSock', methods=['GET'])
 def obreConnexio():
-    port = 4556
+    config = ns.load('config_connection.yaml')
+    result = ns(
+        ip = config.ip,
+        port = config.port,
+    )
     message = 'err'
     if not app.wserver:
-        app.wserver = WebsocketServer(port, host="192.168.35.11")
+        app.wserver = WebsocketServer(result.port, host=result.ip)
         app.wserver.set_fn_message_received(initialize_client)
         app.wserver.set_fn_client_left(client_left)
         app.wserver.run_forever()
