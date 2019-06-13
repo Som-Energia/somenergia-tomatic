@@ -103,6 +103,7 @@ class CallInfo_Test(unittest.TestCase):
             'city',
             'www_email',
             'www_provincia',
+            'www_municipi',
             'polisses_ids',
             'name',
             'ref',
@@ -128,6 +129,7 @@ class CallInfo_Test(unittest.TestCase):
             'city',
             'www_email',
             'www_provincia',
+            'www_municipi',
             'polisses_ids',
             'name',
             'ref',
@@ -179,6 +181,10 @@ class CallInfo_Test(unittest.TestCase):
                 is_partner: True
                 is_notifier: True
                 is_payer: True
+                cups_adress: '...ig)'
+                titular_name: '...iol'
+                energetica: False
+                generation: True
               -
                 end_date: ''
                 cups: ...H0F
@@ -196,6 +202,10 @@ class CallInfo_Test(unittest.TestCase):
                 is_partner: True
                 is_notifier: True
                 is_payer: True
+                cups_adress: '...ig)'
+                titular_name: '...xes'
+                energetica: False
+                generation: True
               -
                 end_date: ''
                 cups: ...A0F
@@ -213,6 +223,10 @@ class CallInfo_Test(unittest.TestCase):
                 is_partner: true
                 is_notifier: false
                 is_payer: false
+                cups_adress: '...ig)'
+                titular_name: '...ero'
+                energetica: False
+                generation: False
               -
                 end_date: ''
                 cups: ...V0F
@@ -230,6 +244,10 @@ class CallInfo_Test(unittest.TestCase):
                 is_partner: true
                 is_notifier: false
                 is_payer: false
+                cups_adress: '...ig)'
+                titular_name: '...nia'
+                energetica: False
+                generation: False
               -
                 end_date: ''
                 cups: ...Y0F
@@ -247,6 +265,10 @@ class CallInfo_Test(unittest.TestCase):
                 is_partner: true
                 is_notifier: false
                 is_payer: false
+                cups_adress: '...ig)'
+                titular_name: '...ert'
+                energetica: False
+                generation: False
             """)
 
     def test_contractInfo_whenAskNone(self):
@@ -278,6 +300,38 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: True
               is_notifier: True
               is_payer: True
+              cups_adress: '...ig)'
+              titular_name: '...iol'
+              energetica: False
+              generation: True
+            """)
+
+    def test_contractInfo_whenEnergetica(self):
+        info = CallInfo(self.O, anonymize=True)
+        contractsData = info.contractInfo([102631],69906)
+        self.assertNsEqual(contractsData, """\
+            contracts:
+            -
+              end_date: ''
+              cups: ...D0F
+              start_date: '2017-03-02'
+              state: activa
+              power: 3.3
+              fare: 2.0A
+              number: '51861'
+              last_invoiced: '2018-06-13'
+              suspended_invoicing: true
+              pending_state: 'Correct'
+              has_open_r1s: False
+              has_open_bs: False
+              is_titular: True
+              is_partner: False
+              is_notifier: True
+              is_payer: True
+              cups_adress: '...ón)'
+              titular_name: '...tín'
+              energetica: True
+              generation: False
             """)
 
     def test_contractInfo_whenAskOne_withR1(self):
@@ -302,6 +356,11 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: True
               is_notifier: False
               is_payer: False
+              cups_adress: '...na)'
+              titular_name: '...iol'
+              titular_name: '...ene'
+              energetica: False
+              generation: False
             """)
 
     def test_contractInfo_whenAskOne_withB1(self):
@@ -326,6 +385,10 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: True
               is_notifier: True
               is_payer: True
+              cups_adress: '...na)'
+              titular_name: '...ACT'
+              energetica: False
+              generation: False
             """)
 
     def test_contractInfo_whenAskOne_titular_not_partner(self):
@@ -350,6 +413,10 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: False
               is_notifier: True
               is_payer: True
+              cups_adress: '...na)'
+              titular_name: '...rat'
+              energetica: False
+              generation: False
             """)
 
     def test_contractInfo_whenAskMore(self):
@@ -374,6 +441,10 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: True
               is_notifier: True
               is_payer: True
+              cups_adress: '...ig)'
+              titular_name: '...iol'
+              energetica: False
+              generation: True
             -
               start_date: '2012-03-29'
               end_date: ''
@@ -391,6 +462,10 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: False
               is_notifier: False
               is_payer: False
+              cups_adress: '...na)'
+              titular_name: '...nna'
+              energetica: False
+              generation: True
             """)
 
     def test_getPartnerRelatedContracts_ordered(self):

@@ -35,7 +35,7 @@ class CallInfo(object):
             id_soci = self.anonymize(partner_data.ref),
             lang = partner_data.lang,
             name = self.anonymize(partner_data.name),
-            city = partner_data.city,
+            city = partner_data.www_municipi[1]['name'],
             email = self.anonymize(partner_data.www_email),
             state = partner_data.www_provincia[1]['name'],
             dni = self.anonymize(partner_data.vat),
@@ -79,6 +79,7 @@ class CallInfo(object):
             'city',
             'www_email',
             'www_provincia',
+            'www_municipi',
             'name',
             'ref',
             'lang',
@@ -110,8 +111,19 @@ class CallInfo(object):
             return len(cases) > 0
 
         def getPartnerId(address_id):
-            partner_ids = self.O.ResPartnerAddress.read([address_id],['partner_id'])
+            partner_ids = self.O.ResPartnerAddress.read([address_id], ['partner_id'])
             return partner_ids[0]['partner_id'][0]
+
+        def getCUPSAdress(cups_id):
+            cups_data = self.O.GiscedataCupsPs.read([cups_id], ['direccio'])
+            return cups_data[0]['direccio']
+
+        def hasGeneration(contract_id):
+            assignations = self.O.GenerationkwhAssignment.search([
+                ('contract_id', '=', contract_id),
+                ('end_date', '=', None),
+            ])
+            return len(assignations) > 0
 
         if not contracts_ids:
             return ns(polisses=[])
@@ -135,7 +147,6 @@ class CallInfo(object):
             'pagador',
             'direccio_notificacio',
         ])
-
         all_contracts_dict = {c['id']:c for c in all_contracts if c}
         for contract_id in contracts_ids:
             if contract_id in all_contracts_dict:
@@ -158,6 +169,10 @@ class CallInfo(object):
                         is_partner = contract['soci'][0] == partner_id,
                         is_notifier = getPartnerId(contract['direccio_notificacio'][0]) == partner_id,
                         is_payer = contract['pagador'][0] == partner_id,
+                        cups_adress = self.anonymize(getCUPSAdress(contract['cups'][0])),
+                        titular_name = self.anonymize(contract['titular'][1]),
+                        energetica = contract['soci'][0] == 38039,
+                        generation = hasGeneration(contract['id']),
                     )
                 )
         return ret
