@@ -9,7 +9,7 @@ var Button = require('polythene-mithril-button').Button;
 var List = require ('polythene-mithril-list').List;
 var Ripple = require('polythene-mithril-ripple').Ripple;
 
-var styleCallinfo = require('./callinfo_style.styl');
+var styleLogin = require('./callinfo_style.styl');
 var Tomatic = require('./tomatic');
 var Callinfo = require('./callinfo');
 
@@ -30,6 +30,7 @@ var getServerSockInfo = function() {
         if (response.info.message === "ok" ) {
             ip = response.info.ip
             port = response.info.port
+
         } else{
             console.debug("Error get data: ", response.info.message);
         }
@@ -133,11 +134,12 @@ var listOfPersons = function() {
     for(id in persons){
         var name = Tomatic.formatName(id);
         var color = "#" + Tomatic.persons().colors[id];
-        if(name !== '-' && name !== '>CONTESTADOR<'){
-            aux.push(m(Button, { 
+        if(name !== '-' && name !== '>>>CONTESTADOR<<<'){
+            aux.push(m(Button, {
+                className: 'btn-list',
                 label: name,
                 border: true,
-                style: { backgroundColor: color, margin: '4px' },
+                style: { backgroundColor: color },
                 events: {
                     onclick: function() {
                         setCookieInfo(this);
@@ -147,15 +149,14 @@ var listOfPersons = function() {
             }));
         }
     }
-    return m(List, { tiles:aux, style:{marginBottom:'10px'} });
+    return m(List, { tiles:aux, className:'list-users' });
 }
 
 
 var askWhoAreYou = function() {
     Dialog.show(function() { return {
-        //class: 'dialog-login',
+        className: 'dialog-login',
         title: 'Qui ets?',
-        backdrop: true,
         body: [
             listOfPersons()
         ],
@@ -169,7 +170,6 @@ var askWhoAreYou = function() {
                 },
             }),
         ],
-        style: { background: "#FFFFFF", width: '750px', marginLeft: '-180px' },
         didHide: function() {m.redraw();}
     };},{id:'whoAreYou'});
 }
@@ -184,6 +184,13 @@ var whoAreYou = function() {
     return info;
 }
 
+var exitIcon = function(){
+    return m(".icon-exit",
+    [
+        m("script", {src: "https://kit.fontawesome.com/c81e1a5696.js"}),
+        m("i", {class: "fas fa-times-circle"}),
+    ]);
+}
 
 Login.identification = function() {
     var info = whoAreYou();
@@ -201,17 +208,15 @@ Login.identification = function() {
         }
     }
 
-    return m('', [
+    return m('.login-buttons', [
         m(Button, {
+            className: 'btn-iden',
             label: nom,
             border: true,
             events: {
                 onclick: function() {
                     if(first == "0"){
                         openServerSock();
-                        if( ip === "" && port === 0){
-                            getServerSockInfo();
-                        }
                         first = "";
                     }
                     askWhoAreYou();
@@ -220,21 +225,13 @@ Login.identification = function() {
             style: { backgroundColor: color },
         }, m(Ripple)),
         m(Button, {
-            //class: 'btn-disconnect',
-            label: '❌',
+            className: 'btn-disconnect',
+            label: exitIcon(),
             events: {
                 onclick: function() {
                     clearInfo();
                     disconnect();
                 }
-            },
-            style: {
-                backgroundColor: '#E1232C',
-                color: '#A0D8BC',
-                marginLeft: '10px',
-                width: '30px',
-                height: '30px',
-                borderRadius: '50%'
             },
         }, m(Ripple)),
     ]);

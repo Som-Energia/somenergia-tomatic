@@ -28,7 +28,7 @@ var infoPartner = function(info){
                 m("", m(".label",info.name))
             ]),
             m(".partner-info-item", dni),
-            m(".partner-info-item", info.state),
+            m(".partner-info-item", [info.city, ", ", info.state]),
             m(".partner-info-item", m("a", {"href":url, target:"_blank"}, info.email)),
             m(".partner-info-item", m(".label","Ha obert OV? "), (info.ov ? "Sí" : "No")),
         ]
@@ -55,13 +55,17 @@ var contractCard = function(info) {
                         m("", m(".label-right", from_til)),
                         m("", m(".label","Número: "), s_num),
                     ]),
+                    m(".contract-info-item", m('.label', "Nom del titular: "), info.titular_name),
                     m(".contract-info-item", m('.label', "CUPS: "), info.cups),
+                    m(".contract-info-item", m('.label', "Adreça CUPS: "), info.cups_adress),
                     m(".contract-info-item", m('.label', "Potència: "), info.power),
                     m(".contract-info-item", m('.label', "Tarifa: "), info.fare),
                     m(".contract-info-item", m('.label', "Data última lectura facturada: "), last_invoiced),
                     m(".contract-info-item", (info.has_open_r1s ? m(".label-alert","Casos ATR R1 oberts.") : "")),
                     m(".contract-info-item", (info.has_open_bs ? m(".label-alert","Cas ATR B1 obert.") : "")),
-                    m(".contract-info-item", m('.label', "Facturació suspesa: "), (info.suspended_invoicing ? "Sí" : "No")),
+                    m(".contract-info-item", (info.suspended_invoicing ? m(".label-alert","Facturació suspesa.") : "")),
+                    m(".contract-info-item", (info.energetica ? m(".label-energetica","És Energetica.") : "")),
+                    m(".contract-info-item", (info.generation ? m(".label-generation","Té Generation.") : "")),
                     m(".contract-info-item", [
                         m(".label-right", [
                             (info.is_titular ? "T " : ""),
@@ -69,7 +73,7 @@ var contractCard = function(info) {
                             (info.is_payer ? "P " : ""),
                             (info.is_notifier ? "N " : ""),
                         ]),
-                        m("", m('.label', "Estat pendent: "), info.pending_state),
+                        m("", m('.label', "Estat pendent: "), (info.pending_state != "" ? info.pending_state : "No especificat")),
                     ]),
                 ]
             )

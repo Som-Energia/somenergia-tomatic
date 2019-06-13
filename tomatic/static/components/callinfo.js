@@ -117,6 +117,16 @@ var saveLogCalls = function(info) {
     });
 }
 
+
+var searchIcon = function(){
+    return m(".icon-search",
+    [
+        m("script", {src: "https://kit.fontawesome.com/c81e1a5696.js"}),
+        m("i", {class: "fas fa-search"}),
+    ]);
+}
+
+
 function isEmpty(obj) {
   return Object.keys(obj).length === 0;
 }
@@ -409,7 +419,7 @@ var cercaInformacio = function() {
                 }),
                 m(Button, {
                     class: 'btn-search',
-                    label: "🔎",
+                    label: searchIcon(),
                     events: {
                         onclick: function() {
                             lookForPhoneInfo();

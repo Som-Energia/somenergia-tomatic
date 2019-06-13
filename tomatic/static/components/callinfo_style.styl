@@ -5,16 +5,6 @@
         margin-left: 20px
         margin-bottom: 10px
 
-    .btn-search
-        min-width: 20px
-        valign: baseline
-
-    .txtf-phone
-        height: 9px
-        width: 150px
-        margin-left: 10px
-        color: #9a0000
-
     .tile-contracts
         color: #502300
         background-color: #F6F6F6
@@ -59,7 +49,7 @@
         margin-top: 8px
         .card-motius-title
             display: flex
-            alignItems: baseline
+            align-items: baseline
             .motiu
                 font-weight: bold
                 margin-top: 5px
@@ -102,12 +92,20 @@
         margin-top: -15px
         margin-right: 40px
         .busca-info-title
-            .label
-                font-size: 14px
-                font-weight: bold
             display: flex
             align-items: baseline
             margin-top: -15px
+            .label
+                font-size: 14px
+                font-weight: bold
+            .txtf-phone
+                height: 9px
+                width: 150px
+                margin-left: 10px
+                color: #9a0000
+            .btn-search
+                min-width: 20px
+                valign: baseline
 
     ::-webkit-scrollbar
         width: 8px
@@ -171,6 +169,17 @@
                     font-weight: bold
                     margin-right: 5px
                     color: #E1232C
+                .label-energetica
+                    display: inline-block
+                    font-weight: bold
+                    margin-right: 5px
+                    color: green
+                .label-generation
+                    display: inline-block
+                    font-weight: bold
+                    margin-right: 5px
+                    color: brown
+
     .contract-field
         background-color: #EEEEEE
         width: 540px
@@ -187,18 +196,32 @@
     .all-info
         display: inline-block
 
+    .icon-search
+        font-size: 15px
 
 
-.login
-    .btn-disconnect
-        background-color: #E1232C
-        color: #A0D8BC
-        margin-left: 10px
-        width: 30px
-        height: 30px
-        border-radius: 50%
+.tmt-header
+    .login-buttons
+        display: flex
+        align-items: center
+        .btn-disconnect
+            display: inline-block
+            min-width: 10px !important
+            min-height: 10px !important
+        .btn-iden
+            display: inline-block
 
-    .dialog-login
-        background: #FFFFFF
-        width: 750px
-        marginLeft: -180px
+.dialog-login
+    display: flex
+    align-items: center !important
+    justify-content: center
+    text-align: center
+    margin-left: 500px
+    max-width: 750px !important
+    .list-users
+        .btn-list
+            margin: 3px
+
+.icon-exit
+    font-size: 25px
+    color: #E1232C
