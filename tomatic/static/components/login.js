@@ -38,6 +38,7 @@ var getServerSockInfo = function() {
         console.debug('Info GET apicall failed WebSock: ', error);
     });
 }
+getServerSockInfo();
 
 var openServerSock = function() {
     m.request({
