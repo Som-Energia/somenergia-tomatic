@@ -220,7 +220,7 @@ var motiu = function() {
                                 var moment = date2str(time, "dd-MM-yyyy hh:mm:ss")
                                 console.log(extra)
                                 for( i in reason) {
-                                    saveLogCalls(moment +'¬'+person+'¬'+reason[i]);
+                                    saveLogCalls(moment +'¬'+person+'¬'+reason[i]+'¬'+extra);
                                     reasons[reason[i]] = false;
                                 }
                                 reason = []
@@ -240,6 +240,7 @@ var motiu = function() {
                             floatingLabel: true,
                             dense: true,
                             onChange: newValue => extra = newValue.value,
+                            disabled: ((desar === "Desa" && document.cookie !== "") ? false : true),
                         }),
                     ])
                 }
