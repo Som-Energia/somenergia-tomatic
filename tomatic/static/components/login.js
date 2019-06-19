@@ -72,13 +72,13 @@ var connectWebSocket = function() {
     }
     ws.onmessage = function (event) {
         var content = event.data;
-        Callinfo.refreshInfo(content,iden);
+        Callinfo.refreshInfo(content);
     }
 }
 
 
 var clearInfo = function() {
-    Callinfo.refreshInfo("","");
+    Callinfo.refreshInfo("");
     if(websock !== null){
         var ws = websock;
         ws.close();

@@ -11,17 +11,17 @@ var Textfield = require('polythene-mithril-textfield').TextField;
 var Card = require('polythene-mithril-card').Card;
 var ListTile = require('polythene-mithril-list-tile').ListTile;
 var List = require ('polythene-mithril-list').List;
-var Icon = require ('polythene-mithril-icon').Icon;
 var Spinner = require('polythene-mithril-material-design-spinner').MaterialDesignSpinner;
 var Checkbox = require('polythene-mithril-checkbox').Checkbox;
 
-var Proves = require('./proves');
+var PartnerInfo = require('./partnerinfo');
 var styleCallinfo = require('./callinfo_style.styl');
 
 var CallInfo = {};
 
 CallInfo.file_info = {};
 CallInfo.phone = "";
+CallInfo.search = "";
 var reason = [];
 var reasons = {};
 var log = [];
@@ -30,13 +30,14 @@ var reason_filter = ""
 var extra = ""
 var refresh = true
 var calling_phone = ""
+var addr = "";
 
 var getInfo = function () {
-    var data = CallInfo.phone;
+    var field = CallInfo.search;
     m.request({
-        method: 'GET',
-        url: '/api/info/'+data,
-        data: data,
+        method: 'POST',
+        url: '/api/info',
+        data: field,
         deserialize: jsyaml.load,
     }).then(function(response){
         console.debug("Info GET Response: ",response);
@@ -46,12 +47,16 @@ var getInfo = function () {
         }
         else{
             CallInfo.file_info=response.info.info;
+            //if(CallInfo.phone===""){
+                //log = ["lookingfor"];
+                //CallInfo.phone=CallInfo.search;
+                //getLog();
+            //}
         }
     }, function(error) {
         console.debug('Info GET apicall failed: ', error);
     });
 };
-
 
 CallInfo.getReasons = function () {
     m.request({
@@ -116,7 +121,6 @@ var saveLogCalls = function(info) {
         console.debug('Info POST apicall failed: ', error);
     });
 }
-
 
 var searchIcon = function(){
     return m(".icon-search",
@@ -292,7 +296,8 @@ var logCalls = function() {
         content: [
             { primary: { title: m(".title",'Històric:') } },
             { text: {
-                content: llistaLog()
+                content: (log[0] === "lookingfor" ?
+                    m('center',m(Spinner, { show: "true" } )) : llistaLog())
             }},
         ]
     });
@@ -307,7 +312,7 @@ var infoPhone = function () {
         return m('center',m(Spinner, { show: "true" } ));
     } else {
         return m("", [
-            Proves.allInfo(CallInfo.file_info, CallInfo.phone),
+            PartnerInfo.allInfo(CallInfo.file_info, CallInfo.phone),
             motiu(),
             logCalls(),
         ]);
@@ -316,31 +321,37 @@ var infoPhone = function () {
 
 
 CallInfo.refreshInfo = function(phone) {
-    if (phone == "") {
-        CallInfo.file_info = {};
-    }
-    else if (refresh) {
-        CallInfo.phone = phone;
-        CallInfo.file_info = { 1: "empty" }
-        Proves.main_partner = 0;
-        getInfo();
-        log = [];
-        getLog();
-    }
-    else {
-        calling_phone = phone;
+    if(addr === "") {
+        addr = phone;
+        console.log(addr);
+    } else {
+        if (phone == "") {
+            CallInfo.file_info = {};
+        }
+        else if (refresh) {
+            CallInfo.phone = phone;
+            CallInfo.search = phone;
+            CallInfo.file_info = { 1: "empty" };
+            PartnerInfo.main_partner = 0;
+            getInfo();
+            log = [];
+            getLog();
+        }
+        else {
+            calling_phone = phone;
+        }
     }
 }
 
 
 var lookForPhoneInfo = function() {
-    if(CallInfo.phone!==0 && CallInfo.phone!==""){
-        CallInfo.file_info = { 1: "empty" }
-        Proves.main_partner = 0;
+    CallInfo.phone="";
+    if (CallInfo.search !== 0 && CallInfo.search !== ""){
+        CallInfo.file_info = { 1: "empty" };
+        PartnerInfo.main_partner = 0;
         getInfo();
-        //reason = [];
         log = [];
-        getLog();
+        //getLog();
     } 
     else {
          CallInfo.file_info = {}
@@ -405,11 +416,11 @@ var cercaInformacio = function() {
         content: [
             { primary: {
                 title: m(".busca-info-title", [
-                m(".label", "Número: "),
+                m(".label", "Cercador: "),
                 m(Textfield, {
                     class: 'txtf-phone',
                     onChange: function(state) {
-                        CallInfo.phone = state.value;
+                        CallInfo.search = state.value;
                     },
                     events: {
                         onkeypress: function(event){

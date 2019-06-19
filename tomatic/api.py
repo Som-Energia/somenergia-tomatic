@@ -241,17 +241,18 @@ def busy_post(person):
     return yamlfy(**busy.update_busy(person, data))
 
 
-@app.route('/api/info/<phone>', methods=['GET'])
-def phoneInfo_byNumber(phone):
+@app.route('/api/info', methods=['POST'])
+def getInfoPerson():
+    field = request.data.split('"')[1]
     message = 'err'
     data = None
-    if phone != '0':
+    if data != '0':
         message = 'ok'
         o = erppeek.Client(**dbconfig.erppeek)
         info = CallInfo(o)
-        data = info.getByPhone(phone)
+        data = info.getByPhone(field)
         if (not data.partners):
-            message = 'El número no està a la base de dades.'
+            message = 'No hi ha informació a la base de dades.'
     result = ns(
         info=data,
         message=message,
