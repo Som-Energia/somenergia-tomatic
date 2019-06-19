@@ -130,6 +130,29 @@ var searchIcon = function(){
     ]);
 }
 
+var lockIcon = function(){
+    return m(".icon-lock",
+    [
+        m("script", {src: "https://kit.fontawesome.com/c81e1a5696.js"}),
+        m("i", {class: "fas fa-lock-open"}),
+    ]);
+}
+
+var lockedIcon = function(){
+    return m(".icon-lock",
+    [
+        m("script", {src: "https://kit.fontawesome.com/c81e1a5696.js"}),
+        m("i", {class: "fas fa-lock"}),
+    ]);
+}
+
+var newTabIcon = function(){
+    return m(".icon-new-tab",
+    [
+        m("script", {src: "https://kit.fontawesome.com/c81e1a5696.js"}),
+        m("i", {class: "fas fa-external-link-alt"}),
+    ]);
+}
 
 function isEmpty(obj) {
   return Object.keys(obj).length === 0;
@@ -359,51 +382,37 @@ var lookForPhoneInfo = function() {
 }
 
 var bloquejarTrucada = function() {
-    var block = m(Button, {
-        label: (refresh ? "Block" : "Blocked"),
-        events: {
-            onclick: function() {
-                refresh = !refresh
-            },
-        },
-        border: 'true',
-        style: {
-            position: 'absolute',
-            right: 0,
-            marginRight: '40px',
-            marginTop: '-15px',
-        },
-    }, m(Ripple));
-
-    var refresh_button = m(Button, {
-        label: 'R',
-        events: {
-            onclick: function() {
-                refresh = true
-                var num = calling_phone
-                calling_phone = ""
-                CallInfo.refreshInfo(num)
-            },
-        },
-        border: 'true',
-        disabled: calling_phone === "",
-        style: {
-            position: 'absolute',
-            right: 0,
-            marginRight: '10px',
-            marginTop: '-15px',
-        },
-    }, m(Ripple));
-
     return m(Card, {
         class: 'num-entrant',
         content: [
             { primary: { 
-                title: m("p", [
-                    m("strong", "Número entrant: "),
-                    CallInfo.phone,
-                    block,
-                    refresh_button,
+                title: m(".text-info", [
+                    m(".label-text", "Número: "),
+                    m(".normal-text", CallInfo.phone),
+                    m(Button, {
+                        class: 'btn-lock',
+                        label: (refresh ? lockIcon() : lockedIcon()),
+                        border: 'true',
+                        events: {
+                            onclick: function() {
+                                refresh = !refresh
+                                if(refresh===true){
+                                    var num = calling_phone;
+                                    calling_phone = "";
+                                    CallInfo.refreshInfo(num);
+                                }
+                            },
+                        },
+                    }, m(Ripple)),
+                    m(Button, {
+                        class: "btn-new-tab",
+                        label: newTabIcon(),
+                        url: {
+                            href: addr+'/#!/Trucada',
+                            target:"_blank",
+                        },
+                        border: 'true',
+                    }, m(Ripple)),
                 ]),
             } },
         ]

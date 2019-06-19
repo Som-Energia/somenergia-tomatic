@@ -302,6 +302,7 @@ def getConnectionInfo():
     result = ns(
         ip = config.ip,
         port = config.port,
+        port_ws = config.port_ws,
         message = "ok"
     )
     return yamlfy(info=result)
@@ -312,7 +313,7 @@ def obreConnexio():
     config = ns.load('config_connection.yaml')
     result = ns(
         ip = config.ip,
-        port = config.port,
+        port = config.port_ws,
     )
     message = 'err'
     if not app.wserver:

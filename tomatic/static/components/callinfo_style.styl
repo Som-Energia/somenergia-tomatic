@@ -154,11 +154,31 @@
                 display: inline-block
                 float: right
                 margin-right: 15px
+            .label-energetica
+                display: inline-block
+                font-weight: bold
+                margin-right: 5px
+                color: green
             
     .partner-card
         margin-bottom: 20px
         .partner-tabs
+            max-width: 570px
             background-color: #8FBC8F
+            .pe-tabs__row
+                max-width: 465px
+                min-width: 475px
+                min-height: 70px
+                .pe-button--selected
+                    background-color: #ABD0AB
+            .pe-tabs__indicator
+                background-color: transparent
+            .pe-tabs__scroll-button-start
+                color: #98FB98
+            .pe-tabs__scroll-button-end
+                right: 0
+                position: absolute
+                color: #98FB98
         .card-info
             background-color: #FFFFFF
             max-width: 570px
@@ -234,16 +254,27 @@
             display: inline-block
 
 .dialog-login
-    display: flex
-    align-items: center !important
-    justify-content: center
-    text-align: center
-    margin-left: 500px
-    max-width: 750px !important
-    .list-users
-        .btn-list
-            margin: 3px
+    .pe-dialog-pane__content
+        max-width: 750px
+        min-width: 700px
+        text-align: center
+        .list-users
+            .btn-list
+                margin: 2px
+
+    .pe-dialog__content
+        min-width: 700px
+
+    .pe-dialog-pane
+        min-width: 700px
 
 .icon-exit
     font-size: 25px
     color: #E1232C
+
+.icon-lock
+    font-size: 25px
+
+.icon-new-tab
+    font-size: 25px
+    color: #228B22

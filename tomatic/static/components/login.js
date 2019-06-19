@@ -19,6 +19,7 @@ var iden = "0";
 var websock = null;
 var ip = "";
 var port = 0;
+var port_ws = 0;
 
 var getServerSockInfo = function() {
     m.request({
@@ -30,7 +31,9 @@ var getServerSockInfo = function() {
         if (response.info.message === "ok" ) {
             ip = response.info.ip
             port = response.info.port
-
+            port_ws = response.info.port_ws
+            console.log("holo");
+            Callinfo.refreshInfo('http://'+ip+':'+port+'/');
         } else{
             console.debug("Error get data: ", response.info.message);
         }
@@ -59,8 +62,14 @@ var openServerSock = function() {
     });
 }
 
+Login.myName = function() {
+    info = whoAreYou();
+    aux = info.split(":");
+    return aux[0];
+}
+
 var connectWebSocket = function() {
-    var addr = 'ws://'+ip+':'+port+'/';
+    var addr = 'ws://'+ip+':'+port_ws+'/';
     if(websock !== null) {
         clearInfo();
     }
