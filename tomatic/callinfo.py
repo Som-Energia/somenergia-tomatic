@@ -15,8 +15,28 @@ class CallInfo(object):
     def addressByPhone(self, phone):
         return self.O.ResPartnerAddress.search([
             '|',
-            ('phone','=',phone),
-            ('mobile','=',phone),
+            ('phone','like',phone),
+            ('mobile','like',phone),
+            ])
+
+    def addressByEmail(self, data):
+        return self.O.ResPartnerAddress.search([
+            ('email', 'ilike', data),
+            ])
+
+    def partnerBySoci(self, data):
+        return self.O.ResPartner.search([
+            ('ref', 'ilike', data),
+            ])
+
+    def partnerByDni(self, data):
+        return self.O.ResPartner.search([
+            ('vat', 'ilike', data),
+            ])
+
+    def partnerByName(self, data):
+        return self.O.ResPartner.search([
+            ('name', 'ilike', data),
             ])
 
     def partnerByAddressId(self, address_ids):
@@ -40,6 +60,7 @@ class CallInfo(object):
             state = partner_data.www_provincia[1]['name'],
             dni = self.anonymize(partner_data.vat),
             ov = partner_data.empowering_token != False,
+            energetica = 24 in partner_data.category_id,
             )
         return result
 
@@ -85,6 +106,7 @@ class CallInfo(object):
             'lang',
             'vat',
             'empowering_token',
+            'category_id',
         ])
         for partner_data in partners_data or []:
             partner_data = ns(partner_data)
@@ -178,6 +200,7 @@ class CallInfo(object):
         return ret
 
     def getByPhone(self, phone):
+        return self.getByData(phone)
         address_ids = self.addressByPhone(phone)
         partners_ids = self.partnerByAddressId(address_ids)
         clean_partners_ids = list(set(partners_ids))
@@ -186,5 +209,25 @@ class CallInfo(object):
         result.update(self.partnersInfo(clean_partners_ids))
         return result
 
+    def getByData(self, data):
+        address_ids = self.addressByPhone(data)
+        address_p_ids = self.partnerByAddressId(address_ids)
+
+        email_ids = self.addressByEmail(data)
+        email_p_ids = self.partnerByAddressId(email_ids)
+
+        soci_p_ids = self.partnerBySoci(data)
+
+        dni_p_ids = self.partnerByDni(data)
+
+        name_p_ids = self.partnerByName(data)
+
+        clean_partners_ids = list(set(address_p_ids + email_p_ids + soci_p_ids + dni_p_ids + name_p_ids))
+
+
+        result = ns()
+        result.callid = data
+        result.update(self.partnersInfo(clean_partners_ids))
+        return result
 
 # vim: ts=4 sw=4 et

@@ -52,6 +52,71 @@ class CallInfo_Test(unittest.TestCase):
         ids = info.addressByPhone('630079522')
         self.assertEqual(ids, [33,42])
 
+    def test_addressByEmail_whenMatchesNone(self):
+        info = CallInfo(self.O)
+        ids = info.addressByEmail('badmail')
+        self.assertEqual(ids, [])
+
+    def test_addressByEmail_whenMatchesOne(self):
+        info = CallInfo(self.O)
+        ids = info.addressByEmail('testing@somenergia.coop')
+        self.assertEqual(ids, [76455])
+
+    def test_addressByEmail_moreThanOne(self):
+        info = CallInfo(self.O)
+        ids = info.addressByEmail('testing2@somenergia.coop')
+        self.assertEqual(ids, [40568, 49661])
+
+    def test_addressByEmail_partial(self):
+        info = CallInfo(self.O)
+        ids = info.addressByEmail('testing%')
+        self.assertEqual(ids, [40568, 49661, 76455])
+
+    def test_partnerBySoci_whenMatchesNone(self):
+        info = CallInfo(self.O)
+        ids = info.partnerBySoci('badsoci')
+        self.assertEqual(ids, [])
+
+    def test_partnerBySoci_whenMatchesOne(self):
+        info = CallInfo(self.O)
+        ids = info.partnerBySoci('S000197')
+        self.assertEqual(ids, [217])
+
+    def test_partnerBySoci_partial(self):
+        info = CallInfo(self.O)
+        ids = info.partnerBySoci('S00019')
+        self.assertEqual(ids, [215, 212, 209, 210, 217, 208, 216, 218, 214, 219])
+
+    def test_partnerByDni_whenMatchesNone(self):
+        info = CallInfo(self.O)
+        ids = info.partnerByDni('baddni')
+        self.assertEqual(ids, [])
+
+    def test_partnerByDni_whenMatchesOne(self):
+        info = CallInfo(self.O)
+        ids = info.partnerByDni(dbconfig.personaldata["nif"])
+        self.assertEqual(ids, [217])
+
+    def test_partnerByDni_partial(self):
+        info = CallInfo(self.O)
+        ids = info.partnerByDni(dbconfig.personaldata["nif"][:-3])
+        self.assertEqual(ids, [72676, 217])
+
+    def test_partnerByName_whenMatchesNone(self):
+        info = CallInfo(self.O)
+        ids = info.partnerByName('badname')
+        self.assertEqual(ids, [])
+
+    def test_partnerByName_whenMatchesOne(self):
+        info = CallInfo(self.O)
+        ids = info.partnerByName(dbconfig.personaldata["surname"]+", "+dbconfig.personaldata["name"])
+        self.assertEqual(ids, [217])
+
+    def test_partnerByName_partial(self):
+        info = CallInfo(self.O)
+        ids = info.partnerByName(dbconfig.personaldata["surname"][:-3])
+        self.assertEqual(ids, [67747, 217])
+
     def test_partnerByAddressId_whenMatchesNone(self):
         info = CallInfo(self.O)
         partner_ids = info.partnerByAddressId([999999999])
@@ -110,6 +175,7 @@ class CallInfo_Test(unittest.TestCase):
             'lang',
             'vat',
             'empowering_token',
+            'category_id',
         ])[0]
         partner_data = info.partnerInfo(ns(data))
         self.assertNsEqual(partner_data, """\
@@ -121,11 +187,12 @@ class CallInfo_Test(unittest.TestCase):
             state: Lleida
             dni: ...82V
             ov: True
+            energetica: False
             """)
 
     def test_partnerInfo_whenMatchesOne_noOV(self):
         info = CallInfo(self.O, anonymize=True)
-        data = self.O.ResPartner.read([51444],[
+        data = self.O.ResPartner.read([51444], [
             'city',
             'www_email',
             'www_provincia',
@@ -136,6 +203,7 @@ class CallInfo_Test(unittest.TestCase):
             'lang',
             'vat',
             'empowering_token',
+            'category_id',
         ])[0]
         partner_data = info.partnerInfo(ns(data))
         self.assertNsEqual(partner_data, """\
@@ -147,6 +215,35 @@ class CallInfo_Test(unittest.TestCase):
             state: Barcelona
             dni: ...36L
             ov: False
+            energetica: False
+            """)
+
+    def test_partnerInfo_whenMatchesOne_energetica(self):
+        info = CallInfo(self.O, anonymize=True)
+        data = self.O.ResPartner.read([29460], [
+            'city',
+            'www_email',
+            'www_provincia',
+            'www_municipi',
+            'polisses_ids',
+            'name',
+            'ref',
+            'lang',
+            'vat',
+            'empowering_token',
+            'category_id',
+        ])[0]
+        partner_data = info.partnerInfo(ns(data))
+        self.assertNsEqual(partner_data, """\
+            lang: es_ES
+            name: ...sar
+            city: Valladolid
+            email: ...oop
+            id_soci: ...295
+            state: Valladolid
+            dni: ...88S
+            ov: True
+            energetica: True
             """)
 
     def test_partnersInfo_whenMatchesOne(self):
@@ -163,6 +260,7 @@ class CallInfo_Test(unittest.TestCase):
               email: ...oop
               dni: ...82V
               ov: True
+              energetica: False
               contracts:
               -
                 end_date: ''
