@@ -18,7 +18,6 @@ PartnerInfo.main_partner = 0;
 
 
 var infoPartner = function(info){
-    // var lang = info.lang;
     var aux = info.email.split(",");
     var emails = [];
     var url = "https://secure.helpscout.net/search/?query=";
@@ -36,7 +35,10 @@ var infoPartner = function(info){
             m(".partner-info-item", [info.city, ", ", info.state]),
             m(".partner-info-item", m("", emails)),
             m(".partner-info-item", (info.energetica ? m(".label-energetica","Soci d'Energetica.") : "")),
-            m(".partner-info-item", m(".label","Ha obert OV? "), (info.ov ? "Sí" : "No")),
+            m(".partner-info-item", [
+                m("", m(".label-right",info.lang)),
+                m("", m(".label","Ha obert OV? "), (info.ov ? "Sí" : "No"))
+            ]),
         ]
     );
 }

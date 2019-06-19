@@ -32,7 +32,6 @@ var getServerSockInfo = function() {
             ip = response.info.ip
             port = response.info.port
             port_ws = response.info.port_ws
-            console.log("holo");
             Callinfo.refreshInfo('http://'+ip+':'+port+'/');
         } else{
             console.debug("Error get data: ", response.info.message);

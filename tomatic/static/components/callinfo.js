@@ -255,7 +255,6 @@ var motiu = function() {
                                 var time = new Date();
                                 time.getTime();
                                 var moment = date2str(time, "dd-MM-yyyy hh:mm:ss")
-                                console.log(extra)
                                 for( i in reason) {
                                     saveLogCalls(moment +'¬'+person+'¬'+reason[i]+'¬'+extra);
                                     reasons[reason[i]] = false;
@@ -346,7 +345,6 @@ var infoPhone = function () {
 CallInfo.refreshInfo = function(phone) {
     if(addr === "") {
         addr = phone;
-        console.log(addr);
     } else {
         if (phone == "") {
             CallInfo.file_info = {};
