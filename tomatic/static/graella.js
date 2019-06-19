@@ -351,7 +351,9 @@ PersonEditor.view = function(vnode) {
 var Grid = function(grid) {
 	var editCell = function(day, houri, turni) {
 		var setPerson = function(name) {
-			Tomatic.editCell(day, houri, turni, name)
+            var myname = Login.myName();
+            console.log(myname);
+			Tomatic.editCell(day, houri, turni, name, myname)
 			Dialog.hide({id:'GridCellEditor'});
 		};
 		var oldPerson = Tomatic.cell(day,houri,turni);
@@ -389,8 +391,13 @@ var Grid = function(grid) {
 		return m('td', {
 			class: name||'ningu',
 			onclick: function(ev) {
-				editCell(day, houri, turni);
-				ev.preventDefault();
+                if(document.cookie===""){
+                    Login.askWhoAreYou();
+                }
+                else {
+    				editCell(day, houri, turni);
+    				ev.preventDefault();
+                }
 			}
 		}, [
 			Tomatic.formatName(name),

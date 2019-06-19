@@ -110,6 +110,7 @@ def graellaYaml(week):
         '<int:turni>/<name>', methods=['UPDATE'])
 @yamlerrors
 def editSlot(week, day, houri, turni, name):
+    myname = request.data.split('"')[1]
     # TODO: Same ensures than graella
     graella = schedules.load(week)
     # TODO: Ensure day, houri, turni and name are in graella
@@ -118,7 +119,7 @@ def editSlot(week, day, houri, turni, name):
     logmsg = (
         "{}: {} ha canviat {} {}-{} {} de {} a {}".format(
         datetime.now(),
-        "nobody", # TODO: ERP user
+        myname, # TODO: ERP user
         day,
         graella.hours[int(houri)], 
         graella.hours[int(houri)+1], 

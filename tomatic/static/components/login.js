@@ -154,10 +154,15 @@ var listOfPersons = function() {
 }
 
 
-var askWhoAreYou = function() {
+Login.askWhoAreYou = function() {
+    if(first == "0"){
+        openServerSock();
+        first = "";
+    }
     Dialog.show(function() { return {
         className: 'dialog-login',
         title: 'Qui ets?',
+        backdrop: true,
         body: [
             listOfPersons()
         ],
@@ -216,11 +221,7 @@ Login.identification = function() {
             border: true,
             events: {
                 onclick: function() {
-                    if(first == "0"){
-                        openServerSock();
-                        first = "";
-                    }
-                    askWhoAreYou();
+                    Login.askWhoAreYou();
                 },
             },
             style: { backgroundColor: color },

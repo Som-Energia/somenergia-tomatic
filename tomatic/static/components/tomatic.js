@@ -118,7 +118,7 @@ Tomatic.cell = function(day, houri, turni) {
 		return undefined;
 	}
 };
-Tomatic.editCell = function(day,houri,turni,name) {
+Tomatic.editCell = function(day,houri,turni,name,myname) {
 	// Direct edition, just for debug purposes
 	//Tomatic.grid().timetable[day][houri][turni] = name;
 	m.request({
@@ -126,6 +126,7 @@ Tomatic.editCell = function(day,houri,turni,name) {
 		url: '/api/graella/'+([
 			Tomatic.grid().week,day,houri,turni,name
 			].join('/')),
+        data: myname,
 		deserialize: jsyaml.load,
 	})
 	.then( function(data) {
