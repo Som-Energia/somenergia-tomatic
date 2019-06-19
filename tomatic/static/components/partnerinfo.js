@@ -12,14 +12,19 @@ var Tabs = require('polythene-mithril-tabs').Tabs;
 
 var styleProves = require('./proves_style.styl');
 
-var Proves = {};
+var PartnerInfo = {};
 
-Proves.main_partner = 0;
+PartnerInfo.main_partner = 0;
 
 
 var infoPartner = function(info){
     // var lang = info.lang;
-    var url = "https://secure.helpscout.net/search/?query=" + info.email;
+    var aux = info.email.split(",");
+    var emails = [];
+    var url = "https://secure.helpscout.net/search/?query=";
+    for(var i=0; i<aux.length; i++){
+        emails.push(m(".partner-info-item", m("a", {"href":url+aux[i], target:"_blank"}, aux[i])));
+    }
     var dni = (info.dni.slice(0,2) === 'ES' ? info.dni.slice(2) : info.dni)
     return m(".partner-info",
         [
@@ -29,7 +34,8 @@ var infoPartner = function(info){
             ]),
             m(".partner-info-item", dni),
             m(".partner-info-item", [info.city, ", ", info.state]),
-            m(".partner-info-item", m("a", {"href":url, target:"_blank"}, info.email)),
+            m(".partner-info-item", m("", emails)),
+            m(".partner-info-item", (info.energetica ? m(".label-energetica","Soci d'Energetica.") : "")),
             m(".partner-info-item", m(".label","Ha obert OV? "), (info.ov ? "Sí" : "No")),
         ]
     );
@@ -134,26 +140,27 @@ var listOfPartners = function(partners, button) {
     }
 
     return m(List, {
-      tiles: [ aux[Proves.main_partner] ],
+      tiles: [ aux[PartnerInfo.main_partner] ],
     });
 }
 
 
 var specificPartnerCard = function(partner, button) {
     return m(".partner-card", [
-        m(Tabs, {
-            class: 'partner-tabs',
-            selected: "true",
-            autofit: "true",
-            all: {
-                activeSelected: "true",
-                ink: "true",
-            },
-            tabs: button,
-            onChange: ({ index }) => {
-                Proves.main_partner = index
-            }
-        }),
+        m(".partner-tabs", [
+            m(Tabs, {
+                selected: "true",
+                scrollable: "true",
+                all: {
+                    activeSelected: "true",
+                    ink: "true",
+                },
+                tabs: button,
+                onChange: ({ index }) => {
+                    PartnerInfo.main_partner = index
+                }
+            }),
+        ]),
         m(Card, {
             class: 'card-info',
             content: [
@@ -169,10 +176,10 @@ var specificPartnerCard = function(partner, button) {
 }
 
 
-Proves.allInfo = function(info, phone) {
+PartnerInfo.allInfo = function(info, phone) {
     return m(".main-info-card", listOfPartners(info.partners, buttons(info.partners)));
 }
 
-return Proves;
+return PartnerInfo;
 
 }();
