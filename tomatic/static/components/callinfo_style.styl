@@ -2,8 +2,94 @@
 .callinfo
     .info
         margin-top: 30px
-        margin-left: 20px
+        margin-left: 10px
         margin-bottom: 10px
+
+    .all-info-call
+        display: inline-flex
+        .text-info
+            margin-left: 30px
+        .spinner-info
+            margin-left: 30px
+        .call-info
+            display: inline-flex
+            .main-info-card
+                margin-left: 30px
+                height: 680px
+                margin-right: 20px
+            .card-motius
+                max-width: 680px
+                max-height: 350px
+                min-height: 350px
+                margin-right: 15px
+                .pe-card__text
+                    padding-bottom: 0px
+                .card-motius-title
+                    display: flex
+                    align-items: baseline
+                    .motiu
+                        font-weight: bold
+                        margin-top: 5px
+                    .filter
+                        margin-left: 10px
+                        .textfield-filter
+                            width: 400px
+                    .save
+                        margin-left: 80px
+            .card-log
+                max-width: 680px
+                max-height: 305px
+                margin-top: 20px
+                .title
+                    font-weight: bold
+        .card-log-person
+            max-width: 380px
+            min-width: 380px
+            max-height: 670px
+            min-height: 670px
+            margin-right: 30px
+            right: 0
+            position: absolute
+            .title
+                font-weight: bold
+            .refresh-button
+                right: 0
+                position: absolute
+                margin-right: 15px
+                min-width: 20px
+                margin-top: -5px
+
+    .motius
+        display: inline-block
+        background-color: #EEEEEE
+        width: 630px
+        height: 200px
+        overflow: auto
+        .llista-motius
+            font-size: 14px
+            .checkbox-motius
+                color: #8FBC8F
+    .logs
+        display: inline-block
+        background-color: #EEEEEE
+        width: 645px
+        height: 210px
+        overflow: auto
+        .registres
+            font-size: 14px
+
+    .logs-person
+        display: inline-block
+        background-color: #EEEEEE
+        width: 350px
+        height: 570px
+        overflow: auto
+        .registres
+            font-size: 14px
+        .registres-red
+            font-size: 14px
+            color: red
+
 
     .tile-contracts
         color: #502300
@@ -21,67 +107,16 @@
         box-sizing: border-box
         text-align: center
 
-    .motius
-        background-color: #EEEEEE
-        width: 630px
-        height: 260px
-        overflow: auto
-        .llista-motius
-            font-size: 14px
-            .checkbox-motius
-                color: #8FBC8F
-
-    .logs
-        background-color: #EEEEEE
-        width: 630px
-        height: 155px
-        overflow: auto
-        .registres
-            font-size: 14px
-
-    .card-motius
-        display: inline-block
-        max-width: 680px
-        max-height: 450px
-        position: absolute
-        right: 0
-        margin-right: 40px
-        margin-top: 8px
-        .card-motius-title
-            display: flex
-            align-items: baseline
-            .motiu
-                font-weight: bold
-                margin-top: 5px
-            .filter
-                margin-left: 10px
-                .textfield-filter
-                    width: 400px
-            .save
-                margin-left: 80px
-
     .textfield-comentaris
-        margin-top: -5px
+        margin-top: -15px
         width: 680px
-
-    .card-log
-        display: inline-block
-        max-width: 680px
-        max-height: 300px
-        margin-right: 40px
-        margin-top: 450px
-        position: absolute
-        right: 0
-        width: 700px
-        .title
-            font-weight: bold
 
     .num-entrant
         display: inline-block
         width: 380px
         height: 70px
         margin-top: -15px
-        margin-right: 40px
+        margin-right: 30px
         position: absolute
         right: 0
         .text-info
@@ -111,7 +146,7 @@
         width: 380px
         height: 70px
         margin-top: -15px
-        margin-right: 40px
+        margin-left: 20px
         .busca-info-title
             margin-top: -5px
             .label
@@ -131,6 +166,7 @@
 
     ::-webkit-scrollbar
         width: 8px
+        height: 8px
 
     ::-webkit-scrollbar-track
         background: #f1f1f1
@@ -161,6 +197,7 @@
                 color: green
             
     .partner-card
+        display: inline-block
         margin-bottom: 20px
         .partner-tabs
             max-width: 570px
@@ -182,8 +219,8 @@
         .card-info
             background-color: #FFFFFF
             max-width: 570px
-            min-height: 630px
-            max-height: 630px
+            min-height: 620px
+            //max-height: 620px
 
 
     .contract-info
@@ -231,12 +268,6 @@
         overflow: auto
         border-radius: 2%
 
-    .main-info-card
-        margin-left: 30px
-        height: 680px
-        display: inline-block
-        margin-right: 10px
-
     .all-info
         display: inline-block
 
@@ -280,3 +311,7 @@
 .icon-new-tab
     font-size: 25px
     color: #228B22
+
+.icon-refresh
+    font-size: 25px
+    //color: #228B22

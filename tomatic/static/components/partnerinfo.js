@@ -140,10 +140,8 @@ var listOfPartners = function(partners, button) {
     for (partner; partner < numOfPartners; partner++) {
         aux[partner] = specificPartnerCard(partners[partner], button);
     }
-
-    return m(List, {
-      tiles: [ aux[PartnerInfo.main_partner] ],
-    });
+    
+    return aux[PartnerInfo.main_partner];
 }
 
 

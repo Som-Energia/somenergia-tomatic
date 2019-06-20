@@ -25,6 +25,7 @@ CallInfo.search = "";
 var reason = [];
 var reasons = {};
 var log = [];
+var log_person = [];
 var desar = "Desa";
 var reason_filter = ""
 var extra = ""
@@ -100,6 +101,27 @@ var getLog = function () {
 };
 
 
+CallInfo.getLogPerson = function () {
+    log_person = [];
+    log_person.push("lookingfor");
+    m.request({
+        method: 'GET',
+        url: '/api/personlog/'+document.cookie.split(":")[0],
+        deserialize: jsyaml.load,
+    }).then(function(response){
+        console.debug("Info GET Response: ",response);
+        if (response.info.message !== "ok" ) {
+            console.debug("Error al obtenir el registre de trucades ateses: ", response.info.message)
+        }
+        else{
+            log_person=response.info.info;
+        }
+    }, function(error) {
+        console.debug('Info GET apicall failed: ', error);
+    });
+};
+CallInfo.getLogPerson();
+
 var saveLogCalls = function(info) {
     desar = 'Desant';
     m.request({
@@ -115,6 +137,7 @@ var saveLogCalls = function(info) {
         else {
             desar='Desa';
             getLog();
+            CallInfo.getLogPerson();
 
         }
     }, function(error) {
@@ -151,6 +174,14 @@ var newTabIcon = function(){
     [
         m("script", {src: "https://kit.fontawesome.com/c81e1a5696.js"}),
         m("i", {class: "fas fa-external-link-alt"}),
+    ]);
+}
+
+var refreshIcon = function(){
+    return m(".icon-refresh",
+    [
+        m("script", {src: "https://kit.fontawesome.com/c81e1a5696.js"}),
+        m("i", {class: "fas fa-redo-alt"}),
     ]);
 }
 
@@ -326,17 +357,80 @@ var logCalls = function() {
 }
 
 
+
+var atencionsLog = function() {
+    var aux = []
+    for(var i = log_person.length-1; i>=0; i--) {
+        var data = log_person[i][0].split(":")
+        var missatge = "("+data[0]+":"+data[1]+"): "+log_person[i][4];
+        var resolt = log_person[i][2]!="";
+        if(resolt){
+            missatge += (", "+log_person[i][2]);
+        }
+        aux.push(m(ListTile, {
+            class: (resolt ? "registres" : "registres-red"),
+            compact: true,
+            selectable: 'true',
+            ink: 'true',
+            ripple: {
+              opacityDecayVelocity: '0.5',
+            },
+            title: missatge,
+        }));
+    }
+    if (log_person.length === 0) {
+        aux[0] = m(ListTile, {
+            class: "registres",
+            compact: true,
+            title: "Cap trucada al registre.",
+        });
+    }
+    return m(".logs-person", m(List, {compact: true, tiles: aux}));
+}
+
+
+var logPerson = function() {
+    return m(Card, {
+        class: 'card-log-person',
+        content: [
+            { primary: { 
+                title: m(".title", [
+                    'Trucades ateses:',
+                    m(Button, {
+                        class: "refresh-button",
+                        label: refreshIcon(),
+                        events: {
+                            onclick: function() {
+                                CallInfo.getLogPerson();
+                            },
+                        },
+                        border: 'true',
+                        disabled: ((log_person.length === 0 && document.cookie !== "") ? false : true),
+                    }, m(Ripple)),
+                ])
+            } },
+            { text: {
+                content: (log_person[0] === "lookingfor" ?
+                    m('center',m(Spinner, { show: "true" } )) : atencionsLog())
+            }},
+        ]
+    });
+}
+
+
 var infoPhone = function () {
     if (isEmpty(CallInfo.file_info)) {
-        return m('center', m("body", 'No hi ha informació.'));
+        return m('.text-info', m("body", 'No hi ha informació.'));
     }
     else if (CallInfo.file_info[1]==="empty"){
-        return m('center',m(Spinner, { show: "true" } ));
+        return m('.spinner-info',m(Spinner, { show: "true" } ));
     } else {
-        return m("", [
-            PartnerInfo.allInfo(CallInfo.file_info, CallInfo.phone),
-            motiu(),
-            logCalls(),
+        return m('.call-info', [
+            m("",PartnerInfo.allInfo(CallInfo.file_info, CallInfo.phone)),
+            m("", [
+                motiu(),
+                logCalls(),
+            ]),
         ]);
     }
 };
@@ -348,6 +442,7 @@ CallInfo.refreshInfo = function(phone) {
     } else {
         if (phone == "") {
             CallInfo.file_info = {};
+            log_person = [];
         }
         else if (refresh) {
             CallInfo.phone = phone;
@@ -357,6 +452,7 @@ CallInfo.refreshInfo = function(phone) {
             getInfo();
             log = [];
             getLog();
+            //getLogPerson();
         }
         else {
             calling_phone = phone;
@@ -373,6 +469,7 @@ var lookForPhoneInfo = function() {
         getInfo();
         log = [];
         //getLog();
+        //getLogPerson();
     } 
     else {
          CallInfo.file_info = {}
@@ -464,8 +561,10 @@ CallInfo.mainPage = function() {
                 cercaInformacio(),
                 bloquejarTrucada(),
             ]),
-            m("div", " "),
-            m("div", infoPhone())
+            m(".all-info-call", [
+                infoPhone(),
+                logPerson(),
+            ])
     ]);
 }
 

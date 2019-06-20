@@ -393,6 +393,26 @@ def getPhoneLog(phone):
     return yamlfy(info=result)
 
 
+@app.route('/api/personlog/<iden>', methods=['GET'])
+def getPersonLog(iden):
+    message = 'ok'
+    try:
+        fetcher = SheetFetcher(
+            documentName='Trucades_3354',
+            credentialFilename='drive-certificate.json',
+        )
+        log = fetcher.get_fullsheet(0)
+    except Exception as e:
+        log = []
+        message = 'err: '
+    reasons = filter(lambda x: x[5] == iden, log)
+    result = ns(
+        info=reasons,
+        message=message,
+    )
+    return yamlfy(info=result)
+
+
 def yamlfy(status=200, data=[], **kwd):
     return Response(ns(
         data, **kwd
