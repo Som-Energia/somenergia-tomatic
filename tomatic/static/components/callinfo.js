@@ -19,19 +19,44 @@ var styleCallinfo = require('./callinfo_style.styl');
 
 var CallInfo = {};
 
+
 CallInfo.file_info = {};
-CallInfo.phone = "";
 CallInfo.search = "";
-var reason = [];
-var reasons = {};
-var log = [];
-var log_person = [];
+
+var call_reasons = {};
+var log_calls = [];
+
+var call = {
+    'phone': "",
+    'date': "",
+    'log_call_reasons': [],
+    'reason': [],
+    'extra': "",
+};
+
+var addr = "";
 var desar = "Desa";
 var reason_filter = ""
-var extra = ""
 var refresh = true
 var calling_phone = ""
-var addr = "";
+
+var fillCallInfo = function(phone) {
+    call['phone']=phone;
+    var time= new Date();
+    time.getTime();
+    var moment=date2str(time, "dd-MM-yyyy hh:mm:ss");
+    call['date']=moment;
+    getLog();
+}
+
+var clearCallInfo = function() {
+    call['phone']="";
+    call['date']="";
+    call['log_call_reasons']=[];
+    call['reason']=[];
+    call['extra']="";
+}
+
 
 var getInfo = function () {
     var field = CallInfo.search;
@@ -59,6 +84,7 @@ var getInfo = function () {
     });
 };
 
+
 CallInfo.getReasons = function () {
     m.request({
         method: 'GET',
@@ -72,7 +98,7 @@ CallInfo.getReasons = function () {
         else{
             aux = response.info.info;
             for (var i=0; i<aux.length; i++) {
-                reasons[aux[i][0]] = false;
+                call_reasons[aux[i][0]] = false;
             }
         }
     }, function(error) {
@@ -83,27 +109,31 @@ CallInfo.getReasons();
 
 
 var getLog = function () {
+    call["log_call_reasons"] = [];
+    call["log_call_reasons"].push("lookingfor");
     m.request({
         method: 'GET',
-        url: '/api/log/'+CallInfo.phone,
+        url: '/api/log/'+call['phone'],
         deserialize: jsyaml.load,
     }).then(function(response){
         console.debug("Info GET Response: ",response);
         if (response.info.message !== "ok" ) {
             console.debug("Error al obtenir els motius: ", response.info.message)
+            call["log_call_reasons"] = [];
         }
         else{
-            log=response.info.info;
+            call['log_call_reasons']=response.info.info;
         }
     }, function(error) {
         console.debug('Info GET apicall failed: ', error);
+        call["log_call_reasons"] = [];
     });
 };
 
 
 CallInfo.getLogPerson = function () {
-    log_person = [];
-    log_person.push("lookingfor");
+    log_calls = [];
+    log_calls.push("lookingfor");
     m.request({
         method: 'GET',
         url: '/api/personlog/'+document.cookie.split(":")[0],
@@ -112,11 +142,13 @@ CallInfo.getLogPerson = function () {
         console.debug("Info GET Response: ",response);
         if (response.info.message !== "ok" ) {
             console.debug("Error al obtenir el registre de trucades ateses: ", response.info.message)
+            log_calls = [];
         }
         else{
-            log_person=response.info.info;
+            log_calls=response.info.info;
         }
     }, function(error) {
+        log_calls = [];
         console.debug('Info GET apicall failed: ', error);
     });
 };
@@ -126,7 +158,7 @@ var saveLogCalls = function(info) {
     desar = 'Desant';
     m.request({
         method: 'POST',
-        url: '/api/reasons/'+CallInfo.phone,
+        url: '/api/reasons/'+call['phone'],
         data: info,
         deserialize: jsyaml.load,
     }).then(function(response){
@@ -194,20 +226,20 @@ function conte(value) {
 }
 
 var selectReason = function(r) {
-    reasons[r] = !reasons[r]
+    call_reasons[r] = !call_reasons[r]
 
-    var index = reason.indexOf(r);
+    var index = call['reason'].indexOf(r);
     if (index > -1) {
-        reason.splice(index, 1);
+        call['reason'].splice(index, 1);
     }
     else {
-        reason.push(r);
+        call['reason'].push(r);
     }
 }
 
 var llistaMotius = function() {
     var aux = [];
-    var list_reasons = Object.keys(reasons);
+    var list_reasons = Object.keys(call_reasons);
     if (reason_filter !== "") {
         var filtered = list_reasons.filter(reason => conte(reason));
     }
@@ -229,7 +261,7 @@ var llistaMotius = function() {
                 m(Checkbox, {
                     class: "checkbox-motius",
                     name: 'checkbox',
-                    checked: reasons[filtered[i]],
+                    checked: call_reasons[filtered[i]],
                     value: filtered[i],
                     onChange: newState => {
                         selectReason(newState.event.target.value)
@@ -283,14 +315,11 @@ var motiu = function() {
                         events: {
                             onclick: function() {
                                 var person = document.cookie.split(":")[0]
-                                var time = new Date();
-                                time.getTime();
-                                var moment = date2str(time, "dd-MM-yyyy hh:mm:ss")
-                                for( i in reason) {
-                                    saveLogCalls(moment +'¬'+person+'¬'+reason[i]+'¬'+extra);
-                                    reasons[reason[i]] = false;
+                                for( i in call['reason']) {
+                                    saveLogCalls(call['date']+'¬'+person+'¬'+call['reason'][i]+'¬'+call['extra']);
+                                    call_reasons[call['reason'][i]] = false;
                                 }
-                                reason = []
+                                call['reason'] = []
                             },
                         },
                         border: 'true',
@@ -306,7 +335,7 @@ var motiu = function() {
                             label: "Algun comentari?",
                             floatingLabel: true,
                             dense: true,
-                            onChange: newValue => extra = newValue.value,
+                            onChange: newValue => call['extra'] = newValue.value,
                             disabled: ((desar === "Desa" && document.cookie !== "") ? false : true),
                         }),
                     ])
@@ -319,8 +348,10 @@ var motiu = function() {
 
 var llistaLog = function() {
     var aux = []
-    for(var i = log.length-1; i>=0; i--) {
-        var missatge = log[i][5]+" ("+log[i][0]+"): "+log[i][2];
+    for(var i = call['log_call_reasons'].length-1; i>=0; i--) {
+        var missatge = call['log_call_reasons'][i][5]
+                    +" ("+call['log_call_reasons'][i][0]
+                    +"): "+call['log_call_reasons'][i][2];
         aux.push(m(ListTile, {
             class: "registres",
             compact: true,
@@ -332,7 +363,7 @@ var llistaLog = function() {
             title: missatge,
         }));
     }
-    if (log.length === 0) {
+    if (call['log_call_reasons'].length === 0) {
         aux[0] = m(ListTile, {
             class: "registres",
             compact: true,
@@ -349,7 +380,7 @@ var logCalls = function() {
         content: [
             { primary: { title: m(".title",'Històric:') } },
             { text: {
-                content: (log[0] === "lookingfor" ?
+                content: ( call['log_call_reasons'][0] === "lookingfor" ?
                     m('center',m(Spinner, { show: "true" } )) : llistaLog())
             }},
         ]
@@ -360,12 +391,12 @@ var logCalls = function() {
 
 var atencionsLog = function() {
     var aux = []
-    for(var i = log_person.length-1; i>=0; i--) {
-        var data = log_person[i][0].split(":")
-        var missatge = "("+data[0]+":"+data[1]+"): "+log_person[i][4];
-        var resolt = log_person[i][2]!="";
+    for(var i = log_calls.length-1; i>=0; i--) {
+        var data = log_calls[i][0].split(":")
+        var missatge = "("+data[0]+":"+data[1]+"): "+log_calls[i][4];
+        var resolt = log_calls[i][2]!="";
         if(resolt){
-            missatge += (", "+log_person[i][2]);
+            missatge += (", "+log_calls[i][2]);
         }
         aux.push(m(ListTile, {
             class: (resolt ? "registres" : "registres-red"),
@@ -378,7 +409,7 @@ var atencionsLog = function() {
             title: missatge,
         }));
     }
-    if (log_person.length === 0) {
+    if (log_calls.length === 0) {
         aux[0] = m(ListTile, {
             class: "registres",
             compact: true,
@@ -405,12 +436,12 @@ var logPerson = function() {
                             },
                         },
                         border: 'true',
-                        disabled: ((log_person.length === 0 && document.cookie !== "") ? false : true),
+                        disabled: ((log_calls.length === 0 && document.cookie !== "") ? false : true),
                     }, m(Ripple)),
                 ])
             } },
             { text: {
-                content: (log_person[0] === "lookingfor" ?
+                content: (log_calls[0] === "lookingfor" ?
                     m('center',m(Spinner, { show: "true" } )) : atencionsLog())
             }},
         ]
@@ -426,7 +457,7 @@ var infoPhone = function () {
         return m('.spinner-info',m(Spinner, { show: "true" } ));
     } else {
         return m('.call-info', [
-            m("",PartnerInfo.allInfo(CallInfo.file_info, CallInfo.phone)),
+            m("",PartnerInfo.allInfo(CallInfo.file_info, call['phone'])),
             m("", [
                 motiu(),
                 logCalls(),
@@ -436,40 +467,36 @@ var infoPhone = function () {
 };
 
 
-CallInfo.refreshInfo = function(phone) {
+CallInfo.refreshInfo = function(data) {
     if(addr === "") {
-        addr = phone;
+        addr = data;
     } else {
-        if (phone == "") {
+        if (data == "") {
             CallInfo.file_info = {};
-            log_person = [];
+            clearCallInfo();
+            log_calls = [];
         }
         else if (refresh) {
-            CallInfo.phone = phone;
-            CallInfo.search = phone;
+            fillCallInfo(data);
+            CallInfo.search = data;
             CallInfo.file_info = { 1: "empty" };
             PartnerInfo.main_partner = 0;
             getInfo();
-            log = [];
-            getLog();
-            //getLogPerson();
         }
         else {
-            calling_phone = phone;
+            calling_phone = data;
         }
     }
 }
 
 
 var lookForPhoneInfo = function() {
-    CallInfo.phone="";
+    clearCallInfo();
     if (CallInfo.search !== 0 && CallInfo.search !== ""){
         CallInfo.file_info = { 1: "empty" };
         PartnerInfo.main_partner = 0;
         getInfo();
-        log = [];
-        //getLog();
-        //getLogPerson();
+        getLog();
     } 
     else {
          CallInfo.file_info = {}
@@ -483,7 +510,7 @@ var bloquejarTrucada = function() {
             { primary: { 
                 title: m(".text-info", [
                     m(".label-text", "Número: "),
-                    m(".normal-text", CallInfo.phone),
+                    m(".normal-text", call['phone']),
                     m(Button, {
                         class: 'btn-lock',
                         label: (refresh ? lockIcon() : lockedIcon()),
@@ -491,7 +518,7 @@ var bloquejarTrucada = function() {
                         events: {
                             onclick: function() {
                                 refresh = !refresh
-                                if(refresh===true){
+                                if(refresh === true && calling_phone !== ""){
                                     var num = calling_phone;
                                     calling_phone = "";
                                     CallInfo.refreshInfo(num);

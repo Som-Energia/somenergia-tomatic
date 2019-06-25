@@ -140,7 +140,6 @@ var listOfPartners = function(partners, button) {
     for (partner; partner < numOfPartners; partner++) {
         aux[partner] = specificPartnerCard(partners[partner], button);
     }
-    
     return aux[PartnerInfo.main_partner];
 }
 
