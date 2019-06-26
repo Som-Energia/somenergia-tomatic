@@ -356,11 +356,6 @@ var llistaLog = function() {
         aux.push(m(ListTile, {
             class: "registres",
             compact: true,
-            selectable: 'true',
-            ink: 'true',
-            ripple: {
-              opacityDecayVelocity: '0.5',
-            },
             title: missatge,
         }));
     }

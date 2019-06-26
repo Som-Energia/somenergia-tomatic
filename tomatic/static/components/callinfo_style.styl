@@ -21,7 +21,6 @@
                 max-width: 680px
                 max-height: 350px
                 min-height: 350px
-                margin-right: 15px
                 .pe-card__text
                     padding-bottom: 0px
                 .card-motius-title
@@ -38,9 +37,9 @@
                         margin-left: 80px
             .card-log
                 max-width: 680px
-                max-height: 305px
-                min-height: 305px
-                margin-top: 20px
+                max-height: 300px
+                min-height: 300px
+                margin-top: 18px
                 .title
                     font-weight: bold
         .card-log-person
@@ -144,7 +143,7 @@
 
     .busca-info
         display: inline-block
-        width: 380px
+        width: 570px
         height: 70px
         margin-top: -15px
         margin-left: 20px
@@ -164,6 +163,23 @@
                 display: inline-block
                 min-width: 20px
                 valign: baseline
+                margin-left: 10px
+                .pe-button__content
+                    background-color: snow
+                    border: 1px solid #ccc
+            .select-search
+                display: inline-block
+                valign: baseline
+
+    select
+        padding: 8px 20px
+        margin-right: 10px
+        border: 1px solid #ccc
+        border-radius: 6px
+        background-color: snow
+        box-sizing: border-box
+        option
+            background-color: white
 
     ::-webkit-scrollbar
         width: 8px
@@ -282,6 +298,8 @@
             display: inline-block
             min-width: 10px !important
             min-height: 10px !important
+            .pe-button__content
+                line-height: 0px
         .btn-iden
             display: inline-block
 
