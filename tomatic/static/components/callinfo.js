@@ -152,7 +152,10 @@ CallInfo.getLogPerson = function () {
         console.debug('Info GET apicall failed: ', error);
     });
 };
-CallInfo.getLogPerson();
+if(document.cookie){
+    CallInfo.getLogPerson();
+}
+
 
 var saveLogCalls = function(info) {
     desar = 'Desant';

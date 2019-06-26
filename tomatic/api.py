@@ -29,6 +29,21 @@ staticpath = os.path.join(packagedir,'dist')
 images_path = os.path.join(packagedir,'..','trucades')
 websockets = {}
 
+SHEETS = {
+    "document": "",
+    "credential": "",
+    "log": 0,
+    "reasons": 1,
+}
+
+LOGS = {
+    "date": 0,
+    "email": 1,
+    "reason": 2,
+    "extras": 3,
+    "phone": 4,
+    "person": 5
+}
 
 def pbx(alternative = None):
     if alternative:
@@ -333,12 +348,15 @@ def obreConnexio():
 @app.route('/api/reasons', methods=['GET'])
 def reasonsInfo():
     message = 'ok'
+    config = ns.load('config_connection.yaml')
+    SHEETS["document"] = config.document_name
+    SHEETS["credential"] = config.credential_name
     try:
         fetcher = SheetFetcher(
-            documentName='Trucades_3354',
-            credentialFilename='drive-certificate.json',
+            documentName=SHEETS["document"],
+            credentialFilename=SHEETS["credential"],
         )
-        reasons = fetcher.get_fullsheet(1)
+        reasons = fetcher.get_fullsheet(SHEETS["reasons"])
     except Exception as e:
         reasons = []
         message = 'err: '
@@ -356,15 +374,15 @@ def savePhoneLog(phone):
         aux = request.data.split('"')
         info = aux[1].split("¬")
         fetcher = SheetFetcher(
-            documentName='Trucades_3354',
-            credentialFilename='drive-certificate.json',
+            documentName=SHEETS["document"],
+            credentialFilename=SHEETS["credential"],
         )
         reason = info[2].decode(encoding='UTF-8', errors='strict')
         comments = info[3].decode(encoding='UTF-8', errors='strict')
         email = '=FILTER(Adreces!B:B;Adreces!A:A="' + info[1] + '")'
         row = [info[0], email, reason, comments, phone, info[1]]
         with app.drive_semaphore:
-            fetcher.add_to_last_row(0, row)
+            fetcher.add_to_last_row(SHEETS["log"], row)
     except Exception as e:
         msg = 'err: '
     result = ns(
@@ -378,14 +396,14 @@ def getPhoneLog(phone):
     message = 'ok'
     try:
         fetcher = SheetFetcher(
-            documentName='Trucades_3354',
-            credentialFilename='drive-certificate.json',
+            documentName=SHEETS["document"],
+            credentialFilename=SHEETS["credential"],
         )
-        log = fetcher.get_fullsheet(0)
+        log = fetcher.get_fullsheet(SHEETS["log"])
     except Exception as e:
         log = []
         message = 'err: '
-    reasons = filter(lambda x: x[4] == phone, log)
+    reasons = filter(lambda x: x[LOGS["phone"]] == phone, log)
     result = ns(
         info=reasons,
         message=message,
@@ -398,14 +416,14 @@ def getPersonLog(iden):
     message = 'ok'
     try:
         fetcher = SheetFetcher(
-            documentName='Trucades_3354',
-            credentialFilename='drive-certificate.json',
+            documentName=SHEETS["document"],
+            credentialFilename=SHEETS["credential"],
         )
-        log = fetcher.get_fullsheet(0)
+        log = fetcher.get_fullsheet(SHEETS["log"])
     except Exception as e:
         log = []
         message = 'err: '
-    reasons = filter(lambda x: x[5] == iden, log)
+    reasons = filter(lambda x: x[LOGS["person"]] == iden, log)
     result = ns(
         info=reasons,
         message=message,
