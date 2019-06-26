@@ -39,6 +39,7 @@ var desar = "Desa";
 var reason_filter = ""
 var refresh = true
 var calling_phone = ""
+var search_by = "phone"
 
 var fillCallInfo = function(phone) {
     call['phone']=phone;
@@ -46,7 +47,6 @@ var fillCallInfo = function(phone) {
     time.getTime();
     var moment=date2str(time, "dd-MM-yyyy hh:mm:ss");
     call['date']=moment;
-    getLog();
 }
 
 var clearCallInfo = function() {
@@ -57,27 +57,25 @@ var clearCallInfo = function() {
     call['extra']="";
 }
 
-
 var getInfo = function () {
-    var field = CallInfo.search;
     m.request({
         method: 'POST',
         url: '/api/info',
-        data: field,
+        data: search_by+"¬"+CallInfo.search,
         deserialize: jsyaml.load,
     }).then(function(response){
         console.debug("Info GET Response: ",response);
         if (response.info.message !== "ok" ) {
-            CallInfo.file_info = {}
+            if(response.info.message === "Masses resultats.") {
+                CallInfo.file_info = { 1: "toomuch" };
+            }
+            else {
+                CallInfo.file_info = {}
+            }
             console.debug("Error al obtenir les dades: ", response.info.message)
         }
         else{
             CallInfo.file_info=response.info.info;
-            //if(CallInfo.phone===""){
-                //log = ["lookingfor"];
-                //CallInfo.phone=CallInfo.search;
-                //getLog();
-            //}
         }
     }, function(error) {
         console.debug('Info GET apicall failed: ', error);
@@ -458,13 +456,18 @@ var infoPhone = function () {
     }
     else if (CallInfo.file_info[1]==="empty"){
         return m('.spinner-info',m(Spinner, { show: "true" } ));
-    } else {
+    }
+    else if (CallInfo.file_info[1]==="toomuch"){
+        return m('.text-info', m("body", 'Cerca poc específica, retorna masses resultats.'));
+    }else {
         return m('.call-info', [
             m("",PartnerInfo.allInfo(CallInfo.file_info, call['phone'])),
-            m("", [
-                motiu(),
-                logCalls(),
-            ]),
+            (call["phone"] === "" ? "" :
+                m("", [
+                    motiu(),
+                    logCalls(),
+                ])
+            ),
         ]);
     }
 };
@@ -484,6 +487,8 @@ CallInfo.refreshInfo = function(data) {
             CallInfo.search = data;
             CallInfo.file_info = { 1: "empty" };
             PartnerInfo.main_partner = 0;
+            search_by = "phone"
+            getLog();
             getInfo();
         }
         else {
@@ -499,7 +504,6 @@ var lookForPhoneInfo = function() {
         CallInfo.file_info = { 1: "empty" };
         PartnerInfo.main_partner = 0;
         getInfo();
-        getLog();
     } 
     else {
          CallInfo.file_info = {}
@@ -544,12 +548,46 @@ var bloquejarTrucada = function() {
     });
 }
 
+
+var typeOfSearch = function() {
+    return m("select",
+        {
+            id: "search-by",
+            class: ".select-search",
+            onchange: function() {
+                search_by = document.getElementById("search-by").value;
+            },
+        },
+        [
+            m("option", {"value":"phone"},
+              "Telèfon"
+            ),
+            m("option", {"value":"name"},
+              "Cognoms/Nom"
+            ),
+            m("option", {"value":"nif"},
+              "NIF"
+            ),
+            m("option", {"value":"soci"},
+              "Número Soci"
+            ),
+            m("option", {"value":"email"},
+              "Email"
+            ),
+            m("option", {"value":"all"},
+              "Tot"
+            )
+        ]
+    );
+}
+
 var cercaInformacio = function() {
     return m(Card, {
         class: 'busca-info',
         content: [
             { primary: {
                 title: m(".busca-info-title", [
+                typeOfSearch(),
                 m(".label", "Cercador: "),
                 m(Textfield, {
                     class: 'txtf-phone',

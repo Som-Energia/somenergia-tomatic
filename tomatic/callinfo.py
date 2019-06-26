@@ -244,10 +244,8 @@ class CallInfo(object):
 
     def getByPartnersId(self, partners_id):
         clean_partners_ids = list(set(partners_id))
-
-        print self.results_limit
         if self.results_limit and len(clean_partners_ids) > self.results_limit:
-            return ns(error='Massa resultats')
+            return ns(partners='Masses resultats')
         result = ns()
         result.update(self.partnersInfo(clean_partners_ids))
         return result

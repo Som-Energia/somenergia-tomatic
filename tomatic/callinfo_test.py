@@ -702,7 +702,7 @@ class CallInfo_Test(unittest.TestCase):
                     37988,
                 ])
         self.assertNsEqual(data, """\
-            error : Massa resultats
+            partners : Masses resultats
             """)
 
 unittest.TestCase.__str__ = unittest.TestCase.id

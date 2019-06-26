@@ -258,16 +258,31 @@ def busy_post(person):
 
 @app.route('/api/info', methods=['POST'])
 def getInfoPerson():
-    field = request.data.split('"')[1]
+    aux = request.data.split('"')[1]
+    typeOf = aux.split("¬")[0]
+    field = aux.split("¬")[1]
     message = 'err'
     data = None
     if data != '0':
         message = 'ok'
         o = erppeek.Client(**dbconfig.erppeek)
         info = CallInfo(o)
-        data = info.getByPhone(field)
+        if typeOf == "phone":
+            data = info.getByPhone(field)
+        elif typeOf == "nif":
+            data = info.getByDni(field)
+        elif typeOf == "name":
+            data = info.getByName(field)
+        elif typeOf == "email":
+            data = info.getByEmail(field)
+        elif typeOf == "soci":
+            data = info.getBySoci(field)
+        elif typeOf == "all":
+            data = info.getByData(field)
         if (not data.partners):
             message = 'No hi ha informació a la base de dades.'
+        elif data.partners == "Masses resultats":
+            message = 'Masses resultats.'
     result = ns(
         info=data,
         message=message,
