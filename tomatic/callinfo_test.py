@@ -246,6 +246,62 @@ class CallInfo_Test(unittest.TestCase):
             energetica: True
             """)
 
+    def test_partnerInfo_whenNoProvincia(self):
+        info = CallInfo(self.O, anonymize=True)
+        data = self.O.ResPartner.read([49781],[
+            'city',
+            'www_email',
+            'www_provincia',
+            'www_municipi',
+            'polisses_ids',
+            'name',
+            'ref',
+            'lang',
+            'vat',
+            'empowering_token',
+            'category_id',
+        ])[0]
+        partner_data = info.partnerInfo(ns(data))
+        self.assertNsEqual(partner_data, """\
+            lang: es_ES
+            name: ...cal
+            city: Valencia
+            email: ...oop
+            id_soci: ...533
+            state: ''
+            dni: ...13X
+            ov: False
+            energetica: False
+            """)
+
+    def test_partnerInfo_whenNoMunicipi(self):
+        info = CallInfo(self.O, anonymize=True)
+        data = self.O.ResPartner.read([3293],[
+            'city',
+            'www_email',
+            'www_provincia',
+            'www_municipi',
+            'polisses_ids',
+            'name',
+            'ref',
+            'lang',
+            'vat',
+            'empowering_token',
+            'category_id',
+        ])[0]
+        partner_data = info.partnerInfo(ns(data))
+        self.assertNsEqual(partner_data, """\
+            lang: ca_ES
+            name: ...ena
+            city: ''
+            email: ...oop
+            id_soci: ''
+            state: Barcelona
+            dni: ...82J
+            ov: True
+            energetica: False
+            """)
+
     def test_partnersInfo_whenMatchesOne(self):
         info = CallInfo(self.O, anonymize=True)
         partner_data = info.partnersInfo([410])
@@ -403,6 +459,35 @@ class CallInfo_Test(unittest.TestCase):
               energetica: False
               generation: True
             """)
+
+    def test_contractInfo_whenNoSoci(self):
+        info = CallInfo(self.O, anonymize=True)
+        contractsData = info.contractInfo([14817],13597)
+        self.assertNsEqual(contractsData, """\
+            contracts:
+            -
+              end_date: ''
+              cups: ...N0F
+              start_date: '2013-08-21'
+              state: activa
+              power: 3.45
+              fare: 2.0A
+              number: '08597'
+              last_invoiced: '2018-06-12'
+              suspended_invoicing: false
+              pending_state: 'Correct'
+              has_open_r1s: False
+              has_open_bs: False
+              is_titular: True
+              is_partner: False
+              is_notifier: False
+              is_payer: False
+              cups_adress: '...rú)'
+              titular_name: '...ger'
+              energetica: False
+              generation: False
+            """)
+
 
     def test_contractInfo_whenEnergetica(self):
         info = CallInfo(self.O, anonymize=True)
@@ -583,6 +668,42 @@ class CallInfo_Test(unittest.TestCase):
         data = info.getByPhone("935514714")
         self.assertB2BEqual(data.dump())
 
+    def test_getByEmail_global(self):
+        info = CallInfo(self.O)
+        data = info.getByEmail("testing%@somenergia.coop")
+        self.assertB2BEqual(data.dump())
+
+    def test_getBySoci_global(self):
+        info = CallInfo(self.O)
+        data = info.getBySoci(dbconfig.personaldata["nsoci"])
+        self.assertB2BEqual(data.dump())
+
+    def test_getByDni_global(self):
+        info = CallInfo(self.O)
+        data = info.getByDni(dbconfig.personaldata["nif"])
+        self.assertB2BEqual(data.dump())
+
+    def test_getByName_global(self):
+        info = CallInfo(self.O)
+        data = info.getByName(dbconfig.personaldata["surname"]+", "+dbconfig.personaldata["name"])
+        self.assertB2BEqual(data.dump())
+
+    def test_getByPartnersId_global(self):
+        info = CallInfo(self.O)
+        data = info.getByPartnersId([dbconfig.personaldata["partnerid"]])
+        self.assertB2BEqual(data.dump())
+
+    def test_getByPartnersId_whenTooManyResults(self):
+        info = CallInfo(self.O, results_limit=3)
+        data = info.getByPartnersId([
+                    37957,
+                    38073,
+                    38043,
+                    37988,
+                ])
+        self.assertNsEqual(data, """\
+            error : Massa resultats
+            """)
 
 unittest.TestCase.__str__ = unittest.TestCase.id
 

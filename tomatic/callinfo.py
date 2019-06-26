@@ -2,11 +2,17 @@
 
 from yamlns import namespace as ns 
 
+
 class CallInfo(object):
 
-    def __init__(self, O, anonymize=False):
+    def __init__(self, O, results_limit = None, anonymize=False):
         self.O = O
+        self.results_limit = results_limit
         self._anonymize = anonymize
+
+        if not self.results_limit:
+            config = ns.load('config_connection.yaml')
+            self.results_limit = config.threshold_hits
 
     def anonymize(self, string):
         if not self._anonymize: return string
@@ -52,12 +58,12 @@ class CallInfo(object):
 
     def partnerInfo(self, partner_data):
         result = ns(
-            id_soci = self.anonymize(partner_data.ref),
+            id_soci = self.anonymize(partner_data.ref) if partner_data.ref else "",
             lang = partner_data.lang,
             name = self.anonymize(partner_data.name),
-            city = partner_data.www_municipi[1]['name'],
+            city = partner_data.www_municipi[1]['name'] if partner_data.www_municipi else "",
             email = self.anonymize(partner_data.www_email),
-            state = partner_data.www_provincia[1]['name'],
+            state = partner_data.www_provincia[1]['name'] if partner_data.www_provincia else "",
             dni = self.anonymize(partner_data.vat),
             ov = partner_data.empowering_token != False,
             energetica = 24 in partner_data.category_id,
@@ -110,14 +116,17 @@ class CallInfo(object):
         ])
         for partner_data in partners_data or []:
             partner_data = ns(partner_data)
-            partner_result = self.partnerInfo(partner_data)
-            contracts_ids = self.getPartnerRelatedContracts(partner_data.id)
-            partner_result.update(self.contractInfo(contracts_ids,partner_data.id))
-            if partner_result.id_soci.startswith('S'):
-                result.partners.append(partner_result)
-            else:
-                no_partners.append(partner_result)
-
+            try:
+                partner_result = self.partnerInfo(partner_data)
+                contracts_ids = self.getPartnerRelatedContracts(partner_data.id)
+                partner_result.update(self.contractInfo(contracts_ids,partner_data.id))
+                if partner_result.id_soci.startswith('S'):
+                    result.partners.append(partner_result)
+                else:
+                    no_partners.append(partner_result)
+            except Exception as e:
+                print "Unexepected error found at partner id {}".format(partner_data.id)
+                print str(e)
         result.partners.extend(no_partners)
         return result
 
@@ -134,7 +143,9 @@ class CallInfo(object):
 
         def getPartnerId(address_id):
             partner_ids = self.O.ResPartnerAddress.read([address_id], ['partner_id'])
-            return partner_ids[0]['partner_id'][0]
+            if partner_ids and partner_ids[0]['partner_id']:
+                return partner_ids[0]['partner_id'][0]
+            return None
 
         def getCUPSAdress(cups_id):
             cups_data = self.O.GiscedataCupsPs.read([cups_id], ['direccio'])
@@ -187,47 +198,59 @@ class CallInfo(object):
                         pending_state = contract['pending_state'],
                         has_open_r1s = hasOpenATR(contract['id'],'R1'),
                         has_open_bs = hasOpenATR(contract['id'],'B1'),
-                        is_titular = contract['titular'][0] == partner_id,
-                        is_partner = contract['soci'][0] == partner_id,
+                        is_titular = contract['titular'] and contract['titular'][0] == partner_id,
+                        is_partner = contract['soci'] and contract['soci'][0] == partner_id,
                         is_notifier = getPartnerId(contract['direccio_notificacio'][0]) == partner_id,
-                        is_payer = contract['pagador'][0] == partner_id,
+                        is_payer = contract['pagador'] and contract['pagador'][0] == partner_id,
                         cups_adress = self.anonymize(getCUPSAdress(contract['cups'][0])),
                         titular_name = self.anonymize(contract['titular'][1]),
-                        energetica = contract['soci'][0] == 38039,
+                        energetica = contract['soci'] and contract['soci'][0] == 38039,
                         generation = hasGeneration(contract['id']),
                     )
                 )
         return ret
 
     def getByPhone(self, phone):
-        return self.getByData(phone)
         address_ids = self.addressByPhone(phone)
         partners_ids = self.partnerByAddressId(address_ids)
-        clean_partners_ids = list(set(partners_ids))
-        result = ns()
-        result.callid = phone
-        result.update(self.partnersInfo(clean_partners_ids))
-        return result
+        return self.getByPartnersId(partners_ids)
+
+    def getByEmail(self, email):
+        email_ids = self.addressByEmail(email)
+        email_p_ids = self.partnerByAddressId(email_ids)
+        return self.getByPartnersId(email_p_ids)
+
+    def getBySoci(self, soci):
+        soci_p_ids = self.partnerBySoci(soci)
+        return self.getByPartnersId(soci_p_ids)
+
+    def getByDni(self, dni):
+        dni_p_ids = self.partnerByDni(dni)
+        return self.getByPartnersId(dni_p_ids)
+
+    def getByName(self, name):
+        name_p_ids = self.partnerByName(name)
+        return self.getByPartnersId(name_p_ids)
 
     def getByData(self, data):
         address_ids = self.addressByPhone(data)
         address_p_ids = self.partnerByAddressId(address_ids)
-
         email_ids = self.addressByEmail(data)
         email_p_ids = self.partnerByAddressId(email_ids)
-
         soci_p_ids = self.partnerBySoci(data)
-
         dni_p_ids = self.partnerByDni(data)
-
         name_p_ids = self.partnerByName(data)
+        return self.getByPartnersId(address_p_ids + email_p_ids + soci_p_ids + dni_p_ids + name_p_ids)
 
-        clean_partners_ids = list(set(address_p_ids + email_p_ids + soci_p_ids + dni_p_ids + name_p_ids))
+    def getByPartnersId(self, partners_id):
+        clean_partners_ids = list(set(partners_id))
 
-
+        print self.results_limit
+        if self.results_limit and len(clean_partners_ids) > self.results_limit:
+            return ns(error='Massa resultats')
         result = ns()
-        result.callid = data
         result.update(self.partnersInfo(clean_partners_ids))
         return result
+
 
 # vim: ts=4 sw=4 et
