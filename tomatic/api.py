@@ -29,9 +29,9 @@ staticpath = os.path.join(packagedir,'dist')
 images_path = os.path.join(packagedir,'..','trucades')
 websockets = {}
 
+CONFIG = ns.load('config_connection.yaml')
+
 SHEETS = {
-    "document": "",
-    "credential": "",
     "log": 0,
     "reasons": 1,
 }
@@ -44,6 +44,7 @@ LOGS = {
     "phone": 4,
     "person": 5
 }
+
 
 def pbx(alternative = None):
     if alternative:
@@ -300,7 +301,7 @@ def callingPhone():
         for client in clients:
             app.wserver.send_message(client, phone)
     except Exception as e:
-        print(ext + " sense identificar. ")
+        print ext + " sense identificar."
     result = ns(
         phone=phone,
         ext=int(ext),
@@ -328,22 +329,20 @@ def client_left(client, server):
 
 @app.route('/api/socketInfo', methods=['GET'])
 def getConnectionInfo():
-    config = ns.load('config_connection.yaml')
     result = ns(
-        ip = config.ip,
-        port = config.port,
-        port_ws = config.port_ws,
-        message = "ok"
+        ip=CONFIG.ip,
+        port=CONFIG.port,
+        port_ws=CONFIG.port_ws,
+        message="ok"
     )
     return yamlfy(info=result)
 
 
 @app.route('/api/info/openSock', methods=['GET'])
 def obreConnexio():
-    config = ns.load('config_connection.yaml')
     result = ns(
-        ip = config.ip,
-        port = config.port_ws,
+        ip=CONFIG.ip,
+        port=CONFIG.port_ws,
     )
     message = 'err'
     if not app.wserver:
@@ -363,18 +362,15 @@ def obreConnexio():
 @app.route('/api/reasons', methods=['GET'])
 def reasonsInfo():
     message = 'ok'
-    config = ns.load('config_connection.yaml')
-    SHEETS["document"] = config.document_name
-    SHEETS["credential"] = config.credential_name
     try:
         fetcher = SheetFetcher(
-            documentName=SHEETS["document"],
-            credentialFilename=SHEETS["credential"],
+            documentName=CONFIG.document_name,
+            credentialFilename=CONFIG.credential_name,
         )
         reasons = fetcher.get_fullsheet(SHEETS["reasons"])
     except Exception as e:
         reasons = []
-        message = 'err: '
+        message = 'err'
     result = ns(
         info=reasons,
         message=message,
@@ -389,8 +385,8 @@ def savePhoneLog(phone):
         aux = request.data.split('"')
         info = aux[1].split("¬")
         fetcher = SheetFetcher(
-            documentName=SHEETS["document"],
-            credentialFilename=SHEETS["credential"],
+            documentName=CONFIG.document_name,
+            credentialFilename=CONFIG.credential_name,
         )
         reason = info[2].decode(encoding='UTF-8', errors='strict')
         comments = info[3].decode(encoding='UTF-8', errors='strict')
@@ -399,7 +395,7 @@ def savePhoneLog(phone):
         with app.drive_semaphore:
             fetcher.add_to_last_row(SHEETS["log"], row)
     except Exception as e:
-        msg = 'err: '
+        msg = 'err'
     result = ns(
         message=msg
     )
@@ -411,13 +407,13 @@ def getPhoneLog(phone):
     message = 'ok'
     try:
         fetcher = SheetFetcher(
-            documentName=SHEETS["document"],
-            credentialFilename=SHEETS["credential"],
+            documentName=CONFIG.document_name,
+            credentialFilename=CONFIG.credential_name,
         )
         log = fetcher.get_fullsheet(SHEETS["log"])
     except Exception as e:
         log = []
-        message = 'err: '
+        message = 'err'
     reasons = filter(lambda x: x[LOGS["phone"]] == phone, log)
     result = ns(
         info=reasons,

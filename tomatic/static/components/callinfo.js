@@ -105,7 +105,6 @@ CallInfo.getReasons = function () {
 };
 CallInfo.getReasons();
 
-
 var getLog = function () {
     call["log_call_reasons"] = [];
     call["log_call_reasons"].push("lookingfor");
@@ -127,7 +126,6 @@ var getLog = function () {
         call["log_call_reasons"] = [];
     });
 };
-
 
 CallInfo.getLogPerson = function () {
     log_calls = [];
@@ -226,6 +224,23 @@ function conte(value) {
     return value.toLowerCase().includes(reason_filter.toLowerCase());
 }
 
+var date2str = function (x, y) {
+    var z = {
+        M: x.getMonth() + 1,
+        d: x.getDate(),
+        h: x.getHours(),
+        m: x.getMinutes(),
+        s: x.getSeconds()
+    };
+    y = y.replace(/(M+|d+|h+|m+|s+)/g, function(v) {
+        return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1))).slice(-2)
+    });
+
+    return y.replace(/(y+)/g, function(v) {
+        return x.getFullYear().toString().slice(-v.length)
+    });
+}
+
 var selectReason = function(r) {
     call_reasons[r] = !call_reasons[r]
 
@@ -280,24 +295,6 @@ var llistaMotius = function() {
 }
 
 
-var date2str = function (x, y) {
-    var z = {
-        M: x.getMonth() + 1,
-        d: x.getDate(),
-        h: x.getHours(),
-        m: x.getMinutes(),
-        s: x.getSeconds()
-    };
-    y = y.replace(/(M+|d+|h+|m+|s+)/g, function(v) {
-        return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1))).slice(-2)
-    });
-
-    return y.replace(/(y+)/g, function(v) {
-        return x.getFullYear().toString().slice(-v.length)
-    });
-}
-
-
 var motiu = function() {
     return m(Card, {
         class: 'card-motius',
@@ -346,7 +343,6 @@ var motiu = function() {
     });
 }
 
-
 var llistaLog = function() {
     var aux = []
     for(var i = call['log_call_reasons'].length-1; i>=0; i--) {
@@ -368,7 +364,6 @@ var llistaLog = function() {
     }
     return m(".logs", m(List, {compact: true, tiles: aux}));
 }
-
 
 var logCalls = function() {
     return m(Card, {
@@ -443,7 +438,6 @@ var logPerson = function() {
         ]
     });
 }
-
 
 var infoPhone = function () {
     if (isEmpty(CallInfo.file_info)) {
@@ -543,7 +537,6 @@ var bloquejarTrucada = function() {
     });
 }
 
-
 var typeOfSearch = function() {
     return m("select",
         {
@@ -616,7 +609,6 @@ function uniCharCode(event) {
         lookForPhoneInfo();
     }
 }
-
 
 CallInfo.mainPage = function() {
     return m( '', [
