@@ -29,9 +29,12 @@ var log_calls = [];
 var call = {
     'phone': "",
     'date': "",
-    'log_call_reasons': [],
+    'partner': "",
+    'contract': "",
     'reason': [],
     'extra': "",
+    'log_call_reasons': [],
+    'registered': false,
 };
 
 var addr = "";
@@ -47,6 +50,7 @@ var fillCallInfo = function(phone) {
     time.getTime();
     var moment=date2str(time, "dd-MM-yyyy hh:mm:ss");
     call['date']=moment;
+    call['registered']=false;
 }
 
 var clearCallInfo = function() {
@@ -55,6 +59,7 @@ var clearCallInfo = function() {
     call['log_call_reasons']=[];
     call['reason']=[];
     call['extra']="";
+    call['registered']=false;
 }
 
 var getInfo = function () {
@@ -81,7 +86,6 @@ var getInfo = function () {
         console.debug('Info GET apicall failed: ', error);
     });
 };
-
 
 CallInfo.getReasons = function () {
     m.request({
@@ -152,9 +156,9 @@ if(document.cookie){
     CallInfo.getLogPerson();
 }
 
-
 var saveLogCalls = function(info) {
     desar = 'Desant';
+    saveCall(call["phone"]);
     m.request({
         method: 'POST',
         url: '/api/reasons/'+call['phone'],
@@ -168,12 +172,45 @@ var saveLogCalls = function(info) {
         else {
             desar='Desa';
             getLog();
-            CallInfo.getLogPerson();
 
         }
     }, function(error) {
         console.debug('Info POST apicall failed: ', error);
     });
+}
+
+var saveCall = function(phone) {
+    var person = document.cookie.split(":")[0]
+    var reasons = ""
+    var len = call['reason'].length
+    if (len > 0){
+        for (var i=0; i < len-1; i++) {
+            reasons += call['reason'][i] + ", "
+        }
+        reasons += call['reason'][len-1]
+    }
+    info = call['date']+'¬'+call['phone']+'¬'+call['partner']+'¬'+call['contract']+"¬"+reasons
+    m.request({
+        method: 'POST',
+        url: '/api/mylog/'+person,
+        data: info,
+        deserialize: jsyaml.load,
+    }).then(function(response){
+        console.debug("Info POST Response: ",response);
+        if (response.info.message !== "ok" ) {
+            console.debug("Error al fer log dels motius: ", response.info.message)
+        }
+        else {
+            if (phone === call["phone"]) {
+                call["registered"] = true
+            }
+            if (document.cookie !== "") CallInfo.getLogPerson();
+
+        }
+    }, function(error) {
+        console.debug('Info POST apicall failed: ', error);
+    });
+
 }
 
 var searchIcon = function(){
@@ -378,27 +415,44 @@ var logCalls = function() {
     });
 }
 
-
-
 var atencionsLog = function() {
     var aux = []
-    for(var i = log_calls.length-1; i>=0; i--) {
-        var data = log_calls[i][0].split(":")
-        var missatge = "("+data[0]+":"+data[1]+"): "+log_calls[i][4];
-        var resolt = log_calls[i][2]!="";
-        if(resolt){
-            missatge += (", "+log_calls[i][2]);
+    var mida = log_calls.length-1
+    for(var i = mida; i>=0; i--) {
+        var data = log_calls[i]["data"]
+        var missatge = "("+ data +"): " + log_calls[i]["telefon"];
+        var resolt = log_calls[i]["motius"]!="";
+        if (resolt) {
+            missatge+=", "+log_calls[i]["partner"]+", "+log_calls[i]["contracte"];
+            text = log_calls[i]["motius"]
+            tipus = "tooltiptext"
+            if(i===mida || i === mida-1) {
+                tipus = "tooltiptext-first"
+            }
+            aux.push(m("div", {"class":"tooltip"}, [
+                m(ListTile, {
+                    class: "registres",
+                    compact: true,
+                    selectable: false,
+                    title: missatge,
+                }),
+                m("span", {"class":tipus},
+                  text
+                )
+            ]));
         }
-        aux.push(m(ListTile, {
-            class: (resolt ? "registres" : "registres-red"),
-            compact: true,
-            selectable: 'true',
-            ink: 'true',
-            ripple: {
-              opacityDecayVelocity: '0.5',
-            },
-            title: missatge,
-        }));
+        else {
+            aux.push(m(ListTile, {
+                class: "registres-red",
+                compact: true,
+                selectable: true,
+                ink: true,
+                ripple: {
+                  opacityDecayVelocity: '0.5',
+                },
+                title: missatge,
+            }));
+        }
     }
     if (log_calls.length === 0) {
         aux[0] = m(ListTile, {
@@ -461,17 +515,22 @@ var infoPhone = function () {
     }
 };
 
-
 CallInfo.refreshInfo = function(data) {
     if(addr === "") {
         addr = data;
     } else {
         if (data == "") {
+            if (call["phone"] !== "" && !call["registered"]) {
+                saveCall(call["phone"]);
+            }
             CallInfo.file_info = {};
             clearCallInfo();
             log_calls = [];
         }
         else if (refresh) {
+            if (call["phone"] !== "" && !call["registered"]) {
+                saveCall(call["phone"]); // Guardem info trucada anterior
+            }
             fillCallInfo(data);
             CallInfo.search = data;
             CallInfo.file_info = { 1: "empty" };
@@ -486,8 +545,10 @@ CallInfo.refreshInfo = function(data) {
     }
 }
 
-
 var lookForPhoneInfo = function() {
+    if (call["phone"] !== "" && !call["registered"]) {
+        saveCall(call["phone"]); // Guardem info trucada anterior
+    }
     clearCallInfo();
     if (CallInfo.search !== 0 && CallInfo.search !== ""){
         CallInfo.file_info = { 1: "empty" };

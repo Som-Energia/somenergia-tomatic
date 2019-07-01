@@ -86,6 +86,7 @@
         overflow: auto
         .registres
             font-size: 14px
+            color: dimgrey
         .registres-red
             font-size: 14px
             color: red
@@ -331,3 +332,57 @@
 
 .icon-refresh
     font-size: 25px
+
+.tooltip
+  position: relative
+  display: inline-block
+  .tooltiptext
+      visibility: hidden
+      width: 335px
+      background-color: #000
+      color: #fff
+      text-align: center
+      border-radius: 6px
+      padding: 5px 3px
+      position: absolute
+      z-index: 1
+      bottom: 115%
+      opacity: 0.85
+      margin-left: 5px
+  .tooltiptext-first
+      visibility: hidden
+      width: 335px
+      background-color: #000
+      color: #fff
+      text-align: center
+      border-radius: 6px
+      padding: 5px 3px
+      position: absolute
+      z-index: 1
+      //bottom: 115%
+      opacity: 0.85
+      margin-left: 5px
+  .tooltiptext::after
+      content: " "
+      position: absolute
+      top: 100%
+      left: 50%
+      margin-left: -5px
+      border-width: 5px
+      border-style: solid
+      border-color: black transparent transparent transparent
+  .tooltiptext-first::after
+      content: " "
+      position: absolute
+      bottom: 100%
+      left: 50%
+      margin-left: -5px
+      border-width: 5px
+      border-style: solid
+      border-color: transparent transparent black transparent
+
+.tooltip:hover .tooltiptext
+  visibility: visible
+
+.tooltip:hover .tooltiptext-first
+  visibility: visible

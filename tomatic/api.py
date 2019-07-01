@@ -425,19 +425,45 @@ def getPhoneLog(phone):
 @app.route('/api/personlog/<iden>', methods=['GET'])
 def getPersonLog(iden):
     message = 'ok'
+    logs = ns.load(CONFIG.my_calls_log)
+    mylog = ""
     try:
-        fetcher = SheetFetcher(
-            documentName=SHEETS["document"],
-            credentialFilename=SHEETS["credential"],
-        )
-        log = fetcher.get_fullsheet(SHEETS["log"])
+        mylog = logs[iden]
     except Exception as e:
-        log = []
-        message = 'err: '
-    reasons = filter(lambda x: x[LOGS["person"]] == iden, log)
+        message = 'err'
+        print iden + " no apareix al registre."
     result = ns(
-        info=reasons,
+        info=mylog,
         message=message,
+    )
+    return yamlfy(info=result)
+
+
+@app.route('/api/mylog/<iden>', methods=['POST'])
+def saveMyLog(iden):
+    msg = 'ok'
+    try:
+        logs = ns.load(CONFIG.my_calls_log)
+        aux = request.data.split('"')[1].split('¬')
+        info = {
+            "data": aux[0],
+            "telefon": aux[1],
+            "partner": aux[2],
+            "contracte": aux[3],
+            "motius": aux[4]
+        }
+        if iden not in logs:
+            logs[iden] = []
+        elif len(logs[iden]) == 20:
+            logs[iden].pop(0)
+        logs[iden].append(info)
+        logs.dump(CONFIG.my_calls_log)
+
+    except Exception as e:
+        msg = 'err'
+        print "Error desant informació del log de " + iden + "."
+    result = ns(
+        message=msg
     )
     return yamlfy(info=result)
 
