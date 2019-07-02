@@ -38,11 +38,14 @@ SHEETS = {
 
 LOGS = {
     "date": 0,
-    "email": 1,
-    "reason": 2,
-    "extras": 3,
-    "phone": 4,
-    "person": 5
+    "person": 1,
+    "phone": 2,
+    "partner": 3,
+    "contract": 4,
+    "reason": 5,
+    "proc": 6,
+    "improc": 7,
+    "extras": 8,
 }
 
 
@@ -333,6 +336,7 @@ def getConnectionInfo():
         ip=CONFIG.ip,
         port=CONFIG.port,
         port_ws=CONFIG.port_ws,
+        adress=CONFIG.adress,
         message="ok"
     )
     return yamlfy(info=result)
@@ -382,19 +386,28 @@ def reasonsInfo():
 def savePhoneLog(phone):
     msg = 'ok'
     try:
-        aux = request.data.split('"')
-        info = aux[1].split("¬")
+        info = ns.loads(request.data)
         fetcher = SheetFetcher(
             documentName=CONFIG.document_name,
             credentialFilename=CONFIG.credential_name,
         )
-        reason = info[2].decode(encoding='UTF-8', errors='strict')
-        comments = info[3].decode(encoding='UTF-8', errors='strict')
-        email = '=FILTER(Adreces!B:B;Adreces!A:A="' + info[1] + '")'
-        row = [info[0], email, reason, comments, phone, info[1]]
+        reason = info["reason"]
+        comments = info["extra"]
+        row = [
+            info["date"],
+            info["person"],
+            phone,
+            info["partner"],
+            info["contract"],
+            reason,
+            info["procedente"],
+            info["improcedente"],
+            comments,
+        ]
         with app.drive_semaphore:
             fetcher.add_to_last_row(SHEETS["log"], row)
     except Exception as e:
+        print 'Error al desar al full de calcul.'
         msg = 'err'
     result = ns(
         message=msg
@@ -450,7 +463,7 @@ def saveMyLog(iden):
             "telefon": aux[1],
             "partner": aux[2],
             "contracte": aux[3],
-            "motius": aux[4]
+            "motius": aux[4].decode(encoding='UTF-8', errors='strict')
         }
         if iden not in logs:
             logs[iden] = []

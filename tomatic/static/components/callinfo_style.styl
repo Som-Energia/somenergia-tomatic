@@ -33,8 +33,25 @@
                         margin-left: 10px
                         .textfield-filter
                             width: 400px
-                    .save
-                        margin-left: 80px
+                    .checkbox-proc
+                        color: #8FBC8F
+                        position: absolute
+                        right: 0
+                        margin-right: 45px
+                        margin-top: -4px
+                        .pe-control__label
+                            font-size: 14px
+                            margin-left: -10px
+                    .checkbox-improc
+                        color: #8FBC8F
+                        position: absolute
+                        margin-top: 25px
+                        right: 0
+                        margin-right: 30px
+                        margin-top: 25px
+                        .pe-control__label
+                            font-size: 14px
+                            margin-left: -10px
             .card-log
                 max-width: 680px
                 max-height: 300px
@@ -43,10 +60,8 @@
                 .title
                     font-weight: bold
         .card-log-person
-            max-width: 380px
-            min-width: 380px
-            max-height: 670px
-            min-height: 670px
+            width: 420px
+            height: 670px
             margin-right: 30px
             right: 0
             position: absolute
@@ -81,7 +96,7 @@
     .logs-person
         display: inline-block
         background-color: #EEEEEE
-        width: 350px
+        width: 390px
         height: 570px
         overflow: auto
         .registres
@@ -108,13 +123,21 @@
         box-sizing: border-box
         text-align: center
 
-    .textfield-comentaris
-        margin-top: -15px
-        width: 680px
+    .final-motius
+        .textfield-comentaris
+            display: inline-block
+            margin-top: -15px
+            width: 480px
+            margin-right: 30px
+        .save
+            display: inline-block
+            position: absolute
+            right: 0
+            margin-right: 30px
 
     .num-entrant
         display: inline-block
-        width: 380px
+        width: 420px
         height: 70px
         margin-top: -15px
         margin-right: 30px
@@ -239,43 +262,56 @@
             max-width: 570px
             min-height: 620px
 
+    .contract-info-selected
+        border: 2px solid #8FBC8F
+        background-color: beige
+        margin-left: 10px
+        margin-right: 10px
+        margin-bottom: 10px
+        width: 515px
+        .pe-list-tile__title
+            max-height: fit-content
+            font-size: 14px
+            line-height: 1.5
     .contract-info
         border: 2px solid #8FBC8F
         margin-left: 10px
         margin-right: 10px
         margin-bottom: 10px
         width: 515px
-        .contract-info-box
-            margin-top: 5px
-            margin-left: 10px
-            width: 500px
-            margin-bottom: 5px
-            color: #000
-            .contract-info-item
-                .label
-                    display: inline-block
-                    font-weight: bold
-                    margin-right: 5px
-                .label-right
-                    display: inline-block
-                    font-weight: bold
-                    float: right
-                    margin-right: 15px
-                .label-alert
-                    display: inline-block
-                    font-weight: bold
-                    margin-right: 5px
-                    color: #E1232C
-                .label-energetica
-                    display: inline-block
-                    font-weight: bold
-                    margin-right: 5px
-                    color: green
-                .label-generation
-                    display: inline-block
-                    font-weight: bold
-                    margin-right: 5px
-                    color: brown
+        .pe-list-tile__title
+            max-height: fit-content
+            font-size: 14px
+            line-height: 1.5
+    .contract-info-box
+        width: 500px
+        color: #000
+        height: fit-content
+        .contract-info-item
+            .label
+                display: inline-block
+                font-weight: bold
+                margin-right: 5px
+            .label-right
+                display: inline-block
+                font-weight: bold
+                float: right
+                margin-right: 15px
+            .label-alert
+                display: inline-block
+                font-weight: bold
+                margin-right: 5px
+                color: #E1232C
+            .label-energetica
+                display: inline-block
+                font-weight: bold
+                margin-right: 5px
+                color: green
+            .label-generation
+                display: inline-block
+                font-weight: bold
+                margin-right: 5px
+                color: brown
 
     .contract-field
         background-color: #EEEEEE
@@ -283,6 +319,9 @@
         height: 450px
         overflow: auto
         border-radius: 2%
+        .center
+            text-align: center
+            margin-top: 10px
 
     .all-info
         display: inline-block
@@ -338,7 +377,7 @@
   display: inline-block
   .tooltiptext
       visibility: hidden
-      width: 335px
+      width: 370px
       background-color: #000
       color: #fff
       text-align: center
@@ -351,7 +390,7 @@
       margin-left: 5px
   .tooltiptext-first
       visibility: hidden
-      width: 335px
+      width: 370px
       background-color: #000
       color: #fff
       text-align: center

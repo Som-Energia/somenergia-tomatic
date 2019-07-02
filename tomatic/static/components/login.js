@@ -20,6 +20,7 @@ var websock = null;
 var ip = "";
 var port = 0;
 var port_ws = 0;
+var addr = "";
 
 var getServerSockInfo = function() {
     m.request({
@@ -32,7 +33,8 @@ var getServerSockInfo = function() {
             ip = response.info.ip
             port = response.info.port
             port_ws = response.info.port_ws
-            Callinfo.refreshInfo('http://'+ip+':'+port+'/');
+            addr = response.info.adress
+            Callinfo.refreshInfo('http://'+addr+':'+port+'/');
         } else{
             console.debug("Error get data: ", response.info.message);
         }

@@ -35,6 +35,8 @@ var call = {
     'extra': "",
     'log_call_reasons': [],
     'registered': false,
+    'proc': false,
+    'improc': false,
 };
 
 var addr = "";
@@ -156,9 +158,19 @@ if(document.cookie){
     CallInfo.getLogPerson();
 }
 
-var saveLogCalls = function(info) {
+var saveLogCalls = function(person, reason) {
     desar = 'Desant';
     saveCall(call["phone"]);
+    info = {
+        "date": call['date'],
+        "person": person,
+        "reason": reason,
+        "extra": call['extra'],
+        "partner": call['partner'],
+        "contract": call['contract'],
+        "procedente": (call["proc"] ? "x" : ""),
+        "improcedente": (call["improc"] ? "x" : ""),
+    }
     m.request({
         method: 'POST',
         url: '/api/reasons/'+call['phone'],
@@ -183,13 +195,23 @@ var saveCall = function(phone) {
     var person = document.cookie.split(":")[0]
     var reasons = ""
     var len = call['reason'].length
+    var data = PartnerInfo.getPartnerAndContract(CallInfo.file_info)
     if (len > 0){
         for (var i=0; i < len-1; i++) {
             reasons += call['reason'][i] + ", "
         }
         reasons += call['reason'][len-1]
     }
-    info = call['date']+'¬'+call['phone']+'¬'+call['partner']+'¬'+call['contract']+"¬"+reasons
+    var contract = data["contract"];
+    var s_contract = "";
+    if(contract !== -1) {
+        s_contract = contract+"";
+        while (s_contract.length < 7) s_contract = "0" + s_contract;
+    }
+    var partner = (data["partner"] === -1 ? "" : data["partner"])
+    call["contract"] = s_contract
+    call["partner"] = data["partner"]
+    info = call['date']+'¬'+call['phone']+'¬'+partner+'¬'+s_contract+"¬"+reasons
     m.request({
         method: 'POST',
         url: '/api/mylog/'+person,
@@ -345,34 +367,62 @@ var motiu = function() {
                         dense: true,
                         onChange: newValue => reason_filter = newValue.value,
                     })),
-                    m(".save", m(Button, {
-                        label: desar,
-                        events: {
-                            onclick: function() {
-                                var person = document.cookie.split(":")[0]
-                                for( i in call['reason']) {
-                                    saveLogCalls(call['date']+'¬'+person+'¬'+call['reason'][i]+'¬'+call['extra']);
-                                    call_reasons[call['reason'][i]] = false;
-                                }
-                                call['reason'] = []
-                            },
-                        },
-                        border: 'true',
-                        disabled: ((desar === "Desa" && document.cookie !== "") ? false : true),
-                    }, m(Ripple))),
+                    m(Checkbox, {
+                        class: "checkbox-proc",
+                        name: 'proc',
+                        checked: call["proc"] && PartnerInfo.contract !== -1,
+                        label: "Procedente",
+                        disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
+                        onChange: newState => {
+                            call["proc"] = !call["proc"]
+                            if (call["proc"] && call["improc"]){
+                                call["improc"] = false
+                            }
+                        }
+                    }),
+                    m(Checkbox, {
+                        class: "checkbox-improc",
+                        name: 'improc',
+                        checked: call["improc"] && PartnerInfo.contract !== -1,
+                        label: "Improcedente",
+                        disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
+                        onChange: newState => {
+                            call["improc"] = !call["improc"]
+                            if(call["proc"] && call["improc"]) {
+                                call["proc"] = false
+                            }
+                        }
+                    }),
                 ]),
             } },
             { text: {
                 content: m("", [
                         llistaMotius(),
-                        m(Textfield, {
-                            class: "textfield-comentaris",
-                            label: "Algun comentari?",
-                            floatingLabel: true,
-                            dense: true,
-                            onChange: newValue => call['extra'] = newValue.value,
-                            disabled: ((desar === "Desa" && document.cookie !== "") ? false : true),
-                        }),
+                        m(".final-motius", [
+                            m(Textfield, {
+                                class: "textfield-comentaris",
+                                label: "Algun comentari?",
+                                floatingLabel: true,
+                                dense: true,
+                                onChange: newValue => call['extra'] = newValue.value,
+                                disabled: ((desar === "Desa" && document.cookie !== "") ? false : true),
+                            }),
+                            m(".save", m(Button, {
+                                label: desar,
+                                events: {
+                                    onclick: function() {
+                                        var person = document.cookie.split(":")[0]
+                                        for( i in call['reason']) {
+                                            saveLogCalls(person, call['reason'][i]);
+                                            call_reasons[call['reason'][i]] = false;
+                                        }
+                                        call['reason'] = []
+                                    },
+                                },
+                                border: 'true',
+                                disabled: ((desar === "Desa" && document.cookie !== "") ? false : true),
+                            }, m(Ripple))),
+                        ]),
                     ])
                 }
             },
@@ -383,9 +433,9 @@ var motiu = function() {
 var llistaLog = function() {
     var aux = []
     for(var i = call['log_call_reasons'].length-1; i>=0; i--) {
-        var missatge = call['log_call_reasons'][i][5]
+        var missatge = call['log_call_reasons'][i][1]
                     +" ("+call['log_call_reasons'][i][0]
-                    +"): "+call['log_call_reasons'][i][2];
+                    +"): "+call['log_call_reasons'][i][5];
         aux.push(m(ListTile, {
             class: "registres",
             compact: true,
@@ -423,7 +473,10 @@ var atencionsLog = function() {
         var missatge = "("+ data +"): " + log_calls[i]["telefon"];
         var resolt = log_calls[i]["motius"]!="";
         if (resolt) {
-            missatge+=", "+log_calls[i]["partner"]+", "+log_calls[i]["contracte"];
+            missatge+=", "+log_calls[i]["partner"]
+            if (log_calls[i]["contracte"] !== "") {
+                missatge += ", "+log_calls[i]["contracte"]
+            }
             text = log_calls[i]["motius"]
             tipus = "tooltiptext"
             if(i===mida || i === mida-1) {
@@ -529,7 +582,7 @@ CallInfo.refreshInfo = function(data) {
         }
         else if (refresh) {
             if (call["phone"] !== "" && !call["registered"]) {
-                saveCall(call["phone"]); // Guardem info trucada anterior
+                saveCall(call["phone"]);
             }
             fillCallInfo(data);
             CallInfo.search = data;
@@ -547,7 +600,7 @@ CallInfo.refreshInfo = function(data) {
 
 var lookForPhoneInfo = function() {
     if (call["phone"] !== "" && !call["registered"]) {
-        saveCall(call["phone"]); // Guardem info trucada anterior
+        saveCall(call["phone"]);
     }
     clearCallInfo();
     if (CallInfo.search !== 0 && CallInfo.search !== ""){

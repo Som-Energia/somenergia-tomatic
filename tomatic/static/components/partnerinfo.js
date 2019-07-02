@@ -15,7 +15,7 @@ var styleProves = require('./proves_style.styl');
 var PartnerInfo = {};
 
 PartnerInfo.main_partner = 0;
-
+PartnerInfo.contract = -1;
 
 var infoPartner = function(info){
     var aux = info.email.split(",");
@@ -57,36 +57,33 @@ var contractCard = function(info) {
     else if (from_til !== "No especificat") {
         from_til += (" ⇨ " + aux);
     }
-    return m(".contract-info", [
-            m(".contract-info-box", [
-                    m(".contract-info-item", [
-                        m("", m(".label-right", from_til)),
-                        m("", m(".label","Número: "), s_num),
+    return m(".contract-info-box", [
+                m(".contract-info-item", [
+                    m("", m(".label-right", from_til)),
+                    m("", m(".label","Número: "), s_num),
+                ]),
+                m(".contract-info-item", m('.label', "Nom del titular: "), info.titular_name),
+                m(".contract-info-item", m('.label', "CUPS: "), info.cups),
+                m(".contract-info-item", m('.label', "Adreça CUPS: "), info.cups_adress),
+                m(".contract-info-item", m('.label', "Potència: "), info.power),
+                m(".contract-info-item", m('.label', "Tarifa: "), info.fare),
+                m(".contract-info-item", m('.label', "Data última lectura facturada: "), last_invoiced),
+                m(".contract-info-item", (info.has_open_r1s ? m(".label-alert","Casos ATR R1 oberts.") : "")),
+                m(".contract-info-item", (info.has_open_bs ? m(".label-alert","Cas ATR B1 obert.") : "")),
+                m(".contract-info-item", (info.suspended_invoicing ? m(".label-alert","Facturació suspesa.") : "")),
+                m(".contract-info-item", (info.energetica ? m(".label-energetica","És Energetica.") : "")),
+                m(".contract-info-item", (info.generation ? m(".label-generation","Té Generation.") : "")),
+                m(".contract-info-item", [
+                    m(".label-right", [
+                        (info.is_titular ? "T " : ""),
+                        (info.is_partner ? "S " : ""),
+                        (info.is_payer ? "P " : ""),
+                        (info.is_notifier ? "N " : ""),
                     ]),
-                    m(".contract-info-item", m('.label', "Nom del titular: "), info.titular_name),
-                    m(".contract-info-item", m('.label', "CUPS: "), info.cups),
-                    m(".contract-info-item", m('.label', "Adreça CUPS: "), info.cups_adress),
-                    m(".contract-info-item", m('.label', "Potència: "), info.power),
-                    m(".contract-info-item", m('.label', "Tarifa: "), info.fare),
-                    m(".contract-info-item", m('.label', "Data última lectura facturada: "), last_invoiced),
-                    m(".contract-info-item", (info.has_open_r1s ? m(".label-alert","Casos ATR R1 oberts.") : "")),
-                    m(".contract-info-item", (info.has_open_bs ? m(".label-alert","Cas ATR B1 obert.") : "")),
-                    m(".contract-info-item", (info.suspended_invoicing ? m(".label-alert","Facturació suspesa.") : "")),
-                    m(".contract-info-item", (info.energetica ? m(".label-energetica","És Energetica.") : "")),
-                    m(".contract-info-item", (info.generation ? m(".label-generation","Té Generation.") : "")),
-                    m(".contract-info-item", [
-                        m(".label-right", [
-                            (info.is_titular ? "T " : ""),
-                            (info.is_partner ? "S " : ""),
-                            (info.is_payer ? "P " : ""),
-                            (info.is_notifier ? "N " : ""),
-                        ]),
-                        m("", m('.label', "Estat pendent: "), (info.pending_state != "" ? info.pending_state : "No especificat")),
-                    ]),
-                ]
-            )
-        ]
-    );
+                    m("", m('.label', "Estat pendent: "), (info.pending_state != "" ? info.pending_state : "No especificat")),
+                ]),
+            ]
+        );
 }
 
 
@@ -97,20 +94,40 @@ var contractsField = function(info){
       var numOfContracts = info.length;
     }
     catch(error) {
-        aux[0] = m("center","No hi ha contractes.");
+        return m(".contract-field", [m(".center","No hi ha contractes.")]);
     }
     if(aux[0]==="ini"){
         for (contract; contract < numOfContracts; contract++) {
             aux[contract] = contractCard(info[contract]);
         }
     }
-    return m(".contract-field",
-        [
+
+    return m(".contract-field", [
             m(List, {
-                tiles: [ aux ],
-            })
-        ]
-    );
+                border: false,
+                tiles: aux.map((title, index) =>
+                  m(ListTile,
+                    {
+                      title,
+                      className: (index !== PartnerInfo.contract ? "contract-info" : "contract-info-selected"),
+                      events: {
+                        onclick: function() {
+                          if(PartnerInfo.contract === index) {
+                            PartnerInfo.contract = -1;
+                          }
+                          else {
+                            PartnerInfo.contract = index
+                          }
+                        }
+                      },
+                      compact: true,
+                      selectable: true,
+                      insetH: true,
+                    }
+                  )
+                )
+            }),
+        ]);
 }
 
 
@@ -156,6 +173,7 @@ var specificPartnerCard = function(partner, button) {
                 },
                 tabs: button,
                 onChange: ({ index }) => {
+                    PartnerInfo.contract = -1
                     PartnerInfo.main_partner = index
                 }
             }),
@@ -172,6 +190,27 @@ var specificPartnerCard = function(partner, button) {
             ]
         })
     ]);
+}
+
+
+PartnerInfo.getPartnerAndContract = function(info) {
+    var partner = -1
+    try {
+        partner = info.partners[PartnerInfo.main_partner].id_soci
+    }
+    catch(error) {
+        console.debug("No hi ha partner.");
+    }
+    var contract = -1
+    if(PartnerInfo.contract!==-1){
+        contract = info.partners[PartnerInfo.main_partner].contracts[PartnerInfo.contract].number
+    }
+    var data = {
+        "partner" : partner,
+        "contract" : contract
+    }
+    console.log(data);
+    return data;
 }
 
 
