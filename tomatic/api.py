@@ -428,6 +428,7 @@ def getPhoneLog(phone):
         log = []
         message = 'err'
     reasons = filter(lambda x: x[LOGS["phone"]] == phone, log)
+    reasons.sort(key=lambda x: datetime.strptime(x[0], '%d-%m-%Y %H:%M:%S'))
     result = ns(
         info=reasons,
         message=message,
@@ -463,7 +464,7 @@ def saveMyLog(iden):
             "telefon": aux[1],
             "partner": aux[2],
             "contracte": aux[3],
-            "motius": aux[4].decode(encoding='UTF-8', errors='strict')
+            "motius": aux[4]
         }
         if iden not in logs:
             logs[iden] = []
@@ -475,6 +476,35 @@ def saveMyLog(iden):
     except Exception as e:
         msg = 'err'
         print "Error desant informació del log de " + iden + "."
+    result = ns(
+        message=msg
+    )
+    return yamlfy(info=result)
+
+
+@app.route('/api/updatelog/<iden>', methods=['POST'])
+def updateMyLog(iden):
+    msg = 'ok'
+    try:
+        logs = ns.load(CONFIG.my_calls_log)
+        aux = request.data.split('"')[1].split('¬')
+        info = {
+            "data": aux[0],
+            "telefon": aux[1],
+            "partner": aux[2],
+            "contracte": aux[3],
+            "motius": aux[4]
+        }
+        for call in logs[iden]:
+            if call["data"] == info["data"]:
+                i = logs[iden].index(call)
+                logs[iden].pop(i)
+                logs[iden].insert(i, info)
+                break
+        logs.dump(CONFIG.my_calls_log)
+    except Exception as e:
+        msg = 'err'
+        print "Error desant informació del log."
     result = ns(
         message=msg
     )
