@@ -26,7 +26,6 @@ packagedir = os.path.join(os.path.dirname(__file__))
 schedules_path = os.path.join(packagedir,'..','graelles')
 schedules = schedulestorage.Storage(schedules_path)
 staticpath = os.path.join(packagedir,'dist')
-images_path = os.path.join(packagedir,'..','trucades')
 websockets = {}
 
 CONFIG = ns.load('config_connection.yaml')
@@ -260,33 +259,137 @@ def busy_post(person):
     return yamlfy(**busy.update_busy(person, data))
 
 
-@app.route('/api/info', methods=['POST'])
-def getInfoPerson():
-    aux = request.data.split('"')[1]
-    typeOf = aux.split("¬")[0]
-    field = aux.split("¬")[1]
-    message = 'err'
+@app.route('/api/info/phone/<phone>', methods=['GET'])
+def getInfoPersonByPhone(phone):
+    decoded_phone = phone.decode('base64')
+    message = 'ok'
+    o = erppeek.Client(**dbconfig.erppeek)
+    info = CallInfo(o)
     data = None
-    if data != '0':
-        message = 'ok'
-        o = erppeek.Client(**dbconfig.erppeek)
-        info = CallInfo(o)
-        if typeOf == "phone":
-            data = info.getByPhone(field)
-        elif typeOf == "nif":
-            data = info.getByDni(field)
-        elif typeOf == "name":
-            data = info.getByName(field)
-        elif typeOf == "email":
-            data = info.getByEmail(field)
-        elif typeOf == "soci":
-            data = info.getBySoci(field)
-        elif typeOf == "all":
-            data = info.getByData(field)
-        if (not data.partners):
-            message = 'No hi ha informació a la base de dades.'
-        elif data.partners == "Masses resultats":
-            message = 'Masses resultats.'
+    try:
+        data = info.getByPhone(decoded_phone)
+    except ValueError:
+        message = 'error_getByPhone'
+        print "Error: Obtenció de la informació a partir del telèfon."
+    if (not data.partners):
+        message = 'no_info'
+    elif data.partners == "Masses resultats":
+        message = 'response_too_long'
+    result = ns(
+        info=data,
+        message=message,
+    )
+    return yamlfy(info=result)
+
+
+@app.route('/api/info/name/<name>', methods=['GET'])
+def getInfoPersonByName(name):
+    decoded_name = name.decode('base64')
+    message = 'ok'
+    o = erppeek.Client(**dbconfig.erppeek)
+    info = CallInfo(o)
+    data = None
+    try:
+        data = info.getByName(decoded_name)
+    except ValueError:
+        message = 'error_getByName'
+        print "Error: Obtenció de la informació a partir del nom."
+    if (not data.partners):
+        message = 'no_info'
+    elif (data.partners == "Masses resultats"):
+        message = 'response_too_long'
+    result = ns(
+        info=data,
+        message=message,
+    )
+    return yamlfy(info=result)
+
+
+@app.route('/api/info/nif/<nif>', methods=['GET'])
+def getInfoPersonByNif(nif):
+    decoded_nif = nif.decode('base64')
+    message = 'ok'
+    o = erppeek.Client(**dbconfig.erppeek)
+    info = CallInfo(o)
+    data = None
+    try:
+        data = info.getByDni(decoded_nif)
+    except ValueError:
+        message = 'error_getByDni'
+        print "Error: Obtenció de la informació a partir del nif."
+    if (not data.partners):
+        message = 'no_info'
+    elif (data.partners == "Masses resultats"):
+        message = 'response_too_long'
+    result = ns(
+        info=data,
+        message=message,
+    )
+    return yamlfy(info=result)
+
+
+@app.route('/api/info/soci/<iden>', methods=['GET'])
+def getInfoPersonBySoci(iden):
+    decoded_iden = iden.decode('base64')
+    message = 'ok'
+    o = erppeek.Client(**dbconfig.erppeek)
+    info = CallInfo(o)
+    data = None
+    try:
+        data = info.getBySoci(decoded_iden)
+    except ValueError:
+        message = 'error_getBySoci'
+        print "Error: Obtenció de la informació a partir del num de soci."
+    if (not data.partners):
+        message = 'no_info'
+    elif (data.partners == "Masses resultats"):
+        message = 'response_too_long'
+    result = ns(
+        info=data,
+        message=message,
+    )
+    return yamlfy(info=result)
+
+
+@app.route('/api/info/email/<email>', methods=['GET'])
+def getInfoPersonByEmail(email):
+    decoded_email = email.decode('base64')
+    message = 'ok'
+    o = erppeek.Client(**dbconfig.erppeek)
+    info = CallInfo(o)
+    data = None
+    try:
+        data = info.getByEmail(decoded_email)
+    except ValueError:
+        message = 'error_getByEmail'
+        print "Error: Obtenció de la informació a partir del email."
+    if (not data.partners):
+        message = 'no_info'
+    elif (data.partners == "Masses resultats"):
+        message = 'response_too_long'
+    result = ns(
+        info=data,
+        message=message,
+    )
+    return yamlfy(info=result)
+
+
+@app.route('/api/info/all/<field>', methods=['GET'])
+def getInfoPersonBy(field):
+    decoded_field = field.decode('base64')
+    message = 'ok'
+    o = erppeek.Client(**dbconfig.erppeek)
+    info = CallInfo(o)
+    data = None
+    try:
+        data = info.getByData(decoded_field)
+    except ValueError:
+        message = 'error_getByData'
+        print "Error: Obtenció de la informació a partir del camp general."
+    if (not data.partners):
+        message = 'no_info'
+    elif (data.partners == "Masses resultats"):
+        message = 'response_too_long'
     result = ns(
         info=data,
         message=message,
@@ -303,7 +406,7 @@ def callingPhone():
         clients = websockets[ext]
         for client in clients:
             app.wserver.send_message(client, phone)
-    except Exception as e:
+    except ValueError:
         print ext + " sense identificar."
     result = ns(
         phone=phone,
@@ -312,9 +415,16 @@ def callingPhone():
     return yamlfy(info=result)
 
 
-@app.route('/img/<filename>')
-def image(filename):
-    return send_from_directory(images_path, filename)
+@app.route('/api/socketInfo', methods=['GET'])
+def getConnectionInfo():
+    result = ns(
+        ip=CONFIG.ip,
+        port=CONFIG.port,
+        port_ws=CONFIG.port_ws,
+        adress=CONFIG.adress,
+        message="ok"
+    )
+    return yamlfy(info=result)
 
 
 def initialize_client(client, server, extension):
@@ -330,27 +440,11 @@ def client_left(client, server):
             break
 
 
-@app.route('/api/socketInfo', methods=['GET'])
-def getConnectionInfo():
-    result = ns(
-        ip=CONFIG.ip,
-        port=CONFIG.port,
-        port_ws=CONFIG.port_ws,
-        adress=CONFIG.adress,
-        message="ok"
-    )
-    return yamlfy(info=result)
-
-
 @app.route('/api/info/openSock', methods=['GET'])
 def obreConnexio():
-    result = ns(
-        ip=CONFIG.ip,
-        port=CONFIG.port_ws,
-    )
-    message = 'err'
+    message = 'error_WebSocketServer'
     if not app.wserver:
-        app.wserver = WebsocketServer(result.port, host=result.ip)
+        app.wserver = WebsocketServer(CONFIG.port_ws, host=CONFIG.ip)
         app.wserver.set_fn_message_received(initialize_client)
         app.wserver.set_fn_client_left(client_left)
         app.wserver.run_forever()
@@ -363,7 +457,7 @@ def obreConnexio():
     return yamlfy(info=result)
 
 
-@app.route('/api/reasons', methods=['GET'])
+@app.route('/api/generalReasons', methods=['GET'])
 def reasonsInfo():
     message = 'ok'
     try:
@@ -372,9 +466,10 @@ def reasonsInfo():
             credentialFilename=CONFIG.credential_name,
         )
         reasons = fetcher.get_fullsheet(SHEETS["reasons"])
-    except Exception as e:
+    except IOError:
         reasons = []
-        message = 'err'
+        message = 'error_get_fullsheet'
+        print "Error: Obtenció dels motius generals."
     result = ns(
         info=reasons,
         message=message,
@@ -382,35 +477,33 @@ def reasonsInfo():
     return yamlfy(info=result)
 
 
-@app.route('/api/reasons/<phone>', methods=['POST'])
-def savePhoneLog(phone):
-    msg = 'ok'
+@app.route('/api/reasons', methods=['POST'])
+def savePhoneLog():
+    message = 'ok'
     try:
         info = ns.loads(request.data)
         fetcher = SheetFetcher(
             documentName=CONFIG.document_name,
             credentialFilename=CONFIG.credential_name,
         )
-        reason = info["reason"]
-        comments = info["extra"]
         row = [
             info["date"],
             info["person"],
-            phone,
+            info["phone"],
             info["partner"],
             info["contract"],
-            reason,
+            info["reason"],
             info["procedente"],
             info["improcedente"],
-            comments,
+            info["extra"],
         ]
         with app.drive_semaphore:
             fetcher.add_to_last_row(SHEETS["log"], row)
-    except Exception as e:
-        print 'Error al desar al full de calcul.'
-        msg = 'err'
+    except IOError:
+        print 'Error: Desar al full de calcul.'
+        message = 'error_add_to_las_row'
     result = ns(
-        message=msg
+        message=message
     )
     return yamlfy(info=result)
 
@@ -424,9 +517,10 @@ def getPhoneLog(phone):
             credentialFilename=CONFIG.credential_name,
         )
         log = fetcher.get_fullsheet(SHEETS["log"])
-    except Exception as e:
+    except IOError:
         log = []
-        message = 'err'
+        message = 'error_get_fullsheet'
+        print "Error: Obtenció histric de trucades del número."
     reasons = filter(lambda x: x[LOGS["phone"]] == phone, log)
     reasons.sort(key=lambda x: datetime.strptime(x[0], '%d-%m-%Y %H:%M:%S'))
     result = ns(
@@ -437,14 +531,14 @@ def getPhoneLog(phone):
 
 
 @app.route('/api/personlog/<iden>', methods=['GET'])
-def getPersonLog(iden):
+def getMyLog(iden):
     message = 'ok'
     logs = ns.load(CONFIG.my_calls_log)
     mylog = ""
-    try:
+    if iden in logs:
         mylog = logs[iden]
-    except Exception as e:
-        message = 'err'
+    else:
+        message = 'not_registers_yet'
         print iden + " no apareix al registre."
     result = ns(
         info=mylog,
@@ -458,24 +552,16 @@ def saveMyLog(iden):
     msg = 'ok'
     try:
         logs = ns.load(CONFIG.my_calls_log)
-        aux = request.data.split('"')[1].split('¬')
-        info = {
-            "data": aux[0],
-            "telefon": aux[1],
-            "partner": aux[2],
-            "contracte": aux[3],
-            "motius": aux[4]
-        }
+        info = ns.loads(request.data)
         if iden not in logs:
             logs[iden] = []
         elif len(logs[iden]) == 20:
             logs[iden].pop(0)
         logs[iden].append(info)
         logs.dump(CONFIG.my_calls_log)
-
-    except Exception as e:
-        msg = 'err'
-        print "Error desant informació del log de " + iden + "."
+    except ValueError:
+        msg = 'error_save_log'
+        print "Error desant informació del log de" + iden + "."
     result = ns(
         message=msg
     )
@@ -487,14 +573,7 @@ def updateMyLog(iden):
     msg = 'ok'
     try:
         logs = ns.load(CONFIG.my_calls_log)
-        aux = request.data.split('"')[1].split('¬')
-        info = {
-            "data": aux[0],
-            "telefon": aux[1],
-            "partner": aux[2],
-            "contracte": aux[3],
-            "motius": aux[4]
-        }
+        info = ns.loads(request.data)
         for call in logs[iden]:
             if call["data"] == info["data"]:
                 i = logs[iden].index(call)
@@ -502,9 +581,9 @@ def updateMyLog(iden):
                 logs[iden].insert(i, info)
                 break
         logs.dump(CONFIG.my_calls_log)
-    except Exception as e:
-        msg = 'err'
-        print "Error desant informació del log."
+    except ValueError:
+        msg = 'error_update_log'
+        print "Error actualitzant informació del log de" + iden + "."
     result = ns(
         message=msg
     )

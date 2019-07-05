@@ -22,14 +22,13 @@ var CallInfo = {};
 
 CallInfo.file_info = {};
 CallInfo.search = "";
-
 var call_reasons = {};
 var log_calls = [];
 
 var call = {
     'phone': "",
     'date': "",
-    'partner': "",
+    'partner': 0,
     'contract': "",
     'reason': [],
     'extra': "",
@@ -53,32 +52,44 @@ var fillCallInfo = function(phone, date) {
         var time= new Date();
         time.getTime();
         date=date2str(time, "dd-MM-yyyy hh:mm:ss");
+        update = false;
     }
     call['date']=date;
 }
 
 var clearCallInfo = function() {
+    console.log("phone: "+call["phone"])
+    console.log("guardat: " + call["registered"])
+    console.log("update: " +update)
     if (call["phone"] !== "" && !call["registered"]) {
-        saveCall(call["phone"]);
+        saveCall(call["date"]);
     }
     call['phone']="";
     call['date']="";
     call['log_call_reasons']=[];
+    for( i in call['reason']) {
+        call_reasons[call['reason'][i]] = false;
+    }
     call['reason']=[];
     call['extra']="";
     call['registered']=false;
+    call['contract']="";
+    call['partner']=0,
+    call['proc']=false;
+    call['improc']=false;
+    desar = "Desa";
 }
 
 var getInfo = function () {
+    var info = btoa(CallInfo.search)
     m.request({
-        method: 'POST',
-        url: '/api/info',
-        data: search_by+"¬"+CallInfo.search,
+        method: 'GET',
+        url: '/api/info/'+search_by+"/"+info,
         deserialize: jsyaml.load,
     }).then(function(response){
-        console.debug("Info GET Response: ",response);
+        console.debug("Info GET Response: ", response);
         if (response.info.message !== "ok" ) {
-            if(response.info.message === "Masses resultats.") {
+            if(response.info.message === "response_too_long") {
                 CallInfo.file_info = { 1: "toomuch" };
             }
             else {
@@ -97,7 +108,7 @@ var getInfo = function () {
 CallInfo.getReasons = function () {
     m.request({
         method: 'GET',
-        url: '/api/reasons',
+        url: '/api/generalReasons',
         deserialize: jsyaml.load,
     }).then(function(response){
         console.debug("Info GET Response: ",response);
@@ -117,7 +128,7 @@ CallInfo.getReasons = function () {
 CallInfo.getReasons();
 
 var getLog = function () {
-    call["log_call_reasons"] = [];
+    call["log_call_reasons"]=[];
     call["log_call_reasons"].push("lookingfor");
     m.request({
         method: 'GET',
@@ -127,19 +138,19 @@ var getLog = function () {
         console.debug("Info GET Response: ",response);
         if (response.info.message !== "ok" ) {
             console.debug("Error al obtenir els motius: ", response.info.message)
-            call["log_call_reasons"] = [];
+            call["log_call_reasons"]=[];
         }
         else{
             call['log_call_reasons']=response.info.info;
         }
     }, function(error) {
         console.debug('Info GET apicall failed: ', error);
-        call["log_call_reasons"] = [];
+        call["log_call_reasons"]=[];
     });
 };
 
 CallInfo.getLogPerson = function () {
-    log_calls = [];
+    log_calls=[];
     log_calls.push("lookingfor");
     m.request({
         method: 'GET',
@@ -148,14 +159,14 @@ CallInfo.getLogPerson = function () {
     }).then(function(response){
         console.debug("Info GET Response: ",response);
         if (response.info.message !== "ok" ) {
-            console.debug("Error al obtenir el registre de trucades ateses: ", response.info.message)
-            log_calls = [];
+            console.debug("Error al obtenir trucades ateses.", response.info.message)
+            log_calls=[];
         }
         else{
             log_calls=response.info.info;
         }
     }, function(error) {
-        log_calls = [];
+        log_calls=[];
         console.debug('Info GET apicall failed: ', error);
     });
 };
@@ -165,9 +176,10 @@ if(document.cookie){
 
 var saveLogCalls = function(person, reason) {
     desar = 'Desant';
-    saveCall(call["phone"]);
+    saveCall(call["date"]);
     info = {
         "date": call['date'],
+        "phone": call['phone'],
         "person": person,
         "reason": reason,
         "extra": call['extra'],
@@ -178,7 +190,58 @@ var saveLogCalls = function(person, reason) {
     }
     m.request({
         method: 'POST',
-        url: '/api/reasons/'+call['phone'],
+        url: '/api/reasons',
+        data: info,
+        deserialize: jsyaml.load,
+    }).then(function(response){
+        console.debug("Info POST Response: ",response);
+        if (response.info.message !== "ok" ) {
+            console.debug("Error al desar motius telefon: ", response.info.message)
+        }
+        else {
+            desar='Desa';
+            call['proc']=false;
+            call['improc']=false;
+            call['extra']="";
+            reason_filter="";
+        }
+    }, function(error) {
+        console.debug('Info POST apicall failed: ', error);
+    });
+}
+
+var saveCall = function(date) {
+    var has_to_save = desar === 'Desant'
+    var person = document.cookie.split(":")[0]
+    var data = PartnerInfo.getPartnerAndContract(CallInfo.file_info)
+    var contract = data['contract']
+    var s_contract = ""
+    if(contract !== -1) {
+        s_contract = contract+"";
+        while (s_contract.length < 7) s_contract = "0" + s_contract
+    }
+    var partner = (data["partner"] === -1 ? "" : data['partner'])
+    call['contract'] = s_contract
+    call['partner'] = partner
+    var reasons = ""
+    var len = call['reason'].length
+    if (len > 0){
+        for (var i=0; i < len-1; i++) {
+            reasons += call['reason'][i] + ", "
+        }
+        reasons += call['reason'][len-1]
+    }
+    console.log("ESTIC DESANT: " + call['phone']);
+    var info = {
+        'data': call['date'],
+        'telefon': call['phone'],
+        'partner': (has_to_save ? partner : ""),
+        'contracte': (has_to_save ? s_contract : ""),
+        'motius': (has_to_save ? reasons : ""),
+    }
+    m.request({
+        method: 'POST',
+        url: '/api/' + (update ? 'updatelog/' : 'mylog/') + person,
         data: info,
         deserialize: jsyaml.load,
     }).then(function(response){
@@ -187,81 +250,14 @@ var saveLogCalls = function(person, reason) {
             console.debug("Error al fer log dels motius: ", response.info.message)
         }
         else {
-            desar='Desa';
-            getLog();
-
+            if (date === call["date"]) {
+                call["registered"] = true
+            }
+            if (document.cookie !== "") CallInfo.getLogPerson();
         }
     }, function(error) {
         console.debug('Info POST apicall failed: ', error);
     });
-}
-
-var saveCall = function(phone) {
-    var person = document.cookie.split(":")[0]
-    var reasons = ""
-    var len = call['reason'].length
-    var data = PartnerInfo.getPartnerAndContract(CallInfo.file_info)
-    if (len > 0){
-        for (var i=0; i < len-1; i++) {
-            reasons += call['reason'][i] + ", "
-        }
-        reasons += call['reason'][len-1]
-    }
-    var contract = data["contract"];
-    var s_contract = "";
-    if(contract !== -1) {
-        s_contract = contract+"";
-        while (s_contract.length < 7) s_contract = "0" + s_contract;
-    }
-    var partner = (data["partner"] === -1 ? "" : data["partner"])
-    call["contract"] = s_contract
-    call["partner"] = data["partner"]
-    info = call['date']+'¬'+call['phone']+'¬'+partner+'¬'+s_contract+"¬"+reasons
-    if (update) {
-        m.request({
-            method: 'POST',
-            url: '/api/updatelog/'+person,
-            data: info,
-            deserialize: jsyaml.load,
-        }).then(function(response){
-            console.debug("Info POST Response: ",response);
-            if (response.info.message !== "ok" ) {
-                console.debug("Error al fer log dels motius: ", response.info.message)
-            }
-            else {
-                update = false
-                if (phone === call["phone"]) {
-                    call["registered"] = true
-                }
-                if (document.cookie !== "") CallInfo.getLogPerson();
-
-            }
-        }, function(error) {
-            console.debug('Info POST apicall failed: ', error);
-        });
-    }
-    else {
-        m.request({
-            method: 'POST',
-            url: '/api/mylog/'+person,
-            data: info,
-            deserialize: jsyaml.load,
-        }).then(function(response){
-            console.debug("Info POST Response: ",response);
-            if (response.info.message !== "ok" ) {
-                console.debug("Error al fer log dels motius: ", response.info.message)
-            }
-            else {
-                if (phone === call["phone"]) {
-                    call["registered"] = true
-                }
-                if (document.cookie !== "") CallInfo.getLogPerson();
-
-            }
-        }, function(error) {
-            console.debug('Info POST apicall failed: ', error);
-        });
-    }
 }
 
 var searchIcon = function(){
@@ -331,7 +327,6 @@ var date2str = function (x, y) {
 
 var selectReason = function(r) {
     call_reasons[r] = !call_reasons[r]
-
     var index = call['reason'].indexOf(r);
     if (index > -1) {
         call['reason'].splice(index, 1);
@@ -369,7 +364,8 @@ var llistaMotius = function() {
                     value: filtered[i],
                     onChange: newState => {
                         selectReason(newState.event.target.value)
-                    }
+                    },
+                    disabled: desar === "Desant" || CallInfo.search === "",
                 }),
             },
             events: {
@@ -377,6 +373,7 @@ var llistaMotius = function() {
                     selectReason(vnode.srcElement.innerText);
                 }
             },
+            disabled: desar === "Desant" || CallInfo.search === "",
         });
     }
     return m(".motius", m(List, {compact: true, tiles: aux}));
@@ -393,13 +390,14 @@ var motiu = function() {
                     m(".filter", m(Textfield, {
                         class: "textfield-filter",
                         label: "Escriure per filtrar",
+                        value: reason_filter,
                         dense: true,
                         onChange: newValue => reason_filter = newValue.value,
                     })),
                     m(Checkbox, {
                         class: "checkbox-proc",
                         name: 'proc',
-                        checked: call["proc"] && PartnerInfo.contract !== -1,
+                        checked: (call["proc"] && PartnerInfo.contract !== -1),
                         label: "Procedente",
                         disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
                         onChange: newState => {
@@ -412,7 +410,7 @@ var motiu = function() {
                     m(Checkbox, {
                         class: "checkbox-improc",
                         name: 'improc',
-                        checked: call["improc"] && PartnerInfo.contract !== -1,
+                        checked: (call["improc"] && PartnerInfo.contract !== -1),
                         label: "Improcedente",
                         disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
                         onChange: newState => {
@@ -433,8 +431,9 @@ var motiu = function() {
                                 label: "Algun comentari?",
                                 floatingLabel: true,
                                 dense: true,
+                                value: call['extra'],
                                 onChange: newValue => call['extra'] = newValue.value,
-                                disabled: ((desar === "Desa" && document.cookie !== "") ? false : true),
+                                disabled: (desar !== "Desa" || CallInfo.search === ""),
                             }),
                             m(".save", m(Button, {
                                 label: desar,
@@ -445,11 +444,11 @@ var motiu = function() {
                                             saveLogCalls(person, call['reason'][i]);
                                             call_reasons[call['reason'][i]] = false;
                                         }
-                                        call['reason'] = []
+                                        call['reason']=[]
                                     },
                                 },
                                 border: 'true',
-                                disabled: ((desar === "Desa" && document.cookie !== "") ? false : true),
+                                disabled: (desar !== "Desa" || CallInfo.search === ""),
                             }, m(Ripple))),
                         ]),
                     ])
@@ -499,10 +498,12 @@ var atencionsLog = function() {
     var mida = log_calls.length-1
     for(var i = mida; i>=0; i--) {
         var data = log_calls[i]["data"]
-        var missatge = "("+ data +"): " + log_calls[i]["telefon"];
+        var missatge = "("+ data +"): " + (log_calls[i]["telefon"] !== "" ?
+            log_calls[i]["telefon"] : "Cercat");
         var resolt = log_calls[i]["motius"]!="";
         if (resolt) {
-            missatge+=", "+log_calls[i]["partner"]
+            missatge+=", "+ (log_calls[i]["partner"] == "" ?
+                "Sense informació" : log_calls[i]["partner"])
             if (log_calls[i]["contracte"] !== "") {
                 missatge += ", "+log_calls[i]["contracte"]
             }
@@ -517,6 +518,7 @@ var atencionsLog = function() {
                     compact: true,
                     selectable: false,
                     title: missatge,
+                    selected: call["date"] == missatge.split(')')[0].substr(1),
                 }),
                 m("span", {"class":tipus},
                   text
@@ -533,21 +535,18 @@ var atencionsLog = function() {
                   opacityDecayVelocity: '0.5',
                 },
                 title: missatge,
+                selected: call["date"] == missatge.split(')')[0].substr(1),
                 events: {
                     onclick: function(vnode) {
+                        if (call["phone"] !== "" && !call["registered"]) {
+                            saveCall(call["date"]);
+                        }
                         update = true;
-                        clearCallInfo();
                         var info = vnode.srcElement.innerText;
                         aux = info.toString().split(')');
                         var phone = aux[1].substr(2);
                         var date = aux[0].substr(1);
-                        fillCallInfo(phone, date);
-                        CallInfo.search = phone;
-                        CallInfo.file_info = { 1: "empty" };
-                        PartnerInfo.main_partner = 0;
-                        search_by = "phone";
-                        getLog();
-                        getInfo();
+                        refreshCall(phone, date);
                     }
                 },
             }));
@@ -580,7 +579,7 @@ var logPerson = function() {
                             },
                         },
                         border: 'true',
-                        disabled: ((log_calls.length === 0 && document.cookie !== "") ? false : true),
+                        disabled: (log_calls.length !== 0 || document.cookie === ""),
                     }, m(Ripple)),
                 ])
             } },
@@ -594,54 +593,53 @@ var logPerson = function() {
 
 var infoPhone = function () {
     if (isEmpty(CallInfo.file_info)) {
-        return m('.text-info', m("body", 'No hi ha informació.'));
+        return m('.plane-info', m("body", 'No hi ha informació.'));
     }
     else if (CallInfo.file_info[1]==="empty"){
-        return m('.spinner-info',m(Spinner, { show: "true" } ));
+        return m('.plane-info', m(Spinner, { show: "true" } ));
     }
     else if (CallInfo.file_info[1]==="toomuch"){
-        return m('.text-info', m("body", 'Cerca poc específica, retorna masses resultats.'));
+        return m('.plane-info', m("body", 'Cerca poc específica, retorna masses resultats.'));
     }else {
         return m('.call-info', [
             m("",PartnerInfo.allInfo(CallInfo.file_info, call['phone'])),
-            (call["phone"] === "" ? "" :
-                m("", [
-                    motiu(),
-                    logCalls(),
-                ])
-            ),
         ]);
     }
 };
 
+var refreshCall = function(data, date) {
+        clearCallInfo();
+        fillCallInfo(data, date);
+        CallInfo.search = data;
+        CallInfo.file_info = { 1: "empty" };
+        PartnerInfo.main_partner = 0;
+        search_by = "phone"
+        getLog();
+        getInfo();
+}
+
 CallInfo.refreshInfo = function(data) {
     if(addr === "") {
         addr = data;
-    } else {
-        if (data == "") {
-            clearCallInfo();
-            CallInfo.file_info = {};
-            log_calls = [];
-        }
-        else if (refresh) {
-            clearCallInfo();
-            fillCallInfo(data, "");
-            CallInfo.search = data;
-            CallInfo.file_info = { 1: "empty" };
-            PartnerInfo.main_partner = 0;
-            search_by = "phone"
-            getLog();
-            getInfo();
-        }
-        else {
-            calling_phone = data;
-        }
+    }
+    else if (data == "") {
+        CallInfo.search = "";
+        clearCallInfo();
+        CallInfo.file_info = {};
+        log_calls = [];
+    }
+    else if (refresh) {
+        refreshCall(data, "");
+    }
+    else {
+        calling_phone = data;
     }
 }
 
 var lookForPhoneInfo = function() {
     clearCallInfo();
     if (CallInfo.search !== 0 && CallInfo.search !== ""){
+        fillCallInfo("", "");
         CallInfo.file_info = { 1: "empty" };
         PartnerInfo.main_partner = 0;
         getInfo();
@@ -699,24 +697,12 @@ var typeOfSearch = function() {
             },
         },
         [
-            m("option", {"value":"phone"},
-              "Telèfon"
-            ),
-            m("option", {"value":"name"},
-              "Cognoms/Nom"
-            ),
-            m("option", {"value":"nif"},
-              "NIF"
-            ),
-            m("option", {"value":"soci"},
-              "Número Soci"
-            ),
-            m("option", {"value":"email"},
-              "Email"
-            ),
-            m("option", {"value":"all"},
-              "Tot"
-            )
+            m("option", {"value":"phone"}, "Telèfon"),
+            m("option", {"value":"name"}, "Cognoms/Nom"),
+            m("option", {"value":"nif"}, "NIF"),
+            m("option", {"value":"soci"}, "Número Soci"),
+            m("option", {"value":"email"}, "Email"),
+            m("option", {"value":"all"}, "Tot")
         ]
     );
 }
@@ -764,13 +750,17 @@ function uniCharCode(event) {
 
 CallInfo.mainPage = function() {
     return m( '', [
-            m(".info", [
+            m(".header-callinfo", [
                 cercaInformacio(),
                 bloquejarTrucada(),
             ]),
             m(".all-info-call", [
                 infoPhone(),
-                logPerson(),
+                (document.cookie !== "" ? motiu() : ""),
+                m("", [
+                    logCalls(),
+                    logPerson(),
+                ])
             ])
     ]);
 }

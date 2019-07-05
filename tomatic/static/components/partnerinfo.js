@@ -10,8 +10,6 @@ var Card = require('polythene-mithril-card').Card;
 var Button = require('polythene-mithril-button').Button;
 var Tabs = require('polythene-mithril-tabs').Tabs;
 
-var styleProves = require('./proves_style.styl');
-
 var PartnerInfo = {};
 
 PartnerInfo.main_partner = 0;
@@ -195,15 +193,15 @@ var specificPartnerCard = function(partner, button) {
 
 PartnerInfo.getPartnerAndContract = function(info) {
     var partner = -1
+    var contract = -1
     try {
         partner = info.partners[PartnerInfo.main_partner].id_soci
+        if(PartnerInfo.contract!==-1){
+            contract = info.partners[PartnerInfo.main_partner].contracts[PartnerInfo.contract].number
+        }
     }
     catch(error) {
         console.debug("No hi ha partner.");
-    }
-    var contract = -1
-    if(PartnerInfo.contract!==-1){
-        contract = info.partners[PartnerInfo.main_partner].contracts[PartnerInfo.contract].number
     }
     var data = {
         "partner" : partner,
