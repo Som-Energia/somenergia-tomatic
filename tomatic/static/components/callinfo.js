@@ -263,7 +263,6 @@ var saveCall = function(date) {
 var searchIcon = function(){
     return m(".icon-search",
     [
-        m("script", {src: "https://kit.fontawesome.com/c81e1a5696.js"}),
         m("i", {class: "fas fa-search"}),
     ]);
 }
@@ -271,7 +270,6 @@ var searchIcon = function(){
 var lockIcon = function(){
     return m(".icon-lock",
     [
-        m("script", {src: "https://kit.fontawesome.com/c81e1a5696.js"}),
         m("i", {class: "fas fa-lock-open"}),
     ]);
 }
@@ -279,7 +277,6 @@ var lockIcon = function(){
 var lockedIcon = function(){
     return m(".icon-lock",
     [
-        m("script", {src: "https://kit.fontawesome.com/c81e1a5696.js"}),
         m("i", {class: "fas fa-lock"}),
     ]);
 }
@@ -287,7 +284,6 @@ var lockedIcon = function(){
 var newTabIcon = function(){
     return m(".icon-new-tab",
     [
-        m("script", {src: "https://kit.fontawesome.com/c81e1a5696.js"}),
         m("i", {class: "fas fa-external-link-alt"}),
     ]);
 }
@@ -295,7 +291,6 @@ var newTabIcon = function(){
 var refreshIcon = function(){
     return m(".icon-refresh",
     [
-        m("script", {src: "https://kit.fontawesome.com/c81e1a5696.js"}),
         m("i", {class: "fas fa-redo-alt"}),
     ]);
 }
@@ -602,7 +597,7 @@ var infoPhone = function () {
         return m('.plane-info', m("body", 'Cerca poc específica, retorna masses resultats.'));
     }else {
         return m('.call-info', [
-            m("",PartnerInfo.allInfo(CallInfo.file_info, call['phone'])),
+            m('.plane-info',PartnerInfo.allInfo(CallInfo.file_info, call['phone'])),
         ]);
     }
 };

@@ -203,7 +203,6 @@ var whoAreYou = function() {
 var exitIcon = function(){
     return m(".icon-exit",
     [
-        m("script", {src: "https://kit.fontawesome.com/c81e1a5696.js"}),
         m("i", {class: "fas fa-times-circle"}),
     ]);
 }

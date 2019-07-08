@@ -284,7 +284,8 @@ def getInfoPersonByPhone(phone):
 
 @app.route('/api/info/name/<name>', methods=['GET'])
 def getInfoPersonByName(name):
-    decoded_name = name.decode('base64')
+    aux = name.decode('base64')
+    decoded_name = aux.decode(encoding='latin-1', errors='strict')
     message = 'ok'
     o = erppeek.Client(**dbconfig.erppeek)
     info = CallInfo(o)
