@@ -534,13 +534,23 @@ def getPhoneLog(phone):
 @app.route('/api/personlog/<iden>', methods=['GET'])
 def getMyLog(iden):
     message = 'ok'
-    logs = ns.load(CONFIG.my_calls_log)
     mylog = ""
-    if iden in logs:
-        mylog = logs[iden]
-    else:
-        message = 'not_registers_yet'
-        print iden + " no apareix al registre."
+    try:
+        logs = ns.load(CONFIG.my_calls_log)
+        if iden in logs:
+            mylog = logs[iden]
+        else:
+            message = 'not_registers_yet'
+            print iden + " no apareix al registre."
+    except IOError:
+        f = open("my_calls_log.yaml", "w+")
+        f.write("nom:\r\n")
+        f.write("- data: DD-MM-YYYY HH:MM:SS\r\n")
+        f.write("  telefon: \'Num de Telefon\' \r\n")
+        f.write("  partner: NumPartner\r\n")
+        f.write("  contracte: \'Num de Contracte\' \r\n")
+        f.write("  motius: \'[ETIQUETA] Motiu1, [ETIQUETA] Motiu2\' \r\n")
+        f.close()
     result = ns(
         info=mylog,
         message=message,
