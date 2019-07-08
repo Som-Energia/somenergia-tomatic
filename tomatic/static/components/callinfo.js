@@ -58,9 +58,6 @@ var fillCallInfo = function(phone, date) {
 }
 
 var clearCallInfo = function() {
-    console.log("phone: "+call["phone"])
-    console.log("guardat: " + call["registered"])
-    console.log("update: " +update)
     if (call["phone"] !== "" && !call["registered"]) {
         saveCall(call["date"]);
     }
@@ -174,7 +171,7 @@ if(document.cookie){
     CallInfo.getLogPerson();
 }
 
-var saveLogCalls = function(person, reason) {
+var saveLogCalls = function(phone, person, reason) {
     desar = 'Desant';
     saveCall(call["date"]);
     info = {
@@ -198,7 +195,7 @@ var saveLogCalls = function(person, reason) {
         if (response.info.message !== "ok" ) {
             console.debug("Error al desar motius telefon: ", response.info.message)
         }
-        else {
+        else if (call['phone'] === phone) {
             desar='Desa';
             call['proc']=false;
             call['improc']=false;
@@ -231,7 +228,6 @@ var saveCall = function(date) {
         }
         reasons += call['reason'][len-1]
     }
-    console.log("ESTIC DESANT: " + call['phone']);
     var info = {
         'data': call['date'],
         'telefon': call['phone'],
@@ -436,7 +432,7 @@ var motiu = function() {
                                     onclick: function() {
                                         var person = document.cookie.split(":")[0]
                                         for( i in call['reason']) {
-                                            saveLogCalls(person, call['reason'][i]);
+                                            saveLogCalls(call['phone'], person, call['reason'][i]);
                                             call_reasons[call['reason'][i]] = false;
                                         }
                                         call['reason']=[]

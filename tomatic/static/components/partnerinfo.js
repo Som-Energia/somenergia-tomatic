@@ -207,7 +207,6 @@ PartnerInfo.getPartnerAndContract = function(info) {
         "partner" : partner,
         "contract" : contract
     }
-    console.log(data);
     return data;
 }
 
