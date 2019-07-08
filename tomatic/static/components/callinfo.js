@@ -295,10 +295,6 @@ function isEmpty(obj) {
   return Object.keys(obj).length === 0;
 }
 
-function conte(value) {
-    return value.toLowerCase().includes(reason_filter.toLowerCase());
-}
-
 var date2str = function (x, y) {
     var z = {
         M: x.getMonth() + 1,
@@ -328,6 +324,10 @@ var selectReason = function(r) {
 }
 
 var llistaMotius = function() {
+    function conte(value) {
+        return value.toLowerCase().includes(reason_filter.toLowerCase());
+    }
+
     var aux = [];
     var list_reasons = Object.keys(call_reasons);
     if (reason_filter !== "") {
@@ -336,38 +336,41 @@ var llistaMotius = function() {
     else {
         var filtered = list_reasons;
     }
-    for(var i = 0; i<filtered.length; i++) {
-        aux[i] = m(ListTile, {
-            class: "llista-motius",
-            compact: true,
-            selectable: true,
-            ink: 'true',
-            ripple: {
-              opacityDecayVelocity: '0.5',
-            },
-            title: filtered[i],
-            secondary: {
-                content:
-                m(Checkbox, {
-                    class: "checkbox-motius",
-                    name: 'checkbox',
-                    checked: call_reasons[filtered[i]],
-                    value: filtered[i],
-                    onChange: function(vnode) {
-                        selectReason(vnode.event.target.value)
-                    },
-                    disabled: desar === "Desant" || CallInfo.search === "",
-                }),
-            },
-            events: {
-                onclick: function(vnode) {
-                    selectReason(vnode.srcElement.innerText);
-                }
-            },
-            disabled: desar === "Desant" || CallInfo.search === "",
-        });
-    }
-    return m(".motius", m(List, {compact: true, tiles: aux}));
+    var disabled = desar === "Desant" || CallInfo.search === "";
+    return m(".motius", m(List, {
+        compact: true,
+        tiles: filtered.map(function(reason) {
+            return m(ListTile, {
+                class: "llista-motius",
+                compact: true,
+                selectable: true,
+                ink: 'true',
+                ripple: {
+                  opacityDecayVelocity: '0.5',
+                },
+                title: reason,
+                secondary: {
+                    content:
+                    m(Checkbox, {
+                        class: "checkbox-motius",
+                        name: 'checkbox',
+                        checked: call_reasons[reason],
+                        value: reason,
+                        onChange: function(newState) {
+                            selectReason(newState.event.target.value)
+                        },
+                        disabled: disabled,
+                    }),
+                },
+                events: {
+                    onclick: function(ev) {
+                        selectReason(ev.srcElement.innerText);
+                    }
+                },
+                disabled: disabled,
+            });
+        }),
+    }));
 }
 
 
@@ -383,8 +386,8 @@ var motiu = function() {
                         label: "Escriure per filtrar",
                         value: reason_filter,
                         dense: true,
-                        onChange: function(vnode) {
-                            reason_filter = vnode.value
+                        onChange: function(params) {
+                            reason_filter = params.value
                         }
                     })),
                     m(Checkbox, {
@@ -393,12 +396,12 @@ var motiu = function() {
                         checked: (call["proc"] && PartnerInfo.contract !== -1),
                         label: "Procedente",
                         disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
-                        onChange: function(vnode) {
+                        onChange: function() {
                             call["proc"] = !call["proc"]
                             if (call["proc"] && call["improc"]){
                                 call["improc"] = false
                             }
-                        }
+                        },
                     }),
                     m(Checkbox, {
                         class: "checkbox-improc",
@@ -406,12 +409,12 @@ var motiu = function() {
                         checked: (call["improc"] && PartnerInfo.contract !== -1),
                         label: "Improcedente",
                         disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
-                        onChange: function(vnode) {
+                        onChange: function() {
                             call["improc"] = !call["improc"]
                             if(call["proc"] && call["improc"]) {
                                 call["proc"] = false
                             }
-                        }
+                        },
                     }),
                 ]),
             } },
@@ -425,8 +428,8 @@ var motiu = function() {
                                 floatingLabel: true,
                                 dense: true,
                                 value: call['extra'],
-                                onChange: function(vnode) {
-                                    call['extra'] = vnode.value
+                                onChange: function(params) {
+                                    call['extra'] = params.value
                                 },
                                 disabled: (desar !== "Desa" || CallInfo.search === ""),
                             }),
@@ -532,12 +535,12 @@ var atencionsLog = function() {
                 title: missatge,
                 selected: call["date"] == missatge.split(')')[0].substr(1),
                 events: {
-                    onclick: function(vnode) {
+                    onclick: function(ev) {
                         if (call["phone"] !== "" && !call["registered"]) {
                             saveCall(call["date"]);
                         }
                         update = true;
-                        var info = vnode.srcElement.innerText;
+                        var info = ev.srcElement.innerText;
                         aux = info.toString().split(')');
                         var phone = aux[1].substr(2);
                         var date = aux[0].substr(1);
