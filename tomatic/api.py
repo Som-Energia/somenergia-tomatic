@@ -28,7 +28,23 @@ schedules = schedulestorage.Storage(schedules_path)
 staticpath = os.path.join(packagedir,'dist')
 websockets = {}
 
-CONFIG = ns.load('config_connection.yaml')
+
+def fillConfigurationInfo():
+    config = ns.load('config.yaml')
+    return {
+        'websocket_ip': config.websocket_ip,
+        'websocket_port': config.websocket_port,
+        'dns_adress': config.dns_adress,
+        'port': config.port,
+        'drive_sheet_name': config.drive_sheet_name,
+        'credential_name': config.credential_name,
+        'threshold_hits': config.threshold_hits,
+        'my_calls_log': config.my_calls_log,
+    }
+
+
+CONFIG = fillConfigurationInfo()
+
 
 SHEETS = {
     "log": 0,
@@ -419,10 +435,10 @@ def callingPhone():
 @app.route('/api/socketInfo', methods=['GET'])
 def getConnectionInfo():
     result = ns(
-        ip=CONFIG.ip,
-        port=CONFIG.port,
-        port_ws=CONFIG.port_ws,
-        adress=CONFIG.adress,
+        ip=CONFIG['websocket_ip'],
+        port=CONFIG['port'],
+        port_ws=CONFIG['websocket_port'],
+        adress=CONFIG['dns_adress'],
         message="ok"
     )
     return yamlfy(info=result)
@@ -445,7 +461,7 @@ def client_left(client, server):
 def obreConnexio():
     message = 'error_WebSocketServer'
     if not app.wserver:
-        app.wserver = WebsocketServer(CONFIG.port_ws, host=CONFIG.ip)
+        app.wserver = WebsocketServer(CONFIG['websocket_port'], host=CONFIG['websocket_ip'])
         app.wserver.set_fn_message_received(initialize_client)
         app.wserver.set_fn_client_left(client_left)
         app.wserver.run_forever()
@@ -463,8 +479,8 @@ def reasonsInfo():
     message = 'ok'
     try:
         fetcher = SheetFetcher(
-            documentName=CONFIG.document_name,
-            credentialFilename=CONFIG.credential_name,
+            documentName=CONFIG['drive_sheet_name'],
+            credentialFilename=CONFIG['credential_name'],
         )
         reasons = fetcher.get_fullsheet(SHEETS["reasons"])
     except IOError:
@@ -484,8 +500,8 @@ def savePhoneLog():
     try:
         info = ns.loads(request.data)
         fetcher = SheetFetcher(
-            documentName=CONFIG.document_name,
-            credentialFilename=CONFIG.credential_name,
+            documentName=CONFIG['drive_sheet_name'],
+            credentialFilename=CONFIG['credential_name'],
         )
         row = [
             info["date"],
@@ -514,8 +530,8 @@ def getPhoneLog(phone):
     message = 'ok'
     try:
         fetcher = SheetFetcher(
-            documentName=CONFIG.document_name,
-            credentialFilename=CONFIG.credential_name,
+            documentName=CONFIG['drive_sheet_name'],
+            credentialFilename=CONFIG['credential_name'],
         )
         log = fetcher.get_fullsheet(SHEETS["log"])
     except IOError:
@@ -536,14 +552,14 @@ def getMyLog(iden):
     message = 'ok'
     mylog = ""
     try:
-        logs = ns.load(CONFIG.my_calls_log)
+        logs = ns.load(CONFIG['my_calls_log'])
         if iden in logs:
             mylog = logs[iden]
         else:
             message = 'not_registers_yet'
             print iden + " no apareix al registre."
     except IOError:
-        f = open("my_calls_log.yaml", "w+")
+        f = open(CONFIG['my_calls_log'], "w+")
         f.write("nom:\r\n")
         f.write("- data: DD-MM-YYYY HH:MM:SS\r\n")
         f.write("  telefon: \'Num de Telefon\' \r\n")
@@ -562,14 +578,14 @@ def getMyLog(iden):
 def saveMyLog(iden):
     msg = 'ok'
     try:
-        logs = ns.load(CONFIG.my_calls_log)
+        logs = ns.load(CONFIG['my_calls_log'])
         info = ns.loads(request.data)
         if iden not in logs:
             logs[iden] = []
         elif len(logs[iden]) == 20:
             logs[iden].pop(0)
         logs[iden].append(info)
-        logs.dump(CONFIG.my_calls_log)
+        logs.dump(CONFIG['my_calls_log'])
     except ValueError:
         msg = 'error_save_log'
         print "Error desant informació del log de" + iden + "."
@@ -583,7 +599,7 @@ def saveMyLog(iden):
 def updateMyLog(iden):
     msg = 'ok'
     try:
-        logs = ns.load(CONFIG.my_calls_log)
+        logs = ns.load(CONFIG['my_calls_log'])
         info = ns.loads(request.data)
         for call in logs[iden]:
             if call["data"] == info["data"]:
@@ -591,7 +607,7 @@ def updateMyLog(iden):
                 logs[iden].pop(i)
                 logs[iden].insert(i, info)
                 break
-        logs.dump(CONFIG.my_calls_log)
+        logs.dump(CONFIG['my_calls_log'])
     except ValueError:
         msg = 'error_update_log'
         print "Error actualitzant informació del log de" + iden + "."
