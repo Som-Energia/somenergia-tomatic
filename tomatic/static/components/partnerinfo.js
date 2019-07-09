@@ -100,30 +100,35 @@ var contractsField = function(info){
         }
     }
 
+    var contractes = []
+
+    for (index in aux) {
+        title = aux[index]
+        contractes = m(ListTile,
+            {
+              title: title,
+              className: (index !== PartnerInfo.contract ? "contract-info" : "contract-info-selected"),
+              events: {
+                onclick: function() {
+                  if(PartnerInfo.contract === index) {
+                    PartnerInfo.contract = -1;
+                  }
+                  else {
+                    PartnerInfo.contract = index
+                  }
+                }
+              },
+              compact: true,
+              selectable: true,
+              insetH: true,
+            }
+          )
+    }
+
     return m(".contract-field", [
             m(List, {
                 border: false,
-                tiles: aux.map((title, index) =>
-                  m(ListTile,
-                    {
-                      title,
-                      className: (index !== PartnerInfo.contract ? "contract-info" : "contract-info-selected"),
-                      events: {
-                        onclick: function() {
-                          if(PartnerInfo.contract === index) {
-                            PartnerInfo.contract = -1;
-                          }
-                          else {
-                            PartnerInfo.contract = index
-                          }
-                        }
-                      },
-                      compact: true,
-                      selectable: true,
-                      insetH: true,
-                    }
-                  )
-                )
+                tiles:  contractes,
             }),
         ]);
 }
@@ -170,9 +175,9 @@ var specificPartnerCard = function(partner, button) {
                     ink: "true",
                 },
                 tabs: button,
-                onChange: ({ index }) => {
+                onChange: function(node) {
                     PartnerInfo.contract = -1
-                    PartnerInfo.main_partner = index
+                    PartnerInfo.main_partner = node.index
                 }
             }),
         ]),

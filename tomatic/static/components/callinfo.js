@@ -331,7 +331,7 @@ var llistaMotius = function() {
     var aux = [];
     var list_reasons = Object.keys(call_reasons);
     if (reason_filter !== "") {
-        var filtered = list_reasons.filter(reason => conte(reason));
+        var filtered = list_reasons.filter(conte);
     }
     else {
         var filtered = list_reasons;
@@ -353,8 +353,8 @@ var llistaMotius = function() {
                     name: 'checkbox',
                     checked: call_reasons[filtered[i]],
                     value: filtered[i],
-                    onChange: newState => {
-                        selectReason(newState.event.target.value)
+                    onChange: function(vnode) {
+                        selectReason(vnode.event.target.value)
                     },
                     disabled: desar === "Desant" || CallInfo.search === "",
                 }),
@@ -383,7 +383,9 @@ var motiu = function() {
                         label: "Escriure per filtrar",
                         value: reason_filter,
                         dense: true,
-                        onChange: newValue => reason_filter = newValue.value,
+                        onChange: function(vnode) {
+                            reason_filter = vnode.value
+                        }
                     })),
                     m(Checkbox, {
                         class: "checkbox-proc",
@@ -391,7 +393,7 @@ var motiu = function() {
                         checked: (call["proc"] && PartnerInfo.contract !== -1),
                         label: "Procedente",
                         disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
-                        onChange: newState => {
+                        onChange: function(vnode) {
                             call["proc"] = !call["proc"]
                             if (call["proc"] && call["improc"]){
                                 call["improc"] = false
@@ -404,7 +406,7 @@ var motiu = function() {
                         checked: (call["improc"] && PartnerInfo.contract !== -1),
                         label: "Improcedente",
                         disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
-                        onChange: newState => {
+                        onChange: function(vnode) {
                             call["improc"] = !call["improc"]
                             if(call["proc"] && call["improc"]) {
                                 call["proc"] = false
@@ -423,7 +425,9 @@ var motiu = function() {
                                 floatingLabel: true,
                                 dense: true,
                                 value: call['extra'],
-                                onChange: newValue => call['extra'] = newValue.value,
+                                onChange: function(vnode) {
+                                    call['extra'] = vnode.value
+                                },
                                 disabled: (desar !== "Desa" || CallInfo.search === ""),
                             }),
                             m(".save", m(Button, {
