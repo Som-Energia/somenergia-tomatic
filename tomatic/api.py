@@ -16,7 +16,7 @@ from .remote import remotewrite
 import os
 import erppeek
 from sheetfetcher import SheetFetcher
-from threading import Semaphore
+from threading import Semaphore, Thread
 try:
     import dbconfig
 except ImportError:
@@ -420,11 +420,14 @@ def callingPhone():
     phone = data['phone']
     ext = data['ext']
     try:
-        clients = websockets[ext]
-        for client in clients:
-            app.wserver.send_message(client, phone)
+        if ext in websockets:
+            clients = websockets[ext]
+            for client in clients:
+                app.wserver.send_message(client, phone)
+        else:
+            print ext + " sense identificar."
     except ValueError:
-        print ext + " sense identificar."
+        print "Error al enviar els missatges."
     result = ns(
         phone=phone,
         ext=int(ext),
@@ -464,7 +467,7 @@ def obreConnexio():
         app.wserver = WebsocketServer(CONFIG['websocket_port'], host=CONFIG['websocket_ip'])
         app.wserver.set_fn_message_received(initialize_client)
         app.wserver.set_fn_client_left(client_left)
-        app.wserver.run_forever()
+        Thread(target=app.wserver.run_forever).start()
         message = 'ok'
     else:
         message = 'done'
