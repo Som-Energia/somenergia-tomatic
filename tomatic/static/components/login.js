@@ -14,13 +14,13 @@ var Tomatic = require('./tomatic');
 var Callinfo = require('./callinfo');
 
 var Login = {};
-var first = 0;
 var iden = "0";
 var websock = null;
 var ip = "";
 var port = 0;
 var port_ws = 0;
 var addr = "";
+
 
 var getServerSockInfo = function() {
     m.request({
@@ -29,39 +29,22 @@ var getServerSockInfo = function() {
         deserialize: jsyaml.load,
     }).then(function(response){
         console.debug("Info GET Response: ",response);
-        if (response.info.message === "ok" ) {
-            ip = response.info.ip
-            port = response.info.port
-            port_ws = response.info.port_ws
-            addr = response.info.adress
-            Callinfo.refreshInfo('http://'+addr+':'+port+'/');
-        } else{
+        if (response.info.message !== "ok" ) {
             console.debug("Error get data: ", response.info.message);
-        }
+			return;
+		}
+		console.log(response);
+		ip = response.info.ip;
+		port = response.info.port;
+		port_ws = response.info.port_ws;
+		addr = response.info.adress;
+		connectWebSocket();
+		Callinfo.refreshInfo('http://'+addr+':'+port+'/');
     }, function(error) {
         console.debug('Info GET apicall failed WebSock: ', error);
     });
 }
 getServerSockInfo();
-
-var openServerSock = function() {
-    m.request({
-        method: 'GET',
-        url: '/api/info/openSock',
-        deserialize: jsyaml.load,
-    }).then(function(response){
-        console.debug("Info GET Response: ",response);
-        if (response.info.message === "ok" ) {
-            console.debug("WebSocket created.");
-        } else if (response.info.message === "done") {
-            console.debug("WebSocket was already oppened.");
-        } else{
-            console.debug("Error get data: ", response.info.message);
-        }
-    }, function(error) {
-        console.debug('Info GET apicall failed WebSock: ', error);
-    });
-}
 
 Login.myName = function() {
     info = whoAreYou();
@@ -69,17 +52,19 @@ Login.myName = function() {
     return aux[0];
 }
 
+function sendIdentification() {
+	ws.send(getMyExt());
+}
+
 var connectWebSocket = function() {
+	console.log('ipport on connectWebSocket', ip, port_ws);
     var addr = 'ws://'+ip+':'+port_ws+'/';
     if(websock !== null) {
         clearInfo();
     }
     websock = new WebSocket(addr);
     var ws = websock;
-    ws.onopen = function(event) {
-        var ext = getMyExt();
-        ws.send(ext);
-    }
+    ws.onopen = sendIdentification;
     ws.onmessage = function (event) {
         var content = event.data;
         Callinfo.refreshInfo(content);
@@ -165,10 +150,6 @@ var listOfPersons = function() {
 
 
 Login.askWhoAreYou = function() {
-    if(first == "0"){
-        openServerSock();
-        first = "";
-    }
     Dialog.show(function() { return {
         className: 'dialog-login',
         title: 'Qui ets?',

@@ -7,6 +7,7 @@ from flask import (
     )
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
+from consolemsg import error
 from callinfo import CallInfo
 from websocket_server import WebsocketServer
 from . import schedulestorage
@@ -17,6 +18,8 @@ import os
 import erppeek
 from sheetfetcher import SheetFetcher
 from threading import Semaphore, Thread
+
+
 try:
     import dbconfig
 except ImportError:
@@ -30,17 +33,7 @@ websockets = {}
 
 
 def fillConfigurationInfo():
-    config = ns.load('config.yaml')
-    return {
-        'websocket_ip': config.websocket_ip,
-        'websocket_port': config.websocket_port,
-        'dns_adress': config.dns_adress,
-        'port': config.port,
-        'drive_sheet_name': config.drive_sheet_name,
-        'credential_name': config.credential_name,
-        'threshold_hits': config.threshold_hits,
-        'my_calls_log': config.my_calls_log,
-    }
+    return ns.load('config.yaml')
 
 
 CONFIG = fillConfigurationInfo()
@@ -419,18 +412,16 @@ def callingPhone():
     data = request.form.to_dict()
     phone = data['phone']
     ext = data['ext']
-    try:
-        if ext in websockets:
-            clients = websockets[ext]
-            for client in clients:
-                app.wserver.send_message(client, phone)
-        else:
-            print ext + " sense identificar."
-    except ValueError:
-        print "Error al enviar els missatges."
+    clients = websockets.get(ext, [])
+    if not clients:
+        error("Calling {} but has no client.", ext)
+    for client in clients:
+        app.wserver.send_message(client, phone)
+
     result = ns(
+        notified = len(clients),
         phone=phone,
-        ext=int(ext),
+        ext=ext,
     )
     return yamlfy(info=result)
 
@@ -439,15 +430,16 @@ def callingPhone():
 def getConnectionInfo():
     result = ns(
         ip=CONFIG['websocket_ip'],
-        port=CONFIG['port'],
         port_ws=CONFIG['websocket_port'],
-        adress=CONFIG['dns_adress'],
+        adress=CONFIG['api_adress'],
+        port=CONFIG['api_port'],
         message="ok"
     )
     return yamlfy(info=result)
 
 
 def initialize_client(client, server, extension):
+    client_left(client, server)
     if extension not in websockets:
         websockets[extension] = []
     websockets[extension].append(client)
@@ -460,21 +452,13 @@ def client_left(client, server):
             break
 
 
-@app.route('/api/info/openSock', methods=['GET'])
-def obreConnexio():
-    message = 'error_WebSocketServer'
-    if not app.wserver:
-        app.wserver = WebsocketServer(CONFIG['websocket_port'], host=CONFIG['websocket_ip'])
-        app.wserver.set_fn_message_received(initialize_client)
-        app.wserver.set_fn_client_left(client_left)
-        Thread(target=app.wserver.run_forever).start()
-        message = 'ok'
-    else:
-        message = 'done'
-    result = ns(
-        message=message,
-    )
-    return yamlfy(info=result)
+def startCallInfoWS(app):
+    app.wserver = WebsocketServer(CONFIG['websocket_port'], host=CONFIG['websocket_ip'])
+    app.wserver.set_fn_message_received(initialize_client)
+    app.wserver.set_fn_client_left(client_left)
+    thread = Thread(target=app.wserver.run_forever)
+    thread.start()
+    return thread
 
 
 @app.route('/api/generalReasons', methods=['GET'])
@@ -482,7 +466,7 @@ def reasonsInfo():
     message = 'ok'
     try:
         fetcher = SheetFetcher(
-            documentName=CONFIG['drive_sheet_name'],
+            documentName=CONFIG['call_reasons_document'],
             credentialFilename=CONFIG['credential_name'],
         )
         reasons = fetcher.get_fullsheet(SHEETS["reasons"])
@@ -503,7 +487,7 @@ def savePhoneLog():
     try:
         info = ns.loads(request.data)
         fetcher = SheetFetcher(
-            documentName=CONFIG['drive_sheet_name'],
+            documentName=CONFIG['call_reasons_document'],
             credentialFilename=CONFIG['credential_name'],
         )
         row = [
@@ -533,7 +517,7 @@ def getPhoneLog(phone):
     message = 'ok'
     try:
         fetcher = SheetFetcher(
-            documentName=CONFIG['drive_sheet_name'],
+            documentName=CONFIG['call_reasons_document'],
             credentialFilename=CONFIG['credential_name'],
         )
         log = fetcher.get_fullsheet(SHEETS["log"])

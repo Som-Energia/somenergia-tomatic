@@ -360,11 +360,11 @@ commented_forced:
     - 2
     - 4
   : ningu
-websocket_ip: "192.168.35.11"
-websocket_port: 4445
-dns_adress: "192.168.35.11"
-port: 4555
-drive_sheet_name: "Trucades_3354"
+api_adress: 192.168.35.242
+api_port: 4555 
+websocket_ip: 192.168.35.242
+websocket_port: 4445 
+call_reasons_document: "Trucades_3354"
 credential_name: "drive-certificate.json"
 threshold_hits: 21
 my_calls_log: "my_calls_log.yaml"

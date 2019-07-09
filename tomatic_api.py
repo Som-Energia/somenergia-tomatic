@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from tomatic.api import app, pbx
+from tomatic.api import app, pbx, startCallInfoWS
 import click
 import dbconfig
-from consolemsg import warn
+from consolemsg import warn, step
 from tomatic import __version__
 
 @click.command()
@@ -49,7 +49,14 @@ def main(fake, debug, host, port, printrules):
         for rule in app.url_map.iter_rules():
             print rule
 
+    step("Starting WS thread")
+    wsthread = startCallInfoWS(app)
+    step("Starting API")
     app.run(debug=debug, host=host, port=port, processes=1)
+    step("API stopped")
+    app.wserver.server_close()
+    wsthread.join(0)
+    step("WS thread stopped")
 
 if __name__=='__main__':
     main()
