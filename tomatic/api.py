@@ -283,11 +283,7 @@ def getInfoPersonByPhone(phone):
             message = 'response_too_long'
     except ValueError:
         message = 'error_getByPhone'
-        print "Error: Obtenció de la informació a partir del telèfon."
-    if (not data.partners):
-        message = 'no_info'
-    elif data.partners == "Masses resultats":
-        message = 'response_too_long'
+        error("Getting information from {}.", phone)
     result = ns(
         info=data,
         message=message,
@@ -311,11 +307,7 @@ def getInfoPersonByName(name):
             message = 'response_too_long'
     except ValueError:
         message = 'error_getByName'
-        print "Error: Obtenció de la informació a partir del nom."
-    if (not data.partners):
-        message = 'no_info'
-    elif (data.partners == "Masses resultats"):
-        message = 'response_too_long'
+        error("Getting information from {}.", name)
     result = ns(
         info=data,
         message=message,
@@ -338,11 +330,7 @@ def getInfoPersonByNif(nif):
             message = 'response_too_long'
     except ValueError:
         message = 'error_getByDni'
-        print "Error: Obtenció de la informació a partir del nif."
-    if (not data.partners):
-        message = 'no_info'
-    elif (data.partners == "Masses resultats"):
-        message = 'response_too_long'
+        error("Getting information from {}.", nif)
     result = ns(
         info=data,
         message=message,
@@ -365,11 +353,7 @@ def getInfoPersonBySoci(iden):
             message = 'response_too_long'
     except ValueError:
         message = 'error_getBySoci'
-        print "Error: Obtenció de la informació a partir del num de soci."
-    if (not data.partners):
-        message = 'no_info'
-    elif (data.partners == "Masses resultats"):
-        message = 'response_too_long'
+        error("Getting information from {}.", iden)
     result = ns(
         info=data,
         message=message,
@@ -392,11 +376,7 @@ def getInfoPersonByEmail(email):
             message = 'response_too_long'
     except ValueError:
         message = 'error_getByEmail'
-        print "Error: Obtenció de la informació a partir del email."
-    if (not data.partners):
-        message = 'no_info'
-    elif (data.partners == "Masses resultats"):
-        message = 'response_too_long'
+        error("Getting information from {}.", email)
     result = ns(
         info=data,
         message=message,
@@ -419,11 +399,7 @@ def getInfoPersonBy(field):
             message = 'response_too_long'
     except ValueError:
         message = 'error_getByData'
-        print "Error: Obtenció de la informació a partir del camp general."
-    if (not data.partners):
-        message = 'no_info'
-    elif (data.partners == "Masses resultats"):
-        message = 'response_too_long'
+        error("Getting information from {}.", field)
     result = ns(
         info=data,
         message=message,
@@ -496,7 +472,7 @@ def reasonsInfo():
     except IOError:
         reasons = []
         message = 'error_get_fullsheet'
-        print "Error: Obtenció dels motius generals."
+        error("Trying to open {} drive sheet.", CONFIG.call_reasons_document)
     result = ns(
         info=reasons,
         message=message,
@@ -527,7 +503,7 @@ def savePhoneLog():
         with app.drive_semaphore:
             fetcher.add_to_last_row(SHEETS["log"], row)
     except IOError:
-        print 'Error: Desar al full de calcul.'
+        error("Saving {} to the drive sheet.", CONFIG.call_reasons_document)
         message = 'error_add_to_las_row'
     result = ns(
         message=message
@@ -547,7 +523,7 @@ def getPhoneLog(phone):
     except IOError:
         log = []
         message = 'error_get_fullsheet'
-        print "Error: Obtenció histric de trucades del número."
+        error("Getting reason calls from {}.", CONFIG.call_reasons_document)
     reasons = filter(lambda x: x[LOGS["phone"]] == phone, log)
     reasons.sort(key=lambda x: datetime.strptime(x[0], '%d-%m-%Y %H:%M:%S'))
     result = ns(
@@ -567,7 +543,7 @@ def getMyLog(iden):
             mylog = logs[iden]
         else:
             message = 'not_registers_yet'
-            print iden + " no apareix al registre."
+            error("{} does not appear in the register.", iden)
     except IOError:
         f = open(CONFIG['my_calls_log'], "w+")
         f.write("nom:\r\n")
@@ -598,7 +574,7 @@ def saveMyLog(iden):
         logs.dump(CONFIG['my_calls_log'])
     except ValueError:
         msg = 'error_save_log'
-        print "Error desant informació del log de" + iden + "."
+        error("[S] Opening file {} but it doesn't exists", CONFIG.my_calls_log)
     result = ns(
         message=msg
     )
@@ -620,7 +596,7 @@ def updateMyLog(iden):
         logs.dump(CONFIG['my_calls_log'])
     except ValueError:
         msg = 'error_update_log'
-        print "Error actualitzant informació del log de" + iden + "."
+        error("[U] Opening file {} but it doesn't exists", CONFIG.my_calls_log)
     result = ns(
         message=msg
     )
