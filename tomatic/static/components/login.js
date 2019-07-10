@@ -114,6 +114,7 @@ var setCookieInfo = function(vnode){
         var expires = "expires="+ exp.toUTCString();
         document.cookie = value + ";" + expires + ";path=/";
     }
+    sendIdentification();
 }
 
 
