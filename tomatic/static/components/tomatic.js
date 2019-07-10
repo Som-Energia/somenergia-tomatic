@@ -1,6 +1,8 @@
 // Tomatic application model component
 module.exports = function() {
 
+var Snackbar = require('polythene-mithril-snackbar').Snackbar;
+
 var jsyaml = require('js-yaml');
 var m = require('mithril');
 m.prop = require('mithril/stream');
