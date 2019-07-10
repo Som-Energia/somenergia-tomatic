@@ -277,6 +277,10 @@ def getInfoPersonByPhone(phone):
     data = None
     try:
         data = info.getByPhone(decoded_phone)
+        if (not data.partners):
+            message = 'no_info'
+        elif data.partners == "Masses resultats":
+            message = 'response_too_long'
     except ValueError:
         message = 'error_getByPhone'
         print "Error: Obtenció de la informació a partir del telèfon."
@@ -301,6 +305,10 @@ def getInfoPersonByName(name):
     data = None
     try:
         data = info.getByName(decoded_name)
+        if (not data.partners):
+            message = 'no_info'
+        elif (data.partners == "Masses resultats"):
+            message = 'response_too_long'
     except ValueError:
         message = 'error_getByName'
         print "Error: Obtenció de la informació a partir del nom."
@@ -324,6 +332,10 @@ def getInfoPersonByNif(nif):
     data = None
     try:
         data = info.getByDni(decoded_nif)
+        if (not data.partners):
+            message = 'no_info'
+        elif (data.partners == "Masses resultats"):
+            message = 'response_too_long'
     except ValueError:
         message = 'error_getByDni'
         print "Error: Obtenció de la informació a partir del nif."
@@ -347,6 +359,10 @@ def getInfoPersonBySoci(iden):
     data = None
     try:
         data = info.getBySoci(decoded_iden)
+        if (not data.partners):
+            message = 'no_info'
+        elif (data.partners == "Masses resultats"):
+            message = 'response_too_long'
     except ValueError:
         message = 'error_getBySoci'
         print "Error: Obtenció de la informació a partir del num de soci."
@@ -370,6 +386,10 @@ def getInfoPersonByEmail(email):
     data = None
     try:
         data = info.getByEmail(decoded_email)
+        if (not data.partners):
+            message = 'no_info'
+        elif (data.partners == "Masses resultats"):
+            message = 'response_too_long'
     except ValueError:
         message = 'error_getByEmail'
         print "Error: Obtenció de la informació a partir del email."
@@ -393,6 +413,10 @@ def getInfoPersonBy(field):
     data = None
     try:
         data = info.getByData(decoded_field)
+        if (not data.partners):
+            message = 'no_info'
+        elif (data.partners == "Masses resultats"):
+            message = 'response_too_long'
     except ValueError:
         message = 'error_getByData'
         print "Error: Obtenció de la informació a partir del camp general."
@@ -417,9 +441,8 @@ def callingPhone():
         error("Calling {} but has no client.", ext)
     for client in clients:
         app.wserver.send_message(client, phone)
-
     result = ns(
-        notified = len(clients),
+        notified=len(clients),
         phone=phone,
         ext=ext,
     )
@@ -429,10 +452,10 @@ def callingPhone():
 @app.route('/api/socketInfo', methods=['GET'])
 def getConnectionInfo():
     result = ns(
-        ip=CONFIG['websocket_ip'],
-        port_ws=CONFIG['websocket_port'],
-        adress=CONFIG['api_adress'],
-        port=CONFIG['api_port'],
+        ip=CONFIG.websocket_ip,
+        port_ws=CONFIG.websocket_port,
+        adress=CONFIG.api_adress,
+        port=CONFIG.api_port,
         message="ok"
     )
     return yamlfy(info=result)
@@ -453,7 +476,7 @@ def client_left(client, server):
 
 
 def startCallInfoWS(app):
-    app.wserver = WebsocketServer(CONFIG['websocket_port'], host=CONFIG['websocket_ip'])
+    app.wserver = WebsocketServer(CONFIG.websocket_port, host=CONFIG.websocket_ip)
     app.wserver.set_fn_message_received(initialize_client)
     app.wserver.set_fn_client_left(client_left)
     thread = Thread(target=app.wserver.run_forever)
@@ -466,8 +489,8 @@ def reasonsInfo():
     message = 'ok'
     try:
         fetcher = SheetFetcher(
-            documentName=CONFIG['call_reasons_document'],
-            credentialFilename=CONFIG['credential_name'],
+            documentName=CONFIG.call_reasons_document,
+            credentialFilename=CONFIG.credential_name,
         )
         reasons = fetcher.get_fullsheet(SHEETS["reasons"])
     except IOError:
@@ -487,8 +510,8 @@ def savePhoneLog():
     try:
         info = ns.loads(request.data)
         fetcher = SheetFetcher(
-            documentName=CONFIG['call_reasons_document'],
-            credentialFilename=CONFIG['credential_name'],
+            documentName=CONFIG.call_reasons_document,
+            credentialFilename=CONFIG.credential_name,
         )
         row = [
             info["date"],
@@ -517,8 +540,8 @@ def getPhoneLog(phone):
     message = 'ok'
     try:
         fetcher = SheetFetcher(
-            documentName=CONFIG['call_reasons_document'],
-            credentialFilename=CONFIG['credential_name'],
+            documentName=CONFIG.call_reasons_document,
+            credentialFilename=CONFIG.credential_name,
         )
         log = fetcher.get_fullsheet(SHEETS["log"])
     except IOError:

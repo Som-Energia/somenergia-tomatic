@@ -33,7 +33,6 @@ var getServerSockInfo = function() {
             console.debug("Error get data: ", response.info.message);
 			return;
 		}
-		console.log(response);
 		ip = response.info.ip;
 		port = response.info.port;
 		port_ws = response.info.port_ws;
@@ -53,19 +52,17 @@ Login.myName = function() {
 }
 
 function sendIdentification() {
-	ws.send(getMyExt());
+	websock.send(getMyExt());
 }
 
 var connectWebSocket = function() {
-	console.log('ipport on connectWebSocket', ip, port_ws);
     var addr = 'ws://'+ip+':'+port_ws+'/';
     if(websock !== null) {
         clearInfo();
     }
     websock = new WebSocket(addr);
-    var ws = websock;
-    ws.onopen = sendIdentification;
-    ws.onmessage = function (event) {
+    websock.onopen = sendIdentification;
+    websock.onmessage = function (event) {
         var content = event.data;
         Callinfo.refreshInfo(content);
     }
@@ -75,8 +72,7 @@ var connectWebSocket = function() {
 var clearInfo = function() {
     Callinfo.refreshInfo("");
     if(websock !== null){
-        var ws = websock;
-        ws.close();
+        websock.close();
         websock = null;
     }
 }
@@ -94,10 +90,8 @@ var disconnect = function(){
 
 
 var getMyExt = function() {
-    var x = document.cookie;
-    var aux = x.split(":");
-    var ext = aux[1].toString();
-    return ext;
+    var cookie = document.cookie;
+    return (cookie !== "" ? cookie.split(":")[1].toString() : cookie);
 }
 
 
@@ -173,12 +167,8 @@ Login.askWhoAreYou = function() {
 
 
 var whoAreYou = function() {
-    var info = ":";
-    var x = document.cookie;
-    if (x !== "") {
-        info = x;
-    }
-    return info;
+    var cookie = document.cookie;
+    return (cookie === "" ? ":" : cookie);
 }
 
 var exitIcon = function(){
