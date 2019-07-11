@@ -120,21 +120,24 @@ var listOfPersons = function() {
     for (id in persons){
         var name = Tomatic.formatName(id);
         var color = "#" + Tomatic.persons().colors[id];
-		// DGG: Turn this into two continue's
-        if (name !== '-' && name !== '>>>CONTESTADOR<<<'){
-            aux.push(m(Button, {
-                className: 'btn-list',
-                label: name,
-                border: true,
-                style: { backgroundColor: color },
-                events: {
-                    onclick: function() {
-                        setCookieInfo(this);
-                        Dialog.hide({id:'whoAreYou'});
-                    },
-                },
-            }));
+		if (name == '-') {
+            continue;
         }
+        else if (name == '>>>CONTESTADOR<<<'){
+            continue;
+        }
+        aux.push(m(Button, {
+            className: 'btn-list',
+            label: name,
+            border: true,
+            style: { backgroundColor: color },
+            events: {
+                onclick: function() {
+                    setCookieInfo(this);
+                    Dialog.hide({id:'whoAreYou'});
+                },
+            },
+        }));
     }
     return m(List, { tiles:aux, className:'list-users' });
 }
