@@ -439,16 +439,20 @@ def getConnectionInfo():
 
 def initialize_client(client, server, extension):
     client_left(client, server)
+    step("Identifying client as {}", extension)
     if extension not in websockets:
         websockets[extension] = []
     websockets[extension].append(client)
 
 
 def client_left(client, server):
-    for ext in websockets:
-        if client in websockets[ext]:
-            websockets[ext].remove(client)
+    for extension in websockets:
+        if client in websockets[extension]:
+            step("Unidentifying client as {}", extension)
+            websockets[extension].remove(client)
             break
+    else:
+        warn("New client")
 
 
 def startCallInfoWS(app):
