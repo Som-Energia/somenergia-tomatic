@@ -18,7 +18,7 @@ import os
 import erppeek
 from sheetfetcher import SheetFetcher
 from threading import Semaphore, Thread
-
+import urllib
 
 try:
     import dbconfig
@@ -270,13 +270,12 @@ def busy_post(person):
 
 @app.route('/api/info/phone/<phone>', methods=['GET'])
 def getInfoPersonByPhone(phone):
-    decoded_phone = phone.decode('base64')
     message = 'ok'
     o = erppeek.Client(**dbconfig.erppeek)
     info = CallInfo(o)
     data = None
     try:
-        data = info.getByPhone(decoded_phone)
+        data = info.getByPhone(phone)
         if (not data.partners):
             message = 'no_info'
         elif data.partners == "Masses resultats":
@@ -293,8 +292,7 @@ def getInfoPersonByPhone(phone):
 
 @app.route('/api/info/name/<name>', methods=['GET'])
 def getInfoPersonByName(name):
-    aux = name.decode('base64')
-    decoded_name = aux.decode(encoding='latin-1', errors='strict')
+    decoded_name = urllib.unquote(name)
     message = 'ok'
     o = erppeek.Client(**dbconfig.erppeek)
     info = CallInfo(o)
@@ -317,13 +315,12 @@ def getInfoPersonByName(name):
 
 @app.route('/api/info/nif/<nif>', methods=['GET'])
 def getInfoPersonByNif(nif):
-    decoded_nif = nif.decode('base64')
     message = 'ok'
     o = erppeek.Client(**dbconfig.erppeek)
     info = CallInfo(o)
     data = None
     try:
-        data = info.getByDni(decoded_nif)
+        data = info.getByDni(nif)
         if (not data.partners):
             message = 'no_info'
         elif (data.partners == "Masses resultats"):
@@ -340,13 +337,12 @@ def getInfoPersonByNif(nif):
 
 @app.route('/api/info/soci/<iden>', methods=['GET'])
 def getInfoPersonBySoci(iden):
-    decoded_iden = iden.decode('base64')
     message = 'ok'
     o = erppeek.Client(**dbconfig.erppeek)
     info = CallInfo(o)
     data = None
     try:
-        data = info.getBySoci(decoded_iden)
+        data = info.getBySoci(iden)
         if (not data.partners):
             message = 'no_info'
         elif (data.partners == "Masses resultats"):
@@ -363,13 +359,12 @@ def getInfoPersonBySoci(iden):
 
 @app.route('/api/info/email/<email>', methods=['GET'])
 def getInfoPersonByEmail(email):
-    decoded_email = email.decode('base64')
     message = 'ok'
     o = erppeek.Client(**dbconfig.erppeek)
     info = CallInfo(o)
     data = None
     try:
-        data = info.getByEmail(decoded_email)
+        data = info.getByEmail(email)
         if (not data.partners):
             message = 'no_info'
         elif (data.partners == "Masses resultats"):
@@ -386,7 +381,7 @@ def getInfoPersonByEmail(email):
 
 @app.route('/api/info/all/<field>', methods=['GET'])
 def getInfoPersonBy(field):
-    decoded_field = field.decode('base64')
+    decoded_field = urllib.unquote(field)
     message = 'ok'
     o = erppeek.Client(**dbconfig.erppeek)
     info = CallInfo(o)

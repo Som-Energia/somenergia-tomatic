@@ -78,10 +78,9 @@ var clearCallInfo = function() {
 }
 
 var getInfo = function () {
-    var info = btoa(CallInfo.search)
     m.request({
         method: 'GET',
-        url: '/api/info/'+search_by+"/"+info,
+        url: '/api/info/'+search_by+"/"+CallInfo.search,
         deserialize: jsyaml.load,
     }).then(function(response){
         console.debug("Info GET Response: ", response);
