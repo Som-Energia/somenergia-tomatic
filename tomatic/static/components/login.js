@@ -52,7 +52,8 @@ Login.logout = function(){
 }
 
 function sendIdentification() {
-	websock.send(getMyExt());
+    message = "IDEN:"+getMyExt()+":"+Login.myName()+":";
+    websock.send(message);
 }
 
 var connectWebSocket = function() {
@@ -60,8 +61,19 @@ var connectWebSocket = function() {
     websock = new WebSocket(addr);
     websock.onopen = sendIdentification;
     websock.onmessage = function (event) {
-        var content = event.data;
-        Callinfo.refreshInfo(content);
+        var message = event.data.split(":");
+        var type_of_message = message[0];
+        if (type_of_message === "IDEN") {
+            var iden = message[1];
+            Callinfo.refreshIden(iden);
+        }
+        else if (type_of_message === "PHONE") {
+            var phone = message[1];
+            Callinfo.refreshPhone(phone);
+        }
+        else {
+            console.debug("Message recieved from WebSockets and type not recognized.");
+        }
     }
 }
 

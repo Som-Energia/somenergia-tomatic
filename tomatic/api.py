@@ -411,7 +411,7 @@ def callingPhone():
     if not clients:
         error("Calling {} but has no client.", ext)
     for client in clients:
-        app.wserver.send_message(client, phone)
+        app.wserver.send_message(client, "PHONE:" + phone)
     result = ns(
         notified=len(clients),
         phone=phone,
@@ -440,6 +440,27 @@ def initialize_client(client, server, extension):
     websockets[extension].append(client)
 
 
+def say_new_user_logged(client, server, extension, iden):
+    step("Saying to the page that now {} is there", iden)
+    clients = websockets.get(extension, [])
+    if not clients:
+        error("Trying to send message to {} but has no client.", extension)
+    for client in clients:
+        app.wserver.send_message(client, "IDEN:" + iden)
+
+
+def on_message_recieved(client, server, message):
+    divided_message = message.split(":")
+    type_of_message = divided_message[0]
+    if type_of_message == "IDEN":
+        extension = divided_message[1]
+        iden = divided_message[2]
+        initialize_client(client, server, extension)
+        say_new_user_logged(client, server, extension, iden)
+    else:
+        error("Type of message not recognized.")
+
+
 def client_left(client, server):
     for extension in websockets:
         if client in websockets[extension]:
@@ -452,7 +473,7 @@ def client_left(client, server):
 
 def startCallInfoWS(app):
     app.wserver = WebsocketServer(CONFIG.websocket_port, host=CONFIG.websocket_ip)
-    app.wserver.set_fn_message_received(initialize_client)
+    app.wserver.set_fn_message_received(on_message_recieved)
     app.wserver.set_fn_client_left(client_left)
     thread = Thread(target=app.wserver.run_forever)
     thread.start()
