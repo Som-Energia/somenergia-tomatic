@@ -265,35 +265,35 @@ var saveCall = function(date) {
 var searchIcon = function(){
     return m(".icon-search",
     [
-        m("i", {class: "fas fa-search"}),
+        m("i.fas.fa-search"),
     ]);
 }
 
 var lockIcon = function(){
     return m(".icon-lock",
     [
-        m("i", {class: "fas fa-lock-open"}),
+        m("i.fas.fa-lock-open"),
     ]);
 }
 
 var lockedIcon = function(){
     return m(".icon-lock",
     [
-        m("i", {class: "fas fa-lock"}),
+        m("i.fas.fa-lock"),
     ]);
 }
 
 var newTabIcon = function(){
     return m(".icon-new-tab",
     [
-        m("i", {class: "fas fa-external-link-alt"}),
+        m("i.fas.fa-external-link-alt"),
     ]);
 }
 
 var refreshIcon = function(){
     return m(".icon-refresh",
     [
-        m("i", {class: "fas fa-redo-alt"}),
+        m("i.fas.fa-redo-alt"),
     ]);
 }
 

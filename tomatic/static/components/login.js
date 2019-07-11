@@ -170,7 +170,7 @@ var whoAreYou = function() {
 
 var exitIcon = function(){
     return m(".icon-exit", [
-        m("i.fas fa-times-circle"),
+        m("i.fas.fa-times-circle"),
     ]);
 }
 
