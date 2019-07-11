@@ -51,15 +51,18 @@ Login.myName = function() {
     return aux[0];
 }
 
+Login.logout = function(){
+	Callinfo.refreshInfo("");
+    document.cookie = "; expires = Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+	sendIdentification();
+}
+
 function sendIdentification() {
 	websock.send(getMyExt());
 }
 
 var connectWebSocket = function() {
     var addr = 'ws://'+ip+':'+port_ws+'/';
-    if(websock !== null) {
-        clearInfo();
-    }
     websock = new WebSocket(addr);
     websock.onopen = sendIdentification;
     websock.onmessage = function (event) {
@@ -68,25 +71,11 @@ var connectWebSocket = function() {
     }
 }
 
-
-var clearInfo = function() {
-    Callinfo.refreshInfo("");
-    if(websock !== null){
-        websock.close();
-        websock = null;
-    }
-}
-
-
 Date.prototype.addHours = function(h) {
    this.setTime(this.getTime() + (h*60*60*1000));
    return this;
 }
 
-
-var disconnect = function(){
-    document.cookie = "; expires = Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-}
 
 
 var getMyExt = function() {
@@ -122,10 +111,11 @@ var listOfPersons = function() {
     var aux = [];
     var persons = Tomatic.persons().extensions;
 
-    for(id in persons){
+    for (id in persons){
         var name = Tomatic.formatName(id);
         var color = "#" + Tomatic.persons().colors[id];
-        if(name !== '-' && name !== '>>>CONTESTADOR<<<'){
+		// DGG: Turn this into two continue's
+        if (name !== '-' && name !== '>>>CONTESTADOR<<<'){
             aux.push(m(Button, {
                 className: 'btn-list',
                 label: name,
@@ -189,7 +179,6 @@ Login.identification = function() {
         nom = Tomatic.formatName(id);
         color = "#" + aux[2];
         if(iden !== nom || websock === null){
-            connectWebSocket();
             iden = nom;
         }
     }
@@ -210,10 +199,7 @@ Login.identification = function() {
             className: 'btn-disconnect',
             label: exitIcon(),
             events: {
-                onclick: function() {
-                    clearInfo();
-                    disconnect();
-                }
+                onclick: Login.logout,
             },
         }, m(Ripple)),
     ]);
