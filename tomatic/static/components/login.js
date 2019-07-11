@@ -173,9 +173,8 @@ var whoAreYou = function() {
 }
 
 var exitIcon = function(){
-    return m(".icon-exit",
-    [
-        m("i", {class: "fas fa-times-circle"}),
+    return m(".icon-exit", [
+        m("i.fas fa-times-circle"),
     ]);
 }
 
