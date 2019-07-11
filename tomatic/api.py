@@ -425,8 +425,6 @@ def getConnectionInfo():
     result = ns(
         ip=CONFIG.websocket_ip,
         port_ws=CONFIG.websocket_port,
-        adress=CONFIG.api_adress,
-        port=CONFIG.api_port,
         message="ok"
     )
     return yamlfy(info=result)

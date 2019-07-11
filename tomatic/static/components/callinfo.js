@@ -38,20 +38,28 @@ var call = {
     'improc': false,
 };
 
-var addr = ""
-var desar = "Desa"
-var reason_filter = ""
-var refresh = true
-var calling_phone = ""
-var search_by = "phone"
-var update = false
+var addr = "";
+var desar = "Desa";
+var reason_filter = "";
+var refresh = true;
+var calling_phone = "";
+var search_by = "phone";
+var update = false;
+
+var my_iden = "";
+
+
+var getCurrentDate = function() {
+    var time= new Date();
+    time.getTime();
+    date=date2str(time, "dd-MM-yyyy hh:mm:ss");
+    return date;
+}
 
 var fillCallInfo = function(phone, date) {
     call['phone']=phone;
     if (date === "") {
-        var time= new Date();
-        time.getTime();
-        date=date2str(time, "dd-MM-yyyy hh:mm:ss");
+        date=getCurrentDate();
         update = false;
     }
     call['date']=date;
@@ -533,9 +541,6 @@ var atencionsLog = function() {
                 selected: call["date"] == missatge.split(')')[0].substr(1),
                 events: {
                     onclick: function(ev) {
-                        if (call["phone"] !== "" && !call["registered"]) {
-                            saveCall(call["date"]);
-                        }
                         update = true;
                         var info = ev.srcElement.innerText;
                         aux = info.toString().split(')');
@@ -565,17 +570,6 @@ var logPerson = function() {
             { primary: { 
                 title: m(".title", [
                     'Trucades ateses:',
-                    m(Button, {
-                        class: "refresh-button",
-                        label: refreshIcon(),
-                        events: {
-                            onclick: function() {
-                                CallInfo.getLogPerson();
-                            },
-                        },
-                        border: 'true',
-                        disabled: (log_calls.length !== 0 || document.cookie === ""),
-                    }, m(Ripple)),
                 ])
             } },
             { text: {
@@ -608,7 +602,7 @@ var refreshCall = function(data, date) {
         CallInfo.search = data;
         CallInfo.file_info = { 1: "empty" };
         PartnerInfo.main_partner = 0;
-        search_by = "phone"
+        search_by = "phone";
         getLog();
         getInfo();
 }
