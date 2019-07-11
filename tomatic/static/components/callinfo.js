@@ -674,7 +674,7 @@ var bloquejarTrucada = function() {
                         class: "btn-new-tab",
                         label: newTabIcon(),
                         url: {
-                            href: addr+'/#!/Trucada',
+                            href: window.location,
                             target:"_blank",
                         },
                         border: 'true',

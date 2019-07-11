@@ -17,9 +17,7 @@ var Login = {};
 var iden = "0";
 var websock = null;
 var ip = "";
-var port = 0;
 var port_ws = 0;
-var addr = "";
 
 
 var getServerSockInfo = function() {
@@ -34,11 +32,8 @@ var getServerSockInfo = function() {
 			return;
 		}
 		ip = response.info.ip;
-		port = response.info.port;
 		port_ws = response.info.port_ws;
-		addr = response.info.adress;
 		connectWebSocket();
-		Callinfo.refreshInfo('http://'+addr+':'+port+'/');
     }, function(error) {
         console.debug('Info GET apicall failed WebSock: ', error);
     });
@@ -52,7 +47,6 @@ Login.myName = function() {
 }
 
 Login.logout = function(){
-	Callinfo.refreshInfo("");
     document.cookie = "; expires = Thu, 01 Jan 1970 00:00:00 GMT;path=/";
 	sendIdentification();
 }
