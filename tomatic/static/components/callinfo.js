@@ -65,14 +65,16 @@ var fillCallInfo = function(phone, date) {
     call['date']=date;
 }
 
-function saveCallToRegisterIfNecessary() {
+var saveCallToRegisterIfNecessary = function() {
     if (call["phone"] !== "" && !call["registered"]) {
         saveCall(call["date"]);
     }
 }
 
 var clearCallInfo = function() {
-    saveCallToRegisterIfNecessary();
+    if (update !== true) {
+        saveCallToRegisterIfNecessary();
+    }
     call['phone']="";
     call['date']="";
     call['log_call_reasons']=[];
@@ -553,6 +555,7 @@ var atencionsLog = function() {
                 selected: call["date"] == missatge.split(')')[0].substr(1),
                 events: {
                     onclick: function(ev) {
+                        saveCallToRegisterIfNecessary();
                         update = true;
                         var info = ev.srcElement.innerText;
                         aux = info.toString().split(')');
