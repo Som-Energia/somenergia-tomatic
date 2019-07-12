@@ -49,7 +49,7 @@ var update = false;
 var my_iden = "";
 
 
-var getCurrentDate = function() {
+var getCurrentDateAndHour = function() {
     var time= new Date();
     time.getTime();
     date=date2str(time, "dd-MM-yyyy hh:mm:ss");
@@ -59,16 +59,20 @@ var getCurrentDate = function() {
 var fillCallInfo = function(phone, date) {
     call['phone']=phone;
     if (date === "") {
-        date=getCurrentDate();
+        date=getCurrentDateAndHour();
         update = false;
     }
     call['date']=date;
 }
 
-var clearCallInfo = function() {
+function saveCallToRegisterIfNecessary() {
     if (call["phone"] !== "" && !call["registered"]) {
         saveCall(call["date"]);
     }
+}
+
+var clearCallInfo = function() {
+    saveCallToRegisterIfNecessary();
     call['phone']="";
     call['date']="";
     call['log_call_reasons']=[];
@@ -120,9 +124,8 @@ CallInfo.getReasons = function () {
             console.debug("Error al obtenir els motius: ", response.info.message)
         }
         else{
-            aux = response.info.info;
-            for (var i=0; i<aux.length; i++) {
-                call_reasons[aux[i][0]] = false;
+            for (i in response.info.info) {
+                call_reasons[response.info.info[i][0]] = false;
             }
         }
     }, function(error) {
@@ -214,18 +217,20 @@ var saveLogCalls = function(phone, person, reason) {
     });
 }
 
-var saveCall = function(date) {
-    var has_to_save = desar === 'Desant'
-    var data = PartnerInfo.getPartnerAndContract(CallInfo.file_info)
-    var contract = data['contract']
-    var s_contract = ""
-    if(contract !== -1) {
-        s_contract = contract+"";
-        while (s_contract.length < 7) s_contract = "0" + s_contract
+function updateContractNumber(given_contract) {
+    var contract = ""
+    if(given_contract!== -1) {
+        contract = given_contract+"";
+        while (contract.length < 7) contract = "0" + contract;
     }
-    var partner = (data["partner"] === -1 ? "" : data['partner'])
-    call['contract'] = s_contract
-    call['partner'] = partner
+    call['contract'] = contract
+}
+
+function updatePartnerNumber(given_partner) {
+    call['partner'] = (given_partner === -1 ? "" : given_partner)
+}
+
+function getCallSelectedReasons() {
     var reasons = ""
     var len = call['reason'].length
     if (len > 0){
@@ -234,12 +239,21 @@ var saveCall = function(date) {
         }
         reasons += call['reason'][len-1]
     }
+    return reasons;
+}
+
+var saveCall = function(date) {
+    var has_to_save = (desar === 'Desant');
+    var data = PartnerInfo.getPartnerAndContract(CallInfo.file_info);
+    updateContractNumber(data['contract']);
+    updatePartnerNumber(data["partner"]);
+    getCallSelectedReasons();
     var info = {
         'data': call['date'],
         'telefon': call['phone'],
-        'partner': (has_to_save ? partner : ""),
-        'contracte': (has_to_save ? s_contract : ""),
-        'motius': (has_to_save ? reasons : ""),
+        'partner': (has_to_save ? call['partner'] : ""),
+        'contracte': (has_to_save ? call['contract'] : ""),
+        'motius': (has_to_save ? getCallSelectedReasons() : ""),
     }
     m.request({
         method: 'POST',
@@ -333,8 +347,6 @@ var llistaMotius = function() {
     function conte(value) {
         return value.toLowerCase().includes(reason_filter.toLowerCase());
     }
-
-    var aux = [];
     var list_reasons = Object.keys(call_reasons);
     if (reason_filter !== "") {
         var filtered = list_reasons.filter(conte);
@@ -342,7 +354,7 @@ var llistaMotius = function() {
     else {
         var filtered = list_reasons;
     }
-    var disabled = desar === "Desant" || CallInfo.search === "";
+    var disabled = (desar === "Desant" || CallInfo.search === "");
     return m(".motius", m(List, {
         compact: true,
         tiles: filtered.map(function(reason) {
