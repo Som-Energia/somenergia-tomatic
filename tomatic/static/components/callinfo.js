@@ -538,7 +538,7 @@ var atencionsLog = function() {
                     selected: call["date"] == missatge.split(')')[0].substr(1),
                 }),
                 m("span", {"class":tipus},
-                  text
+                  m(".main-text",text)
                 )
             ]));
         }

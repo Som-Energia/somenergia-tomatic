@@ -385,7 +385,6 @@
   .tooltiptext
       visibility: hidden
       max-width: 520px
-      width: fit-content
       background-color: #000
       color: #fff
       text-align: center
@@ -397,10 +396,12 @@
       opacity: 0.85
       left: 50%
       transform: translateX(-50%)
+      .main-text
+          width: max-content
+          max-width: 500px
   .tooltiptext-first
       visibility: hidden
       max-width: 520px
-      width: fit-content
       background-color: #000
       color: #fff
       text-align: center
@@ -411,6 +412,9 @@
       opacity: 0.85
       left: 50%
       transform: translateX(-50%)
+      .main-text
+          width: max-content
+          max-width: 500px
   .tooltiptext::after
       content: " "
       position: absolute
