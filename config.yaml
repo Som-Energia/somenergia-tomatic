@@ -113,6 +113,7 @@ taules:
   javi: 99
   albertsimo: 99
   clara: 99
+  jaume: 99
 sempreUnLliure: {}
 randomColors: false
 colors:
@@ -187,6 +188,7 @@ colors:
   javi: 79eeff
   albertsimo: cc00ff
   clara: 602fa7
+  jaume: 5afc9c
 extensions:
   marta: '3040'
   monica: '3041'
@@ -256,6 +258,7 @@ extensions:
   javi: '3383'
   albertsimo: '3013'
   clara: '3014'
+  jaume: '3196'
 names:
   silvia: Sílvia
   monica: Mònica
@@ -292,6 +295,7 @@ names:
   nuria: Núria
   contestado: '>>>CONTESTADOR<<<'
   albertsimo: AlbertSi
+  jaume: JaumeA
 forced: {}
 also_commented_forced:
   ? - dl
