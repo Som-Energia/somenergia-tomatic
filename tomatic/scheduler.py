@@ -12,6 +12,8 @@ import sys
 from sheetfetcher import SheetFetcher
 from tomatic.htmlgen import HtmlGen
 import busy
+import requests
+import dbconfig
 
 # Dirty Hack: Behave like python3 open regarding unicode
 def open(*args, **kwd):
@@ -26,7 +28,7 @@ def transliterate(word):
 		word = word.replace(old,new)
 	return word
 
-def baixaDades(config, certificat) :
+def baixaCarrega(config, certificat):
 
 	def table(sheet, name):
 		cells = sheet.range(name)
@@ -59,6 +61,7 @@ def baixaDades(config, certificat) :
 				)
 			)
 
+	"""
 	step('Baixant vacances...')
 
 	nextFriday = config.monday+timedelta(days=4)
@@ -92,6 +95,57 @@ def baixaDades(config, certificat) :
 		for name, days in holidays:
 			for day in days:
 				holidaysfile.write("{} {} # vacances\n".format(name, day))
+	"""
+
+
+def baixaNotoi(config):
+    step('Baixant vacances de no toi...')
+    notoi = dbconfig.tomatic.notoi_data
+
+    login = requests.post(
+        notoi.service_url + notoi.login_ep,
+        data={'username': notoi.user, 'password': notoi.password},
+        verify=False
+    )
+    token = login.json()['token']
+    firstDay = config.monday - timedelta(days=1)
+    lastDay = config.monday + timedelta(days=5)
+    next = notoi.service_url + notoi.query_ep.format(firstDay, lastDay)
+    absences = []
+    while(next):
+        response = requests.get(
+            next,
+            headers={'Authorization': notoi.token_head + token},
+            verify=False
+        )
+        next = response.json()['next']
+        absences.extend(response.json()['results'])
+
+    step("  Guardant indisponibilitats per vacances a 'indisponibilitats-vacances.conf'...")
+    notoi_names = {}
+    for key, value in config.notoi_ids.iteritems():
+        notoi_names[value] = key
+    translate_days = ['dl', 'dm', 'dx', 'dj', 'dv']
+
+    with open('indisponibilitats-vacances.conf', 'w') as holidaysfile:
+        for absence in absences:
+            name = notoi_names.get(absence['worker'])
+            start = datetime.datetime.strptime(
+                absence['start_time'],
+                '%Y-%m-%dT%H:%M:%S'
+            ).date()
+            end = datetime.datetime.strptime(
+                absence['end_time'],
+                '%Y-%m-%dT%H:%M:%S'
+            ).date()
+            days = [
+                translate_days[day]
+                for day in range(5)
+                if start <= config.monday + timedelta(days=day) <= end
+            ]
+            for day in days:
+                print "{} {} # vacances".format(name, day)
+                holidaysfile.write("{} {} # vacances\n".format(name, day))
 
 
 class Backtracker:
@@ -641,7 +695,9 @@ def main():
 		config.monday = today + timedelta(days=7-today.weekday())
 
 	if not args.keep:
-		baixaDades(config, args.certificate)
+		baixaCarrega(config, args.certificate)
+		baixaNotoi(config)
+
 
 	import signal
 	import subprocess
