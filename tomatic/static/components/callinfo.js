@@ -33,62 +33,36 @@ var call = {
     'reason': [],
     'extra': "",
     'log_call_reasons': [],
-    'registered': false,
     'proc': false,
     'improc': false,
 };
 
-var addr = "";
 var desar = "Desa";
 var reason_filter = "";
 var refresh = true;
 var calling_phone = "";
 var search_by = "phone";
-var update = false;
 
-var my_iden = "";
-
-
-var getCurrentDateAndHour = function() {
-    var time= new Date();
-    time.getTime();
-    date=date2str(time, "dd-MM-yyyy hh:mm:ss");
-    return date;
+var me = {
+    iden: "",
+    ext: -1,
 }
 
-var fillCallInfo = function(phone, date) {
-    call['phone']=phone;
-    if (date === "") {
-        date=getCurrentDateAndHour();
-        update = false;
-    }
-    call['date']=date;
-}
-
-var saveCallToRegisterIfNecessary = function() {
-    if (call["phone"] !== "" && !call["registered"]) {
-        saveCall(call["date"]);
-    }
-}
 
 var clearCallInfo = function() {
-    if (update !== true) {
-        saveCallToRegisterIfNecessary();
-    }
     call['phone']="";
-    call['date']="";
     call['log_call_reasons']=[];
     for( i in call['reason']) {
         call_reasons[call['reason'][i]] = false;
     }
     call['reason']=[];
     call['extra']="";
-    call['registered']=false;
     call['contract']="";
     call['partner']=0,
     call['proc']=false;
     call['improc']=false;
     desar = "Desa";
+    CallInfo.file_info = {};
 }
 
 var getInfo = function () {
@@ -141,7 +115,7 @@ var getLog = function () {
     call["log_call_reasons"].push("lookingfor");
     m.request({
         method: 'GET',
-        url: '/api/log/'+call['phone'],
+        url: '/api/log/'+call.phone,
         deserialize: jsyaml.load,
     }).then(function(response){
         console.debug("Info GET Response: ",response);
@@ -160,10 +134,11 @@ var getLog = function () {
 
 CallInfo.getLogPerson = function () {
     log_calls=[];
+    if (me.ext === -1) return 0;
     log_calls.push("lookingfor");
     m.request({
         method: 'GET',
-        url: '/api/personlog/'+my_iden,
+        url: '/api/personlog/'+me.ext,
         deserialize: jsyaml.load,
     }).then(function(response){
         console.debug("Info GET Response: ",response);
@@ -179,13 +154,13 @@ CallInfo.getLogPerson = function () {
         console.debug('Info GET apicall failed: ', error);
     });
 };
-if(my_iden !== ""){
+if(me.ext !== -1){
     CallInfo.getLogPerson();
 }
 
 var saveLogCalls = function(phone, person, reason) {
     desar = 'Desant';
-    saveCall(call["date"]);
+    updateCall(call["date"]);
     info = {
         "date": call['date'],
         "phone": call['phone'],
@@ -220,58 +195,51 @@ var saveLogCalls = function(phone, person, reason) {
 }
 
 function updateContractNumber(given_contract) {
-    var contract = ""
+    var contract = "";
     if(given_contract!== -1) {
         contract = given_contract+"";
         while (contract.length < 7) contract = "0" + contract;
     }
-    call['contract'] = contract
+    call['contract'] = contract;
 }
 
 function updatePartnerNumber(given_partner) {
-    call['partner'] = (given_partner === -1 ? "" : given_partner)
+    call['partner'] = (given_partner === -1 ? "" : given_partner);
 }
 
 function getCallSelectedReasons() {
-    var reasons = ""
-    var len = call['reason'].length
+    var reasons = "";
+    var len = call['reason'].length;
     if (len > 0){
         for (var i=0; i < len-1; i++) {
-            reasons += call['reason'][i] + ", "
+            reasons += call['reason'][i] + ", ";
         }
-        reasons += call['reason'][len-1]
+        reasons += call['reason'][len-1];
     }
     return reasons;
 }
 
-var saveCall = function(date) {
-    var has_to_save = (desar === 'Desant');
+var updateCall = function(date) {
     var data = PartnerInfo.getPartnerAndContract(CallInfo.file_info);
     updateContractNumber(data['contract']);
     updatePartnerNumber(data["partner"]);
     getCallSelectedReasons();
     var info = {
-        'data': call['date'],
-        'telefon': call['phone'],
-        'partner': (has_to_save ? call['partner'] : ""),
-        'contracte': (has_to_save ? call['contract'] : ""),
-        'motius': (has_to_save ? getCallSelectedReasons() : ""),
+        'data': call.date,
+        'telefon': call.phone,
+        'partner': call.partner,
+        'contracte': call.contract,
+        'motius': getCallSelectedReasons(),
     }
     m.request({
         method: 'POST',
-        url: '/api/' + (update ? 'updatelog/' : 'mylog/') + my_iden,
+        url: '/api/' + 'updatelog/'+ me.ext,
         data: info,
         deserialize: jsyaml.load,
     }).then(function(response){
         console.debug("Info POST Response: ",response);
-        if (response.info.message !== "ok" ) {
+        if (response.info.message !== "ok") {
             console.debug("Error al fer log dels motius: ", response.info.message)
-        }
-        else {
-            if (date === call["date"]) {
-                call["registered"] = true
-            }
-            if (my_iden !== "") CallInfo.getLogPerson();
         }
     }, function(error) {
         console.debug('Info POST apicall failed: ', error);
@@ -317,25 +285,9 @@ function isEmpty(obj) {
   return Object.keys(obj).length === 0;
 }
 
-var date2str = function (x, y) {
-    var z = {
-        M: x.getMonth() + 1,
-        d: x.getDate(),
-        h: x.getHours(),
-        m: x.getMinutes(),
-        s: x.getSeconds()
-    };
-    y = y.replace(/(M+|d+|h+|m+|s+)/g, function(v) {
-        return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1))).slice(-2)
-    });
-
-    return y.replace(/(y+)/g, function(v) {
-        return x.getFullYear().toString().slice(-v.length)
-    });
-}
 
 var selectReason = function(r) {
-    call_reasons[r] = !call_reasons[r]
+    call_reasons[r] = !call_reasons[r];
     var index = call['reason'].indexOf(r);
     if (index > -1) {
         call['reason'].splice(index, 1);
@@ -440,43 +392,42 @@ var motiu = function() {
             } },
             { text: {
                 content: m("", [
-                        llistaMotius(),
-                        m(".final-motius", [
-                            m(Textfield, {
-                                class: "textfield-comentaris",
-                                label: "Algun comentari?",
-                                floatingLabel: true,
-                                dense: true,
-                                value: call['extra'],
-                                onChange: function(params) {
-                                    call['extra'] = params.value
+                    llistaMotius(),
+                    m(".final-motius", [
+                        m(Textfield, {
+                            class: "textfield-comentaris",
+                            label: "Algun comentari?",
+                            floatingLabel: true,
+                            dense: true,
+                            value: call['extra'],
+                            onChange: function(params) {
+                                call['extra'] = params.value
+                            },
+                            disabled: (desar !== "Desa" || CallInfo.search === ""),
+                        }),
+                        m(".save", m(Button, {
+                            label: desar,
+                            events: {
+                                onclick: function() {
+                                    for( i in call['reason']) {
+                                        saveLogCalls(call['phone'], me.iden, call['reason'][i]);
+                                        call_reasons[call['reason'][i]] = false;
+                                    }
+                                    call['reason']=[]
                                 },
-                                disabled: (desar !== "Desa" || CallInfo.search === ""),
-                            }),
-                            m(".save", m(Button, {
-                                label: desar,
-                                events: {
-                                    onclick: function() {
-                                        for( i in call['reason']) {
-                                            saveLogCalls(call['phone'], my_iden, call['reason'][i]);
-                                            call_reasons[call['reason'][i]] = false;
-                                        }
-                                        call['reason']=[]
-                                    },
-                                },
-                                border: 'true',
-                                disabled: (desar !== "Desa" || CallInfo.search === ""),
-                            }, m(Ripple))),
-                        ]),
-                    ])
-                }
-            },
+                            },
+                            border: 'true',
+                            disabled: (desar !== "Desa" || CallInfo.search === ""),
+                        }, m(Ripple))),
+                    ]),
+                ])
+            } },
         ]
     });
 }
 
 var llistaLog = function() {
-    var aux = []
+    var aux = [];
     for(var i = call['log_call_reasons'].length-1; i>=0; i--) {
         var missatge = call['log_call_reasons'][i][1]
                     +" ("+call['log_call_reasons'][i][0]
@@ -511,23 +462,23 @@ var logCalls = function() {
 }
 
 var atencionsLog = function() {
-    var aux = []
-    var mida = log_calls.length-1
+    var aux = [];
+    var mida = log_calls.length-1;
     for(var i = mida; i>=0; i--) {
-        var data = log_calls[i]["data"]
+        var data = log_calls[i]["data"];
         var missatge = "("+ data +"): " + (log_calls[i]["telefon"] !== "" ?
             log_calls[i]["telefon"] : "Cercat");
         var resolt = log_calls[i]["motius"]!="";
         if (resolt) {
             missatge+=", "+ (log_calls[i]["partner"] == "" ?
-                "Sense informació" : log_calls[i]["partner"])
+                "Sense informació" : log_calls[i]["partner"]);
             if (log_calls[i]["contracte"] !== "") {
-                missatge += ", "+log_calls[i]["contracte"]
+                missatge += ", "+log_calls[i]["contracte"];
             }
-            text = log_calls[i]["motius"]
-            tipus = "tooltiptext"
+            text = log_calls[i]["motius"];
+            tipus = "tooltiptext";
             if(i===mida || i === mida-1) {
-                tipus = "tooltiptext-first"
+                tipus = "tooltiptext-first";
             }
             aux.push(m("div", {"class":"tooltip"}, [
                 m(ListTile, {
@@ -555,15 +506,15 @@ var atencionsLog = function() {
                 selected: call["date"] == missatge.split(')')[0].substr(1),
                 events: {
                     onclick: function(ev) {
-                        saveCallToRegisterIfNecessary();
-                        update = true;
                         var info = ev.srcElement.innerText;
                         aux = info.toString().split(')');
                         var phone = aux[1].substr(2);
                         var date = aux[0].substr(1);
-                        refreshCall(phone, date);
+                        call.date = date;
+                        refreshCall(phone);
                     }
                 },
+                disabled: !refresh,
             }));
         }
     }
@@ -611,36 +562,36 @@ var infoPhone = function () {
     }
 };
 
-var refreshCall = function(data, date) {
-        clearCallInfo();
-        fillCallInfo(data, date);
-        CallInfo.search = data;
-        CallInfo.file_info = { 1: "empty" };
-        PartnerInfo.main_partner = 0;
-        search_by = "phone";
-        getLog();
-        getInfo();
+var refreshCall = function(data) {
+    clearCallInfo();
+    call.phone = data;
+    CallInfo.search = data;
+    CallInfo.file_info = { 1: "empty" };
+    PartnerInfo.main_partner = 0;
+    search_by = "phone";
+    getLog();
+    getInfo();
 }
 
 
-CallInfo.refreshIden = function(iden) {
+CallInfo.refreshIden = function(new_me) {
+    if (!refresh && new_me.iden !== "") return 0;
     CallInfo.search = "";
     clearCallInfo();
+    call.date = ""
     CallInfo.file_info = {};
     log_calls = [];
-    my_iden = iden;
-    if (iden !== "") {
-        CallInfo.getLogPerson();
+    me = new_me;
+    if (me.ext === -1) {
+        refresh = true;
     }
 }
 
 
-CallInfo.refreshPhone = function(phone) {
+CallInfo.refreshPhone = function(phone, date) {
     if (refresh) {
-        refreshCall(phone, "");
-    }
-    else {
-        calling_phone = phone;
+        call.date = date;
+        refreshCall(phone);
     }
 }
 
@@ -648,13 +599,14 @@ CallInfo.refreshPhone = function(phone) {
 var lookForPhoneInfo = function() {
     clearCallInfo();
     if (CallInfo.search !== 0 && CallInfo.search !== ""){
-        fillCallInfo("", "");
+        call.phone = "";
         CallInfo.file_info = { 1: "empty" };
         PartnerInfo.main_partner = 0;
         getInfo();
     } 
     else {
-         CallInfo.file_info = {}
+        call.date = "";
+        CallInfo.file_info = {}
     }
 }
 
@@ -673,11 +625,6 @@ var bloquejarTrucada = function() {
                         events: {
                             onclick: function() {
                                 refresh = !refresh
-                                if(refresh === true && calling_phone !== ""){
-                                    var num = calling_phone;
-                                    calling_phone = "";
-                                    CallInfo.refreshInfo(num);
-                                }
                             },
                         },
                     }, m(Ripple)),
@@ -734,6 +681,7 @@ var cercaInformacio = function() {
                             uniCharCode(event)
                         }
                     },
+                    disabled: !refresh,
                 }),
                 m(Button, {
                     class: 'btn-search',
@@ -742,7 +690,8 @@ var cercaInformacio = function() {
                         onclick: function() {
                             lookForPhoneInfo();
                         },
-                    }
+                    },
+                    disabled: !refresh,
                 }, m(Ripple)),
             ]),
             } },
@@ -765,7 +714,7 @@ CallInfo.mainPage = function() {
             ]),
             m(".all-info-call", [
                 infoPhone(),
-                (my_iden !== "" ? motiu() : ""),
+                (me.iden !== "" ? motiu() : ""),
                 m("", [
                     logCalls(),
                     logPerson(),

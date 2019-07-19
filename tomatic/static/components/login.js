@@ -65,11 +65,22 @@ var connectWebSocket = function() {
         var type_of_message = message[0];
         if (type_of_message === "IDEN") {
             var iden = message[1];
-            Callinfo.refreshIden(iden);
+            var ext = getMyExt();
+            var info = {
+                iden: iden,
+                ext: (ext === "" ? -1 : ext),
+            }
+            Callinfo.refreshIden(info);
+            Callinfo.getLogPerson();
         }
         else if (type_of_message === "PHONE") {
             var phone = message[1];
-            Callinfo.refreshPhone(phone);
+            var date = message[2]+":"+message[3]+":"+message[4];
+            Callinfo.refreshPhone(phone, date);
+            Callinfo.getLogPerson();
+        }
+        else if (type_of_message === "REFRESH") {
+            Callinfo.getLogPerson();
         }
         else {
             console.debug("Message recieved from WebSockets and type not recognized.");

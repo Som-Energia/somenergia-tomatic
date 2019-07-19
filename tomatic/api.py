@@ -408,10 +408,29 @@ def callingPhone():
     phone = data['phone']
     ext = data['ext']
     clients = websockets.get(ext, [])
+    time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    try:
+        logs = ns.load(CONFIG.my_calls_log)
+        if ext not in logs:
+            logs[ext] = []
+        elif len(logs[ext]) == 20:
+            logs[ext].pop(0)
+        info = {
+            "data": time,
+            "telefon": phone,
+            "motius": "",
+            "partner": "",
+            "contracte": "",
+        }
+        logs[ext].append(info)
+        logs.dump(CONFIG.my_calls_log)
+    except ValueError:
+        error("[S] Opening file {} but it doesn't exists", CONFIG.my_calls_log)
+
     if not clients:
         error("Calling {} but has no client.", ext)
     for client in clients:
-        app.wserver.send_message(client, "PHONE:" + phone)
+        app.wserver.send_message(client, "PHONE:" + phone + ":" + time)
     result = ns(
         notified=len(clients),
         phone=phone,
@@ -445,6 +464,14 @@ def say_new_user_logged(client, server, extension, iden):
         error("Trying to send message to {} but has no client.", extension)
     for client in clients:
         app.wserver.send_message(client, "IDEN:" + iden)
+
+
+def say_logcalls_has_changed(extension):
+    clients = websockets.get(extension, [])
+    if not clients:
+        error("Trying to send message to {} but has no client.", extension)
+    for client in clients:
+        app.wserver.send_message(client, "REFRESH:" + extension)
 
 
 def on_message_recieved(client, server, message):
@@ -551,19 +578,19 @@ def getPhoneLog(phone):
     return yamlfy(info=result)
 
 
-@app.route('/api/personlog/<iden>', methods=['GET'])
-def getMyLog(iden):
+@app.route('/api/personlog/<ext>', methods=['GET'])
+def getMyLog(ext):
     message = 'ok'
     mylog = ""
     try:
-        logs = ns.load(CONFIG['my_calls_log'])
-        if iden in logs:
-            mylog = logs[iden]
+        logs = ns.load(CONFIG.my_calls_log)
+        if ext in logs:
+            mylog = logs[ext]
         else:
             message = 'not_registers_yet'
-            error("{} does not appear in the register.", iden)
+            error("{} does not appear in the register.", ext)
     except IOError:
-        f = open(CONFIG['my_calls_log'], "w+")
+        f = open(CONFIG.my_calls_log, "w+")
         f.write("nom:\r\n")
         f.write("- data: DD-MM-YYYY HH:MM:SS\r\n")
         f.write("  telefon: \'Num de Telefon\' \r\n")
@@ -578,40 +605,20 @@ def getMyLog(iden):
     return yamlfy(info=result)
 
 
-@app.route('/api/mylog/<iden>', methods=['POST'])
-def saveMyLog(iden):
+@app.route('/api/updatelog/<ext>', methods=['POST'])
+def updateMyLog(ext):
     msg = 'ok'
     try:
-        logs = ns.load(CONFIG['my_calls_log'])
+        logs = ns.load(CONFIG.my_calls_log)
         info = ns.loads(request.data)
-        if iden not in logs:
-            logs[iden] = []
-        elif len(logs[iden]) == 20:
-            logs[iden].pop(0)
-        logs[iden].append(info)
-        logs.dump(CONFIG['my_calls_log'])
-    except ValueError:
-        msg = 'error_save_log'
-        error("[S] Opening file {} but it doesn't exists", CONFIG.my_calls_log)
-    result = ns(
-        message=msg
-    )
-    return yamlfy(info=result)
-
-
-@app.route('/api/updatelog/<iden>', methods=['POST'])
-def updateMyLog(iden):
-    msg = 'ok'
-    try:
-        logs = ns.load(CONFIG['my_calls_log'])
-        info = ns.loads(request.data)
-        for call in logs[iden]:
-            if call["data"] == info["data"]:
-                i = logs[iden].index(call)
-                logs[iden].pop(i)
-                logs[iden].insert(i, info)
+        for call in logs[ext]:
+            if call.data == info.data:
+                i = logs[ext].index(call)
+                logs[ext].pop(i)
+                logs[ext].insert(i, info)
                 break
-        logs.dump(CONFIG['my_calls_log'])
+        logs.dump(CONFIG.my_calls_log)
+        say_logcalls_has_changed(ext)
     except ValueError:
         msg = 'error_update_log'
         error("[U] Opening file {} but it doesn't exists", CONFIG.my_calls_log)
