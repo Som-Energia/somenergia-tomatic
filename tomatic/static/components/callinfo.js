@@ -366,26 +366,26 @@ var motiu = function() {
                     m(Checkbox, {
                         class: "checkbox-proc",
                         name: 'proc',
-                        checked: (call["proc"] && PartnerInfo.contract !== -1),
+                        checked: (call.proc && PartnerInfo.contract !== -1),
                         label: "Procedente",
                         disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
                         onChange: function() {
-                            call["proc"] = !call["proc"]
-                            if (call["proc"] && call["improc"]){
-                                call["improc"] = false
+                            call.proc = !call.proc;
+                            if (call.proc && call.improc){
+                                call.improc = false
                             }
                         },
                     }),
                     m(Checkbox, {
                         class: "checkbox-improc",
                         name: 'improc',
-                        checked: (call["improc"] && PartnerInfo.contract !== -1),
+                        checked: (call.improc && PartnerInfo.contract !== -1),
                         label: "Improcedente",
                         disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
                         onChange: function() {
-                            call["improc"] = !call["improc"]
-                            if(call["proc"] && call["improc"]) {
-                                call["proc"] = false
+                            call.improc = !call.improc;
+                            if (call.proc && call.improc) {
+                                call.proc = false
                             }
                         },
                     }),
