@@ -63,6 +63,7 @@ var clearCallInfo = function() {
     call['improc']=false;
     desar = "Desa";
     CallInfo.file_info = {};
+    PartnerInfo.contract=-1;
 }
 
 var getInfo = function () {
