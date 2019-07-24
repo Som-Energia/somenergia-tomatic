@@ -1,6 +1,12 @@
 # Changelog
 
-## 0.99 unreleased
+## 3.0.0  unreleased
+
+- Call info
+- User identification
+- Must identify before edit schedule
+
+## 2.1.0  2018-02-07
 
 - First tagged release 
 

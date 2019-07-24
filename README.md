@@ -161,17 +161,17 @@ Create a link named 'certificate.json' pointing to the actual certificate.
 - Callinfo
 	- Simplify yaml structure
 	- Refactor tests
-	- Link in a new window to helpscout last emails
+	- [x] Link in a new window to helpscout last emails
 	- Missing field:
-		- contract number
-		- contract address
-		- contract persons (payer, owner, host)
-			- Email and helpscout link
-			- DNI
+		- [x] contract number
+		- [x] contract address
+		- [x] contract persons (payer, owner, host)
+			- [x] Email and helpscout link
+			- [x] DNI
 			- Phone
 	- Alerts:
-		- Delayed invoicing
-		- Pending or recent ATR cases
+		- [x] Delayed invoicing
+		- [x] Pending or recent ATR cases
 		- Unpaid invoices
 
 
