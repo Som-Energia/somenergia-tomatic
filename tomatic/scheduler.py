@@ -61,8 +61,14 @@ def baixaCarrega(config, certificat):
 				)
 			)
 
-	"""
-	step('Baixant vacances...')
+def baixaVacancesDrive(config, certificat):
+
+	fetcher = SheetFetcher(
+		documentName='Quadre de Vacances',
+		credentialFilename=certificat,
+	)
+
+	step('Baixant vacances del drive...')
 
 	nextFriday = config.monday+timedelta(days=4)
 	mondayYear = config.monday.year
@@ -95,10 +101,9 @@ def baixaCarrega(config, certificat):
 		for name, days in holidays:
 			for day in days:
 				holidaysfile.write("{} {} # vacances\n".format(name, day))
-	"""
 
 
-def baixaNotoi(config):
+def baixaVacancesNotoi(config):
     step('Baixant vacances de no toi...')
     notoi = dbconfig.tomatic.notoi_data
 
@@ -667,6 +672,12 @@ def parseArgs():
 		help='certificat amb permisos per accedir al document gdrive',
 		)
 
+	parser.add_argument(
+		'--holidays',
+		default='drive',
+		help="Origen d'on agafa les vacances",
+	)
+
 	return parser.parse_args()
 
 args=None
@@ -696,7 +707,10 @@ def main():
 
 	if not args.keep:
 		baixaCarrega(config, args.certificate)
-		baixaNotoi(config)
+		if args.holidays == 'drive':
+			baixaVacancesDrive(config, args.certificate)
+		if args.holidays == 'notoi':
+			baixaVacancesNotoi(config)
 
 
 	import signal
