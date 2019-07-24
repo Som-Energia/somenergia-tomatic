@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.0.0  unreleased
+## 3.0.0  2019-07-24
 
 - Call info
 - User identification
