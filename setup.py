@@ -38,6 +38,7 @@ setup(
         'PyMySQL',
         'click',
         'decorator',
+        'requests',
     #],
     #tests_require=[
         'nose',
