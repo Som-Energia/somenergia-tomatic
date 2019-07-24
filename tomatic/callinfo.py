@@ -11,7 +11,7 @@ class CallInfo(object):
         self._anonymize = anonymize
 
         if not self.results_limit:
-            config = ns.load('config_connection.yaml')
+            config = ns.load('config.yaml')
             self.results_limit = config.threshold_hits
 
     def anonymize(self, string):
