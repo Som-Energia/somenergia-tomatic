@@ -246,6 +246,8 @@ class CallInfo(object):
         clean_partners_ids = list(set(partners_id))
         if self.results_limit and len(clean_partners_ids) > self.results_limit:
             return ns(partners='Masses resultats')
+        elif len(clean_partners_ids) == 0:
+            return ns(partners=None)
         result = ns()
         result.update(self.partnersInfo(clean_partners_ids))
         return result
