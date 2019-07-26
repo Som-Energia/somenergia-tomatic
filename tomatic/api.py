@@ -239,6 +239,7 @@ def personInfo():
         extensions = config.extensions,
         tables = config.taules,
         colors = config.colors,
+        notoi_id = config.notoi_ids
     )
     return yamlfy(persons=result)
 
@@ -255,12 +256,15 @@ def setPersonInfo(person):
         config.taules[person] = data.table
     if 'color' in data:
         config.colors[person] = data.color
+    if 'notoi_id' in data:
+        config.notoi_ids[person] = data.notoi_id
     config.dump('config.yaml')
     result = ns(
         names = config.names,
         extensions = config.extensions,
         tables = config.taules,
         colors = config.colors,
+        notoi_id = config.notoi_ids
     )
     return yamlfy(persons=result)
 
