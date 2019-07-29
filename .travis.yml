@@ -6,7 +6,7 @@ install:
 - ./setup.py develop
 - pip install coveralls
 script:
-- coverage run nosetests
+- coverage run --source tomatic ./setup.py test
 after_success:
 - coveralls
 
