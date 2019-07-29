@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- encoding: utf8 -*-
-
+import sys
 from setuptools import setup
 from tomatic import __version__
 readme = open("README.rst").read()
