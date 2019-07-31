@@ -62,6 +62,8 @@ taules: # Asignacio de les persones en taules
    vic:     7
    ningu:  99
 sempreUnLliure: {}
+notoi_ids:
+  marc: 1
 randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
 colors:
   marc:    'fbe8bc'
