@@ -163,6 +163,9 @@ Tomatic.setPersonData = function (name, data) {
 		case 'color':
 			postdata.color = value;
 			break;
+		case 'notoi_id':
+			postdata.notoi_id = value;
+			break;
 		}
 	}
 	console.log("posting",postdata);

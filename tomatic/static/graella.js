@@ -207,6 +207,7 @@ var editPerson = function(name) {
 			formatName: Tomatic.formatName(name),
 			color: Tomatic.persons().colors[name],
 			extension: Tomatic.persons().extensions[name],
+			notoi_id: Tomatic.persons().notoi_id[name],
 			table: Tomatic.table(name),
 		};
 	};
@@ -295,6 +296,19 @@ PersonEditor.view = function(vnode) {
 			},
 			onChange: function(state) {
 				vnode.attrs.name=state.value;
+			},
+		}),
+		m(Textfield, {
+			label: 'Identificador Gestor d\'Absències',
+			floatingLabel: true,
+			pattern: '[0-9]{1,5}$',
+			help: 'Identificador del Gestor d\'Absències.',
+			error: 'Només numeros.',
+			required: true,
+			disabled: !vnode.attrs.newone,
+			value: vnode.attrs.notoi_id || '',
+			onChange: function(state) {
+				vnode.attrs.notoi_id=parseInt(state.value);
 			},
 		}),
 		m(Textfield, {
