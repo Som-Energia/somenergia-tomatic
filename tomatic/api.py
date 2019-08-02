@@ -109,14 +109,14 @@ def yamlerrors(f,*args,**kwd):
     try:
         return f(*args,**kwd)
     except ApiError as e:
-	error("ApiError: {}", e)
+        error("ApiError: {}", e)
         raise
         return yamlfy(
             error=str(e),
             status=500,
             )
     except Exception as e:
-	error("UnexpectedError: {}", e)
+        error("UnexpectedError: {}", e)
         raise
         return yamlfy(
             error=str(e),
