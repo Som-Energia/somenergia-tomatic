@@ -167,7 +167,6 @@ def updatePerson(filename, person, newPersonEntries, handler=None):
 
 def busy(person):
 	"""API Entry point to obtain person's busy"""
-	config = ns.load('config.yaml')
 	errors = []
 	def indisponibilitats(filename):
 		def handler(m):
