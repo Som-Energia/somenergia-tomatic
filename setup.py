@@ -28,7 +28,6 @@ setup(
         'consolemsg',
         'parse',
         'Flask<1.1' if sys.version_info[0] <3 else 'Flask',
-        'Flask-Assets',
         'Flask-Script',
         'jsmin',
         'py-Asterisk',
