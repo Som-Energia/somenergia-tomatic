@@ -2,7 +2,6 @@
 
 import b2btest
 import unittest
-from yamlns import namespace as ns
 from datetime import datetime
 
 from . import api

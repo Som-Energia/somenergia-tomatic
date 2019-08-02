@@ -2,7 +2,6 @@
 
 from flask import (
     Flask, Response, request,
-    redirect, url_for,
     send_from_directory,
     )
 from datetime import datetime, timedelta
