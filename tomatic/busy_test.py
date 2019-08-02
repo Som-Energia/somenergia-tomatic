@@ -706,7 +706,7 @@ class BusyTest(unittest.TestCase):
 		self.assertEqual(format(ctx.exception),
 			"Missing field 'turns'")
 
-	def test_checkEntry_missingReason(self):
+	def test_checkEntry_missingOptional(self):
 		with self.assertRaises(Exception) as ctx:
 			busy.checkEntry('weekly', ns(
 				weekday='dl',
