@@ -13,8 +13,7 @@ setup(
     author_email = "david.garcia@somenergia.coop",
     url = 'https://github.com/Som-Energia/somenergia-tomatic',
     long_description = readme,
-    license = 'GNU General Public License v3 or later (GPLv3+)',
-    test_suite = 'nose.collector',
+    license = 'GNU Affero General Public License v3 or later (GPLv3+)',
     scripts=[
         'schedulehours.py',
         'tomatic_rtqueue.py',
@@ -51,6 +50,7 @@ setup(
         'erppeek',
         'websocket-server',
     ],
+    test_suite = 'nose.collector',
     classifiers = [
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
