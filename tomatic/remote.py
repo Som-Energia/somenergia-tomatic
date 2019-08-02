@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from paramiko import SSHClient,AutoAddPolicy, SFTPClient
+from paramiko import SSHClient,AutoAddPolicy
 
 class Remote(object):
     def __init__(self, username, host):
