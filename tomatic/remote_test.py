@@ -67,7 +67,7 @@ class Remote_Test(unittest.TestCase):
     def test_read_badPath(self):
         with Remote(self.user, self.host) as remote:
             with self.assertRaises(IOError) as ctx:
-                content = remote.read("/etc/badfile")
+                remote.read("/etc/badfile")
         self.assertEqual(str(ctx.exception),
             "[Errno 2] No such file")
 

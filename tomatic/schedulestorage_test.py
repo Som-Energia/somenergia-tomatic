@@ -38,14 +38,14 @@ class ScheduleStorage_Test(unittest.TestCase):
 
     def test_load_missing(self):
         with self.assertRaises(KeyError) as ctx:
-            data = self.storage.load("2000-01-02")
+            self.storage.load("2000-01-02")
 
         self.assertEqual(str(ctx.exception),
             "'2000-01-02'")
  
     def test_load_notADate(self):
         with self.assertRaises(Exception) as ctx:
-            data = self.storage.load("../../etc/passwd")
+            self.storage.load("../../etc/passwd")
 
         self.assertEqual(str(ctx.exception),
             "time data '../../etc/passwd' does not match format '%Y-%m-%d'")

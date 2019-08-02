@@ -3,7 +3,7 @@
 
 from .pbxmockup import weekday
 import unittest
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
 from yamlns.dateutils import Date
 from yamlns import namespace as ns
 from scheduling import weekstart, nextweek, choosers, Scheduling
