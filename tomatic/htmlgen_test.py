@@ -1,13 +1,9 @@
 #-*- coding: utf-8 -*-
 
 import unittest
-import datetime
 from yamlns import namespace as ns
 import b2btest
 import sys
-from parse import parse
-import random
-import datetime
 
 from htmlgen import HtmlGen
 from htmlgen import schedule2asterisk

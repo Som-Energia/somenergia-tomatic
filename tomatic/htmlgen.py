@@ -2,7 +2,7 @@
 import random
 import datetime
 from yamlns import namespace as ns
-from .scheduling import weekday, weekstart, nextweek, Scheduling
+from .scheduling import weekstart, nextweek, Scheduling
 
 class HtmlGen(object):
 
@@ -25,7 +25,6 @@ class HtmlGen(object):
         return sched.intervals()
 
     def partialCoreTable(self,day,itime):
-        sched = Scheduling(self.yaml)
         return "".join([
             u"""<td class='{name}'>{properName}</td>\n"""
             .format(

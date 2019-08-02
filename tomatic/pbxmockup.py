@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from yamlns import namespace as ns
 from scheduling import weekday, Scheduling
 

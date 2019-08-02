@@ -25,7 +25,7 @@ class Remote_Test(unittest.TestCase):
 
     def test_remoteread_badPath(self):
         with self.assertRaises(IOError) as ctx:
-            content = remoteread(
+            remoteread(
                 self.user,
                 self.host,
                 "/etc/badfile")
