@@ -6,9 +6,8 @@ from datetime import date, timedelta
 import random
 import datetime
 import glob
-from consolemsg import step, error, warn, fail
+from consolemsg import step, error, warn
 import codecs
-import sys
 from sheetfetcher import SheetFetcher
 from tomatic.htmlgen import HtmlGen
 import busy
@@ -684,7 +683,6 @@ args=None
 
 def main():
 	global args
-	import sys
 
 	args = parseArgs()
 
@@ -714,7 +712,6 @@ def main():
 
 
 	import signal
-	import subprocess
 
 	def signal_handler(signal, frame):
 		print 'You pressed Ctrl-C!'
