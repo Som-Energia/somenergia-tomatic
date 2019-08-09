@@ -604,6 +604,11 @@ var lookForPhoneInfo = function() {
         CallInfo.file_info = { 1: "empty" };
         PartnerInfo.main_partner = 0;
         getInfo();
+        var today = new Date();
+        var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date+' '+time;
+        call.date = dateTime
     } 
     else {
         call.date = "";
