@@ -201,6 +201,10 @@ function updateContractNumber(given_contract) {
         contract = given_contract+"";
         while (contract.length < 7) contract = "0" + contract;
     }
+    else {
+        call.proc = false;
+        call.improc = false;
+    }
     call['contract'] = contract;
 }
 
