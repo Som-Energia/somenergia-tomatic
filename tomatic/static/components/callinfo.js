@@ -367,32 +367,6 @@ var motiu = function() {
                             reason_filter = params.value
                         }
                     })),
-                    m(Checkbox, {
-                        class: "checkbox-proc",
-                        name: 'proc',
-                        checked: (call.proc && PartnerInfo.contract !== -1),
-                        label: "Procedente",
-                        disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
-                        onChange: function() {
-                            call.proc = !call.proc;
-                            if (call.proc && call.improc){
-                                call.improc = false
-                            }
-                        },
-                    }),
-                    m(Checkbox, {
-                        class: "checkbox-improc",
-                        name: 'improc',
-                        checked: (call.improc && PartnerInfo.contract !== -1),
-                        label: "Improcedente",
-                        disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
-                        onChange: function() {
-                            call.improc = !call.improc;
-                            if (call.proc && call.improc) {
-                                call.proc = false
-                            }
-                        },
-                    }),
                 ]),
             } },
             { text: {
@@ -410,6 +384,42 @@ var motiu = function() {
                             },
                             disabled: (desar !== "Desa" || CallInfo.search === ""),
                         }),
+                    ]),
+                    m(".checkboxes-and-save-btn", [
+                        m(".locked-text", "TIPUS: "),
+                        m(Checkbox, {
+                            class: "checkbox",
+                            name: 'proc',
+                            checked: (call.proc && PartnerInfo.contract !== -1),
+                            label: "Procedente",
+                            disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
+                            onChange: function() {
+                                call.proc = !call.proc;
+                                call.improc = false
+                            },
+                        }),
+                        m(Checkbox, {
+                            class: "checkbox",
+                            name: 'improc',
+                            checked: (call.improc && PartnerInfo.contract !== -1),
+                            label: "Improcedente",
+                            disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
+                            onChange: function() {
+                                call.improc = !call.improc;
+                                call.proc = false
+                            },
+                        }),
+                        m(Checkbox, {
+                            class: "checkbox",
+                            name: 'noproc',
+                            checked: (!call.improc && !call.proc && PartnerInfo.contract !== -1),
+                            label: "No gestionable",
+                            disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
+                            onChange: function() {
+                                call.improc = false;
+                                call.proc = false;
+                            },
+                        }),
                         m(".save", m(Button, {
                             label: desar,
                             events: {
@@ -424,7 +434,7 @@ var motiu = function() {
                             border: 'true',
                             disabled: (desar !== "Desa" || CallInfo.search === ""),
                         }, m(Ripple))),
-                    ]),
+                    ])
                 ])
             } },
         ]
