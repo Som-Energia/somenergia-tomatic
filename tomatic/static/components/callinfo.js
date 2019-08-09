@@ -397,7 +397,7 @@ var motiu = function() {
                     m(".final-motius", [
                         m(Textfield, {
                             class: "textfield-comentaris",
-                            label: "Algun comentari?",
+                            label: "Observacions:",
                             floatingLabel: true,
                             dense: true,
                             value: call['extra'],
