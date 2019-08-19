@@ -316,9 +316,12 @@ var llistaMotius = function() {
     var disabled = (desar === "Desant" || CallInfo.search === "");
     return m(".motius", m(List, {
         compact: true,
+        indentedBorder: true,
         tiles: filtered.map(function(reason) {
             return m(ListTile, {
-                class: "llista-motius",
+                class: (call_reasons[reason]?
+			"llista-motius-selected":
+			"llista-motius-unselected"),
                 compact: true,
                 selectable: true,
                 ink: 'true',
@@ -326,26 +329,14 @@ var llistaMotius = function() {
                   opacityDecayVelocity: '0.5',
                 },
                 title: reason,
-                secondary: {
-                    content:
-                    m(Checkbox, {
-                        class: "checkbox-motius",
-                        name: 'checkbox',
-                        checked: call_reasons[reason],
-                        value: reason,
-                        onChange: function(newState) {
-                            selectReason(newState.event.target.value)
-                        },
-                        disabled: disabled,
-                    }),
-                },
                 events: {
                     onclick: function(ev) {
                         selectReason(ev.srcElement.innerText);
                     }
                 },
                 disabled: disabled,
-            });
+		bordered: true,
+	    });
         }),
     }));
 }
