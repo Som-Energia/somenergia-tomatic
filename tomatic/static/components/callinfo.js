@@ -313,7 +313,7 @@ var llistaMotius = function() {
     else {
         var filtered = list_reasons;
     }
-    var disabled = (desar === "Desant" || CallInfo.search === "");
+    var disabled = (desar === "Desant" || call.date === "" );
     return m(".motius", m(List, {
         compact: true,
         indentedBorder: true,
@@ -373,7 +373,7 @@ var motiu = function() {
                             onChange: function(params) {
                                 call['extra'] = params.value
                             },
-                            disabled: (desar !== "Desa" || CallInfo.search === ""),
+                            disabled: (desar !== "Desa" || call.date === ""),
                         }),
                     ]),
                     m(".checkboxes-and-save-btn", [
@@ -423,7 +423,7 @@ var motiu = function() {
                                 },
                             },
                             border: 'true',
-                            disabled: (desar !== "Desa" || CallInfo.search === ""),
+                            disabled: (desar !== "Desa" || call.date === ""),
                         }, m(Ripple))),
                     ])
                 ])
