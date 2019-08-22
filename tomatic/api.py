@@ -509,7 +509,10 @@ def client_left(client, server):
 
 
 def startCallInfoWS(app):
-    app.wserver = WebsocketServer(CONFIG.websocket_port, host=CONFIG.websocket_ip)
+    app.wserver = WebsocketServer(
+        CONFIG.websocket_port,
+        host=CONFIG.websocket_ip
+    )
     app.wserver.set_fn_message_received(on_message_recieved)
     app.wserver.set_fn_client_left(client_left)
     thread = Thread(target=app.wserver.run_forever)
@@ -547,15 +550,17 @@ def savePhoneLog():
             credentialFilename=CONFIG.credential_name,
         )
         row = [
-            info["date"],
-            info["person"],
-            info["phone"],
-            info["partner"],
-            info["contract"],
-            info["reason"],
-            info["procedente"],
-            info["improcedente"],
-            info["extra"],
+            info.date,
+            info.person,
+            info.phone,
+            info.partner,
+            info.contract,
+            info.reason,
+            info.user,
+            info.procedente,
+            info.improcedente,
+            info.solved,
+            info.extra,
         ]
         with app.drive_semaphore:
             fetcher.add_to_last_row(SHEETS["log"], row)

@@ -13,6 +13,8 @@ var ListTile = require('polythene-mithril-list-tile').ListTile;
 var List = require ('polythene-mithril-list').List;
 var Spinner = require('polythene-mithril-material-design-spinner').MaterialDesignSpinner;
 var Checkbox = require('polythene-mithril-checkbox').Checkbox;
+var RadioButton = require('polythene-mithril-radio-button').RadioButton
+var RadioGroup = require('polythene-mithril-radio-group').RadioGroup;
 
 var PartnerInfo = require('./partnerinfo');
 var styleCallinfo = require('./callinfo_style.styl');
@@ -22,19 +24,17 @@ var CallInfo = {};
 
 CallInfo.file_info = {};
 CallInfo.search = "";
-var call_reasons = {};
 var log_calls = [];
+var call_reasons = [];
 
 var call = {
     'phone': "",
     'date': "",
     'partner': 0,
     'contract': "",
-    'reason': [],
+    'reason': "",
     'extra': "",
     'log_call_reasons': [],
-    'proc': false,
-    'improc': false,
 };
 
 var desar = "Desa";
@@ -50,20 +50,17 @@ var me = {
 
 
 var clearCallInfo = function() {
-    call['phone']="";
-    call['log_call_reasons']=[];
-    for( i in call['reason']) {
-        call_reasons[call['reason'][i]] = false;
-    }
-    call['reason']=[];
-    call['extra']="";
-    call['contract']="";
-    call['partner']=0,
-    call['proc']=false;
-    call['improc']=false;
+    call['phone'] = "";
+    call['log_call_reasons'] = [];
+    call['reason'] = "";
+    call['extra'] = "";
+    call['contract'] = "";
+    call['partner'] = 0,
+    call['proc'] = false;
+    call['improc'] = false;
     desar = "Desa";
     CallInfo.file_info = {};
-    PartnerInfo.contract=-1;
+    PartnerInfo.contract = -1;
 }
 
 var getInfo = function () {
@@ -102,8 +99,9 @@ CallInfo.getReasons = function () {
         }
         else{
             for (i in response.info.info) {
-                call_reasons[response.info.info[i][0]] = false;
+                call_reasons.push(response.info.info[i][0]);
             }
+            console.log(call_reasons)
         }
     }, function(error) {
         console.debug('Info GET apicall failed: ', error);
@@ -159,19 +157,21 @@ if(me.ext !== -1){
     CallInfo.getLogPerson();
 }
 
-var saveLogCalls = function(phone, person, reason) {
+var saveLogCalls = function(phone, person, reclamacio) {
     desar = 'Desant';
     updateCall(call["date"]);
     info = {
-        "date": call['date'],
-        "phone": call['phone'],
+        "date": call.date,
+        "phone": call.phone,
         "person": person,
-        "reason": reason,
-        "extra": call['extra'],
-        "partner": call['partner'],
-        "contract": call['contract'],
-        "procedente": (call["proc"] ? "x" : ""),
-        "improcedente": (call["improc"] ? "x" : ""),
+        "reason": call.reason,
+        "extra": call.extra,
+        "partner": call.partner,
+        "contract": call.contract,
+        "procedente": (reclamacio.proc ? "x" : ""),
+        "improcedente": (reclamacio.improc ? "x" : ""),
+        "solved": (reclamacio.solved ? "x" : ""),
+        "user": reclamacio.tag,
     }
     m.request({
         method: 'POST',
@@ -185,9 +185,9 @@ var saveLogCalls = function(phone, person, reason) {
         }
         else if (call['phone'] === phone) {
             desar='Desa';
-            call['proc']=false;
-            call['improc']=false;
-            call['extra']="";
+            call.proc=false;
+            call.improc=false;
+            call.extra="";
             reason_filter="";
         }
     }, function(error) {
@@ -212,29 +212,17 @@ function updatePartnerNumber(given_partner) {
     call['partner'] = (given_partner === -1 ? "" : given_partner);
 }
 
-function getCallSelectedReasons() {
-    var reasons = "";
-    var len = call['reason'].length;
-    if (len > 0){
-        for (var i=0; i < len-1; i++) {
-            reasons += call['reason'][i] + ", ";
-        }
-        reasons += call['reason'][len-1];
-    }
-    return reasons;
-}
 
 var updateCall = function(date) {
     var data = PartnerInfo.getPartnerAndContract(CallInfo.file_info);
     updateContractNumber(data['contract']);
     updatePartnerNumber(data["partner"]);
-    getCallSelectedReasons();
     var info = {
         'data': call.date,
         'telefon': call.phone,
         'partner': call.partner,
         'contracte': call.contract,
-        'motius': getCallSelectedReasons(),
+        'motius': call.reason,
     }
     m.request({
         method: 'POST',
@@ -287,26 +275,15 @@ var refreshIcon = function(){
 }
 
 function isEmpty(obj) {
-  return Object.keys(obj).length === 0;
+    return Object.keys(obj).length === 0;
 }
 
-
-var selectReason = function(r) {
-    call_reasons[r] = !call_reasons[r];
-    var index = call['reason'].indexOf(r);
-    if (index > -1) {
-        call['reason'].splice(index, 1);
-    }
-    else {
-        call['reason'].push(r);
-    }
-}
 
 var llistaMotius = function() {
     function conte(value) {
         return value.toLowerCase().includes(reason_filter.toLowerCase());
     }
-    var list_reasons = Object.keys(call_reasons);
+    var list_reasons = call_reasons;
     if (reason_filter !== "") {
         var filtered = list_reasons.filter(conte);
     }
@@ -319,7 +296,7 @@ var llistaMotius = function() {
         indentedBorder: true,
         tiles: filtered.map(function(reason) {
             return m(ListTile, {
-                class: (call_reasons[reason]?
+                class: (call.reason === reason?
 			"llista-motius-selected":
 			"llista-motius-unselected"),
                 compact: true,
@@ -329,9 +306,10 @@ var llistaMotius = function() {
                   opacityDecayVelocity: '0.5',
                 },
                 title: reason,
+                selected: call.reason == reason,
                 events: {
                     onclick: function(ev) {
-                        selectReason(ev.srcElement.innerText);
+                        call['reason'] = reason
                     }
                 },
                 disabled: disabled,
@@ -343,6 +321,191 @@ var llistaMotius = function() {
 
 
 var motiu = function() {
+    
+    var enviar = function(reclamacio="") {
+        saveLogCalls(call.phone, me.iden, reclamacio);
+        call.reason="";
+    }
+    
+    var getTag = function(reason) {
+        var matches = reason.match(/\[(.*?)\]/);
+        if (matches) {
+            return matches[1].trim();
+        }
+        return "";
+    }
+
+    var esReclamacio = function(type) {
+        info = "INFO";
+        return (type != info);
+    }
+
+
+    var seleccionaUsuari = function(tag) {
+        var user = tag;
+        var options = [
+            "RECLAMA",
+            "FACTURA",
+            "ATR A-COMER",
+            "ATR B-COMER",
+            "ATR C-COMER",
+            "ATR M-COMER"
+        ]
+        return m("", [
+            m("p", "Usuari: " ),
+            m("select",
+                {
+                    id: "select-user",
+                    class: ".select-user",
+                    disabled: user !== "",
+                    default: tag,
+                    onchange: function() {
+                        user = document.getElementById("select-user").value;
+                    },
+                },
+                [
+                    m("option", {
+                        "value":"reclama",
+                        "selected": tag === options[0]
+                    }, options[0]),
+                    m("option", {
+                        "value":"factura",
+                        "selected": tag === options[1]
+                    }, options[1]),
+                    m("option", {
+                        "value":"atr-a-comer",
+                        "selected": tag === options[2]
+                    }, options[2]),
+                    m("option", {
+                        "value":"atr-b-comer",
+                        "selected": tag === options[3]
+                    }, options[3]),
+                    m("option", {
+                        "value":"atr-c-comer",
+                        "selected": tag === options[4]
+                    }, options[4]),
+                    m("option", {
+                        "value":"atr-m-comer",
+                        "selected": tag === options[5]
+                    }, options[5]),
+                    m("option", {
+                        "value":"others",
+                        "selected": !options.includes(tag)
+                    }, tag)
+                ]
+            )
+        ]);
+    }
+
+    var tipusATR = function(reclamacio) { 
+        return m("", [
+            m("p", "Tipus: "),
+            m(Checkbox, {
+                class: "checkbox",
+                name: 'proc',
+                checked: reclamacio.proc,
+                label: "Procedente",
+                onChange: function() {
+                    reclamacio.proc = !call.proc;
+                    reclamacio.improc = false
+                },
+            }),
+            m("br"),
+            m(Checkbox, {
+                class: "checkbox",
+                name: 'improc',
+                checked: reclamacio.improc,
+                label: "Improcedente",
+                onChange: function() {
+                    reclamacio.improc = !call.improc;
+                    reclamacio.proc = false
+                },
+            }),
+            m("br"),
+            m(Checkbox, {
+                class: "checkbox",
+                name: 'noproc',
+                checked: (!reclamacio.improc && !reclamacio.proc),
+                label: "No gestionable",
+                onChange: function() {
+                    reclamacio.improc = false;
+                    reclamacio.proc = false;
+                },
+            }),
+        ]);
+    }
+
+    var preguntarResolt = function(reclamacio) {
+        return m("", [
+            m("p", "S'ha resolt?"),
+            m(Checkbox, {
+                class: "checkbox",
+                name: 'solved-yes',
+                checked: reclamacio.solved,
+                label: "Sí",
+                onChange: function() {
+                    reclamacio.solved = !reclamacio.solved;
+                },
+            }),
+            m("br"),
+            m(Checkbox, {
+                class: "checkbox",
+                name: 'solved-no',
+                checked: !reclamacio.solved,
+                label: "No",
+                onChange: function() {
+                    reclamacio.solved = !reclamacio.solved;
+                },
+            }),
+        ]);
+    }
+
+    var buttons = function(reclamacio) {
+        return [ 
+            m(Button, { 
+                label: "Cancel·lar",
+                events: {
+                    onclick: function() {
+                        Dialog.hide({id:'fillReclama'});
+                    },
+                },
+            }),
+            m(Button, {
+                label: "Desa",
+                events: {
+                    onclick: function() {
+                        enviar(reclamacio);
+                        Dialog.hide({id:'fillReclama'});
+                    },
+                },
+            })
+        ];
+    }
+
+    var emplenaReclamacio = function(tag) {
+        var reclamacio = {
+            "proc": false,
+            "improc": false,
+            "solved": false,
+            "tag": tag
+        }
+        Dialog.show(function() { return {
+            className: 'dialog-reclama',
+            title: 'Reclamació:',
+            backdrop: true,
+            body: [
+                seleccionaUsuari(reclamacio.tag),
+                m("br"),
+                tipusATR(reclamacio),
+                m("br"),
+                preguntarResolt(reclamacio),
+                m("br"),
+            ],
+            footerButtons: buttons(reclamacio),
+        };},{id:'fillReclama'});
+    }
+
+
     return m(Card, {
         class: 'card-motius',
         content: [
@@ -377,53 +540,21 @@ var motiu = function() {
                         }),
                     ]),
                     m(".checkboxes-and-save-btn", [
-                        m(".locked-text", "TIPUS: "),
-                        m(Checkbox, {
-                            class: "checkbox",
-                            name: 'proc',
-                            checked: (call.proc && PartnerInfo.contract !== -1),
-                            label: "Procedente",
-                            disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
-                            onChange: function() {
-                                call.proc = !call.proc;
-                                call.improc = false
-                            },
-                        }),
-                        m(Checkbox, {
-                            class: "checkbox",
-                            name: 'improc',
-                            checked: (call.improc && PartnerInfo.contract !== -1),
-                            label: "Improcedente",
-                            disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
-                            onChange: function() {
-                                call.improc = !call.improc;
-                                call.proc = false
-                            },
-                        }),
-                        m(Checkbox, {
-                            class: "checkbox",
-                            name: 'noproc',
-                            checked: (!call.improc && !call.proc && PartnerInfo.contract !== -1),
-                            label: "No gestionable",
-                            disabled: (PartnerInfo.contract === -1) || (desar === "Desant"),
-                            onChange: function() {
-                                call.improc = false;
-                                call.proc = false;
-                            },
-                        }),
                         m(".save", m(Button, {
                             label: desar,
                             events: {
                                 onclick: function() {
-                                    for( i in call['reason']) {
-                                        saveLogCalls(call['phone'], me.iden, call['reason'][i]);
-                                        call_reasons[call['reason'][i]] = false;
+                                    var tag = getTag(call.reason);
+                                    if (esReclamacio(tag)) {
+                                        emplenaReclamacio(tag);
                                     }
-                                    call['reason']=[]
+                                    else {
+                                        enviar();
+                                    }
                                 },
                             },
                             border: 'true',
-                            disabled: (desar !== "Desa" || call.date === ""),
+                            disabled: (call.reason === "" || desar !== "Desa" || call.date === ""),
                         }, m(Ripple))),
                     ])
                 ])
