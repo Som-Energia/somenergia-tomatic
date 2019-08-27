@@ -352,9 +352,11 @@ var llistaMotius = function() {
     }
     var list_reasons = call_reasons.general;
     if (reason_filter !== "") {
+        list_reasons = call_reasons.specific;
         var filtered = list_reasons.filter(conte);
     }
     else {
+        list_reasons = call_reasons.general;
         var filtered = list_reasons;
     }
     var disabled = (desar === "Desant" || call.date === "" );
