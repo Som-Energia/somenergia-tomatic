@@ -39,7 +39,8 @@ CONFIG = fillConfigurationInfo()
 
 
 SHEETS = {
-    "log": 0,
+    "infos_log": 0,
+    "claims_log": 4,
     "general_reasons": 2,
     "specific_reasons": 3
 }
@@ -543,8 +544,8 @@ def getReasonsInfo(info_type):
     return yamlfy(info=result)
 
 
-@app.route('/api/reasons', methods=['POST'])
-def savePhoneLog():
+@app.route('/api/infoReasons', methods=['POST'])
+def savePhoneInfosLog():
     message = 'ok'
     try:
         info = ns.loads(request.data)
@@ -556,18 +557,44 @@ def savePhoneLog():
             info.date,
             info.person,
             info.phone,
-            info.partner,
-            info.contract,
-            info.cups,
             info.reason,
-            info.user,
-            info.procedente,
-            info.improcedente,
-            info.solved,
             info.extra,
         ]
         with app.drive_semaphore:
-            fetcher.add_to_last_row(SHEETS["log"], row)
+            fetcher.add_to_last_row(SHEETS["infos_log"], row)
+    except IOError:
+        error("Saving {} to the drive sheet.", CONFIG.call_reasons_document)
+        message = 'error_add_to_las_row'
+    result = ns(
+        message=message
+    )
+    return yamlfy(info=result)
+
+
+@app.route('/api/claimReasons', methods=['POST'])
+def savePhoneClaimsLog():
+    message = 'ok'
+    try:
+        info = ns.loads(request.data)
+        fetcher = SheetFetcher(
+            documentName=CONFIG.call_reasons_document,
+            credentialFilename=CONFIG.credential_name,
+        )
+        row = [
+            info.date,
+            info.person,
+            info.partner,
+            info.contract,
+            info.cups,
+            info.user,
+            info.reason,
+            info.procedente,
+            info.improcedente,
+            info.solved,
+            info.observations,
+        ]
+        with app.drive_semaphore:
+            fetcher.add_to_last_row(SHEETS["claims_log"], row)
     except IOError:
         error("Saving {} to the drive sheet.", CONFIG.call_reasons_document)
         message = 'error_add_to_las_row'
@@ -585,7 +612,7 @@ def getPhoneLog(phone):
             documentName=CONFIG.call_reasons_document,
             credentialFilename=CONFIG.credential_name,
         )
-        log = fetcher.get_fullsheet(SHEETS["log"])
+        log = fetcher.get_fullsheet(SHEETS["infos_log"])
     except IOError:
         log = []
         message = 'error_get_fullsheet'

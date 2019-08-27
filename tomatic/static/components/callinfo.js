@@ -183,26 +183,12 @@ if(me.ext !== -1){
     CallInfo.getLogPerson();
 }
 
-var saveLogCalls = function(phone, person, reclamacio) {
-    desar = 'Desant';
-    updateCall(call["date"]);
-    info = {
-        "date": call.date,
-        "phone": call.phone,
-        "person": person,
-        "reason": call.reason,
-        "extra": call.extra,
-        "partner": call.partner,
-        "contract": (PartnerInfo.contract === -1 ? "" : contract.number),
-        "procedente": (reclamacio.proc ? "x" : ""),
-        "improcedente": (reclamacio.improc ? "x" : ""),
-        "solved": (reclamacio.solved ? "x" : ""),
-        "user": (reclamacio.tag ? reclamacio.tag : "INFO"),
-        "cups": (PartnerInfo.contract === -1 ? "" : contract.cups)
-    }
+
+
+var postInfo = function(info) {
     m.request({
         method: 'POST',
-        url: '/api/reasons',
+        url: '/api/infoReasons',
         data: info,
         deserialize: jsyaml.load,
     }).then(function(response){
@@ -212,14 +198,67 @@ var saveLogCalls = function(phone, person, reclamacio) {
         }
         else if (call['phone'] === phone) {
             desar='Desa';
-            call.proc=false;
-            call.improc=false;
             call.extra="";
             reason_filter="";
         }
     }, function(error) {
         console.debug('Info POST apicall failed: ', error);
     });
+}
+
+var postReclama = function(claim) {
+    m.request({
+        method: 'POST',
+        url: '/api/claimReasons',
+        data: claim,
+        deserialize: jsyaml.load,
+    }).then(function(response){
+        console.debug("Info POST Response: ",response);
+        if (response.info.message !== "ok" ) {
+            console.debug("Error al desar motius telefon: ", response.info.message)
+        }
+        else if (call['phone'] === phone) {
+            call.proc=false;
+            call.improc=false;
+        }
+    }, function(error) {
+        console.debug('Info POST apicall failed: ', error);
+    });
+}
+
+
+var saveLogCalls = function(phone, person, reclamacio) {
+    desar = 'Desant';
+    updateCall(call["date"]);
+    info = {
+        "date": call.date,
+        "phone": call.phone,
+        "person": person,
+        "reason": call.reason,
+        "extra": call.extra,
+    }
+    if (reclamacio == "") {
+        console.log("Faig coses de INFO");
+        postInfo(info);
+    }
+    else {
+        console.log("Faig coses de RECLAMACIO");
+        claim = {
+            "date": call.date,
+            "person": person,
+            "reason": call.reason,
+            "partner": call.partner,
+            "contract": (PartnerInfo.contract === -1 ? "" : contract.number),
+            "procedente": (reclamacio.proc ? "x" : ""),
+            "improcedente": (reclamacio.improc ? "x" : ""),
+            "solved": (reclamacio.solved ? "x" : ""),
+            "user": (reclamacio.tag ? reclamacio.tag : "INFO"),
+            "cups": (PartnerInfo.contract === -1 ? "" : contract.cups),
+            "observations":"observetions, blah blah",
+        }
+        postInfo(info);
+        postReclama(claim);
+    }
 }
 
 function updateContractNumber(given_contract) {
@@ -602,7 +641,7 @@ var llistaLog = function() {
     for(var i = call['log_call_reasons'].length-1; i>=0; i--) {
         var missatge = call['log_call_reasons'][i][1]
                     +" ("+call['log_call_reasons'][i][0]
-                    +"): "+call['log_call_reasons'][i][5];
+                    +"): "+call['log_call_reasons'][i][3];
         aux.push(m(ListTile, {
             class: "registres",
             compact: true,
