@@ -185,7 +185,7 @@ if(me.ext !== -1){
 
 
 
-var postInfo = function(info) {
+var postInfo = function(phone, info) {
     m.request({
         method: 'POST',
         url: '/api/infoReasons',
@@ -200,6 +200,8 @@ var postInfo = function(info) {
             desar='Desa';
             call.extra="";
             reason_filter="";
+            call.proc=false;
+            call.improc=false;
         }
     }, function(error) {
         console.debug('Info POST apicall failed: ', error);
@@ -216,10 +218,6 @@ var postReclama = function(claim) {
         console.debug("Info POST Response: ",response);
         if (response.info.message !== "ok" ) {
             console.debug("Error al desar motius telefon: ", response.info.message)
-        }
-        else if (call['phone'] === phone) {
-            call.proc=false;
-            call.improc=false;
         }
     }, function(error) {
         console.debug('Info POST apicall failed: ', error);
@@ -239,7 +237,7 @@ var saveLogCalls = function(phone, person, reclamacio) {
     }
     if (reclamacio == "") {
         console.log("Faig coses de INFO");
-        postInfo(info);
+        postInfo(phone, info);
     }
     else {
         console.log("Faig coses de RECLAMACIO");
@@ -256,7 +254,7 @@ var saveLogCalls = function(phone, person, reclamacio) {
             "cups": (PartnerInfo.contract === -1 ? "" : contract.cups),
             "observations":"observetions, blah blah",
         }
-        postInfo(info);
+        postInfo(phone, info);
         postReclama(claim);
     }
 }
