@@ -194,10 +194,12 @@ var specificPartnerCard = function(partner, button) {
 PartnerInfo.getPartnerAndContract = function(info) {
     var partner = -1
     var contract = -1
+    var cups = -1
     try {
         partner = info.partners[PartnerInfo.main_partner].id_soci
         if(PartnerInfo.contract!==-1){
             contract = info.partners[PartnerInfo.main_partner].contracts[PartnerInfo.contract].number
+            cups = info.partners[PartnerInfo.main_partner].contracts[PartnerInfo.contract].cups
         }
     }
     catch(error) {
@@ -205,7 +207,10 @@ PartnerInfo.getPartnerAndContract = function(info) {
     }
     var data = {
         "partner" : partner,
-        "contract" : contract
+        "contract" : {
+	    "number": contract,
+            "cups": cups,
+	}
     }
     return data;
 }

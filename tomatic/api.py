@@ -558,6 +558,7 @@ def savePhoneLog():
             info.phone,
             info.partner,
             info.contract,
+            info.cups,
             info.reason,
             info.user,
             info.procedente,

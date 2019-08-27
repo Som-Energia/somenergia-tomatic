@@ -36,11 +36,15 @@ var call = {
     'phone': "",
     'date': "",
     'partner': 0,
-    'contract': "",
     'reason': "",
     'extra': "",
     'log_call_reasons': [],
 };
+
+var contract = {
+    'number': "",
+    'cups':"",
+}
 
 var desar = "Desa";
 var reason_filter = "";
@@ -59,10 +63,11 @@ var clearCallInfo = function() {
     call['log_call_reasons'] = [];
     call['reason'] = "";
     call['extra'] = "";
-    call['contract'] = "";
     call['partner'] = 0,
     call['proc'] = false;
     call['improc'] = false;
+    contract.number = "";
+    contract.cups = "";
     desar = "Desa";
     CallInfo.file_info = {};
     PartnerInfo.contract = -1;
@@ -188,11 +193,12 @@ var saveLogCalls = function(phone, person, reclamacio) {
         "reason": call.reason,
         "extra": call.extra,
         "partner": call.partner,
-        "contract": call.contract,
+        "contract": (PartnerInfo.contract === -1 ? "" : contract.number),
         "procedente": (reclamacio.proc ? "x" : ""),
         "improcedente": (reclamacio.improc ? "x" : ""),
         "solved": (reclamacio.solved ? "x" : ""),
-        "user": reclamacio.tag,
+        "user": (reclamacio.tag ? reclamacio.tag : "INFO"),
+        "cups": (PartnerInfo.contract === -1 ? "" : contract.cups)
     }
     m.request({
         method: 'POST',
@@ -217,16 +223,17 @@ var saveLogCalls = function(phone, person, reclamacio) {
 }
 
 function updateContractNumber(given_contract) {
-    var contract = "";
-    if(given_contract!== -1) {
-        contract = given_contract+"";
-        while (contract.length < 7) contract = "0" + contract;
+    var pretty_contract = "";
+    if(given_contract.number !== -1) {
+        pretty_contract = given_contract.number+"";
+        while (pretty_contract.length < 7) pretty_contract = "0" + pretty_contract;
     }
     else {
         call.proc = false;
         call.improc = false;
     }
-    call['contract'] = contract;
+    contract.number = pretty_contract;
+    contract.cups = given_contract.cups;
 }
 
 function updatePartnerNumber(given_partner) {
@@ -242,7 +249,7 @@ var updateCall = function(date) {
         'data': call.date,
         'telefon': call.phone,
         'partner': call.partner,
-        'contracte': call.contract,
+        'contracte': (PartnerInfo.contract === -1 ? "" : contract.number),
         'motius': call.reason,
     }
     m.request({
@@ -579,7 +586,9 @@ var motiu = function() {
                                 },
                             },
                             border: 'true',
-                            disabled: (call.reason === "" || desar !== "Desa" || call.date === ""),
+                            disabled: (call.reason === "" || desar !== "Desa" || call.date === "" ||
+			            (esReclamacio(getTag(call.reason)) && PartnerInfo.contract ===  -1)
+			    ),
                         }, m(Ripple))),
                     ])
                 ])
