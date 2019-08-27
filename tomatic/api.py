@@ -40,7 +40,8 @@ CONFIG = fillConfigurationInfo()
 
 SHEETS = {
     "log": 0,
-    "reasons": 1,
+    "general_reasons": 2,
+    "specific_reasons": 3
 }
 
 LOGS = {
@@ -520,15 +521,17 @@ def startCallInfoWS(app):
     return thread
 
 
-@app.route('/api/generalReasons', methods=['GET'])
-def reasonsInfo():
+@app.route('/api/callReasons/<info_type>', methods=['GET'])
+def getReasonsInfo(info_type):
     message = 'ok'
     try:
         fetcher = SheetFetcher(
             documentName=CONFIG.call_reasons_document,
             credentialFilename=CONFIG.credential_name,
         )
-        reasons = fetcher.get_fullsheet(SHEETS["reasons"])
+        reasons = fetcher.get_fullsheet(
+                SHEETS["general_reasons"] if info_type == 'general' else SHEETS["specific_reasons"]
+        )
     except IOError:
         reasons = []
         message = 'error_get_fullsheet'

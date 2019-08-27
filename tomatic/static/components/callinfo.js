@@ -25,7 +25,12 @@ var CallInfo = {};
 CallInfo.file_info = {};
 CallInfo.search = "";
 var log_calls = [];
-var call_reasons = [];
+
+var call_reasons = {
+    'general': [],
+    'specific': []
+}
+
 
 var call = {
     'phone': "",
@@ -90,7 +95,7 @@ var getInfo = function () {
 CallInfo.getReasons = function () {
     m.request({
         method: 'GET',
-        url: '/api/generalReasons',
+        url: '/api/callReasons/general',
         deserialize: jsyaml.load,
     }).then(function(response){
         console.debug("Info GET Response: ",response);
@@ -99,9 +104,25 @@ CallInfo.getReasons = function () {
         }
         else{
             for (i in response.info.info) {
-                call_reasons.push(response.info.info[i][0]);
+                call_reasons.general.push(response.info.info[i][1]);
             }
-            console.log(call_reasons)
+        }
+    }, function(error) {
+        console.debug('Info GET apicall failed: ', error);
+    });
+    m.request({
+        method: 'GET',
+        url: '/api/callReasons/specific',
+        deserialize: jsyaml.load,
+    }).then(function(response){
+        console.debug("Info GET Response: ",response);
+        if (response.info.message !== "ok" ) {
+            console.debug("Error al obtenir els motius: ", response.info.message)
+        }
+        else{
+            for (i in response.info.info) {
+                call_reasons.specific.push(response.info.info[i][1]);
+            }
         }
     }, function(error) {
         console.debug('Info GET apicall failed: ', error);
@@ -283,7 +304,7 @@ var llistaMotius = function() {
     function conte(value) {
         return value.toLowerCase().includes(reason_filter.toLowerCase());
     }
-    var list_reasons = call_reasons;
+    var list_reasons = call_reasons.general;
     if (reason_filter !== "") {
         var filtered = list_reasons.filter(conte);
     }
@@ -341,57 +362,57 @@ var motiu = function() {
     }
 
 
-    var seleccionaUsuari = function(tag) {
-        var user = tag;
+    var seleccionaUsuari = function(reclamacio, tag) {
+        var section = tag;
         var options = [
             "RECLAMA",
             "FACTURA",
-            "ATR A-COMER",
-            "ATR B-COMER",
-            "ATR C-COMER",
-            "ATR M-COMER"
+            "ATR A - COMER",
+            "ATR B - COMER",
+            "ATR C - COMER",
+            "ATR M - COMER"
         ]
         return m("", [
-            m("p", "Usuari: " ),
+            m("p", "Secció: " ),
             m("select",
                 {
                     id: "select-user",
                     class: ".select-user",
-                    disabled: user !== "",
-                    default: tag,
+                    disabled: section !== "ASSIGNAR USUARI",
+                    default: section,
                     onchange: function() {
-                        user = document.getElementById("select-user").value;
+                        reclamacio.tag = document.getElementById("select-user").value;
                     },
                 },
                 [
                     m("option", {
-                        "value":"reclama",
-                        "selected": tag === options[0]
+                        "value": options[0],
+                        "selected": section === options[0]
                     }, options[0]),
                     m("option", {
-                        "value":"factura",
-                        "selected": tag === options[1]
+                        "value": options[1],
+                        "selected": section === options[1]
                     }, options[1]),
                     m("option", {
-                        "value":"atr-a-comer",
-                        "selected": tag === options[2]
+                        "value": options[2],
+                        "selected": section === options[2]
                     }, options[2]),
                     m("option", {
-                        "value":"atr-b-comer",
-                        "selected": tag === options[3]
+                        "value": options[3],
+                        "selected": section === options[3]
                     }, options[3]),
                     m("option", {
-                        "value":"atr-c-comer",
-                        "selected": tag === options[4]
+                        "value": options[4],
+                        "selected": section === options[4]
                     }, options[4]),
                     m("option", {
-                        "value":"atr-m-comer",
-                        "selected": tag === options[5]
+                        "value": options[5],
+                        "selected": section === options[5]
                     }, options[5]),
                     m("option", {
-                        "value":"others",
-                        "selected": !options.includes(tag)
-                    }, tag)
+                        "value": section,
+                        "selected": !options.includes(section)
+                    }, section)
                 ]
             )
         ]);
