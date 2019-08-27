@@ -490,6 +490,7 @@ var motiu = function() {
                         Dialog.hide({id:'fillReclama'});
                     },
                 },
+                raised: true,
             }),
             m(Button, {
                 label: "Desa",
@@ -499,6 +500,9 @@ var motiu = function() {
                         Dialog.hide({id:'fillReclama'});
                     },
                 },
+                disabled: (reclamacio.tag === "ASSIGNAR USUARI"),
+                contained: true,
+                raised: true,
             })
         ];
     }
@@ -515,7 +519,7 @@ var motiu = function() {
             title: 'Reclamació:',
             backdrop: true,
             body: [
-                seleccionaUsuari(reclamacio.tag),
+                seleccionaUsuari(reclamacio, tag),
                 m("br"),
                 tipusATR(reclamacio),
                 m("br"),
