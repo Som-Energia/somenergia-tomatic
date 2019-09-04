@@ -236,11 +236,9 @@ var saveLogCalls = function(phone, person, reclamacio) {
         "extra": call.extra,
     }
     if (reclamacio == "") {
-        console.log("Faig coses de INFO");
         postInfo(phone, info);
     }
     else {
-        console.log("Faig coses de RECLAMACIO");
         claim = {
             "date": call.date,
             "person": person,
