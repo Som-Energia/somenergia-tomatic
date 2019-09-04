@@ -250,7 +250,7 @@ var saveLogCalls = function(phone, person, reclamacio) {
             "solved": (reclamacio.solved ? "x" : ""),
             "user": (reclamacio.tag ? reclamacio.tag : "INFO"),
             "cups": (PartnerInfo.contract === -1 ? "" : contract.cups),
-            "observations":"observetions, blah blah",
+            "observations": call.extra,
         }
         postInfo(phone, info);
         postReclama(claim);
