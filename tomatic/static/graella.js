@@ -207,7 +207,7 @@ var editPerson = function(name) {
 			formatName: Tomatic.formatName(name),
 			color: Tomatic.persons().colors[name],
 			extension: Tomatic.persons().extensions[name],
-			notoi_id: Tomatic.persons().notoi_id[name],
+			email: Tomatic.persons().emails[name],
 			table: Tomatic.table(name),
 		};
 	};
@@ -299,19 +299,6 @@ PersonEditor.view = function(vnode) {
 			},
 		}),
 		m(Textfield, {
-			label: 'Identificador Gestor d\'Absències',
-			floatingLabel: true,
-			pattern: '[0-9]{1,5}$',
-			help: 'Identificador del Gestor d\'Absències.',
-			error: 'Només numeros.',
-			required: true,
-			disabled: !vnode.attrs.newone,
-			value: vnode.attrs.notoi_id || '',
-			onChange: function(state) {
-				vnode.attrs.notoi_id=parseInt(state.value);
-			},
-		}),
-		m(Textfield, {
 			label: 'Nom mostrat',
 			floatingLabel: true,
 			help: 'Nom amb accents, majúscules...',
@@ -319,6 +306,18 @@ PersonEditor.view = function(vnode) {
 			value: vnode.attrs.formatName,
 			onChange: function(state) {
 				vnode.attrs.formatName=state.value;
+			},
+		}),
+		m(Textfield, {
+			label: 'Correu electrònic',
+			floatingLabel: true,
+			type: 'email',
+			help: 'Correu oficial que tens a Som Energia.',
+			error: 'Correu invàlid.',
+			required: true,
+			value: vnode.attrs.email || '',
+			onChange: function(state) {
+				vnode.attrs.email=state.value;
 			},
 		}),
 		m(Textfield, {

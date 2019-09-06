@@ -308,36 +308,9 @@ colors:
   berta: ddeeff
   yolanda: ddeeff
   joel: 00797c
-notoi_ids:
-  marta: 1
-  albertg: null
-  yaiza: null
-  vero: null
-  benjami: null
-  eduard: null
-  tania: null
-  victor: null
-  albert: null
-  judith: null
-  manel: null
-  maite: null
-  eloi: null
-  erola: null
-  lucia: null
-  davids: null
-  mar: null
-  gemma: null
-  vic: null
-  sergi: null
-  juanpe: null
-  hermigg: 2406
-  cire: 1007
-  francesc: 1718
-  jaume: null
-  berta: null
-  yolanda: null
-  pere: null
-  joel: null
+emails:
+  marc: marc.rosello@somenergia.coop
+  benjami: benjami.ramos@somenergia.coop
 extensions:
   marta: '3040'
   monica: '3041'
