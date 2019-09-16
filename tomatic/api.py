@@ -39,8 +39,10 @@ CONFIG = fillConfigurationInfo()
 
 
 SHEETS = {
-    "log": 0,
-    "reasons": 1,
+    "infos_log": 0,
+    "claims_log": 4,
+    "general_reasons": 2,
+    "specific_reasons": 3
 }
 
 LOGS = {
@@ -509,7 +511,10 @@ def client_left(client, server):
 
 
 def startCallInfoWS(app):
-    app.wserver = WebsocketServer(CONFIG.websocket_port, host=CONFIG.websocket_ip)
+    app.wserver = WebsocketServer(
+        CONFIG.websocket_port,
+        host=CONFIG.websocket_ip
+    )
     app.wserver.set_fn_message_received(on_message_recieved)
     app.wserver.set_fn_client_left(client_left)
     thread = Thread(target=app.wserver.run_forever)
@@ -517,15 +522,17 @@ def startCallInfoWS(app):
     return thread
 
 
-@app.route('/api/generalReasons', methods=['GET'])
-def reasonsInfo():
+@app.route('/api/callReasons/<info_type>', methods=['GET'])
+def getReasonsInfo(info_type):
     message = 'ok'
     try:
         fetcher = SheetFetcher(
             documentName=CONFIG.call_reasons_document,
             credentialFilename=CONFIG.credential_name,
         )
-        reasons = fetcher.get_fullsheet(SHEETS["reasons"])
+        reasons = fetcher.get_fullsheet(
+                SHEETS["general_reasons"] if info_type == 'general' else SHEETS["specific_reasons"]
+        )
     except IOError:
         reasons = []
         message = 'error_get_fullsheet'
@@ -537,8 +544,8 @@ def reasonsInfo():
     return yamlfy(info=result)
 
 
-@app.route('/api/reasons', methods=['POST'])
-def savePhoneLog():
+@app.route('/api/infoReasons', methods=['POST'])
+def savePhoneInfosLog():
     message = 'ok'
     try:
         info = ns.loads(request.data)
@@ -547,18 +554,47 @@ def savePhoneLog():
             credentialFilename=CONFIG.credential_name,
         )
         row = [
-            info["date"],
-            info["person"],
-            info["phone"],
-            info["partner"],
-            info["contract"],
-            info["reason"],
-            info["procedente"],
-            info["improcedente"],
-            info["extra"],
+            info.date,
+            info.person,
+            info.phone,
+            info.reason,
+            info.extra,
         ]
         with app.drive_semaphore:
-            fetcher.add_to_last_row(SHEETS["log"], row)
+            fetcher.add_to_last_row(SHEETS["infos_log"], row)
+    except IOError:
+        error("Saving {} to the drive sheet.", CONFIG.call_reasons_document)
+        message = 'error_add_to_las_row'
+    result = ns(
+        message=message
+    )
+    return yamlfy(info=result)
+
+
+@app.route('/api/claimReasons', methods=['POST'])
+def savePhoneClaimsLog():
+    message = 'ok'
+    try:
+        info = ns.loads(request.data)
+        fetcher = SheetFetcher(
+            documentName=CONFIG.call_reasons_document,
+            credentialFilename=CONFIG.credential_name,
+        )
+        row = [
+            info.date,
+            info.person,
+            info.partner,
+            info.contract,
+            info.cups,
+            info.user,
+            info.reason,
+            info.procedente,
+            info.improcedente,
+            info.solved,
+            info.observations,
+        ]
+        with app.drive_semaphore:
+            fetcher.add_to_last_row(SHEETS["claims_log"], row)
     except IOError:
         error("Saving {} to the drive sheet.", CONFIG.call_reasons_document)
         message = 'error_add_to_las_row'
@@ -576,7 +612,7 @@ def getPhoneLog(phone):
             documentName=CONFIG.call_reasons_document,
             credentialFilename=CONFIG.credential_name,
         )
-        log = fetcher.get_fullsheet(SHEETS["log"])
+        log = fetcher.get_fullsheet(SHEETS["infos_log"])
     except IOError:
         log = []
         message = 'error_get_fullsheet'
