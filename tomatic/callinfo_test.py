@@ -217,7 +217,7 @@ class CallInfo_Test(unittest.TestCase):
             id_soci: ...225
             state: Barcelona
             dni: ...36L
-            ov: False
+            ov: True
             energetica: False
             """)
 
@@ -273,7 +273,7 @@ class CallInfo_Test(unittest.TestCase):
             id_soci: ...533
             state: ''
             dni: ...13X
-            ov: False
+            ov: True
             energetica: False
             """)
 
@@ -328,8 +328,8 @@ class CallInfo_Test(unittest.TestCase):
                 state: activa
                 power: 3.45
                 fare: 2.0DHA
-                number: '00155'
-                last_invoiced: '2018-05-22'
+                number: '0000155'
+                last_invoiced: '2019-08-18'
                 suspended_invoicing: false
                 pending_state: 'Correct'
                 has_open_r1s: False
@@ -349,10 +349,10 @@ class CallInfo_Test(unittest.TestCase):
                 state: activa
                 power: 1.15
                 fare: 2.0A
-                number: '28042'
-                last_invoiced: '2018-06-18'
+                number: '0028042'
+                last_invoiced: '2019-08-18'
                 suspended_invoicing: false
-                pending_state: 'Correct'
+                pending_state: 'Correcte'
                 has_open_r1s: False
                 has_open_bs: False
                 is_titular: False
@@ -370,8 +370,8 @@ class CallInfo_Test(unittest.TestCase):
                 state: activa
                 power: 4.6
                 fare: 2.0DHA
-                number: '29062'
-                last_invoiced: '2018-05-22'
+                number: '0029062'
+                last_invoiced: '2019-08-19'
                 suspended_invoicing: false
                 pending_state: 'Correct'
                 has_open_r1s: false
@@ -391,8 +391,8 @@ class CallInfo_Test(unittest.TestCase):
                 state: activa
                 power: 3.45
                 fare: 2.0DHA
-                number: '34613'
-                last_invoiced: '2018-05-22'
+                number: '0034613'
+                last_invoiced: '2019-08-19'
                 suspended_invoicing: false
                 pending_state: 'Correct'
                 has_open_r1s: false
@@ -403,27 +403,6 @@ class CallInfo_Test(unittest.TestCase):
                 is_payer: false
                 cups_adress: '...ig)'
                 titular_name: '...nia'
-                energetica: False
-                generation: False
-              -
-                end_date: ''
-                cups: ...Y0F
-                start_date: '2018-01-13'
-                state: activa
-                power: 5.75
-                fare: 2.0A
-                number: '71164'
-                last_invoiced: '2018-06-12'
-                suspended_invoicing: false
-                pending_state: 'Correct'
-                has_open_r1s: false
-                has_open_bs: false
-                is_titular: false
-                is_partner: true
-                is_notifier: false
-                is_payer: false
-                cups_adress: '...ig)'
-                titular_name: '...ert'
                 energetica: False
                 generation: False
             """)
@@ -447,10 +426,10 @@ class CallInfo_Test(unittest.TestCase):
               state: activa
               power: 3.45
               fare: 2.0DHA
-              number: '00155'
+              number: '0000155'
               last_invoiced: '2018-05-22'
               suspended_invoicing: false
-              pending_state: 'Correct'
+              pending_state: 'Correcte'
               has_open_r1s: False
               has_open_bs: False
               is_titular: True
@@ -478,7 +457,7 @@ class CallInfo_Test(unittest.TestCase):
               number: '08597'
               last_invoiced: '2018-06-12'
               suspended_invoicing: false
-              pending_state: 'Correct'
+              pending_state: 'Correcte'
               has_open_r1s: False
               has_open_bs: False
               is_titular: True
@@ -507,7 +486,7 @@ class CallInfo_Test(unittest.TestCase):
               number: '51861'
               last_invoiced: '2018-06-13'
               suspended_invoicing: true
-              pending_state: 'Correct'
+              pending_state: 'Correcte'
               has_open_r1s: False
               has_open_bs: False
               is_titular: True
@@ -535,7 +514,7 @@ class CallInfo_Test(unittest.TestCase):
               number: '00406'
               last_invoiced: '2018-05-23'
               suspended_invoicing: false
-              pending_state: 'Correct'
+              pending_state: 'Correcte'
               has_open_r1s: True
               has_open_bs: False
               is_titular: True
@@ -564,7 +543,7 @@ class CallInfo_Test(unittest.TestCase):
               number: '11324'
               last_invoiced: '2018-05-28'
               suspended_invoicing: false
-              pending_state: 'Correct'
+              pending_state: 'Correcte'
               has_open_r1s: False
               has_open_bs: True
               is_titular: True
@@ -617,10 +596,10 @@ class CallInfo_Test(unittest.TestCase):
               state: activa
               power: 3.45
               fare: 2.0DHA
-              number: '00155'
+              number: '0000155'
               last_invoiced: '2018-05-22'
               suspended_invoicing: false
-              pending_state: 'Correct'
+              pending_state: 'Correcte'
               has_open_r1s: False
               has_open_bs: False
               is_titular: True
@@ -638,10 +617,10 @@ class CallInfo_Test(unittest.TestCase):
               state: activa
               power: 3.45
               fare: 2.0A
-              number: '00250'
+              number: '0e00250'
               last_invoiced: '2018-05-29'
               suspended_invoicing: false
-              pending_state: 'Correct'
+              pending_state: 'Correcte'
               has_open_r1s: False
               has_open_bs: False
               is_titular: False
