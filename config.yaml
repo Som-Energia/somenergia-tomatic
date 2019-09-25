@@ -46,7 +46,7 @@ taules:
   marc: 16
   joan: 5
   mariona: 17
-  eduard: 6
+  eduard: 7
   pere: -1
   david: 5
   carles: 8
@@ -59,12 +59,12 @@ taules:
   joanb: 14
   marta: 15
   yaiza: 15
-  victor: 6
+  victor: 7
   silvia: 13
   ana: 18
   gabriel: 9
   manel: 12
-  tania: 3
+  tania: 7
   lucia: 3
   vic: 15
   maria: 12
@@ -174,7 +174,7 @@ colors:
   rogerlf: 00517d
   gemma: a6ba8c
   aram: 614d02
-  benjami: 31ff14
+  benjami: 53ff14
   guifre: ff000e
   nuria: 00662a
   carme: 0000ff
@@ -191,6 +191,14 @@ colors:
   jaume: 5afc9c
 notoi_ids:
   marta: 1
+  albertg: null
+  yaiza: null
+  vero: null
+  benjami: null
+  eduard: null
+  tania: null
+  victor: null
+  albert: null
 extensions:
   marta: '3040'
   monica: '3041'
