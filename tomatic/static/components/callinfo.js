@@ -411,6 +411,7 @@ var motiu = function() {
         var options = [
             "RECLAMA",
             "FACTURA",
+	    "COBRAMENTS",
             "ATR A - COMER",
             "ATR B - COMER",
             "ATR C - COMER",
@@ -453,6 +454,10 @@ var motiu = function() {
                         "value": options[5],
                         "selected": section === options[5]
                     }, options[5]),
+                    m("option", {
+                        "value": options[6],
+                        "selected": section === options[6]
+                    }, options[6]),
                     m("option", {
                         "value": section,
                         "selected": !options.includes(section)
