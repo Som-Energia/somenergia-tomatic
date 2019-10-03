@@ -97,6 +97,13 @@ var getInfo = function () {
     });
 };
 
+
+String.prototype.pad = function(String, len) {
+    var str = this;
+    while (str.length < len)
+        str = String + str;
+    return str;
+}
 CallInfo.getReasons = function () {
     m.request({
         method: 'GET',
@@ -109,7 +116,10 @@ CallInfo.getReasons = function () {
         }
         else{
             for (i in response.info.info) {
-                call_reasons.general.push(response.info.info[i][1]);
+                var num = response.info.info[i][0];
+                var reason = (num != '-' && num.pad("0", 3) + ". " || "");
+                reason += response.info.info[i][1];
+                call_reasons.general.push(reason);
             }
         }
     }, function(error) {
@@ -126,7 +136,10 @@ CallInfo.getReasons = function () {
         }
         else{
             for (i in response.info.info) {
-                call_reasons.specific.push(response.info.info[i][1]);
+                var num = response.info.info[i][0];
+                var reason = (num != '-' && num.pad("0", 3) + ". " || "");
+                reason += response.info.info[i][1];
+                call_reasons.specific.push(reason);
             }
         }
     }, function(error) {
