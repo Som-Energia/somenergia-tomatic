@@ -560,7 +560,7 @@ var motiu = function() {
         var reclamacio = {
             "proc": false,
             "improc": false,
-            "solved": false,
+            "solved": true,
             "tag": tag
         }
         Dialog.show(function() { return {
@@ -570,9 +570,9 @@ var motiu = function() {
             body: [
                 seleccionaUsuari(reclamacio, tag),
                 m("br"),
-                tipusATR(reclamacio),
-                m("br"),
                 preguntarResolt(reclamacio),
+                m("br"),
+                (reclamacio.solved && m("") || tipusATR(reclamacio)),
                 m("br"),
             ],
             footerButtons: buttons(reclamacio),
