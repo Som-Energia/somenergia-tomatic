@@ -28,8 +28,10 @@ var log_calls = [];
 
 var call_reasons = {
     'general': [],
-    'specific': []
+    'specific': [],
+    'extras': []
 }
+var extras_dict = {}
 
 
 var call = {
@@ -97,13 +99,27 @@ var getInfo = function () {
     });
 };
 
-
 String.prototype.pad = function(String, len) {
     var str = this;
     while (str.length < len)
         str = String + str;
     return str;
 }
+var getFormatedReason = function(number, reason) {
+    var formated_reason = (number != '-' && number.pad("0", 3) + ". " || "");
+    formated_reason += reason;
+    return formated_reason;
+}
+
+var saveExtras = function(extras, formated_reason) {
+    for (index in extras) {
+        if (extras[index] !== "") {
+            call_reasons.extras.push(extras[index]);
+            extras_dict[extras[index]] = formated_reason;
+        }
+    }
+}
+
 CallInfo.getReasons = function () {
     m.request({
         method: 'GET',
@@ -116,10 +132,12 @@ CallInfo.getReasons = function () {
         }
         else{
             for (i in response.info.info) {
-                var num = response.info.info[i][0];
-                var reason = (num != '-' && num.pad("0", 3) + ". " || "");
-                reason += response.info.info[i][1];
-                call_reasons.general.push(reason);
+                var formated_reason = getFormatedReason(
+		    response.info.info[i][0],
+                    response.info.info[i][1]
+		);
+                call_reasons.general.push(formated_reason);
+                saveExtras(response.info.info[i].slice(2), formated_reason);
             }
         }
     }, function(error) {
@@ -136,10 +154,12 @@ CallInfo.getReasons = function () {
         }
         else{
             for (i in response.info.info) {
-                var num = response.info.info[i][0];
-                var reason = (num != '-' && num.pad("0", 3) + ". " || "");
-                reason += response.info.info[i][1];
-                call_reasons.specific.push(reason);
+                var formated_reason = getFormatedReason(
+		    response.info.info[i][0],
+                    response.info.info[i][1]
+		);
+                call_reasons.specific.push(formated_reason);
+                saveExtras(response.info.info[i].slice(2), formated_reason);
             }
         }
     }, function(error) {
@@ -354,15 +374,26 @@ function isEmpty(obj) {
     return Object.keys(obj).length === 0;
 }
 
+function getExtras(extras) {
+    var reasons = [];
+    for (extra in extras) {
+        reasons.push(extras_dict[extras[extra]]);
+    }
+    return reasons;
+}
 
 var llistaMotius = function() {
     function conte(value) {
-        return value.toLowerCase().includes(reason_filter.toLowerCase());
+        var contains = value.toLowerCase().includes(reason_filter.toLowerCase());
+        return contains;
     }
     var list_reasons = call_reasons.general;
     if (reason_filter !== "") {
         list_reasons = call_reasons.specific;
-        var filtered = list_reasons.filter(conte);
+        var filtered_regular = list_reasons.filter(conte);
+        var filtered_extras = call_reasons.extras.filter(conte);
+        var extras = getExtras(filtered_extras);
+        var filtered = filtered_regular.concat(extras);
     }
     else {
         list_reasons = call_reasons.general;
