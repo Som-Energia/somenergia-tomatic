@@ -725,6 +725,11 @@ def parseArgs():
 		help="Origen d'on agafa les vacances",
 	)
 
+	parser.add_argument(
+		'--search-days',
+		help="dies de cerca per comanda p.e dl,dm,dx,dj,dv sobreescriu config.yaml"
+		)
+
 	return parser.parse_args()
 
 args=None
@@ -758,6 +763,8 @@ def main():
 		if args.holidays == 'notoi':
 			baixaVacancesNotoi(config)
 
+	if args.search_days:
+		config.diesCerca = args.search_days.split(',')
 
 	import signal
 
