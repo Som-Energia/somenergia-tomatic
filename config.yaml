@@ -26,6 +26,7 @@ hours:
 mostraCami: false
 maximCamiAMostrar: 60
 aleatori: true
+stopPenalty: 0
 backtrackDepth: 10000
 costLimit: 200
 descartaNoPrometedores: true

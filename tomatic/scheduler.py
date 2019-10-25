@@ -402,6 +402,9 @@ class Backtracker:
 			step("Millor graella grabada a '{}'".format(self.outputYaml))
 
 	def solveTorn(self, partial):
+		if self.cutoffCost <= self.config.get("stopPenalty",0):
+			self.terminated = True
+
 		if self.terminated: return
 
 		# Better solution found? Report and hold it
@@ -730,6 +733,12 @@ def parseArgs():
 		help="dies de cerca per comanda p.e dl,dm,dx,dj,dv sobreescriu config.yaml"
 		)
 
+	parser.add_argument(
+		'--stop-penalty',
+		type=int,
+		help="condició de parada al arribar a solució amb la penalització, sobreescriu config.yaml"
+		)
+
 	return parser.parse_args()
 
 args=None
@@ -765,6 +774,9 @@ def main():
 
 	if args.search_days:
 		config.diesCerca = args.search_days.split(',')
+
+	if args.stop_penalty:
+		config.stopPenalty = args.stop_penalty
 
 	import signal
 
