@@ -739,6 +739,12 @@ def parseArgs():
 		help="condició de parada al arribar a solució amb la penalització, sobreescriu config.yaml"
 		)
 
+	parser.add_argument(
+		'--deterministic',
+		action='store_true',
+		help="desaleatoritza la cerca de branques i possibilitats, sobreescriu config.yaml"
+		)
+
 	return parser.parse_args()
 
 args=None
@@ -777,6 +783,9 @@ def main():
 
 	if args.stop_penalty:
 		config.stopPenalty = args.stop_penalty
+
+	if args.deterministic:
+		config.aleatori = not args.deterministic
 
 	import signal
 
