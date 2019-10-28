@@ -750,6 +750,12 @@ def parseArgs():
 		help="Document del drive origen de dades externes"
 		)
 
+	parser.add_argument(
+		'--config-file',
+		default='config.yaml',
+		help="fitxer de configuració pincipal",
+	)
+
 	return parser.parse_args()
 
 args=None
@@ -762,7 +768,7 @@ def main():
 	step('Carregant configuració...')
 	from yamlns import namespace as ns
 	try:
-		config = ns.load("config.yaml")
+		config = ns.load(args.config_file)
 	except:
 		error("Configuració incorrecta")
 		raise
