@@ -41,7 +41,7 @@ def baixaCarrega(config, certificat):
 
 	step('Autentificant al Google Drive')
 	fetcher = SheetFetcher(
-		documentName='Quadre de Vacances',
+		documentName=config.documentDrive,
 		credentialFilename=certificat,
 		)
 
@@ -63,7 +63,7 @@ def baixaCarrega(config, certificat):
 def baixaVacancesDrive(config, certificat):
 
 	fetcher = SheetFetcher(
-		documentName='Quadre de Vacances',
+		documentName=config.documentDrive,
 		credentialFilename=certificat,
 	)
 
@@ -745,6 +745,11 @@ def parseArgs():
 		help="desaleatoritza la cerca de branques i possibilitats, sobreescriu config.yaml"
 		)
 
+	parser.add_argument(
+		'--drive-file',
+		help="Document del drive origen de dades externes"
+		)
+
 	return parser.parse_args()
 
 args=None
@@ -770,6 +775,9 @@ def main():
 		# If no date provided, take the next monday
 		today = date.today()
 		config.monday = today + timedelta(days=7-today.weekday())
+
+	if args.drive_file:
+		config.documentDrive = args.drive_file
 
 	if not args.keep:
 		baixaCarrega(config, args.certificate)
