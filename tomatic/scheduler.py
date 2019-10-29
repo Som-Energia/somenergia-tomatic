@@ -172,10 +172,10 @@ class Backtracker:
                 "Aquests dies no son a la llista de visualitzacio: {}".format(errorDays))
 
         self.hours = self.llegeixHores()
-        self.nhours = len(self.hours)
+
         self.torns = self.llegeixTorns('carrega.csv', self.ntelefons)
         self.companys = list(self.torns.keys())
-        self.caselles = list(xproduct(self.dies, range(self.nhours), range(self.ntelefons)))
+        self.caselles = list(xproduct(self.dies, range(len(self.hours)), range(self.ntelefons)))
         self.topesDiaris = self.llegeixTopesDiaris(self.companys)
         self.disponible = self.initBusyTable(
             'oneshot.conf',
@@ -185,13 +185,13 @@ class Backtracker:
             """Creates a table with as many cells as the cross product of the iterables"""
             return dict((keys, defaultValue) for keys in xproduct(*iterables))
 
-        self.teTelefon = createTable(False,  self.dies, range(self.nhours), self.companys)
+        self.teTelefon = createTable(False,  self.dies, range(len(self.hours)), self.companys)
         self.tePrincipal = createTable(0,  self.companys, self.dies)
         self.horesDiaries = createTable(0,  self.companys, self.dies)
 
         self.taules = config.taules
         self.telefonsALaTaula = createTable(0,
-            self.dies, range(self.nhours), set(self.taules.values()))
+            self.dies, range(len(self.hours)), set(self.taules.values()))
 
         # Number of hours available each day
         self.disponibilitatDiaria = dict(
@@ -199,7 +199,7 @@ class Backtracker:
                 self.maxTornsDiaris(nom),
                 sum(
                     0 if self.isBusy(nom,dia,hora) else 1
-                    for hora in xrange(self.nhours))
+                    for hora in xrange(len(self.hours)))
                 ))
             for nom, dia in xproduct(self.companys, self.dies))
 
@@ -231,7 +231,7 @@ class Backtracker:
         self.phoningOnGroup = createTable(0,
             self.config.groups.keys(),
             self.dies,
-            xrange(self.nhours),
+            xrange(len(self.hours)),
             )
 
         # Idle persons in each group (not busy nor on phone)
@@ -247,7 +247,7 @@ class Backtracker:
             in xproduct(
                 self.config.groups.items(),
                 self.dies,
-                xrange(self.nhours),
+                xrange(len(self.hours)),
                 )
             ])
 
@@ -289,11 +289,11 @@ class Backtracker:
         # checks
         for telefon in range(ntelefons):
             horesTelefon = sum(v[telefon] for nom, v in result.items())
-            if horesTelefon == len(self.dies)*self.nhours:
+            if horesTelefon == len(self.dies)*len(self.hours):
                 continue
             raise Backtracker.ErrorConfiguracio(
                 "Les hores de T{} sumen {} i no pas {}, revisa {}".format(
-                    telefon+1, horesTelefon, len(self.dies)*self.nhours, tornsfile))
+                    telefon+1, horesTelefon, len(self.dies)*len(self.hours), tornsfile))
         return result
 
 
@@ -317,7 +317,7 @@ class Backtracker:
     def initBusyTable(self, *filenames) :
         availability = dict(
             ((dia,hora,nom), True)
-            for nom, dia, hora in xproduct(self.companys, self.dies, range(self.nhours))
+            for nom, dia, hora in xproduct(self.companys, self.dies, range(len(self.hours)))
             )
         for filename in filenames:
 
