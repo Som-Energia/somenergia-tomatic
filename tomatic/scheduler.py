@@ -27,6 +27,10 @@ def transliterate(word):
         word = word.replace(old,new)
     return word
 
+def createTable(defaultValue, *iterables) :
+    """Creates a table with as many cells as the cross product of the iterables"""
+    return dict((keys, defaultValue) for keys in xproduct(*iterables))
+
 def baixaCarrega(config, certificat):
 
     def table(sheet, name):
@@ -175,27 +179,23 @@ class Backtracker:
                 "Aquests dies no son a la llista de visualitzacio: {}".format(errorDays))
 
         # Main Solution
-        self.caselles = list(xproduct(self.dies, range(len(self.hours)), range(self.ntelefons)))    # Empty solution to fill
+        self.caselles = list(xproduct(self.dies, range(len(self.hours)), range(self.ntelefons)))    # all (day,turn,slot) combinations required to be filled
 
         # Constraints
         self.torns = self.llegeixTorns('carrega.csv', self.ntelefons)   # Persons and slots to be done
         self.companys = list(self.torns.keys())                         # Persons only
 
-        self.topesDiaris = self.llegeixTopesDiaris(self.companys)
+        self.topesDiaris = self.llegeixTopesDiaris(self.companys)       # Person with it's day limit
         self.disponible = self.initBusyTable(
             'oneshot.conf',
-            *glob.glob('indisponibilitats*.conf'))
+            *glob.glob('indisponibilitats*.conf'))                      # (day,turn,person) is available?
 
-        def createTable(defaultValue, *iterables) :
-            """Creates a table with as many cells as the cross product of the iterables"""
-            return dict((keys, defaultValue) for keys in xproduct(*iterables))
-
-        self.teTelefon = createTable(False,  self.dies, range(len(self.hours)), self.companys)
-        self.tePrincipal = createTable(0,  self.companys, self.dies)
-        self.horesDiaries = createTable(0,  self.companys, self.dies)
+        self.teTelefon = createTable(False,  self.dies, range(len(self.hours)), self.companys)  # (day,turn,person) has phone?
+        self.tePrincipal = createTable(0,  self.companys, self.dies)    # (person,day) first turns?
+        self.horesDiaries = createTable(0,  self.companys, self.dies)   # (person,day) turns?
 
         self.taules = config.taules
-        self.telefonsALaTaula = createTable(0,
+        self.telefonsALaTaula = createTable(0,                          # (day,turn,table) phones actives?
             self.dies, range(len(self.hours)), set(self.taules.values()))
 
         # Number of hours available each day
