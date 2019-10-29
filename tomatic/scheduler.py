@@ -171,7 +171,6 @@ class Backtracker:
             raise Backtracker.ErrorConfiguracio(
                 "Aquests dies no son a la llista de visualitzacio: {}".format(errorDays))
 
-        self.ndies = len(self.dies)
         self.hours = self.llegeixHores()
         self.nhours = len(self.hours)
         self.torns = self.llegeixTorns('carrega.csv', self.ntelefons)
@@ -290,11 +289,11 @@ class Backtracker:
         # checks
         for telefon in range(ntelefons):
             horesTelefon = sum(v[telefon] for nom, v in result.items())
-            if horesTelefon == self.ndies*self.nhours:
+            if horesTelefon == len(self.dies)*self.nhours:
                 continue
             raise Backtracker.ErrorConfiguracio(
                 "Les hores de T{} sumen {} i no pas {}, revisa {}".format(
-                    telefon+1, horesTelefon, self.ndies*self.nhours, tornsfile))
+                    telefon+1, horesTelefon, len(self.dies)*self.nhours, tornsfile))
         return result
 
 
@@ -430,11 +429,11 @@ class Backtracker:
         if not telefon and not hora:
 
             idia = self.dies.index(day)
-            diesRestants =  self.ndies-idia
+            diesRestants =  len(self.dies)-idia
 
             # TODO: Heuristica que pot tallar bones solucions
             if self.config.descartaNoPrometedores :
-                if idia and self.cost*self.ndies / idia > self.cutoffCost:
+                if idia and self.cost*len(self.dies) / idia > self.cutoffCost:
                     self.cut("NoEarlyCost", partial,
                         "Tallant una solucio poc prometedora")
                     return
