@@ -629,12 +629,6 @@ class Backtracker:
                 break
 
     def reportSolution(self, partial, cost, penalties=[]) :
-        def properName(name):
-            """Capitalizes name unless configuration provides
-            A better alternative, for example with tildes.
-            """
-            return self.config.noms.get(name, name.title())
-
         firstAtCost = self.storedCost != (len(partial), cost)
         ncaselles = len(self.caselles)
         paddedPartial = (partial+['?']*ncaselles)[:ncaselles]
