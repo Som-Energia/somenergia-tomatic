@@ -194,12 +194,12 @@ class Backtracker:
         self.tePrincipal = createTable(0,  self.companys, self.dies)    # (person,day) first turns?
         self.horesDiaries = createTable(0,  self.companys, self.dies)   # (person,day) turns?
 
-        self.taules = config.taules
+        self.taules = config.taules                                     # (person) table
         self.telefonsALaTaula = createTable(0,                          # (day,turn,table) phones actives?
             self.dies, range(len(self.hours)), set(self.taules.values()))
 
         # Number of hours available each day
-        self.disponibilitatDiaria = dict(
+        self.disponibilitatDiaria = dict(                               # (person,day) max possible turns
             ((nom,dia), min(
                 self.maxTornsDiaris(nom),
                 sum(
@@ -209,7 +209,7 @@ class Backtracker:
             for nom, dia in xproduct(self.companys, self.dies))
 
         # Groups by person
-        self.personGroups = dict([
+        self.personGroups = dict([                                      # (person) list of goups
             (company, [
                 group 
                 for group, companysDelGrup in self.config.groups.items()
@@ -233,14 +233,14 @@ class Backtracker:
                         groupConfig, group)
 
         # Persons on phone in each group
-        self.phoningOnGroup = createTable(0,
+        self.phoningOnGroup = createTable(0,                            # (group,day,turn) phones actives
             self.config.groups.keys(),
             self.dies,
             xrange(len(self.hours)),
             )
 
         # Idle persons in each group (not busy nor on phone)
-        self.idleInGroup = dict([
+        self.idleInGroup = dict([                                       # (group,day,turn) available persons in group
             (
                 (group, dia, hora),
                 sum(
