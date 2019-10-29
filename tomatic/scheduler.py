@@ -428,10 +428,10 @@ class Backtracker:
             self.reportSolution(partial, self.cost, self.penalties)
             return
 
-        day, hora, telefon = self.caselles[len(partial)]
+        day, hora, telefon = self.caselles[len(partial)] # (day,turn,slot) to be filled
 
         # Comencem dia, mirem si podem acomplir els objectius amb els dies restants
-        if not telefon and not hora:
+        if not telefon and not hora:        # if turn == 0 and slot == 0 test if there is possible solution
 
             idia = self.dies.index(day)
             diesRestants =  len(self.dies)-idia
@@ -468,7 +468,7 @@ class Backtracker:
         if self.config.aleatori:
             random.shuffle(companys)
 
-        if (day, hora+1, telefon+1) in self.config.forced:
+        if (day, hora+1, telefon+1) in self.config.forced:              # see if is a forced position
             companys = [self.config.forced[(day,hora+1,telefon+1)]]
 
         for company in companys:
