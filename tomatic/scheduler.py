@@ -164,18 +164,23 @@ class Backtracker:
         self.outputYaml = "graella-telefons-{}.yaml".format(config.monday)
         self.storedCost = ('uncomparableSize', 'uncomparablePenalty')
         self.globalMaxTurnsADay = config.maximHoresDiariesGeneral
-        self.ntelefons = config.nTelefons
-        self.dies = config.diesCerca
+
+        # Dimensional variables
+        self.ntelefons = config.nTelefons                               # Phone slots
+        self.hours = self.llegeixHores()                                # Turns (1st, 2nd, 3rd or 4th)
+        self.dies = config.diesCerca                                    # Days at week (mon, tues, ...)
         errorDays = set(self.dies) - set(config.diesVisualitzacio)
         if errorDays:
             raise Backtracker.ErrorConfiguracio(
                 "Aquests dies no son a la llista de visualitzacio: {}".format(errorDays))
 
-        self.hours = self.llegeixHores()
+        # Main Solution
+        self.caselles = list(xproduct(self.dies, range(len(self.hours)), range(self.ntelefons)))    # Empty solution to fill
 
-        self.torns = self.llegeixTorns('carrega.csv', self.ntelefons)
-        self.companys = list(self.torns.keys())
-        self.caselles = list(xproduct(self.dies, range(len(self.hours)), range(self.ntelefons)))
+        # Constraints
+        self.torns = self.llegeixTorns('carrega.csv', self.ntelefons)   # Persons and slots to be done
+        self.companys = list(self.torns.keys())                         # Persons only
+
         self.topesDiaris = self.llegeixTopesDiaris(self.companys)
         self.disponible = self.initBusyTable(
             'oneshot.conf',
