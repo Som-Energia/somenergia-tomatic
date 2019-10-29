@@ -166,11 +166,10 @@ class Backtracker:
         self.globalMaxTurnsADay = config.maximHoresDiariesGeneral
         self.ntelefons = config.nTelefons
         self.dies = config.diesCerca
-        self.diesVisualitzacio = config.diesVisualitzacio
-        diesErronis = set(self.dies) - set(self.diesVisualitzacio)
-        if diesErronis:
+        errorDays = set(self.dies) - set(config.diesVisualitzacio)
+        if errorDays:
             raise Backtracker.ErrorConfiguracio(
-                "Aquests dies no son a la llista de visualitzacio: {}".format(diesErronis))
+                "Aquests dies no son a la llista de visualitzacio: {}".format(errorDays))
 
         self.ndies = len(self.dies)
         self.hours = self.llegeixHores()
