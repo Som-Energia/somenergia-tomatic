@@ -523,16 +523,6 @@ class Backtracker:
                         .format(group, company, day, hora+1))
                 return False
 
-            def markGroups(company, day, hora):
-                for g in self.personGroups[company] :
-                    self.idleInGroup[g, day, hora] -= 1
-                    self.phoningOnGroup[g, day, hora] +=1
-                
-            def unmarkGroups(company, day, hora):
-                for g in self.personGroups[company] :
-                    self.idleInGroup[g, day, hora] += 1
-                    self.phoningOnGroup[g, day, hora] -=1
-
             if notEnoughIdleInGroup(company):
                 self.cut("NotEnoughIdleInGroup", partial, notEnoughIdleInGroup(company))
                 continue
@@ -596,6 +586,16 @@ class Backtracker:
             if self.config.mostraCami or args.track:
                 if len(partial) < self.config.maximCamiAMostrar :
                     print "  "*len(partial)+company[:2]
+
+            def markGroups(company, day, hora):
+                for g in self.personGroups[company] :
+                    self.idleInGroup[g, day, hora] -= 1
+                    self.phoningOnGroup[g, day, hora] +=1
+
+            def unmarkGroups(company, day, hora):
+                for g in self.personGroups[company] :
+                    self.idleInGroup[g, day, hora] += 1
+                    self.phoningOnGroup[g, day, hora] -=1
 
             # Anotem la casella
             self.cost += cost
