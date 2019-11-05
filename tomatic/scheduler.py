@@ -32,17 +32,6 @@ def createTable(defaultValue, *iterables) :
     return dict((keys, defaultValue) for keys in xproduct(*iterables))
 
 def baixaCarrega(config, certificat):
-
-    def table(sheet, name):
-        cells = sheet.range(name)
-        width = cells[-1].col-cells[0].col +1
-        height = cells[-1].row-cells[0].row +1
-        return [ 
-            [cell.value for cell in row]
-            for row in zip( *(iter(cells),)*width)
-            ]
-
-
     step('Autentificant al Google Drive')
     fetcher = SheetFetcher(
         documentName=config.documentDrive,
