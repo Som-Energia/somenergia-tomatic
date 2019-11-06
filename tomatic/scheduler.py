@@ -306,7 +306,10 @@ class Backtracker:
             raise Backtracker.ErrorConfiguracio(
                 "Les hores de T{} sumen {} i no pas {}, revisa {}".format(
                     telefon+1, horesTelefon, len(self.dies)*len(self.hours), tornsfile))
-        return result
+        return {
+            name: [sum(values)]+(ntelefons-1)*[0]
+            for name, values in result.items()
+            }
 
 
     def llegeixTopesDiaris(self, persons) :
@@ -453,14 +456,15 @@ class Backtracker:
             cut=False
             isInfraSolution = len(partial)<len(self.bestSolution)
             for company in self.companys:
+                """
                 if self.torns[company][0] > diesRestants * self.config.maximsT1PerDia:
                     self.cut("T1RestantsIncolocables", partial,
                         "A {} li queden massa T1 per posar"
                         .format(company))
                     if isInfraSolution: return
                     cut=True # Report all the bad guys and cut later
-
-                tornsPendents = sum(
+                """
+                tornsPendents = sum( ## TODO: refactor to simplify
                     self.torns[company][torn]
                     for torn in range(self.ntelefons)
                     )
@@ -485,6 +489,13 @@ class Backtracker:
             companys = [self.config.forced[(day,hora+1,telefon+1)]]
 
         for company in companys:
+            if telefon and partial[-1] > company:
+                self.cut("Redundant", partial,
+                    "Cami redundant, noms no ordenats {} -> {}"
+                    .format(partial[-1], company))
+                continue
+
+
 
             cost = 0
             penalties = []
@@ -492,7 +503,7 @@ class Backtracker:
 
             # Motius de rebuig del camí
 
-            if self.torns[company][telefon] <= 0:
+            if self.torns[company][0] <= 0:
                 self.cut("TotColocat", partial,
                     "{} ja ha exhaurit els seus torns de telefon {}ari"
                     .format( company, telefon))
@@ -504,11 +515,13 @@ class Backtracker:
                     .format( company, day, hora+1))
                 continue
 
+            """
             if telefon==0 and self.tePrincipal[company, day] >= self.config.maximsT1PerDia:
                 self.cut("MassesPrincipals", partial,
                     "Dos principals per {} el {} no, sisplau"
                     .format(company,day))
                 continue
+            """
 
             if self.telefonsALaTaula[day, hora, taula]>=self.config.maximPerTaula :
                 self.cut("TaulaSorollosa", partial,
@@ -613,11 +626,11 @@ class Backtracker:
             # Anotem la casella
             self.cost += cost
             self.penalties += penalties
-            if telefon == 0: self.tePrincipal[company, day]+=1
+            #if telefon == 0: self.tePrincipal[company, day]+=1
             self.teTelefon[day, hora, company]=True
             self.setBusy(company,day,hora)
             self.horesDiaries[company,day]+=1
-            self.torns[company][telefon]-=1
+            self.torns[company][0]-=1
             self.telefonsALaTaula[day,hora,taula]+=1
             markGroups(company,day,hora)
 
@@ -628,17 +641,19 @@ class Backtracker:
             # Desanotem la casella
             unmarkGroups(company,day,hora)
             self.telefonsALaTaula[day,hora,taula]-=1
-            self.torns[company][telefon]+=1
+            self.torns[company][0]+=1
             self.horesDiaries[company,day]-=1
             self.setBusy(company,day,hora, False)
             self.teTelefon[day, hora, company]=False
-            if telefon == 0: self.tePrincipal[company, day]-=1
+            #if telefon == 0: self.tePrincipal[company, day]-=1
             if penalties:
                 del self.penalties[-len(penalties):]
             self.cost -= cost
 
             # Si portem massa estona explorant el camí parem i provem un altre
             if self.config.aleatori and self.nbactracks > self.backtrackDepth:
+                break
+            if self.nbactracks > self.backtrackDepth:
                 break
 
     def reportSolution(self, partial, cost, penalties=[]) :
