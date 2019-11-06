@@ -354,8 +354,6 @@ penalties:
   - mariona te 1 persones a la mateixa taula amb telefon a 4a hora del dm
 - - 5
   - carme te 1 persones a la mateixa taula amb telefon a 1a hora del dx
-- - 5
-  - eloi te 1 persones a la mateixa taula amb telefon a 2a hora del dx
 - - 1
   - gemma te mes de 1 hores el dx
 - - 5
@@ -396,6 +394,4 @@ penalties:
   - nuria te mes de 1 hores el dj
 - - 5
   - nuria te 1 persones a la mateixa taula amb telefon a 4a hora del dj
-- - 5
-  - eloi te 1 persones a la mateixa taula amb telefon a 4a hora del dj
-cost: 96
+cost: 86
