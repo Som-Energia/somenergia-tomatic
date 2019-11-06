@@ -1,6 +1,6 @@
 datapath: "b2bdata" # Point it to the directory containing your reference data
 testcases:
-    short:
+    4days6lines:
         command: |
             python schedulehours.py 2019-10-28 \
                 --config-file b2bdata/inputs/config-4days6lines.yaml \
