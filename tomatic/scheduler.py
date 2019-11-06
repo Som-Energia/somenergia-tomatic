@@ -810,4 +810,4 @@ if __name__ == '__main__':
     main()
 
 
-# vim: noet ts=4 sw=4
+# vim: et ts=4 sw=4
