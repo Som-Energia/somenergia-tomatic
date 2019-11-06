@@ -1,8 +1,4 @@
 [34;1m:: Carregant configuració b2bdata/inputs/config-4days6lines.yaml...[0m
-[34;1m:: Autentificant al Google Drive[0m
-[34;1m:: Baixant carrega setmanal...[0m
-[34;1m::   Descarregant el rang 'carrega20191028'...[0m
-[34;1m::   Guardant-ho com 'carrega.csv'...[0m
 [34;1m:: Baixant vacances del drive...[0m
 [34;1m::   Baixant vacances de l'interval Vacances2019Semestre2[0m
 [34;1m::   Guardant indisponibilitats per vacances a 'indisponibilitats-vacances.conf'...[0m

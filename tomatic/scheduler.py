@@ -44,8 +44,8 @@ def baixaCarrega(config, certificat):
         *config.monday.timetuple())
     step("  Descarregant el rang '{}'...".format(carregaRangeName))
     carrega = fetcher.get_range(config.fullCarrega, carregaRangeName)
-    step("  Guardant-ho com '{}'...".format('carrega.csv'))
-    with open('carrega.csv','w') as phoneload :
+    step("  Guardant-ho com '{}'...".format(config.weekShifts))
+    with open(config.weekShifts,'w') as phoneload :
         phoneload.write(
             "\n".join(
                 '\t'.join(c for c in row)
@@ -171,7 +171,8 @@ class Backtracker:
         self.caselles = list(xproduct(self.dies, range(len(self.hours)), range(self.ntelefons)))    # all (day,turn,slot) combinations required to be filled
 
         # Constraints
-        self.torns = self.llegeixTorns('carrega.csv', self.ntelefons)   # Persons and slots to be done
+		
+        self.torns = self.llegeixTorns(config.weekShifts, self.ntelefons)   # Persons and slots to be done
         self.companys = list(self.torns.keys())                         # Persons only
 
         self.topesDiaris = self.llegeixTopesDiaris(self.companys)       # Person with it's day limit
@@ -742,6 +743,12 @@ def parseArgs():
         help="fitxer de configuració pincipal",
     )
 
+    parser.add_argument(
+        '--weekshifts',
+        default=None,
+        help="fitxer tsv amb la carrega a cada torn (columna) de cada persona (fila)",
+    )
+
     return parser.parse_args()
 
 args=None
@@ -771,8 +778,12 @@ def main():
     if args.drive_file:
         config.documentDrive = args.drive_file
 
+	mustDownloadShifts = not args.weekshifts and not config.get('weekShifts')
+	config.weekShifts = config.get('weekShifts') or args.weekshifts or 'carrega.csv'
+
     if not args.keep:
-        baixaCarrega(config, args.certificate)
+        if mustDownloadShifts:
+            baixaCarrega(config, args.certificate)
         if args.holidays == 'drive':
             baixaVacancesDrive(config, args.certificate)
         if args.holidays == 'notoi':

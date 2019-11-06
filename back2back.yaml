@@ -4,6 +4,7 @@ testcases:
         command: |
             python schedulehours.py 2019-10-28 \
                 --config-file b2bdata/inputs/config-4days6lines.yaml \
+                --weekshifts b2bdata/inputs/carrega-4days6lines.csv \
                 --stop-penalty 86 \
                 --deterministic \
                 --search-days "dl,dm,dx,dj" \
