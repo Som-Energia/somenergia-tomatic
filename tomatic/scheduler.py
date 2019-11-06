@@ -176,9 +176,11 @@ class Backtracker:
         self.companys = list(self.torns.keys())                         # Persons only
 
         self.topesDiaris = self.llegeixTopesDiaris(self.companys)       # Person with it's day limit
-        self.disponible = self.initBusyTable(
-            'oneshot.conf',
-            *glob.glob('indisponibilitats*.conf'))                      # (day,turn,person) is available?
+        busyFiles = config.get('busyFiles',
+            ['oneshot.conf']+
+            glob.glob('indisponibilitats*.conf'))
+
+        self.disponible = self.initBusyTable(*busyFiles)                # (day,turn,person) is available?
 
         self.teTelefon = createTable(False,  self.dies, range(len(self.hours)), self.companys)  # (day,turn,person) has phone?
         self.tePrincipal = createTable(0,  self.companys, self.dies)    # (person,day) first turns?
