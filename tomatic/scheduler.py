@@ -786,10 +786,11 @@ def main():
     if not args.keep:
         if mustDownloadShifts:
             baixaCarrega(config, args.certificate)
-        if args.holidays == 'drive':
-            baixaVacancesDrive(config, args.certificate)
-        if args.holidays == 'notoi':
-            baixaVacancesNotoi(config)
+        if not config.get('busyFiles'):
+            if args.holidays == 'drive':
+                baixaVacancesDrive(config, args.certificate)
+            if args.holidays == 'notoi':
+                baixaVacancesNotoi(config)
 
     if args.search_days:
         config.diesCerca = args.search_days.split(',')
