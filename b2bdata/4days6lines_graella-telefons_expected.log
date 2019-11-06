@@ -182,6 +182,10 @@ Solució incomplerta 15/96 caselles, cost 8
 Solució incomplerta 15/96 caselles, cost 8
 Solució incomplerta 15/96 caselles, cost 8
 Solució incomplerta 15/96 caselles, cost 8
+Solució incomplerta 15/96 caselles, cost 8
+Solució incomplerta 15/96 caselles, cost 8
+Solució incomplerta 15/96 caselles, cost 8
+Solució incomplerta 15/96 caselles, cost 8
 Solució incomplerta 16/96 caselles, cost 8
 Solució incomplerta 17/96 caselles, cost 8
 Solució incomplerta 18/96 caselles, cost 8
@@ -417,11 +421,7 @@ Solució incomplerta 48/96 caselles, cost 26
 Solució incomplerta 48/96 caselles, cost 26
 Solució incomplerta 48/96 caselles, cost 26
 Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució in[33mWarning: pau no esta disponible el dx a la hora 1[0m
+Solució incomp[33mWarning: pau no esta disponible el dx a la hora 1[0m
 [33mWarning: marc no esta disponible el dx a la hora 1[0m
 [33mWarning: eduard no esta disponible el dx a la hora 1[0m
 [33mWarning: eloi no esta disponible el dx a la hora 1[0m
@@ -481,8 +481,11 @@ Solució in[33mWarning: pau no esta disponible el dx a la hora 1[0m
 [33mWarning: manel es queda sense esmorzar el dj[0m
 [33mWarning: otilia te hores separades el dj[0m
 [33mWarning: roger ja té 2 persones a la mateixa taula amb telefon a 3a hora del dj[0m
-[33mWarning: nuria te hores separades el dj[0m
-complerta 48/96 caselles, cost 26
+lerta 48/96 caselles, cost 26
+Solució incomplerta 48/96 caselles, cost 26
+Solució incomplerta 48/96 caselles, cost 26
+Solució incomplerta 48/96 caselles, cost 26
+Solució incomplerta 48/96 caselles, cost 26
 Solució incomplerta 48/96 caselles, cost 26
 Solució incomplerta 48/96 caselles, cost 26
 Solució incomplerta 48/96 caselles, cost 26
@@ -569,11 +572,8 @@ Solució incomplerta 88/96 caselles, cost 59
 Solució incomplerta 88/96 caselles, cost 59
 Solució incomplerta 89/96 caselles, cost 70
 Solució incomplerta 90/96 caselles, cost 76
-Solució incomplerta 91/96 caselles, cost 76
-Solució incomplerta 92/96 caselles, cost 82
-Solució incomplerta 93/96 caselles, cost 83
-Solució incomplerta 94/96 caselles, cost 84
-Solució inc[33mWarning: roger te hores separades el dj[0m
+Solució incompl[33mWarning: nuria te hores separades el dj[0m
+[33mWarning: roger te hores separades el dj[0m
 [33mWarning: otilia te hores separades el dj[0m
 [33mWarning: rogerlf no esta disponible el dj a la hora 4[0m
 [33mWarning: nuria no esta disponible el dj a la hora 4[0m
@@ -583,7 +583,11 @@ Solució inc[33mWarning: roger te hores separades el dj[0m
 [34;1m:: Massa estona en aquest camí[0m
 [34;1m:: Millor graella grabada a 'graella-telefons-2019-10-28.html'[0m
 [34;1m:: Millor graella grabada a 'graella-telefons-2019-10-28.yaml'[0m
-omplerta 94/96 caselles, cost 79
+erta 91/96 caselles, cost 76
+Solució incomplerta 92/96 caselles, cost 82
+Solució incomplerta 93/96 caselles, cost 83
+Solució incomplerta 94/96 caselles, cost 84
+Solució incomplerta 94/96 caselles, cost 79
 Solució incomplerta 94/96 caselles, cost 79
 Solució incomplerta 94/96 caselles, cost 79
 Solució incomplerta 95/96 caselles, cost 90
