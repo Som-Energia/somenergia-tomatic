@@ -3,11 +3,12 @@ testcases:
     short:
         command: |
             python schedulehours.py 2019-10-28 \
-            --stop-penalty 86 \
-            --deterministic \
-            --search-days "dl,dm,dx,dj" \
-            --drive-file "Copia de Quadre de Vacances TOMATIC DEBUG" \
-            2>&1 | tee graella-telefons.log
+                --config-file b2bdata/inputs/config-4days6lines.yaml \
+                --stop-penalty 86 \
+                --deterministic \
+                --search-days "dl,dm,dx,dj" \
+                --drive-file "Copia de Quadre de Vacances TOMATIC DEBUG" \
+                2>&1 | tee graella-telefons.log
         outputs:
         - graella-telefons-2019-10-28.html
         - graella-telefons-2019-10-28.yaml

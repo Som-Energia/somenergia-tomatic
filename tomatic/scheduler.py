@@ -751,7 +751,7 @@ def main():
 
     args = parseArgs()
 
-    step('Carregant configuració...')
+    step('Carregant configuració {}...', args.config_file)
     from yamlns import namespace as ns
     try:
         config = ns.load(args.config_file)
