@@ -780,8 +780,8 @@ def main():
     if args.drive_file:
         config.documentDrive = args.drive_file
 
-	mustDownloadShifts = not args.weekshifts and not config.get('weekShifts')
-	config.weekShifts = config.get('weekShifts') or args.weekshifts or 'carrega.csv'
+    mustDownloadShifts = not args.weekshifts and not config.get('weekShifts')
+    config.weekShifts = config.get('weekShifts') or args.weekshifts or 'carrega.csv'
 
     if not args.keep:
         if mustDownloadShifts:
