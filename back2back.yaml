@@ -22,3 +22,12 @@ testcases:
         - graella-telefons-2019-11-11.html
         - graella-telefons-2019-11-11.yaml
         - graella-telefons-2019-11-11.log
+    3days6lines:
+        command: |
+            python schedulehours.py 2019-11-18 \
+                --config-file b2bdata/inputs/config-3days6lines.yaml \
+                2>&1 | tee graella-telefons-2019-11-18.log
+        outputs:
+        - graella-telefons-2019-11-18.html
+        - graella-telefons-2019-11-18.yaml
+        - graella-telefons-2019-11-18.log

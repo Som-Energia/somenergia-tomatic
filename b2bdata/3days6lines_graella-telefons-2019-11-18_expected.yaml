@@ -1,0 +1,341 @@
+week: '2019-11-18'
+days:
+- dl
+- dm
+- dx
+- dj
+- dv
+hours:
+- 09:00
+- '10:15'
+- '11:30'
+- '12:45'
+- '14:00'
+turns:
+- T1
+- T2
+- T3
+- T4
+- T5
+- T6
+timetable:
+  dl:
+  - - adria
+    - guifre
+    - nuria
+    - roger
+    - vane
+    - maria
+  - - albertg
+    - carme
+    - otilia
+    - olga
+    - vero
+    - joanb
+  - - aram
+    - merce
+    - rogerlf
+    - annab
+    - albert
+    - maite
+  - - gemma
+    - monicag
+    - eloi
+    - joanm
+    - carol
+    - gabriel
+  dm:
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+    - festiu
+    - festiu
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+    - festiu
+    - festiu
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+    - festiu
+    - festiu
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+    - festiu
+    - festiu
+  dx:
+  - - adria
+    - guifre
+    - nuria
+    - roger
+    - vane
+    - maria
+  - - albertg
+    - carme
+    - otilia
+    - olga
+    - vero
+    - joanb
+  - - aram
+    - merce
+    - rogerlf
+    - annab
+    - albert
+    - maite
+  - - gemma
+    - monicag
+    - eloi
+    - joanm
+    - carol
+    - gabriel
+  dj:
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+    - festiu
+    - festiu
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+    - festiu
+    - festiu
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+    - festiu
+    - festiu
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+    - festiu
+    - festiu
+  dv:
+  - - adria
+    - guifre
+    - nuria
+    - roger
+    - vane
+    - maria
+  - - albertg
+    - carme
+    - otilia
+    - olga
+    - vero
+    - joanb
+  - - aram
+    - merce
+    - rogerlf
+    - annab
+    - albert
+    - maite
+  - - gemma
+    - monicag
+    - eloi
+    - joanm
+    - carol
+    - gabriel
+colors:
+  marc: fbe8bc
+  eduard: d8b9c5
+  pere: f200ff
+  david: ffb300
+  carles: c98e98
+  marta: eb9481
+  monica: 7fada0
+  yaiza: ffffff
+  erola: 876dd8
+  manel: ff0084
+  tania: c8abf4
+  judit: e781e8
+  silvia: 8097b8
+  joan: fae080
+  ana: ff6600
+  victor: ff3233
+  judith: 00ff00
+  lucia: 9f24c2
+  sergi: 8cf2df
+  vic: 164aff
+  mariona: '813400'
+  gabriel: ffff00
+  maite: 007877
+  ningu: ffffff
+  joanb: 8af47d
+  maria: 00594d
+  pau: e6f214
+  carol: 94c703
+  undefined: ddeeff
+  viktu: ddeeff
+  albert: f4f4f4
+  oriol: a52513
+  fran: 621bf1
+  miguelanxo: 00b986
+  belen: 2892ff
+  fcasadella: 10ee30
+  gijsbert: 00adff
+  nuri: 17ef6f
+  fcots: ff5a60
+  annarodon: 009e7d
+  alberto: 0074f0
+  juanpe: ddeeff
+  olga: ddeeff
+  mar: 00ffff
+  joanm: 2d93f2
+  roger: 367c0f
+  vane: bd00ff
+  eloi: 9baec4
+  annab: c1f3d7
+  vero: ff0048
+  projectes: ffffe7
+  jordi: 2756ff
+  xavi: ddeeff
+  joana: c9ec80
+  rogerlf: 00517d
+  gemma: a6ba8c
+  aram: 614d02
+  benjami: 53ff14
+  guifre: ff000e
+  nuria: 00662a
+  carme: 0000ff
+  merce: f5447f
+  albertg: fcdc05
+  adria: b68f2f
+  monicag: f44c3b
+  otilia: 96b0ff
+  contestado: 333c3a
+  alex: ce6108
+  javi: 79eeff
+  albertsimo: cc00ff
+  clara: 602fa7
+  jaume: 5afc9c
+  cesar: ffffee
+extensions:
+  marta: '3040'
+  monica: '3041'
+  manel: '3042'
+  erola: '3043'
+  yaiza: '3044'
+  eduard: '3051'
+  marc: '3046'
+  judit: '3047'
+  tania: '3183'
+  carles: '3045'
+  pere: '3052'
+  fran: '3008'
+  david: '3054'
+  silvia: '3055'
+  joan: '3056'
+  judith: '3057'
+  ana: '3181'
+  victor: '3182'
+  lucia: '3184'
+  vic: '3185'
+  sergi: '3186'
+  maite: '3187'
+  gabriel: '3188'
+  mariona: '3189'
+  joanb: '3195'
+  maria: '3039'
+  pau: '3048'
+  carol: '3049'
+  viktu: '3006'
+  albert: '3038'
+  oriol: '3089'
+  miguelanxo: '3194'
+  belen: '3385'
+  fcasadella: '3002'
+  gijsbert: '3003'
+  nuri: '3889'
+  fcots: '3015'
+  annarodon: '3197'
+  alberto: '3011'
+  juanpe: '0000'
+  olga: '3088'
+  mar: '3087'
+  joanm: '3086'
+  roger: '3085'
+  vane: '3084'
+  eloi: '3083'
+  annab: '3082'
+  vero: '3081'
+  jordi: '3004'
+  xavi: '3009'
+  joana: '4001'
+  rogerlf: '2902'
+  gemma: '2903'
+  aram: '2905'
+  benjami: '3012'
+  guifre: '2911'
+  nuria: '2909'
+  carme: '2904'
+  merce: '2908'
+  albertg: '2901'
+  adria: '2907'
+  monicag: '2906'
+  otilia: '2910'
+  contestado: '3193'
+  alex: '3050'
+  javi: '3383'
+  albertsimo: '3013'
+  clara: '3014'
+  jaume: '3196'
+names:
+  silvia: Sílvia
+  monica: Mònica
+  tania: Tània
+  cesar: César
+  victor: VíctorNA
+  lucia: Lucía
+  joanb: JoanB
+  ningu: '-'
+  joan: Joan
+  carol: Càrol
+  miguelanxo: MiguelAnxo
+  belen: Belén
+  fcasadella: FrancescCasadellà
+  fcots: FrancescCots
+  annarodon: AnnaRodon
+  juanpe: Juanpe
+  joanm: JoanM
+  annab: Anna B
+  eloi: 'Eloi '
+  projectes: PROJECTES
+  jordi: JordiP
+  xavi: XaviDolz
+  david: David G.
+  gijsbert: Salomé
+  rogerlf: RogerLF
+  guifre: Guifré
+  merce: Mercè
+  adria: Adrià
+  monicag: Mònica G
+  albertg: Albert GS
+  albert: Albert M
+  otilia: 'Otilia '
+  nuria: Núria
+  contestado: '>>>CONTESTADOR<<<'
+  albertsimo: AlbertSi
+  jaume: JaumeA
+penalties:
+- - 5
+  - carme te 1 persones a la mateixa taula amb telefon a 2a hora del dl
+- - 5
+  - annab te 1 persones a la mateixa taula amb telefon a 3a hora del dl
+- - 5
+  - carme te 1 persones a la mateixa taula amb telefon a 2a hora del dx
+- - 5
+  - annab te 1 persones a la mateixa taula amb telefon a 3a hora del dx
+- - 5
+  - carme te 1 persones a la mateixa taula amb telefon a 2a hora del dv
+- - 5
+  - annab te 1 persones a la mateixa taula amb telefon a 3a hora del dv
+cost: 30
