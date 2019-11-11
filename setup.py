@@ -22,7 +22,7 @@ setup(
         'tomatic_callinfo.py',
         ],
     install_requires=[
-        'setuptools==20.4',
+        'setuptools>=20.4',
         'somutils',
         'yamlns',
         'consolemsg',
