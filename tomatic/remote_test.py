@@ -3,32 +3,67 @@
 from .remote import remotewrite, remoteread, remoterun, Remote
 import unittest
 import os
+from io import open
 
 # In order to pass these tests you need to have your
 # ssh public key copied as auhtorized key in you own
 # computer. And sshd installed and running!
 
-
 class Remote_Test(unittest.TestCase):
 
+    def read(self, filename):
+        path = os.path.expanduser(filename)
+        try:
+            with open(path, encoding='utf8') as f:
+                return f.read()
+        except:
+            return None
+
+    def write(self, filename, content):
+        path = os.path.expanduser(filename)
+        with open(path, 'w', encoding='utf8') as f:
+            return f.write(content)
+
+    def append(self, filename, content):
+        path = os.path.expanduser(filename)
+        try:
+            with open(path, encoding='utf8') as f:
+                return f.write(content)
+        except:
+            return
+
+
     def setUp(self):
-        self.user = os.getenv('USER')
-        self.host = 'localhost'
+        self.previousAuthorized = self.read('~/.ssh/authorized_keys')
+        self.publicKey = self.read('~/.ssh/id_rsa.pub')
+        if self.previousAuthorized:
+            content = self.previousAuthorized + '\n' + self.publicKey
+        else:
+            content = self.publicKey
+        self.write('~/.ssh/authorized_keys',  content)
+        self.conf = dict(
+            username = os.getenv('USER'),
+            host = 'localhost',
+            port = os.getenv('REMOTEPORT',22),
+        )
+
+    def tearDown(self):
+        if self.previousAuthorized:
+            self.write('~/.ssh/authorized_keys', self.previousAuthorized)
+        else:
+            os.unlink(os.expanduser('~/.ssh/authorized_keys'))
 
     def test_remoterun(self):
-        result = remoterun(self.user, self.host, "cat /etc/hosts")
+        result = remoterun(command="cat /etc/hosts", **self.conf)
         self.assertIn('localhost', result)
 
     def test_remoteread(self):
-        content = remoteread(self.user, self.host, "/etc/hosts")
+        content = remoteread(filename="/etc/hosts", **self.conf)
         self.assertIn("localhost", content)
 
     def test_remoteread_badPath(self):
         with self.assertRaises(IOError) as ctx:
-            remoteread(
-                self.user,
-                self.host,
-                "/etc/badfile")
+            remoteread(filename="/etc/badfile", **self.conf)
         self.assertEqual(str(ctx.exception),
             "[Errno 2] No such file")
 
@@ -36,43 +71,39 @@ class Remote_Test(unittest.TestCase):
         try:
             content = "Some content"
             remotewrite(
-                self.user,
-                self.host,
-                "borrame.remotewritetest",
-                content)
+                filename="borrame.remotewritetest",
+                content=content,
+                **self.conf)
             result = remoteread(
-                self.user,
-                self.host,
-                "borrame.remotewritetest")
+                filename="borrame.remotewritetest",
+                **self.conf)
             self.assertEqual(result, content)
         finally:
             remoterun(
-                self.user,
-                self.host,
-                'rm borrame.remotewritetest'
-                )
+                command = 'rm borrame.remotewritetest',
+                **self.conf)
 
     def test_run(self):
-        with Remote(self.user, self.host) as remote:
+        with Remote(**self.conf) as remote:
             result = remote.run("cat /etc/hosts")
 
         self.assertIn('localhost', result)
 
     def test_read(self):
-        with Remote(self.user, self.host) as remote:
+        with Remote(**self.conf) as remote:
             content = remote.read("/etc/hosts")
 
         self.assertIn("localhost", content)
 
     def test_read_badPath(self):
-        with Remote(self.user, self.host) as remote:
+        with Remote(**self.conf) as remote:
             with self.assertRaises(IOError) as ctx:
                 remote.read("/etc/badfile")
         self.assertEqual(str(ctx.exception),
             "[Errno 2] No such file")
 
     def test_write(self):
-        with Remote(self.user, self.host) as remote:
+        with Remote(**self.conf) as remote:
             try:
                 content = "Some content"
                 remote.write("borrame.remotewritetest", content)

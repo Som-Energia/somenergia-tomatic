@@ -3,10 +3,10 @@
 from paramiko import SSHClient,AutoAddPolicy
 
 class Remote(object):
-    def __init__(self, username, host):
+    def __init__(self, username, host, **kwds):
         self.ssh = SSHClient()
         self.ssh.set_missing_host_key_policy(AutoAddPolicy())
-        self.ssh.connect(host, username=username)
+        self.ssh.connect(host, username=username, **kwds)
 
     def __enter__(self):
         return self
@@ -29,17 +29,17 @@ class Remote(object):
         stdin.close()
         return stdout.read()
 
-def remoteread(user, host, filename):
-    with Remote(user, host) as remote:
+def remoteread(username, host, filename, **kwds):
+    with Remote(username, host, **kwds) as remote:
         return remote.read(filename)
 
 
-def remotewrite(user, host, filename, content):
-    with Remote(user, host) as remote:
+def remotewrite(username, host, filename, content, **kwds):
+    with Remote(username, host, **kwds) as remote:
         remote.write(filename, content)
 
-def remoterun(user, host, command):
-    with Remote(user, host) as remote:
+def remoterun(username, host, command, **kwds):
+    with Remote(username, host, **kwds) as remote:
         return remote.run(command)
 
 
