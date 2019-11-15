@@ -3,7 +3,7 @@
 import sys
 from setuptools import setup
 from tomatic import __version__
-readme = open("README.rst").read()
+readme = open("README.md").read()
 
 setup(
     name = "tomatic",
@@ -13,6 +13,7 @@ setup(
     author_email = "david.garcia@somenergia.coop",
     url = 'https://github.com/Som-Energia/somenergia-tomatic',
     long_description = readme,
+    long_description_content_type = 'text/markdown',
     license = 'GNU Affero General Public License v3 or later (GPLv3+)',
     scripts=[
         'schedulehours.py',
