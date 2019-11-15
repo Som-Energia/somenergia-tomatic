@@ -51,7 +51,7 @@ class Remote_Test(unittest.TestCase):
         if self.previousAuthorized:
             self.write('~/.ssh/authorized_keys', self.previousAuthorized)
         else:
-            os.unlink(os.expanduser('~/.ssh/authorized_keys'))
+            os.unlink(os.path.expanduser('~/.ssh/authorized_keys'))
 
     def test_remoterun(self):
         result = remoterun(command="cat /etc/hosts", **self.conf)
