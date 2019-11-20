@@ -91,7 +91,7 @@ taules:
   joanm: 6
   roger: 9
   vane: 17
-  eloi: 1
+  eloi: 17
   annab: -1
   vero: 9
   projectes: 12
@@ -116,6 +116,7 @@ taules:
   albertsimo: 99
   clara: 99
   jaume: 99
+  davids: 99
 sempreUnLliure: {}
 groups:
   ramat:
@@ -241,6 +242,7 @@ colors:
   clara: 602fa7
   jaume: 5afc9c
   cesar: ffffee
+  davids: d8863d
 notoi_ids:
   marta: 1
   albertg: null
@@ -256,6 +258,8 @@ notoi_ids:
   maite: null
   eloi: null
   erola: null
+  lucia: null
+  davids: null
 extensions:
   marta: '3040'
   monica: '3041'
@@ -326,6 +330,7 @@ extensions:
   albertsimo: '3013'
   clara: '3014'
   jaume: '3196'
+  davids: '4003'
 names:
   silvia: Sílvia
   monica: Mònica
@@ -363,6 +368,7 @@ names:
   contestado: '>>>CONTESTADOR<<<'
   albertsimo: AlbertSi
   jaume: JaumeA
+  davids: DavidS
 forced: {}
 also_commented_forced:
   ? - dl
