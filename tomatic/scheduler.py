@@ -6,7 +6,7 @@ from datetime import date, timedelta
 import random
 import datetime
 import glob
-from consolemsg import step, error, warn, u
+from consolemsg import step, error, warn, out, u
 import codecs
 from sheetfetcher import SheetFetcher
 from tomatic.htmlgen import HtmlGen
@@ -164,7 +164,7 @@ def baixaVacancesNotoi(config):
                 if start <= config.monday + timedelta(days=day) <= end
             ]
             for day in days:
-                print "+{} {} # vacances".format(name, day)
+                out("+{} {} # vacances", name, day)
                 holidaysfile.write("+{} {} # vacances\n".format(name, day))
 
 
@@ -414,8 +414,9 @@ class Backtracker:
         self.disponible[day, hour, person] = not busy
 
     def printCuts(self):
+        out("Raons de tall a cada nivell")
         for (depth, motiu), many in sorted(self.cutLog.items()):
-            print depth, motiu, many
+            out("{} {} {}", depth, motiu, many)
 
     def cut(self, motiu, partial, log=None):
         try:
@@ -486,9 +487,9 @@ class Backtracker:
                 self.perseveredNodes=0 # chill, we found something!
 
             if len(partial) == len(self.caselles):
-                print 'Solució trobada amb cost {}.'.format(self.cost)
+                out("Solució trobada amb cost {}.",cost)
             else:
-                print 'Solució incomplerta {}/{} caselles, cost {}'.format(
+                out("Solució incomplerta {}/{} caselles, cost {}",
                     len(partial), len(self.caselles), self.cost)
             self.reportSolution(partial, self.cost, self.penalties)
             self.bestSolution=list(partial)
@@ -699,7 +700,7 @@ class Backtracker:
 
             if self.config.mostraCami or args.track:
                 if len(partial) < self.config.maximCamiAMostrar :
-                    print "  "*len(partial)+company[:2]
+                    out("  "*len(partial)+company[:2])
 
             def markGroups(company, day, hora):
                 for g in self.personGroups[company] :
@@ -929,7 +930,7 @@ def main():
     import signal
 
     def signal_handler(signal, frame):
-        print 'You pressed Ctrl-C!'
+        warn('You pressed Ctrl-C!')
         b.terminated = True
 
     signal.signal(signal.SIGINT, signal_handler)
