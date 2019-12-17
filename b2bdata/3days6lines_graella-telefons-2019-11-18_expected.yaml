@@ -22,28 +22,28 @@ timetable:
   dl:
   - - adria
     - guifre
+    - maria
     - nuria
     - roger
     - vane
-    - maria
   - - albertg
     - carme
-    - otilia
-    - olga
-    - vero
     - joanb
-  - - aram
+    - olga
+    - otilia
+    - vero
+  - - albert
+    - annab
+    - aram
+    - maite
     - merce
     - rogerlf
-    - annab
-    - albert
-    - maite
-  - - gemma
-    - monicag
+  - - carol
     - eloi
-    - joanm
-    - carol
     - gabriel
+    - gemma
+    - joanm
+    - monicag
   dm:
   - - festiu
     - festiu
@@ -72,28 +72,28 @@ timetable:
   dx:
   - - adria
     - guifre
+    - maria
     - nuria
     - roger
     - vane
-    - maria
   - - albertg
     - carme
-    - otilia
-    - olga
-    - vero
     - joanb
-  - - aram
+    - olga
+    - otilia
+    - vero
+  - - albert
+    - annab
+    - aram
+    - maite
     - merce
     - rogerlf
-    - annab
-    - albert
-    - maite
-  - - gemma
-    - monicag
+  - - carol
     - eloi
-    - joanm
-    - carol
     - gabriel
+    - gemma
+    - joanm
+    - monicag
   dj:
   - - festiu
     - festiu
@@ -122,28 +122,28 @@ timetable:
   dv:
   - - adria
     - guifre
+    - maria
     - nuria
     - roger
     - vane
-    - maria
   - - albertg
     - carme
-    - otilia
-    - olga
-    - vero
     - joanb
-  - - aram
+    - olga
+    - otilia
+    - vero
+  - - albert
+    - annab
+    - aram
+    - maite
     - merce
     - rogerlf
-    - annab
-    - albert
-    - maite
-  - - gemma
-    - monicag
+  - - carol
     - eloi
-    - joanm
-    - carol
     - gabriel
+    - gemma
+    - joanm
+    - monicag
 colors:
   marc: fbe8bc
   eduard: d8b9c5
