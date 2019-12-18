@@ -726,6 +726,7 @@ def parseArgs():
 
     parser.add_argument(
         '-v',
+        '--verbose',
         dest='verbose',
         metavar='message',
         nargs='+',
