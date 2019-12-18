@@ -163,8 +163,59 @@ groups:
   - jordi
   - xavi
   - benjami
+  - davids
+  - joana
+  infern:
+  - monica
+  - carles
+  - manel
+  - marc
+  - marta
+  balneari:
+  # Aram, Olga, Joan M, Mariona, Victor Naval, Eloi, Eduard, Albert, Càrol, Gabriel, Vero, Núria, Otilia, Guifré, Anna Bellmunt, Albert M, Mònica G., Roger Liarte, Vane
+  - aram
+  - olga
+  - joanm
+  - mariona
+  - victor
+  - eloi
+  - eduard
+  - albertg
+  - albert
+  - carol
+  - gabriel
+  - vero
+  - nuria
+  - otilia
+  - guifre
+  - annab
+  - monicag
+  - roger
+  - vane
+  casademnont:
+  # Roger Lapeña, Lucía, Adrià, Silvia, Judith, Carme, Erola, Mar, Joan B, Maria, Sergi, Yaiza, Gemma, Pau, Tània, Juan U. Vic
+  - rogerlf
+  - lucia
+  - adria
+  - silvia
+  - judith
+  - carme
+  - erola
+  - mar
+  - joanb
+  - maria
+  - sergi
+  - yaiza
+  - gemma
+  - pau
+  - tania
+  - joan
+  - vic
 maxPhoningInGroup:
-  nouramat: 1
+  #nouramat: 1
+  infern: 1
+  casademnont: 3
+  
 minIdleInGroup:
   it: 4
 randomColors: false
