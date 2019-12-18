@@ -56,7 +56,7 @@ taules:
   judith: 14
   maite: 1
   erola: 12
-  sergi: 3
+  sergi: 19
   judit: 13
   joanb: 14
   marta: 15
@@ -68,7 +68,7 @@ taules:
   manel: 12
   tania: 7
   lucia: 3
-  vic: 15
+  vic: 19
   maria: 12
   pau: 12
   carol: 18
@@ -87,7 +87,7 @@ taules:
   juanpe: -1
   ningu: -1
   olga: -1
-  mar: 14
+  mar: 19
   joanm: 6
   roger: 9
   vane: 17
@@ -99,7 +99,7 @@ taules:
   xavi: -1
   joana: 2
   rogerlf: 14
-  gemma: 8
+  gemma: 19
   aram: -1
   benjami: 99
   guifre: 8
@@ -260,6 +260,10 @@ notoi_ids:
   erola: null
   lucia: null
   davids: null
+  mar: null
+  gemma: null
+  vic: null
+  sergi: null
 extensions:
   marta: '3040'
   monica: '3041'
