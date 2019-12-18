@@ -344,6 +344,8 @@ class Backtracker:
                 allentries = busy.parseBusy(thefile, errorHandler)
                 thisweekentries = busy.onWeek(self.config.monday, allentries)
                 for entry in thisweekentries:
+                    if entry.optional and self.config.ignoreOptionalAbsences:
+                        continue
                     for hora, isBusy in enumerate(entry.turns):
                         if isBusy!='1': continue
                         weekdays = [entry.weekday] if entry.weekday else self.dies
