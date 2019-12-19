@@ -109,7 +109,7 @@ def baixaVacancesDrive(config, certificat):
     with open('indisponibilitats-vacances.conf','w') as holidaysfile:
         for name, days in holidays:
             for day in days:
-                holidaysfile.write("{} {} # vacances\n".format(name, day))
+                holidaysfile.write("+{} {} # vacances\n".format(name, day))
 
 
 def baixaVacancesNotoi(config):
@@ -158,8 +158,8 @@ def baixaVacancesNotoi(config):
                 if start <= config.monday + timedelta(days=day) <= end
             ]
             for day in days:
-                print "{} {} # vacances".format(name, day)
-                holidaysfile.write("{} {} # vacances\n".format(name, day))
+                print "+{} {} # vacances".format(name, day)
+                holidaysfile.write("+{} {} # vacances\n".format(name, day))
 
 
 class Backtracker:
