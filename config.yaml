@@ -8,11 +8,11 @@ intervalCarrega: carrega{:02d}{:02d}{:02d}
 monitoringFile: taula.html
 nTelefons: 5
 diesCerca:
-- dv
 - dl
 - dm
 - dx
 - dj
+- dv
 diesVisualitzacio:
 - dl
 - dm
@@ -33,7 +33,7 @@ maximCamiAMostrar: 60
 aleatori: true
 stopPenalty: 0
 backtrackDepth: 10000000000
-maxNodesToPersevere: 10000000
+maxNodesToPersevere: 100000
 costLimit: 200
 descartaNoPrometedores: true
 deixaEsmorzar: true
