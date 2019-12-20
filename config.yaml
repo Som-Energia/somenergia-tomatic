@@ -42,7 +42,7 @@ maximPerTaula: 2
 maximsT1PerDia: 1
 maximHoresDiariesGeneral: 2
 maximHoresDiaries:
-  ningu: 4
+  ningu: 10
 costHoresDiscontinues: 40
 costHoresConcentrades: 1
 costTaulaSorollosa: 5
@@ -88,6 +88,7 @@ taules:
   annarodon: 16
   alberto: 10
   ningu: -1
+  ningu2: -1
   olga: -1
   mar: 19
   joanm: 6
