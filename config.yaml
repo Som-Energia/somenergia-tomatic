@@ -30,7 +30,8 @@ mostraCami: false
 maximCamiAMostrar: 60
 aleatori: true
 stopPenalty: 0
-backtrackDepth: 10000
+backtrackDepth: 10000000000
+maxNodesToPersevere: 10000000
 costLimit: 200
 descartaNoPrometedores: true
 deixaEsmorzar: true

@@ -263,9 +263,13 @@ class Backtracker:
                 )
             ])
 
-
+        # Visited nodes
         self.nbactracks = 0
+        # Max number of visited 
         self.backtrackDepth = config.backtrackDepth
+        # Number of visited nodes befor trying another path in random mode
+        self.maxNodesToPersevere = config.maxNodesToPersevere
+
         self.cutLog = {}
         self.deeperCutDepth = 0
         self.deeperCutLog = set()
@@ -398,13 +402,18 @@ class Backtracker:
 
 
     def solve(self) :
+        self.nbactracks = 0
         while not self.terminated:
-            self.nbactracks = 0
+            self.perseveredNodes = 0
             self.solveTorn([])
-            if self.nbactracks < self.backtrackDepth:
-                break
-            else:
-                step("Massa estona en aquest camí")
+            if self.backtrackDepth and self.nbactracks > self.backtrackDepth:
+                break # Too long
+ 
+            if self.config.aleatori and self.perseveredNodes > self.maxNodesToPersevere:
+                step("Massa estona en aquest camí sense solucions")
+                continue
+ 
+            break # Full backtrack completed
 
         ncaselles = len(self.caselles)
 
@@ -433,6 +442,7 @@ class Backtracker:
             self.reportSolution(partial, self.cost, self.penalties)
             self.bestSolution=list(partial)
             self.bestCost=self.cost
+            self.perseveredNodes=0 # chill, we found something!
 
         # Complete solution? Stop backtracking.
         if len(partial) == len(self.caselles):
@@ -639,6 +649,7 @@ class Backtracker:
             # Provem amb la seguent casella
             self.solveTorn(partial+[company])
             self.nbactracks += 1
+            self.perseveredNodes += 1
 
             # Desanotem la casella
             unmarkGroups(company,day,hora)
@@ -653,7 +664,7 @@ class Backtracker:
             self.cost -= cost
 
             # Si portem massa estona explorant el camí parem i provem un altre
-            if self.config.aleatori and self.nbactracks > self.backtrackDepth:
+            if self.config.aleatori and self.perseveredNodes > self.maxNodesToPersevere:
                 break
             if self.nbactracks > self.backtrackDepth:
                 break
@@ -707,7 +718,6 @@ class Backtracker:
                     htmlgen.htmlFixExtensions()+
                     htmlgen.htmlFooter()
                 )
-
 
 
 def parseArgs():
