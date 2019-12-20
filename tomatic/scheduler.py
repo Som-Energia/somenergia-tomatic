@@ -494,7 +494,8 @@ class Backtracker:
 
             if cut: return
 
-        companys = list(self.companys)
+        lastPersonInTurn = next((person for person in partial[-1:-1-telefon:-1] if person is not 'ningu'), None)
+        companys = [person for person in self.companys if not lastPersonInTurn or person > lastPersonInTurn]
         if self.config.aleatori:
             random.shuffle(companys)
 
@@ -503,19 +504,20 @@ class Backtracker:
             companys = [self.config.forced[(day,hora+1,telefon+1)]]
 
         for company in companys:
-            if telefon and partial[-1] > company:
-                self.cut("Redundant", partial,
-                    "Cami redundant, noms no ordenats {} -> {}"
-                    .format(partial[-1], company))
-                continue
-
-
 
             cost = 0
             penalties = []
             taula=self.taules[company]
 
             # Reasons to prune chosing that person
+
+            # Force ordered persons within a turn to avoid redundant paths
+            # Prefilter should do but forced may introduce them again
+            if lastPersonInTurn and company is not 'ningu' and lastPersonInTurn > company:
+                self.cut("Redundant", partial,
+                    "Cami redundant, noms no ordenats {} -> {}"
+                    .format(partial[-1], company))
+                continue
 
             # Person has no turns left to do
             if self.torns[company][0] <= 0:
