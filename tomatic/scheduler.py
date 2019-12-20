@@ -218,7 +218,7 @@ class Backtracker:
         # Groups by person
         self.personGroups = dict([                                      # (person) list of goups
             (company, [
-                group 
+                group
                 for group, companysDelGrup in self.config.groups.items()
                 if company in companysDelGrup])
             for company in self.companys
@@ -265,7 +265,7 @@ class Backtracker:
 
         # Visited nodes
         self.nbactracks = 0
-        # Max number of visited 
+        # Max number of visited
         self.backtrackDepth = config.backtrackDepth
         # Number of visited nodes befor trying another path in random mode
         self.maxNodesToPersevere = config.maxNodesToPersevere
@@ -408,11 +408,11 @@ class Backtracker:
             self.solveTorn([])
             if self.backtrackDepth and self.nbactracks > self.backtrackDepth:
                 break # Too long
- 
+
             if self.config.aleatori and self.perseveredNodes > self.maxNodesToPersevere:
                 step("Massa estona en aquest camí sense solucions")
                 continue
- 
+
             break # Full backtrack completed
 
         ncaselles = len(self.caselles)
@@ -468,6 +468,7 @@ class Backtracker:
             cut=False
             isInfraSolution = len(partial)<len(self.bestSolution)
             for company in self.companys:
+
                 """
                 if self.torns[company][0] > diesRestants * self.config.maximsT1PerDia:
                     self.cut("T1RestantsIncolocables", partial,
@@ -497,7 +498,8 @@ class Backtracker:
         if self.config.aleatori:
             random.shuffle(companys)
 
-        if (day, hora+1, telefon+1) in self.config.forced:              # see if is a forced position
+        # Is forced position?
+        if (day, hora+1, telefon+1) in self.config.forced:
             companys = [self.config.forced[(day,hora+1,telefon+1)]]
 
         for company in companys:
@@ -513,20 +515,23 @@ class Backtracker:
             penalties = []
             taula=self.taules[company]
 
-            # Motius de rebuig del camí
+            # Reasons to prune chosing that person
 
+            # Person has no turns left to do
             if self.torns[company][0] <= 0:
                 self.cut("TotColocat", partial,
                     "{} ja ha exhaurit els seus torns de telefon {}ari"
                     .format( company, telefon))
                 continue
 
+            # Person busy in this turn (it has another line in this turn or it is unavailable)
             if self.isBusy(company, day, hora):
                 self.cut("Indisponible", partial,
                     "{} no esta disponible el {} a la hora {}"
                     .format( company, day, hora+1))
                 continue
 
+            # Its a main line and person already has taken a main line that day
             """
             if telefon==0 and self.tePrincipal[company, day] >= self.config.maximsT1PerDia:
                 self.cut("MassesPrincipals", partial,
@@ -535,12 +540,14 @@ class Backtracker:
                 continue
             """
 
+            # Reduce cacophonies, by limiting people in the same table at once
             if self.telefonsALaTaula[day, hora, taula]>=self.config.maximPerTaula :
                 self.cut("TaulaSorollosa", partial,
                     "{} ja té {} persones a la mateixa taula amb telefon a {}a hora del {}"
                     .format(company, self.telefonsALaTaula[day, hora, taula], hora+1, day))
                 continue
 
+            # Ensure groups with a minimum of idle persons
             def notEnoughIdleInGroup(company):
                 for group in self.personGroups[company] :
                     if group not in self.config.minIdleInGroup: continue
@@ -551,6 +558,11 @@ class Backtracker:
                         .format(group, company, minIdle, day, hora+1))
                 return False
 
+            if notEnoughIdleInGroup(company):
+                self.cut("NotEnoughIdleInGroup", partial, notEnoughIdleInGroup(company))
+                continue
+
+            # Ensure groups with a maximum phoning persons
             def tooManyPhoningOnGroup(company):
                 for group in self.personGroups[company] :
                     if group not in self.config.maxPhoningInGroup: continue
@@ -561,26 +573,26 @@ class Backtracker:
                         .format(group, company, maxPhoning, day, hora+1))
                 return False
 
-            if notEnoughIdleInGroup(company):
-                self.cut("NotEnoughIdleInGroup", partial, notEnoughIdleInGroup(company))
-                continue
-
             if tooManyPhoningOnGroup(company):
                 self.cut("TooManyLinesForGroup", partial, tooManyPhoningOnGroup(company))
                 continue
 
+            # Limit the number of daily turns
             if self.horesDiaries[company, day] >= self.maxTornsDiaris(company):
                 self.cut("DiaATope", partial,
                     "No li posem mes a {} que ja te {} hores el {}"
                     .format( company, self.horesDiaries[company, day], day))
                 continue
 
+            # Allow lunch break, do no take both central hours one day
             if self.config.deixaEsmorzar and company not in self.config.noVolenEsmorzar:
                 if hora==2 and self.teTelefon[day, 1, company]:
                     self.cut("Esmorzar", partial,
                         "{} es queda sense esmorzar el {}"
                         .format(company, day))
                     continue
+
+            # Reasons to penalize chosing that person
 
             def penalize(value, short, reason):
                 penalties.append((value,reason))
@@ -609,11 +621,15 @@ class Backtracker:
                     "{} te {} persones a la mateixa taula amb telefon a {}a hora del {}".format(
                         company, self.telefonsALaTaula[day, hora, taula], hora+1, day))
 
+            # If penalty is too high also prune
+
             if self.cost + cost > self.cutoffCost :
                 self.cut("TooMuchCost", partial,
                     "Afegir {} suma masa cost: {}"
                     .format(company, self.cost+cost))
                 break
+
+            # (Over?)Pruning solutions which have the same cost than
 
             if self.cost + cost == self.cutoffCost and len(partial)<len(self.caselles)*0.7 :
                 self.cut("CostEqual", partial,
