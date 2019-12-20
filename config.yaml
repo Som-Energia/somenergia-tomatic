@@ -25,7 +25,7 @@ hours:
 - '11:30'
 - '12:45'
 - '14:00'
-ignoreOptionalAbsences: True
+ignoreOptionalAbsences: false
 mostraCami: false
 maximCamiAMostrar: 60
 aleatori: true
