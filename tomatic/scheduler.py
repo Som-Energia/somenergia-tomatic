@@ -80,6 +80,12 @@ def baixaVacancesDrive(config, certificat):
     nextFriday = config.monday+timedelta(days=4)
     mondayYear = config.monday.year
     startingSemester = 1 if config.monday < date(mondayYear,7,1) else 2
+
+    # HACK: Activate this flag until we have holidays spreadsheet for the new year
+    if config.get("newYearHack",False):
+        mondayYear-=1
+        startingSemester = 2
+
     semesterFirsMonth = 1 if startingSemester is 1 else 7
     semesterFirstDay = date(mondayYear, semesterFirsMonth, 1)
     startingOffset = (config.monday - semesterFirstDay).days
