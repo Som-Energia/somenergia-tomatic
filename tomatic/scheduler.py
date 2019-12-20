@@ -379,25 +379,26 @@ class Backtracker:
         if motiu in args.verbose or 'all' in args.verbose:
             warn(message)
 
+        # Do not log when a more complete solution solution exists
         if self.deeperCutLog and self.deeperCutDepth > len(partial): return
 
         if self.deeperCutDepth < len(partial):
             self.deeperCutLog = set()
             self.deeperCutDepth = len(partial)
 
-        if motiu == 'TotColocat':
+        if False and motiu is 'TotColocat':
             return # Not worth to log
+
+        with open(self.config.monitoringFile,'a') as output:
+            output.write("<div class='error'>Incompletable: ")
+            output.write(message.decode("utf-8"))
+            output.write("</div>")
 
         if message in self.deeperCutLog:
             return
 
         warn(message)
         self.deeperCutLog.add(message)
-
-        with open(self.config.monitoringFile,'a') as output:
-            output.write("<div class='error'>Incompletable: ")
-            output.write(message.decode("utf-8"))
-            output.write("</div>")
 
 
 
