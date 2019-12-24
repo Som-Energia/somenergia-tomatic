@@ -41,7 +41,7 @@ def busyTable(monday, *filenames, **kwds):
 					for dia in busyWeekDays:
 						if 'optional' in kwds and kwds['optional'] and not entry.optional:
 							continue
-						elif 'required' in kwds and kwds['required'] and entry.optional:
+						if 'required' in kwds and kwds['required'] and entry.optional:
 							continue
 						availability[dia, hora].add(entry.person)
 	return availability
