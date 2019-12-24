@@ -54,6 +54,10 @@ def busyTable(monday, *filenames, **kwds):
 @click.argument('date',
 	default=None,
 	)
+@click.argument('person',
+	required=False,
+	default=None,
+	)
 @click.option('--optional',
 	help=u"Mira només quants son opcionals",
 	is_flag=True,
@@ -62,7 +66,7 @@ def busyTable(monday, *filenames, **kwds):
 	help=u"Mira només quants son obligats",
 	is_flag=True,
 	)
-def cli(date, optional, required):
+def cli(date, person, optional, required):
 	u'Manages busy hours that persons cannot be attending phone'
 	print(optional)
 	date = busy.isodate(date)
@@ -93,6 +97,17 @@ def cli(date, optional, required):
 			]
 			for hour in xrange(busy.nturns)
 		])
+	if person:
+		print table(
+			[['']+busy.weekdays] +
+			[
+				[hour]+
+				[
+					1 if person in busydays[weekday, hour] else 0
+					for weekday in busy.weekdays
+				]
+				for hour in xrange(busy.nturns)
+			])
 
 
 if __name__=='__main__':
