@@ -25,6 +25,7 @@ hours:
 - '11:30'
 - '12:45'
 - '14:00'
+newYearHack: true
 ignoreOptionalAbsences: false
 mostraCami: false
 maximCamiAMostrar: 60
