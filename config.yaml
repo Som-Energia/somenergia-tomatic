@@ -5,13 +5,10 @@ fullCarrega_5: opm82es
 fullCarrega: om1qfyn
 intervalCarrega: carrega{:02d}{:02d}{:02d}
 monitoringFile: taula.html
-nTelefons: 6
+nTelefons: 5
 diesCerca:
-- dm
 - dv
-- dx
 - dl
-- dj
 diesVisualitzacio:
 - dl
 - dm
@@ -49,7 +46,7 @@ taules:
   joan: 5
   mariona: 17
   eduard: 7
-  pere: -1
+  pere: 99
   david: 5
   carles: 8
   monica: 15
@@ -76,7 +73,7 @@ taules:
   albert: 17
   oriol: 10
   fran: 10
-  miguelanxo: 14
+  juanpe: 0
   belen: 3
   fcasadella: 8
   gijsbert: 16
@@ -84,7 +81,6 @@ taules:
   fcots: 16
   annarodon: 16
   alberto: 10
-  juanpe: -1
   ningu: -1
   olga: -1
   mar: 19
@@ -117,6 +113,12 @@ taules:
   clara: 99
   jaume: 99
   davids: 99
+  hermigg: 99
+  cire: 99
+  francesc: 99
+  berta: 99
+  yolanda: 99
+  joel: 99
 sempreUnLliure: {}
 groups:
   ramat:
@@ -153,7 +155,6 @@ groups:
   - albert
   - oriol
   - fran
-  - miguelanxo
   it:
   - alberto
   - david
@@ -172,7 +173,6 @@ groups:
   - marc
   - marta
   balneari:
-  # Aram, Olga, Joan M, Mariona, Victor Naval, Eloi, Eduard, Albert, Càrol, Gabriel, Vero, Núria, Otilia, Guifré, Anna Bellmunt, Albert M, Mònica G., Roger Liarte, Vane
   - aram
   - olga
   - joanm
@@ -193,7 +193,6 @@ groups:
   - roger
   - vane
   casademnont:
-  # Roger Lapeña, Lucía, Adrià, Silvia, Judith, Carme, Erola, Mar, Joan B, Maria, Sergi, Yaiza, Gemma, Pau, Tània, Juan U. Vic
   - rogerlf
   - lucia
   - adria
@@ -212,17 +211,15 @@ groups:
   - joan
   - vic
 maxPhoningInGroup:
-  #nouramat: 1
   infern: 1
   casademnont: 3
-  
 minIdleInGroup:
   it: 4
 randomColors: false
 colors:
   marc: fbe8bc
   eduard: d8b9c5
-  pere: f200ff
+  pere: ddeeff
   david: ffb300
   carles: c98e98
   marta: eb9481
@@ -253,7 +250,7 @@ colors:
   albert: f4f4f4
   oriol: a52513
   fran: 621bf1
-  miguelanxo: 00b986
+  juanpe: ddeeff
   belen: 2892ff
   fcasadella: 10ee30
   gijsbert: 00adff
@@ -261,7 +258,6 @@ colors:
   fcots: ff5a60
   annarodon: 009e7d
   alberto: 0074f0
-  juanpe: ddeeff
   olga: ddeeff
   mar: 00ffff
   joanm: 2d93f2
@@ -291,9 +287,15 @@ colors:
   javi: 79eeff
   albertsimo: cc00ff
   clara: 602fa7
-  jaume: 5afc9c
+  jaume: 74eb79
   cesar: ffffee
   davids: d8863d
+  hermigg: ddbdf1
+  cire: 994a00
+  francesc: dcf664
+  berta: ddeeff
+  yolanda: ddeeff
+  joel: 00797c
 notoi_ids:
   marta: 1
   albertg: null
@@ -315,6 +317,15 @@ notoi_ids:
   gemma: null
   vic: null
   sergi: null
+  juanpe: null
+  hermigg: 2406
+  cire: 1007
+  francesc: 1718
+  jaume: null
+  berta: null
+  yolanda: null
+  pere: null
+  joel: null
 extensions:
   marta: '3040'
   monica: '3041'
@@ -326,7 +337,7 @@ extensions:
   judit: '3047'
   tania: '3183'
   carles: '3045'
-  pere: '3052'
+  pere: '3062'
   fran: '3008'
   david: '3054'
   silvia: '3055'
@@ -347,7 +358,7 @@ extensions:
   viktu: '3006'
   albert: '3038'
   oriol: '3089'
-  miguelanxo: '3194'
+  juanpe: '3194'
   belen: '3385'
   fcasadella: '3002'
   gijsbert: '3003'
@@ -355,7 +366,6 @@ extensions:
   fcots: '3015'
   annarodon: '3197'
   alberto: '3011'
-  juanpe: '0000'
   olga: '3088'
   mar: '3087'
   joanm: '3086'
@@ -386,6 +396,12 @@ extensions:
   clara: '3014'
   jaume: '3196'
   davids: '4003'
+  hermigg: '2406'
+  cire: '3065'
+  francesc: '3017'
+  berta: '3060'
+  yolanda: '3061'
+  joel: '3063'
 names:
   silvia: Sílvia
   monica: Mònica
@@ -397,12 +413,11 @@ names:
   ningu: '-'
   joan: Joan
   carol: Càrol
-  miguelanxo: MiguelAnxo
+  juanpe: Juan Pe
   belen: Belén
   fcasadella: FrancescCasadellà
   fcots: FrancescCots
   annarodon: AnnaRodon
-  juanpe: Juanpe
   joanm: JoanM
   annab: Anna B
   eloi: 'Eloi '
@@ -424,6 +439,8 @@ names:
   albertsimo: AlbertSi
   jaume: JaumeA
   davids: DavidS
+  hermigg: Hermi
+  francesc: Cesc
 forced: {}
 also_commented_forced:
   ? - dl
