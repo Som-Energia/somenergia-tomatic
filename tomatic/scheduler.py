@@ -6,7 +6,7 @@ from datetime import date, timedelta
 import random
 import datetime
 import glob
-from consolemsg import step, error, warn
+from consolemsg import step, error, warn, u
 import codecs
 from sheetfetcher import SheetFetcher
 from tomatic.htmlgen import HtmlGen
@@ -20,7 +20,7 @@ def open(*args, **kwd):
     return codecs.open(encoding='utf8', *args, **kwd)
 
 def transliterate(word):
-    word=unicode(word).lower()
+    word=u(word).lower()
     for old, new in zip(
         u'àèìòùáéíóúçñ',
         u'aeiouaeioucn',
@@ -183,6 +183,7 @@ class Backtracker:
         self.ntelefons = config.nTelefons                               # Phone slots
         self.hours = self.llegeixHores()                                # Turns (1st, 2nd, 3rd or 4th)
         self.dies = config.diesCerca                                    # Days at week (mon, tues, ...)
+
         errorDays = set(self.dies) - set(config.diesVisualitzacio)
         if errorDays:
             raise Backtracker.ErrorConfiguracio(
@@ -397,7 +398,7 @@ class Backtracker:
 
         with open(self.config.monitoringFile,'a') as output:
             output.write("<div class='error'>Incompletable: ")
-            output.write(message.decode("utf-8"))
+            output.write(u(message))
             output.write("</div>")
 
         if message in self.deeperCutLog:
