@@ -367,7 +367,7 @@ class Backtracker:
 
         message = log or motiu
 
-        if motiu in args.verbose:
+        if motiu in args.verbose or 'all' in args.verbose:
             warn(message)
 
         if self.deeperCutLog and self.deeperCutDepth > len(partial): return
