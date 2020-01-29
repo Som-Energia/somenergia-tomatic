@@ -450,12 +450,15 @@ class Backtracker:
                         "Tallant una solucio poc prometedora")
                     return
 
+            cut=False
+            isInfraSolution = len(partial)<len(self.bestSolution)
             for company in self.companys:
                 if self.torns[company][0] > diesRestants * self.config.maximsT1PerDia:
                     self.cut("T1RestantsIncolocables", partial,
                         "A {} li queden massa T1 per posar"
                         .format(company))
-                    return
+                    if isInfraSolution: return
+                    cut=True # Report all the bad guys and cut later
 
                 tornsPendents = sum(
                     self.torns[company][torn]
@@ -469,7 +472,10 @@ class Backtracker:
                     self.cut("RestantsIncolocables", partial,
                         "A {} nomes li queden {} forats per posar {} hores"
                         .format(company, tornsColocables, tornsPendents))
-                    return
+                    if isInfraSolution: return
+                    cut=True # Report all the bad guys and cut later
+
+            if cut: return
 
         companys = list(self.companys)
         if self.config.aleatori:
