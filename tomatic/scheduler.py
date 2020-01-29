@@ -13,6 +13,7 @@ from tomatic.htmlgen import HtmlGen
 import busy
 import requests
 import dbconfig
+from pathlib2 import Path
 
 # Dirty Hack: Behave like python3 open regarding unicode
 def open(*args, **kwd):
@@ -52,6 +53,20 @@ def baixaCarrega(config, certificat):
                 for row in carrega
                 )
             )
+
+def baixaIndisponibilitatsTomatic(config):
+    step("Baixant indisponibilitats del tomatic...")
+
+    baseUrl = config.baseUrl + '/api/busy/download/'
+    for name, filename in [
+            ('weekly', 'indisponibilitats.conf'),
+            ('oneshot', 'oneshot.conf'),
+        ]:
+        url = baseUrl + name
+        step("  Baixant {} from {}", filename, url)
+        r = requests.get(url)
+        r.raise_for_status()
+        Path(filename).write_bytes(r.content)
 
 def baixaVacancesDrive(config, certificat):
 
@@ -787,6 +802,7 @@ def main():
         if mustDownloadShifts:
             baixaCarrega(config, args.certificate)
         if not config.get('busyFiles'):
+            baixaIndisponibilitatsTomatic(config)
             if args.holidays == 'drive':
                 baixaVacancesDrive(config, args.certificate)
             if args.holidays == 'notoi':
