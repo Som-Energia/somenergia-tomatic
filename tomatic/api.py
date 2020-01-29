@@ -3,6 +3,7 @@
 from flask import (
     Flask, Response, request,
     send_from_directory,
+    send_file,
     )
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
@@ -675,6 +676,24 @@ def updateMyLog(ext):
     )
     return yamlfy(info=result)
 
+@app.route('/api/busy/download/weekly')
+def downloadWeeklyBusy():
+    print("joder")
+    response = send_file(
+        '../indisponibilitats.conf',
+        as_attachment=True,
+        mimetype='text/plain',
+    )
+    print("response {}".format(response))
+    return response
+
+@app.route('/api/busy/download/oneshot')
+def downloadOneShotBusy():
+    return send_file(
+        '../oneshot.conf',
+        as_attachment=True,
+        mimetype='text/plain',
+    )
 
 def yamlfy(status=200, data=[], **kwd):
     return Response(ns(
