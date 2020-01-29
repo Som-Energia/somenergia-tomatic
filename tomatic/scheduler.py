@@ -709,7 +709,7 @@ def parseArgs():
         metavar='message',
         nargs='+',
         default=[],
-        help="activa els missatges de tall del tipus indicat",
+        help="activa els missatges de tall del tipus indicat ('all' per tots)",
         )
 
     parser.add_argument(
