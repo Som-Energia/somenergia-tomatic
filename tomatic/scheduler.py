@@ -868,10 +868,10 @@ def main():
             baixaCarrega(config, args.certificate)
         if not config.get('busyFiles'):
             baixaIndisponibilitatsTomatic(config)
-            if args.holidays == 'drive':
-                baixaVacancesDrive(config, args.certificate)
             if args.holidays == 'notoi':
                 baixaVacancesNotoi(config)
+            else: # args.holidays == 'drive':
+                baixaVacancesDrive(config, args.certificate)
 
     if args.search_days:
         config.diesCerca = args.search_days.split(',')

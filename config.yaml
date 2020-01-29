@@ -6,7 +6,7 @@ fullCarrega_5: opm82es
 fullCarrega: om1qfyn
 intervalCarrega: carrega{:02d}{:02d}{:02d}
 monitoringFile: taula.html
-nTelefons: 5
+nTelefons: 6
 diesCerca:
 - dl
 - dm
@@ -26,7 +26,7 @@ hours:
 - '12:45'
 - '14:00'
 pruneRedundant: true
-newYearHack: true
+newYearHack: false
 ignoreOptionalAbsences: false
 mostraCami: false
 maximCamiAMostrar: 60
