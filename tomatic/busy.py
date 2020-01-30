@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 import datetime
 from yamlns import namespace as ns
+from consolemsg import out
 
 def open(*args, **kwd):
 	import codecs
@@ -241,7 +242,7 @@ def update_busy(person, data):
 			with open(filename,'w') as f:
 				f.write(output[attribute])
 	except Exception as e:
-		print e, entry
+		out("{} {}", e, entry)
 		return ns(
 			result='error',
 			message=format(e),

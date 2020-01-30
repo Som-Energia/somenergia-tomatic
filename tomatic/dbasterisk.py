@@ -56,7 +56,7 @@ class DbAsterisk(object):
             print queue, extension
             self.add(queue, extension)
             # KLUDGE: Let asterisk do its stuff so the wueue gets ordered
-            time.sleep(2)
+            #time.sleep(1)
 
     @db_session
     def queue(self, queue):

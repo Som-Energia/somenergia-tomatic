@@ -4,6 +4,7 @@
 from bisect import bisect
 from datetime import timedelta
 from yamlns import namespace as ns
+from builtins import range
 
 def weekday(date):
     "Returns the catalan short for the weekday of the given date"
@@ -104,8 +105,8 @@ def solution2schedule(config, solution, date=None):
     nhours = len(config.hours)-1
     tt = ns(
         (day, [
-            [None for i in xrange(config.nTelefons)]
-            for j in xrange(nhours)
+            [None for i in range(config.nTelefons)]
+            for j in range(nhours)
         ])
         for day in config.diesVisualitzacio
     )

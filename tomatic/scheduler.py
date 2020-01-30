@@ -6,12 +6,14 @@ from datetime import date, timedelta
 import random
 import datetime
 import glob
-from consolemsg import step, error, warn, out, u
 import codecs
-from sheetfetcher import SheetFetcher
-from tomatic.htmlgen import HtmlGen
-import busy
 import requests
+from builtins import range
+
+from consolemsg import step, error, warn, out, u
+from sheetfetcher import SheetFetcher
+from .htmlgen import HtmlGen
+from . import busy
 import dbconfig
 from pathlib2 import Path
 
@@ -219,7 +221,7 @@ class Backtracker:
                 self.maxTornsDiaris(nom),
                 sum(
                     0 if self.isBusy(nom,dia,hora) else 1
-                    for hora in xrange(len(self.hours)))
+                    for hora in range(len(self.hours)))
                 ))
             for nom, dia in xproduct(self.companys, self.dies))
 
@@ -251,7 +253,7 @@ class Backtracker:
         self.phoningOnGroup = createTable(0,                            # (group,day,turn) phones actives
             self.config.groups.keys(),
             self.dies,
-            xrange(len(self.hours)),
+            range(len(self.hours)),
             )
 
         # Idle persons in each group (not busy nor on phone)
@@ -267,7 +269,7 @@ class Backtracker:
             in xproduct(
                 self.config.groups.items(),
                 self.dies,
-                xrange(len(self.hours)),
+                range(len(self.hours)),
                 )
             ])
 
