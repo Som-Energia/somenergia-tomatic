@@ -439,9 +439,12 @@ class Backtracker:
 
         if self.terminated: return
 
-        # Better solution found? Report and hold it
         # A more complete solution is always better
+        # Better solution found? Report and hold it
         if (len(self.bestSolution), -self.bestCost) <= (len(partial), -self.cost):
+            if len(self.bestSolution) < len(partial) or len(partial)==len(self.caselles):
+                self.perseveredNodes=0 # chill, we found something!
+
             if len(partial) == len(self.caselles):
                 print 'Solució trobada amb cost {}.'.format(self.cost)
             else:
@@ -450,7 +453,6 @@ class Backtracker:
             self.reportSolution(partial, self.cost, self.penalties)
             self.bestSolution=list(partial)
             self.bestCost=self.cost
-            self.perseveredNodes=0 # chill, we found something!
 
         # Complete solution? Stop backtracking.
         if len(partial) == len(self.caselles):
