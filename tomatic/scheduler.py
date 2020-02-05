@@ -558,7 +558,7 @@ class Backtracker:
             """
 
             # Reduce cacophonies, by limiting people in the same table at once
-            if self.telefonsALaTaula[day, hora, taula]>=self.config.maximPerTaula :
+            if taula!=-1 and self.telefonsALaTaula[day, hora, taula]>=self.config.maximPerTaula :
                 self.cut("TaulaSorollosa", partial,
                     "{} ja té {} persones a la mateixa taula amb telefon a {}a hora del {}"
                     .format(company, self.telefonsALaTaula[day, hora, taula], hora+1, day))
@@ -631,7 +631,7 @@ class Backtracker:
                     "Repartiment",
                     "{} te mes de {} hores el {}".format(company, self.horesDiaries[company, day], day))
 
-            if self.telefonsALaTaula[day, hora, taula]>0 :
+            if taula!=-1 and self.telefonsALaTaula[day, hora, taula]>0 :
                 cost += penalize(
                     self.config.costTaulaSorollosa * self.telefonsALaTaula[day, hora, taula],
                     "Ocupacio",
