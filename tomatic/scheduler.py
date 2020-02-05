@@ -418,7 +418,8 @@ class Backtracker:
                 break # Too long
 
             if self.config.aleatori and self.perseveredNodes > self.maxNodesToPersevere:
-                step("Massa estona en aquest camí sense solucions")
+                step("Massa estona en aquest camí sense solucions que superin {}/{} amb cost {}",
+                    len(self.bestSolution), len(self.caselles), self.bestCost)
                 continue
 
             break # Full backtrack completed
