@@ -103,7 +103,7 @@ Tomatic.table = function(name) {
 	var tables = Tomatic.persons().tables;
 	if (!tables) { Tomatic.persons().tables={}; } // TODO: Move that anywhere else
 	var table = Tomatic.persons().tables[name];
-	if (table == undefined) { return 99; }
+	if (table == undefined) { return -1; }
 	return table;
 };
 Tomatic.peopleInTable = function(table) {
