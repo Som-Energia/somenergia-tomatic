@@ -393,7 +393,7 @@ class Backtracker:
             self.deeperCutLog = set()
             self.deeperCutDepth = len(partial)
 
-        if False and motiu is 'TotColocat':
+        if motiu is 'TotColocat':
             return # Not worth to log
 
         with open(self.config.monitoringFile,'a') as output:
