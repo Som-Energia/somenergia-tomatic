@@ -704,8 +704,7 @@ class Backtracker:
 
     def reportSolution(self, partial, cost, penalties=[]) :
         firstAtCost = self.storedCost != (len(partial), cost)
-        ncaselles = len(self.caselles)
-        paddedPartial = (partial+['?']*ncaselles)[:ncaselles]
+        paddedPartial = partial + ['?']*(len(self.caselles)-len(partial))
         solution = dict(zip(self.caselles, paddedPartial))
         htmlgen=HtmlGen.fromSolution(self.config,solution,self.config.monday)
         if firstAtCost:
