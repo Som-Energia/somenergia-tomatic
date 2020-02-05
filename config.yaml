@@ -8,11 +8,11 @@ intervalCarrega: carrega{:02d}{:02d}{:02d}
 monitoringFile: taula.html
 nTelefons: 6
 diesCerca:
+- dv
 - dl
 - dm
 - dx
 - dj
-- dv
 diesVisualitzacio:
 - dl
 - dm
@@ -33,7 +33,7 @@ maximCamiAMostrar: 60
 aleatori: true
 stopPenalty: 0
 backtrackDepth: 10000000000
-maxNodesToPersevere: 100000
+maxNodesToPersevere: 10000
 costLimit: 200
 descartaNoPrometedores: true
 deixaEsmorzar: true
@@ -54,7 +54,7 @@ taules:
   joan: 5
   mariona: 17
   eduard: 7
-  pere: 99
+  pere: -1
   david: 5
   carles: 8
   monica: 15
@@ -106,28 +106,28 @@ taules:
   rogerlf: 14
   gemma: 19
   aram: -1
-  benjami: 99
+  benjami: -1
   guifre: 8
-  nuria: 99
-  carme: 99
+  nuria: -1
+  carme: -1
   merce: 13
-  albertg: 99
+  albertg: -1
   adria: 13
-  monicag: 99
+  monicag: -1
   otilia: 17
-  contestado: 99
-  alex: 99
-  javi: 99
-  albertsimo: 99
-  clara: 99
-  jaume: 99
-  davids: 99
-  hermigg: 99
-  cire: 99
-  francesc: 99
-  berta: 99
-  yolanda: 99
-  joel: 99
+  contestado: -1
+  alex: -1
+  javi: -1
+  albertsimo: -1
+  clara: -1
+  jaume: -1
+  davids: -1
+  hermigg: -1
+  cire: -1
+  francesc: -1
+  berta: -1
+  yolanda: -1
+  joel: -1
 sempreUnLliure: {}
 groups:
   ramat:
