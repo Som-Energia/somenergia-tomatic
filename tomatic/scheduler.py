@@ -424,9 +424,7 @@ class Backtracker:
 
             break # Full backtrack completed
 
-        ncaselles = len(self.caselles)
-
-        if len(self.bestSolution) != ncaselles:
+        if len(self.bestSolution) != len(self.caselles):
             self.printCuts()
             error("Impossible trobar solució\n{}"
                 .format( '\n'.join(sorted(self.deeperCutLog))))
