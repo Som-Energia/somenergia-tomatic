@@ -191,7 +191,7 @@ class HtmlGen(object):
             "<p>Penalitzacio: {}</p>".format(minimumCost),
             "<ul>",
             "\n".join(
-                "<li>{}: {}</li>".format(*reason)
+                u"<li>{}: {}</li>".format(*reason)
                 for reason in penalties
             ),
             "</ul>",
