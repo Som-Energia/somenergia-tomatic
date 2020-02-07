@@ -522,18 +522,18 @@ class Backtracker:
                     minIdle = self.config.minIdleInGroup[group]
                     if self.idleInGroup[group, day, hora] > minIdle+1:
                         continue
-                    return ("Al grup {} on pertany {} no li quedaria prou gent el {} a {} hora"
-                        .format(group, company, day, hora+1))
+                    return ("El grup {} on pertany {} no tindria {} persones alliberades el {} a {} hora"
+                        .format(group, company, minIdle, day, hora+1))
                 return False
 
             def tooManyPhoningOnGroup(company):
                 for group in self.personGroups[company] :
                     if group not in self.config.maxPhoningInGroup: continue
                     maxPhoning = self.config.maxPhoningInGroup[group]
-                    if self.phoningOnGroup[group, day, hora] > maxPhoning:
+                    if self.phoningOnGroup[group, day, hora] < maxPhoning:
                         continue
-                    return ("Al grup {} on pertany {} hi ha massa gent al telèfon el {} a {} hora"
-                        .format(group, company, day, hora+1))
+                    return ("El grup {} on pertany {} ja te {} persones al telèfon el {} a {} hora"
+                        .format(group, company, maxPhoning, day, hora+1))
                 return False
 
             if notEnoughIdleInGroup(company):

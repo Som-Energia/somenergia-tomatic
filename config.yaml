@@ -196,7 +196,7 @@ groups:
   - monicag
   - roger
   - vane
-  casademnont:
+  casademont:
   - rogerlf
   - lucia
   - adria
@@ -215,8 +215,9 @@ groups:
   - joan
   - vic
 maxPhoningInGroup:
-  infern: 1
-  casademnont: 3
+  infern: 2
+  casademont: 4
+  balneari: 4
 minIdleInGroup:
   it: 4
 randomColors: false
