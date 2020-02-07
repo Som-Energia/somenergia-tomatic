@@ -194,7 +194,7 @@ class Backtracker:
 
         # Constraints
 		
-        self.torns = self.llegeixTorns(config.weekShifts, self.ntelefons)   # Persons and slots to be done
+        self.torns = self.readShifts(config.weekShifts, self.ntelefons)   # Persons and slots to be done
         self.companys = list(self.torns.keys())                         # Persons only
 
         self.topesDiaris = self.llegeixTopesDiaris(self.companys)       # Person with it's day limit
@@ -295,7 +295,7 @@ class Backtracker:
         lines = [str(h) for h in self.config.hours ]
         return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
 
-    def llegeixTorns(self,tornsfile, ntelefons):
+    def readShifts(self, tornsfile, ntelefons):
         result = dict()
         with open(tornsfile) as thefile:
             for numline, line in enumerate(thefile):
@@ -317,10 +317,26 @@ class Backtracker:
             raise Backtracker.ErrorConfiguracio(
                 "Les hores de T{} sumen {} i no pas {}, revisa {}".format(
                     telefon+1, horesTelefon, len(self.dies)*len(self.hours), tornsfile))
+        if self.config.discriminateLines:
+            return result
         return {
             name: [sum(values)]+(ntelefons-1)*[0]
             for name, values in result.items()
             }
+
+    def pendingShifts(self, person, line=None):
+        if not self.config.discriminateLines: line = 0
+        if line is not None:
+            return self.torns[person][line]
+        return sum(self.torns[person])
+
+    def useShift(self, person, line):
+        if not self.config.discriminateLines: line = 0
+        self.torns[person][line]-=1
+
+    def unuseShift(self, person, line):
+        if not self.config.discriminateLines: line = 0
+        self.torns[person][line]+=1
 
 
     def llegeixTopesDiaris(self, persons) :
@@ -370,7 +386,6 @@ class Backtracker:
     def setBusy(self, person, day, hour, busy=True):
         self.disponible[day, hour, person] = not busy
 
-
     def printCuts(self):
         for (depth, motiu), many in sorted(self.cutLog.items()):
             print depth, motiu, many
@@ -406,7 +421,6 @@ class Backtracker:
 
         warn(message)
         self.deeperCutLog.add(message)
-
 
 
     def solve(self) :
@@ -462,7 +476,7 @@ class Backtracker:
         day, hora, telefon = self.caselles[len(partial)] # (day,turn,slot) to be filled
 
         # Comencem dia, mirem si podem acomplir els objectius amb els dies restants
-        if not telefon and not hora:        # if turn == 0 and slot == 0 test if there is possible solution
+        if telefon==0 and hora==0:
 
             idia = self.dies.index(day)
             diesRestants =  len(self.dies)-idia
@@ -479,17 +493,14 @@ class Backtracker:
             for company in self.companys:
 
                 """
-                if self.torns[company][0] > diesRestants * self.config.maximsT1PerDia:
+                if self.pendingShifts(company,0) > diesRestants * self.config.maximsT1PerDia:
                     self.cut("T1RestantsIncolocables", partial,
                         "A {} li queden massa T1 per posar"
                         .format(company))
                     if isInfraSolution: return
                     cut=True # Report all the bad guys and cut later
                 """
-                tornsPendents = sum( ## TODO: refactor to simplify
-                    self.torns[company][torn]
-                    for torn in range(self.ntelefons)
-                    )
+                tornsPendents = self.pendingShifts(company)
                 tornsColocables = sum(
                     self.disponibilitatDiaria[company,dia]
                     for dia in self.dies[idia:]
@@ -534,7 +545,7 @@ class Backtracker:
                     continue
 
             # Person has no turns left to do
-            if self.torns[company][0] <= 0:
+            if self.pendingShifts(company) <= 0:
                 self.cut("TotColocat", partial,
                     "{} ja ha exhaurit els seus torns de telefon {}ari"
                     .format( company, telefon))
@@ -674,7 +685,7 @@ class Backtracker:
             self.teTelefon[day, hora, company]=True
             self.setBusy(company,day,hora)
             self.horesDiaries[company,day]+=1
-            self.torns[company][0]-=1
+            self.useShift(company, telefon)
             self.telefonsALaTaula[day,hora,taula]+=1
             markGroups(company,day,hora)
 
@@ -686,7 +697,7 @@ class Backtracker:
             # Desanotem la casella
             unmarkGroups(company,day,hora)
             self.telefonsALaTaula[day,hora,taula]-=1
-            self.torns[company][0]+=1
+            self.unuseShift(company, telefon)
             self.horesDiaries[company,day]-=1
             self.setBusy(company,day,hora, False)
             self.teTelefon[day, hora, company]=False
