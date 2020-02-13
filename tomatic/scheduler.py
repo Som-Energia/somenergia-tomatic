@@ -203,6 +203,7 @@ class Backtracker:
             glob.glob('indisponibilitats*.conf'))
 
         self.disponible = self.initBusyTable(*busyFiles)                # (day,turn,person) is available?
+        self.undesiredShifts = self.initUndesiredTable(*busyFiles)                # (day,turn,person) reason
 
         self.teTelefon = createTable(False,  self.dies, range(len(self.hours)), self.companys)  # (day,turn,person) has phone?
         self.tePrincipal = createTable(0,  self.companys, self.dies)    # (person,day) first turns?
@@ -355,6 +356,32 @@ class Backtracker:
     def maxTornsDiaris(self, company):
         return self.topesDiaris.get(company, self.globalMaxTurnsADay)
 
+
+    def initUndesiredTable(self, *filenames) :
+        #if self.config.ignoreOptionalAbsences: return dict()
+
+        undesired = dict()
+        for filename in filenames:
+            def errorHandler(msg):
+                raise Backtracker.ErrorConfiguracio(
+                    "{}:{}".format(filename, msg))
+
+            with open(filename) as thefile:
+                allentries = busy.parseBusy(thefile, errorHandler)
+                thisweekentries = busy.onWeek(self.config.monday, allentries)
+                for entry in thisweekentries:
+                    if not entry.optional:
+                        continue
+                    for hora, isBusy in enumerate(entry.turns):
+                        if isBusy!='1': continue
+                        weekdays = [entry.weekday] if entry.weekday else self.dies
+                        for dia in weekdays:
+                            undesired[dia, hora, entry.person] = entry.reason
+        print undesired
+        return undesired
+
+    def isUndesiredShift(self, person, day, hour):
+        return self.undesiredShifts.get((day, hour, person), False)
 
     def initBusyTable(self, *filenames) :
         availability = dict(
@@ -634,6 +661,12 @@ class Backtracker:
                 if self.config.costHoresDiscontinues:
                     cost += penalize(self.config.costHoresDiscontinues, "Discontinu",
                         "{} te hores separades el {}".format(company, day))
+
+            undesiredReason = self.isUndesiredShift(company, day, hora)
+            if undesiredReason:
+                cost += penalize(self.config.costHoraNoDesitjada, "Undesired",
+                    u"{} fa {} a {}a hora que no li va be perque: \"{}\""
+                    .format(company, day, hora+1, undesiredReason))
 
             if self.horesDiaries[company, day]>0 :
                 cost += penalize(

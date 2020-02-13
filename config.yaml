@@ -48,7 +48,7 @@ maximHoresDiaries:
 costHoresDiscontinues: 40
 costHoresConcentrades: 1
 costTaulaSorollosa: 5
-costHoraNoDesitjada: 0
+costHoraNoDesitjada: 10
 taules:
   marc: 16
   joan: 5
