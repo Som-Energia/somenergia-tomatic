@@ -126,8 +126,7 @@ class DbAsterisk(object):
             )
             for m in self._sipPeers.select(
                 lambda m: True
-            )
-            ]
+        )]
 
 
 # vim: ts=4 sw=4 et

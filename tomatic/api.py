@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-from __future__ import absolute_import
 from future import standard_library
 standard_library.install_aliases()
 from flask import (
@@ -185,7 +183,7 @@ def listGraelles():
 @app.route('/api/graella', methods=['POST'])
 @yamlerrors
 def uploadGraella(week=None):
-    print("uploading", request.files)
+    print("uploading {}".format(request.files))
     if 'yaml' not in request.files:
         print("Cap graella pujada")
         return "KO"
@@ -682,7 +680,6 @@ def updateMyLog(ext):
 
 @app.route('/api/busy/download/weekly')
 def downloadWeeklyBusy():
-    print("joder")
     response = send_file(
         '../indisponibilitats.conf',
         as_attachment=True,

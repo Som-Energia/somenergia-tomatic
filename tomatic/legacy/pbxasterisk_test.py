@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
 from .pbxasterisk import Pbx, remotewrite, remoteread, remoterun, Remote
 from .scheduling import weekday
 import unittest
