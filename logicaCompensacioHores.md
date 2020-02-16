@@ -1,7 +1,7 @@
 # Logica de compensació d'hores
 
 1. **Càrrega ideal:** Es parteix de les càrregues ideals del drive
-1. **Càrrega ponderada:**Aquesta carrega es ponderarà pels dies hàbils de cada persona on es tenen en compte (ideal * dies habils / 5)
+1. **Càrrega ponderada:** Aquesta carrega es ponderarà pels dies hàbils de cada persona on es tenen en compte (ideal * dies habils / 5)
     - Els dies hàbils són els que no són
         - Festius
         - Vacances
