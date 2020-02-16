@@ -38,6 +38,8 @@ setup(
         'click',
         'decorator',
         'requests',
+        'future',
+        'pathlib2',
     #],
     #tests_require=[
         'nose',

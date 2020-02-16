@@ -4,7 +4,6 @@
 from bisect import bisect
 from datetime import timedelta
 from yamlns import namespace as ns
-from builtins import range
 
 def weekday(date):
     "Returns the catalan short for the weekday of the given date"

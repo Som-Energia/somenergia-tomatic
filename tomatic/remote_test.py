@@ -64,7 +64,7 @@ class Remote_Test(unittest.TestCase):
     def test_remoteread_badPath(self):
         with self.assertRaises(IOError) as ctx:
             remoteread(filename="/etc/badfile", **self.conf)
-        self.assertEqual(str(ctx.exception),
+        self.assertEqual(format(ctx.exception),
             "[Errno 2] No such file")
 
     def test_remotewrite(self):
@@ -99,7 +99,7 @@ class Remote_Test(unittest.TestCase):
         with Remote(**self.conf) as remote:
             with self.assertRaises(IOError) as ctx:
                 remote.read("/etc/badfile")
-        self.assertEqual(str(ctx.exception),
+        self.assertEqual(format(ctx.exception),
             "[Errno 2] No such file")
 
     def test_write(self):

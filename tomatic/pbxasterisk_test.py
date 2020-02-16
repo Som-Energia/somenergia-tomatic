@@ -29,7 +29,7 @@ class PbxAsterisk_Test(unittest.TestCase):
     def setupScheduling(self, yaml):
         sched = ns.loads(yaml)
         storage = Storage(self.path)
-        sched.week = str(self.monday.date())
+        sched.week = format(self.monday.date())
         storage.save(sched)
 
     def test_currentQueue_noConfiguration(self):
