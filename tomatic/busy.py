@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 from past.builtins import basestring
 import datetime
 from yamlns import namespace as ns
-from consolemsg import out
+from consolemsg import out, u
 
 def open(*args, **kwd):
 	import codecs
@@ -19,7 +18,7 @@ weekdays = 'dl dm dx dj dv'.split()
 
 # TODO: Move it to a utility module and test it
 def transliterate(word):
-	word=unicode(word).lower()
+	word=u(word).lower()
 	for old, new in zip(
 		u'àèìòùáéíóúçñ',
 		u'aeiouaeioucn',
