@@ -3,13 +3,14 @@
 from tomatic.dbasterisk import DbAsterisk
 from tomatic.schedulestorage import Storage
 from tomatic.scheduling import choosers, Scheduling
+from consolemsg import u
 import dbconfig
 import sys
 import click
 from tomatic import __version__
 
 def table(data):
-	return '\n'.join('\t'.join(str(c) for c in row) for row in data)
+	return '\n'.join('\t'.join(u(c) for c in row) for row in data)
 
 
 queue_option = click.option('--queue', '-q',

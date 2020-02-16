@@ -18,7 +18,7 @@ def table(data):
 def nextMonday(date):
 	import datetime
 	today = date or datetime.datetime.today()
-	return str(today + datetime.timedelta(days=(7-today.weekday()) or 7))
+	return format(today + datetime.timedelta(days=(7-today.weekday()) or 7))
 
 def busyTable(monday, *filenames, **kwds):
 	from itertools import product as xproduct

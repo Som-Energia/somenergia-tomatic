@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from past.builtins import basestring
 import datetime
 from yamlns import namespace as ns
 from consolemsg import out

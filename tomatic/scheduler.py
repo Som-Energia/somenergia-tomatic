@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 from itertools import product as xproduct
 from datetime import date, timedelta
 import random
@@ -97,7 +98,7 @@ def baixaVacancesDrive(config, certificat):
         startingSemester,
         )
     step("  Baixant vacances de l'interval {}".format(holidays2SRange))
-    holidays2S = fetcher.get_range(str(mondayYear), holidays2SRange)
+    holidays2S = fetcher.get_range(u(mondayYear), holidays2SRange)
 
     # TODO: Compose from two semesters (won't happen till 2018 Jan)
 #    endingSemester = 1 if nextFriday < date(mondayYear,7,1) else 2
@@ -145,7 +146,7 @@ def baixaVacancesNotoi(config):
 
     step("  Guardant indisponibilitats per vacances a 'indisponibilitats-vacances.conf'...")
     notoi_names = {}
-    for key, value in config.notoi_ids.iteritems():
+    for key, value in config.notoi_ids.items():
         notoi_names[value] = key
     translate_days = ['dl', 'dm', 'dx', 'dj', 'dv']
 
@@ -170,7 +171,7 @@ def baixaVacancesNotoi(config):
                 holidaysfile.write("+{} {} # vacances\n".format(name, day))
 
 
-class Backtracker:
+class Backtracker(object):
     class ErrorConfiguracio(Exception): pass
 
     def __init__(self, config) :
@@ -295,7 +296,7 @@ class Backtracker:
         self.terminated=False
 
     def llegeixHores(self):
-        lines = [str(h) for h in self.config.hours ]
+        lines = [u(h) for h in self.config.hours ]
         return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
 
     def readShifts(self, tornsfile, ntelefons):
@@ -379,7 +380,7 @@ class Backtracker:
                         weekdays = [entry.weekday] if entry.weekday else self.dies
                         for dia in weekdays:
                             undesired[dia, hora, entry.person] = entry.reason
-        print undesired
+        print(undesired)
         return undesired
 
     def isUndesiredShift(self, person, day, hour):

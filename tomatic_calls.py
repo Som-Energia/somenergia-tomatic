@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from __future__ import print_function
-from consolemsg import step
+from consolemsg import step, u
 from datetime import datetime
 from pony.orm import (
     PrimaryKey,
@@ -127,7 +127,7 @@ def summary(date):
             else:
                 header = '???'
             print('\t'.join([
-                str(trucades), minuts, header
+                u(trucades), minuts, header
                 ]))
 @cli.command()
 @date_option
@@ -136,7 +136,7 @@ def all(date):
     adate = dateOrToday(date)
     with db_session():
         for x in db.execute("select * from cdr where date(calldate)=$adate order by calldate"):
-            print(u'\t'.join(unicode(a) for a in x))
+            print(u'\t'.join(u(a) for a in x))
 
 @cli.command()
 @date_option
@@ -145,7 +145,7 @@ def unanswered(date):
     step("trucades no servides")
     with db_session():
         for x in db.execute("select * from cdr where dstchannel='' and dst='s' and date(calldate)=$adate order by calldate"):
-            print('\t'.join(unicode(a) for a in x))
+            print('\t'.join(u(a) for a in x))
 
 
     with db_session():
@@ -195,7 +195,7 @@ def missed(date):
             and c.dcontext == 'atencio'
             and c.lastdata == '/var/lib/asterisk/sounds/custom/liniesocupades'
         ):
-            print('\t'.join(str(s) for s in x))
+            print('\t'.join(u(s) for s in x))
 
 
 if __name__=='__main__':

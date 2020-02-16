@@ -127,7 +127,7 @@ class CallInfo(object):
                     no_partners.append(partner_result)
             except Exception as e:
                 print("Unexepected error found at partner id {}".format(partner_data.id))
-                print(str(e))
+                print(e)
         result.partners.extend(no_partners)
         return result
 

@@ -2,6 +2,8 @@
 
 from __future__ import print_function
 from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
 from flask import (
     Flask, Response, request,
     send_from_directory,
@@ -20,7 +22,7 @@ import os
 import erppeek
 from sheetfetcher import SheetFetcher
 from threading import Semaphore, Thread
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 try:
     import dbconfig
@@ -77,7 +79,7 @@ def anow():
     return datetime(2016,12,27,10,23,23)
 
 def thisweek():
-    return str(now().date() - timedelta(days=now().weekday()))
+    return format(now().date() - timedelta(days=now().weekday()))
 
 dbconfig=None
 
@@ -116,14 +118,14 @@ def yamlerrors(f,*args,**kwd):
         error("ApiError: {}", e)
         raise
         return yamlfy(
-            error=str(e),
+            error=format(e),
             status=500,
             )
     except Exception as e:
         error("UnexpectedError: {}", e)
         raise
         return yamlfy(
-            error=str(e),
+            error=format(e),
             status=500,
             )
 
@@ -309,7 +311,7 @@ def getInfoPersonByPhone(phone):
 
 @app.route('/api/info/name/<name>', methods=['GET'])
 def getInfoPersonByName(name):
-    decoded_name = urllib.unquote(name)
+    decoded_name = urllib.parse.unquote(name)
     message = 'ok'
     o = erppeek.Client(**dbconfig.erppeek)
     info = CallInfo(o)
@@ -398,7 +400,7 @@ def getInfoPersonByEmail(email):
 
 @app.route('/api/info/all/<field>', methods=['GET'])
 def getInfoPersonBy(field):
-    decoded_field = urllib.unquote(field)
+    decoded_field = urllib.parse.unquote(field)
     message = 'ok'
     o = erppeek.Client(**dbconfig.erppeek)
     info = CallInfo(o)
@@ -620,7 +622,7 @@ def getPhoneLog(phone):
         log = []
         message = 'error_get_fullsheet'
         error("Getting reason calls from {}.", CONFIG.call_reasons_document)
-    reasons = filter(lambda x: x[LOGS["phone"]] == phone, log)
+    reasons = [x for x in log if x[LOGS["phone"]] == phone]
     reasons.sort(key=lambda x: datetime.strptime(x[0], '%d-%m-%Y %H:%M:%S'))
     result = ns(
         info=reasons,
