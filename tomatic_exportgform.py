@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 from sheetfetcher import SheetFetcher
 from tomatic import busy
 from yamlns import namespace as ns
@@ -25,5 +26,5 @@ with open('oneshot.conf', 'w') as f:
 		print (line)
 		f.write(line)
 
-print busy.busy('erola').dump()
+print(busy.busy('erola').dump())
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 from consolemsg import step
 from datetime import datetime
 from pony.orm import (
@@ -86,7 +87,7 @@ def properNameByExtension(config, extension):
 def dumpschema():
     "Dumps the db schema, for debug purposes"
     with db_session():
-        for x in db.execute("show create table cdr"): print x[1]
+        for x in db.execute("show create table cdr"): print(x[1])
 
 
 @cli.command()
@@ -108,7 +109,7 @@ def summary(date):
             if c.calldate.date() == adate
             and c.dst=='s'
             ).order_by(-3)
-        print '\t'.join('trucades minuts extensio '.split())
+        print('\t'.join('trucades minuts extensio '.split()))
         for call in calls:
             extension, trucades, segons, callid, lastapp, lastdata, disposition = call
             minuts="{:02}:{:02} min".format(*divmod(segons,60))
@@ -125,9 +126,9 @@ def summary(date):
                 header = disposition
             else:
                 header = '???'
-            print '\t'.join([
+            print('\t'.join([
                 str(trucades), minuts, header
-                ])
+                ]))
 @cli.command()
 @date_option
 def all(date):
@@ -135,7 +136,7 @@ def all(date):
     adate = dateOrToday(date)
     with db_session():
         for x in db.execute("select * from cdr where date(calldate)=$adate order by calldate"):
-            print u'\t'.join(unicode(a) for a in x)
+            print(u'\t'.join(unicode(a) for a in x))
 
 @cli.command()
 @date_option
@@ -144,7 +145,7 @@ def unanswered(date):
     step("trucades no servides")
     with db_session():
         for x in db.execute("select * from cdr where dstchannel='' and dst='s' and date(calldate)=$adate order by calldate"):
-            print '\t'.join(unicode(a) for a in x)
+            print('\t'.join(unicode(a) for a in x))
 
 
     with db_session():
@@ -161,18 +162,18 @@ def unanswered(date):
         )).order_by("c.calldate"):
             n, disposition, lastapp, lastdata = c
             if lastapp == 'Hangup':
-                print "Penjades:", n
+                print("Penjades:", n)
                 continue
             if lastapp == 'Playback':
-                print "Contestador {}: {}".format(''.join(lastdata.split('/')[-1:]), n)
+                print("Contestador {}: {}".format(''.join(lastdata.split('/')[-1:]), n))
                 continue
             if disposition == 'NO ANSWER':
-                print "Sense resposta:", n
+                print("Sense resposta:", n)
                 continue
             if disposition == 'BUSY':
-                print "Ocupades:", n
+                print("Ocupades:", n)
                 continue
-            print c
+            print(c)
 
 
 @cli.command()
@@ -181,7 +182,7 @@ def missed(date):
     adate = dateOrToday(date)
     step("Trucades perdudes")
     with db_session():
-        print '\t'.join('origen n'.split())
+        print('\t'.join('origen n'.split()))
         for x in select((
             c.src,
             c.dcontext,
@@ -194,7 +195,7 @@ def missed(date):
             and c.dcontext == 'atencio'
             and c.lastdata == '/var/lib/asterisk/sounds/custom/liniesocupades'
         ):
-            print '\t'.join(str(s) for s in x)
+            print('\t'.join(str(s) for s in x))
 
 
 if __name__=='__main__':

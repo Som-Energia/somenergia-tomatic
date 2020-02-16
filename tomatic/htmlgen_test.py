@@ -1,12 +1,13 @@
 #-*- coding: utf-8 -*-
 
+from __future__ import absolute_import
 import unittest
 from yamlns import namespace as ns
 import b2btest
 import sys
 
-from htmlgen import HtmlGen
-from htmlgen import schedule2asterisk
+from .htmlgen import HtmlGen
+from .htmlgen import schedule2asterisk
 
 class Schedule_Test(unittest.TestCase):
 

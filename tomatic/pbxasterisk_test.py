@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import
 from .pbxasterisk import PbxAsterisk
-from scheduling import weekday, weekstart
-from schedulestorage import Storage
+from .scheduling import weekday, weekstart
+from .schedulestorage import Storage
 import unittest
 from datetime import datetime, timedelta
 from yamlns import namespace as ns

@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 
+from __future__ import absolute_import
 from .pbxmockup import weekday
 import unittest
 from datetime import datetime, timedelta
 from yamlns.dateutils import Date
 from yamlns import namespace as ns
-from scheduling import weekstart, nextweek, choosers, Scheduling
+from .scheduling import weekstart, nextweek, choosers, Scheduling
 
 class Scheduling_Test(unittest.TestCase):
 

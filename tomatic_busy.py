@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 
+from __future__ import print_function
 from tomatic import busy
 import sys
 import click
@@ -76,7 +77,7 @@ def cli(date, person, optional, required):
 		optional=optional,
 		required=required,
 		)
-	print table(
+	print(table(
 		[['']+busy.weekdays] +
 		[
 			[hour]+
@@ -85,9 +86,9 @@ def cli(date, person, optional, required):
 				for weekday in busy.weekdays
 			]
 			for hour in xrange(busy.nturns)
-		])
+		]))
 
-	print table(
+	print(table(
 		[['']+busy.weekdays] +
 		[
 			[hour]+
@@ -96,9 +97,9 @@ def cli(date, person, optional, required):
 				for weekday in busy.weekdays
 			]
 			for hour in xrange(busy.nturns)
-		])
+		]))
 	if person:
-		print table(
+		print(table(
 			[['']+busy.weekdays] +
 			[
 				[hour]+
@@ -107,7 +108,7 @@ def cli(date, person, optional, required):
 					for weekday in busy.weekdays
 				]
 				for hour in xrange(busy.nturns)
-			])
+			]))
 
 
 if __name__=='__main__':

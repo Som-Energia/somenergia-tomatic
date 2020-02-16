@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 from tomatic.api import app, pbx, startCallInfoWS
 import click
 import dbconfig
@@ -34,7 +35,7 @@ from tomatic import __version__
     )
 def main(fake, debug, host, port, printrules):
     "Runs the Tomatic web and API"
-    print fake, debug, host, port, printrules
+    print(fake, debug, host, port, printrules)
     if fake:
         warn("Using fake pbx")
     else:
@@ -47,7 +48,7 @@ def main(fake, debug, host, port, printrules):
 
     if printrules:
         for rule in app.url_map.iter_rules():
-            print rule
+            print(rule)
 
     step("Starting WS thread")
     wsthread = startCallInfoWS(app)

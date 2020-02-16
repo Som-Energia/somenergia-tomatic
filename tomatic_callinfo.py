@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 
+from __future__ import print_function
 from tomatic.callinfo import CallInfo
 
 import dbconfig
@@ -9,7 +10,7 @@ import sys
 
 O = erppeek.Client(**dbconfig.erppeek)
 callinfo = CallInfo(O)
-print callinfo.getByPhone(sys.argv[1]).dump()
+print(callinfo.getByPhone(sys.argv[1]).dump())
 
 
 

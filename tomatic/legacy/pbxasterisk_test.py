@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 from .pbxasterisk import Pbx, remotewrite, remoteread, remoterun, Remote
 from .scheduling import weekday
 import unittest
@@ -41,7 +42,7 @@ class Pbx_Test(unittest.TestCase):
 
     def tearDown(self):
         if self.previousConfig is not None:
-            print self.previousConfig
+            print(self.previousConfig)
             self.remote.write(config.pbx.scp.path, self.previousConfig)
 
     def pbx(self):

@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import
 from datetime import datetime
 from yamlns import namespace as ns
-from scheduling import weekday, Scheduling
+from .scheduling import weekday, Scheduling
 
 class PbxMockup(object):
     """

@@ -1,20 +1,21 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from callinfo import CallInfo
+import b2btest
+from yamlns import namespace as ns
+from .callinfo import CallInfo
+
 import erppeek
 try:
     import dbconfig
 except ImportError:
     dbconfig = None
-from yamlns import namespace as ns
-import b2btest
 
 @unittest.skipIf(not dbconfig or not dbconfig.erppeek,
     "Requires configuring dbconfig.erppeek")
 class CallInfo_Test(unittest.TestCase):
 
-    from testutils import assertNsEqual
+    from somutils.testutils import assertNsEqual
 
     def setUp(self):
         self.maxDiff = None
@@ -25,6 +26,8 @@ class CallInfo_Test(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        if not dbconfig: return
+        if not dbconfig.erppeek: return
         cls.O = erppeek.Client(**dbconfig.erppeek)
 
     def test_addressByPhone_whenMatchesNone(self):

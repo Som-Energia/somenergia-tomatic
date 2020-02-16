@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 import unittest
 import os
 from . import busy
@@ -74,7 +73,7 @@ class BusyTest(unittest.TestCase):
 			reason = reason,
 			**when)
 
-	from testutils import assertNsEqual
+	from somutils.testutils import assertNsEqual
 	def assertBusyEqual(self, result, expected):
 		self.assertNsEqual(result, self.tupleToNs(*expected))
 

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+from __future__ import absolute_import
 from flask import (
     Flask, Response, request,
     send_from_directory,
@@ -8,7 +10,7 @@ from flask import (
 from datetime import datetime, timedelta
 from yamlns import namespace as ns
 from consolemsg import error, step, warn
-from callinfo import CallInfo
+from .callinfo import CallInfo
 from websocket_server import WebsocketServer
 from . import schedulestorage
 from .pbxmockup import PbxMockup
@@ -165,7 +167,7 @@ def editSlot(week, day, houri, turni, name):
         name
         ))
     graella.setdefault('log',[])
-    print logmsg
+    print(logmsg)
     graella.log.append(logmsg)
     schedules.save(graella)
     publishStatic(graella)
@@ -181,7 +183,7 @@ def listGraelles():
 @app.route('/api/graella', methods=['POST'])
 @yamlerrors
 def uploadGraella(week=None):
-    print "uploading", request.files
+    print("uploading", request.files)
     if 'yaml' not in request.files:
         print("Cap graella pujada")
         return "KO"
@@ -198,7 +200,7 @@ def uploadGraella(week=None):
         graella.week,
         ))
     graella.setdefault('log',[])
-    print logmsg
+    print(logmsg)
     schedules.save(graella)
     publishStatic(graella)
     return yamlfy(result='ok')
@@ -272,12 +274,12 @@ def setPersonInfo(person):
 
 @app.route('/api/busy/<person>', methods=['GET'])
 def busy(person):
-    import busy
+    from . import busy
     return yamlfy(**busy.busy(person))
 
 @app.route('/api/busy/<person>', methods=['POST'])
 def busy_post(person):
-    import busy
+    from . import busy
     data = ns.loads(request.data)
     return yamlfy(**busy.update_busy(person, data))
 

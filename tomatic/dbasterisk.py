@@ -53,7 +53,6 @@ class DbAsterisk(object):
             if m.queue_name == queue
             )
         for extension in extensions:
-            print queue, extension
             self.add(queue, extension)
             # KLUDGE: Let asterisk do its stuff so the wueue gets ordered
             #time.sleep(1)

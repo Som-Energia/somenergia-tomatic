@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from schedulestorage import Storage
-from dbasterisk import DbAsterisk
-from scheduling import choosers, Scheduling
+from __future__ import absolute_import
+from .schedulestorage import Storage
+from .dbasterisk import DbAsterisk
+from .scheduling import choosers, Scheduling
 import datetime
 from yamlns import namespace as ns
 
