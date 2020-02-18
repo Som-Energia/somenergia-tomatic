@@ -380,7 +380,6 @@ class Backtracker(object):
                         weekdays = [entry.weekday] if entry.weekday else self.dies
                         for dia in weekdays:
                             undesired[dia, hora, entry.person] = entry.reason
-        print(undesired)
         return undesired
 
     def isUndesiredShift(self, person, day, hour):
