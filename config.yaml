@@ -25,9 +25,10 @@ hours:
 - '11:30'
 - '12:45'
 - '14:00'
+discriminateLines: true
 pruneRedundant: true
 newYearHack: false
-ignoreOptionalAbsences: false
+ignoreOptionalAbsences: true
 mostraCami: false
 maximCamiAMostrar: 60
 aleatori: true
