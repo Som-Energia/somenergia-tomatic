@@ -576,7 +576,7 @@ class Backtracker(object):
                     continue
 
             # Person has no turns left to do
-            if self.pendingShifts(company) <= 0:
+            if self.pendingShifts(company, telefon) <= 0:
                 self.cut("TotColocat", partial,
                     "{} ja ha exhaurit els seus torns de telefon {}ari"
                     .format( company, telefon))
