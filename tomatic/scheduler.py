@@ -490,7 +490,7 @@ class Backtracker(object):
                 self.perseveredNodes=0 # chill, we found something!
 
             if len(partial) == len(self.caselles):
-                out("Solució trobada amb cost {}.",cost)
+                out("Solució trobada amb cost {}.", self.cost)
             else:
                 out("Solució incomplerta {}/{} caselles, cost {}",
                     len(partial), len(self.caselles), self.cost)
