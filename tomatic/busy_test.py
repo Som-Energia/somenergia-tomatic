@@ -177,32 +177,34 @@ class BusyTest(unittest.TestCase):
 			('F', 'maria', u'dl', '1101', u'reunió POL'),
 			])
 
+	def assertParsed(self, result, expected):
+		self.assertNsEqual(ns(data=list(result)), ns(data=expected))
 
 	def test_parseBusy_whenEmpty(self):
 		lines = [
 		]
-		self.assertEqual(list(busy.parseBusy(lines)), [
+		self.assertParsed(busy.parseBusy(lines), [
 			])
 
 	def test_parseBusy_commentsIgnored(self):
 		lines = [
 			"# comment"
 		]
-		self.assertEqual(list(busy.parseBusy(lines)), [
+		self.assertParsed(busy.parseBusy(lines), [
 			])
 
 	def test_parseBusy_emptyLineIgnored(self):
 		lines = [
 			" "
 		]
-		self.assertEqual(list(busy.parseBusy(lines)), [
+		self.assertParsed(busy.parseBusy(lines), [
 			])
 
 	def test_parseBusy_singleWeekDay(self):
 		lines = [
 			"someone dx 0101 # Reason"
 		]
-		self.assertEqual(list(busy.parseBusy(lines)), [
+		self.assertParsed(busy.parseBusy(lines), [
 			ns(
 				person='someone',
 				weekday='dx',
@@ -216,7 +218,7 @@ class BusyTest(unittest.TestCase):
 		lines = [
 			"+someone dx 0101 # Reason" # a plus behind
 		]
-		self.assertEqual(list(busy.parseBusy(lines)), [
+		self.assertParsed(busy.parseBusy(lines), [
 			ns(
 				person='someone',
 				weekday='dx',
@@ -230,7 +232,7 @@ class BusyTest(unittest.TestCase):
 		lines = [
 			"someone 0101 # Reason"
 		]
-		self.assertEqual(list(busy.parseBusy(lines)), [
+		self.assertParsed(busy.parseBusy(lines), [
 			ns(
 				person='someone',
 				weekday='',
@@ -244,7 +246,7 @@ class BusyTest(unittest.TestCase):
 		lines = [
 			"someone 2015-01-02 0101 # Reason"
 		]
-		self.assertEqual(list(busy.parseBusy(lines)), [
+		self.assertParsed(busy.parseBusy(lines), [
 			ns(
 				person='someone',
 				date=isodate('2015-01-02'),
@@ -258,7 +260,7 @@ class BusyTest(unittest.TestCase):
 		lines = [
 			"someone dl # Reason"
 		]
-		self.assertEqual(list(busy.parseBusy(lines)), [
+		self.assertParsed(busy.parseBusy(lines), [
 			ns(
 				person='someone',
 				weekday='dl',
@@ -272,7 +274,7 @@ class BusyTest(unittest.TestCase):
 		lines = [
 			"someone  # Reason"
 		]
-		self.assertEqual(list(busy.parseBusy(lines)), [
+		self.assertParsed(busy.parseBusy(lines), [
 			ns(
 				person='someone',
 				weekday='',
@@ -366,7 +368,7 @@ class BusyTest(unittest.TestCase):
 		def handler(msg):
 			errors.append(msg)
 
-		self.assertNsEqual(ns(caca=list(busy.parseBusy(lines, handler))), ns(caca=[
+		self.assertParsed(busy.parseBusy(lines, handler), [
 			ns(
 				person='someone',
 				weekday='dx',
@@ -388,7 +390,7 @@ class BusyTest(unittest.TestCase):
 				reason='Reason',
 				optional=True,
 				),
-			]))
+			])
 
 		self.assertEqual(errors, [
 			"1: Expected busy string of lenght 4 "
