@@ -554,7 +554,7 @@ class Backtracker(object):
         if self.config.aleatori:
             random.shuffle(companys)
 
-        # Is forced position?
+        # Is forced position? Take it
         if (day, hora+1, telefon+1) in self.config.forced:
             companys = [self.config.forced[(day,hora+1,telefon+1)]]
 
@@ -578,14 +578,14 @@ class Backtracker(object):
             # Person has no turns left to do
             if self.pendingShifts(company, telefon) <= 0:
                 self.cut("TotColocat", partial,
-                    "{} ja ha exhaurit els seus torns de telefon {}ari"
-                    .format( company, telefon))
+                    "{} ja ha exhaurit els seus torns de linia {}aria"
+                    .format( company, telefon+1))
                 continue
 
             # Person busy in this turn (it has another line in this turn or it is unavailable)
             if self.isBusy(company, day, hora):
                 self.cut("Indisponible", partial,
-                    "{} no esta disponible el {} a la hora {}"
+                    "{} no esta disponible el {} a {}a hora"
                     .format( company, day, hora+1))
                 continue
 
