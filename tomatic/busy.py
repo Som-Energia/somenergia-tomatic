@@ -5,6 +5,7 @@ from past.builtins import basestring
 import datetime
 from yamlns import namespace as ns
 from consolemsg import out, u
+from pathlib2 import Path
 
 def open(*args, **kwd):
 	import codecs
@@ -248,6 +249,28 @@ def update_busy(person, data):
 			message=format(e),
 			)
 	return ns(result='ok')
+
+
+def laborableWeekDays(monday, holidays=None):
+
+	if not holidays:
+		# TODO: This should be taken from No Toi Web App
+		holidaysFile = Path('holidays.conf')
+		content = holidaysFile.read_text(encoding='utf8')
+		holidays = [
+			line.split('\t')
+			for line in content.split('\n')
+			if line.strip()
+		]
+	holidays = set(
+		isodate(date)
+		for date, description  in holidays
+	)
+	return [
+		w
+		for i,w in enumerate(weekdays)
+		if monday + datetime.timedelta(days=i-1) not in holidays
+		]
 
 
 # vim: noet ts=4 sw=4

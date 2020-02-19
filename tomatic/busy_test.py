@@ -816,5 +816,22 @@ class BusyTest(unittest.TestCase):
 			))
 
 
+	def test_weekdays(self):
+		holidays= [
+			# Inventados
+			('2020-11-25', 'Nadal'),
+			('2020-11-26', 'Sant Esteve'),
+		]
+		self.assertEqual(
+			busy.laborableWeekDays(isodate('2020-11-23'), holidays),
+			['dl', 'dm', 'dx'])
+
+	def test_weekdays_defaultlist(self):
+		self.assertEqual(
+			busy.laborableWeekDays(isodate('2020-12-23')),
+			['dl', 'dm', 'dx'])
+
+
+
 
 # vim: noet ts=4 sw=4
