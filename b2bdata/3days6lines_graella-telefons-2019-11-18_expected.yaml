@@ -22,28 +22,28 @@ timetable:
   dl:
   - - adria
     - guifre
-    - maria
     - nuria
     - roger
     - vane
+    - maria
   - - albertg
     - carme
-    - joanb
-    - olga
     - otilia
+    - olga
     - vero
-  - - albert
-    - annab
-    - aram
-    - maite
+    - joanb
+  - - aram
     - merce
     - rogerlf
-  - - carol
-    - eloi
-    - gabriel
-    - gemma
-    - joanm
+    - annab
+    - albert
+    - maite
+  - - gemma
     - monicag
+    - eloi
+    - joanm
+    - carol
+    - gabriel
   dm:
   - - festiu
     - festiu
@@ -72,28 +72,28 @@ timetable:
   dx:
   - - adria
     - guifre
-    - maria
     - nuria
     - roger
     - vane
+    - maria
   - - albertg
     - carme
-    - joanb
-    - olga
     - otilia
+    - olga
     - vero
-  - - albert
-    - annab
-    - aram
-    - maite
+    - joanb
+  - - aram
     - merce
     - rogerlf
-  - - carol
-    - eloi
-    - gabriel
-    - gemma
-    - joanm
+    - annab
+    - albert
+    - maite
+  - - gemma
     - monicag
+    - eloi
+    - joanm
+    - carol
+    - gabriel
   dj:
   - - festiu
     - festiu
@@ -122,28 +122,28 @@ timetable:
   dv:
   - - adria
     - guifre
-    - maria
     - nuria
     - roger
     - vane
+    - maria
   - - albertg
     - carme
-    - joanb
-    - olga
     - otilia
+    - olga
     - vero
-  - - albert
-    - annab
-    - aram
-    - maite
+    - joanb
+  - - aram
     - merce
     - rogerlf
-  - - carol
-    - eloi
-    - gabriel
-    - gemma
-    - joanm
+    - annab
+    - albert
+    - maite
+  - - gemma
     - monicag
+    - eloi
+    - joanm
+    - carol
+    - gabriel
 colors:
   marc: fbe8bc
   eduard: d8b9c5
@@ -329,13 +329,7 @@ penalties:
 - - 5
   - carme te 1 persones a la mateixa taula amb telefon a 2a hora del dl
 - - 5
-  - annab te 1 persones a la mateixa taula amb telefon a 3a hora del dl
-- - 5
   - carme te 1 persones a la mateixa taula amb telefon a 2a hora del dx
 - - 5
-  - annab te 1 persones a la mateixa taula amb telefon a 3a hora del dx
-- - 5
   - carme te 1 persones a la mateixa taula amb telefon a 2a hora del dv
-- - 5
-  - annab te 1 persones a la mateixa taula amb telefon a 3a hora del dv
-cost: 30
+cost: 15

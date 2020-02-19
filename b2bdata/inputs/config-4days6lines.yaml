@@ -26,11 +26,15 @@ hours:
 - '14:00'
 mostraCami: false
 maximCamiAMostrar: 60
-aleatori: true
+aleatori: false
 stopPenalty: 0
-backtrackDepth: 10000
+backtrackDepth: 100000
+maxNodesToPersevere: 100000
 costLimit: 200
+discriminateLines: true
+pruneRedundant: false
 descartaNoPrometedores: true
+ignoreOptionalAbsences: false
 deixaEsmorzar: true
 noVolenEsmorzar:
 - david

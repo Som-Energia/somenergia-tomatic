@@ -27,8 +27,12 @@ maximCamiAMostrar: 60
 aleatori: false
 stopPenalty: 100
 backtrackDepth: 10000
+maxNodesToPersevere: 10000
 costLimit: 200
+discriminateLines: true
+pruneRedundant: false
 descartaNoPrometedores: true
+ignoreOptionalAbsences: false
 deixaEsmorzar: true
 noVolenEsmorzar:
 - david

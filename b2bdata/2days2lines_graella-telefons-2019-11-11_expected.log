@@ -1,34 +1,26 @@
 [34;1m:: Carregant configuració b2bdata/inputs/config-2days2lines.yaml...[0m
 [34;1m:: Muntant el solucionador...[0m
 [34;1m:: Generant horari...[0m
-[33mWarning: aram no esta disponible el dm a la hora 1[0m
-[33mWarning: albertg no esta disponible el dm a la hora 1[0m
-[33mWarning: gemma no esta disponible el dm a la hora 1[0m
-[33mWarning: aram no esta disponible el dm a la hora 2[0m
-[33mWarning: guifre no esta disponible el dm a la hora 2[0m
-[33mWarning: guifre no esta disponible el dm a la hora 3[0m
-[33mWarning: carme no esta disponible el dm a la hora 3[0m
-[33mWarning: monicag no esta disponible el dm a la hora 3[0m
-[33mWarning: aram no esta disponible el dm a la hora 4[0m
-[33mWarning: albertg no esta disponible el dm a la hora 4[0m
-[33mWarning: guifre no esta disponible el dm a la hora 4[0m
-[33mWarning: carme no esta disponible el dm a la hora 4[0m
-[33mWarning: aram no esta disponible el dj a la hora 1[0m
-[33mWarning: albertg no esta disponible el dj a la hora 1[0m
-[33mWarning: gemma no esta disponible el dj a la hora 1[0m
-[33mWarning: aram no esta disponible el dj a la hora 2[0m
-[33mWarning: monicag no esta disponible el dj a la hora 3[0m
-[33mWarning: gemma no esta disponible el dj a la hora 3[0m
-[34;1m:: Millor graella grabada a 'graella-telefons-2019-11-11.html'[0m
-[34;1m:: Millor graella grabada a 'graella-telefons-2019-11-11.yaml'[0m
 Solució incomplerta 0/16 caselles, cost 0
 Solució incomplerta 1/16 caselles, cost 0
 Solució incomplerta 2/16 caselles, cost 0
+[33mWarning: adria no esta disponible el dm a 2a hora[0m
 Solució incomplerta 3/16 caselles, cost 0
+[33mWarning: guifre no esta disponible el dm a 2a hora[0m
 Solució incomplerta 4/16 caselles, cost 5
+[33mWarning: adria no esta disponible el dm a 3a hora[0m
+[33mWarning: albertg no esta disponible el dm a 3a hora[0m
 Solució incomplerta 5/16 caselles, cost 5
+[33mWarning: guifre no esta disponible el dm a 3a hora[0m
+[33mWarning: carme no esta disponible el dm a 3a hora[0m
 Solució incomplerta 6/16 caselles, cost 5
+[33mWarning: adria no esta disponible el dm a 4a hora[0m
+[33mWarning: albertg no esta disponible el dm a 4a hora[0m
+[33mWarning: aram no esta disponible el dm a 4a hora[0m
 Solució incomplerta 7/16 caselles, cost 5
+[33mWarning: guifre no esta disponible el dm a 4a hora[0m
+[33mWarning: carme no esta disponible el dm a 4a hora[0m
+[33mWarning: merce no esta disponible el dm a 4a hora[0m
 Solució incomplerta 8/16 caselles, cost 5
 Solució incomplerta 9/16 caselles, cost 5
 Solució incomplerta 10/16 caselles, cost 5
@@ -38,3 +30,6 @@ Solució incomplerta 13/16 caselles, cost 10
 Solució incomplerta 14/16 caselles, cost 10
 Solució incomplerta 15/16 caselles, cost 10
 Solució trobada amb cost 10.
+[33mWarning: monicag no esta disponible el dj a 3a hora[0m
+[34;1m:: Millor graella grabada a 'graella-telefons-2019-11-11.html'[0m
+[34;1m:: Millor graella grabada a 'graella-telefons-2019-11-11.yaml'[0m

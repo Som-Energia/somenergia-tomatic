@@ -13,6 +13,7 @@ testcases:
         - graella-telefons-2019-10-28.html
         - graella-telefons-2019-10-28.yaml
         - graella-telefons.log
+ignore:
     2days2lines:
         command: |
             python schedulehours.py 2019-11-11 \
