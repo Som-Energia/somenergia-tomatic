@@ -253,6 +253,7 @@ def update_busy(person, data):
 
 def laborableWeekDays(monday, holidays=None):
 
+	monday = monday + datetime.timedelta(days=-monday.weekday())
 	if not holidays:
 		# TODO: This should be taken from No Toi Web App
 		holidaysFile = Path('holidays.conf')
@@ -269,7 +270,7 @@ def laborableWeekDays(monday, holidays=None):
 	return [
 		w
 		for i,w in enumerate(weekdays)
-		if monday + datetime.timedelta(days=i-1) not in holidays
+		if monday + datetime.timedelta(days=i) not in holidays
 		]
 
 
