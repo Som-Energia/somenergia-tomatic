@@ -59,7 +59,7 @@ class Remote_Test(unittest.TestCase):
 
     def test_remoteread(self):
         content = remoteread(filename="/etc/hosts", **self.conf)
-        self.assertIn("localhost", content)
+        self.assertIn('localhost', content)
 
     def test_remoteread_badPath(self):
         with self.assertRaises(IOError) as ctx:
@@ -94,6 +94,12 @@ class Remote_Test(unittest.TestCase):
             content = remote.read("/etc/hosts")
 
         self.assertIn("localhost", content)
+
+    def test_read__binary(self):
+        with Remote(**self.conf) as remote:
+            content = remote.read("/etc/hosts", binary=True)
+
+        self.assertIn(b"localhost", content)
 
     def test_read_badPath(self):
         with Remote(**self.conf) as remote:
