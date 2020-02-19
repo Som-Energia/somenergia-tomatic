@@ -829,7 +829,7 @@ class BusyTest(unittest.TestCase):
 	def test_weekdays_defaultlist(self):
 		self.assertEqual(
 			busy.laborableWeekDays(isodate('2020-12-23')),
-			['dl', 'dm', 'dx'])
+			['dl', 'dm'])
 
 
 
