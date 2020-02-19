@@ -57,6 +57,16 @@ def baixaCarrega(config, certificat):
                 )
             )
 
+def baixaPersones(config):
+    step("Baixant informació de les persones del tomatic...")
+    url = config.baseUrl + '/api/persons'
+    r = requests.get(url)
+    r.raise_for_status()
+    from yamlns import namespace as ns
+    persons = ns.loads(r.content)
+    persons.persons.dump('persons.yaml')
+    
+
 def baixaIndisponibilitatsTomatic(config):
     step("Baixant indisponibilitats del tomatic...")
 
@@ -894,6 +904,13 @@ def main():
     except:
         error("Configuració incorrecta")
         raise
+
+    if not args.keep:
+        baixaPersones(config)
+
+    personsPath = Path('persons.yaml')
+    if personsPath.exists():
+        config.update(ns.load(str(personsPath)))
 
     if args.date is not None:
         # take the monday of the week including that date
