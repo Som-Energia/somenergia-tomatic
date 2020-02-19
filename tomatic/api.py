@@ -21,6 +21,7 @@ import erppeek
 from sheetfetcher import SheetFetcher
 from threading import Semaphore, Thread
 import urllib.request, urllib.parse, urllib.error
+from pathlib2 import Path
 
 try:
     import dbconfig
@@ -237,19 +238,29 @@ def resume_line(person):
 
 @app.route('/api/persons/')
 def personInfo():
+    # TODO: Just load persons.yaml
     config = ns.load('config.yaml')
+    if Path('persons.yaml').exists():
+        persons = ns.load('persons.yaml')
+        config.update(persons)
+
     result = ns(
         names = config.names,
         extensions = config.extensions,
         tables = config.taules,
         colors = config.colors,
-        notoi_id = config.notoi_ids
+        notoi_id = config.notoi_ids,
+        groups = config.groups,
     )
     return yamlfy(persons=result)
 
 @app.route('/api/person/<person>', methods=['POST'])
 def setPersonInfo(person):
-    config = ns.load('config.yaml')
+    # TODO: Just load persons.yaml
+    config = ns.load('persons.yaml')
+    if Path('persons.yaml').exists():
+        persons = ns.load('persons.yaml')
+        config.update(persons)
     print(request.data)
     data = ns.loads(request.data)
     if 'name' in data:
@@ -262,13 +273,21 @@ def setPersonInfo(person):
         config.colors[person] = data.color
     if 'notoi_id' in data:
         config.notoi_ids[person] = data.notoi_id
-    config.dump('config.yaml')
+    if 'groups' in data:
+        for group, components in config.groups.items():
+            if person in components and group not in data.groups:
+                components.remove(person)
+            if group in data.groups and person not in components:
+                components.append(person)
+
+    config.dump('persons.yaml')
     result = ns(
         names = config.names,
         extensions = config.extensions,
         tables = config.taules,
         colors = config.colors,
-        notoi_id = config.notoi_ids
+        notoi_id = config.notoi_ids,
+        groups = config.groups,
     )
     return yamlfy(persons=result)
 
