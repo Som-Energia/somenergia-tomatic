@@ -29,7 +29,14 @@ incorporació en el codi font.
 - **càrrega:** (_load_) Nombre de torns que fa algú en una setmana. Pot ser discriminada per linies o no
 - **càrrega ideal:** (_ideal load_) Càrrega que asumeix setmanalment cada persona pel seu perfil i antiguitat
 - **absència alliberadora** (_free day off_) Indisponibilitats que redueixen la càrrega setmanal d'una persona.
-    Ara considerem alliberadores: Festius, vacances, baixes i viatges laborals
+    - Ara considerem alliberadores: Festius, vacances, baixes i viatges laborals
+        - **festius:** (_holidays_) Dies que, segons el calendari laboral, ningú treballa
+        - **vacances:** (_day off_) Dies que una persona ha seleccionat per no treballar
+        - **baixa:** (_sick leave_) Dies que per motius justificats (enfermetat, embaràs, criança...) una persona no pot treballar
+        - **viatges laborals:** (_bussiness trip_) Dies que una persona està treballant fora de l'oficina (no inclou teletreball)
+    - Altres no considerats pero que caldrà decidir:
+        - **vaga** (_strike_) Dies que algú no treballa per convocatoria de vaga
+
 - **càrrega ponderada:** (_ponderated load_) Càrrega proporcional que una persona ha d'assumir una setmana en concret, considerant les absències alliberadores.
     Exemple: Si una persona té ideal 4 torns, i aquella setmana té 2 dies de vacances, només haurà de fer $4 (5-2)/5= 2.4$.
 - **càrrega arrodonida:** (_rounded load_) Càrrega ponderada arrodonida, donat que la cárrega ponderada surt d'un factor amb decimals
@@ -59,6 +66,11 @@ incorporació en el codi font.
             - S'escull entre les que més crèdit o deute tinguin
         - Si s'arriba, compensar credit amb deute fins que un sigui zero o no es pugui fer sense violar restriccions
         - Si no s'arriba, generar deute i crèdit nou aleatoriament entre els que menys en tinguin
+
+
+
+
+
 
 
 
