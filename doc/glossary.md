@@ -14,15 +14,17 @@ incorporació en el codi font.
 - **hora:** (_hour_) Cadascuna de les hores a la que comecen els torns (9:00, 10:15, 11:30, 12:45)
 - **linia:** (_line_) Les diferents linies que poden estar rebent trucades en un torn
 - **torn:** (_turn_) Conjunció de hores i dies. Exemple el torn de dimarts a les 9h
-
 - **cassella:**
-  \footnote{David: A la cassella se li diu sovint torn, hi ha cap mot que expressi el que queda definit com a torn?}
   (_cell_) Conjunció de dia, hora, i linia. Exemple la casella de dimarts a les 9h per la linia 1 (primaria).
+    - **David:** Torn es polisèmic. L'equip sovint anomena torn al que diem aqui cassella: "Canvia'm el torn que tinc el dilluns"
+        Per resoldre això si tinguessim un nom millor pel que hem anomenat torn o per al que anomenem casella.
+        Pista: El que intercanviem, la casella, es l'obligació d'una persona de fer en un interval de temps, el torn, una linia.
+
 - **linies discriminades:** (_discriminated lines_)
   Succeeix quan hi ha diferencia entre les linies.
-  Per exemple si acaba tenint més trucades una primera que una sisena linia.
+  Per exemple, si acaba tenint més trucades una primera que una sisena linia no seria just considerar-les iguals.
 - **indisponibilitat:** (_busy_) el fet de que una persona no estigui disponible per un torn concret
-- **indisponibilitat fixa:** (_weekly busy_) La que succedeix cada setmana
+- **indisponibilitat setmanal o fixa:** (_weekly busy_) La que succedeix cada setmana
 - **indisponibilitat puntual:** (_oneshot busy_) La que succedeix puntualment un dia
 - **indisponibilitat opcional:** (_optional busy_) La que es podria negociar en cas de que no hi hagi graelles viables.
 - **indisponibilitat forçosa:** (_unavoidable busy_) La que no es pot negociar
