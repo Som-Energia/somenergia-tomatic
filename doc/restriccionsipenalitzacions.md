@@ -1,20 +1,26 @@
 # Restriccions i penalitzacións de l'arbre de cerca
 
-La cerca de les graelles es fa provant per cada cassella de la graella cadascuna de les persones.
-Aixó genera un arbre de decissió que cal recòrrer.
-Té un nivell per cassella i a cada nivell s'expandeix amb tantes branques com persones.
-Les solucions a explorar son $ persones^(hores \times dies \times linies) $.
+**Restricció:** Fa que una graella no sigui viable.
 
-Les restriccions ens permeten detectar solucions parcials no viables
-i podar, no explorar, tota la branca que en penja.
+**Penalització:** Fa que una graella es consideri pitjor que una altra.
+
+Perquè és util definir-ne?
+
+La cerca de la graelles es fa provant per cada cassella de la graella cadascuna de les persones.
+Per explorar totes les possibilitats cal recòrrer un arbre de decissió inmens.
+Té tants nivells com caselles de la graella (6 linies x 5 dies x 4 hores = 120 caselles),
+i a cada nivell les branques es multipliquen pel nombre de persones.
+
+Detectar una restricció a una solució parcial (quan només hem omplert unes poques caselles),
+ens permet podar l'arbre i reduir el recorregut.
 
 A part de les restriccions de poda, hi ha altres criteris que
-ens permeten decidir quina es la millor d'entre dues solucions viables.
+ens permeten decidir quina és la millor d'entre dues solucions viables.
 Aquests criteris els materialitzem definint penalitzacions
-a situacions que volem evitar pero que si no hi ha més remei
-les acceptem.
+a situacions que volem evitar pero que acceptem si no hi ha més remei.
 
 Sovint el cost acomulat d'una solució parcial ja ens permet descartar-la i podar-la també.
+Per això són útils per reduir la cerca quan es tracta de millorar la solució trobada.
 
 Les restriccions i penalitzacions implementades són les següents:
 
