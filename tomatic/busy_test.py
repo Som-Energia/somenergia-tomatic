@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import unittest
 import os
 from . import busy
@@ -408,7 +409,7 @@ class BusyTest(unittest.TestCase):
 			person='someone',
 			weekday='dm',
 			turns='1111',
-			reason=u'La razón',
+			reason='La razón',
 			optional=True,
 			)
 		self.assertEqual(
@@ -421,7 +422,7 @@ class BusyTest(unittest.TestCase):
 			person='someone',
 			date=isodate('2015-02-03'),
 			turns='1111',
-			reason=u'La razón',
+			reason='La razón',
 			optional=True,
 			)
 		self.assertEqual(
@@ -434,7 +435,7 @@ class BusyTest(unittest.TestCase):
 			person='someone',
 			weekday='dm',
 			turns='1111',
-			reason=u'La razón',
+			reason='La razón',
 			optional=False,
 			)
 		self.assertEqual(
@@ -448,7 +449,7 @@ class BusyTest(unittest.TestCase):
 			ns(
 				weekday='dl',
 				turns='1111',
-				reason=u'La razón',
+				reason='La razón',
 				optional=False,
 				),
 			])
@@ -464,13 +465,13 @@ class BusyTest(unittest.TestCase):
 			ns(
 				weekday='dl',
 				turns='1111',
-				reason=u'La razón',
+				reason='La razón',
 				optional=False,
 				),
 			ns(
 				weekday='dm',
 				turns='0001',
-				reason=u'Otra razón',
+				reason='Otra razón',
 				optional=True,
 				),
 			])
@@ -489,7 +490,7 @@ class BusyTest(unittest.TestCase):
 			ns(
 				weekday='dl',
 				turns='1111',
-				reason=u'La razón',
+				reason='La razón',
 				optional=False,
 				),
 			])
@@ -509,7 +510,7 @@ class BusyTest(unittest.TestCase):
 			ns(
 				weekday='dl',
 				turns='1111',
-				reason=u'La razón',
+				reason='La razón',
 				optional=False,
 				),
 			])
@@ -587,7 +588,7 @@ class BusyTest(unittest.TestCase):
 				person='someone',
 				weekday='dl',
 				turns='1111',
-				reason=u'La razón',
+				reason='La razón',
 				optional=False,
 				),
 			])
@@ -605,7 +606,7 @@ class BusyTest(unittest.TestCase):
 				person='other',
 				weekday='dl',
 				turns='1111',
-				reason=u'La razón',
+				reason='La razón',
 				optional=False,
 				),
 			])
@@ -619,21 +620,21 @@ class BusyTest(unittest.TestCase):
 				person='someone',
 				weekday='dl',
 				turns='1000',
-				reason=u'La razón 1',
+				reason='La razón 1',
 				optional=False,
 				),
 			ns(
 				person='other',
 				weekday='dx',
 				turns='0100',
-				reason=u'La razón 2',
+				reason='La razón 2',
 				optional=False,
 				),
 			ns(
 				person='someone',
 				weekday='dm',
 				turns='0010',
-				reason=u'La razón 3',
+				reason='La razón 3',
 				optional=True,
 				),
 			])
@@ -656,7 +657,7 @@ class BusyTest(unittest.TestCase):
 				person='someone',
 				date=isodate('2015-01-23'),
 				turns='1111',
-				reason=u'La razón',
+				reason='La razón',
 				optional=False,
 				),
 			])
