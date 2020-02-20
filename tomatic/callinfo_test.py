@@ -11,6 +11,7 @@ try:
 except ImportError:
     dbconfig = None
 
+@unittest.skip("PLEASE DEFRAGILIZE ME!!!!")
 @unittest.skipIf(not dbconfig or not dbconfig.erppeek,
     "Requires configuring dbconfig.erppeek")
 class CallInfo_Test(unittest.TestCase):
