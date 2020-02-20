@@ -532,14 +532,14 @@ class Backtracker(object):
             isInfraSolution = len(partial)<len(self.bestSolution)
             for company in self.companys:
 
-                """
-                if self.pendingShifts(company,0) > diesRestants * self.config.maximsT1PerDia:
-                    self.cut("T1RestantsIncolocables", partial,
-                        "A {} li queden massa T1 per posar"
-                        .format(company))
-                    if isInfraSolution: return
-                    cut=True # Report all the bad guys and cut later
-                """
+                if self.config.discriminateLines:
+                    if self.pendingShifts(company,0) > diesRestants * self.config.maximsT1PerDia:
+                        self.cut("L1RestantsIncolocables", partial,
+                            "A {} li queden massa L1 per posar"
+                            .format(company))
+                        if isInfraSolution: return
+                        cut=True # Report all the bad guys and cut later
+
                 tornsPendents = self.pendingShifts(company)
                 tornsColocables = sum(
                     self.disponibilitatDiaria[company,dia]
