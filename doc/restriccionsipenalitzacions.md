@@ -1,38 +1,45 @@
 # Restriccions i penalitzacións de l'arbre de cerca
 
+La cerca de les graelles es fa provant per cada cassella de la graella cadascuna de les persones.
+Aixó genera un arbre de decissió que cal recòrrer.
+Té un nivell per cassella i a cada nivell s'expandeix amb tantes branques com persones.
+Les solucions a explorar son $ persones^(hores \times dies \times linies) $.
+
+Les restriccions ens permeten detectar solucions parcials no viables
+i podar, no explorar, tota la branca que en penja.
+
+A part de les restriccions de poda, hi ha altres criteris que
+ens permeten decidir quina es la millor d'entre dues solucions viables.
+Aquests criteris els materialitzem definint penalitzacions
+a situacions que volem evitar pero que si no hi ha més remei
+les acceptem.
+
+Sovint el cost acomulat d'una solució parcial ja ens permet descartar-la i podar-la també.
+
+Les restriccions i penalitzacions implementades són les següents:
 
 ## Restriccions
 
-- **L1RestantsIncolocables**
-    A una persona no li queden forats per ficar tota la seva càrrega de primeres linies.
-    Normalment vol dir que hauriem d'haver colocat el seus torns de primera linia en dies anteriors.
-    Està a part perque, si discriminem linies, les primeres linies estan restringides
-    a una per dia (`maximsT1PerDia`) i ens permet descartar abans.
+- **Indisponible**
+    La persona no està disponible pel torn que s'està repartint.
+    Pot ser per indisponibilitat o perqué ja l'hem posat a una altra linia
+    el mateix torn.
 
-- **RestantsIncolocables**
-    A una persona no li queden forats per ficar tota la seva càrrega.
-    Normalment vol dir que hauriem d'haver colocat el seus torns abans.
+- **TotColocat**
+    A la persona no li queden torns a colocar (amb discriminació,
+    no té torns de la linia a la que correspon la casella)
 
 - **Redundant**
     Quan no hi ha discriminació de lines, talla les solucions que només
     reordenen les persones d'un torn. S'activa amb `pruneRedundant`
 
-- **TotColocat**
-    La persona no té torns a colocar (amb discriminació,
-    no té de la linia a la que correspon la casella.
-
-- **Indisponible**
-    La persona no està disponible pel torn que s'està repartint
-
 - **MassesPrincipals**
     Quan hi ha discriminació de linies, podem limitar a una L1 per dia
-
 
 - **TaulaSorollosa**
     Per evitar crosstalking, limitem a `maximPerTaula` (per defecte, 2)
     la gent que pot estar rebent trucades assegudes a la mateixa taula.
     Per aixo definim les taules a la interficie web del Tomatic.
-
 
 - **NotEnoughIdleInGroup**
     S'ha definit que, en un grup de gent, ha d'haver un cert nombre
@@ -68,8 +75,26 @@
 
 - **CostEqual**
     La solució parcial iguala el cost de la millor solució total trobada
-    i només hem posat un 70% de les casselles.
+    i només hem posat un 70% de les casselles.\
+    Nota: No se si aquesta restricció fa gaire cosa, o, si en fa, de bona.
 
+- **NoEarlyCost**
+    La solucio parcial és poc prometedora.
+    Només afecta quan ja tenim una solucio complerta,
+    si la parcial té un cost per día superior a la complerta.
+    Es fa amb la benentesa de que molts dels costos s'afegeixen a les darreres casselles.
+
+A mirar en començar a omplir un dia:
+
+- **L1RestantsIncolocables**
+    A una persona no li queden forats per ficar tota la seva càrrega de primeres linies.
+    Normalment vol dir que hauriem d'haver colocat el seus torns de primera linia en dies anteriors.
+    Està a part perque, si discriminem linies, les primeres linies estan restringides
+    a una per dia (`maximsT1PerDia`) i ens permet descartar abans.
+
+- **RestantsIncolocables**
+    A una persona no li queden forats per ficar tota la seva càrrega.
+    Normalment vol dir que hauriem d'haver colocat el seus torns abans.
 
 ## Penalitzacións
 
