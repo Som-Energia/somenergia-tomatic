@@ -33,8 +33,18 @@ Les restriccions i penalitzacions implementades són les següents:
     Quan no hi ha discriminació de lines, talla les solucions que només
     reordenen les persones d'un torn. S'activa amb `pruneRedundant`
 
-- **MassesPrincipals**
-    Quan hi ha discriminació de linies, podem limitar a una L1 per dia
+- **DiaATope**
+    La persona ha superat el seu màxim nombre d'hores diaries.
+    Es defineix en general a `maximHoresDiariesGeneral`
+    o especificament per la persona a `maximHoresDiaries`.
+    Actualment el general es 2 i només fem servir el especific
+    per `ningu` o quan es una graella molt complicada i volem fer
+    una excepció.
+
+- **MassesPrincipals**\
+    Quan hi ha discriminació de linies,
+    podem limitar els torns primaris (L1) que fa una persona per dia.\
+    Es defineix a `maximsT1PerDia` i normalment és 1.\
 
 - **TaulaSorollosa**
     Per evitar crosstalking, limitem a `maximPerTaula` (per defecte, 2)
@@ -51,14 +61,6 @@ Les restriccions i penalitzacions implementades són les següents:
     nombre de persones fent telèfon.
     Per exemple, si volem limitar les persones parlant en un espai.
     De fet la majoria de grups definits son per aquest motiu.
-
-- **DiaATope**
-    La persona ha superat el màxim nombre d'hores diaries definides
-    a `maximHoresDiariesGeneral` o especificament per la persona a
-    `maximHoresDiaries`.
-    Actualment el general es 2 i només fem servir el especific
-    per `ningu` o quan es una graella molt complicada i volem fer
-    una excepció.
 
 - **Esmorzar**
     Estem posant un tercer torn a una persona que està fent el segon torn
