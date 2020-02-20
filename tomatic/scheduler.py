@@ -684,13 +684,13 @@ class Backtracker(object):
                 cost += penalize(
                     self.config.costHoresConcentrades * self.horesDiaries[company, day],
                     "Repartiment",
-                    "{} te mes de {} hores el {}".format(company, self.horesDiaries[company, day], day))
+                    u"{} té més de {} hores el {}".format(company, self.horesDiaries[company, day], day))
 
             if taula!=-1 and self.telefonsALaTaula[day, hora, taula]>0 :
                 cost += penalize(
                     self.config.costTaulaSorollosa * self.telefonsALaTaula[day, hora, taula],
-                    "Ocupacio",
-                    "{} te {} persones a la mateixa taula amb telefon a {}a hora del {}".format(
+                    "Crosstalk",
+                    u"{} té altres {} persones amb telèfon a la mateixa taula a {}a hora del {}".format(
                         company, self.telefonsALaTaula[day, hora, taula], hora+1, day))
 
             # If penalty is too high also prune
