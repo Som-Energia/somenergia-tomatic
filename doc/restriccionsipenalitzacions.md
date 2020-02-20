@@ -2,8 +2,6 @@
 
 **Restricció:** Fa que una graella no sigui viable.
 
-**Penalització:** Fa que una graella es consideri pitjor que una altra.
-
 Perquè és util definir-ne?
 
 La cerca de la graelles es fa provant, per cada cassella de la graella, cadascuna de les persones.
@@ -14,13 +12,18 @@ i a cada nivell les branques es multipliquen pel nombre de persones.
 Detectar una restricció a una solució parcial (quan només hem omplert unes poques caselles),
 ens permet podar l'arbre i reduir el recorregut.
 
-A part de les restriccions de poda, hi ha altres criteris que
-ens permeten decidir quina és la millor d'entre dues solucions viables.
-Aquests criteris els materialitzem definint penalitzacions
-a situacions que volem evitar pero que acceptem si no hi ha més remei.
+**Penalització:** Fa que una graella es consideri pitjor que una altra.
 
-Sovint el cost acomulat d'una solució parcial ja ens permet descartar-la i podar-la també.
-Per això són útils per reduir la cerca quan es tracta de millorar la solució trobada.
+Perquè és util definir-ne?
+
+Principalment, ens permeten decidir quina és la millor d'entre dues solucions viables.
+
+Assignem a cada situació que volem evitar una penalització en punts negatius.
+Serà millor la solució que menys penalització acomuli.
+
+Un cop obtenim la primera solució viable,
+podem podar les solucions parcials que superin la penalització de la millor solució trobada.
+
 
 Les restriccions i penalitzacions implementades són les següents:
 
