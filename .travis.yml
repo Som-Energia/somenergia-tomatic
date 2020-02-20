@@ -6,6 +6,7 @@ install:
 - ./setup.py develop
 - pip install coveralls
 script:
+- '[ -e ~/.ssh/id_rsa.pub ] || ssh-keygen -f ~/.ssh/id_rsa.pub -N ""'
 - coverage run --source tomatic ./setup.py test
 after_success:
 - coveralls
