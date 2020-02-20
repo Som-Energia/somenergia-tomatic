@@ -599,13 +599,12 @@ class Backtracker(object):
                 continue
 
             # Its a main line and person already has taken a main line that day
-            """
-            if telefon==0 and self.tePrincipal[company, day] >= self.config.maximsT1PerDia:
-                self.cut("MassesPrincipals", partial,
-                    "Dos principals per {} el {} no, sisplau"
-                    .format(company,day))
-                continue
-            """
+            if self.config.discriminateLines:
+                if telefon==0 and self.tePrincipal[company, day] >= self.config.maximsT1PerDia:
+                    self.cut("MassesPrincipals", partial,
+                        "Dos principals per {} el {} no, sisplau"
+                        .format(company,day))
+                    continue
 
             # Reduce cacophonies, by limiting people in the same table at once
             if taula!=-1 and self.telefonsALaTaula[day, hora, taula]>=self.config.maximPerTaula :

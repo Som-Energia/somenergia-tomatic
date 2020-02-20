@@ -42,7 +42,7 @@ noVolenEsmorzar:
 - david
 - ningu
 maximPerTaula: 2
-maximsT1PerDia: 1
+maximsT1PerDia: 2
 maximHoresDiariesGeneral: 2
 maximHoresDiaries:
   ningu: 10
