@@ -9,6 +9,10 @@ import os.path
 import random
 
 
+def ponderatedLoad(idealLoad, holidays, daysoff, leaves):
+    return idealLoad 
+
+
 args = None
 
 FULL_CARREGA = 0
