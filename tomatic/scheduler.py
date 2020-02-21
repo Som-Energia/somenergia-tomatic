@@ -202,6 +202,17 @@ class Backtracker(object):
             raise Backtracker.ErrorConfiguracio(
                 "Aquests dies no son a la llista de visualitzacio: {}".format(errorDays))
 
+        workDays = busy.laborableWeekDays(config.monday)
+        if set(workDays) - set(self.dies):
+            warn("T'has deixat dies laborables: {}"
+                .format([x for x in set(workDays)-set(self.dies)]))
+
+        if set(self.dies) - set(workDays):
+            warn(u"No s'inclouran els dies festius: {}."
+                .format(', '.join((x for x in set(self.dies)-set(workDays)))))
+
+        self.dies = [day for day in self.dies if day in workDays]
+
         # Main Solution
         self.caselles = list(xproduct(self.dies, range(len(self.hours)), range(self.ntelefons)))    # all (day,turn,slot) combinations required to be filled
 
