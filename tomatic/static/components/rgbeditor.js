@@ -26,12 +26,9 @@ module.exports = function() {
 			vnode.attrs.onChange({value: result});
 		};
 		state.setRgb();
-		console.debug("init: ", vnode.state);
 	};
 
-	var borrame = m.prop(30);
 	RgbEditor.view = function(vnode) {
-		console.debug("view: ", vnode.state);
 		return m('.rgbeditor.horizontal.layout', [
 			m('.field', {
 				style: {
