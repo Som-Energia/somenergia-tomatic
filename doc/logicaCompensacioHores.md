@@ -23,7 +23,7 @@
     - Restricccions: Les compensacions següents no es faran si superen aquests límits.
         - Limit superior: ideal + 1 per persona
         - Limit superior: Capacitat per indisponibilitats no optatives
-        - Limit inferior: 0 (es podria quedar sense càrrega, pero no negatiu)
+        - Limit inferior: el nombre de torns forçats que tingui la persona (o zero)
     - Cas: Tenim més torns que necessitem. Exemple: càrrega limitada suma 125, a fer 120
         - Primer retornem els torns que sobren a les creditores de la bossa d'hores, restant crèdit
         - Si encara no arribem als 120, alliberem, considerant ja a tothom, afegint-los deute
