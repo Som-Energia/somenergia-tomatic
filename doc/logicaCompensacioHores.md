@@ -24,11 +24,11 @@
         - Limit superior: ideal + 1 per persona
         - Limit superior: Capacitat per indisponibilitats no optatives
         - Limit inferior: 0 (es podria quedar sense càrrega, pero no negatiu)
-    - Cas: Tenim més torns que necessitem: Torns arrodonits 125, a fer 120
+    - Cas: Tenim més torns que necessitem. Exemple: càrrega limitada suma 125, a fer 120
         - Primer retornem els torns que sobren a les creditores de la bossa d'hores, restant crèdit
         - Si encara no arribem als 120, alliberem, considerant ja a tothom, afegint-los deute
         - Ordre: un a cada persona ordenades per credit, i amb el mateix crèdit per sobrecàrrega. Repetim fins que no poguem colocar res més.
-    - Cas: Tenim menys torns que necessitem: Torns arrodonits 115, a fer 120
+    - Cas: Tenim menys torns que necessitem. Exemple: càrrega limitada suma 115, a fer 120
         - Primer afegim els torns que falten a les deutores de la bossa d'hores, restant dèbit
         - Si encara no arribem als 120, carreguem, considerant ja a tothom, afegint-los crèdit
         - Ordre: una a cada persona ordenades per dèbit, i amb el mateix dèbit per infracàrrega. Com el màxim de sobrecarrega es 1, no podriem repetir.
