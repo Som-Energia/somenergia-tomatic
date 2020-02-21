@@ -6,6 +6,7 @@ testcases:
                 --keep \
                 --config-file b2bdata/inputs/config-2days2lines.yaml \
                 --weekshifts b2bdata/inputs/carrega-2days2lines.csv \
+                --personsfile '' \
                 --lines 2 \
                 --search-days dm,dj \
                 2>&1 | tee graella-telefons-2019-11-11.log
@@ -19,6 +20,7 @@ testcases:
                 --keep \
                 --config-file b2bdata/inputs/config-3days6lines.yaml \
                 --weekshifts b2bdata/inputs/carrega-3days6lines.csv \
+                --personsfile '' \
                 --lines 6 \
                 --search-days dl,dx,dv \
                 2>&1 | tee graella-telefons-2019-11-18.log
@@ -32,6 +34,7 @@ testcases:
                 --keep \
                 --config-file b2bdata/inputs/config-4days6lines.yaml \
                 --weekshifts b2bdata/inputs/carrega-4days6lines.csv \
+                --personsfile '' \
                 --stop-penalty 86 \
                 --deterministic \
                 --search-days "dl,dm,dx,dj" \

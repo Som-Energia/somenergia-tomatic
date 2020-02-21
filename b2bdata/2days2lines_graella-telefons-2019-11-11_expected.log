@@ -1,39 +1,6 @@
 [34;1m:: Carregant configuració b2bdata/inputs/config-2days2lines.yaml...[0m
 [34;1m:: Muntant el solucionador...[0m
 [33mWarning: T'has deixat dies laborables: ['dv', 'dl', 'dx'][0m
-[33mWarning: 'hermigg' es al grup 'casademont', però no es al fitxer de càrrega[0m
-[33mWarning: 'pere' es al grup 'casademont', però no es al fitxer de càrrega[0m
-[33mWarning: 'francesc' es al grup 'balneari', però no es al fitxer de càrrega[0m
-[33mWarning: 'berta' es al grup 'balneari', però no es al fitxer de càrrega[0m
-[33mWarning: 'joel' es al grup 'balneari', però no es al fitxer de càrrega[0m
-[33mWarning: 'cire' es al grup 'balneari', però no es al fitxer de càrrega[0m
-[33mWarning: 'yolanda' es al grup 'balneari', però no es al fitxer de càrrega[0m
-[33mWarning: 'javi' es al grup 'balneari', però no es al fitxer de càrrega[0m
-[33mWarning: 'nuri' es al grup 'lamina', però no es al fitxer de càrrega[0m
-[33mWarning: 'xavi' es al grup 'oasis', però no es al fitxer de càrrega[0m
-[33mWarning: 'benjami' es al grup 'oasis', però no es al fitxer de càrrega[0m
-[33mWarning: 'marjene' es al grup 'oasis', però no es al fitxer de càrrega[0m
-[33mWarning: 'jordi' es al grup 'oasis', però no es al fitxer de càrrega[0m
-[33mWarning: 'davidr' es al grup 'oasis', però no es al fitxer de càrrega[0m
-[33mWarning: 'juanpe' es al grup 'oasis', però no es al fitxer de càrrega[0m
-[33mWarning: 'joana' es al grup 'oasis', però no es al fitxer de càrrega[0m
-[33mWarning: 'polmonso' es al grup 'oasis', però no es al fitxer de càrrega[0m
-[33mWarning: 'david' es al grup 'oasis', però no es al fitxer de càrrega[0m
-[33mWarning: 'alberto' es al grup 'oasis', però no es al fitxer de càrrega[0m
-[33mWarning: 'clara' es al grup 'zulo', però no es al fitxer de càrrega[0m
-[33mWarning: 'fcasadella' es al grup 'zulo', però no es al fitxer de càrrega[0m
-[33mWarning: 'annarodon' es al grup 'zulo', però no es al fitxer de càrrega[0m
-[33mWarning: 'albertsimo' es al grup 'zulo', però no es al fitxer de càrrega[0m
-[33mWarning: 'fran' es al grup 'zuloit', però no es al fitxer de càrrega[0m
-[33mWarning: 'oriol' es al grup 'zuloit', però no es al fitxer de càrrega[0m
-[33mWarning: 'marite' es al grup 'zuloit', però no es al fitxer de càrrega[0m
-[33mWarning: 'samuel' es al grup 'zuloit', però no es al fitxer de càrrega[0m
-[33mWarning: 'davids' es al grup 'zuloit', però no es al fitxer de càrrega[0m
-[33mWarning: 'belen' es al grup 'pendent', però no es al fitxer de càrrega[0m
-[33mWarning: 'fcots' es al grup 'pendent', però no es al fitxer de càrrega[0m
-[33mWarning: 'jaume' es al grup 'pendent', però no es al fitxer de càrrega[0m
-[33mWarning: 'alex' es al grup 'pendent', però no es al fitxer de càrrega[0m
-[33mWarning: 'viktu' es al grup 'pendent', però no es al fitxer de càrrega[0m
 [34;1m:: Generant horari...[0m
 Solució incomplerta 0/16 caselles, cost 0
 [33mWarning: aram no esta disponible el dm a 1a hora[0m
@@ -44,15 +11,15 @@ Solució incomplerta 2/16 caselles, cost 0
 [33mWarning: aram no esta disponible el dm a 2a hora[0m
 Solució incomplerta 3/16 caselles, cost 0
 [33mWarning: guifre no esta disponible el dm a 2a hora[0m
-Solució incomplerta 4/16 caselles, cost 0
-Solució incomplerta 5/16 caselles, cost 0
+Solució incomplerta 4/16 caselles, cost 5
+Solució incomplerta 5/16 caselles, cost 5
 [33mWarning: guifre no esta disponible el dm a 3a hora[0m
 [33mWarning: carme no esta disponible el dm a 3a hora[0m
 [33mWarning: monicag no esta disponible el dm a 3a hora[0m
-Solució incomplerta 6/16 caselles, cost 0
+Solució incomplerta 6/16 caselles, cost 5
 [33mWarning: aram no esta disponible el dm a 4a hora[0m
 [33mWarning: albertg no esta disponible el dm a 4a hora[0m
-Solució incomplerta 7/16 caselles, cost 0
+Solució incomplerta 7/16 caselles, cost 5
 [33mWarning: guifre no esta disponible el dm a 4a hora[0m
 [33mWarning: carme no esta disponible el dm a 4a hora[0m
 Solució incomplerta 8/16 caselles, cost 5
@@ -63,11 +30,11 @@ Solució incomplerta 9/16 caselles, cost 5
 Solució incomplerta 10/16 caselles, cost 5
 [33mWarning: aram no esta disponible el dj a 2a hora[0m
 Solució incomplerta 11/16 caselles, cost 5
-Solució incomplerta 12/16 caselles, cost 5
-Solució incomplerta 13/16 caselles, cost 5
+Solució incomplerta 12/16 caselles, cost 10
+Solució incomplerta 13/16 caselles, cost 10
 [33mWarning: monicag no esta disponible el dj a 3a hora[0m
-Solució incomplerta 14/16 caselles, cost 5
-Solució incomplerta 15/16 caselles, cost 5
+Solució incomplerta 14/16 caselles, cost 10
+Solució incomplerta 15/16 caselles, cost 10
 Solució trobada amb cost 10.
 [33mWarning: annab no esta disponible el dj a 3a hora[0m
 [34;1m:: Millor graella grabada a 'graella-telefons-2019-11-11.html'[0m
