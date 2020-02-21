@@ -136,8 +136,7 @@ class ShiftLoadTest(unittest.TestCase):
             daysoff=[],
             leaves=[],
         )
-        self.assertEqual(load, 4.0)
-        
+        self.assertEqual(load, 8.0)
 
 
     def test_ponderatedLoad_(self):
