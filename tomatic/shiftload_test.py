@@ -155,8 +155,17 @@ class ShiftLoadTest(unittest.TestCase):
         )
         self.assertEqual(load, 6.0)
 
+    def test_singlePonderatedLoad_withHolidaysAndLeaves(self):
+        load = shiftload.singlePonderatedLoad(
+            person='alice',
+            load=10,
+            businessDays=['dm', 'dx', 'dj', 'dv'],
+            daysoff=[],
+            leaves=['alice'],
+        )
+        self.assertEqual(load, 0.0)
 
-    def test_ponderatedLoad_(self):
+    def test_ponderatedLoad_allWorkingDays(self):
         ideal = ns(
             alice=60,
             bob=60,
@@ -167,8 +176,30 @@ class ShiftLoadTest(unittest.TestCase):
             leaves=[],
         )
         self.assertNsEqual(load, """\
-            alice: 60
-            bob: 60
+            alice: 60.0
+            bob: 60.0
+        """)
+
+    def test_ponderatedLoad_withHolidaysAndDayOff(self):
+        ideal = ns(
+            alice=10,
+            bob=10,
+        )
+        load = shiftload.ponderatedLoad(ideal, 
+            businessDays=['dm', 'dx', 'dj', 'dv'],
+            daysoff=[
+                ns(
+                    optional = False,
+                    person = 'bob',
+                    reason = 'a reason',
+                    turns = '1111',
+                    weekday = 'dm',
+                )],
+            leaves=[],
+        )
+        self.assertNsEqual(load, """\
+            alice: 8.0
+            bob: 6.0
         """)
 
 

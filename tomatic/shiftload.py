@@ -10,10 +10,19 @@ import random
 
 
 def singlePonderatedLoad(person, load, businessDays, daysoff, leaves):
-    return load*workingDays(person, businessDays, daysoff, [])/5
+    return load*workingDays(person, businessDays, daysoff, leaves)/5
 
 def ponderatedLoad(idealLoad, businessDays, daysoff, leaves):
-    return idealLoad 
+    return {
+        person: singlePonderatedLoad(
+            person=person,
+            load=load,
+            businessDays = businessDays,
+            daysoff = daysoff,
+            leaves = leaves,
+            )
+        for person, load in idealLoad.items()
+    }
 
 def workingDays(person, businessDays, daysoff, leaves):
     if person in leaves: return 0
