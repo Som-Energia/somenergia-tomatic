@@ -582,7 +582,7 @@ class Backtracker(object):
 
             cost = 0
             penalties = []
-            taula=self.tables[company]
+            taula=self.tables.get(company,-1)
 
             # Reasons to prune chosing that person
 
