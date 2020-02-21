@@ -9,6 +9,7 @@ from io import open
 # ssh public key copied as auhtorized key in you own
 # computer. And sshd installed and running!
 
+@unittest.skipIf(os.environ.get("travis") == 'true')
 class Remote_Test(unittest.TestCase):
 
     def read(self, filename):
