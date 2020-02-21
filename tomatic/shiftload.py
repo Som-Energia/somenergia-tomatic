@@ -13,7 +13,8 @@ def ponderatedLoad(idealLoad, holidays, daysoff, leaves):
     return idealLoad 
 
 def workingDays(person, holidays, daysoff, leaves):
-    return 0 if person in leaves else 5
+    if person in leaves: return 0
+    return 5
 
 
 args = None
