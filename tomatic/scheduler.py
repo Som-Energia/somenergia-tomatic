@@ -15,7 +15,6 @@ from consolemsg import step, error, warn, out, u
 from sheetfetcher import SheetFetcher
 from .htmlgen import HtmlGen
 from . import busy
-import dbconfig
 from pathlib2 import Path
 
 # Dirty Hack: Behave like python3 open regarding unicode
@@ -133,6 +132,7 @@ def baixaVacancesDrive(config, certificat):
 
 def baixaVacancesNotoi(config):
     step('Baixant vacances de no toi...')
+    import dbconfig
     notoi = dbconfig.tomatic.notoi_data
 
     login = requests.post(
