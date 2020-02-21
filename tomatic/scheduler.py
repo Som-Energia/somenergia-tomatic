@@ -222,9 +222,9 @@ class Backtracker(object):
         self.tePrincipal = createTable(0,  self.companys, self.dies)    # (person,day) first turns?
         self.horesDiaries = createTable(0,  self.companys, self.dies)   # (person,day) turns?
 
-        self.taules = config.taules                                     # (person) table
+        self.tables = config.tables                                     # (person) table
         self.telefonsALaTaula = createTable(0,                          # (day,turn,table) phones actives?
-            self.dies, range(len(self.hours)), set(self.taules.values()))
+            self.dies, range(len(self.hours)), set(self.tables.values()))
 
         # Number of hours available each day
         self.disponibilitatDiaria = dict(                               # (person,day) max possible turns
@@ -571,7 +571,7 @@ class Backtracker(object):
 
             cost = 0
             penalties = []
-            taula=self.taules[company]
+            taula=self.tables[company]
 
             # Reasons to prune chosing that person
 

@@ -247,11 +247,12 @@ def personInfo():
     result = ns(
         names = config.names,
         extensions = config.extensions,
-        tables = config.taules,
+        tables = config.tables,
         colors = config.colors,
         emails = config.emails,
         groups = config.groups,
     )
+
     return yamlfy(persons=result)
 
 @app.route('/api/person/<person>', methods=['POST'])
@@ -268,7 +269,7 @@ def setPersonInfo(person):
     if 'extension' in data:
         config.extensions[person] = data.extension
     if 'table' in data:
-        config.taules[person] = data.table
+        config.tables[person] = data.table
     if 'color' in data:
         config.colors[person] = data.color
     if 'email' in data:
@@ -282,7 +283,7 @@ def setPersonInfo(person):
     result = ns(
         names = config.names,
         extensions = config.extensions,
-        tables = config.taules,
+        tables = config.tables,
         colors = config.colors,
         emails = config.emails,
         groups = config.groups,
