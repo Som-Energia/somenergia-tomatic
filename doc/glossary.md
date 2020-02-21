@@ -69,7 +69,10 @@ incorporació en el codi font.
         - Si s'arriba, compensar credit amb deute fins que un sigui zero o no es pugui fer sense violar restriccions
         - Si no s'arriba, generar deute i crèdit nou aleatoriament entre els que menys en tinguin
 
-
+- **sobrecàrrega** (_overload_)
+    Diferència amb la càrrega ponderada de referència.
+    Positiu vol dir que es fan més hores.
+    Negatiu vol dir que hi ha **infracàrrega**.
 
 
 
