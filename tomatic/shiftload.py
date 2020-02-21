@@ -14,8 +14,15 @@ def ponderatedLoad(idealLoad, holidays, daysoff, leaves):
 
 def workingDays(person, businessDays, daysoff, leaves):
     if person in leaves: return 0
-    ndaysoff = sum(day.person == person for day in daysoff)
-    return 5-ndaysoff
+    ndaysoff = sum(
+            day.person == person
+            for day in daysoff
+            if day.weekday in businessDays
+            )
+    return len(businessDays)-ndaysoff
+
+
+
 
 
 args = None

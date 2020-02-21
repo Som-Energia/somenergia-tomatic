@@ -103,10 +103,19 @@ class ShiftLoadTest(unittest.TestCase):
         )
         self.assertEqual(workingDays,3)
 
-    def test_workingDays_withManyDaysOff(self):
+    def test_workingDays_withOneHoliday(self):
         workingDays = shiftload.workingDays(
             person='alice',
-            businessDays=['dl', 'dm', 'dx', 'dj', 'dv'],
+            businessDays=['dm', 'dx', 'dj', 'dv'],
+            daysoff=[],
+            leaves=[],
+        )
+        self.assertEqual(workingDays,4)
+
+    def test_workingDays_withDayOffInHolidays(self):
+        workingDays = shiftload.workingDays(
+            person='alice',
+            businessDays=['dm', 'dx', 'dj', 'dv'],
             daysoff=[
                 ns(
                     optional = False,
@@ -114,19 +123,10 @@ class ShiftLoadTest(unittest.TestCase):
                     reason = 'a reason',
                     turns = '1111',
                     weekday = 'dl',
-                ),
-                ns(
-                    optional = False,
-                    person = 'alice',
-                    reason = 'a reason',
-                    turns = '1111',
-                    weekday = 'dm',
                 )],
             leaves=[],
         )
-        self.assertEqual(workingDays,3)
-
-
+        self.assertEqual(workingDays,4)
 
     def test_ponderatedLoad_(self):
         ideal = ns(
