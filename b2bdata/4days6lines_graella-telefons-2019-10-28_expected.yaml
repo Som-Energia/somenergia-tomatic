@@ -23,102 +23,102 @@ timetable:
   - - carles
     - joanb
     - joanm
-    - aram
+    - guifre
+    - pau
     - albertg
-    - monica
   - - joanm
     - joan
     - joanb
-    - mar
-    - aram
-    - tania
-  - - rogerlf
+    - pau
+    - guifre
+    - monica
+  - - tania
     - silvia
-    - carme
-    - vane
-    - lucia
+    - aram
+    - mar
+    - gemma
     - maite
   - - eloi
-    - carme
-    - mariona
-    - guifre
-    - pau
-    - vane
-  dm:
-  - - monica
     - aram
     - gemma
-    - joanm
+    - albert
     - carme
-    - albertg
-  - - tania
+    - tania
+  dm:
+  - - pau
+    - gemma
+    - mariona
+    - joanm
+    - aram
+    - guifre
+  - - monica
     - judith
     - eloi
     - joan
-    - guifre
-    - joanm
-  - - vane
-    - maite
-    - rogerlf
-    - carol
-    - vero
-    - mar
-  - - marta
-    - lucia
-    - vane
-    - pau
-    - carol
-    - mariona
-  dx:
-  - - carol
-    - gemma
-    - aram
     - albertg
-    - judith
-    - carme
+    - joanm
   - - eduard
+    - maite
+    - vane
+    - carol
+    - lucia
+    - mar
+  - - vane
+    - carme
+    - rogerlf
+    - vero
+    - carol
+    - otilia
+  dx:
+  - - marc
+    - lucia
+    - carme
+    - aram
+    - judith
+    - mariona
+  - - carol
     - rogerlf
     - vero
     - eloi
-    - gemma
-    - guifre
+    - maria
+    - vane
   - - otilia
     - nuria
     - adria
-    - roger
-    - sergi
+    - albertg
     - monicag
-  - - roger
-    - victor
-    - nuria
-    - adria
-    - monicag
-    - otilia
-  dj:
-  - - marc
-    - adria
-    - otilia
-    - gemma
-    - maria
     - roger
   - - erola
     - otilia
+    - nuria
+    - roger
+    - adria
+    - monicag
+  dj:
+  - - vero
+    - adria
+    - otilia
+    - gemma
+    - manel
+    - rogerlf
+  - - rogerlf
+    - manel
+    - gabriel
+    - adria
+    - vero
+    - eloi
+  - - roger
+    - victor
+    - monicag
+    - vane
+    - nuria
+    - carme
+  - - marta
+    - monicag
     - roger
     - yaiza
-    - adria
-    - rogerlf
-  - - vero
-    - monicag
-    - gabriel
-    - albert
-    - manel
+    - sergi
     - nuria
-  - - pau
-    - manel
-    - monicag
-    - vero
-    - nuria
-    - eloi
   dv:
   - - festiu
     - festiu
@@ -147,8 +147,8 @@ timetable:
 colors:
   marc: fbe8bc
   eduard: d8b9c5
-  pere: f200ff
-  david: ffb300
+  pere: ddeeff
+  david: ffb500
   carles: c98e98
   marta: eb9481
   monica: 7fada0
@@ -178,15 +178,14 @@ colors:
   albert: f4f4f4
   oriol: a52513
   fran: 621bf1
-  miguelanxo: 00b986
+  juanpe: ddeeff
   belen: 2892ff
   fcasadella: 10ee30
-  gijsbert: 00adff
+  salome: 00adff
   nuri: 17ef6f
   fcots: ff5a60
   annarodon: 009e7d
   alberto: 0074f0
-  juanpe: ddeeff
   olga: ddeeff
   mar: 00ffff
   joanm: 2d93f2
@@ -216,8 +215,16 @@ colors:
   javi: 79eeff
   albertsimo: cc00ff
   clara: 602fa7
-  jaume: 5afc9c
+  jaume: 74eb79
   cesar: ffffee
+  davids: d8863d
+  hermigg: ddbdf1
+  cire: 994a00
+  francesc: ddeeff
+  berta: ddeeff
+  yolanda: ddeeff
+  joel: 00a28a
+  polmonso: 76ff91
 extensions:
   marta: '3040'
   monica: '3041'
@@ -229,7 +236,7 @@ extensions:
   judit: '3047'
   tania: '3183'
   carles: '3045'
-  pere: '3052'
+  pere: '3062'
   fran: '3008'
   david: '3054'
   silvia: '3055'
@@ -250,15 +257,14 @@ extensions:
   viktu: '3006'
   albert: '3038'
   oriol: '3089'
-  miguelanxo: '3194'
+  juanpe: '3194'
   belen: '3385'
   fcasadella: '3002'
-  gijsbert: '3003'
+  salome: '3003'
   nuri: '3889'
   fcots: '3015'
   annarodon: '3197'
   alberto: '3011'
-  juanpe: '0000'
   olga: '3088'
   mar: '3087'
   joanm: '3086'
@@ -288,6 +294,14 @@ extensions:
   albertsimo: '3013'
   clara: '3014'
   jaume: '3196'
+  davids: '4003'
+  hermigg: '3052'
+  cire: '3065'
+  berta: '3060'
+  yolanda: '3061'
+  joel: '3063'
+  polmonso: '2912'
+  francesc: '3017'
 names:
   silvia: Sílvia
   monica: Mònica
@@ -299,12 +313,11 @@ names:
   ningu: '-'
   joan: Joan
   carol: Càrol
-  miguelanxo: MiguelAnxo
+  juanpe: Juan Pe
   belen: Belén
   fcasadella: FrancescCasadellà
   fcots: FrancescCots
   annarodon: AnnaRodon
-  juanpe: Juanpe
   joanm: JoanM
   annab: Anna B
   eloi: 'Eloi '
@@ -312,7 +325,7 @@ names:
   jordi: JordiP
   xavi: XaviDolz
   david: David G.
-  gijsbert: Salomé
+  salome: Salomé
   rogerlf: RogerLF
   guifre: Guifré
   merce: Mercè
@@ -325,73 +338,105 @@ names:
   contestado: '>>>CONTESTADOR<<<'
   albertsimo: AlbertSi
   jaume: JaumeA
+  davids: DavidS
+  hermigg: Hermi
+  polmonso: PolMonso
+  francesc: Cesc
 penalties:
-- - 1
-  - joanm te mes de 1 hores el dl
-- - 1
-  - joanb te mes de 1 hores el dl
+- - 0
+  - 'guifre fa dl a 1a hora que no li va be perque: "Bioritme de Tarda"'
+- - 0
+  - 'pau fa dl a 1a hora que no li va be perque: "Organització de la càrrega de feina
+    i de les reunions"'
 - - 5
-  - mar te 1 persones a la mateixa taula amb telefon a 2a hora del dl
+  - albertg té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dl
 - - 1
-  - aram te mes de 1 hores el dl
+  - joanm té més de 1 hores el dl
 - - 1
-  - carme te mes de 1 hores el dl
+  - joanb té més de 1 hores el dl
+- - 0
+  - 'pau fa dl a 2a hora que no li va be perque: "Organització de la càrrega de feina
+    i de les reunions"'
 - - 1
-  - vane te mes de 1 hores el dl
+  - pau té més de 1 hores el dl
 - - 5
-  - vane te 1 persones a la mateixa taula amb telefon a 4a hora del dl
+  - pau té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dl
+- - 0
+  - 'guifre fa dl a 2a hora que no li va be perque: "Reunions Traspàs Factura"'
+- - 1
+  - guifre té més de 1 hores el dl
 - - 5
-  - albertg te 1 persones a la mateixa taula amb telefon a 1a hora del dm
-- - 1
-  - joanm te mes de 1 hores el dm
+  - silvia té altres 1 persones amb telèfon a la mateixa taula a 3a hora del dl
+- - 0
+  - 'gemma fa dl a 3a hora que no li va be perque: "Telèfon a primera hora"'
 - - 5
-  - mar te 1 persones a la mateixa taula amb telefon a 3a hora del dm
+  - gemma té altres 1 persones amb telèfon a la mateixa taula a 3a hora del dl
 - - 1
-  - vane te mes de 1 hores el dm
+  - aram té més de 1 hores el dl
+- - 0
+  - 'gemma fa dl a 4a hora que no li va be perque: "Telèfon a primera hora"'
 - - 1
-  - carol te mes de 1 hores el dm
+  - gemma té més de 1 hores el dl
+- - 1
+  - tania té més de 1 hores el dl
+- - 0
+  - 'pau fa dm a 1a hora que no li va be perque: "Organització de la càrrega de feina
+    i de les reunions"'
 - - 5
-  - mariona te 1 persones a la mateixa taula amb telefon a 4a hora del dm
+  - aram té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dm
+- - 0
+  - 'guifre fa dm a 1a hora que no li va be perque: "Bioritme de Tarda"'
+- - 1
+  - joanm té més de 1 hores el dm
 - - 5
-  - carme te 1 persones a la mateixa taula amb telefon a 1a hora del dx
+  - joanm té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dm
 - - 1
-  - gemma te mes de 1 hores el dx
+  - vane té més de 1 hores el dm
+- - 1
+  - carol té més de 1 hores el dm
+- - 0
+  - 'marc fa dx a 1a hora que no li va be perque: "Ronda IT"'
+- - 0
+  - 'maria fa dx a 2a hora que no li va be perque: "Altes"'
 - - 5
-  - guifre te 1 persones a la mateixa taula amb telefon a 2a hora del dx
+  - vane té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dx
 - - 5
-  - monicag te 1 persones a la mateixa taula amb telefon a 3a hora del dx
+  - roger té altres 1 persones amb telèfon a la mateixa taula a 3a hora del dx
 - - 1
-  - roger te mes de 1 hores el dx
+  - otilia té més de 1 hores el dx
 - - 1
-  - nuria te mes de 1 hores el dx
+  - nuria té més de 1 hores el dx
 - - 1
-  - adria te mes de 1 hores el dx
-- - 1
-  - monicag te mes de 1 hores el dx
+  - roger té més de 1 hores el dx
 - - 5
-  - monicag te 1 persones a la mateixa taula amb telefon a 4a hora del dx
+  - roger té altres 1 persones amb telèfon a la mateixa taula a 4a hora del dx
 - - 1
-  - otilia te mes de 1 hores el dx
+  - adria té més de 1 hores el dx
 - - 1
-  - otilia te mes de 1 hores el dj
-- - 1
-  - roger te mes de 1 hores el dj
-- - 1
-  - adria te mes de 1 hores el dj
+  - monicag té més de 1 hores el dx
+- - 0
+  - 'vero fa dj a 1a hora que no li va be perque: "Em resulta difícil arribar a les
+    9h"'
+- - 0
+  - 'manel fa dj a 1a hora que no li va be perque: "Flexibilitat per compartir cotxe"'
 - - 5
-  - gabriel te 1 persones a la mateixa taula amb telefon a 3a hora del dj
+  - rogerlf té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dj
+- - 1
+  - rogerlf té més de 1 hores el dj
+- - 1
+  - manel té més de 1 hores el dj
+- - 1
+  - adria té més de 1 hores el dj
 - - 5
-  - nuria te 1 persones a la mateixa taula amb telefon a 3a hora del dj
+  - adria té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dj
 - - 1
-  - manel te mes de 1 hores el dj
+  - vero té més de 1 hores el dj
+- - 1
+  - monicag té més de 1 hores el dj
+- - 1
+  - roger té més de 1 hores el dj
 - - 5
-  - manel te 1 persones a la mateixa taula amb telefon a 4a hora del dj
+  - yaiza té altres 1 persones amb telèfon a la mateixa taula a 4a hora del dj
 - - 1
-  - monicag te mes de 1 hores el dj
-- - 1
-  - vero te mes de 1 hores el dj
-- - 1
-  - nuria te mes de 1 hores el dj
-- - 5
-  - nuria te 1 persones a la mateixa taula amb telefon a 4a hora del dj
-cost: 86
+  - nuria té més de 1 hores el dj
+cost: 82

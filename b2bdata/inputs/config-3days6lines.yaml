@@ -32,7 +32,7 @@ costLimit: 200
 discriminateLines: true
 pruneRedundant: false
 descartaNoPrometedores: true
-ignoreOptionalAbsences: false
+ignoreOptionalAbsences: true
 deixaEsmorzar: true
 noVolenEsmorzar:
 - david

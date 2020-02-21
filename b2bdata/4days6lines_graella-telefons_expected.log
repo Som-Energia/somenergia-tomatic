@@ -1,610 +1,367 @@
 [34;1m:: Carregant configuració b2bdata/inputs/config-4days6lines.yaml...[0m
 [34;1m:: Muntant el solucionador...[0m
-[33mWarning: 'javier' es al grup 'ramat', però no es al fitxer de càrrega[0m
-[33mWarning: 'pere' es al grup 'ramat', però no es al fitxer de càrrega[0m
-[33mWarning: 'david' es al grup 'ramat', però no es al fitxer de càrrega[0m
-[33mWarning: 'oriol' es al grup 'ramat', però no es al fitxer de càrrega[0m
-[33mWarning: 'fran' es al grup 'ramat', però no es al fitxer de càrrega[0m
-[33mWarning: 'miguelanxo' es al grup 'ramat', però no es al fitxer de càrrega[0m
-[33mWarning: 'alberto' es al grup 'it', però no es al fitxer de càrrega[0m
-[33mWarning: 'david' es al grup 'it', però no es al fitxer de càrrega[0m
-[33mWarning: 'fran' es al grup 'it', però no es al fitxer de càrrega[0m
-[33mWarning: 'oriol' es al grup 'it', però no es al fitxer de càrrega[0m
-[33mWarning: 'juanpe' es al grup 'it', però no es al fitxer de càrrega[0m
-[33mWarning: 'jordi' es al grup 'it', però no es al fitxer de càrrega[0m
-[33mWarning: 'xavi' es al grup 'it', però no es al fitxer de càrrega[0m
-[33mWarning: 'benjami' es al grup 'it', però no es al fitxer de càrrega[0m
+[33mWarning: T'has deixat dies laborables: ['dv'][0m
+[33mWarning: 'hermigg' es al grup 'casademont', però no es al fitxer de càrrega[0m
+[33mWarning: 'pere' es al grup 'casademont', però no es al fitxer de càrrega[0m
+[33mWarning: 'francesc' es al grup 'balneari', però no es al fitxer de càrrega[0m
+[33mWarning: 'berta' es al grup 'balneari', però no es al fitxer de càrrega[0m
+[33mWarning: 'joel' es al grup 'balneari', però no es al fitxer de càrrega[0m
+[33mWarning: 'cire' es al grup 'balneari', però no es al fitxer de càrrega[0m
+[33mWarning: 'yolanda' es al grup 'balneari', però no es al fitxer de càrrega[0m
+[33mWarning: 'javi' es al grup 'balneari', però no es al fitxer de càrrega[0m
+[33mWarning: 'nuri' es al grup 'lamina', però no es al fitxer de càrrega[0m
+[33mWarning: 'xavi' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'benjami' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'marjene' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'jordi' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'davidr' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'juanpe' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'joana' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'polmonso' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'david' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'alberto' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'clara' es al grup 'zulo', però no es al fitxer de càrrega[0m
+[33mWarning: 'fcasadella' es al grup 'zulo', però no es al fitxer de càrrega[0m
+[33mWarning: 'annarodon' es al grup 'zulo', però no es al fitxer de càrrega[0m
+[33mWarning: 'albertsimo' es al grup 'zulo', però no es al fitxer de càrrega[0m
+[33mWarning: 'fran' es al grup 'zuloit', però no es al fitxer de càrrega[0m
+[33mWarning: 'oriol' es al grup 'zuloit', però no es al fitxer de càrrega[0m
+[33mWarning: 'marite' es al grup 'zuloit', però no es al fitxer de càrrega[0m
+[33mWarning: 'samuel' es al grup 'zuloit', però no es al fitxer de càrrega[0m
+[33mWarning: 'davids' es al grup 'zuloit', però no es al fitxer de càrrega[0m
+[33mWarning: 'belen' es al grup 'pendent', però no es al fitxer de càrrega[0m
+[33mWarning: 'fcots' es al grup 'pendent', però no es al fitxer de càrrega[0m
+[33mWarning: 'jaume' es al grup 'pendent', però no es al fitxer de càrrega[0m
+[33mWarning: 'alex' es al grup 'pendent', però no es al fitxer de càrrega[0m
+[33mWarning: 'viktu' es al grup 'pendent', però no es al fitxer de càrrega[0m
+[33mWarning: Configuration 'minIdleInGroup' uses group 'it' not defined in 'groups'[0m
 [33mWarning: Configuration 'maxPhoningInGroup' uses group 'nouramat' not defined in 'groups'[0m
 [34;1m:: Generant horari...[0m
-[33mWarning: joan no esta disponible el dl a la hora 1[0m
-[33mWarning: silvia no esta disponible el dl a la hora 1[0m
-[33mWarning: eloi no esta disponible el dl a la hora 1[0m
-[33mWarning: guifre no esta disponible el dl a la hora 1[0m
-[33mWarning: joan no esta disponible el dl a la hora 1[0m
-[33mWarning: eloi no esta disponible el dl a la hora 1[0m
-[33mWarning: joanm no esta disponible el dl a la hora 1[0m
-[33mWarning: pau no esta disponible el dl a la hora 1[0m
-[33mWarning: guifre no esta disponible el dl a la hora 1[0m
-[33mWarning: pau no esta disponible el dl a la hora 1[0m
-[33mWarning: aram no esta disponible el dl a la hora 1[0m
-[33mWarning: judith no esta disponible el dl a la hora 1[0m
-[33mWarning: guifre no esta disponible el dl a la hora 1[0m
-[33mWarning: eloi no esta disponible el dl a la hora 1[0m
-[33mWarning: joanm no esta disponible el dl a la hora 1[0m
-[33mWarning: albertg no esta disponible el dl a la hora 1[0m
-[33mWarning: eloi no esta disponible el dl a la hora 2[0m
-[33mWarning: eloi no esta disponible el dl a la hora 2[0m
-[33mWarning: guifre no esta disponible el dl a la hora 2[0m
-[33mWarning: joan no esta disponible el dl a la hora 2[0m
-[33mWarning: eloi no esta disponible el dl a la hora 2[0m
-[33mWarning: joanm no esta disponible el dl a la hora 2[0m
-[33mWarning: pau no esta disponible el dl a la hora 2[0m
-[33mWarning: albertg no esta disponible el dl a la hora 2[0m
-[33mWarning: guifre no esta disponible el dl a la hora 2[0m
-[33mWarning: pau no esta disponible el dl a la hora 2[0m
-[33mWarning: guifre no esta disponible el dl a la hora 2[0m
-[33mWarning: eloi no esta disponible el dl a la hora 2[0m
-[33mWarning: joanm no esta disponible el dl a la hora 2[0m
-[33mWarning: albertg no esta disponible el dl a la hora 2[0m
-[33mWarning: eloi no esta disponible el dl a la hora 3[0m
-[33mWarning: pau no esta disponible el dl a la hora 3[0m
-[33mWarning: marc no esta disponible el dl a la hora 3[0m
-[33mWarning: monica te hores separades el dl[0m
-[33mWarning: tania es queda sense esmorzar el dl[0m
-[33mWarning: eduard no esta disponible el dl a la hora 3[0m
-[33mWarning: eloi no esta disponible el dl a la hora 3[0m
-[33mWarning: No li posem mes a aram que ja te 2 hores el dl[0m
-[33mWarning: gemma no esta disponible el dl a la hora 3[0m
-[33mWarning: mariona no esta disponible el dl a la hora 3[0m
-[33mWarning: vane no esta disponible el dl a la hora 3[0m
-[33mWarning: guifre no esta disponible el dl a la hora 3[0m
-[33mWarning: joan es queda sense esmorzar el dl[0m
-[33mWarning: eloi no esta disponible el dl a la hora 3[0m
-[33mWarning: No li posem mes a joanm que ja te 2 hores el dl[0m
-[33mWarning: pau no esta disponible el dl a la hora 3[0m
-[33mWarning: albertg no esta disponible el dl a la hora 3[0m
-[33mWarning: gemma no esta disponible el dl a la hora 3[0m
-[33mWarning: albert no esta disponible el dl a la hora 3[0m
-[33mWarning: vane no esta disponible el dl a la hora 3[0m
-[33mWarning: carol no esta disponible el dl a la hora 3[0m
-[33mWarning: vero no esta disponible el dl a la hora 3[0m
-[33mWarning: adria no esta disponible el dl a la hora 3[0m
-[33mWarning: roger no esta disponible el dl a la hora 3[0m
-[33mWarning: yaiza no esta disponible el dl a la hora 3[0m
-[33mWarning: guifre no esta disponible el dl a la hora 3[0m
-[33mWarning: pau no esta disponible el dl a la hora 3[0m
-[33mWarning: judith no esta disponible el dl a la hora 3[0m
-[33mWarning: gemma no esta disponible el dl a la hora 3[0m
-[33mWarning: carme no esta disponible el dl a la hora 3[0m
-[33mWarning: carol no esta disponible el dl a la hora 3[0m
-[33mWarning: guifre no esta disponible el dl a la hora 3[0m
-[33mWarning: eloi no esta disponible el dl a la hora 3[0m
-[33mWarning: No li posem mes a joanm que ja te 2 hores el dl[0m
-[33mWarning: albertg no esta disponible el dl a la hora 3[0m
-[33mWarning: mar es queda sense esmorzar el dl[0m
-[33mWarning: No li posem mes a aram que ja te 2 hores el dl[0m
-[33mWarning: judith no esta disponible el dl a la hora 4[0m
-[33mWarning: gemma no esta disponible el dl a la hora 4[0m
-[33mWarning: maite no esta disponible el dl a la hora 4[0m
-[33mWarning: eloi no esta disponible el dl a la hora 4[0m
-[33mWarning: No li posem mes a aram que ja te 2 hores el dl[0m
-[33mWarning: gemma no esta disponible el dl a la hora 4[0m
-[33mWarning: guifre no esta disponible el dl a la hora 4[0m
-[33mWarning: guifre no esta disponible el dl a la hora 4[0m
-[33mWarning: eloi no esta disponible el dl a la hora 4[0m
-[33mWarning: No li posem mes a joanm que ja te 2 hores el dl[0m
-[33mWarning: albertg te hores separades el dl[0m
-[33mWarning: mar te hores separades el dl[0m
-[33mWarning: mariona no esta disponible el dl a la hora 4[0m
-[33mWarning: pau no esta disponible el dm a la hora 1[0m
-[33mWarning: marc no esta disponible el dm a la hora 1[0m
-[33mWarning: eloi no esta disponible el dm a la hora 1[0m
-[33mWarning: aram no esta disponible el dm a la hora 1[0m
-[33mWarning: joan no esta disponible el dm a la hora 1[0m
-[33mWarning: eloi no esta disponible el dm a la hora 1[0m
-[33mWarning: guifre no esta disponible el dm a la hora 1[0m
-[33mWarning: judith no esta disponible el dm a la hora 1[0m
-[33mWarning: gemma no esta disponible el dm a la hora 1[0m
-[33mWarning: guifre no esta disponible el dm a la hora 1[0m
-[33mWarning: eloi no esta disponible el dm a la hora 1[0m
-[33mWarning: joanm no esta disponible el dm a la hora 1[0m
-[33mWarning: pau no esta disponible el dm a la hora 2[0m
-[33mWarning: marc no esta disponible el dm a la hora 2[0m
-[33mWarning: guifre no esta disponible el dm a la hora 2[0m
-[33mWarning: eloi no esta disponible el dm a la hora 2[0m
-[33mWarning: pau no esta disponible el dm a la hora 3[0m
-[33mWarning: marc no esta disponible el dm a la hora 3[0m
-[33mWarning: eduard no esta disponible el dm a la hora 3[0m
-[33mWarning: gemma no esta disponible el dm a la hora 3[0m
-[33mWarning: aram te hores separades el dm[0m
-[33mWarning: vane no esta disponible el dm a la hora 3[0m
-[33mWarning: eloi es queda sense esmorzar el dm[0m
-[33mWarning: pau no esta disponible el dm a la hora 3[0m
-[33mWarning: albertg te hores separades el dm[0m
-[33mWarning: gemma no esta disponible el dm a la hora 3[0m
-[33mWarning: albert no esta disponible el dm a la hora 3[0m
-[33mWarning: judith es queda sense esmorzar el dm[0m
-[33mWarning: gemma no esta disponible el dm a la hora 3[0m
-[33mWarning: carol no esta disponible el dm a la hora 3[0m
-[33mWarning: guifre es queda sense esmorzar el dm[0m
-[33mWarning: eloi es queda sense esmorzar el dm[0m
-[33mWarning: gemma no esta disponible el dm a la hora 4[0m
-[33mWarning: aram te hores separades el dm[0m
-[33mWarning: eloi te hores separades el dm[0m
-[33mWarning: pau no esta disponible el dm a la hora 4[0m
-[33mWarning: albertg te hores separades el dm[0m
-[33mWarning: gemma no esta disponible el dm a la hora 4[0m
-[33mWarning: albert no esta disponible el dm a la hora 4[0m
-[33mWarning: judith te hores separades el dm[0m
-[33mWarning: gemma no esta disponible el dm a la hora 4[0m
-[33mWarning: guifre te hores separades el dm[0m
-[33mWarning: eloi te hores separades el dm[0m
-[33mWarning: A marta nomes li queden 0 forats per posar 1 hores[0m
 Solució incomplerta 0/96 caselles, cost 0
 Solució incomplerta 1/96 caselles, cost 0
+[33mWarning: joan no esta disponible el dl a 1a hora[0m
+[33mWarning: silvia no esta disponible el dl a 1a hora[0m
 Solució incomplerta 2/96 caselles, cost 0
+[33mWarning: eloi no esta disponible el dl a 1a hora[0m
 Solució incomplerta 3/96 caselles, cost 0
 Solució incomplerta 4/96 caselles, cost 0
+[33mWarning: guifre no esta disponible el dl a 1a hora[0m
 Solució incomplerta 5/96 caselles, cost 0
-Solució incomplerta 6/96 caselles, cost 0
-Solució incomplerta 7/96 caselles, cost 1
-Solució incomplerta 8/96 caselles, cost 1
-Solució incomplerta 9/96 caselles, cost 2
-Solució incomplerta 10/96 caselles, cost 7
-Solució incomplerta 11/96 caselles, cost 8
-Solució incomplerta 12/96 caselles, cost 8
-Solució incomplerta 13/96 caselles, cost 8
-Solució incomplerta 14/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 15/96 caselles, cost 8
-Solució incomplerta 16/96 caselles, cost 8
-Solució incomplerta 17/96 caselles, cost 8
-Solució incomplerta 18/96 caselles, cost 8
-Solució incomplerta 19/96 caselles, cost 8
-Solució incomplerta 20/96 caselles, cost 9
-Solució incomplerta 21/96 caselles, cost 9
-Solució incomplerta 22/96 caselles, cost 9
-Solució incomplerta 23/96 caselles, cost 9
-Solució incomplerta 24/96 caselles, cost 15
-Solució incomplerta 25/96 caselles, cost 15
-Solució incomplerta 26/96 caselles, cost 15
-Solució incomplerta 27/96 caselles, cost 15
-Solució incomplerta 28/96 caselles, cost 15
-Solució incomplerta 29/96 caselles, cost 15
-Solució incomplerta 30/96 caselles, cost 20
-Solució incomplerta 31/96 caselles, cost 20
-Solució incomplerta 32/96 caselles, cost 20
-Solució incomplerta 33/96 caselles, cost 20
-Solució incomplerta 34/96 caselles, cost 20
-Solució incomplerta 35/96 caselles, cost 20
-Solució incomplerta 36/96 caselles, cost 21
-Solució incomplerta 37/96 caselles, cost 21
-Solució incomplerta 38/96 caselles, cost 21
-Solució incomplerta 39/96 caselles, cost 21
-Solució incomplerta 40/96 caselles, cost 21
-Solució incomplerta 41/96 caselles, cost 21
-Solució incomplerta 42/96 caselles, cost 26
-Solució incomplerta 43/96 caselles, cost 26
-Solució incomplerta 44/96 caselles, cost 26
-Solució incomplerta 45/96 caselles, cost 27
-Solució incomplerta 46/96 caselles, cost 28
-Solució incomplerta 47/96 caselles, cost 29
-Solució incomplerta 48/96 caselles, cost 34
-Solució incomplerta 48/96 caselles, cost 30
-Solució incomplerta 48/96 caselles, cost 29
-Solució incomplerta 48/96 caselles, cost 29
-Solució incomplerta 48/96 caselles, cost 29
-Solució incomplerta 48/96 caselles, cost 29
-Solució incomplerta 48/96 caselles, cost 28
-Solució incomplerta 48/96 caselles, cost 28
-Solució incomplerta 48/96 caselles, cost 28
-Solució incomplerta 48/96 caselles, cost 28
-Solució incomplerta 48/96 caselles, cost 28
-Solució incomplerta 48/96 caselles, cost 28
-Solució incomplerta 48/96 caselles, cost 27
-Solució incomplerta 48/96 caselles, cost 27
-Solució incomplerta 48/96 caselles, cost 27
-Solució incomplerta 48/96 caselles, cost 27
-Solució incomplerta 48/96 caselles, cost 27
-Solució incomplerta 48/96 caselles, cost 27
-Solució incomplerta 48/96 caselles, cost 27
-Solució incomplerta 48/96 caselles, cost 27
-Solució incomplerta 48/96 caselles, cost 27
-Solució incomplerta 48/96 caselles, cost 27
-Solució incomplerta 48/96 caselles, cost 27
-Solució incomplerta 48/96 caselles, cost 27
-Solució incomplerta 48/96 caselles, cost 27
-Solució incomplerta 48/96 caselles, cost 27
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomp[33mWarning: pau no esta disponible el dx a la hora 1[0m
-[33mWarning: marc no esta disponible el dx a la hora 1[0m
-[33mWarning: eduard no esta disponible el dx a la hora 1[0m
-[33mWarning: eloi no esta disponible el dx a la hora 1[0m
-[33mWarning: guifre no esta disponible el dx a la hora 1[0m
-[33mWarning: eloi no esta disponible el dx a la hora 1[0m
-[33mWarning: pau no esta disponible el dx a la hora 2[0m
-[33mWarning: marc no esta disponible el dx a la hora 2[0m
-[33mWarning: pau no esta disponible el dx a la hora 3[0m
-[33mWarning: marc no esta disponible el dx a la hora 3[0m
-[33mWarning: vero es queda sense esmorzar el dx[0m
-[33mWarning: otilia no esta disponible el dx a la hora 3[0m
-[33mWarning: otilia no esta disponible el dx a la hora 3[0m
-[33mWarning: nuria no esta disponible el dx a la hora 3[0m
-[33mWarning: gemma no esta disponible el dx a la hora 3[0m
-[33mWarning: maria no esta disponible el dx a la hora 3[0m
-[33mWarning: nuria no esta disponible el dx a la hora 3[0m
-[33mWarning: adria no esta disponible el dx a la hora 3[0m
-[33mWarning: eloi es queda sense esmorzar el dx[0m
+[33mWarning: guifre no esta disponible el dl a 1a hora[0m
+[33mWarning: eloi no esta disponible el dl a 1a hora[0m
+[33mWarning: joanm no esta disponible el dl a 1a hora[0m
+Solució incomplerta 6/96 caselles, cost 5
+[33mWarning: eloi no esta disponible el dl a 2a hora[0m
+Solució incomplerta 7/96 caselles, cost 6
+Solució incomplerta 8/96 caselles, cost 6
+[33mWarning: eloi no esta disponible el dl a 2a hora[0m
+Solució incomplerta 9/96 caselles, cost 7
+[33mWarning: joan no esta disponible el dl a 2a hora[0m
+[33mWarning: eloi no esta disponible el dl a 2a hora[0m
+[33mWarning: joanm no esta disponible el dl a 2a hora[0m
+Solució incomplerta 10/96 caselles, cost 13
+Solució incomplerta 11/96 caselles, cost 14
+[33mWarning: guifre no esta disponible el dl a 2a hora[0m
+[33mWarning: eloi no esta disponible el dl a 2a hora[0m
+[33mWarning: joanm no esta disponible el dl a 2a hora[0m
+Solució incomplerta 12/96 caselles, cost 14
+[33mWarning: eloi no esta disponible el dl a 3a hora[0m
+[33mWarning: No li posem mes a pau que ja te 2 hores el dl[0m
+[33mWarning: marc no esta disponible el dl a 3a hora[0m
+[33mWarning: monica es queda sense esmorzar el dl[0m
+Solució incomplerta 13/96 caselles, cost 14
+Solució incomplerta 14/96 caselles, cost 19
+[33mWarning: eloi no esta disponible el dl a 3a hora[0m
+Solució incomplerta 15/96 caselles, cost 19
+[33mWarning: joan es queda sense esmorzar el dl[0m
+[33mWarning: eloi no esta disponible el dl a 3a hora[0m
+[33mWarning: No li posem mes a joanm que ja te 2 hores el dl[0m
+[33mWarning: aram no esta disponible el dl a 3a hora[0m
+[33mWarning: albertg no esta disponible el dl a 3a hora[0m
+Solució incomplerta 16/96 caselles, cost 19
+[33mWarning: aram no esta disponible el dl a 3a hora[0m
+[33mWarning: judith no esta disponible el dl a 3a hora[0m
+[33mWarning: albertg no esta disponible el dl a 3a hora[0m
+Solució incomplerta 17/96 caselles, cost 24
+[33mWarning: No li posem mes a guifre que ja te 2 hores el dl[0m
+[33mWarning: eloi no esta disponible el dl a 3a hora[0m
+[33mWarning: No li posem mes a joanm que ja te 2 hores el dl[0m
+[33mWarning: tania no esta disponible el dl a 3a hora[0m
+[33mWarning: mar no esta disponible el dl a 3a hora[0m
+Solució incomplerta 18/96 caselles, cost 24
+Solució incomplerta 19/96 caselles, cost 24
+Solució incomplerta 20/96 caselles, cost 25
+[33mWarning: eloi no esta disponible el dl a 4a hora[0m
+Solució incomplerta 21/96 caselles, cost 26
+[33mWarning: joan te hores separades el dl[0m
+[33mWarning: eloi no esta disponible el dl a 4a hora[0m
+[33mWarning: No li posem mes a joanm que ja te 2 hores el dl[0m
+[33mWarning: aram no esta disponible el dl a 4a hora[0m
+[33mWarning: albertg te hores separades el dl[0m
+[33mWarning: gemma no esta disponible el dl a 4a hora[0m
+Solució incomplerta 22/96 caselles, cost 26
+[33mWarning: aram no esta disponible el dl a 4a hora[0m
+[33mWarning: judith no esta disponible el dl a 4a hora[0m
+[33mWarning: albertg te hores separades el dl[0m
+Solució incomplerta 23/96 caselles, cost 26
+[33mWarning: No li posem mes a guifre que ja te 2 hores el dl[0m
+[33mWarning: eloi no esta disponible el dl a 4a hora[0m
+[33mWarning: No li posem mes a joanm que ja te 2 hores el dl[0m
+Solució incomplerta 24/96 caselles, cost 27
+Solució incomplerta 25/96 caselles, cost 27
+[33mWarning: judith no esta disponible el dm a 1a hora[0m
+Solució incomplerta 26/96 caselles, cost 27
+[33mWarning: eloi no esta disponible el dm a 1a hora[0m
+Solució incomplerta 27/96 caselles, cost 27
+[33mWarning: joan no esta disponible el dm a 1a hora[0m
+[33mWarning: eloi no esta disponible el dm a 1a hora[0m
+Solució incomplerta 28/96 caselles, cost 27
+Solució incomplerta 29/96 caselles, cost 32
+Solució incomplerta 30/96 caselles, cost 32
+[33mWarning: marc no esta disponible el dm a 2a hora[0m
+Solució incomplerta 31/96 caselles, cost 32
+Solució incomplerta 32/96 caselles, cost 32
+Solució incomplerta 33/96 caselles, cost 32
+Solució incomplerta 34/96 caselles, cost 32
+[33mWarning: judith no esta disponible el dm a 2a hora[0m
+Solució incomplerta 35/96 caselles, cost 32
+[33mWarning: eloi no esta disponible el dm a 2a hora[0m
+Solució incomplerta 36/96 caselles, cost 38
+[33mWarning: marc no esta disponible el dm a 3a hora[0m
+Solució incomplerta 37/96 caselles, cost 38
+Solució incomplerta 38/96 caselles, cost 38
+Solució incomplerta 39/96 caselles, cost 38
+[33mWarning: eloi es queda sense esmorzar el dm[0m
+[33mWarning: aram te hores separades el dm[0m
+[33mWarning: albertg es queda sense esmorzar el dm[0m
+[33mWarning: gemma te hores separades el dm[0m
+[33mWarning: vane no esta disponible el dm a 3a hora[0m
+Solució incomplerta 40/96 caselles, cost 38
+[33mWarning: judith es queda sense esmorzar el dm[0m
+[33mWarning: carol no esta disponible el dm a 3a hora[0m
+Solució incomplerta 41/96 caselles, cost 38
+[33mWarning: eloi es queda sense esmorzar el dm[0m
+Solució incomplerta 42/96 caselles, cost 38
+[33mWarning: marc no esta disponible el dm a 4a hora[0m
+Solució incomplerta 43/96 caselles, cost 39
+Solució incomplerta 44/96 caselles, cost 39
+[33mWarning: carme no esta disponible el dm a 4a hora[0m
+Solució incomplerta 45/96 caselles, cost 39
+[33mWarning: eloi te hores separades el dm[0m
+[33mWarning: aram te hores separades el dm[0m
+[33mWarning: albertg te hores separades el dm[0m
+[33mWarning: gemma te hores separades el dm[0m
+[33mWarning: vane no esta disponible el dm a 4a hora[0m
+Solució incomplerta 46/96 caselles, cost 39
+[33mWarning: judith te hores separades el dm[0m
+Solució incomplerta 47/96 caselles, cost 40
+[33mWarning: eloi te hores separades el dm[0m
+[33mWarning: mariona te hores separades el dm[0m
+[33mWarning: vane no esta disponible el dm a 4a hora[0m
+[33mWarning: carme no esta disponible el dm a 4a hora[0m
+[33mWarning: rogerlf no esta disponible el dm a 4a hora[0m
+Solució incomplerta 48/96 caselles, cost 40
+Solució incomplerta 49/96 caselles, cost 40
+Solució incomplerta 50/96 caselles, cost 40
+Solució incomplerta 51/96 caselles, cost 40
+[33mWarning: eloi no esta disponible el dx a 1a hora[0m
+Solució incomplerta 52/96 caselles, cost 40
+Solució incomplerta 53/96 caselles, cost 40
+[33mWarning: eloi no esta disponible el dx a 1a hora[0m
+Solució incomplerta 54/96 caselles, cost 40
+Solució incomplerta 55/96 caselles, cost 40
+Solució incomplerta 56/96 caselles, cost 40
+Solució incomplerta 57/96 caselles, cost 40
+Solució incomplerta 58/96 caselles, cost 40
+[33mWarning: vero no esta disponible el dx a 2a hora[0m
+Solució incomplerta 59/96 caselles, cost 40
+[33mWarning: eloi no esta disponible el dx a 2a hora[0m
+Solució incomplerta 60/96 caselles, cost 45
 [33mWarning: rogerlf es queda sense esmorzar el dx[0m
-[33mWarning: otilia no esta disponible el dx a la hora 3[0m
-[33mWarning: nuria no esta disponible el dx a la hora 3[0m
-[33mWarning: otilia no esta disponible el dx a la hora 4[0m
-[33mWarning: gemma no esta disponible el dx a la hora 4[0m
-[33mWarning: vero te hores separades el dx[0m
-[33mWarning: maria no esta disponible el dx a la hora 4[0m
-[33mWarning: nuria no esta disponible el dx a la hora 4[0m
-[33mWarning: adria no esta disponible el dx a la hora 4[0m
-[33mWarning: eloi te hores separades el dx[0m
+[33mWarning: vero es queda sense esmorzar el dx[0m
+Solució incomplerta 61/96 caselles, cost 45
+[33mWarning: otilia no esta disponible el dx a 3a hora[0m
+Solució incomplerta 62/96 caselles, cost 45
+[33mWarning: otilia no esta disponible el dx a 3a hora[0m
+[33mWarning: nuria no esta disponible el dx a 3a hora[0m
+Solució incomplerta 63/96 caselles, cost 45
+Solució incomplerta 64/96 caselles, cost 45
+[33mWarning: vero es queda sense esmorzar el dx[0m
+[33mWarning: nuria no esta disponible el dx a 3a hora[0m
+[33mWarning: adria no esta disponible el dx a 3a hora[0m
+Solució incomplerta 65/96 caselles, cost 45
+[33mWarning: eloi es queda sense esmorzar el dx[0m
+[33mWarning: carme te hores separades el dx[0m
+[33mWarning: rogerlf es queda sense esmorzar el dx[0m
+[33mWarning: nuria no esta disponible el dx a 3a hora[0m
+Solució incomplerta 66/96 caselles, cost 50
 [33mWarning: rogerlf te hores separades el dx[0m
-[33mWarning: otilia no esta disponible el dx a la hora 4[0m
-[33mWarning: nuria no esta disponible el dx a la hora 4[0m
-[33mWarning: monicag no esta disponible el dx a la hora 4[0m
-[33mWarning: A victor nomes li queden 0 forats per posar 1 hores[0m
-[33mWarning: A nuria nomes li queden 2 forats per posar 3 hores[0m
+[33mWarning: vero te hores separades el dx[0m
+Solució incomplerta 67/96 caselles, cost 50
+Solució incomplerta 68/96 caselles, cost 51
+[33mWarning: otilia no esta disponible el dx a 4a hora[0m
+Solució incomplerta 69/96 caselles, cost 52
+Solució incomplerta 70/96 caselles, cost 52
+[33mWarning: vero te hores separades el dx[0m
+[33mWarning: nuria no esta disponible el dx a 4a hora[0m
+Solució incomplerta 71/96 caselles, cost 53
+[33mWarning: eloi te hores separades el dx[0m
+[33mWarning: carme te hores separades el dx[0m
+[33mWarning: rogerlf te hores separades el dx[0m
+[33mWarning: nuria no esta disponible el dx a 4a hora[0m
+Solució incomplerta 72/96 caselles, cost 53
 [33mWarning: A roger nomes li queden 2 forats per posar 3 hores[0m
+[33mWarning: A monicag nomes li queden 2 forats per posar 3 hores[0m
+Solució incomplerta 72/96 caselles, cost 52
 [33mWarning: A adria nomes li queden 2 forats per posar 3 hores[0m
 [33mWarning: A monicag nomes li queden 2 forats per posar 4 hores[0m
-[33mWarning: A otilia nomes li queden 2 forats per posar 3 hores[0m
-[33mWarning: A monicag nomes li queden 2 forats per posar 3 hores[0m
+[33mWarning: A nuria nomes li queden 2 forats per posar 3 hores[0m
+Solució incomplerta 72/96 caselles, cost 52
+Solució incomplerta 72/96 caselles, cost 52
+Solució incomplerta 72/96 caselles, cost 52
+Solució incomplerta 72/96 caselles, cost 52
+Solució incomplerta 72/96 caselles, cost 52
+Solució incomplerta 72/96 caselles, cost 51
+Solució incomplerta 72/96 caselles, cost 51
+Solució incomplerta 72/96 caselles, cost 51
+Solució incomplerta 72/96 caselles, cost 51
+Solució incomplerta 72/96 caselles, cost 51
+Solució incomplerta 72/96 caselles, cost 51
+Solució incomplerta 72/96 caselles, cost 51
+Solució incomplerta 72/96 caselles, cost 51
+Solució incomplerta 72/96 caselles, cost 50
+Solució incomplerta 72/96 caselles, cost 50
+Solució incomplerta 72/96 caselles, cost 49
 [33mWarning: A roger nomes li queden 2 forats per posar 4 hores[0m
-[33mWarning: A sergi nomes li queden 0 forats per posar 1 hores[0m
-[33mWarning: pau no esta disponible el dj a la hora 1[0m
-[33mWarning: nuria no esta disponible el dj a la hora 1[0m
-[33mWarning: eloi no esta disponible el dj a la hora 1[0m
-[33mWarning: pau no esta disponible el dj a la hora 2[0m
-[33mWarning: nuria no esta disponible el dj a la hora 2[0m
-[33mWarning: adria no esta disponible el dj a la hora 2[0m
-[33mWarning: pau no esta disponible el dj a la hora 3[0m
-[33mWarning: erola no esta disponible el dj a la hora 3[0m
-[33mWarning: monicag no esta disponible el dj a la hora 3[0m
-[33mWarning: vero no esta disponible el dj a la hora 3[0m
-[33mWarning: nuria es queda sense esmorzar el dj[0m
-[33mWarning: adria es queda sense esmorzar el dj[0m
-[33mWarning: manel no esta disponible el dj a la hora 3[0m
-[33mWarning: nuria no esta disponible el dj a la hora 3[0m
-[33mWarning: adria no esta disponible el dj a la hora 3[0m
-[33mWarning: manel es queda sense esmorzar el dj[0m
-[33mWarning: otilia te hores separades el dj[0m
-[33mWarning: roger ja té 2 persones a la mateixa taula amb telefon a 3a hora del dj[0m
-lerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 48/96 caselles, cost 26
-Solució incomplerta 49/96 caselles, cost 33
-Solució incomplerta 50/96 caselles, cost 33
-Solució incomplerta 51/96 caselles, cost 33
-Solució incomplerta 52/96 caselles, cost 33
-Solució incomplerta 53/96 caselles, cost 33
-Solució incomplerta 54/96 caselles, cost 38
-Solució incomplerta 55/96 caselles, cost 38
-Solució incomplerta 56/96 caselles, cost 38
-Solució incomplerta 57/96 caselles, cost 38
-Solució incomplerta 58/96 caselles, cost 38
-Solució incomplerta 59/96 caselles, cost 39
-Solució incomplerta 60/96 caselles, cost 44
-Solució incomplerta 61/96 caselles, cost 44
-Solució incomplerta 62/96 caselles, cost 44
-Solució incomplerta 63/96 caselles, cost 44
-Solució incomplerta 64/96 caselles, cost 49
-Solució incomplerta 65/96 caselles, cost 49
-Solució incomplerta 66/96 caselles, cost 49
-Solució incomplerta 67/96 caselles, cost 49
-Solució incomplerta 68/96 caselles, cost 50
-Solució incomplerta 69/96 caselles, cost 51
-Solució incomplerta 70/96 caselles, cost 52
-Solució incomplerta 71/96 caselles, cost 57
-Solució incomplerta 71/96 caselles, cost 57
-Solució incomplerta 72/96 caselles, cost 62
-Solució incomplerta 72/96 caselles, cost 58
-Solució incomplerta 72/96 caselles, cost 58
-Solució incomplerta 72/96 caselles, cost 58
-Solució incomplerta 72/96 caselles, cost 58
-Solució incomplerta 72/96 caselles, cost 57
-Solució incomplerta 72/96 caselles, cost 57
-Solució incomplerta 72/96 caselles, cost 57
-Solució incomplerta 72/96 caselles, cost 57
-Solució incomplerta 72/96 caselles, cost 56
-Solució incomplerta 72/96 caselles, cost 56
-Solució incomplerta 72/96 caselles, cost 53
-Solució incomplerta 72/96 caselles, cost 52
-Solució incomplerta 72/96 caselles, cost 52
-Solució incomplerta 72/96 caselles, cost 52
-Solució incomplerta 72/96 caselles, cost 52
-Solució incomplerta 72/96 caselles, cost 51
-Solució incomplerta 72/96 caselles, cost 51
-Solució incomplerta 72/96 caselles, cost 51
-Solució incomplerta 72/96 caselles, cost 51
-Solució incomplerta 73/96 caselles, cost 59
-Solució incomplerta 74/96 caselles, cost 59
-Solució incomplerta 75/96 caselles, cost 59
-Solució incomplerta 76/96 caselles, cost 59
-Solució incomplerta 77/96 caselles, cost 59
-Solució incomplerta 78/96 caselles, cost 59
-Solució incomplerta 79/96 caselles, cost 59
-Solució incomplerta 80/96 caselles, cost 59
-Solució incomplerta 81/96 caselles, cost 59
-Solució incomplerta 82/96 caselles, cost 59
-Solució incomplerta 83/96 caselles, cost 59
-Solució incomplerta 84/96 caselles, cost 59
-Solució incomplerta 84/96 caselles, cost 59
-Solució incomplerta 84/96 caselles, cost 59
-Solució incomplerta 84/96 caselles, cost 59
-Solució incomplerta 84/96 caselles, cost 59
-Solució incomplerta 84/96 caselles, cost 59
-Solució incomplerta 84/96 caselles, cost 59
-Solució incomplerta 84/96 caselles, cost 59
-Solució incomplerta 85/96 caselles, cost 64
-Solució incomplerta 86/96 caselles, cost 64
-Solució incomplerta 87/96 caselles, cost 69
-Solució incomplerta 88/96 caselles, cost 69
-Solució incomplerta 88/96 caselles, cost 69
-Solució incomplerta 88/96 caselles, cost 69
-Solució incomplerta 88/96 caselles, cost 69
-Solució incomplerta 88/96 caselles, cost 59
-Solució incomplerta 88/96 caselles, cost 59
-Solució incomplerta 88/96 caselles, cost 59
-Solució incomplerta 88/96 caselles, cost 59
-Solució incomplerta 89/96 caselles, cost 70
-Solució incomplerta 90/96 caselles, cost 76
-Solució incompl[33mWarning: nuria te hores separades el dj[0m
+Solució incomplerta 72/96 caselles, cost 48
+Solució incomplerta 72/96 caselles, cost 48
+Solució incomplerta 72/96 caselles, cost 48
+Solució incomplerta 72/96 caselles, cost 47
+Solució incomplerta 72/96 caselles, cost 47
+Solució incomplerta 72/96 caselles, cost 47
+Solució incomplerta 72/96 caselles, cost 47
+Solució incomplerta 72/96 caselles, cost 46
+Solució incomplerta 72/96 caselles, cost 46
+Solució incomplerta 72/96 caselles, cost 46
+Solució incomplerta 72/96 caselles, cost 46
+Solució incomplerta 72/96 caselles, cost 46
+Solució incomplerta 72/96 caselles, cost 46
+Solució incomplerta 72/96 caselles, cost 46
+Solució incomplerta 72/96 caselles, cost 46
+Solució incomplerta 72/96 caselles, cost 46
+Solució incomplerta 72/96 caselles, cost 46
+Solució incomplerta 72/96 caselles, cost 46
+Solució incomplerta 72/96 caselles, cost 46
+Solució incomplerta 72/96 caselles, cost 46
+Solució incomplerta 72/96 caselles, cost 46
+Solució incomplerta 73/96 caselles, cost 60
+[33mWarning: victor no esta disponible el dj a 1a hora[0m
+Solució incomplerta 74/96 caselles, cost 65
+Solució incomplerta 75/96 caselles, cost 65
+Solució incomplerta 76/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+[33mWarning: eloi no esta disponible el dj a 1a hora[0m
+[33mWarning: carme no esta disponible el dj a 1a hora[0m
+[33mWarning: rogerlf no esta disponible el dj a 1a hora[0m
+[33mWarning: nuria no esta disponible el dj a 1a hora[0m
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 65
+Solució incomplerta 77/96 caselles, cost 60
+Solució incomplerta 77/96 caselles, cost 60
+Solució incomplerta 77/96 caselles, cost 60
+Solució incomplerta 77/96 caselles, cost 60
+Solució incomplerta 77/96 caselles, cost 60
+Solució incomplerta 77/96 caselles, cost 60
+Solució incomplerta 77/96 caselles, cost 60
+Solució incomplerta 77/96 caselles, cost 60
+Solució incomplerta 77/96 caselles, cost 60
+Solució incomplerta 77/96 caselles, cost 60
+Solució incomplerta 77/96 caselles, cost 60
+Solució incomplerta 77/96 caselles, cost 60
+Solució incomplerta 77/96 caselles, cost 60
+Solució incomplerta 77/96 caselles, cost 60
+Solució incomplerta 77/96 caselles, cost 60
+Solució incomplerta 78/96 caselles, cost 70
+Solució incomplerta 79/96 caselles, cost 71
+Solució incomplerta 80/96 caselles, cost 71
+Solució incomplerta 81/96 caselles, cost 71
+Solució incomplerta 82/96 caselles, cost 71
+Solució incomplerta 83/96 caselles, cost 72
+Solució incomplerta 84/96 caselles, cost 77
+[33mWarning: roger es queda sense esmorzar el dj[0m
+Solució incomplerta 85/96 caselles, cost 77
+Solució incomplerta 86/96 caselles, cost 77
+[33mWarning: monicag no esta disponible el dj a 3a hora[0m
+Solució incomplerta 87/96 caselles, cost 77
+[33mWarning: adria te hores separades el dj[0m
+Solució incomplerta 88/96 caselles, cost 82
+Solució incomplerta 89/96 caselles, cost 82
+Solució incomplerta 90/96 caselles, cost 82
 [33mWarning: roger te hores separades el dj[0m
-[33mWarning: otilia te hores separades el dj[0m
-[33mWarning: rogerlf no esta disponible el dj a la hora 4[0m
-[33mWarning: nuria no esta disponible el dj a la hora 4[0m
-[33mWarning: nuria te hores separades el dj[0m
-[33mWarning: Afegir roger suma masa cost: 96[0m
-[33mWarning: Afegir nuria suma masa cost: 96[0m
-[34;1m:: Massa estona en aquest camí[0m
+Solució incomplerta 90/96 caselles, cost 82
+Solució incomplerta 90/96 caselles, cost 82
+Solució incomplerta 90/96 caselles, cost 82
+Solució incomplerta 90/96 caselles, cost 77
+Solució incomplerta 90/96 caselles, cost 77
+Solució incomplerta 90/96 caselles, cost 77
+Solució incomplerta 90/96 caselles, cost 77
+Solució incomplerta 90/96 caselles, cost 77
+Solució incomplerta 90/96 caselles, cost 72
+Solució incomplerta 90/96 caselles, cost 72
+Solució incomplerta 90/96 caselles, cost 72
+Solució incomplerta 90/96 caselles, cost 72
+Solució incomplerta 90/96 caselles, cost 72
+Solució incomplerta 90/96 caselles, cost 72
+Solució incomplerta 90/96 caselles, cost 72
+Solució incomplerta 90/96 caselles, cost 72
+Solució incomplerta 90/96 caselles, cost 71
+Solució incomplerta 90/96 caselles, cost 71
+Solució incomplerta 91/96 caselles, cost 82
+[33mWarning: monicag te hores separades el dj[0m
+Solució incomplerta 91/96 caselles, cost 78
+Solució incomplerta 91/96 caselles, cost 77
+Solució incomplerta 91/96 caselles, cost 77
+Solució incomplerta 91/96 caselles, cost 73
+Solució incomplerta 91/96 caselles, cost 72
+Solució incomplerta 92/96 caselles, cost 83
+Solució incomplerta 93/96 caselles, cost 84
+[33mWarning: adria te hores separades el dj[0m
+Solució incomplerta 93/96 caselles, cost 84
+Solució incomplerta 93/96 caselles, cost 79
+Solució incomplerta 93/96 caselles, cost 79
+Solució incomplerta 93/96 caselles, cost 79
+Solució incomplerta 94/96 caselles, cost 85
+Solució incomplerta 95/96 caselles, cost 86
+Solució trobada amb cost 87.
+[33mWarning: nuria no esta disponible el dj a 3a hora[0m
+Solució trobada amb cost 87.
+[33mWarning: nuria no esta disponible el dj a 4a hora[0m
+Solució trobada amb cost 87.
+Solució trobada amb cost 87.
+Solució trobada amb cost 87.
+Solució trobada amb cost 87.
+[33mWarning: Afegir eloi suma masa cost: 92[0m
+Solució trobada amb cost 82.
 [34;1m:: Millor graella grabada a 'graella-telefons-2019-10-28.html'[0m
 [34;1m:: Millor graella grabada a 'graella-telefons-2019-10-28.yaml'[0m
-erta 91/96 caselles, cost 76
-Solució incomplerta 92/96 caselles, cost 82
-Solució incomplerta 93/96 caselles, cost 83
-Solució incomplerta 94/96 caselles, cost 84
-Solució incomplerta 94/96 caselles, cost 79
-Solució incomplerta 94/96 caselles, cost 79
-Solució incomplerta 94/96 caselles, cost 79
-Solució incomplerta 95/96 caselles, cost 90
-Solució incomplerta 95/96 caselles, cost 90
-Solució incomplerta 95/96 caselles, cost 90
-Solució incomplerta 95/96 caselles, cost 90
-Solució incomplerta 95/96 caselles, cost 85
-Solució incomplerta 95/96 caselles, cost 85
-Solució incomplerta 95/96 caselles, cost 85
-Solució incomplerta 95/96 caselles, cost 85
-Solució incomplerta 95/96 caselles, cost 85
-Solució incomplerta 95/96 caselles, cost 85
-Solució incomplerta 95/96 caselles, cost 85
-Solució incomplerta 95/96 caselles, cost 85
-Solució incomplerta 95/96 caselles, cost 80
-Solució incomplerta 95/96 caselles, cost 80
-Solució incomplerta 95/96 caselles, cost 80
-Solució incomplerta 95/96 caselles, cost 80
-Solució trobada amb cost 96.
-Solució trobada amb cost 96.
-Solució trobada amb cost 91.
-Solució trobada amb cost 91.
-Solució trobada amb cost 91.
-Solució trobada amb cost 91.
-Solució trobada amb cost 91.
-Solució trobada amb cost 91.
-Solució trobada amb cost 86.
