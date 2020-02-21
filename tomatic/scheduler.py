@@ -63,7 +63,7 @@ def baixaPersones(config):
     r.raise_for_status()
     from yamlns import namespace as ns
     persons = ns.loads(r.content)
-    persons.persons.dump('persons.yaml')
+    persons.persons.dump(config.personsfile)
     
 
 def baixaIndisponibilitatsTomatic(config):
@@ -195,7 +195,7 @@ class Backtracker(object):
         # Dimensional variables
         self.ntelefons = config.nTelefons                               # Phone slots
         self.hours = self.llegeixHores()                                # Turns (1st, 2nd, 3rd or 4th)
-        self.dies = config.diesCerca                                    # Days at week (mon, tues, ...)
+        self.dies = config.diesCerca
 
         errorDays = set(self.dies) - set(config.diesVisualitzacio)
         if errorDays:
@@ -897,7 +897,13 @@ def parseArgs():
     parser.add_argument(
         '--config-file',
         default='config.yaml',
-        help="fitxer de configuració pincipal",
+        help="fitxer de configuració principal",
+    )
+
+    parser.add_argument(
+        '--personsfile',
+        default='persons.yaml',
+        help="fitxer de configuració de les persones",
     )
 
     parser.add_argument(
@@ -926,9 +932,8 @@ def main():
     if not args.keep:
         baixaPersones(config)
 
-    personsPath = Path('persons.yaml')
-    if personsPath.exists():
-        config.update(ns.load(str(personsPath)))
+    if args.personsfile and Path(args.personsfile).exists():
+        config.update(ns.load(args.personsfile))
 
     if args.date is not None:
         # take the monday of the week including that date
