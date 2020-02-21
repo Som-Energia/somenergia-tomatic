@@ -929,6 +929,9 @@ def main():
         error("Configuració incorrecta")
         raise
 
+    if args.personsfile:
+        config.personsfile = args.personsfile
+
     if not args.keep:
         baixaPersones(config)
 
