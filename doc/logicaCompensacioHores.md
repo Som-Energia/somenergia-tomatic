@@ -36,10 +36,9 @@
         - Compensem torns de deutores amb torns de creditores
         - Ordre: creditores per ordre de crèdit i deutores per ordre de deute i sobre/infracàrrega, un a cada i repetim fins que no poguem compensar ningú més.
 
-1. La diferencia entre càrrega final i la ponderada
-
-    - El que no es pugui fer de la càrrega ponderada perque no hi ha capacitat, es posa com a deute a la bossa d'hores
-    - S'agafarà aquesta càrrega com a referència per dirimir els torns que es deuen per la graella.
+1. **Sobrecàrrega:** Torns que cadascú ha fet de més respecta la càrrega ponderada
+    - De la càrrega final cal restar la ponderada
+    - Es el que caldria sumar a la bossa d'hores de dèbit
 
 1. **Càrrega discriminada:**
     - Un cop repartida, si estem fent discriminació, cal distribuir la càrrega en linies
