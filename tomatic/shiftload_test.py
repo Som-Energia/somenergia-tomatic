@@ -25,7 +25,6 @@ class ShiftLoadTest(unittest.TestCase):
     def test_workingDays(self):
         workingDays = shiftload.workingDays(
             person='alice',
-            holidays=[],
             daysoff=[],
             leaves=[],
         )
@@ -34,7 +33,6 @@ class ShiftLoadTest(unittest.TestCase):
     def test_workingDays_withLeave(self):
         workingDays = shiftload.workingDays(
             person='alice',
-            holidays=[],
             daysoff=[],
             leaves=['alice'],
         )
@@ -43,7 +41,6 @@ class ShiftLoadTest(unittest.TestCase):
     def test_workingDays_withOthersLeave(self):
         workingDays = shiftload.workingDays(
             person='alice',
-            holidays=[],
             daysoff=[],
             leaves=['bob'],
         )
@@ -52,7 +49,6 @@ class ShiftLoadTest(unittest.TestCase):
     def test_workingDays_withOneDayoff(self):
         workingDays = shiftload.workingDays(
             person='alice',
-            holidays=[],
             daysoff=[ns(
                 optional = False,
                 person = 'alice',
@@ -67,7 +63,6 @@ class ShiftLoadTest(unittest.TestCase):
     def test_workingDays_withOneDayoffFromSomeOneElse(self):
         workingDays = shiftload.workingDays(
             person='alice',
-            holidays=[],
             daysoff=[
                 ns(
                     optional = False,
@@ -82,7 +77,6 @@ class ShiftLoadTest(unittest.TestCase):
 
     def test_workingDays_withManyDaysOff(self):
         workingDays = shiftload.workingDays(
-            holidays=[],
             person='alice',
             daysoff=[
                 ns(
