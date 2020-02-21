@@ -25,6 +25,7 @@ class ShiftLoadTest(unittest.TestCase):
     def test_workingDays(self):
         workingDays = shiftload.workingDays(
             person='alice',
+            businessDays=['dl', 'dm', 'dx', 'dj', 'dv'],
             daysoff=[],
             leaves=[],
         )
@@ -33,6 +34,7 @@ class ShiftLoadTest(unittest.TestCase):
     def test_workingDays_withLeave(self):
         workingDays = shiftload.workingDays(
             person='alice',
+            businessDays=['dl', 'dm', 'dx', 'dj', 'dv'],
             daysoff=[],
             leaves=['alice'],
         )
@@ -41,6 +43,7 @@ class ShiftLoadTest(unittest.TestCase):
     def test_workingDays_withOthersLeave(self):
         workingDays = shiftload.workingDays(
             person='alice',
+            businessDays=['dl', 'dm', 'dx', 'dj', 'dv'],
             daysoff=[],
             leaves=['bob'],
         )
@@ -49,6 +52,7 @@ class ShiftLoadTest(unittest.TestCase):
     def test_workingDays_withOneDayoff(self):
         workingDays = shiftload.workingDays(
             person='alice',
+            businessDays=['dl', 'dm', 'dx', 'dj', 'dv'],
             daysoff=[ns(
                 optional = False,
                 person = 'alice',
@@ -63,6 +67,7 @@ class ShiftLoadTest(unittest.TestCase):
     def test_workingDays_withOneDayoffFromSomeOneElse(self):
         workingDays = shiftload.workingDays(
             person='alice',
+            businessDays=['dl', 'dm', 'dx', 'dj', 'dv'],
             daysoff=[
                 ns(
                     optional = False,
@@ -78,6 +83,7 @@ class ShiftLoadTest(unittest.TestCase):
     def test_workingDays_withManyDaysOff(self):
         workingDays = shiftload.workingDays(
             person='alice',
+            businessDays=['dl', 'dm', 'dx', 'dj', 'dv'],
             daysoff=[
                 ns(
                     optional = False,
@@ -100,6 +106,7 @@ class ShiftLoadTest(unittest.TestCase):
     def test_workingDays_withManyDaysOff(self):
         workingDays = shiftload.workingDays(
             person='alice',
+            businessDays=['dl', 'dm', 'dx', 'dj', 'dv'],
             daysoff=[
                 ns(
                     optional = False,

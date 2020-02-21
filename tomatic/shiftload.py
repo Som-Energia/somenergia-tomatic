@@ -12,7 +12,7 @@ import random
 def ponderatedLoad(idealLoad, holidays, daysoff, leaves):
     return idealLoad 
 
-def workingDays(person, daysoff, leaves, holidays=[]):
+def workingDays(person, businessDays, daysoff, leaves):
     if person in leaves: return 0
     ndaysoff = sum(day.person == person for day in daysoff)
     return 5-ndaysoff
