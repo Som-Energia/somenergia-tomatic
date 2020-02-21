@@ -34,7 +34,7 @@ def workingDays(person, businessDays, daysoff, leaves):
     return len(businessDays)-ndaysoff
 
 def dayCapacity(busy, maxPerDay):
-    return maxPerDay if '0' in busy else 0
+    return maxPerDay if '1' not in busy else 0
 
 
 
