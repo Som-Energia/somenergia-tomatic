@@ -147,8 +147,8 @@ timetable:
 colors:
   marc: fbe8bc
   eduard: d8b9c5
-  pere: f200ff
-  david: ffb300
+  pere: ddeeff
+  david: ffb500
   carles: c98e98
   marta: eb9481
   monica: 7fada0
@@ -178,15 +178,14 @@ colors:
   albert: f4f4f4
   oriol: a52513
   fran: 621bf1
-  miguelanxo: 00b986
+  juanpe: ddeeff
   belen: 2892ff
   fcasadella: 10ee30
-  gijsbert: 00adff
+  salome: 00adff
   nuri: 17ef6f
   fcots: ff5a60
   annarodon: 009e7d
   alberto: 0074f0
-  juanpe: ddeeff
   olga: ddeeff
   mar: 00ffff
   joanm: 2d93f2
@@ -216,8 +215,16 @@ colors:
   javi: 79eeff
   albertsimo: cc00ff
   clara: 602fa7
-  jaume: 5afc9c
+  jaume: 74eb79
   cesar: ffffee
+  davids: d8863d
+  hermigg: ddbdf1
+  cire: 994a00
+  francesc: ddeeff
+  berta: ddeeff
+  yolanda: ddeeff
+  joel: 00a28a
+  polmonso: 76ff91
 extensions:
   marta: '3040'
   monica: '3041'
@@ -229,7 +236,7 @@ extensions:
   judit: '3047'
   tania: '3183'
   carles: '3045'
-  pere: '3052'
+  pere: '3062'
   fran: '3008'
   david: '3054'
   silvia: '3055'
@@ -250,15 +257,14 @@ extensions:
   viktu: '3006'
   albert: '3038'
   oriol: '3089'
-  miguelanxo: '3194'
+  juanpe: '3194'
   belen: '3385'
   fcasadella: '3002'
-  gijsbert: '3003'
+  salome: '3003'
   nuri: '3889'
   fcots: '3015'
   annarodon: '3197'
   alberto: '3011'
-  juanpe: '0000'
   olga: '3088'
   mar: '3087'
   joanm: '3086'
@@ -288,6 +294,14 @@ extensions:
   albertsimo: '3013'
   clara: '3014'
   jaume: '3196'
+  davids: '4003'
+  hermigg: '3052'
+  cire: '3065'
+  berta: '3060'
+  yolanda: '3061'
+  joel: '3063'
+  polmonso: '2912'
+  francesc: '3017'
 names:
   silvia: Sílvia
   monica: Mònica
@@ -299,12 +313,11 @@ names:
   ningu: '-'
   joan: Joan
   carol: Càrol
-  miguelanxo: MiguelAnxo
+  juanpe: Juan Pe
   belen: Belén
   fcasadella: FrancescCasadellà
   fcots: FrancescCots
   annarodon: AnnaRodon
-  juanpe: Juanpe
   joanm: JoanM
   annab: Anna B
   eloi: 'Eloi '
@@ -312,7 +325,7 @@ names:
   jordi: JordiP
   xavi: XaviDolz
   david: David G.
-  gijsbert: Salomé
+  salome: Salomé
   rogerlf: RogerLF
   guifre: Guifré
   merce: Mercè
@@ -325,11 +338,21 @@ names:
   contestado: '>>>CONTESTADOR<<<'
   albertsimo: AlbertSi
   jaume: JaumeA
+  davids: DavidS
+  hermigg: Hermi
+  polmonso: PolMonso
+  francesc: Cesc
 penalties:
 - - 5
-  - carme te 1 persones a la mateixa taula amb telefon a 2a hora del dl
+  - roger té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dl
 - - 5
-  - carme te 1 persones a la mateixa taula amb telefon a 2a hora del dx
+  - vero té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dl
 - - 5
-  - carme te 1 persones a la mateixa taula amb telefon a 2a hora del dv
-cost: 15
+  - roger té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dx
+- - 5
+  - vero té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dx
+- - 5
+  - roger té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dv
+- - 5
+  - vero té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dv
+cost: 30

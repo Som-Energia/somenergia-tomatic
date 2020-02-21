@@ -1,151 +1,207 @@
 [34;1m:: Carregant configuració b2bdata/inputs/config-3days6lines.yaml...[0m
 [34;1m:: Muntant el solucionador...[0m
+[33mWarning: T'has deixat dies laborables: ['dm', 'dj'][0m
+[33mWarning: 'hermigg' es al grup 'casademont', però no es al fitxer de càrrega[0m
+[33mWarning: 'pere' es al grup 'casademont', però no es al fitxer de càrrega[0m
+[33mWarning: 'francesc' es al grup 'balneari', però no es al fitxer de càrrega[0m
+[33mWarning: 'berta' es al grup 'balneari', però no es al fitxer de càrrega[0m
+[33mWarning: 'joel' es al grup 'balneari', però no es al fitxer de càrrega[0m
+[33mWarning: 'cire' es al grup 'balneari', però no es al fitxer de càrrega[0m
+[33mWarning: 'yolanda' es al grup 'balneari', però no es al fitxer de càrrega[0m
+[33mWarning: 'javi' es al grup 'balneari', però no es al fitxer de càrrega[0m
+[33mWarning: 'nuri' es al grup 'lamina', però no es al fitxer de càrrega[0m
+[33mWarning: 'xavi' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'benjami' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'marjene' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'jordi' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'davidr' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'juanpe' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'joana' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'polmonso' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'david' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'alberto' es al grup 'oasis', però no es al fitxer de càrrega[0m
+[33mWarning: 'clara' es al grup 'zulo', però no es al fitxer de càrrega[0m
+[33mWarning: 'fcasadella' es al grup 'zulo', però no es al fitxer de càrrega[0m
+[33mWarning: 'annarodon' es al grup 'zulo', però no es al fitxer de càrrega[0m
+[33mWarning: 'albertsimo' es al grup 'zulo', però no es al fitxer de càrrega[0m
+[33mWarning: 'fran' es al grup 'zuloit', però no es al fitxer de càrrega[0m
+[33mWarning: 'oriol' es al grup 'zuloit', però no es al fitxer de càrrega[0m
+[33mWarning: 'marite' es al grup 'zuloit', però no es al fitxer de càrrega[0m
+[33mWarning: 'samuel' es al grup 'zuloit', però no es al fitxer de càrrega[0m
+[33mWarning: 'davids' es al grup 'zuloit', però no es al fitxer de càrrega[0m
+[33mWarning: 'belen' es al grup 'pendent', però no es al fitxer de càrrega[0m
+[33mWarning: 'fcots' es al grup 'pendent', però no es al fitxer de càrrega[0m
+[33mWarning: 'jaume' es al grup 'pendent', però no es al fitxer de càrrega[0m
+[33mWarning: 'alex' es al grup 'pendent', però no es al fitxer de càrrega[0m
+[33mWarning: 'viktu' es al grup 'pendent', però no es al fitxer de càrrega[0m
 [34;1m:: Generant horari...[0m
 Solució incomplerta 0/72 caselles, cost 0
+[33mWarning: aram no esta disponible el dl a 1a hora[0m
+[33mWarning: albertg no esta disponible el dl a 1a hora[0m
+[33mWarning: gemma no esta disponible el dl a 1a hora[0m
 Solució incomplerta 1/72 caselles, cost 0
 Solució incomplerta 2/72 caselles, cost 0
+[33mWarning: eloi no esta disponible el dl a 1a hora[0m
+[33mWarning: rogerlf no esta disponible el dl a 1a hora[0m
+[33mWarning: otilia no esta disponible el dl a 1a hora[0m
 Solució incomplerta 3/72 caselles, cost 0
-Solució incomplerta 4/72 caselles, cost 0
-Solució incomplerta 5/72 caselles, cost 0
-Solució incomplerta 6/72 caselles, cost 0
-[33mWarning: adria no esta disponible el dl a 2a hora[0m
-Solució incomplerta 7/72 caselles, cost 0
+[33mWarning: joanm no esta disponible el dl a 1a hora[0m
+[33mWarning: annab no esta disponible el dl a 1a hora[0m
+[33mWarning: olga no esta disponible el dl a 1a hora[0m
+Solució incomplerta 4/72 caselles, cost 5
+[33mWarning: albert no esta disponible el dl a 1a hora[0m
+Solució incomplerta 5/72 caselles, cost 5
+[33mWarning: joanb no esta disponible el dl a 1a hora[0m
+[33mWarning: maite no esta disponible el dl a 1a hora[0m
+Solució incomplerta 6/72 caselles, cost 5
+[33mWarning: aram no esta disponible el dl a 2a hora[0m
+Solució incomplerta 7/72 caselles, cost 5
 [33mWarning: guifre no esta disponible el dl a 2a hora[0m
 Solució incomplerta 8/72 caselles, cost 5
-[33mWarning: nuria no esta disponible el dl a 2a hora[0m
+[33mWarning: eloi no esta disponible el dl a 2a hora[0m
+[33mWarning: rogerlf no esta disponible el dl a 2a hora[0m
 Solució incomplerta 9/72 caselles, cost 5
-[33mWarning: roger no esta disponible el dl a 2a hora[0m
+[33mWarning: joanm no esta disponible el dl a 2a hora[0m
+[33mWarning: annab no esta disponible el dl a 2a hora[0m
 Solució incomplerta 10/72 caselles, cost 5
+[33mWarning: albert no esta disponible el dl a 2a hora[0m
 [33mWarning: vane no esta disponible el dl a 2a hora[0m
-Solució incomplerta 11/72 caselles, cost 5
-[33mWarning: maria no esta disponible el dl a 2a hora[0m
-Solució incomplerta 12/72 caselles, cost 5
-[33mWarning: adria no esta disponible el dl a 3a hora[0m
-[33mWarning: albertg no esta disponible el dl a 3a hora[0m
-Solució incomplerta 13/72 caselles, cost 5
+[33mWarning: carol no esta disponible el dl a 2a hora[0m
+Solució incomplerta 11/72 caselles, cost 10
+Solució incomplerta 12/72 caselles, cost 10
+Solució incomplerta 13/72 caselles, cost 10
 [33mWarning: guifre no esta disponible el dl a 3a hora[0m
 [33mWarning: carme no esta disponible el dl a 3a hora[0m
-Solució incomplerta 14/72 caselles, cost 5
-[33mWarning: nuria no esta disponible el dl a 3a hora[0m
-[33mWarning: otilia no esta disponible el dl a 3a hora[0m
-Solució incomplerta 15/72 caselles, cost 5
-[33mWarning: roger no esta disponible el dl a 3a hora[0m
-[33mWarning: olga no esta disponible el dl a 3a hora[0m
-Solució incomplerta 16/72 caselles, cost 5
-[33mWarning: vane no esta disponible el dl a 3a hora[0m
-[33mWarning: vero no esta disponible el dl a 3a hora[0m
-Solució incomplerta 17/72 caselles, cost 5
-[33mWarning: maria no esta disponible el dl a 3a hora[0m
+[33mWarning: monicag no esta disponible el dl a 3a hora[0m
+Solució incomplerta 14/72 caselles, cost 10
+[33mWarning: eloi no esta disponible el dl a 3a hora[0m
+Solució incomplerta 15/72 caselles, cost 10
+[33mWarning: joanm no esta disponible el dl a 3a hora[0m
+Solució incomplerta 16/72 caselles, cost 10
+Solució incomplerta 17/72 caselles, cost 10
 [33mWarning: joanb no esta disponible el dl a 3a hora[0m
-Solució incomplerta 18/72 caselles, cost 5
-[33mWarning: adria no esta disponible el dl a 4a hora[0m
-[33mWarning: albertg no esta disponible el dl a 4a hora[0m
+Solució incomplerta 18/72 caselles, cost 10
 [33mWarning: aram no esta disponible el dl a 4a hora[0m
-Solució incomplerta 19/72 caselles, cost 5
+[33mWarning: albertg no esta disponible el dl a 4a hora[0m
+Solució incomplerta 19/72 caselles, cost 10
 [33mWarning: guifre no esta disponible el dl a 4a hora[0m
 [33mWarning: carme no esta disponible el dl a 4a hora[0m
-[33mWarning: merce no esta disponible el dl a 4a hora[0m
-Solució incomplerta 20/72 caselles, cost 5
-[33mWarning: nuria no esta disponible el dl a 4a hora[0m
-[33mWarning: otilia no esta disponible el dl a 4a hora[0m
-[33mWarning: rogerlf no esta disponible el dl a 4a hora[0m
-Solució incomplerta 21/72 caselles, cost 5
-[33mWarning: roger no esta disponible el dl a 4a hora[0m
-[33mWarning: olga no esta disponible el dl a 4a hora[0m
-[33mWarning: annab no esta disponible el dl a 4a hora[0m
-Solució incomplerta 22/72 caselles, cost 5
-[33mWarning: vane no esta disponible el dl a 4a hora[0m
-[33mWarning: vero no esta disponible el dl a 4a hora[0m
+Solució incomplerta 20/72 caselles, cost 10
+Solució incomplerta 21/72 caselles, cost 10
+Solució incomplerta 22/72 caselles, cost 10
 [33mWarning: albert no esta disponible el dl a 4a hora[0m
-Solució incomplerta 23/72 caselles, cost 5
-[33mWarning: maria no esta disponible el dl a 4a hora[0m
+[33mWarning: vane no esta disponible el dl a 4a hora[0m
+Solució incomplerta 23/72 caselles, cost 10
 [33mWarning: joanb no esta disponible el dl a 4a hora[0m
 [33mWarning: maite no esta disponible el dl a 4a hora[0m
-Solució incomplerta 24/72 caselles, cost 5
-Solució incomplerta 25/72 caselles, cost 5
-Solució incomplerta 26/72 caselles, cost 5
-Solució incomplerta 27/72 caselles, cost 5
-Solució incomplerta 28/72 caselles, cost 5
-Solució incomplerta 29/72 caselles, cost 5
-Solució incomplerta 30/72 caselles, cost 5
-[33mWarning: adria no esta disponible el dx a 2a hora[0m
-Solució incomplerta 31/72 caselles, cost 5
+[33mWarning: maria no esta disponible el dl a 4a hora[0m
+Solució incomplerta 24/72 caselles, cost 10
+[33mWarning: aram no esta disponible el dx a 1a hora[0m
+[33mWarning: albertg no esta disponible el dx a 1a hora[0m
+[33mWarning: gemma no esta disponible el dx a 1a hora[0m
+Solució incomplerta 25/72 caselles, cost 10
+Solució incomplerta 26/72 caselles, cost 10
+[33mWarning: eloi no esta disponible el dx a 1a hora[0m
+[33mWarning: rogerlf no esta disponible el dx a 1a hora[0m
+[33mWarning: otilia no esta disponible el dx a 1a hora[0m
+Solució incomplerta 27/72 caselles, cost 10
+[33mWarning: joanm no esta disponible el dx a 1a hora[0m
+[33mWarning: annab no esta disponible el dx a 1a hora[0m
+[33mWarning: olga no esta disponible el dx a 1a hora[0m
+Solució incomplerta 28/72 caselles, cost 15
+[33mWarning: albert no esta disponible el dx a 1a hora[0m
+Solució incomplerta 29/72 caselles, cost 15
+[33mWarning: joanb no esta disponible el dx a 1a hora[0m
+[33mWarning: maite no esta disponible el dx a 1a hora[0m
+Solució incomplerta 30/72 caselles, cost 15
+[33mWarning: aram no esta disponible el dx a 2a hora[0m
+Solució incomplerta 31/72 caselles, cost 15
 [33mWarning: guifre no esta disponible el dx a 2a hora[0m
-Solució incomplerta 32/72 caselles, cost 10
-[33mWarning: nuria no esta disponible el dx a 2a hora[0m
-Solució incomplerta 33/72 caselles, cost 10
-[33mWarning: roger no esta disponible el dx a 2a hora[0m
-Solució incomplerta 34/72 caselles, cost 10
+Solució incomplerta 32/72 caselles, cost 15
+[33mWarning: eloi no esta disponible el dx a 2a hora[0m
+[33mWarning: rogerlf no esta disponible el dx a 2a hora[0m
+Solució incomplerta 33/72 caselles, cost 15
+[33mWarning: joanm no esta disponible el dx a 2a hora[0m
+[33mWarning: annab no esta disponible el dx a 2a hora[0m
+Solució incomplerta 34/72 caselles, cost 15
+[33mWarning: albert no esta disponible el dx a 2a hora[0m
 [33mWarning: vane no esta disponible el dx a 2a hora[0m
-Solució incomplerta 35/72 caselles, cost 10
-[33mWarning: maria no esta disponible el dx a 2a hora[0m
-Solució incomplerta 36/72 caselles, cost 10
-[33mWarning: adria no esta disponible el dx a 3a hora[0m
-[33mWarning: albertg no esta disponible el dx a 3a hora[0m
-Solució incomplerta 37/72 caselles, cost 10
+[33mWarning: carol no esta disponible el dx a 2a hora[0m
+Solució incomplerta 35/72 caselles, cost 20
+Solució incomplerta 36/72 caselles, cost 20
+Solució incomplerta 37/72 caselles, cost 20
 [33mWarning: guifre no esta disponible el dx a 3a hora[0m
 [33mWarning: carme no esta disponible el dx a 3a hora[0m
-Solució incomplerta 38/72 caselles, cost 10
-[33mWarning: nuria no esta disponible el dx a 3a hora[0m
-[33mWarning: otilia no esta disponible el dx a 3a hora[0m
-Solució incomplerta 39/72 caselles, cost 10
-[33mWarning: roger no esta disponible el dx a 3a hora[0m
-[33mWarning: olga no esta disponible el dx a 3a hora[0m
-Solució incomplerta 40/72 caselles, cost 10
-[33mWarning: vane no esta disponible el dx a 3a hora[0m
-[33mWarning: vero no esta disponible el dx a 3a hora[0m
-Solució incomplerta 41/72 caselles, cost 10
-[33mWarning: maria no esta disponible el dx a 3a hora[0m
+[33mWarning: monicag no esta disponible el dx a 3a hora[0m
+Solució incomplerta 38/72 caselles, cost 20
+[33mWarning: eloi no esta disponible el dx a 3a hora[0m
+Solució incomplerta 39/72 caselles, cost 20
+[33mWarning: joanm no esta disponible el dx a 3a hora[0m
+Solució incomplerta 40/72 caselles, cost 20
+Solució incomplerta 41/72 caselles, cost 20
 [33mWarning: joanb no esta disponible el dx a 3a hora[0m
-Solució incomplerta 42/72 caselles, cost 10
-[33mWarning: adria no esta disponible el dx a 4a hora[0m
-[33mWarning: albertg no esta disponible el dx a 4a hora[0m
+Solució incomplerta 42/72 caselles, cost 20
 [33mWarning: aram no esta disponible el dx a 4a hora[0m
-Solució incomplerta 43/72 caselles, cost 10
+[33mWarning: albertg no esta disponible el dx a 4a hora[0m
+Solució incomplerta 43/72 caselles, cost 20
 [33mWarning: guifre no esta disponible el dx a 4a hora[0m
 [33mWarning: carme no esta disponible el dx a 4a hora[0m
-[33mWarning: merce no esta disponible el dx a 4a hora[0m
-Solució incomplerta 44/72 caselles, cost 10
-[33mWarning: nuria no esta disponible el dx a 4a hora[0m
-[33mWarning: otilia no esta disponible el dx a 4a hora[0m
-[33mWarning: rogerlf no esta disponible el dx a 4a hora[0m
-Solució incomplerta 45/72 caselles, cost 10
-[33mWarning: roger no esta disponible el dx a 4a hora[0m
-[33mWarning: olga no esta disponible el dx a 4a hora[0m
-[33mWarning: annab no esta disponible el dx a 4a hora[0m
-Solució incomplerta 46/72 caselles, cost 10
-[33mWarning: vane no esta disponible el dx a 4a hora[0m
-[33mWarning: vero no esta disponible el dx a 4a hora[0m
+Solució incomplerta 44/72 caselles, cost 20
+Solució incomplerta 45/72 caselles, cost 20
+Solució incomplerta 46/72 caselles, cost 20
 [33mWarning: albert no esta disponible el dx a 4a hora[0m
-Solució incomplerta 47/72 caselles, cost 10
-[33mWarning: maria no esta disponible el dx a 4a hora[0m
+[33mWarning: vane no esta disponible el dx a 4a hora[0m
+Solució incomplerta 47/72 caselles, cost 20
 [33mWarning: joanb no esta disponible el dx a 4a hora[0m
 [33mWarning: maite no esta disponible el dx a 4a hora[0m
-Solució incomplerta 48/72 caselles, cost 10
-Solució incomplerta 49/72 caselles, cost 10
-Solució incomplerta 50/72 caselles, cost 10
-Solució incomplerta 51/72 caselles, cost 10
-Solució incomplerta 52/72 caselles, cost 10
-Solució incomplerta 53/72 caselles, cost 10
-Solució incomplerta 54/72 caselles, cost 10
-Solució incomplerta 55/72 caselles, cost 10
-Solució incomplerta 56/72 caselles, cost 15
-Solució incomplerta 57/72 caselles, cost 15
-Solució incomplerta 58/72 caselles, cost 15
-Solució incomplerta 59/72 caselles, cost 15
-Solució incomplerta 60/72 caselles, cost 15
-Solució incomplerta 61/72 caselles, cost 15
-Solució incomplerta 62/72 caselles, cost 15
-Solució incomplerta 63/72 caselles, cost 15
-Solució incomplerta 64/72 caselles, cost 15
-Solució incomplerta 65/72 caselles, cost 15
-Solució incomplerta 66/72 caselles, cost 15
-Solució incomplerta 67/72 caselles, cost 15
-Solució incomplerta 68/72 caselles, cost 15
-Solució incomplerta 69/72 caselles, cost 15
-Solució incomplerta 70/72 caselles, cost 15
-Solució incomplerta 71/72 caselles, cost 15
-Solució trobada amb cost 15.
+[33mWarning: maria no esta disponible el dx a 4a hora[0m
+Solució incomplerta 48/72 caselles, cost 20
+[33mWarning: aram no esta disponible el dv a 1a hora[0m
+[33mWarning: albertg no esta disponible el dv a 1a hora[0m
+[33mWarning: gemma no esta disponible el dv a 1a hora[0m
+Solució incomplerta 49/72 caselles, cost 20
+Solució incomplerta 50/72 caselles, cost 20
+[33mWarning: eloi no esta disponible el dv a 1a hora[0m
+[33mWarning: rogerlf no esta disponible el dv a 1a hora[0m
+[33mWarning: otilia no esta disponible el dv a 1a hora[0m
+Solució incomplerta 51/72 caselles, cost 20
+[33mWarning: joanm no esta disponible el dv a 1a hora[0m
+[33mWarning: annab no esta disponible el dv a 1a hora[0m
+[33mWarning: olga no esta disponible el dv a 1a hora[0m
+Solució incomplerta 52/72 caselles, cost 25
+[33mWarning: albert no esta disponible el dv a 1a hora[0m
+Solució incomplerta 53/72 caselles, cost 25
+[33mWarning: joanb no esta disponible el dv a 1a hora[0m
+[33mWarning: maite no esta disponible el dv a 1a hora[0m
+Solució incomplerta 54/72 caselles, cost 25
+[33mWarning: aram no esta disponible el dv a 2a hora[0m
+Solució incomplerta 55/72 caselles, cost 25
+Solució incomplerta 56/72 caselles, cost 25
+[33mWarning: eloi no esta disponible el dv a 2a hora[0m
+[33mWarning: rogerlf no esta disponible el dv a 2a hora[0m
+Solució incomplerta 57/72 caselles, cost 25
+[33mWarning: joanm no esta disponible el dv a 2a hora[0m
+[33mWarning: annab no esta disponible el dv a 2a hora[0m
+Solució incomplerta 58/72 caselles, cost 25
+[33mWarning: albert no esta disponible el dv a 2a hora[0m
+[33mWarning: carol no esta disponible el dv a 2a hora[0m
+Solució incomplerta 59/72 caselles, cost 30
+Solució incomplerta 60/72 caselles, cost 30
+Solució incomplerta 61/72 caselles, cost 30
+[33mWarning: monicag no esta disponible el dv a 3a hora[0m
+Solució incomplerta 62/72 caselles, cost 30
+[33mWarning: eloi no esta disponible el dv a 3a hora[0m
+Solució incomplerta 63/72 caselles, cost 30
+[33mWarning: joanm no esta disponible el dv a 3a hora[0m
+Solució incomplerta 64/72 caselles, cost 30
+Solució incomplerta 65/72 caselles, cost 30
+Solució incomplerta 66/72 caselles, cost 30
+Solució incomplerta 67/72 caselles, cost 30
+Solució incomplerta 68/72 caselles, cost 30
+Solució incomplerta 69/72 caselles, cost 30
+Solució incomplerta 70/72 caselles, cost 30
+Solució incomplerta 71/72 caselles, cost 30
+Solució trobada amb cost 30.
 [33mWarning: gabriel no esta disponible el dv a 3a hora[0m
 [34;1m:: Millor graella grabada a 'graella-telefons-2019-11-18.html'[0m
 [34;1m:: Millor graella grabada a 'graella-telefons-2019-11-18.yaml'[0m
