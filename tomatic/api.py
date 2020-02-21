@@ -279,7 +279,6 @@ def setPersonInfo(person):
                 components.remove(person)
             if group in data.groups and person not in components:
                 components.append(person)
-    config.dump('persons.yaml')
     result = ns(
         names = config.names,
         extensions = config.extensions,
@@ -288,6 +287,7 @@ def setPersonInfo(person):
         emails = config.emails,
         groups = config.groups,
     )
+    result.dump('persons.yaml')
     return yamlfy(persons=result)
 
 @app.route('/api/busy/<person>', methods=['GET'])
