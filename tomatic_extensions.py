@@ -8,6 +8,7 @@ import sys
 import click
 from yamlns import namespace as ns
 from tomatic import __version__
+from pathlib2 import Path
 
 def table(data):
 	return u'\n'.join(u'\t'.join(unicode(c) for c in row) for row in data)
