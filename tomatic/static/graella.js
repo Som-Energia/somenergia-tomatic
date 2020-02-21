@@ -575,12 +575,10 @@ var GridsPage = {
 var PbxPage = {
     view: function() {
         return m('', [
-			Doc([
-				m('',
+			Doc(m('',
 				"Visualitza les línies que estan actualment rebent trucades. "+
 				"Feu click al damunt per pausar-les o al signe '+' per afegir-ne"),
-				m('b','Les accions no tenen efecte sense la centraleta nova.'),
-				]),
+				),
 			m('h2[style=text-align:center]', "Linies en cua"),
 			m(QueueWidget),
         ]);
@@ -591,7 +589,7 @@ var PersonsPage = {
     view: function() {
         return m('', [
 			Doc("Permet modificar la configuració personal de cadascú: "+
-				"Color, taula, extensió e indisponibilitats."),
+				"Color, taula, extensió, indisponibilitats..."),
 			Persons(Tomatic.persons().extensions),
         ]);
     },
