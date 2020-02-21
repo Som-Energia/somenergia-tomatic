@@ -9,7 +9,7 @@ from io import open
 # ssh public key copied as auhtorized key in you own
 # computer. And sshd installed and running!
 
-@unittest.skipIf(os.environ.get("travis") == 'true',
+@unittest.skipIf(os.environ.get("TRAVIS") == 'true',
     "Unable to set ssh self-connections in Travis")
 class Remote_Test(unittest.TestCase):
 
