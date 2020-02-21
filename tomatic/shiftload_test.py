@@ -134,7 +134,7 @@ class ShiftLoadTest(unittest.TestCase):
             bob=60,
         )
         load = shiftload.ponderatedLoad(ideal, 
-            holidays=[],
+            businessDays=['dl', 'dm', 'dx', 'dj', 'dv'],
             daysoff=[],
             leaves=[],
         )

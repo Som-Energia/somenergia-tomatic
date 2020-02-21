@@ -9,7 +9,7 @@ import os.path
 import random
 
 
-def ponderatedLoad(idealLoad, holidays, daysoff, leaves):
+def ponderatedLoad(idealLoad, businessDays, daysoff, leaves):
     return idealLoad 
 
 def workingDays(person, businessDays, daysoff, leaves):
