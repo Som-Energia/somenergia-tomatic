@@ -48,8 +48,8 @@ def remove(extension):
 	db.removeExtension(extension)
 
 
-def properName(config, name):
-	names = config.get('names',{})
+def properName(persons, name):
+	names = persons.get('names',{})
 	if name in names:
 		return names[name]
 	return name.title()
@@ -58,12 +58,15 @@ def properName(config, name):
 @cli.command()
 def load():
 	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
-	config = ns.load('config.yaml')
+	persons = ns()
+	for config in ['config.yaml', 'persons.yaml']:
+		if Path(config).exists():
+			persons.update(ns.load(config))
 	db.clearExtensions()
-	for name, extension in config.extensions.iteritems():
+	for name, extension in persons.extensions.iteritems():
 		db.addExtension(
 			unicode(extension),
-			properName(config, name)
+			properName(persons, name)
 			)
 
 

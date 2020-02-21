@@ -20,7 +20,7 @@ sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 
 import os
 srcpath = os.path.dirname(os.path.abspath(__file__))
-yamlconfigpath = os.path.join(srcpath,'config.yaml')
+yamlconfigpath = os.path.join(srcpath,'persons.yaml')
 
 from yamlns import namespace as ns
 import dbconfig
