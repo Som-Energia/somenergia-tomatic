@@ -9,7 +9,7 @@ script:
 - eval "$(ssh-agent -s)"
 - '[ -e ~/.ssh/id_rsa.pub ] || ssh-keygen -f ~/.ssh/id_rsa.pub -N ""'
 - ssh-add ~/.ssh/id_rsa.pub
-- ssh localhost "echo it works"
+- ssh localhost -o StrictHostKeyChecking=no echo it works!
 - coverage run --source tomatic ./setup.py test
 after_success:
 - coveralls
