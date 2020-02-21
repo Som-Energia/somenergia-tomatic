@@ -20,7 +20,7 @@ import os
 import erppeek
 from sheetfetcher import SheetFetcher
 from threading import Semaphore, Thread
-import urllib.request, urllib.parse, urllib.error
+import urllib.parse
 from pathlib2 import Path
 
 try:
