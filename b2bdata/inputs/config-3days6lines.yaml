@@ -328,5 +328,4 @@ threshold_hits: 21
 my_calls_log: "my_calls_log.yaml"
 busyFiles:
 - b2bdata/inputs/indisponibilitats-3days6lines.conf
-weekShifts: b2bdata/inputs/carrega-3days6lines.csv
 

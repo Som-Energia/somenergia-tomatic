@@ -31,7 +31,7 @@ costLimit: 200
 discriminateLines: true
 pruneRedundant: false
 descartaNoPrometedores: true
-ignoreOptionalAbsences: false
+ignoreOptionalAbsences: true
 deixaEsmorzar: true
 noVolenEsmorzar:
 - david
@@ -327,5 +327,4 @@ threshold_hits: 21
 my_calls_log: "my_calls_log.yaml"
 busyFiles:
 - b2bdata/inputs/indisponibilitats-2days2lines.conf
-weekShifts: b2bdata/inputs/carrega-2days2lines.csv
 
