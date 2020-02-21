@@ -854,6 +854,14 @@ def parseArgs():
     )
 
     parser.add_argument(
+        '-l',
+        '--lines',
+        default=None,
+        type=int,
+        help="Origen d'on agafa les vacances",
+    )
+
+    parser.add_argument(
         '--search-days',
         help="dies de cerca per comanda p.e dl,dm,dx,dj,dv sobreescriu config.yaml"
         )
@@ -919,6 +927,9 @@ def main():
         # If no date provided, take the next monday
         today = date.today()
         config.monday = today + timedelta(days=7-today.weekday())
+
+    if args.lines:
+        config.nTelefons = args.lines
 
     if args.drive_file:
         config.documentDrive = args.drive_file
