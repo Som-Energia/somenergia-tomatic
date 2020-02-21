@@ -12,6 +12,9 @@ import random
 def ponderatedLoad(idealLoad, holidays, daysoff, leaves):
     return idealLoad 
 
+def workingDays(person, holidays, daysoff, leaves):
+    return 5
+
 
 args = None
 
