@@ -9,6 +9,9 @@ import os.path
 import random
 
 
+def singlePonderatedLoad(person, load, businessDays, daysoff, leaves):
+    return 4.0
+
 def ponderatedLoad(idealLoad, businessDays, daysoff, leaves):
     return idealLoad 
 
