@@ -222,10 +222,6 @@ class ShiftLoadTest(unittest.TestCase):
         capacity = shiftload.dayCapacity(busy='0110',maxPerDay=2)
         self.assertEqual(capacity, 1)
 
-    def test_dayCapacity_max3(self):
-        capacity = shiftload.dayCapacity(busy='0000',maxPerDay=3)
-        self.assertEqual(capacity, 3)
-
     def test_dayCapacity_max1AndAvailable(self):
         capacity = shiftload.dayCapacity(busy='0011',maxPerDay=1)
         self.assertEqual(capacity, 1)
@@ -234,6 +230,17 @@ class ShiftLoadTest(unittest.TestCase):
         capacity = shiftload.dayCapacity(busy='1111',maxPerDay=1)
         self.assertEqual(capacity, 0)
 
+    def test_dayCapacity_max3_noBusy(self):
+        capacity = shiftload.dayCapacity(busy='0000',maxPerDay=3)
+        self.assertEqual(capacity, 3)
+
+    def test_dayCapacity_max3_twoBusy(self):
+        capacity = shiftload.dayCapacity(busy='1001',maxPerDay=3)
+        self.assertEqual(capacity, 2)
+
+    def test_dayCapacity_max3_threeBusy(self):
+        capacity = shiftload.dayCapacity(busy='1011',maxPerDay=3)
+        self.assertEqual(capacity, 1)
 
 
 # vim: et ts=4 sw=4
