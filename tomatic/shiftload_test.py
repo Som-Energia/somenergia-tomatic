@@ -77,7 +77,7 @@ class ShiftLoadTest(unittest.TestCase):
                 )],
             leaves=[],
         )
-        self.assertEqual(workingDays,4)
+        self.assertEqual(workingDays,5)
 
     def test_ponderatedLoad_(self):
         ideal = ns(

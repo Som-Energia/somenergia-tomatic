@@ -14,7 +14,7 @@ def ponderatedLoad(idealLoad, holidays, daysoff, leaves):
 
 def workingDays(person, holidays, daysoff, leaves):
     if person in leaves: return 0
-    if daysoff: return 4
+    if any(day.person == person for day in daysoff): return 4
     return 5
 
 
