@@ -202,5 +202,10 @@ class ShiftLoadTest(unittest.TestCase):
             bob: 6.0
         """)
 
+    def test_dayCapacity_noBusy(self):
+        capacity = shiftload.dayCapacity(busy='0000',maxPerDay=2)
+        self.assertEqual(capacity, 2)
+
+
 
 # vim: et ts=4 sw=4
