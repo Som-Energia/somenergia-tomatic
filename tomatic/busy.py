@@ -250,7 +250,6 @@ def update_busy(person, data):
 			)
 	return ns(result='ok')
 
-
 def laborableWeekDays(monday, holidays=None):
 
 	monday = monday + datetime.timedelta(days=-monday.weekday())

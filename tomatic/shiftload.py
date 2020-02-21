@@ -36,14 +36,17 @@ def workingDays(person, businessDays, daysoff, leaves):
 def dayCapacity(busy, maxPerDay):
     if busy == '1111': return 0
     if maxPerDay == 1: return 1
-    if maxPerDay == 3:
-        if '000' in busy: return 3
-        if '00' in busy: return 2
+    if maxPerDay == 2:
+        if busy[:2] == '00': return 2
+        if busy[2:] == '00': return 2
         return 1
-    if busy[:2] == '00': return 2
-    if busy[2:] == '00': return 2
+    if '000' in busy: return 3
+    if '00' in busy: return 2
     return 1
 
+
+def weekCapacity(busy, maxPerDay):
+    return sum(dayCapacity(b, maxPerDay) for b in busy)
 
 
 args = None
