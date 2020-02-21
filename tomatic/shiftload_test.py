@@ -40,6 +40,15 @@ class ShiftLoadTest(unittest.TestCase):
         )
         self.assertEqual(workingDays,0)
 
+    def test_workingDays_withOthersLeave(self):
+        workingDays = shiftload.workingDays(
+            person='alice',
+            holidays=[],
+            daysoff=[],
+            leaves=['bob'],
+        )
+        self.assertEqual(workingDays,5)
+
 
     def test_ponderatedLoad_(self):
         ideal = ns(
