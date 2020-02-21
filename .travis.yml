@@ -12,6 +12,7 @@ script:
 #- for a in ~/.ssh/*; do file $a; cat $a; done
 #- ssh localhost -o StrictHostKeyChecking=no echo it works!
 - coverage run --source tomatic ./setup.py test
+- back2back back2back.yaml
 after_success:
 - coveralls
 
