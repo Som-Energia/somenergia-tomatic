@@ -206,6 +206,10 @@ class ShiftLoadTest(unittest.TestCase):
         capacity = shiftload.dayCapacity(busy='0000',maxPerDay=2)
         self.assertEqual(capacity, 2)
 
+    def test_dayCapacity_max3(self):
+        capacity = shiftload.dayCapacity(busy='0000',maxPerDay=3)
+        self.assertEqual(capacity, 3)
+
     def test_dayCapacity_allBusy(self):
         capacity = shiftload.dayCapacity(busy='1111',maxPerDay=2)
         self.assertEqual(capacity, 0)
