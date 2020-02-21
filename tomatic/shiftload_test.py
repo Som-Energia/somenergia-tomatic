@@ -68,16 +68,64 @@ class ShiftLoadTest(unittest.TestCase):
         workingDays = shiftload.workingDays(
             person='alice',
             holidays=[],
-            daysoff=[ns(
-                optional = False,
-                person = 'bob',
-                reason = 'a reason',
-                turns = '1111',
-                weekday = 'dl',
+            daysoff=[
+                ns(
+                    optional = False,
+                    person = 'bob',
+                    reason = 'a reason',
+                    turns = '1111',
+                    weekday = 'dl',
                 )],
             leaves=[],
         )
         self.assertEqual(workingDays,5)
+
+    def test_workingDays_withManyDaysOff(self):
+        workingDays = shiftload.workingDays(
+            holidays=[],
+            person='alice',
+            daysoff=[
+                ns(
+                    optional = False,
+                    person = 'alice',
+                    reason = 'a reason',
+                    turns = '1111',
+                    weekday = 'dl',
+                ),
+                ns(
+                    optional = False,
+                    person = 'alice',
+                    reason = 'a reason',
+                    turns = '1111',
+                    weekday = 'dm',
+                )],
+            leaves=[],
+        )
+        self.assertEqual(workingDays,3)
+
+    def test_workingDays_withManyDaysOff(self):
+        workingDays = shiftload.workingDays(
+            person='alice',
+            daysoff=[
+                ns(
+                    optional = False,
+                    person = 'alice',
+                    reason = 'a reason',
+                    turns = '1111',
+                    weekday = 'dl',
+                ),
+                ns(
+                    optional = False,
+                    person = 'alice',
+                    reason = 'a reason',
+                    turns = '1111',
+                    weekday = 'dm',
+                )],
+            leaves=[],
+        )
+        self.assertEqual(workingDays,3)
+
+
 
     def test_ponderatedLoad_(self):
         ideal = ns(
