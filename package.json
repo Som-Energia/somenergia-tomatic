@@ -1,6 +1,6 @@
 {
   "name": "somenergia-tomatic",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "description": "Phone call dealer for SomEnergia",
   "main": "index.js",
   "scripts": {
