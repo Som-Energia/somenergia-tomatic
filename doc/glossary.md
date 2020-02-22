@@ -53,9 +53,9 @@ incorporació en el codi font.
         - Per deixar temps a mig matí per esmorzar
 
 - **càrrega limitada:** (_bounded load_) Càrrega ajustada per no superar la capacitat de la setmana de la persona.
-- **bossa de torns:**
+- **bossa de crèdit de torns:**
     (_turn bag_) Annotació acomulada per a cada persona
-    de quants torns ha acabat fent en el passat més o menys respecte la càrrega arrodonida que li tocava cada setmana.
+    de quants torns ha acabat fent en el passat més o menys respecte la càrrega ponderada que li tocava cada setmana.
     \footnote{David: Dubto si fer-ho respecte a l'arrodonida o la ponderada sense arrodonir}
 - **creditora:** persona a la que se li deuen hores que ha fet de més
 - **deutora:** persona que deu hores que ha fet de menys
@@ -73,7 +73,7 @@ incorporació en el codi font.
         - Si no s'arriba, generar deute i crèdit nou aleatoriament entre els que menys en tinguin
 
 - **sobrecàrrega** (_overload_)
-    Diferència amb la càrrega ponderada de referència.
+    Diferència entre la càrrega final que farà cada persona amb la càrrega ponderada de referència.
     Positiu vol dir que es fan més hores.
     Negatiu vol dir que hi ha **infracàrrega**.
 
