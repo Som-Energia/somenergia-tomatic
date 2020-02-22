@@ -777,7 +777,7 @@ class BusyTest(unittest.TestCase):
 			['dl', 'dm', 'dx'])
 
 
-	def test_initBusyTable_singleCell(self):
+	def test_BusyTable_init_singleCell(self):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl'],
@@ -787,7 +787,7 @@ class BusyTest(unittest.TestCase):
 			('dl', 0, 'alice'): False,
 		})
 
-	def test_initBusyTable_manyPersons(self):
+	def test_BusyTable_init_manyPersons(self):
 		table = busy.BusyTable(
 			persons=['alice','bob'],
 			days=['dl'],
@@ -798,7 +798,7 @@ class BusyTest(unittest.TestCase):
 			('dl', 0, 'bob'): False,
 		})
 
-	def test_initBusyTable_manyHours(self):
+	def test_BusyTable_init_manyHours(self):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl'],
@@ -809,7 +809,7 @@ class BusyTest(unittest.TestCase):
 			('dl', 1, 'alice'): False,
 		})
 
-	def test_initBusyTable_manyDays(self):
+	def test_BusyTable_init_manyDays(self):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl','dm'],
