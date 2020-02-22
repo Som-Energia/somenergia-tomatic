@@ -170,21 +170,21 @@ def parseArgs():
         '--lines',
         default=None,
         type=int,
-        help="-l 'nombre de linies'"
+        help="nombre de linies"
     )
     parser.add_argument(
         '-c',
         '--charge',
         default=None,
         type=int,
-        help="-c 'carrega necessaria'"
+        help="carrega necessaria"
     )
     parser.add_argument(
         '-b',
         '--baixes',
         default=None,
         nargs='+',
-        help="-b 'llista de baixes'"
+        help="llista de baixes"
     )
     return parser.parse_args()
 
