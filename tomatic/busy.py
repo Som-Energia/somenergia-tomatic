@@ -4,7 +4,7 @@
 from past.builtins import basestring
 import datetime
 from yamlns import namespace as ns
-from consolemsg import out, u
+from consolemsg import warn, out, u
 from pathlib2 import Path
 
 def open(*args, **kwd):
@@ -238,10 +238,15 @@ class BusyTable(object):
 		return self._table.get((day,hour,person), True)
 
 	def setBusy(self, day, hour, person, isBusy=True):
-		if (day,hour,person) not in self._table:
-			raise Exception(
-				"{} not in the list, cannot be unbusied"
+		if person not in self._persons:
+			return warn("Ignorant una indisponibilitat de {}, que no entra al repartiment"
 				.format(person))
+		if day not in self._days:
+			return warn("Ignorant una indisponibilitat del dia {} que no considerem"
+				.format(day))
+		if hour not in range(self._nhours):
+			return warn("Ignorant una indisponibilitat per {}a hora que no considerem"
+				.format(hour+1))
 
 		self._table[(day,hour,person)] = isBusy
 
