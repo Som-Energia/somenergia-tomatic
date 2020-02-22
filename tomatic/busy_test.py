@@ -809,6 +809,16 @@ class BusyTest(unittest.TestCase):
 			('dl', 1, 'alice'): True,
 		})
 
+	def test_initBusyTable_manyDays(self):
+		table = busy.initTable(
+			persons=['alice'],
+			days=['dl','dm'],
+			hours=1,
+		)
+		self.assertEqual(table, {
+			('dl', 0, 'alice'): True,
+			('dm', 0, 'alice'): True,
+		})
 
 
 

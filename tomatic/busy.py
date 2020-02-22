@@ -236,9 +236,10 @@ def laborableWeekDays(monday, holidays=None):
 
 def initTable(days, hours, persons):
 	return {
-		('dl', hour, person): True
+		(day, hour, person): True
 		for person in persons
 		for hour in range(hours)
+		for day in days
 	}
 
 
