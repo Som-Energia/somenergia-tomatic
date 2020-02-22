@@ -257,5 +257,15 @@ class BusyTable(object):
 
 
 
+	def load(self, filename, monday, errorHandler=None, justOptional=False, justRequired=False):
+		with open(filename) as thefile:
+			allentries = parseBusy(thefile, errorHandler)
+			thisweekentries = onWeek(monday, allentries)
+			for entry in thisweekentries:
+				for hora, isBusy in enumerate(entry.turns):
+					if isBusy!='1': continue
+					weekdays = [entry.weekday] if entry.weekday else self.dies
+					for dia in weekdays:
+						self.setBusy(dia, hora, entry.person)
 
 # vim: noet ts=4 sw=4
