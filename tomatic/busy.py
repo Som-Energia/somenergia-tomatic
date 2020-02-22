@@ -255,4 +255,12 @@ class BusyTable(object):
 					for dia in weekdays:
 						self.setBusy(dia, hora, entry.person)
 
+	def dayBusy(self, day, person):
+		return ''.join(
+			'1' if self.isBusy(day, hour, person) else '0'
+			for hour in range(4))
+
+
+
+
 # vim: noet ts=4 sw=4

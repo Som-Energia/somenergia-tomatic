@@ -897,4 +897,27 @@ class BusyTest(unittest.TestCase):
 		), (False, True, False, False))
 
 
+	def test_BusyTable_dayBusy(self):
+		table = busy.BusyTable(
+			persons=['alice'],
+			days=['dl', 'dm'],
+			hours=4,
+		)
+		assert table.dayBusy('dl', 'alice') == '0000'
+
+	def test_BusyTable_dayBusy_whenBusy(self):
+		table = busy.BusyTable(
+			persons=['alice'],
+			days=['dl', 'dm'],
+			hours=4,
+		)
+		table.setBusy('dl', 2, 'alice')
+		assert table.dayBusy('dl', 'alice') == '0010'
+		
+
+
+
+
+
+
 # vim: noet ts=4 sw=4
