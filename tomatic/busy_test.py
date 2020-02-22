@@ -912,12 +912,7 @@ class BusyTest(unittest.TestCase):
 			nhours=4,
 		)
 		table.load("testfile", isodate('2020-02-10'))
-		self.assertEqual((
-			table.isBusy('dl',0,'alice'),
-			table.isBusy('dl',1,'alice'),
-			table.isBusy('dl',2,'alice'),
-			table.isBusy('dl',3,'alice'),
-		), (False, True, True, False))
+		self.assertEqual(table.show('alice'), "0110")
 
 	def test_BusyTable_load_justOptional(self):
 		self.write("testfile",
@@ -933,12 +928,7 @@ class BusyTest(unittest.TestCase):
 		table.load("testfile", isodate('2020-02-10'),
 			justOptional=True,
 		)
-		self.assertEqual((
-			table.isBusy('dl',0,'alice'),
-			table.isBusy('dl',1,'alice'),
-			table.isBusy('dl',2,'alice'),
-			table.isBusy('dl',3,'alice'),
-		), (False, True, False, False))
+		self.assertEqual(table.show('alice'), "0100")
 
 	def test_BusyTable_load_justRequired(self):
 		self.write("testfile",
@@ -954,12 +944,7 @@ class BusyTest(unittest.TestCase):
 		table.load("testfile", isodate('2020-02-10'),
 			justRequired=True,
 		)
-		self.assertEqual((
-			table.isBusy('dl',0,'alice'),
-			table.isBusy('dl',1,'alice'),
-			table.isBusy('dl',2,'alice'),
-			table.isBusy('dl',3,'alice'),
-		), (False, False, True, False))
+		self.assertEqual(table.show('alice'), "0010")
 
 	def test_BusyTable_load_dated(self):
 		self.write("testfile",
@@ -972,13 +957,7 @@ class BusyTest(unittest.TestCase):
 			nhours=4,
 		)
 		table.load("testfile", isodate('2020-02-10'))
-		self.assertEqual((
-			table.isBusy('dl',0,'alice'),
-			table.isBusy('dl',1,'alice'),
-			table.isBusy('dl',2,'alice'),
-			table.isBusy('dl',3,'alice'),
-		), (False, True, False, False))
-
+		self.assertEqual(table.show('alice'), "0010")
 
 
 
