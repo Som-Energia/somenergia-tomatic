@@ -864,20 +864,6 @@ class BusyTest(unittest.TestCase):
 				"bob not in the list, cannot be unbusied")
 		self.assertEqual(table.isBusy('dl',0,'bob'), True)
 
-	def setUp(self):
-		self.maxDiff=None
-		self.todelete=[]
-
-	def tearDown(self):
-		for filename in self.todelete:
-			os.remove(filename)
-
-	def write(self, filename, content):
-		with open(filename,'w') as f:
-			f.write(content)
-		self.todelete.append(filename)
-
-
 	def test_BusyTable_load(self):
 		self.write("testfile",
 			"alice dl 0100 # My optional break\n"
