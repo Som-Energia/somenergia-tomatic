@@ -31,44 +31,6 @@ def isodate(datestr):
 	return datetime.datetime.strptime(datestr, "%Y-%m-%d").date()
 
 
-def gformDataLine(line):
-	"""
-	Turns an entry from the gform into a proper singular busy date.
-	Weekly busies are considered errors.
-	"""
-	_, who, day, weekday, hours, need, comment = line
-	if weekday and day:
-		raise GFormError(
-			"Indisponibilitat especifica dia puntual {} "
-			"i dia de la setmana {}"
-			.format(day,weekday))
-	if weekday:
-		raise GFormError(
-			"Hi ha indisponibilitats permaments al drive, "
-			"afegeix-les a ma i esborra-les del drive")
-	theDay = datetime.datetime.strptime(day, "%d/%m/%Y").date()
-	startHours = [ h.split(':')[0].strip() for h in hours.split(',')]
-	bitmap = ''.join((
-		('1' if '9' in startHours else '0'),
-		('1' if '10' in startHours else '0'),
-		('1' if '11' in startHours else '0'),
-		('1' if '12' in startHours else '0'),
-	))
-	optional = need != u'Necessària'
-	return ns(
-		optional = optional,
-		person = transliterate(who),
-		turns = bitmap,
-		reason = comment,
-		date = theDay,
-		)
-
-def gform2Singular(lines):
-	"""
-	Takes the collected google froms table of
-	"""
-	return ( gformDataLine(l) for l in lines[1:] )
-
 def onWeek(monday, singularBusies):
 	"""
 	Generator that takes a serie of fixed date busies,

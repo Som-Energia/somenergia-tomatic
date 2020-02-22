@@ -45,22 +45,6 @@ class BusyTest(unittest.TestCase):
 			actual = f.read()
 		self.assertMultiLineEqual(content, actual)
 
-	def test_gformDataLine_whenBothModesActivated(self):
-		line = [ts, user, date, dl, turns(t11,t12), needed, reason]
-		with self.assertRaises(busy.GFormError) as ctx:
-			busy.gformDataLine(line)
-		self.assertEqual(format(ctx.exception),
-				"Indisponibilitat especifica dia puntual 11/07/2017 "
-				"i dia de la setmana Dilluns")
-
-	def test_gformDataLine_permanentNotAllowed(self):
-		line = [ts, user, '', dl, turns(t11,t12), needed, reason]
-		with self.assertRaises(busy.GFormError) as ctx:
-			busy.gformDataLine(line)
-		self.assertEqual(format(ctx.exception),
-			"Hi ha indisponibilitats permaments al drive, "
-			"afegeix-les a ma i esborra-les del drive")
-
 	def tupleToNs(self, opcional, person, when, turns, reason):
 		import datetime
 		if type(when) == datetime.date:
@@ -75,9 +59,6 @@ class BusyTest(unittest.TestCase):
 			**when)
 
 	from somutils.testutils import assertNsEqual
-	def assertBusyEqual(self, result, expected):
-		self.assertNsEqual(result, self.tupleToNs(*expected))
-
 	def assertBusyListEqual(self, result, expected):
 		result = ns(lines=[
 			entry
@@ -89,48 +70,6 @@ class BusyTest(unittest.TestCase):
 			])
 
 		self.assertNsEqual(result, expected)
-
-	def test_gformDataLine_singleHour(self):
-		line = [ts, user, date, '', t11, needed, reason]
-		result = busy.gformDataLine(line)
-		self.assertBusyEqual(result,
-			('F', 'mate', isodate('2017-07-11'), '0010', u'reunió POL'))
-
-	def test_gformDataLine_manyHours(self):
-		line = [ts, user, date, '', turns(t9,t10,t12), needed, reason]
-		result = busy.gformDataLine(line)
-		self.assertBusyEqual(result,
-			('F', 'mate', isodate('2017-07-11'), '1101', u'reunió POL'))
-
-	def test_gformDataLine_transliteratesNames(self):
-		line = [ts, u'María', date, '', turns(t9,t10,t11,t12), needed, reason]
-		result = busy.gformDataLine(line)
-		self.assertBusyEqual(result,
-			('F', 'maria', isodate('2017-07-11'), '1111', u'reunió POL'))
-
-	def test_gformDataLine_withOptional(self):
-		line = [ts, 'Mate', date, '', turns(t9,t10,t11,t12), optional, reason]
-		result = busy.gformDataLine(line)
-		self.assertBusyEqual(result,
-			('O', 'mate', isodate('2017-07-11'), '1111', u'reunió POL'))
-
-
-	def test_gform2Singular_firstIgnored(self):
-		gform=[
-			['headers ignored']*7,
-		]
-		self.assertEqual(list(busy.gform2Singular(gform)), [
-			])
-
-	def test_gform2Singular_singleEntry(self):
-		gform=[
-			['headers ignored']*7,
-			[ts, u'María', date, '', turns(t9,t10,t12), needed, u'reuni\xf3 POL']
-		]
-		self.assertBusyListEqual(list(busy.gform2Singular(gform)), [
-			('F', 'maria', isodate('2017-07-11'), '1101', u'reunió POL'),
-			])
-
 
 	def test_onWeek_oneOnMonday(self):
 		sequence = busy.onWeek(isodate('2018-01-01'), [
@@ -836,7 +775,6 @@ class BusyTest(unittest.TestCase):
 		self.assertEqual(
 			busy.laborableWeekDays(isodate('2020-12-25')),
 			['dl', 'dm', 'dx'])
-
 
 
 
