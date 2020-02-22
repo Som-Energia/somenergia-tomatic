@@ -777,5 +777,31 @@ class BusyTest(unittest.TestCase):
 			['dl', 'dm', 'dx'])
 
 
+	def test_initBusyTable_singleCell(self):
+		table = busy.initTable(
+			persons=['alice'],
+			days=['dl'],
+			hours=1,
+		)
+		self.assertEqual(table, {
+			('dl', 0, 'alice'): True,
+		})
+
+	def test_initBusyTable_manyPersons(self):
+		table = busy.initTable(
+			persons=['alice','bob'],
+			days=['dl'],
+			hours=1,
+		)
+		self.assertEqual(table, {
+			('dl', 0, 'alice'): True,
+			('dl', 0, 'bob'): True,
+		})
+
+
+
+
+
+
 
 # vim: noet ts=4 sw=4

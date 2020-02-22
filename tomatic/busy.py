@@ -234,5 +234,10 @@ def laborableWeekDays(monday, holidays=None):
 		if monday + datetime.timedelta(days=i) not in holidays
 		]
 
+def initTable(days, hours, persons):
+	return {
+		('dl', 0, 'alice'):True
+	}
+
 
 # vim: noet ts=4 sw=4
