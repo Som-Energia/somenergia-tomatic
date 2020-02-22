@@ -245,6 +245,17 @@ class BusyTable(object):
 		}
 
 	def isBusy(self, day, hour, person):
-		return self._table.get((day,hour,person),True)
+		return self._table.get((day,hour,person), True)
+
+	def setBusy(self, day, hour, person, isBusy=True):
+		if (day,hour,person) not in self._table:
+			raise Exception(
+				"{} not in the list, cannot be unbusied"
+				.format(person))
+
+		self._table[(day,hour,person)] = isBusy
+
+
+
 
 # vim: noet ts=4 sw=4

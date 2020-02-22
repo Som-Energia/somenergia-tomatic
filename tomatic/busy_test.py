@@ -831,6 +831,38 @@ class BusyTest(unittest.TestCase):
 		self.assertEqual(table.isBusy('dl',1,'alice'), True)
 		self.assertEqual(table.isBusy('dm',0,'alice'), True)
 
+	def test_BusyTable_setBusy_baseCase(self):
+		table = busy.BusyTable(
+			persons=['alice'],
+			days=['dl'],
+			hours=1,
+		)
+		table.setBusy('dl',0,'alice')
+		self.assertEqual(table.isBusy('dl',0,'alice'), True)
+
+	def test_BusyTable_setBusy_unbusy(self):
+		table = busy.BusyTable(
+			persons=['alice'],
+			days=['dl'],
+			hours=1,
+		)
+		table.setBusy('dl',0,'alice')
+		table.setBusy('dl',0,'alice', False)
+		self.assertEqual(table.isBusy('dl',0,'alice'), False)
+
+	def test_BusyTable_setBusy_outliersAlwaysUnBusy(self):
+		table = busy.BusyTable(
+			persons=['alice'],
+			days=['dl'],
+			hours=1,
+		)
+		try:
+			table.setBusy('dl',0,'bob', False)
+			self.fail("should have thrown")
+		except Exception as e:
+			self.assertEqual(format(e),
+				"bob not in the list, cannot be unbusied")
+		self.assertEqual(table.isBusy('dl',0,'bob'), True)
 
 
 
