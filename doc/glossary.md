@@ -16,9 +16,12 @@ incorporació en el codi font.
 - **torn:** (_turn_) Conjunció de hores i dies. Exemple el torn de dimarts a les 9h
 - **cassella:**
   (_cell_) Conjunció de dia, hora, i linia. Exemple la casella de dimarts a les 9h per la linia 1 (primaria).
+
     - **David:** Torn es polisèmic. L'equip sovint anomena torn al que diem aqui cassella: "Canvia'm el torn que tinc el dilluns"
-        Per resoldre això si tinguessim un nom millor pel que hem anomenat torn o per al que anomenem casella.
-        Pista: El que intercanviem, la casella, es l'obligació d'una persona de fer en un interval de temps, el torn, una linia.
+        Per resoldre això, estaria bé si tinguessim un nom millor pel que hem anomenat torn o per al que anomenem casella.
+        Pista: El que intercanviem, la casella, es l'obligació d'una persona de fer en un interval de temps, el torn, una linia.\
+		Considerant per tots dos: tanda, tongada, lloc, posició, guardia, asignació, designació, cabina, misió\
+		En anglès: batch, shift, turn, slot, position, stand, designation
 
 - **linies discriminades:** (_discriminated lines_)
   Succeeix quan hi ha diferencia entre les linies.
