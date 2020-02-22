@@ -223,11 +223,12 @@ def laborableWeekDays(monday, holidays=None):
 
 class BusyTable(object):
 	"""Fast lookup table of whether someone is busy at some turn"""
-	def __init__(self, days, hours, persons):
+	def __init__(self, days, nhours, persons):
+		self._days = days
 		self._table = {
 			(day, hour, person): False
 			for person in persons
-			for hour in range(hours)
+			for hour in range(nhours)
 			for day in days
 		}
 

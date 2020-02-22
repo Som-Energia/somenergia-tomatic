@@ -781,7 +781,7 @@ class BusyTest(unittest.TestCase):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl'],
-			hours=1,
+			nhours=1,
 		)
 		self.assertEqual(table._table, {
 			('dl', 0, 'alice'): False,
@@ -791,7 +791,7 @@ class BusyTest(unittest.TestCase):
 		table = busy.BusyTable(
 			persons=['alice','bob'],
 			days=['dl'],
-			hours=1,
+			nhours=1,
 		)
 		self.assertEqual(table._table, {
 			('dl', 0, 'alice'): False,
@@ -802,7 +802,7 @@ class BusyTest(unittest.TestCase):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl'],
-			hours=2,
+			nhours=2,
 		)
 		self.assertEqual(table._table, {
 			('dl', 0, 'alice'): False,
@@ -813,7 +813,7 @@ class BusyTest(unittest.TestCase):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl','dm'],
-			hours=1,
+			nhours=1,
 		)
 		self.assertEqual(table._table, {
 			('dl', 0, 'alice'): False,
@@ -824,7 +824,7 @@ class BusyTest(unittest.TestCase):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl'],
-			hours=1,
+			nhours=1,
 		)
 		self.assertEqual(table.isBusy('dl',0,'alice'), False)
 		self.assertEqual(table.isBusy('dl',0,'bob'), True)
@@ -835,7 +835,7 @@ class BusyTest(unittest.TestCase):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl'],
-			hours=1,
+			nhours=1,
 		)
 		table.setBusy('dl',0,'alice')
 		self.assertEqual(table.isBusy('dl',0,'alice'), True)
@@ -844,7 +844,7 @@ class BusyTest(unittest.TestCase):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl'],
-			hours=1,
+			nhours=1,
 		)
 		table.setBusy('dl',0,'alice')
 		table.setBusy('dl',0,'alice', False)
@@ -854,7 +854,7 @@ class BusyTest(unittest.TestCase):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl'],
-			hours=1,
+			nhours=1,
 		)
 		try:
 			table.setBusy('dl',0,'bob', False)
@@ -887,7 +887,7 @@ class BusyTest(unittest.TestCase):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl'],
-			hours=4,
+			nhours=4,
 		)
 		table.load("testfile", isodate('2020-02-10'))
 		self.assertEqual((
@@ -906,7 +906,7 @@ class BusyTest(unittest.TestCase):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl'],
-			hours=4,
+			nhours=4,
 		)
 		table.load("testfile", isodate('2020-02-10'),
 			justOptional=True,
@@ -927,7 +927,7 @@ class BusyTest(unittest.TestCase):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl'],
-			hours=4,
+			nhours=4,
 		)
 		table.load("testfile", isodate('2020-02-10'),
 			justRequired=True,
@@ -944,7 +944,7 @@ class BusyTest(unittest.TestCase):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl', 'dm'],
-			hours=4,
+			nhours=4,
 		)
 		assert table.dayBusy('dl', 'alice') == '0000'
 
@@ -952,7 +952,7 @@ class BusyTest(unittest.TestCase):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl', 'dm'],
-			hours=4,
+			nhours=4,
 		)
 		table.setBusy('dl', 2, 'alice')
 		assert table.dayBusy('dl', 'alice') == '0010'
