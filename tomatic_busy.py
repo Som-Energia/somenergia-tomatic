@@ -40,9 +40,9 @@ def busyTable(monday, *filenames, **kwds):
 					if isBusy!='1': continue
 					busyWeekDays = [entry.weekday] if entry.weekday else busy.weekdays
 					for dia in busyWeekDays:
-						if 'optional' in kwds and kwds['optional'] and not entry.optional:
+						if kwds.get('optional') and not entry.optional:
 							continue
-						if 'required' in kwds and kwds['required'] and entry.optional:
+						if kwds.get('required') and entry.optional:
 							continue
 						availability[dia, hora].add(entry.person)
 	return availability
