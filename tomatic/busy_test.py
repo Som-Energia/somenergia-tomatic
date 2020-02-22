@@ -918,6 +918,27 @@ class BusyTest(unittest.TestCase):
 			table.isBusy('dl',3,'alice'),
 		), (False, True, False, False))
 
+	def test_BusyTable_load_justRequired(self):
+		self.write("testfile",
+			"alice dl 0100 # My optional break\n"
+			"+alice dl 0010 # My mandatory break\n"
+		)
+
+		table = busy.BusyTable(
+			persons=['alice'],
+			days=['dl'],
+			hours=4,
+		)
+		table.load("testfile", isodate('2020-02-10'),
+			justRequired=True,
+		)
+		self.assertEqual((
+			table.isBusy('dl',0,'alice'),
+			table.isBusy('dl',1,'alice'),
+			table.isBusy('dl',2,'alice'),
+			table.isBusy('dl',3,'alice'),
+		), (False, False, True, False))
+
 
 	def test_BusyTable_dayBusy(self):
 		table = busy.BusyTable(
