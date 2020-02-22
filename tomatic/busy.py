@@ -251,12 +251,11 @@ class BusyTable(object):
 			for day in self._days
 		)
 
-
 	def load(self, filename, monday, errorHandler=None, justOptional=False, justRequired=False):
 		with open(filename) as thefile:
 			allentries = parseBusy(thefile, errorHandler)
-			#thisweekentries = onWeek(monday, allentries)
-			for entry in allentries:
+			thisweekentries = onWeek(monday, allentries)
+			for entry in thisweekentries:
 				if justOptional and not entry.optional: continue
 				if justRequired and entry.optional: continue
 				for hora, isBusy in enumerate(entry.turns):
