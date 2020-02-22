@@ -784,7 +784,7 @@ class BusyTest(unittest.TestCase):
 			hours=1,
 		)
 		self.assertEqual(table._table, {
-			('dl', 0, 'alice'): True,
+			('dl', 0, 'alice'): False,
 		})
 
 	def test_initBusyTable_manyPersons(self):
@@ -794,8 +794,8 @@ class BusyTest(unittest.TestCase):
 			hours=1,
 		)
 		self.assertEqual(table._table, {
-			('dl', 0, 'alice'): True,
-			('dl', 0, 'bob'): True,
+			('dl', 0, 'alice'): False,
+			('dl', 0, 'bob'): False,
 		})
 
 	def test_initBusyTable_manyHours(self):
@@ -805,8 +805,8 @@ class BusyTest(unittest.TestCase):
 			hours=2,
 		)
 		self.assertEqual(table._table, {
-			('dl', 0, 'alice'): True,
-			('dl', 1, 'alice'): True,
+			('dl', 0, 'alice'): False,
+			('dl', 1, 'alice'): False,
 		})
 
 	def test_initBusyTable_manyDays(self):
@@ -816,8 +816,8 @@ class BusyTest(unittest.TestCase):
 			hours=1,
 		)
 		self.assertEqual(table._table, {
-			('dl', 0, 'alice'): True,
-			('dm', 0, 'alice'): True,
+			('dl', 0, 'alice'): False,
+			('dm', 0, 'alice'): False,
 		})
 
 

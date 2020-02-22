@@ -238,12 +238,11 @@ class BusyTable(object):
 	"""Fast lookup table of whether someone is busy at some turn"""
 	def __init__(self, days, hours, persons):
 		self._table = {
-			(day, hour, person): True
+			(day, hour, person): False
 			for person in persons
 			for hour in range(hours)
 			for day in days
 		}
-
 
 
 
