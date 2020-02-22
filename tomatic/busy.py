@@ -274,6 +274,24 @@ class BusyTable(object):
 			'1' if self.isBusy(day, hour, person) else '0'
 			for hour in range(self._nhours))
 
+	def personsByTurn(self):
+		result = {}
+		for (day, hour, person), busy in self._table.items():
+			if not busy: continue
+			if (day,hour) not in result:
+				result[day,hour] = set([person])
+			else:
+				result[day,hour].add(person)
+		return result
+
+	def nPersonsByTurn(self):
+		result = {}
+		for (day, hour, person), busy in self._table.items():
+			if (day,hour) not in result:
+				result[day,hour] = 1 if busy else 0
+			elif busy:
+				result[day,hour] += 1
+		return result
 
 
 # vim: noet ts=4 sw=4

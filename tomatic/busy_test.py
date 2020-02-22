@@ -977,5 +977,49 @@ class BusyTest(unittest.TestCase):
 		self.assertEqual(table.show('alice'), "0100\n0100")
 
 
+	def test_BusyTable_personsByTurn(self):
+		table = busy.BusyTable(
+			persons=['alice','bob'],
+			days=['dl','dm'],
+			nhours=4,
+		)
+		self.write("testfile",
+			"alice dl 0010 # My monday break\n"
+			"alice 0100 # My everyday break\n"
+			"bob dl 0110 # My monday break\n"
+		)
+		table.load("testfile", isodate('2020-02-10'))
+		self.assertEqual(table.personsByTurn(), {
+			('dl', 1): {'alice','bob'},
+			('dl', 2): {'alice','bob'},
+			('dm', 1): {'alice'},
+		})
+
+	def test_BusyTable_nPersonsByTurn(self):
+		table = busy.BusyTable(
+			persons=['alice','bob'],
+			days=['dl','dm'],
+			nhours=4,
+		)
+		self.write("testfile",
+			"alice dl 0010 # My monday break\n"
+			"alice 0100 # My everyday break\n"
+			"bob dl 0110 # My monday break\n"
+		)
+		table.load("testfile", isodate('2020-02-10'))
+		self.assertEqual(table.nPersonsByTurn(), {
+			('dl', 0): 0,
+			('dl', 1): 2,
+			('dl', 2): 2,
+			('dl', 3): 0,
+			('dm', 0): 0,
+			('dm', 1): 1,
+			('dm', 2): 0,
+			('dm', 3): 0,
+		})
+		
+
+
+
 
 # vim: noet ts=4 sw=4
