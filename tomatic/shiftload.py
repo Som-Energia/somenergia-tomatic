@@ -104,9 +104,9 @@ def apply_holidays(charge):
         if person is not 'all':
             situation[person] = 5*2 - (situation[person]*2 if person in situation.keys() else 0)  # carrega maxima absoluta
             # TODO: el ponderat
-            days = charge[person] if situation[person] > charge[person] else situation[person]
+            days = min(charge[person],situation[person])
             before = charge[person]
-            charge[person] = days if days > 0 else 0
+            charge[person] = max(days,0)
             charge['all'] -= (before - charge[person])
     return situation
 
