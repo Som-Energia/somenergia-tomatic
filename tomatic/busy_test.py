@@ -864,6 +864,42 @@ class BusyTest(unittest.TestCase):
 				"bob not in the list, cannot be unbusied")
 		self.assertEqual(table.isBusy('dl',0,'bob'), True)
 
+	def test_BusyTable_showDay(self):
+		table = busy.BusyTable(
+			persons=['alice'],
+			days=['dl', 'dm'],
+			nhours=4,
+		)
+		assert table.showDay('dl', 'alice') == '0000'
+
+	def test_BusyTable_showDay_whenBusy(self):
+		table = busy.BusyTable(
+			persons=['alice'],
+			days=['dl', 'dm'],
+			nhours=4,
+		)
+		table.setBusy('dl', 2, 'alice')
+		assert table.showDay('dl', 'alice') == '0010'
+		
+
+	def test_BusyTable_show_twoHours(self):
+		table = busy.BusyTable(
+			persons=['alice'],
+			days=['dl'],
+			nhours=2,
+		)
+		table.setBusy('dl', 1, 'alice')
+		self.assertEqual(table.show('alice'), '01')
+
+	def test_BusyTable_show_twoDays(self):
+		table = busy.BusyTable(
+			persons=['alice'],
+			days=['dl','dm'],
+			nhours=1,
+		)
+		table.setBusy('dm', 0, 'alice')
+		self.assertEqual(table.show('alice'), '0\n1')
+
 	def test_BusyTable_load(self):
 		self.write("testfile",
 			"alice dl 0100 # My optional break\n"
@@ -943,42 +979,6 @@ class BusyTest(unittest.TestCase):
 			table.isBusy('dl',3,'alice'),
 		), (False, True, False, False))
 
-
-	def test_BusyTable_showDay(self):
-		table = busy.BusyTable(
-			persons=['alice'],
-			days=['dl', 'dm'],
-			nhours=4,
-		)
-		assert table.showDay('dl', 'alice') == '0000'
-
-	def test_BusyTable_showDay_whenBusy(self):
-		table = busy.BusyTable(
-			persons=['alice'],
-			days=['dl', 'dm'],
-			nhours=4,
-		)
-		table.setBusy('dl', 2, 'alice')
-		assert table.showDay('dl', 'alice') == '0010'
-		
-
-	def test_BusyTable_show_twoHours(self):
-		table = busy.BusyTable(
-			persons=['alice'],
-			days=['dl'],
-			nhours=2,
-		)
-		table.setBusy('dl', 1, 'alice')
-		self.assertEqual(table.show('alice'), '01')
-
-	def test_BusyTable_show_twoDays(self):
-		table = busy.BusyTable(
-			persons=['alice'],
-			days=['dl','dm'],
-			nhours=1,
-		)
-		table.setBusy('dm', 0, 'alice')
-		self.assertEqual(table.show('alice'), '0\n1')
 
 
 
