@@ -880,7 +880,8 @@ class BusyTest(unittest.TestCase):
 
 	def test_BusyTable_load(self):
 		self.write("testfile",
-			"alice dl 0100 # My vacation\n"
+			"alice dl 0100 # My optional break\n"
+			"+alice dl 0010 # My mandatory break\n"
 		)
 
 		table = busy.BusyTable(
@@ -889,6 +890,27 @@ class BusyTest(unittest.TestCase):
 			hours=4,
 		)
 		table.load("testfile", isodate('2020-02-10'))
+		self.assertEqual((
+			table.isBusy('dl',0,'alice'),
+			table.isBusy('dl',1,'alice'),
+			table.isBusy('dl',2,'alice'),
+			table.isBusy('dl',3,'alice'),
+		), (False, True, True, False))
+
+	def test_BusyTable_load_justOptional(self):
+		self.write("testfile",
+			"alice dl 0100 # My optional break\n"
+			"+alice dl 0010 # My mandatory break\n"
+		)
+
+		table = busy.BusyTable(
+			persons=['alice'],
+			days=['dl'],
+			hours=4,
+		)
+		table.load("testfile", isodate('2020-02-10'),
+			justOptional=True,
+		)
 		self.assertEqual((
 			table.isBusy('dl',0,'alice'),
 			table.isBusy('dl',1,'alice'),

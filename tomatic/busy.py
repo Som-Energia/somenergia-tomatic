@@ -249,6 +249,7 @@ class BusyTable(object):
 			allentries = parseBusy(thefile, errorHandler)
 			thisweekentries = onWeek(monday, allentries)
 			for entry in thisweekentries:
+				if justOptional and not entry.optional: continue
 				for hora, isBusy in enumerate(entry.turns):
 					if isBusy!='1': continue
 					weekdays = [entry.weekday] if entry.weekday else self.dies
