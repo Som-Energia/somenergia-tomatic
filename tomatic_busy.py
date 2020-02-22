@@ -24,7 +24,7 @@ def busyTable(monday, *filenames, **kwds):
 	from itertools import product as xproduct
 	availability = dict(
 		((dia,hora), set())
-	for dia, hora in xproduct(busy.weekdays, range(busy.nturns))
+		for dia, hora in xproduct(busy.weekdays, range(busy.nturns))
 		)
 
 	for filename in filenames:
