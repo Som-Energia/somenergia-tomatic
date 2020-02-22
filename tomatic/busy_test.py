@@ -820,6 +820,18 @@ class BusyTest(unittest.TestCase):
 			('dm', 0, 'alice'): False,
 		})
 
+	def test_BusyTable_isBusy_outliers(self):
+		table = busy.BusyTable(
+			persons=['alice'],
+			days=['dl'],
+			hours=1,
+		)
+		self.assertEqual(table.isBusy('dl',0,'alice'), False)
+		self.assertEqual(table.isBusy('dl',0,'bob'), True)
+		self.assertEqual(table.isBusy('dl',1,'alice'), True)
+		self.assertEqual(table.isBusy('dm',0,'alice'), True)
+
+
 
 
 

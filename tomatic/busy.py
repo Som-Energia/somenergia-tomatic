@@ -244,6 +244,7 @@ class BusyTable(object):
 			for day in days
 		}
 
-
+	def isBusy(self, day, hour, person):
+		return self._table.get((day,hour,person),True)
 
 # vim: noet ts=4 sw=4
