@@ -242,5 +242,12 @@ def initTable(days, hours, persons):
 		for day in days
 	}
 
+class BusyTable(object):
+	"""Fast lookup table of whether someone is busy at some turn"""
+	def __init__(self, days, hours, persons):
+		self._table = initTable(days, hours, persons)
+
+
+
 
 # vim: noet ts=4 sw=4
