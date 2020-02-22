@@ -247,7 +247,7 @@ class BusyTable(object):
 
 	def show(self, person):
 		return '\n'.join(
-			self.dayBusy(day, person)
+			self.showDay(day, person)
 			for day in self._days
 		)
 
@@ -266,7 +266,7 @@ class BusyTable(object):
 					#for dia in weekdays:
 					#	self.setBusy(dia, hora, entry.person)
 
-	def dayBusy(self, day, person):
+	def showDay(self, day, person):
 		return ''.join(
 			'1' if self.isBusy(day, hour, person) else '0'
 			for hour in range(self._nhours))

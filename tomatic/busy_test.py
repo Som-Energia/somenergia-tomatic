@@ -926,22 +926,22 @@ class BusyTest(unittest.TestCase):
 		), (False, False, True, False))
 
 
-	def test_BusyTable_dayBusy(self):
+	def test_BusyTable_showDay(self):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl', 'dm'],
 			nhours=4,
 		)
-		assert table.dayBusy('dl', 'alice') == '0000'
+		assert table.showDay('dl', 'alice') == '0000'
 
-	def test_BusyTable_dayBusy_whenBusy(self):
+	def test_BusyTable_showDay_whenBusy(self):
 		table = busy.BusyTable(
 			persons=['alice'],
 			days=['dl', 'dm'],
 			nhours=4,
 		)
 		table.setBusy('dl', 2, 'alice')
-		assert table.dayBusy('dl', 'alice') == '0010'
+		assert table.showDay('dl', 'alice') == '0010'
 		
 
 	def test_BusyTable_show_twoHours(self):
