@@ -948,7 +948,7 @@ class BusyTest(unittest.TestCase):
 
 	def test_BusyTable_load_dated(self):
 		self.write("testfile",
-			"alice 2020-02-10 0100 # My optional break\n"
+			"alice 2020-02-10 0100 # My dated break\n"
 		)
 
 		table = busy.BusyTable(
@@ -957,7 +957,20 @@ class BusyTest(unittest.TestCase):
 			nhours=4,
 		)
 		table.load("testfile", isodate('2020-02-10'))
-		self.assertEqual(table.show('alice'), "0010")
+		self.assertEqual(table.show('alice'), "0100")
+
+	def test_BusyTable_load_everyday(self):
+		self.write("testfile",
+			"alice 0100 # My everyday break\n"
+		)
+
+		table = busy.BusyTable(
+			persons=['alice'],
+			days=['dl','dm'],
+			nhours=4,
+		)
+		table.load("testfile", isodate('2020-02-10'))
+		self.assertEqual(table.show('alice'), "0100\n0100")
 
 
 

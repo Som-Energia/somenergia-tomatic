@@ -260,10 +260,9 @@ class BusyTable(object):
 				if justRequired and entry.optional: continue
 				for hora, isBusy in enumerate(entry.turns):
 					if isBusy!='1': continue
-					self.setBusy(entry.weekday, hora, entry.person)
-					#weekdays = [entry.weekday] if entry.weekday else self._days
-					#for dia in weekdays:
-					#	self.setBusy(dia, hora, entry.person)
+					weekdays = [entry.weekday] if entry.weekday else self._days
+					for dia in weekdays:
+						self.setBusy(dia, hora, entry.person)
 
 	def showDay(self, day, person):
 		return ''.join(
