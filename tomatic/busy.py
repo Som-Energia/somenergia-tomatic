@@ -248,15 +248,16 @@ class BusyTable(object):
 	def load(self, filename, monday, errorHandler=None, justOptional=False, justRequired=False):
 		with open(filename) as thefile:
 			allentries = parseBusy(thefile, errorHandler)
-			thisweekentries = onWeek(monday, allentries)
-			for entry in thisweekentries:
+			#thisweekentries = onWeek(monday, allentries)
+			for entry in allentries:
 				if justOptional and not entry.optional: continue
 				if justRequired and entry.optional: continue
 				for hora, isBusy in enumerate(entry.turns):
 					if isBusy!='1': continue
-					weekdays = [entry.weekday] if entry.weekday else self.dies
-					for dia in weekdays:
-						self.setBusy(dia, hora, entry.person)
+					self.setBusy(entry.weekday, hora, entry.person)
+					#weekdays = [entry.weekday] if entry.weekday else self._days
+					#for dia in weekdays:
+					#	self.setBusy(dia, hora, entry.person)
 
 	def dayBusy(self, day, person):
 		return ''.join(
