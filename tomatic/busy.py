@@ -225,6 +225,8 @@ class BusyTable(object):
 	"""Fast lookup table of whether someone is busy at some turn"""
 	def __init__(self, days, nhours, persons):
 		self._days = days
+		self._nhours = nhours
+		self._persons = persons
 		self._table = {
 			(day, hour, person): False
 			for person in persons
@@ -243,6 +245,11 @@ class BusyTable(object):
 
 		self._table[(day,hour,person)] = isBusy
 
+	def show(self, person):
+		return '\n'.join(
+			self.dayBusy(day, person)
+			for day in self._days
+		)
 
 
 	def load(self, filename, monday, errorHandler=None, justOptional=False, justRequired=False):
@@ -262,8 +269,7 @@ class BusyTable(object):
 	def dayBusy(self, day, person):
 		return ''.join(
 			'1' if self.isBusy(day, hour, person) else '0'
-			for hour in range(4))
-
+			for hour in range(self._nhours))
 
 
 

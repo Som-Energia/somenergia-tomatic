@@ -944,8 +944,23 @@ class BusyTest(unittest.TestCase):
 		assert table.dayBusy('dl', 'alice') == '0010'
 		
 
+	def test_BusyTable_show_twoHours(self):
+		table = busy.BusyTable(
+			persons=['alice'],
+			days=['dl'],
+			nhours=2,
+		)
+		table.setBusy('dl', 1, 'alice')
+		self.assertEqual(table.show('alice'), '01')
 
-
+	def test_BusyTable_show_twoDays(self):
+		table = busy.BusyTable(
+			persons=['alice'],
+			days=['dl','dm'],
+			nhours=1,
+		)
+		table.setBusy('dm', 0, 'alice')
+		self.assertEqual(table.show('alice'), '0\n1')
 
 
 
