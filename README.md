@@ -12,12 +12,12 @@ This software is used within SomEnergia cooperative to manage phone support to m
 	to ensure staff wellbeing and service quality,
 	it decides each week a timetable each person must be attending the phone.
 
-- Manual edits of the resulting time table
+- Manual edition of the resulting time table
 
 	Often unscheduled meetings and other issues makes the computed timetable unpractical.
 	The web interface can be used to swap turns and keep track of the changes.
 
-- Program Asterisk queues according the timetable.
+- Asterisk queues programming according the timetable.
 
 	Each turn, the Asterisk queue is reloaded in order to meet the timetable.
 
