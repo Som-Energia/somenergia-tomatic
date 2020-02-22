@@ -226,7 +226,7 @@ class Backtracker(object):
             ['oneshot.conf']+
             glob.glob('indisponibilitats*.conf'))
 
-        self.disponible = self.initBusyTable(*busyFiles)                # (day,turn,person) is available?
+        self.busy = self.initBusyTable(*busyFiles)                # (day,turn,person) is available?
         self.undesiredShifts = self.initUndesiredTable(*busyFiles)                # (day,turn,person) reason
 
         self.teTelefon = createTable(False,  self.dies, range(len(self.hours)), self.companys)  # (day,turn,person) has phone?
@@ -407,34 +407,29 @@ class Backtracker(object):
         return self.undesiredShifts.get((day, hour, person), False)
 
     def initBusyTable(self, *filenames) :
-        availability = dict(
-            ((dia,hora,nom), True)
-            for nom, dia, hora in xproduct(self.companys, self.dies, range(len(self.hours)))
-            )
+        table = busy.BusyTable(
+            persons = self.companys,
+            days = self.dies,
+            nhours = len(self.hours),
+        )
         for filename in filenames:
-
             def errorHandler(msg):
                 raise Backtracker.ErrorConfiguracio(
                     "{}:{}".format(filename, msg))
 
-            with open(filename) as thefile:
-                allentries = busy.parseBusy(thefile, errorHandler)
-                thisweekentries = busy.onWeek(self.config.monday, allentries)
-                for entry in thisweekentries:
-                    if entry.optional and self.config.ignoreOptionalAbsences:
-                        continue
-                    for hora, isBusy in enumerate(entry.turns):
-                        if isBusy!='1': continue
-                        weekdays = [entry.weekday] if entry.weekday else self.dies
-                        for dia in weekdays:
-                            availability[dia, hora, entry.person] = False
-        return availability
+            table.load(
+                filename,
+                monday = self.config.monday,
+                errorHandler = errorHandler,
+                justRequired = self.config.ignoreOptionalAbsences,
+            )
+        return table
 
     def isBusy(self, person, day, hour):
-        return not self.disponible[day, hour, person]
+        return self.busy.isBusy(day, hour, person)
 
     def setBusy(self, person, day, hour, busy=True):
-        self.disponible[day, hour, person] = not busy
+        self.busy.setBusy(day, hour, person, busy)
 
     def printCuts(self):
         out("Raons de tall a cada nivell")
