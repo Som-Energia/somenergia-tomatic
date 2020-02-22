@@ -11,21 +11,8 @@ def open(*args, **kwd):
 	import codecs
 	return codecs.open(encoding='utf8', *args, **kwd)
 
-
-class GFormError(Exception): pass
-
 nturns = 4
 weekdays = 'dl dm dx dj dv'.split()
-
-# TODO: Move it to a utility module and test it
-def transliterate(word):
-	word=u(word).lower()
-	for old, new in zip(
-		u'àèìòùáéíóúçñ',
-		u'aeiouaeioucn',
-	) :
-		word = word.replace(old,new)
-	return word
 
 def isodate(datestr):
 	return datetime.datetime.strptime(datestr, "%Y-%m-%d").date()
