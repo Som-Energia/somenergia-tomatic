@@ -234,18 +234,15 @@ def laborableWeekDays(monday, holidays=None):
 		if monday + datetime.timedelta(days=i) not in holidays
 		]
 
-def initTable(days, hours, persons):
-	return {
-		(day, hour, person): True
-		for person in persons
-		for hour in range(hours)
-		for day in days
-	}
-
 class BusyTable(object):
 	"""Fast lookup table of whether someone is busy at some turn"""
 	def __init__(self, days, hours, persons):
-		self._table = initTable(days, hours, persons)
+		self._table = {
+			(day, hour, person): True
+			for person in persons
+			for hour in range(hours)
+			for day in days
+		}
 
 
 
