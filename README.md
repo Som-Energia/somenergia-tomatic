@@ -85,13 +85,37 @@ $ ./tomatic_api.py
 
 Use `--help` to see other options.
 
+### Direct asterisk extension configuration
+
+Tomatic can load all persons extension numbers from its configuration to Asterisk.
+Be careful, those changes might cut ongoing communications.
+A cron task performs it weekly every friday afternoon when all communications are over.
+You can force it yourself by running:
+
+```bash
+$ ./tomatic_extension.py load
+```
+To see which extensions are configured
+
+```bash
+$ ./tomatic_extension.py show
+```
 
 ### Direct asterisk rtqueue control
 
-To load the current queue acording to the schedule
+To load the current answering queue acording to the schedule
 
 ```bash
+$ ./tomatic_rtqueue.py set
+```
+To load the queue of a different time (for testing purposes):
+```bash
 $ ./tomatic_rtqueue.py set -d 2018-12-26 -t 10:23
+```
+To see the current queue (besides Tomatic web interface)
+
+```bash
+$ ./tomatic_rtqueue.py show
 ```
 
 
