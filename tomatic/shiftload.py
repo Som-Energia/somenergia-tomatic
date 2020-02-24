@@ -91,24 +91,27 @@ def apply_baixes(charge, baixes):
 
 def apply_holidays(charge):
     step("Aplicant vacances...")
-    situation = {}
+    loadLimit = {}
     with open('indisponibilitats-vacances.conf') as holidays_file:
         for line in holidays_file:
             name = line.split(" ")[0]
-            if name in situation.keys():
-                situation[name] += 1
+            if name in loadLimit.keys():
+                loadLimit[name] += 1
             else:
-                situation[name] = 1
+                loadLimit[name] = 1
 
     for person in charge:  # warning: name has to be ok
         if person is not 'all':
-            situation[person] = 5*2 - (situation[person]*2 if person in situation.keys() else 0)  # carrega maxima absoluta
+            ndays = 5
+            maxLoadPerDay = 2
+            # carrega maxima absoluta
+            loadLimit[person] = (ndays - loadLimit.get(person,0))*maxLoadPerDay
             # TODO: el ponderat
-            days = min(charge[person],situation[person])
+            days = min(charge[person],loadLimit[person])
             before = charge[person]
             charge[person] = max(days,0)
             charge['all'] -= (before - charge[person])
-    return situation
+    return loadLimit
 
 
 def pay_debts(maxim, charge, debts):
