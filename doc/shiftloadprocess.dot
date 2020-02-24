@@ -1,0 +1,7 @@
+digraph G {
+	rankdir=LR
+	Ponderació [shape=square]
+	"Carrega Ideal" -> "Ponderació"
+	Ponderació -> "Carrega Ponderada"
+}
+
