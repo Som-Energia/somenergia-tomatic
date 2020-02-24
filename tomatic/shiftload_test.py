@@ -263,24 +263,20 @@ class ShiftLoadTest(unittest.TestCase):
         self.assertEqual(capacity, 3+2+0+1+2)
 
     def test_achieveFullLoad_alreadyComplete(self):
-        limits = ns(
-            alice=10,
-            bob=10,
-        )
-        debts = ns(
-            alice=0,
-            bob=0,
-        )
-        shifts = ns(
-            alice=1,
-            bob=1,
-        )
-
         newShifts = shiftload.achieveFullLoad(
-            limits=limits,
             fullLoad=2,
-            shifts=shifts,
-            debts=debts,
+            limits = ns(
+                alice=10,
+                bob=10,
+            ),
+            debts = ns(
+                alice=0,
+                bob=0,
+            ),
+            shifts = ns(
+                alice=1,
+                bob=1,
+            ),
         )
         self.assertNsEqual(newShifts, """\
             alice: 1
