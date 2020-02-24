@@ -132,6 +132,7 @@ def achieveFullLoad(limits, fullLoad, shifts, debts):
     currentLoad = sum(shifts.values())
     for person, debt in sorted(debts.items(), key=lambda x: -x[1]):
         if currentLoad == fullLoad: break
+        if result[person] >= limits[person]: continue
         if debt:
             result[person] += 1
             currentLoad += 1
