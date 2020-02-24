@@ -129,8 +129,12 @@ def pay_debts(maxim, charge, debts):
 
 def achieveFullLoad(limits, fullLoad, shifts, debts):
     result = ns(shifts)
+    currentLoad = sum(shifts.values())
     for person, debt in debts.items():
-	if debt: result[person] += 1
+        if currentLoad == fullLoad: break
+        if debt:
+            result[person] += 1
+            currentLoad += 1
     return result
 
     step("Compensant torns que falten amb criteri 'random'...")
@@ -244,3 +248,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# vim: et ts=4 sw=4
