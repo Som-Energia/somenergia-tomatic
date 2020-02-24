@@ -10,7 +10,7 @@ import random
 
 
 def singlePonderatedLoad(person, load, businessDays, daysoff, leaves):
-    return load*workingDays(person, businessDays, daysoff, leaves)/5
+    return load*workingDays(person, businessDays, daysoff, leaves)/float(5)
 
 def ponderatedLoad(idealLoad, businessDays, daysoff, leaves):
     return {
