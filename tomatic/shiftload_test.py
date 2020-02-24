@@ -277,9 +277,9 @@ class ShiftLoadTest(unittest.TestCase):
         )
 
         newShifts = shiftload.achieveFullLoad(
-            maxims=limits,
-            total_lines=2,
-            charge=shifts,
+            limits=limits,
+            fullLoad=2,
+            shifts=shifts,
             debts=debts,
         )
         self.assertNsEqual(newShifts, """\

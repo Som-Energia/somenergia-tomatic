@@ -127,25 +127,25 @@ def pay_debts(maxim, charge, debts):
     return debts
 
 
-def achieveFullLoad(maxims, total_lines, charge, debts):
-    return charge 
+def achieveFullLoad(limits, fullLoad, shifts, debts):
+    return shifts 
     step("Compensant torns que falten amb criteri 'random'...")
-    possibles_afortunats = list(charge.keys())
+    possibles_afortunats = list(shifts.keys())
     compensat = False
     while not compensat:
         random_person = random.choice(possibles_afortunats)
-        if charge[random_person] < maxims[random_person]:
-            charge[random_person] += 1
-            charge['all'] += 1
+        if shifts[random_person] < limits[random_person]:
+            shifts[random_person] += 1
+            shifts['all'] += 1
             if person in debts:
                 debts[random_person] -= 1
             else:
                 debts[random_person] = -1
-        compensat = charge['all'] == total_lines 
-    return charge
+        compensat = shifts['all'] == fullLoad 
+    return shifts
 
 
-def compensar_torns_que_sobren(total_lines, charge, debts):
+def compensar_torns_que_sobren(fullLoad, charge, debts):
     step("Compensant torns que sobren amb criteri 'random'...")
     possibles_afortunats = list(charge.keys())
     compensat = False
@@ -158,11 +158,11 @@ def compensar_torns_que_sobren(total_lines, charge, debts):
                 debts[random_person] += 1
             else:
                 debts[random_person] = 1
-        compensat = charge['all'] == total_lines 
+        compensat = charge['all'] == fullLoad 
     return charge
 
 
-def clusteritzar(lines, total_lines, charge):
+def clusteritzar(lines, fullLoad, charge):
     return charge
 
 
@@ -211,7 +211,7 @@ def main():
 
     lines = args.lines
     ideals = get_ideals_sheet(lines)
-    total_lines = lines*args.charge
+    fullLoad = lines*args.charge
 
     charge = ideals
     if args.baixes:
@@ -223,9 +223,9 @@ def main():
     debts = pay_debts(situation, charge, excedents.deutes)
 
     if charge['all'] < lines*args.charge:
-        compensat = achieveFullLoad(situation, total_lines, charge, debts)
+        compensat = achieveFullLoad(situation, fullLoad, charge, debts)
     else:
-        compensat = compensar_torns_que_sobren(total_lines, charge, debts)
+        compensat = compensar_torns_que_sobren(fullLoad, charge, debts)
     
     if not compensat:
         error("No es pot assolir la càrrega mínima amb les línies especificades.")
@@ -233,7 +233,7 @@ def main():
     debts = ns({'deutes': debts})
     debts.dump(EXCEDENTS_FILE)
 
-    final_charge = clusteritzar(lines, total_lines, charge)
+    final_charge = clusteritzar(lines, fullLoad, charge)
 
     return 0
 
