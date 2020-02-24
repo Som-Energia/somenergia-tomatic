@@ -262,6 +262,30 @@ class ShiftLoadTest(unittest.TestCase):
         ], maxPerDay = 3)
         self.assertEqual(capacity, 3+2+0+1+2)
 
+    def test_achieveFullLoad_alreadyComplete(self):
+        limits = ns(
+            alice=10,
+            bob=10,
+        )
+        debts = ns(
+            alice=0,
+            bob=0,
+        )
+        shifts = ns(
+            alice=1,
+            bob=1,
+        )
+
+        newShifts = shiftload.achieveFullLoad(
+            maxims=limits,
+            total_lines=2,
+            charge=shifts,
+            debts=debts,
+        )
+        self.assertNsEqual(newShifts, """\
+            alice: 1
+            bob: 1
+        """)
 
 
 # vim: et ts=4 sw=4

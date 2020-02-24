@@ -127,7 +127,8 @@ def pay_debts(maxim, charge, debts):
     return debts
 
 
-def compensar_torns_que_falten(maxims, total_lines, charge, debts):
+def achieveFullLoad(maxims, total_lines, charge, debts):
+    return charge 
     step("Compensant torns que falten amb criteri 'random'...")
     possibles_afortunats = list(charge.keys())
     compensat = False
@@ -222,7 +223,7 @@ def main():
     debts = pay_debts(situation, charge, excedents.deutes)
 
     if charge['all'] < lines*args.charge:
-        compensat = compensar_torns_que_falten(situation, total_lines, charge, debts)
+        compensat = achieveFullLoad(situation, total_lines, charge, debts)
     else:
         compensat = compensar_torns_que_sobren(total_lines, charge, debts)
     
