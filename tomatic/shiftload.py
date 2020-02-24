@@ -128,7 +128,11 @@ def pay_debts(maxim, charge, debts):
 
 
 def achieveFullLoad(limits, fullLoad, shifts, debts):
-    return shifts 
+    result = ns(shifts)
+    for person, debt in debts.items():
+	if debt: result[person] += 1
+    return result
+
     step("Compensant torns que falten amb criteri 'random'...")
     possibles_afortunats = list(shifts.keys())
     compensat = False

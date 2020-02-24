@@ -264,7 +264,7 @@ class ShiftLoadTest(unittest.TestCase):
 
     def test_achieveFullLoad_alreadyComplete(self):
         newShifts = shiftload.achieveFullLoad(
-            fullLoad=2,
+            fullLoad=4,
             limits = ns(
                 alice=10,
                 bob=10,
@@ -274,13 +274,34 @@ class ShiftLoadTest(unittest.TestCase):
                 bob=0,
             ),
             shifts = ns(
-                alice=1,
-                bob=1,
+                alice=2,
+                bob=2,
             ),
         )
         self.assertNsEqual(newShifts, """\
-            alice: 1
-            bob: 1
+            alice: 2
+            bob: 2
+        """)
+
+    def test_achieveFullLoad_withDebt(self):
+        newShifts = shiftload.achieveFullLoad(
+            fullLoad=4,
+            limits = ns(
+                alice=10,
+                bob=10,
+            ),
+            debts = ns(
+                alice=1,
+                bob=0,
+            ),
+            shifts = ns(
+                alice=1,
+                bob=2,
+            ),
+        )
+        self.assertNsEqual(newShifts, """\
+            alice: 2
+            bob: 2
         """)
 
 
