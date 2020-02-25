@@ -453,7 +453,7 @@ class ShiftLoadTest(unittest.TestCase):
 
 #---------------
 
-    def test_increaseUntilFullLoad_alreadyComplete(self):
+    def test_decreaseUntilFullLoad_alreadyComplete(self):
         newShifts = shiftload.decreaseUntilFullLoad(
             fullLoad=4,
             limits = ns(
@@ -474,7 +474,7 @@ class ShiftLoadTest(unittest.TestCase):
             bob: 2
         """)
 
-    def __test_increaseUntilFullLoad_withDebt(self):
+    def __test_decreaseUntilFullLoad_withDebt(self):
         newShifts = shiftload.decreaseUntilFullLoad(
             fullLoad=4,
             limits = ns(
@@ -495,7 +495,7 @@ class ShiftLoadTest(unittest.TestCase):
             bob: 2
         """)
 
-    def __test_increaseUntilFullLoad_withDebtAndFullLoad_ignoresDebt(self):
+    def __test_decreaseUntilFullLoad_withDebtAndFullLoad_ignoresDebt(self):
         newShifts = shiftload.decreaseUntilFullLoad(
             fullLoad=4,
             limits = ns(
@@ -516,7 +516,7 @@ class ShiftLoadTest(unittest.TestCase):
             bob: 2
         """)
 
-    def _test_increaseUntilFullLoad_majorDebtorPays(self):
+    def _test_decreaseUntilFullLoad_majorDebtorPays(self):
         newShifts = shiftload.decreaseUntilFullLoad(
             fullLoad=4,
             limits = ns(
@@ -537,7 +537,7 @@ class ShiftLoadTest(unittest.TestCase):
             bob: 3
         """)
 
-    def _test_increaseUntilFullLoad_respectLimits(self):
+    def _test_decreaseUntilFullLoad_respectLimits(self):
         newShifts = shiftload.decreaseUntilFullLoad(
             fullLoad=4,
             limits = ns(
@@ -558,7 +558,7 @@ class ShiftLoadTest(unittest.TestCase):
             bob: 2
         """)
 
-    def _test_increaseUntilFullLoad_samePersonTwice(self):
+    def _test_decreaseUntilFullLoad_samePersonTwice(self):
         newShifts = shiftload.decreaseUntilFullLoad(
             fullLoad=4,
             limits = ns(
@@ -579,7 +579,7 @@ class ShiftLoadTest(unittest.TestCase):
             bob: 2
         """)
 
-    def _test_increaseUntilFullLoad_onceDebtsArePayed(self):
+    def _test_decreaseUntilFullLoad_onceDebtsArePayed(self):
         newShifts = shiftload.decreaseUntilFullLoad(
             fullLoad=4,
             limits = ns(
@@ -600,7 +600,7 @@ class ShiftLoadTest(unittest.TestCase):
             bob: 3
         """)
 
-    def _test_increaseUntilFullLoad_withNegativeDebts(self):
+    def _test_decreaseUntilFullLoad_withNegativeDebts(self):
         newShifts = shiftload.decreaseUntilFullLoad(
             fullLoad=4,
             limits = ns(
@@ -621,7 +621,7 @@ class ShiftLoadTest(unittest.TestCase):
             bob: 4
         """)
 
-    def _test_increaseUntilFullLoad_settleDebt(self):
+    def _test_decreaseUntilFullLoad_settleDebt(self):
         newShifts = shiftload.decreaseUntilFullLoad(
             fullLoad=4,
             limits = ns(
