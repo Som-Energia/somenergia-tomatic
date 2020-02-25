@@ -262,6 +262,16 @@ class ShiftLoadTest(unittest.TestCase):
         ], maxPerDay = 3)
         self.assertEqual(capacity, 3+2+0+1+2)
 
+    def test_weekCapacity_max4(self):
+        capacity = shiftload.weekCapacity(busy=[
+            '0000',
+            '0011',
+            '1111',
+            '0111',
+            '1001',
+        ], maxPerDay = 4)
+        self.assertEqual(capacity, 4+2+0+1+2)
+
     def test_achieveFullLoad_alreadyComplete(self):
         newShifts = shiftload.achieveFullLoad(
             fullLoad=4,

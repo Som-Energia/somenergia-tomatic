@@ -40,9 +40,11 @@ def dayCapacity(busy, maxPerDay):
     if busy == '1111': return 0
     if maxPerDay == 1: return 1
     if maxPerDay == 2:
+        # Restriction: consecutive and not arround the lunch time, to be two
         if busy[:2] == '00': return 2
         if busy[2:] == '00': return 2
         return 1
+    if maxPerDay == 4 and busy=='0000': return 4
     if '000' in busy: return 3
     if '00' in busy: return 2
     return 1
