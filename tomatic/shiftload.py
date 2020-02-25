@@ -137,6 +137,7 @@ def achieveFullLoad(fullLoad, shifts, limits, debts):
             if currentLoad == fullLoad: break
             if result[person] >= limits[person]: continue
             if operatingWithDebts and debt <= 0: continue
+            debts[person] -= 1
             result[person] += 1
             currentLoad += 1
         if load == currentLoad:
