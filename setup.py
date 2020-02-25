@@ -16,7 +16,7 @@ setup(
     long_description_content_type = 'text/markdown',
     license = 'GNU Affero General Public License v3 or later (GPLv3+)',
     scripts=[
-        'schedulehours.py',
+        'tomatic_scheduler.py',
         'tomatic_rtqueue.py',
         'tomatic_extensions.py',
         'tomatic_api.py',
