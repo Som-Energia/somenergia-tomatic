@@ -269,7 +269,7 @@ class ShiftLoadTest(unittest.TestCase):
                 alice=10,
                 bob=10,
             ),
-            debts = ns(
+            credits = ns(
                 alice=0,
                 bob=0,
             ),
@@ -290,8 +290,8 @@ class ShiftLoadTest(unittest.TestCase):
                 alice=10,
                 bob=10,
             ),
-            debts = ns(
-                alice=1,
+            credits = ns(
+                alice=-1,
                 bob=0,
             ),
             shifts = ns(
@@ -311,8 +311,8 @@ class ShiftLoadTest(unittest.TestCase):
                 alice=10,
                 bob=10,
             ),
-            debts = ns(
-                alice=1,
+            credits = ns(
+                alice=-1,
                 bob=0,
             ),
             shifts = ns(
@@ -332,9 +332,9 @@ class ShiftLoadTest(unittest.TestCase):
                 alice=10,
                 bob=10,
             ),
-            debts = ns(
-                alice=1,
-                bob=2,
+            credits = ns(
+                alice=-1,
+                bob=-2,
             ),
             shifts = ns(
                 alice=1,
@@ -353,9 +353,9 @@ class ShiftLoadTest(unittest.TestCase):
                 alice=10,
                 bob=2,
             ),
-            debts = ns(
-                alice=1,
-                bob=2,
+            credits = ns(
+                alice=-1,
+                bob=-2,
             ),
             shifts = ns(
                 alice=1,
@@ -374,8 +374,8 @@ class ShiftLoadTest(unittest.TestCase):
                 alice=10,
                 bob=10,
             ),
-            debts = ns(
-                alice=5,
+            credits = ns(
+                alice=-5,
                 bob=0,
             ),
             shifts = ns(
@@ -395,7 +395,7 @@ class ShiftLoadTest(unittest.TestCase):
                 alice=10,
                 bob=10,
             ),
-            debts = ns(
+            credits = ns(
                 alice=0,
                 bob=0,
             ),
@@ -416,9 +416,9 @@ class ShiftLoadTest(unittest.TestCase):
                 alice=10,
                 bob=10,
             ),
-            debts = ns(
-                alice=-1,
-                bob=2,
+            credits = ns(
+                alice=1,
+                bob=-2,
             ),
             shifts = ns(
                 alice=0,
@@ -437,9 +437,9 @@ class ShiftLoadTest(unittest.TestCase):
                 alice=10,
                 bob=10,
             ),
-            debts = ns(
-                alice=1,
-                bob=3,
+            credits = ns(
+                alice=-1,
+                bob=-3,
             ),
             shifts = ns(
                 alice=0,
