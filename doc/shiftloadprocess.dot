@@ -1,7 +1,35 @@
 digraph G {
-	rankdir=LR
-	Ponderació [shape=square]
-	"Carrega Ideal" -> "Ponderació"
-	Ponderació -> "Carrega Ponderada"
+	rankdir=TB
+    "Càrrega Ideal" [shape=rectangle, color=red]
+	"Càrrega Ponderada" [shape=rectangle, color=red]
+	"Càrrega Arrodonida" [shape=rectangle, color=red]
+	"Càrrega Limitada" [shape=rectangle, color=red]
+	"Càrrega Final" [shape=rectangle, color=red]
+
+	"Festius" [shape=rectangle]
+	"Vacances" [shape=rectangle]
+	"Baixes" [shape=rectangle]
+	"Viatges Laborals" [shape=rectangle]
+	Capacitat [label = "Capacitat\nper persona", shape=rectangle]
+    "Indisponibilitats" [shape=rectangle]
+    "Cotes" [shape=rectangle]
+    "Sobrecàrrega" [shape=rectangle]
+
+
+	"Càrrega Ideal" -> Ponderació -> "Càrrega Ponderada" -> Arrodoniment -> "Càrrega Arrodonida" -> "Ajust a Capacitat" -> "Càrrega Limitada" -> Compensació -> "Càrrega Final"
+
+    "Vacances" -> "Ponderació"
+    "Festius" -> "Ponderació"
+    "Baixes" -> "Ponderació"
+    "Viatges Laborals" -> "Ponderació"
+
+    Indisponibilitats -> "Càlcul\nCapacitat" -> Capacitat
+    Capacitat -> "Ajust a Capacitat"
+
+    Capacitat -> "Cota mínima" -> Cotes
+    "Càrrega Arrodonida" -> "Cota mínima"
+    Cotes -> Compensació
+    Compensació -> "Sobrecàrrega"
+
 }
 
