@@ -127,7 +127,16 @@ def pay_debts(maxim, charge, debts):
     return debts
 
 
+
+
 def achieveFullLoad(fullLoad, shifts, limits, credits):
+    return increaseUntilFullLoad(fullLoad, shifts, limits, credits)
+
+
+def decreaseUntilFullLoad(fullLoad, shifts, limits, credits):
+    return shifts 
+
+def increaseUntilFullLoad(fullLoad, shifts, limits, credits):
     result = ns(shifts)
     currentLoad = sum(shifts.values())
     operatingWithDebts = True
@@ -144,6 +153,7 @@ def achieveFullLoad(fullLoad, shifts, limits, credits):
             if not operatingWithDebts: break
             operatingWithDebts = False
     return result
+
 
 def compensar_torns_que_sobren(fullLoad, charge, debts):
     step("Compensant torns que sobren amb criteri 'random'...")

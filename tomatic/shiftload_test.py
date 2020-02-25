@@ -450,4 +450,197 @@ class ShiftLoadTest(unittest.TestCase):
             alice: 1
             bob: 3
         """)
+
+#---------------
+
+    def test_increaseUntilFullLoad_alreadyComplete(self):
+        newShifts = shiftload.decreaseUntilFullLoad(
+            fullLoad=4,
+            limits = ns(
+                alice=10,
+                bob=10,
+            ),
+            credits = ns(
+                alice=0,
+                bob=0,
+            ),
+            shifts = ns(
+                alice=2,
+                bob=2,
+            ),
+        )
+        self.assertNsEqual(newShifts, """\
+            alice: 2
+            bob: 2
+        """)
+
+    def __test_increaseUntilFullLoad_withDebt(self):
+        newShifts = shiftload.decreaseUntilFullLoad(
+            fullLoad=4,
+            limits = ns(
+                alice=10,
+                bob=10,
+            ),
+            credits = ns(
+                alice=-1,
+                bob=0,
+            ),
+            shifts = ns(
+                alice=1,
+                bob=2,
+            ),
+        )
+        self.assertNsEqual(newShifts, """\
+            alice: 2
+            bob: 2
+        """)
+
+    def __test_increaseUntilFullLoad_withDebtAndFullLoad_ignoresDebt(self):
+        newShifts = shiftload.decreaseUntilFullLoad(
+            fullLoad=4,
+            limits = ns(
+                alice=10,
+                bob=10,
+            ),
+            credits = ns(
+                alice=-1,
+                bob=0,
+            ),
+            shifts = ns(
+                alice=2,
+                bob=2,
+            ),
+        )
+        self.assertNsEqual(newShifts, """\
+            alice: 2
+            bob: 2
+        """)
+
+    def _test_increaseUntilFullLoad_majorDebtorPays(self):
+        newShifts = shiftload.decreaseUntilFullLoad(
+            fullLoad=4,
+            limits = ns(
+                alice=10,
+                bob=10,
+            ),
+            credits = ns(
+                alice=-1,
+                bob=-2,
+            ),
+            shifts = ns(
+                alice=1,
+                bob=2,
+            ),
+        )
+        self.assertNsEqual(newShifts, """\
+            alice: 1
+            bob: 3
+        """)
+
+    def _test_increaseUntilFullLoad_respectLimits(self):
+        newShifts = shiftload.decreaseUntilFullLoad(
+            fullLoad=4,
+            limits = ns(
+                alice=10,
+                bob=2,
+            ),
+            credits = ns(
+                alice=-1,
+                bob=-2,
+            ),
+            shifts = ns(
+                alice=1,
+                bob=2,
+            ),
+        )
+        self.assertNsEqual(newShifts, """\
+            alice: 2
+            bob: 2
+        """)
+
+    def _test_increaseUntilFullLoad_samePersonTwice(self):
+        newShifts = shiftload.decreaseUntilFullLoad(
+            fullLoad=4,
+            limits = ns(
+                alice=10,
+                bob=10,
+            ),
+            credits = ns(
+                alice=-5,
+                bob=0,
+            ),
+            shifts = ns(
+                alice=0,
+                bob=2,
+            ),
+        )
+        self.assertNsEqual(newShifts, """\
+            alice: 2
+            bob: 2
+        """)
+
+    def _test_increaseUntilFullLoad_onceDebtsArePayed(self):
+        newShifts = shiftload.decreaseUntilFullLoad(
+            fullLoad=4,
+            limits = ns(
+                alice=10,
+                bob=10,
+            ),
+            credits = ns(
+                alice=0,
+                bob=0,
+            ),
+            shifts = ns(
+                alice=0,
+                bob=2,
+            ),
+        )
+        self.assertNsEqual(newShifts, """\
+            alice: 1
+            bob: 3
+        """)
+
+    def _test_increaseUntilFullLoad_withNegativeDebts(self):
+        newShifts = shiftload.decreaseUntilFullLoad(
+            fullLoad=4,
+            limits = ns(
+                alice=10,
+                bob=10,
+            ),
+            credits = ns(
+                alice=1,
+                bob=-2,
+            ),
+            shifts = ns(
+                alice=0,
+                bob=2,
+            ),
+        )
+        self.assertNsEqual(newShifts, """\
+            alice: 0
+            bob: 4
+        """)
+
+    def _test_increaseUntilFullLoad_settleDebt(self):
+        newShifts = shiftload.decreaseUntilFullLoad(
+            fullLoad=4,
+            limits = ns(
+                alice=10,
+                bob=10,
+            ),
+            credits = ns(
+                alice=-1,
+                bob=-3,
+            ),
+            shifts = ns(
+                alice=0,
+                bob=0,
+            ),
+        )
+        self.assertNsEqual(newShifts, """\
+            alice: 1
+            bob: 3
+        """)
+
+
 # vim: et ts=4 sw=4
