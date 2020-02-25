@@ -127,7 +127,7 @@ def pay_debts(maxim, charge, debts):
     return debts
 
 
-def achieveFullLoad(limits, fullLoad, shifts, debts):
+def achieveFullLoad(fullLoad, shifts, limits, debts):
     result = ns(shifts)
     currentLoad = sum(shifts.values())
     operatingWithDebts = True
