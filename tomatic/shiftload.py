@@ -143,26 +143,7 @@ def achieveFullLoad(fullLoad, shifts, limits, debts):
         if load == currentLoad:
             if not operatingWithDebts: break
             operatingWithDebts = False
-
-
-
     return result
-
-    step("Compensant torns que falten amb criteri 'random'...")
-    possibles_afortunats = list(shifts.keys())
-    compensat = False
-    while not compensat:
-        random_person = random.choice(possibles_afortunats)
-        if shifts[random_person] < limits[random_person]:
-            shifts[random_person] += 1
-            shifts['all'] += 1
-            if person in debts:
-                debts[random_person] -= 1
-            else:
-                debts[random_person] = -1
-        compensat = shifts['all'] == fullLoad 
-    return shifts
-
 
 def compensar_torns_que_sobren(fullLoad, charge, debts):
     step("Compensant torns que sobren amb criteri 'random'...")
