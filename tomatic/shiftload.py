@@ -132,9 +132,24 @@ def pay_debts(maxim, charge, debts):
 def achieveFullLoad(fullLoad, shifts, limits, credits):
     return increaseUntilFullLoad(fullLoad, shifts, limits, credits)
 
-
 def decreaseUntilFullLoad(fullLoad, shifts, limits, credits):
-    return shifts 
+    result = ns(shifts)
+    currentLoad = sum(shifts.values())
+    operatingWithCredit = True
+    while True:
+        load = currentLoad
+        for person, credit in sorted(credits.items(), key=lambda x: -x[1]):
+            if currentLoad == fullLoad: break
+            if result[person] <= 0: continue
+            if operatingWithCredit and credit <= 0: continue
+            credits[person] -= 1
+            result[person] -= 1
+            currentLoad -= 1
+        if load == currentLoad:
+            if not operatingWithCredit: break
+            operatingWithCredit = False
+    return result
+
 
 def increaseUntilFullLoad(fullLoad, shifts, limits, credits):
     result = ns(shifts)
