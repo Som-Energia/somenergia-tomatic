@@ -7,6 +7,9 @@ from consolemsg import error, warn, step
 from yamlns import namespace as ns
 import os.path
 import random
+from pathlib2 import Path
+import datetime
+
 
 
 def singlePonderatedLoad(person, load, businessDays, daysoff, leaves):
@@ -127,10 +130,12 @@ def pay_debts(maxim, charge, debts):
     return debts
 
 
-
-
 def achieveFullLoad(fullLoad, shifts, limits, credits):
+    currentLoad = sum(shifts.values())
+    if currentLoad > fullLoad:
+        return decreaseUntilFullLoad(fullLoad, shifts, limits, credits)
     return increaseUntilFullLoad(fullLoad, shifts, limits, credits)
+
 
 def decreaseUntilFullLoad(fullLoad, shifts, limits, credits):
     result = ns(shifts)
@@ -223,7 +228,7 @@ def showInfo():
     print("carrega necesaria = nombre de torns * nombre de dies")
 
 
-def main():
+def oldmain():
     global args
     args = parseArgs()
 
@@ -261,6 +266,136 @@ def main():
     final_charge = clusteritzar(lines, fullLoad, charge)
 
     return 0
+
+
+def parseArgs():
+    import argparse
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        '--keep',
+        action='store_true',
+        help="no baixa les dades del drive"
+        )
+
+    parser.add_argument(
+        dest='date',
+        nargs='?',
+        default=None,
+        help='generates the schedule for the week including such date',
+        )
+
+    parser.add_argument(
+        '--certificate','-C',
+        metavar='CERTIFICATE.json',
+        default='drive-certificate.json',
+        help='certificat amb permisos per accedir al document gdrive',
+        )
+
+    parser.add_argument(
+        '--holidays',
+        default='drive',
+        help="Origen d'on agafa les vacances",
+    )
+
+    parser.add_argument(
+        '-l',
+        '--lines',
+        default=None,
+        type=int,
+        help="Number of concurrent phone lines",
+    )
+
+    parser.add_argument(
+        '--drive-file',
+        help="Document del drive origen de dades externes"
+        )
+
+    parser.add_argument(
+        '--config-file',
+        default='config.yaml',
+        help="fitxer de configuració principal",
+    )
+
+    parser.add_argument(
+        '--personsfile',
+        default='persons.yaml',
+        help="fitxer de configuració de les persones",
+    )
+
+    parser.add_argument(
+        '--idealshifts',
+        default=None,
+        help="fitxer tsv amb la carrega ideal de cada persona (fila)",
+    )
+
+    return parser.parse_args()
+
+args=None
+
+from .scheduler import (
+    baixaPersones,
+    baixaIndisponibilitatsTomatic,
+    baixaVacancesNotoi,
+    baixaVacancesDrive,
+    baixaCarregaIdeal,
+)
+
+def main():
+    global args
+
+    args = parseArgs()
+
+    step('Carregant configuració {}...', args.config_file)
+    from yamlns import namespace as ns
+    try:
+        config = ns.load(args.config_file)
+    except:
+        error("Configuració incorrecta")
+        raise
+
+    if args.personsfile:
+        config.personsfile = args.personsfile
+
+    if not args.keep:
+        baixaPersones(config)
+
+    if args.personsfile and Path(args.personsfile).exists():
+        config.update(ns.load(args.personsfile))
+
+    if args.date is not None:
+        # take the monday of the week including that date
+        givenDate = datetime.datetime.strptime(args.date,"%Y-%m-%d").date()
+        config.monday = givenDate - timedelta(days=givenDate.weekday())
+    else:
+        # If no date provided, take the next monday
+        today = datetime.date.today()
+        config.monday = today + datetime.timedelta(days=7-today.weekday())
+
+    if args.lines:
+        config.nTelefons = args.lines
+
+    if args.drive_file:
+        config.documentDrive = args.drive_file
+
+    mustDownloadShifts = not args.idealshifts and not config.get('idealshifts')
+    config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.csv'
+
+    if not args.keep:
+        if mustDownloadShifts:
+            baixaCarregaIdeal(config, args.certificate)
+        if not config.get('busyFiles'):
+            baixaIndisponibilitatsTomatic(config)
+            if args.holidays == 'notoi':
+                baixaVacancesNotoi(config)
+            else: # args.holidays == 'drive':
+                baixaVacancesDrive(config, args.certificate)
+
+    step('Generant carrega...')
+
+
+
+
 
 
 if __name__ == '__main__':

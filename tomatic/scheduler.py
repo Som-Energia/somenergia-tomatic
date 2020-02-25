@@ -56,6 +56,30 @@ def baixaCarrega(config, certificat):
                 )
             )
 
+def baixaCarregaIdeal(config, certificat):
+    step('Autentificant al Google Drive')
+    fetcher = SheetFetcher(
+        documentName=config.documentDrive,
+        credentialFilename=certificat,
+        )
+
+    step('Baixant carrega setmanal...')
+
+    step("  Descarregant el rang '{}'...", config.idealLoadNamesRange)
+    names = fetcher.get_range(
+        config.fullCarregaIdeal, config.idealLoadNamesRange)
+    step("  Descarregant el rang '{}'...", config.idealLoadValuesRange)
+    values = fetcher.get_range(
+        config.fullCarregaIdeal, config.idealLoadValuesRange)
+    step("  Guardant-ho com '{}'...".format(config.idealshifts))
+    with open(config.idealshifts,'w') as phoneload :
+        phoneload.write(
+            "\n".join(
+                '\t'.join([transliterate(name[0]), value[0]])
+                for name, value in zip(names, values)
+                )
+            )
+
 def baixaPersones(config):
     step("Baixant informació de les persones del tomatic...")
     url = config.baseUrl + '/api/persons'
