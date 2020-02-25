@@ -12,10 +12,11 @@ import datetime
 
 
 
-def singlePonderatedLoad(person, load, businessDays, daysoff, leaves):
-    return load*workingDays(person, businessDays, daysoff, leaves)/float(5)
-
 def ponderatedLoad(idealLoad, businessDays, daysoff, leaves):
+    """Applies to an ideal load (a dictionary person->load)
+    the proportionality of the actual days each person has to
+    work removing non business days, days off, and leaves.
+    """
     return {
         person: singlePonderatedLoad(
             person=person,
@@ -27,7 +28,16 @@ def ponderatedLoad(idealLoad, businessDays, daysoff, leaves):
         for person, load in idealLoad.items()
     }
 
+def singlePonderatedLoad(person, load, businessDays, daysoff, leaves):
+    """Returns for a given person the ponderated load, that is
+    the ideal load for a full week, proportional to the actual working
+    days considering businessDays, days off and leavs."""
+    return load*workingDays(person, businessDays, daysoff, leaves)/float(5)
+
 def workingDays(person, businessDays, daysoff, leaves):
+    """Returns the real working days for a person,
+    removing the days off or all if in sick leave.
+    """
     if person in leaves: return 0
     ndaysoff = sum(
             day.person == person
@@ -36,7 +46,27 @@ def workingDays(person, businessDays, daysoff, leaves):
             )
     return len(businessDays)-ndaysoff
 
+def weekCapacity(busy, maxPerDay):
+    """Returns a upper bound for the actual week capacity
+    for a person to answer phone given some constraints
+    on working confort and the availability of the person.
+
+    @arg maxPerDay is the configured maxPerDay for that person.
+    @arg busy is an iterable of strings per day encoding the
+        aggregated capacity ['0011', '1010', ... ]
+    """
+    return sum(dayCapacity(b, maxPerDay) for b in busy)
+
+
 def dayCapacity(busy, maxPerDay):
+    """Returns the upper bound for the actual day capacity
+    for a person to answer phone given some constraints
+    on working confort and the availability of the person.
+
+    @arg maxPerDay is the configured maxPerDay for that person.
+    @arg busy is a string coding shift unavailability for the day
+        (one means busy, zero means available)
+    """
     if busy == '1111': return 0
     if maxPerDay == 1: return 1
     if maxPerDay == 2:
@@ -49,9 +79,6 @@ def dayCapacity(busy, maxPerDay):
     if '00' in busy: return 2
     return 1
 
-
-def weekCapacity(busy, maxPerDay):
-    return sum(dayCapacity(b, maxPerDay) for b in busy)
 
 
 args = None

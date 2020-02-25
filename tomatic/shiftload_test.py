@@ -15,13 +15,6 @@ class ShiftLoadTest(unittest.TestCase):
 
     from yamlns.testutils import assertNsEqual
 
-    def _test_commented(self):
-        lines = Path('indisponibilitats-vacances.conf').read_text(encoding='utf8').split('\n')
-        vacances = busy.parseBusy(lines)
-        self.assertNsEqual(ns(vacances=list(vacances)), """\
-                vacances: 
-                """)
-
     def test_workingDays_allWorkingDays(self):
         workingDays = shiftload.workingDays(
             person='alice',
