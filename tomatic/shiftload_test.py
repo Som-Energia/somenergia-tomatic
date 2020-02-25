@@ -409,4 +409,24 @@ class ShiftLoadTest(unittest.TestCase):
             bob: 3
         """)
 
+    def test_achieveFullLoad_withNegativeDebts(self):
+        newShifts = shiftload.achieveFullLoad(
+            fullLoad=4,
+            limits = ns(
+                alice=10,
+                bob=10,
+            ),
+            debts = ns(
+                alice=-1,
+                bob=2,
+            ),
+            shifts = ns(
+                alice=0,
+                bob=2,
+            ),
+        )
+        self.assertNsEqual(newShifts, """\
+            alice: 0
+            bob: 4
+        """)
 # vim: et ts=4 sw=4
