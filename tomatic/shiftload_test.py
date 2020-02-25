@@ -265,6 +265,61 @@ class ShiftLoadTest(unittest.TestCase):
         ], maxPerDay = 4)
         self.assertEqual(capacity, 4+2+0+1+2)
 
+    def setupBusy(self, lines=''):
+        busytable = busy.BusyTable(
+            days=['dl','dm'],
+            nhours=4,
+            persons=['alice'],
+        )
+        tmpfile = Path("tempfile")
+        tmpfile.write_text(lines)
+        busytable.load(str(tmpfile), busy.isodate('2020-01-02'))
+ 
+        return busytable
+
+    def test_capacity_noLimits(self):
+        busytable = self.setupBusy()
+        c = shiftload.capacity(busytable,4)
+
+        self.assertNsEqual(c, """\
+            alice: 8
+        """)
+
+    def test_capacity_limit3(self):
+        busytable = self.setupBusy()
+        c = shiftload.capacity(busytable,3)
+
+        self.assertNsEqual(c, """\
+            alice: 6
+        """)
+
+    def test_capacity_higherSpecificLimits(self):
+        busytable = self.setupBusy()
+        c = shiftload.capacity(busytable,3, ns(alice=4))
+
+        self.assertNsEqual(c, """\
+            alice: 8
+        """)
+
+    def test_capacity_lowerSpecificLimits(self):
+        busytable = self.setupBusy()
+        busytable.load
+        c = shiftload.capacity(busytable,3, ns(alice=2))
+
+        self.assertNsEqual(c, """\
+            alice: 4
+        """)
+
+    def test_capacity_busyConstraints(self):
+        busytable = self.setupBusy(
+            '+alice dl 1001 # forbides 2 on monday\n'
+        )
+        c = shiftload.capacity(busytable,2)
+
+        self.assertNsEqual(c, """\
+            alice: 3
+        """)
+
     def test_achieveFullLoad_alreadyComplete(self):
         newShifts = shiftload.achieveFullLoad(
             fullLoad=4,
