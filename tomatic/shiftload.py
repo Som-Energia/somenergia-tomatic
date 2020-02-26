@@ -3,14 +3,14 @@
 
 import csv
 from sheetfetcher import SheetFetcher
-from consolemsg import error, warn, step
+from consolemsg import error, warn, step, out
 from yamlns import namespace as ns
 import os.path
 import random
 from pathlib2 import Path
 import datetime
 from . import busy
-
+import glob
 
 
 def ponderatedLoad(idealLoad, businessDays, daysoff, leaves):
@@ -103,6 +103,20 @@ def loadSubstract(minuend, subtrahend):
     return ns(
         (person, minuend.get(person, 0) - subtrahend.get(person, 0))
         for person in set(minuend.keys()+subtrahend.keys())
+    )
+
+# TODO: To test
+def loadMin(a, b):
+    return ns(
+        (person, min(a.get(person, 0), b.get(person, 0)))
+        for person in set(a.keys()+b.keys())
+    )
+
+# TODO: To test
+def augmentLoad(load, addend=1):
+    return ns(
+        (person, value+addend)
+        for person, value in load.items()
     )
 
 
@@ -409,9 +423,7 @@ def main():
     businessDays = busy.laborableWeekDays(config.monday)
     idealLoad = ns.load(config.idealshifts)
     daysoffcontent = Path('indisponibilitats-vacances.conf').read_text(encoding='utf8').split("\n")
-    daysoff = busy.parseBusy(daysoffcontent, error)
-    print(list(daysoff))
-    
+    daysoff = list(busy.parseBusy(daysoffcontent, error))
 
     ponderated = ponderatedLoad(
         idealLoad=idealLoad,
@@ -420,9 +432,50 @@ def main():
         leaves = [], # TODO
     )
 
-    print(ponderated)
+    rounded = ns((p, round(v)) for p,v in ponderated.items())
 
+    persons=list(idealLoad.keys())
 
+    busyTable = busy.BusyTable(
+        days=businessDays,
+        nhours=busy.nturns,
+        persons=idealLoad.keys(),
+    )
+    busyFiles = config.get('busyFiles',
+        ['oneshot.conf']+
+        glob.glob('indisponibilitats*.conf'))
+
+    for busyfile in busyFiles:
+        busyTable.load(busyfile,
+            monday = config.monday,
+            errorHandler = error,
+            justRequired = config.ignoreOptionalAbsences,
+        )
+
+    loadCapacity = capacity(
+        busyTable,
+        config.maximHoresDiariesGeneral,
+        config.maximHoresDiaries,
+    )
+
+    augmented = augmentLoad(ponderated)
+    upperBound = loadMin(augmented, loadCapacity)
+    limited = loadMin(rounded, upperBound)
+
+    fullLoad = len(businessDays) * busy.nturns * config.nTelefons
+    credits = ns((person,0) for person in persons)
+
+    complete = achieveFullLoad(
+        fullLoad = fullLoad,
+        shifts = limited,
+        limits = upperBound,
+        credits = credits,
+    )
+    print(complete.dump())
+    print(fullLoad, sum(complete.values()))
+
+    overload = loadSubstract(complete, ponderated)
+    out("Overload {}", overload.dump())
 
 
 if __name__ == '__main__':
