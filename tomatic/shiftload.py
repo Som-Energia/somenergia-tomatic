@@ -99,10 +99,10 @@ def dayCapacity(busy, maxPerDay):
 
 
 def loadSubstract(minuend, subtrahend):
-    return ns( 
-        (person, minuend[person] - subtrahend.get(person, 0))
-        for person in minuend
-    ) 
+    return ns(
+        (person, minuend.get(person, 0) - subtrahend.get(person, 0))
+        for person in set(minuend.keys()+subtrahend.keys())
+    )
 
 
 args = None

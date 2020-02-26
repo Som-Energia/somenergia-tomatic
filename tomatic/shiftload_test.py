@@ -743,4 +743,14 @@ class ShiftLoadTest(unittest.TestCase):
                 ns(alice=1, bob=2),
                 ns(alice=1),
             ),  ns(alice=0, bob=2))
+
+    def test_loadSubstract_missingMinuend(self):
+        self.assertNsEqual(
+            shiftload.loadSubstract(
+                ns(alice=1),
+                ns(alice=1, bob=2),
+            ),  ns(alice=0, bob=-2))
+
+
+
 # vim: et ts=4 sw=4
