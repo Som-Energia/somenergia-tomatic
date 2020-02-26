@@ -369,7 +369,14 @@ def main():
     )
 
     overload = loadSubstract(complete, ponderated)
-    out("Overload {}", overload.dump())
+    out("La sobrecarrega d'aquesta setmana seria:")
+    for person, value in sorted(overload.items(), key=lambda x:x[1]):
+        if abs(value)<.001: continue
+        out("{}: {}".format(person,value))
+
+
+    overload.dump("overload-{}.yaml".format(config.monday))
+    complete.dump("carrega-{}.yaml".format(config.monday))
 
 
 if __name__ == '__main__':
