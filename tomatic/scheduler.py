@@ -102,6 +102,15 @@ def baixaIndisponibilitatsTomatic(config):
         r.raise_for_status()
         Path(filename).write_bytes(r.content)
 
+def downloadShiftCredit(config):
+    step("Baixant crèdit de torns del tomatic...")
+    url = config.baseUrl + '/api/shifts/download/credit'
+    filename='shiftcredit.yaml'
+    step("  Baixant {} from {}", filename, url)
+    r = requests.get(url)
+    r.raise_for_status()
+    Path(filename).write_bytes(r.content)
+
 def baixaVacancesDrive(config, certificat):
 
     fetcher = SheetFetcher(

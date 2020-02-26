@@ -367,6 +367,7 @@ from .scheduler import (
     baixaVacancesNotoi,
     baixaVacancesDrive,
     baixaCarregaIdeal,
+    downloadShiftCredit,
 )
 
 def main():
@@ -418,6 +419,7 @@ def main():
                 baixaVacancesNotoi(config)
             else: # args.holidays == 'drive':
                 baixaVacancesDrive(config, args.certificate)
+        downloadShiftCredit(config)
 
     step('Generant carrega...')
     businessDays = busy.laborableWeekDays(config.monday)
@@ -463,7 +465,9 @@ def main():
     limited = loadMin(rounded, upperBound)
 
     fullLoad = len(businessDays) * busy.nturns * config.nTelefons
-    credits = ns((person,0) for person in persons)
+    credits = ns.load('shiftcredit.yaml')
+    credits = ns((person, credits.get(person, 0)) for person in persons)
+    print credits.dump()
 
     complete = achieveFullLoad(
         fullLoad = fullLoad,

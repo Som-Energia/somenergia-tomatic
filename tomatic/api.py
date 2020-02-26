@@ -715,6 +715,19 @@ def downloadOneShotBusy():
         mimetype='text/plain',
     )
 
+@app.route('/api/shifts/download/credit')
+def downloadShiftCredit():
+    shiftcreditfile = Path('shiftcredit.yaml')
+    if not shiftcreditfile.exists():
+        persons = ns.load('persons.yaml').extensions.keys()
+        ns((p,0) for p in persons).dump('shiftcredit.yaml')
+
+    return send_file(
+        '../shiftcredit.yaml',
+        as_attachment=True,
+        mimetype='text/plain',
+    )
+
 def yamlfy(status=200, data=[], **kwd):
     return Response(ns(
         data, **kwd
