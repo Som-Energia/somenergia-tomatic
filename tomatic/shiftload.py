@@ -122,44 +122,12 @@ def augmentLoad(load, addend=1):
 
 args = None
 
-FULL_CARREGA = 0
-FULL_DE_CALCUL = 'generacio_automatica_0101'
-INTERVAL_IDEALS = 'idealsTelefon'
-INTERVAL_PERSONES = 'personesTelefon'
-FILE_NAME = 'excedents.yaml'
-EXCEDENTS_FILE = 'excedents.yaml'
-
 
 def apply_baixes(charge, baixes):
     step("Aplicant baixes...")
     for baixa in baixes:
         charge['all'] -= charge[baixa]
         del charge[baixa]
-
-
-def apply_holidays(charge):
-    step("Aplicant vacances...")
-    loadLimit = {}
-    with open('indisponibilitats-vacances.conf') as holidays_file:
-        for line in holidays_file:
-            name = line.split(" ")[0]
-            if name in loadLimit.keys():
-                loadLimit[name] += 1
-            else:
-                loadLimit[name] = 1
-
-    for person in charge:  # warning: name has to be ok
-        if person is not 'all':
-            ndays = 5
-            maxLoadPerDay = 2
-            # carrega maxima absoluta
-            loadLimit[person] = (ndays - loadLimit.get(person,0))*maxLoadPerDay
-            # TODO: el ponderat
-            days = min(charge[person],loadLimit[person])
-            before = charge[person]
-            charge[person] = max(days,0)
-            charge['all'] -= (before - charge[person])
-    return loadLimit
 
 
 def pay_debts(maxim, charge, debts):
@@ -219,81 +187,6 @@ def increaseUntilFullLoad(fullLoad, shifts, limits, credits):
             operatingWithDebts = False
     return result
 
-
-def clusteritzar(lines, fullLoad, charge):
-    return charge
-
-
-def parseArgs():
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '-l',
-        '--lines',
-        default=None,
-        type=int,
-        help="nombre de linies"
-    )
-    parser.add_argument(
-        '-c',
-        '--charge',
-        default=None,
-        type=int,
-        help="carrega necessaria"
-    )
-    parser.add_argument(
-        '-b',
-        '--baixes',
-        default=None,
-        nargs='+',
-        help="llista de baixes"
-    )
-    return parser.parse_args()
-
-
-def showInfo():
-    warn("REQUIERED: --l 'nombre de linies' --c 'carrega necessaria'")  # --d 'data graelles'")
-    print("carrega necesaria = nombre de torns * nombre de dies")
-
-
-def oldmain():
-    global args
-    args = parseArgs()
-
-    if args.lines is None or args.charge is None:  # or args.d is None:
-        error("Missing arguments!")
-        showInfo()
-        return -1
-    
-    excedents = ns.load(EXCEDENTS_FILE)
-
-    lines = args.lines
-    ideals = get_ideals_sheet(lines)
-    fullLoad = lines*args.charge
-
-    charge = ideals
-    if args.baixes:
-        apply_baixes(charge, args.baixes)
-
-    situation = apply_holidays(charge)
-    # TODO: mirar les indisponibilitats
-    
-    debts = pay_debts(situation, charge, excedents.deutes)
-
-    if charge['all'] < lines*args.charge:
-        compensat = achieveFullLoad(situation, fullLoad, charge, debts)
-    else:
-        compensat = compensar_torns_que_sobren(fullLoad, charge, debts)
-    
-    if not compensat:
-        error("No es pot assolir la càrrega mínima amb les línies especificades.")
-
-    debts = ns({'deutes': debts})
-    debts.dump(EXCEDENTS_FILE)
-
-    final_charge = clusteritzar(lines, fullLoad, charge)
-
-    return 0
 
 
 def parseArgs():
@@ -467,7 +360,6 @@ def main():
     fullLoad = len(businessDays) * busy.nturns * config.nTelefons
     credits = ns.load('shiftcredit.yaml')
     credits = ns((person, credits.get(person, 0)) for person in persons)
-    print credits.dump()
 
     complete = achieveFullLoad(
         fullLoad = fullLoad,
@@ -475,8 +367,6 @@ def main():
         limits = upperBound,
         credits = credits,
     )
-    print(complete.dump())
-    print(fullLoad, sum(complete.values()))
 
     overload = loadSubstract(complete, ponderated)
     out("Overload {}", overload.dump())
