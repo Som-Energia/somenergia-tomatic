@@ -116,29 +116,6 @@ FILE_NAME = 'excedents.yaml'
 EXCEDENTS_FILE = 'excedents.yaml'
 
 
-def get_ideals_sheet(lines):
-    try:
-        fetcher = SheetFetcher(
-            documentName=FULL_DE_CALCUL,
-            credentialFilename='drive-certificate.json',
-        )
-        step("Accedint al full de càlcul...")
-        ideals = fetcher.get_range(FULL_CARREGA, INTERVAL_IDEALS)
-        persones = fetcher.get_range(FULL_CARREGA, INTERVAL_PERSONES)
-        step("Tenim els ideals!")
-    except IOError:
-        message = 'error_get_fullsheet'
-        error("Error accedint al full de càlcul: {}.", FULL_DE_CALCUL)
-
-    all_ideals = {}
-    for i, p in zip(ideals, persones):
-        all_ideals[p[0].strip().lower()] = int(i[0])
-    all_ideals['all'] = int(all_ideals[''])
-    del all_ideals['']  # last row
-
-    return all_ideals
-
-
 def apply_baixes(charge, baixes):
     step("Aplicant baixes...")
     for baixa in baixes:
@@ -227,23 +204,6 @@ def increaseUntilFullLoad(fullLoad, shifts, limits, credits):
             if not operatingWithDebts: break
             operatingWithDebts = False
     return result
-
-
-def compensar_torns_que_sobren(fullLoad, charge, debts):
-    step("Compensant torns que sobren amb criteri 'random'...")
-    possibles_afortunats = list(charge.keys())
-    compensat = False
-    while not compensat:
-        random_person = random.choice(possibles_afortunats)
-        if charge[random_person] > 0:
-            charge[random_person] -= 1
-            charge['all'] -= 1
-            if random_person in debts:
-                debts[random_person] += 1
-            else:
-                debts[random_person] = 1
-        compensat = charge['all'] == fullLoad 
-    return charge
 
 
 def clusteritzar(lines, fullLoad, charge):
