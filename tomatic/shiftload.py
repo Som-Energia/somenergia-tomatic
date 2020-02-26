@@ -9,6 +9,7 @@ import os.path
 import random
 from pathlib2 import Path
 import datetime
+from . import busy
 
 
 
@@ -445,8 +446,21 @@ def main():
                 baixaVacancesDrive(config, args.certificate)
 
     step('Generant carrega...')
+    businessDays = busy.laborableWeekDays(config.monday)
+    idealLoad = ns.load(config.idealshifts)
+    daysoffcontent = Path('indisponibilitats-vacances.conf').read_text(encoding='utf8').split("\n")
+    daysoff = busy.parseBusy(daysoffcontent, error)
+    print(list(daysoff))
+    
 
+    ponderated = ponderatedLoad(
+        idealLoad=idealLoad,
+        businessDays = businessDays,
+        daysoff = daysoff, # TODO
+        leaves = [], # TODO
+    )
 
+    print(ponderated)
 
 
 
