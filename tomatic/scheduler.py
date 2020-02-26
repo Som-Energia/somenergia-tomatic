@@ -22,7 +22,7 @@ def open(*args, **kwd):
     return codecs.open(encoding='utf8', *args, **kwd)
 
 def transliterate(word):
-    word=u(word).lower()
+    word=u(word).lower().strip()
     for old, new in zip(
         u'àèìòùáéíóúçñ',
         u'aeiouaeioucn',
