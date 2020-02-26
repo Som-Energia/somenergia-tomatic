@@ -72,13 +72,11 @@ def baixaCarregaIdeal(config, certificat):
     values = fetcher.get_range(
         config.fullCarregaIdeal, config.idealLoadValuesRange)
     step("  Guardant-ho com '{}'...".format(config.idealshifts))
-    with open(config.idealshifts,'w') as phoneload :
-        phoneload.write(
-            "\n".join(
-                '\t'.join([transliterate(name[0]), value[0]])
-                for name, value in zip(names, values)
-                )
-            )
+    from yamlns import namespace as ns
+    carregaIdeal = ns(
+        (transliterate(name[0]), int(value[0]))
+        for name, value in zip(names,values))
+    carregaIdeal.dump(config.idealshifts)
 
 def baixaPersones(config):
     step("Baixant informació de les persones del tomatic...")
