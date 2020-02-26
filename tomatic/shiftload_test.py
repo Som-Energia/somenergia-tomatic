@@ -721,5 +721,26 @@ class ShiftLoadTest(unittest.TestCase):
             bob: 1
         """)
 
+    def test_loadSubstract_substractNothing(self):
+        self.assertNsEqual(
+            shiftload.loadSubstract(
+                ns(alice=1, bob=2),
+                ns(alice=0, bob=0),
+            ),  ns(alice=1, bob=2))
 
+
+    def test_loadSubstract_substractSomething(self):
+        self.assertNsEqual(
+            shiftload.loadSubstract(
+                ns(alice=1, bob=2),
+                ns(alice=1, bob=-1),
+            ),  ns(alice=0, bob=3))
+
+
+    def test_loadSubstract_missingSubtrahend(self):
+        self.assertNsEqual(
+            shiftload.loadSubstract(
+                ns(alice=1, bob=2),
+                ns(alice=1),
+            ),  ns(alice=0, bob=2))
 # vim: et ts=4 sw=4
