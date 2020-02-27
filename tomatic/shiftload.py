@@ -317,12 +317,13 @@ def main():
     idealLoad = ns.load(config.idealshifts)
     daysoffcontent = Path('indisponibilitats-vacances.conf').read_text(encoding='utf8').split("\n")
     daysoff = list(busy.parseBusy(daysoffcontent, error))
+    leaves = Path('leaves.conf').read_text(encoding='utf8').split()
 
     ponderated = ponderatedLoad(
         idealLoad=idealLoad,
         businessDays = businessDays,
-        daysoff = daysoff, # TODO
-        leaves = [], # TODO
+        daysoff = daysoff,
+        leaves = leaves,
     )
 
     rounded = ns((p, round(v)) for p,v in ponderated.items())
