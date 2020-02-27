@@ -4,10 +4,11 @@
 
 from pathlib2 import Path
 import os
+import sys
 import subprocess
 
-os.chdir(Path(sys.argv[1]).absolute().parent)
-subprocess.run(sys.argv[2:])
+os.chdir(str(Path(sys.argv[1]).absolute().parent))
+subprocess.call(sys.argv[2:])
 
 
 
