@@ -377,6 +377,7 @@ def main():
     overload.dump("overload-{}.yaml".format(config.monday))
     final = ns((p, int(v)) for p,v in complete.items())
     final.dump("carrega-{}.yaml".format(config.monday))
+    out("All load sums: {}", sum(v for k,v in final.items()))
 
 
 if __name__ == '__main__':
