@@ -1,23 +1,41 @@
 digraph G {
 	rankdir=TB
-	"Càrrega Ideal" [shape=rectangle, color=red]
-	"Càrrega Ponderada" [shape=rectangle, color=red]
-	"Càrrega Arrodonida" [shape=rectangle, color=red]
-	"Càrrega Limitada" [shape=rectangle, color=red]
-	"Càrrega Final" [shape=rectangle, color=red]
+    graph [fontsize=10 fontname="Verdana"];
 
-	"Festius" [shape=rectangle]
-	"Vacances" [shape=rectangle]
-	"Baixes" [shape=rectangle]
-	"Viatges Laborals" [shape=rectangle]
-	Capacitat [label = "Capacitat\nper persona", shape=rectangle]
-	"Indisponibilitats" [shape=rectangle]
-	"Cotes" [shape=rectangle]
-	"Sobrecàrrega" [shape=rectangle]
-	"Bossa de Crèdit" [shape=rectangle]
-	"FullLoad"[label = "Objectiu\nCàrrega Total", shape=rectangle]
+    subgraph main {
 
-	"Càrrega Ideal" -> Ponderació -> "Càrrega Ponderada" -> Arrodoniment -> "Càrrega Arrodonida" -> "Ajust a Capacitat" -> "Càrrega Limitada" -> Compensació -> "Càrrega Final"
+    node[shape=rectangle, color=red]
+	"Càrrega Ideal"
+	"Càrrega Ponderada"
+	"Càrrega Arrodonida"
+	"Càrrega Limitada"
+	"Càrrega Complerta"
+	"Càrrega Final"
+
+    node[shape=rectangle, color=black]
+	"Càrrega Augmentada"
+	"Festius"
+	"Vacances"
+	"Baixes"
+	"Viatges Laborals"
+	Capacitat [label = "Capacitat\nper persona"]
+	"Indisponibilitats"
+	"Cotes" [label = "Càrrega Màxima"]
+	"Sobrecàrrega"
+	"Bossa de Crèdit"
+	"FullLoad"[label = "Objectiu\nCàrrega Total"]
+
+    node[shape=ellipse]
+
+    Compensació [label="Compensació\nde deutes"]
+
+
+	"Càrrega Ideal" ->
+        Ponderació -> "Càrrega Ponderada" ->
+        Arrodoniment -> "Càrrega Arrodonida" ->
+        "Ajust a Capacitat" -> "Càrrega Limitada" ->
+        Compleció -> "Càrrega Complerta" ->
+        Compensació -> "Càrrega Final"
 
 	"Vacances" -> "Ponderació"
 	"Festius" -> "Ponderació"
@@ -25,15 +43,29 @@ digraph G {
 	"Viatges Laborals" -> "Ponderació"
 
 	Indisponibilitats -> "Càlcul\nCapacitat" -> Capacitat
-	Capacitat -> "Ajust a Capacitat"
+	Cotes -> "Ajust a Capacitat"
 
-	Capacitat -> "Cota mínima" -> Cotes
-	"Càrrega Arrodonida" -> "Cota mínima"
+    "Suma 1" [label = "+1"]
+	"Càrrega Ponderada" -> "Suma 1" -> "Càrrega Augmentada"
+	"Càrrega Augmentada" -> "Mínim" -> "Cotes"
+	Capacitat -> "Mínim"
+	Cotes -> Compleció
 	Cotes -> Compensació
+	"Bossa de Crèdit" -> Compleció
+	FullLoad          -> "Compleció"
 	"Bossa de Crèdit" -> "Compensació"
-	"FullLoad" -> "Compensació"
-	"Càrrega Ponderada" -> "Resta" -> "Sobrecàrrega"
+	"Càrrega Ponderada" -> "Resta"  -> "Sobrecàrrega"
 	"Càrrega Final" -> "Resta"
-
+    }
+    subgraph cluster0 {
+        label="Llegenda"
+        rank="other"
+        edge[style=invis]
+        "Producte principal" [shape=rectangle, color=red]
+        "Producte secundari" [shape=rectangle, color=black]
+        "Procés" [shape=ellipse, color=black]
+        "Producte principal" -> "Producte secundari" -> Procés
+    }
+    "Mínim" -> "Producte principal" [style=invis]
 }
 
