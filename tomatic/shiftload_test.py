@@ -752,5 +752,30 @@ class ShiftLoadTest(unittest.TestCase):
             ),  ns(alice=0, bob=-2))
 
 
+    def test_loadMin_allCases(self):
+        self.assertNsEqual(
+            shiftload.loadMin(
+                ns(alice=3, carol=4),
+                ns(alice=1, bob=1),
+            ),  ns(alice=1, bob=0, carol=0))
+
+
+    def test_augmentLoad_byDefault(self):
+        self.assertNsEqual(
+            shiftload.augmentLoad(
+                ns(alice=1, bob=2)
+            ),  ns(alice=2, bob=3))
+
+    def test_augmentLoad_byTwo(self):
+        self.assertNsEqual(
+            shiftload.augmentLoad(
+                ns(alice=1, bob=2), 2
+            ),  ns(alice=3, bob=4))
+
+
+
+
+
+
 
 # vim: et ts=4 sw=4
