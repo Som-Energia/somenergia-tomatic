@@ -377,7 +377,11 @@ def main():
     overload.dump("overload-{}.yaml".format(config.monday))
     final = ns((p, int(v)) for p,v in complete.items())
     final.dump("carrega-{}.yaml".format(config.monday))
-    out("All load sums: {}", sum(v for k,v in final.items()))
+    finalLoad = sum(v for k,v in final.items())
+    if finalLoad == fullLoad:
+        success("S'ha pogut aconseguir una carrega {} torns", finalLoad)
+    else:
+        fail("Només s'han pogut aconseguir {} torns dels {} necessaris", finalLoad, fullLoad)
 
 
 if __name__ == '__main__':
