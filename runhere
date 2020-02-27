@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+# this script is a wrapper for execution in scriptlauncher
+
+from pathlib2 import Path
+import os
+import subprocess
+
+os.chdir(Path(sys.argv[1]).absolute().parent)
+subprocess.run(sys.argv[2:])
+
+
+
