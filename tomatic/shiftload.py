@@ -3,7 +3,7 @@
 
 import csv
 from sheetfetcher import SheetFetcher
-from consolemsg import error, warn, step, out
+from consolemsg import error, warn, step, success, out
 from yamlns import namespace as ns
 import os.path
 import random
@@ -245,7 +245,19 @@ def parseArgs():
     parser.add_argument(
         '--idealshifts',
         default=None,
-        help="fitxer tsv amb la carrega ideal de cada persona (fila)",
+        help="fitxer yaml amb la càrrega ideal de cada persona",
+    )
+
+    parser.add_argument(
+        '--weekshifts',
+        default=None,
+        help="fitxer yaml de sortida amb la càrrega final de cada persona",
+    )
+
+    parser.add_argument(
+        '--overload',
+        default=None,
+        help="fitxer yaml de sortida amb la sobrecàrrega final sobre l'ideal ponderat de cada persona",
     )
 
     return parser.parse_args()
@@ -312,7 +324,7 @@ def main():
                 baixaVacancesDrive(config, args.certificate)
         downloadShiftCredit(config)
 
-    step('Generant carrega...')
+    step('Generant càrrega...')
     businessDays = busy.laborableWeekDays(config.monday)
     idealLoad = ns.load(config.idealshifts)
     daysoffcontent = Path('indisponibilitats-vacances.conf').read_text(encoding='utf8').split("\n")
@@ -367,19 +379,27 @@ def main():
         credits = credits,
     )
 
+    # TODO: After reaching the full load, try to trade existing credit and debit
+
     overload = loadSubstract(complete, ponderated)
     out("La sobrecarrega d'aquesta setmana seria:")
     for person, value in sorted(overload.items(), key=lambda x:x[1]):
         if abs(value)<.001: continue
         out("{}: {}".format(person,value))
 
+    overloadfile = args.overload or "overload-{}.yaml".format(config.monday)
+    step("Saving overloads as {}", overloadfile)
+    overload.dump(overloadfile)
 
-    overload.dump("overload-{}.yaml".format(config.monday))
     final = ns((p, int(v)) for p,v in complete.items())
-    final.dump("carrega-{}.yaml".format(config.monday))
+
+    finalfile = args.weekshifts or "carrega-{}.yaml".format(config.monday)
+    step("Saving overloads as {}", overloadfile)
+    final.dump(finalfile)
+
     finalLoad = sum(v for k,v in final.items())
     if finalLoad == fullLoad:
-        success("S'ha pogut aconseguir una carrega {} torns", finalLoad)
+        success("S'ha pogut aconseguir una càrrega {} torns", finalLoad)
     else:
         fail("Només s'han pogut aconseguir {} torns dels {} necessaris", finalLoad, fullLoad)
 
