@@ -286,7 +286,7 @@ def main():
     if args.date is not None:
         # take the monday of the week including that date
         givenDate = datetime.datetime.strptime(args.date,"%Y-%m-%d").date()
-        config.monday = givenDate - timedelta(days=givenDate.weekday())
+        config.monday = givenDate - datetime.timedelta(days=givenDate.weekday())
     else:
         # If no date provided, take the next monday
         today = datetime.date.today()

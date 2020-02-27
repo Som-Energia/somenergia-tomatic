@@ -1,0 +1,127 @@
+baseUrl: http://192.168.35.244:4555
+documentDrive: Quadre de Vacances
+fullIndisponibilitats: Reunions i altres afers
+fullCarrega_4: o9rxhxk
+fullCarrega_5: opm82es
+fullCarrega: om1qfyn
+fullCarregaIdeal: "IDEALS_6t_Càrrega telèfon"
+intervalCarrega: carrega{:02d}{:02d}{:02d}
+idealLoadNamesRange: carregaideal_noms
+idealLoadValuesRange: carregaideal_valors
+monitoringFile: taula.html
+nTelefons: 6
+diesCerca:
+- dv
+- dl
+- dm
+- dx
+- dj
+diesVisualitzacio:
+- dl
+- dm
+- dx
+- dj
+- dv
+hours:
+- 09:00
+- '10:15'
+- '11:30'
+- '12:45'
+- '14:00'
+discriminateLines: true
+pruneRedundant: true
+newYearHack: false
+ignoreOptionalAbsences: true
+mostraCami: false
+maximCamiAMostrar: 60
+aleatori: true
+stopPenalty: 0
+backtrackDepth: 10000000000
+maxNodesToPersevere: 10000
+costLimit: 200
+descartaNoPrometedores: true
+deixaEsmorzar: true
+noVolenEsmorzar:
+- david
+- ningu
+maximPerTaula: 2
+maximsT1PerDia: 2
+maximHoresDiariesGeneral: 2
+maximHoresDiaries:
+  ningu: 10
+costHoresDiscontinues: 40
+costHoresConcentrades: 1
+costTaulaSorollosa: 5
+costHoraNoDesitjada: 10
+sempreUnLliure: {}
+maxPhoningInGroup:
+  infern: 2
+  casademont: 4
+minIdleInGroup:
+  it: 4
+randomColors: false
+forced: {}
+also_commented_forced:
+  ? - dl
+    - 1
+    - 5
+  : ningu
+  ? - dl
+    - 2
+    - 5
+  : ningu
+  ? - dl
+    - 3
+    - 5
+  : ningu
+  ? - dl
+    - 4
+    - 5
+  : ningu
+commented_forced:
+  ? - dl
+    - 1
+    - 4
+  : ningu
+  ? - dl
+    - 2
+    - 4
+  : ningu
+  ? - dm
+    - 1
+    - 4
+  : ningu
+  ? - dm
+    - 2
+    - 4
+  : ningu
+  ? - dx
+    - 1
+    - 4
+  : ningu
+  ? - dx
+    - 2
+    - 4
+  : ningu
+  ? - dj
+    - 1
+    - 4
+  : ningu
+  ? - dj
+    - 2
+    - 4
+  : ningu
+  ? - dv
+    - 1
+    - 4
+  : ningu
+  ? - dv
+    - 2
+    - 4
+  : ningu
+websocket_ip: 0.0.0.0
+websocket_port: 4445
+call_reasons_document: Trucades_3354
+credential_name: drive-certificate.json
+threshold_hits: 21
+my_calls_log: my_calls_log.yaml
