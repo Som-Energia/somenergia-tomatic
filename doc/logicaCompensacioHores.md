@@ -49,7 +49,7 @@
 
 
 
-
+![](shiftloadprocess.png)
 
 
 
