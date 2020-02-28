@@ -35,6 +35,7 @@ testcases:
                 --config-file b2bdata/inputs/config-4days6lines.yaml \
                 --weekshifts b2bdata/inputs/carrega-4days6lines.csv \
                 --personsfile '' \
+                --lines 6 \
                 --stop-penalty 86 \
                 --deterministic \
                 --search-days "dl,dm,dx,dj" \
@@ -43,3 +44,14 @@ testcases:
         - graella-telefons-2019-10-28.html
         - graella-telefons-2019-10-28.yaml
         - graella-telefons.log
+
+    load-2020-03-02:
+        command: |
+            cd b2bdata/inputs/load-2020-03-02; python ../../../tomatic_shiftload.py 2020-03-02 \
+                --keep \
+                2>&1 | tee console.log
+        outputs:
+        - b2bdata/inputs/load-2020-03-02/console.log
+        - b2bdata/inputs/load-2020-03-02/overload-2020-03-02.yaml
+        - b2bdata/inputs/load-2020-03-02/carrega-2020-03-02.yaml
+
