@@ -19,11 +19,6 @@
 [33mWarning: Ignorant una indisponibilitat de fran, que no entra al repartiment[0m
 [33mWarning: Ignorant una indisponibilitat de fran, que no entra al repartiment[0m
 [33mWarning: Ignorant una indisponibilitat de fran, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de hermigg, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de hermigg, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de hermigg, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de hermigg, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de hermigg, que no entra al repartiment[0m
 La sobrecarrega d'aquesta setmana seria:
 carol: -0.2
 marta: 0.4
@@ -33,6 +28,6 @@ gemma: 1.0
 carme: 1.0
 adria: 1.0
 merce: 1.0
-[34;1m:: Saving overloads as overload-2020-03-02.yaml[0m
+[34;1m:: Desant sobrecàrrega com a overload-2020-03-02.yaml[0m
 [34;1m:: Desant càrrega final com a carrega-2020-03-02.yaml[0m
 [32;1m>> S'ha pogut aconseguir una càrrega 120 torns[0m
