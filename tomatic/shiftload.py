@@ -388,14 +388,19 @@ def main():
         out("{}: {}".format(person,value))
 
     overloadfile = args.overload or "overload-{}.yaml".format(config.monday)
-    step("Saving overloads as {}", overloadfile)
+    step("Desant sobrecàrrega com a {}", overloadfile)
     overload.dump(overloadfile)
 
     final = ns((p, int(v)) for p,v in complete.items())
 
-    finalfile = args.weekshifts or "carrega-{}.yaml".format(config.monday)
-    step("Saving overloads as {}", overloadfile)
+    finalfile = "carrega-{}.yaml".format(config.monday)
+    step("Desant càrrega final com a {}", finalfile)
     final.dump(finalfile)
+
+    if args.weekshifts:
+        finalfile = args.weekshifts
+        step("Desant càrrega final com a {}", finalfile)
+        final.dump(finalfile)
 
     finalLoad = sum(v for k,v in final.items())
     if finalLoad == fullLoad:
