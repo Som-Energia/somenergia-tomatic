@@ -406,7 +406,7 @@ def main():
     if finalLoad == fullLoad:
         success("S'ha pogut aconseguir una càrrega {} torns", finalLoad)
     else:
-        fail("Només s'han pogut aconseguir {} torns dels {} necessaris", finalLoad, fullLoad)
+        fail("Només s'han pogut aconseguir {} torns dels {} necessaris", -1, finalLoad, fullLoad)
 
 
 if __name__ == '__main__':
