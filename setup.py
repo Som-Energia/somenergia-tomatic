@@ -62,6 +62,9 @@ setup(
         'b2btest',
         'lxml',
         'wavefile',
+        'erppeek',
+        'websocket-server',
+        'ERPPeek-WST',
     ],
     test_suite = 'nose.collector',
     classifiers = [
