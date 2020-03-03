@@ -3,7 +3,7 @@
 
 import csv
 from sheetfetcher import SheetFetcher
-from consolemsg import error, warn, step, success, out
+from consolemsg import error, warn, step, success, fail, out
 from yamlns import namespace as ns
 import os.path
 import random
