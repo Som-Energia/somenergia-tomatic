@@ -29,7 +29,7 @@ hours:
 - '12:45'
 - '14:00'
 discriminateLines: true
-pruneRedundant: true
+pruneRedundant: false
 newYearHack: false
 ignoreOptionalAbsences: true
 mostraCami: false
@@ -44,6 +44,7 @@ deixaEsmorzar: true
 noVolenEsmorzar:
 - david
 - ningu
+- vero
 maximPerTaula: 2
 maximsT1PerDia: 2
 maximHoresDiariesGeneral: 2

@@ -74,6 +74,7 @@ def cli(date, person, optional, required):
 	busydays = busyTable(date,
 		'oneshot.conf',
 		'indisponibilitats.conf',
+		'indisponibilitats-vacances.conf',
 		optional=optional,
 		required=required,
 		)

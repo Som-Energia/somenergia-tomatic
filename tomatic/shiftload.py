@@ -117,15 +117,21 @@ def augmentLoad(load, addend=1):
         for person, value in load.items()
     )
 
+def clusterize(nlines, load):
+    result = ns(
+        (person, [0]*nlines)
+        for person in load
+    )
+    linesTotal = [0]*nlines
+    for person, load in sorted(load.items(), key=lambda x:-x[1]):
+        line = min((x,i) for i,x in enumerate(linesTotal))[1]
+        result[person][line]+=load
+        linesTotal[line]+=load
+    return result
+
+
 
 args = None
-
-
-def apply_baixes(charge, baixes):
-    step("Aplicant baixes...")
-    for baixa in baixes:
-        charge['all'] -= charge[baixa]
-        del charge[baixa]
 
 
 def pay_debts(maxim, charge, debts):
@@ -217,6 +223,11 @@ def parseArgs():
         help="Origen d'on agafa les vacances",
     )
 
+    parser.add_argument(
+        '--clusterize',
+        action='store_true',
+        help="output a line clusterized load",
+        )
     parser.add_argument(
         '-l',
         '--lines',
@@ -401,6 +412,20 @@ def main():
         finalfile = args.weekshifts
         step("Desant càrrega final com a {}", finalfile)
         final.dump(finalfile)
+
+    if args.clusterize:
+        clusterized = clusterize(config.nTelefons, final)
+        if 'ningu' not in clusterized:
+            clusterized.ningu = [0]*config.nTelefons
+
+        loadContent = '\n'.join(
+            u'\t'.join([person]+[str(lineload) for lineload in lineloads])
+            for person, lineloads in clusterized.items()
+        )
+        clusterfile = Path("carrega-{}.csv".format(config.monday))
+        step("Desant càrrega distribuida en linies com a {}", clusterfile)
+        clusterfile.write_text(loadContent, encoding='utf8')
+        
 
     finalLoad = sum(v for k,v in final.items())
     if finalLoad == fullLoad:
