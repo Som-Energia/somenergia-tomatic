@@ -775,20 +775,22 @@ class ShiftLoadTest(unittest.TestCase):
     def test_clusterize_sortedByLoad(self):
         self.assertNsEqual(
             shiftload.clusterize(
-                2, ns(alice=4,bob=2)),
-            ns(
-                alice=[4,0],
-                bob=  [0,2],
-            ))
-
-    def test_clusterize_repeatingLine(self):
-        self.assertNsEqual(
-            shiftload.clusterize(
                 2, ns(alice=4,bob=2,carol=6)),
             ns(
                 carol=[6,0],
                 alice=[0,4],
                 bob=  [0,2],
+            ))
+
+
+    def test_clusterize_splittingLast(self):
+        self.assertNsEqual(
+            shiftload.clusterize(
+                2, ns(alice=4,bob=3,carol=5)),
+            ns(
+                carol=[5,0],
+                alice=[0,4],
+                bob=  [1,2],
             ))
 
 

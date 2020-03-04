@@ -118,15 +118,28 @@ def augmentLoad(load, addend=1):
     )
 
 def clusterize(nlines, load):
+    """
+    Deals persons load on lines so that every person load
+    tend to be on a single line, increasing search space cuts.
+    """
+    totalLoad = sum(load.values())
+    if totalLoad % nlines:
+        raise Exception("Total load {} is not divisible by {} lines"
+            .format(totalLoad, nlines))
+    loadPerLine = totalLoad // nlines
     result = ns(
         (person, [0]*nlines)
         for person in load
     )
     linesTotal = [0]*nlines
     for person, load in sorted(load.items(), key=lambda x:-x[1]):
-        line = min((x,i) for i,x in enumerate(linesTotal))[1]
-        result[person][line]+=load
-        linesTotal[line]+=load
+        while load:
+            lineLoad, line = min((x,i) for i,x in enumerate(linesTotal))
+            transferedLoad = min(loadPerLine-lineLoad, load)
+            result[person][line]+=transferedLoad
+            linesTotal[line]+=transferedLoad
+            load-=transferedLoad
+            
     return result
 
 
