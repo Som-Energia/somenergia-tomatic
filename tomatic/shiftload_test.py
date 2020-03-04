@@ -793,6 +793,13 @@ class ShiftLoadTest(unittest.TestCase):
                 bob=  [1,2],
             ))
 
+    def test_clusterize_whenNotDivisible_raises(self):
+        with self.assertRaises(Exception) as ctx:
+            shiftload.clusterize(
+                2, ns(alice=4,bob=3))
+        self.assertEqual(format(ctx.exception),
+            "Total load 7 is not divisible by 2 lines")
+
 
 
 
