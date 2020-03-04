@@ -4,7 +4,7 @@ tomatic:
   scripts:
 
     carregues:
-      script: SOME_SRC/somenergia-tomatic/runhere SOME_SRC/somenergia-tomatic/ ./tomatic_shiftload.py {monday} --lines {numberOfLines} --weekshifts {load}
+      script: SOME_SRC/somenergia-tomatic/runhere SOME_SRC/somenergia-tomatic/ ./tomatic_shiftload.py {monday} --clusterize --lines {numberOfLines} --weekshifts {load}
       title: Generació de càrregues setmanals
       description: >
         Resum de les trucades rebudes del dia.
