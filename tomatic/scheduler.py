@@ -78,6 +78,23 @@ def baixaCarregaIdeal(config, certificat):
         for name, value in zip(names,values))
     carregaIdeal.dump(config.idealshifts)
 
+def baixaLeaves(config, certificat):
+    step('Autentificant al Google Drive')
+    fetcher = SheetFetcher(
+        documentName=config.documentDrive,
+        credentialFilename=certificat,
+        )
+    leavesSheet = "Baixes"
+    leavesFile = "leaves.conf"
+
+    step('Baixant baixes...')
+
+    step("  Descarregant fulla '{}'...", leavesSheet)
+    leaves = fetcher.get_fullsheet(leavesSheet)
+    leaves = u'\n'.join([person for line in leaves for person in line])
+    step("  Guardant-ho com '{}'...".format(leavesFile))
+    Path(leavesFile).write_text(leaves, encoding='utf8')
+
 def baixaPersones(config):
     step("Baixant informació de les persones del tomatic...")
     url = config.baseUrl + '/api/persons'
@@ -113,6 +130,7 @@ def downloadShiftCredit(config):
 
 def baixaVacancesDrive(config, certificat):
 
+    step('Autentificant al Google Drive')
     fetcher = SheetFetcher(
         documentName=config.documentDrive,
         credentialFilename=certificat,

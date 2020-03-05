@@ -294,6 +294,7 @@ from .scheduler import (
     baixaVacancesNotoi,
     baixaVacancesDrive,
     baixaCarregaIdeal,
+    baixaLeaves,
     downloadShiftCredit,
 )
 
@@ -338,6 +339,7 @@ def main():
     config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.csv'
 
     if not args.keep:
+        baixaLeaves(config, args.certificate)
         if mustDownloadShifts:
             baixaCarregaIdeal(config, args.certificate)
         if not config.get('busyFiles'):
