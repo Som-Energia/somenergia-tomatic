@@ -44,7 +44,6 @@ deixaEsmorzar: true
 noVolenEsmorzar:
 - david
 - ningu
-- vero
 maximPerTaula: 2
 maximsT1PerDia: 2
 maximHoresDiariesGeneral: 2
