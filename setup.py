@@ -28,7 +28,6 @@ setup(
         'yamlns',
         'consolemsg',
         'parse',
-        'Flask<1.1' if sys.version_info[0] <3 else 'Flask',
         'jsmin',
         'py-Asterisk',
         'paramiko',
@@ -40,6 +39,14 @@ setup(
         'requests',
         'future',
         'pathlib2',
+        'erppeek',
+        'websocket-server',
+    ] + [
+        'Flask<1.1',
+        'jinja<3.0',
+    ] if sys.version_info[0] <3 else [
+        'Flask',
+    ] + [
     #],
     #tests_require=[
         'nose',
@@ -48,8 +55,6 @@ setup(
         'b2btest',
         'lxml',
         'wavefile',
-        'erppeek',
-        'websocket-server',
     ],
     test_suite = 'nose.collector',
     classifiers = [
