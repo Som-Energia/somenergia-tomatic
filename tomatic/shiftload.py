@@ -158,20 +158,20 @@ def sortedDebtors(credits):
         yield person, credit
 
 def compensateDebtsAndCredits(shifts, credits, limits):
-    shifts=ns(shifts)
+    result=ns(shifts)
     for (debtor, debit),(creditor,credit) in zip(
             sortedDebtors(credits),
             sortedCreditors(credits),
             ):
         if credit<=0: break
         if debit>=0: break
-        if shifts[creditor]<=0: continue
-        if shifts[debtor]>=limits[debtor]: continue
-        shifts[debtor] += 1
+        if result[creditor]<=0: continue
+        if result[debtor]>=limits[debtor]: continue
+        result[debtor] += 1
         credits[debtor] += 1
-        shifts[creditor] -= 1
+        result[creditor] -= 1
         credits[creditor] -= 1
-    return shifts
+    return result
 
 
 def achieveFullLoad(fullLoad, shifts, limits, credits):
