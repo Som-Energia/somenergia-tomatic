@@ -154,8 +154,9 @@ def sortedCreditors(credits, strict=False):
         if strict and credit<=0: break
         yield person, credit
 
-def sortedDebtors(credits):
+def sortedDebtors(credits, strict=False):
     for person, credit in sorted(credits.items(), key=lambda x: x[1]):
+        if strict and credit>=0: break
         yield person, credit
 
 def compensateDebtsAndCredits(shifts, credits, limits):
