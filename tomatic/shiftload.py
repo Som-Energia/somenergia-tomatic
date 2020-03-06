@@ -102,13 +102,13 @@ def dayCapacity(busy, maxPerDay):
 def loadSubstract(minuend, subtrahend):
     return ns(
         (person, minuend.get(person, 0) - subtrahend.get(person, 0))
-        for person in set(minuend.keys()+subtrahend.keys())
+        for person in set(minuend.keys()).union(subtrahend.keys())
     )
 
 def loadMin(a, b):
     return ns(
         (person, min(a.get(person, 0), b.get(person, 0)))
-        for person in set(a.keys()+b.keys())
+        for person in set(a.keys()).union(b.keys())
     )
 
 def augmentLoad(load, addend=1):
