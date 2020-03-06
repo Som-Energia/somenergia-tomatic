@@ -823,29 +823,29 @@ class ShiftLoadTest(unittest.TestCase):
     def test_sortedCreditors(self):
         self.assertEqual(list(
             shiftload.sortedCreditors(ns(alice=1, bob=2, carol=-1))), [
-                ('bob',2),
-                ('alice',1),
-                ('carol',-1),
+                'bob',
+                'alice',
+                'carol',
             ])
 
     def test_sortedCreditors_strict(self):
         self.assertEqual(list(
             shiftload.sortedCreditors(ns(alice=0, bob=2, carol=-1), strict=True)), [
-                ('bob',2),
+                'bob',
             ])
 
     def test_sortedDebtors(self):
         self.assertEqual(list(
             shiftload.sortedDebtors(ns(alice=1, bob=2, carol=-1))), [
-                ('carol',-1),
-                ('alice',1),
-                ('bob',2),
+                'carol',
+                'alice',
+                'bob',
             ])
 
     def test_sortedDebtors_strict(self):
         self.assertEqual(list(
             shiftload.sortedDebtors(ns(alice=0, bob=2, carol=-1), strict=True)), [
-                ('carol',-1),
+                'carol',
             ])
 
     def test_compensateDebtsAndCredits_noDebtNorCredit(self):
