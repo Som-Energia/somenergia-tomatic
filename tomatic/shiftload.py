@@ -281,14 +281,13 @@ def parseArgs():
 
     parser.add_argument(
         '--personsfile',
-        default='persons.yaml',
-        help="fitxer de configuració de les persones",
+        help="fitxer de configuració de les persones, si s'especifica aqui, no es baixarà",
     )
 
     parser.add_argument(
         '--idealshifts',
         default=None,
-        help="fitxer yaml amb la càrrega ideal de cada persona",
+        help="fitxer yaml amb la càrrega ideal de cada persona, si s'especifica aqui no es baixarà",
     )
 
     parser.add_argument(
@@ -330,14 +329,12 @@ def main():
         error("Configuració incorrecta")
         raise
 
-    if args.personsfile:
-        config.personsfile = args.personsfile
-
-    if not args.keep:
+    config.personsfile = args.personsfile or config.get('personsfile', 'persons.yaml')
+    if not args.keep and not args.personsfile:
         baixaPersones(config)
 
-    if args.personsfile and Path(args.personsfile).exists():
-        config.update(ns.load(args.personsfile))
+    if config.personsfile and Path(config.personsfile).exists():
+        config.update(ns.load(config.personsfile))
 
     if args.date is not None:
         # take the monday of the week including that date
