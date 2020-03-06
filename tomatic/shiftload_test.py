@@ -3,10 +3,10 @@
 
 from __future__ import unicode_literals
 import unittest
-from . import shiftload
-from yamlns import namespace as ns
-from . import busy
 from pathlib2 import Path
+from yamlns import namespace as ns
+from . import shiftload
+from . import busy
 
 class ShiftLoadTest(unittest.TestCase):
 
