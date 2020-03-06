@@ -440,7 +440,7 @@ def main():
     step("Desant sobrecàrrega com a {}", overloadfile)
     overload.dump(overloadfile)
 
-    final = ns((p, int(v)) for p,v in complete.items())
+    final = ns((p, int(v)) for p,v in sorted(compensated.items()))
 
     finalfile = "carrega-{}.yaml".format(config.monday)
     step("Desant càrrega final com a {}", finalfile)
