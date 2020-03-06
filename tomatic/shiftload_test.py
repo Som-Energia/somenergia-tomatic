@@ -728,6 +728,20 @@ class ShiftLoadTest(unittest.TestCase):
                 ns(alice=20, bob=10, dave=4),
             ),  ns(alice=21, bob=12, carol=3, dave=4))
 
+    def test_loadSum_threeParams(self):
+        self.assertNsEqual(
+            shiftload.loadSum(
+                ns(alice=1, bob=2, carol=3),
+                ns(alice=20, bob=10, dave=4),
+                ns(alice=100, bob=200, eve=5),
+            ),  ns(alice=121, bob=212, carol=3, dave=4, eve=5))
+
+    def test_loadSum_noParams(self):
+        self.assertNsEqual(
+            shiftload.loadSum(
+            ),  ns())
+
+
     def test_loadSubstract_substractNothing(self):
         self.assertNsEqual(
             shiftload.loadSubstract(
