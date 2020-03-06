@@ -160,8 +160,13 @@ def sortedDebtors(credits, strict=False):
         yield person
 
 def compensateDebtsAndCredits(shifts, credits, limits):
+    """
+    Exchanges shifts to compensate positive with negative credit
+    while keeping shifts positive and under limits.
+    """
     result=ns(shifts)
-    while True:
+    hasCompensated = True
+    while hasCompensated:
         hasCompensated = False
         for debtor, creditor in zip(
                 sortedDebtors(credits, strict=True),
@@ -174,9 +179,7 @@ def compensateDebtsAndCredits(shifts, credits, limits):
             result[creditor] -= 1
             credits[creditor] -= 1
             hasCompensated = True
-
-        if not hasCompensated:
-            return result
+    return result
 
 
 def achieveFullLoad(fullLoad, shifts, limits, credits):
