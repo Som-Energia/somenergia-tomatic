@@ -839,12 +839,43 @@ class ShiftLoadTest(unittest.TestCase):
     def test_compensateDebtsAndCredits_noDebtNorCredit(self):
         self.assertNsEqual(
             shiftload.compensateDebtsAndCredits(
-                load=ns(alice=1, bob=2, carol=3),
-                credit=ns(),
-                limit=ns(alice=100, bob=100, carol=100),
+                shifts=ns(alice=1, bob=2),
+                credits=ns(alice=0, bob=0),
+                limits=ns(alice=100, bob=100),
             ),
-            ns(alice=1, bob=2, carol=3),
+            ns(alice=1, bob=2),
         )
+
+    def test_compensateDebtsAndCredits_debitMatches(self):
+        self.assertNsEqual(
+            shiftload.compensateDebtsAndCredits(
+                shifts=ns(alice=1, bob=2),
+                credits=ns(alice=-1, bob=1),
+                limits=ns(alice=100, bob=100),
+            ),
+            ns(alice=2, bob=1),
+        )
+
+    def test_compensateDebtsAndCredits_notBelowZero(self):
+        self.assertNsEqual(
+            shiftload.compensateDebtsAndCredits(
+                shifts=ns(alice=2, bob=0),
+                credits=ns(alice=-1, bob=1),
+                limits=ns(alice=100, bob=100),
+            ),
+            ns(alice=2, bob=0),
+        )
+
+    def test_compensateDebtsAndCredits_notAboveLimits(self):
+        self.assertNsEqual(
+            shiftload.compensateDebtsAndCredits(
+                shifts=ns(alice=1, bob=2),
+                credits=ns(alice=-1, bob=1),
+                limits=ns(alice=1, bob=100),
+            ),
+            ns(alice=1, bob=2),
+        )
+
 
 
 # vim: et ts=4 sw=4

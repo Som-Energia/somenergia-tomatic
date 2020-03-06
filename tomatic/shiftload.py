@@ -149,10 +149,6 @@ def clusterize(nlines, load):
             
     return result
 
-def compensateDebtsAndCredits(load, credit, limit):
-    return ns(load)
-
-
 def sortedCreditors(credits):
     for person, credit in sorted(credits.items(), key=lambda x: -x[1]):
         yield person, credit
@@ -161,6 +157,21 @@ def sortedDebtors(credits):
     for person, credit in sorted(credits.items(), key=lambda x: x[1]):
         yield person, credit
 
+def compensateDebtsAndCredits(shifts, credits, limits):
+    shifts=ns(shifts)
+    for (debtor, debit),(creditor,credit) in zip(
+            sortedDebtors(credits),
+            sortedCreditors(credits),
+            ):
+        if credit<=0: break
+        if debit>=0: break
+        if shifts[creditor]<=0: continue
+        if shifts[debtor]>=limits[debtor]: continue
+        shifts[debtor] += 1
+        credits[debtor] += 1
+        shifts[creditor] -= 1
+        credits[creditor] -= 1
+    return shifts
 
 
 def achieveFullLoad(fullLoad, shifts, limits, credits):
