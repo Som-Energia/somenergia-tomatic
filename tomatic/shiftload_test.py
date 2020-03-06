@@ -7,6 +7,7 @@ from pathlib2 import Path
 from yamlns import namespace as ns
 from . import shiftload
 from . import busy
+from decimal import *
 
 class ShiftLoadTest(unittest.TestCase):
 
@@ -163,7 +164,7 @@ class ShiftLoadTest(unittest.TestCase):
             alice=60,
             bob=60,
         )
-        load = shiftload.ponderatedLoad(ideal, 
+        load = shiftload.ponderatedLoad(ideal,
             businessDays=['dl', 'dm', 'dx', 'dj', 'dv'],
             daysoff=[],
             leaves=[],
@@ -178,7 +179,7 @@ class ShiftLoadTest(unittest.TestCase):
             alice=10,
             bob=10,
         )
-        load = shiftload.ponderatedLoad(ideal, 
+        load = shiftload.ponderatedLoad(ideal,
             businessDays=['dm', 'dx', 'dj', 'dv'],
             daysoff=[
                 ns(
@@ -274,7 +275,7 @@ class ShiftLoadTest(unittest.TestCase):
         tmpfile = Path("tempfile")
         tmpfile.write_text(lines)
         busytable.load(str(tmpfile), busy.isodate('2020-01-02'))
- 
+
         return busytable
 
     def test_capacity_noLimits(self):
@@ -720,6 +721,24 @@ class ShiftLoadTest(unittest.TestCase):
             alice: 3
             bob: 1
         """)
+
+    def test_loadSum_twoFloatParams(self):
+        summedns = shiftload.loadSum(
+                ns(alice=-0.4, bob=-1.5, carol=3.5),
+                ns(alice=1.4, bob=-0.5, dave=-4.0)
+        )
+        targetns = ns(alice=1.0, bob=-2.0, carol=3.5, dave=-4.0)
+
+        [self.assertAlmostEqual(summedns[k], targetns[k]) for k in targetns.keys()]
+
+    def test_loadSum_twoDecimalParams(self):
+        summedns = shiftload.loadSum(
+            ns(alice=Decimal(-0.4), bob=Decimal(-1.5), carol=Decimal(3.5)),
+            ns(alice=Decimal(1.4), bob=Decimal(-0.5), dave=Decimal(-4))
+        )
+        targetns = ns(alice=Decimal(1.0), bob=Decimal(-2), carol=Decimal(3.5), dave=Decimal(-4))
+
+        [self.assertAlmostEqual(summedns[k], targetns[k]) for k in targetns.keys()]
 
     def test_loadSum_twoParams(self):
         self.assertNsEqual(
