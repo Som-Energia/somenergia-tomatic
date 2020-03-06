@@ -149,8 +149,9 @@ def clusterize(nlines, load):
             
     return result
 
-def sortedCreditors(credits):
+def sortedCreditors(credits, strict=False):
     for person, credit in sorted(credits.items(), key=lambda x: -x[1]):
+        if strict and credit<=0: break
         yield person, credit
 
 def sortedDebtors(credits):
