@@ -21,104 +21,104 @@ turns:
 timetable:
   dl:
   - - carles
-    - joanb
-    - joanm
-    - guifre
-    - pau
+    - adria
+    - aram
     - albertg
-  - - joanm
+    - carme
+    - guifre
+  - - eduard
+    - aram
+    - adria
+    - gemma
+    - guifre
+    - carme
+  - - erola
     - joan
     - joanb
-    - pau
-    - guifre
-    - monica
-  - - tania
-    - silvia
-    - aram
-    - mar
-    - gemma
+    - joanm
+    - lucia
     - maite
   - - eloi
-    - aram
-    - gemma
+    - joanb
+    - gabriel
     - albert
-    - carme
-    - tania
-  dm:
-  - - pau
-    - gemma
-    - mariona
+    - manel
     - joanm
+  dm:
+  - - carol
+    - carme
+    - gemma
+    - adria
+    - albertg
+    - mar
+  - - joanm
+    - gemma
+    - carme
     - aram
-    - guifre
-  - - monica
+    - adria
+    - albertg
+  - - marta
     - judith
     - eloi
-    - joan
-    - albertg
-    - joanm
-  - - eduard
-    - maite
-    - vane
-    - carol
+    - guifre
+    - maria
+    - mariona
+  - - otilia
     - lucia
-    - mar
-  - - vane
-    - carme
-    - rogerlf
-    - vero
-    - carol
-    - otilia
+    - mariona
+    - eloi
+    - judith
+    - monicag
   dx:
   - - marc
-    - lucia
-    - carme
+    - maite
+    - joanm
+    - carol
     - aram
-    - judith
-    - mariona
-  - - carol
-    - rogerlf
-    - vero
-    - eloi
-    - maria
-    - vane
-  - - otilia
+    - monica
+  - - monica
+    - monicag
     - nuria
-    - adria
+    - joan
+    - carol
+    - eloi
+  - - pau
+    - otilia
+    - roger
+    - mar
     - gemma
-    - monicag
-    - roger
-  - - erola
-    - otilia
-    - nuria
-    - roger
-    - adria
-    - monicag
-  dj:
-  - - vero
-    - adria
-    - otilia
-    - albertg
-    - sergi
-    - rogerlf
+    - tania
   - - rogerlf
-    - victor
-    - gabriel
-    - adria
+    - manel
     - vero
-    - carme
-  - - roger
-    - manel
-    - monicag
-    - vane
-    - nuria
-    - eloi
-  - - marta
-    - monicag
-    - roger
     - yaiza
-    - manel
-    - nuria
+    - sergi
+    - vane
+  dj:
+  - - '?'
+    - '?'
+    - '?'
+    - '?'
+    - '?'
+    - '?'
+  - - '?'
+    - '?'
+    - '?'
+    - '?'
+    - '?'
+    - '?'
+  - - '?'
+    - '?'
+    - '?'
+    - '?'
+    - '?'
+    - '?'
+  - - '?'
+    - '?'
+    - '?'
+    - '?'
+    - '?'
+    - '?'
   dv:
   - - festiu
     - festiu
@@ -326,94 +326,61 @@ names:
   albertsimo: AlbertSi
   jaume: JaumeA
 penalties:
+- - 5
+  - carme té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dl
 - - 0
   - 'guifre fa dl a 1a hora que no li va be perque: "Bioritme de Tarda"'
 - - 5
   - guifre té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dl
-- - 0
-  - 'pau fa dl a 1a hora que no li va be perque: "Organització de la càrrega de feina
-    i de les reunions"'
 - - 1
-  - joanm té més de 1 hores el dl
+  - aram té més de 1 hores el dl
 - - 1
-  - joanb té més de 1 hores el dl
-- - 0
-  - 'pau fa dl a 2a hora que no li va be perque: "Organització de la càrrega de feina
-    i de les reunions"'
-- - 1
-  - pau té més de 1 hores el dl
+  - adria té més de 1 hores el dl
 - - 0
   - 'guifre fa dl a 2a hora que no li va be perque: "Reunions Traspàs Factura"'
 - - 1
   - guifre té més de 1 hores el dl
-- - 0
-  - 'gemma fa dl a 3a hora que no li va be perque: "Telèfon a primera hora"'
-- - 1
-  - aram té més de 1 hores el dl
-- - 0
-  - 'gemma fa dl a 4a hora que no li va be perque: "Telèfon a primera hora"'
-- - 1
-  - gemma té més de 1 hores el dl
-- - 1
-  - tania té més de 1 hores el dl
-- - 0
-  - 'pau fa dm a 1a hora que no li va be perque: "Organització de la càrrega de feina
-    i de les reunions"'
-- - 0
-  - 'guifre fa dm a 1a hora que no li va be perque: "Bioritme de Tarda"'
 - - 5
-  - guifre té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dm
+  - guifre té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dl
 - - 1
-  - joanm té més de 1 hores el dm
+  - carme té més de 1 hores el dl
+- - 0
+  - 'joanb fa dl a 4a hora que no li va be perque: "Dinar a les 13h"'
 - - 1
-  - vane té més de 1 hores el dm
+  - joanb té més de 1 hores el dl
 - - 1
-  - carol té més de 1 hores el dm
+  - joanm té més de 1 hores el dl
 - - 5
-  - otilia té altres 1 persones amb telèfon a la mateixa taula a 4a hora del dm
+  - albertg té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dm
+- - 1
+  - gemma té més de 1 hores el dm
+- - 1
+  - carme té més de 1 hores el dm
+- - 1
+  - adria té més de 1 hores el dm
+- - 1
+  - albertg té més de 1 hores el dm
+- - 5
+  - albertg té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dm
+- - 1
+  - mariona té més de 1 hores el dm
+- - 5
+  - mariona té altres 1 persones amb telèfon a la mateixa taula a 4a hora del dm
+- - 1
+  - eloi té més de 1 hores el dm
+- - 1
+  - judith té més de 1 hores el dm
 - - 0
   - 'marc fa dx a 1a hora que no li va be perque: "Ronda IT"'
+- - 1
+  - monica té més de 1 hores el dx
+- - 5
+  - nuria té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dx
+- - 1
+  - carol té més de 1 hores el dx
 - - 0
-  - 'maria fa dx a 2a hora que no li va be perque: "Altes"'
+  - 'pau fa dx a 3a hora que no li va be perque: "Organització de la càrrega de feina
+    i de les reunions"'
 - - 0
   - 'gemma fa dx a 3a hora que no li va be perque: "Telèfon a primera hora"'
-- - 5
-  - monicag té altres 1 persones amb telèfon a la mateixa taula a 3a hora del dx
-- - 1
-  - otilia té més de 1 hores el dx
-- - 1
-  - nuria té més de 1 hores el dx
-- - 1
-  - roger té més de 1 hores el dx
-- - 1
-  - adria té més de 1 hores el dx
-- - 1
-  - monicag té més de 1 hores el dx
-- - 5
-  - monicag té altres 1 persones amb telèfon a la mateixa taula a 4a hora del dx
-- - 0
-  - 'vero fa dj a 1a hora que no li va be perque: "Em resulta difícil arribar a les
-    9h"'
-- - 1
-  - rogerlf té més de 1 hores el dj
-- - 1
-  - adria té més de 1 hores el dj
-- - 1
-  - vero té més de 1 hores el dj
-- - 5
-  - vero té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dj
-- - 5
-  - nuria té altres 1 persones amb telèfon a la mateixa taula a 3a hora del dj
-- - 1
-  - monicag té més de 1 hores el dj
-- - 1
-  - roger té més de 1 hores el dj
-- - 5
-  - yaiza té altres 1 persones amb telèfon a la mateixa taula a 4a hora del dj
-- - 1
-  - manel té més de 1 hores el dj
-- - 1
-  - nuria té més de 1 hores el dj
-- - 5
-  - nuria té altres 1 persones amb telèfon a la mateixa taula a 4a hora del dj
-cost: 67
+cost: 50

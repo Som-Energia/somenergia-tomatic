@@ -9,12 +9,12 @@ import datetime
 import codecs
 import requests
 from builtins import range
+from pathlib2 import Path
 
 from consolemsg import step, error, warn, out, u
 from sheetfetcher import SheetFetcher
 from .htmlgen import HtmlGen
 from . import busy
-from pathlib2 import Path
 
 # Dirty Hack: Behave like python3 open regarding unicode
 def open(*args, **kwd):
@@ -253,7 +253,7 @@ class Backtracker(object):
         workDays = busy.laborableWeekDays(config.monday)
         if set(workDays) - set(self.dies):
             warn("T'has deixat dies laborables: {}"
-                .format([x for x in set(workDays)-set(self.dies)]))
+                .format(sorted([x for x in set(workDays)-set(self.dies)])))
 
         if set(self.dies) - set(workDays):
             warn(u"No s'inclouran els dies festius: {}."
@@ -268,6 +268,8 @@ class Backtracker(object):
 		
         self.torns = self.readShifts(config.weekShifts, self.ntelefons)   # Persons and slots to be done
         self.companys = list(self.torns.keys())                         # Persons only
+        if not config.aleatori:
+            self.companys.sort()
 
         self.topesDiaris = self.llegeixTopesDiaris(self.companys)       # Person with it's day limit
         busyFiles = config.get('busyFiles', [
