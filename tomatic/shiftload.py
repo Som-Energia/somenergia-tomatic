@@ -423,9 +423,14 @@ def main():
         credits = credits,
     )
 
-    # TODO: After reaching the full load, try to trade existing credit and debit
+    compensated = compensateDebtsAndCredits(
+        shifts = complete,
+        credits = credits,
+        limits = upperBound,
+    )
 
-    overload = loadSubstract(complete, ponderated)
+    overload = loadSubstract(compensated, ponderated)
+    overload = ns((p,round(v,1)) for p,v in sorted(overload.items()))
     out("La sobrecarrega d'aquesta setmana seria:")
     for person, value in sorted(overload.items(), key=lambda x:x[1]):
         if abs(value)<.001: continue
