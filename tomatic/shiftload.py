@@ -162,11 +162,9 @@ def sortedDebtors(credits, strict=False):
 def compensateDebtsAndCredits(shifts, credits, limits):
     result=ns(shifts)
     for (debtor, debit),(creditor,credit) in zip(
-            sortedDebtors(credits),
-            sortedCreditors(credits),
+            sortedDebtors(credits, strict=True),
+            sortedCreditors(credits, strict=True),
             ):
-        if credit<=0: break
-        if debit>=0: break
         if result[creditor]<=0: continue
         if result[debtor]>=limits[debtor]: continue
         result[debtor] += 1
@@ -189,10 +187,9 @@ def decreaseUntilFullLoad(fullLoad, shifts, limits, credits):
     operatingWithCredit = True
     while True:
         load = currentLoad
-        for person, credit in sortedCreditors(credits):
+        for person, credit in sortedCreditors(credits, strict=operatingWithCredit):
             if currentLoad == fullLoad: break
             if result[person] <= 0: continue
-            if operatingWithCredit and credit <= 0: continue
             credits[person] -= 1
             result[person] -= 1
             currentLoad -= 1
@@ -208,10 +205,9 @@ def increaseUntilFullLoad(fullLoad, shifts, limits, credits):
     operatingWithDebts = True
     while True:
         load = currentLoad
-        for person, credit in sortedDebtors(credits):
+        for person, credit in sortedDebtors(credits, strict=operatingWithDebts):
             if currentLoad == fullLoad: break
             if result[person] >= limits[person]: continue
-            if operatingWithDebts and credit >= 0: continue
             credits[person] += 1
             result[person] += 1
             currentLoad += 1
