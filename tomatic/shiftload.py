@@ -149,6 +149,8 @@ def clusterize(nlines, load):
             
     return result
 
+def compensateDebtsAndCredits(load, credit, limit):
+    return ns(load)
 
 
 def pay_debts(maxim, charge, debts):

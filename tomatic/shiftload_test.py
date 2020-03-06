@@ -803,7 +803,6 @@ class ShiftLoadTest(unittest.TestCase):
                 bob=  [0,2],
             ))
 
-
     def test_clusterize_splittingLast(self):
         self.assertNsEqual(
             shiftload.clusterize(
@@ -822,7 +821,15 @@ class ShiftLoadTest(unittest.TestCase):
             "Total load 7 is not divisible by 2 lines")
 
 
-
+    def test_compensateDebtsAndCredits_noDebtNorCredit(self):
+        self.assertNsEqual(
+            shiftload.compensateDebtsAndCredits(
+                load=ns(alice=1, bob=2, carol=3),
+                credit=ns(),
+                limit=ns(alice=100, bob=100, carol=100),
+            ),
+            ns(alice=1, bob=2, carol=3),
+        )
 
 
 # vim: et ts=4 sw=4
