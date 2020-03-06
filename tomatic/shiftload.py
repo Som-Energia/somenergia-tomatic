@@ -85,6 +85,7 @@ def dayCapacity(busy, maxPerDay):
     @arg busy is a string coding shift unavailability for the day
         (one means busy, zero means available)
     """
+    # TODO: max=2 but no lunch required
     if busy == '1111': return 0
     if maxPerDay == 1: return 1
     if maxPerDay == 2:
@@ -441,7 +442,7 @@ def main():
     overload = loadSubstract(compensated, ponderated)
     overload = ns((p,round(v,1)) for p,v in sorted(overload.items()))
     out("La sobrecarrega d'aquesta setmana seria:")
-    for person, value in sorted(overload.items(), key=lambda x:x[1]):
+    for person, value in sorted(overload.items(), key=lambda x: x[::-1]):
         if abs(value)<.001: continue
         out("{}: {:.1f}".format(person,value))
 
