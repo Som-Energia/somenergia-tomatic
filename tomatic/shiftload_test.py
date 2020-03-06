@@ -729,7 +729,7 @@ class ShiftLoadTest(unittest.TestCase):
         )
         targetns = ns(alice=1.0, bob=-2.0, carol=3.5, dave=-4.0)
 
-        [self.assertAlmostEqual(summedns[k], targetns[k]) for k in targetns.keys()]
+        (self.assertAlmostEqual(summedns[k], targetns[k]) for k in targetns.keys())
 
     def test_loadSum_twoDecimalParams(self):
         summedns = shiftload.loadSum(
@@ -738,7 +738,7 @@ class ShiftLoadTest(unittest.TestCase):
         )
         targetns = ns(alice=Decimal(1.0), bob=Decimal(-2), carol=Decimal(3.5), dave=Decimal(-4))
 
-        [self.assertAlmostEqual(summedns[k], targetns[k]) for k in targetns.keys()]
+        (self.assertAlmostEqual(summedns[k], targetns[k]) for k in targetns.keys())
 
     def test_loadSum_twoParams(self):
         self.assertNsEqual(
