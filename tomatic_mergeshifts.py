@@ -9,6 +9,7 @@ def main():
         ns.load(filename)
         for filename in sys.argv[1:]
     ))
+    result = ns((p,round(v,1)) for p,v in sorted(result.items()))
     print(result.dump())
 
 if __name__ == "__main__":
