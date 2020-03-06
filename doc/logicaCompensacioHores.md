@@ -16,7 +16,8 @@
         1. Cada persona no pot fer més de dos torns un dia
         1. Per fer dos torns han de ser seguits bé a l'inici o bé al final del dia
 
-1. **Càrrega final:** Compensació:
+1. **Càrrega complerta:** S'agafaran o es tornaran torns fins que s'arribi per dalt o per baix al total de càrrega demanat.
+	Primer fent servir el deute o crèdit existent a la bossa d'hores i, si ja no es pot, generant nou deute/crèdit.
     - Què volem compensar?
         - En aquest moment, és possible estiguem per damunt o per sota dels torns necessaris
         - També és possible que hi hagi deute o crèdit de torns de graelles anteriors que calgui compensar
@@ -32,9 +33,11 @@
         - Primer afegim els torns que falten a les deutores de la bossa d'hores, restant dèbit
         - Si encara no arribem als 120, carreguem, considerant ja a tothom, afegint-los crèdit
         - Ordre: una a cada persona ordenades per dèbit, i amb el mateix dèbit per infracàrrega. Com el màxim de sobrecarrega es 1, no podriem repetir.
-    - En qualsevol cas, un cop arribem a 120, si encara queden creditores i deutores
-        - Compensem torns de deutores amb torns de creditores
-        - Ordre: creditores per ordre de crèdit i deutores per ordre de deute i sobre/infracàrrega, un a cada i repetim fins que no poguem compensar ningú més.
+
+1. **Càrrega final:** Compensem deutes i crèdits que encara puguem compensar entre ells.
+	- TODO: Això encara no s'ha implementat
+	- Ordre: creditores per ordre de crèdit i deutores per ordre de deute i sobre/infracàrrega,
+		un a cada i repetim fins que no poguem compensar ningú més d'un dels dos costats.
 
 1. **Sobrecàrrega:** Torns que cadascú ha fet de més respecta la càrrega ponderada
     - De la càrrega final cal restar la ponderada
