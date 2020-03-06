@@ -432,7 +432,7 @@ def main():
     out("La sobrecarrega d'aquesta setmana seria:")
     for person, value in sorted(overload.items(), key=lambda x:x[1]):
         if abs(value)<.001: continue
-        out("{}: {}".format(person,value))
+        out("{}: {:.1f}".format(person,value))
 
     overloadfile = args.overload or "overload-{}.yaml".format(config.monday)
     step("Desant sobrecàrrega com a {}", overloadfile)
