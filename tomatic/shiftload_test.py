@@ -888,6 +888,19 @@ class ShiftLoadTest(unittest.TestCase):
             ns(alice=1, bob=2),
         )
 
+    def test_compensateDebtsAndCredits_secondRound(self):
+        self.assertNsEqual(
+            shiftload.compensateDebtsAndCredits(
+                shifts=ns(alice=2, bob=4),
+                credits=ns(alice=-2, bob=2),
+                limits=ns(alice=100, bob=100),
+            ),
+            ns(alice=4, bob=2),
+        )
+
+    # TODO: credit is modified
+    # TODO: shifts is not modified
+    # TODO: Second creditor round versus many debtors
 
 
 # vim: et ts=4 sw=4
