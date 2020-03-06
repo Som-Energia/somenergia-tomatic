@@ -144,9 +144,6 @@ def clusterize(nlines, load):
 
 
 
-args = None
-
-
 def pay_debts(maxim, charge, debts):
     step("Pagant deutes...")
     # TODO: Fer en funcio de la situacio
@@ -286,8 +283,6 @@ def parseArgs():
 
     return parser.parse_args()
 
-args=None
-
 from .scheduler import (
     baixaPersones,
     baixaIndisponibilitatsTomatic,
@@ -297,6 +292,8 @@ from .scheduler import (
     baixaLeaves,
     downloadShiftCredit,
 )
+
+args=None
 
 def main():
     global args
