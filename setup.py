@@ -42,7 +42,7 @@ setup(
         'websocket-server',
     ] + [
         'Flask<1.1',
-        'jinja<3.0',
+        'jinja2<3.0',
         'pony<0.7',
     ] if sys.version_info[0] <3 else [
         'Flask',
