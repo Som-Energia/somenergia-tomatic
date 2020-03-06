@@ -367,20 +367,12 @@ def main():
         downloadShiftCredit(config)
 
     step('Generant càrrega...')
+    step("  Carregant dades...")
     businessDays = busy.laborableWeekDays(config.monday)
     idealLoad = ns.load(config.idealshifts)
     daysoffcontent = Path('indisponibilitats-vacances.conf').read_text(encoding='utf8').split("\n")
     daysoff = list(busy.parseBusy(daysoffcontent, error))
     leaves = Path('leaves.conf').read_text(encoding='utf8').split()
-
-    ponderated = ponderatedLoad(
-        idealLoad=idealLoad,
-        businessDays = businessDays,
-        daysoff = daysoff,
-        leaves = leaves,
-    )
-
-    rounded = ns((p, round(v)) for p,v in ponderated.items())
 
     persons=list(idealLoad.keys())
 
@@ -402,15 +394,33 @@ def main():
             justRequired = config.ignoreOptionalAbsences,
         )
 
+    step("  Ponderant la ideal...")
+    ponderated = ponderatedLoad(
+        idealLoad=idealLoad,
+        businessDays = businessDays,
+        daysoff = daysoff,
+        leaves = leaves,
+    )
+
+    rounded = ns((p, round(v)) for p,v in ponderated.items())
+    nrounded = int(sum(rounded.values()))
+    success("    Surten {} torns", nrounded)
+
+    step("  Limitant a la capacitat real...")
     loadCapacity = capacity(
         busyTable,
         config.maximHoresDiariesGeneral,
         config.maximHoresDiaries,
     )
-
     augmented = augmentLoad(ponderated)
     upperBound = loadMin(augmented, loadCapacity)
     limited = loadMin(rounded, upperBound)
+    nlimited = sum(limited.values())
+    for person in limited:
+        if limited.get(person,0) == rounded.get(person,0):
+            continue
+        warn("{} no te capacitat per fer {} torns sino {}...",
+            person, rounded.get(person,0), limited.get(person,0))
 
     fullLoad = len(businessDays) * busy.nturns * config.nTelefons
     credits = ns.load('shiftcredit.yaml')
