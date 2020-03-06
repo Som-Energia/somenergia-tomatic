@@ -49,9 +49,11 @@ testcases:
         command: |
             cd b2bdata/inputs/load-2020-03-02; python ../../../tomatic_shiftload.py 2020-03-02 \
                 --keep \
+                --clusterize \
                 2>&1 | tee console.log
         outputs:
         - b2bdata/inputs/load-2020-03-02/console.log
         - b2bdata/inputs/load-2020-03-02/overload-2020-03-02.yaml
         - b2bdata/inputs/load-2020-03-02/carrega-2020-03-02.yaml
+        - b2bdata/inputs/load-2020-03-02/carrega-2020-03-02.csv
 
