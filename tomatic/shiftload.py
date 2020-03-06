@@ -153,17 +153,14 @@ def compensateDebtsAndCredits(load, credit, limit):
     return ns(load)
 
 
-def pay_debts(maxim, charge, debts):
-    step("Pagant deutes...")
-    # TODO: Fer en funcio de la situacio
-    for person in debts:
-        if person != 'all':
-            days = charge[person] + debts[person]
-            if days <= maxim[person]:
-                charge[person] = days if days > 0 else 0
-                charge['all'] += debts[person]
-                del debts[person]
-    return debts
+def sortedCreditors(credits):
+    for person, credit in sorted(credits.items(), key=lambda x: -x[1]):
+        yield person, credit
+
+def sortedDebtors(credits):
+    for person, credit in sorted(credits.items(), key=lambda x: x[1]):
+        yield person, credit
+
 
 
 def achieveFullLoad(fullLoad, shifts, limits, credits):
@@ -179,7 +176,7 @@ def decreaseUntilFullLoad(fullLoad, shifts, limits, credits):
     operatingWithCredit = True
     while True:
         load = currentLoad
-        for person, credit in sorted(credits.items(), key=lambda x: -x[1]):
+        for person, credit in sortedCreditors(credits):
             if currentLoad == fullLoad: break
             if result[person] <= 0: continue
             if operatingWithCredit and credit <= 0: continue
@@ -198,7 +195,7 @@ def increaseUntilFullLoad(fullLoad, shifts, limits, credits):
     operatingWithDebts = True
     while True:
         load = currentLoad
-        for person, credit in sorted(credits.items(), key=lambda x: x[1]):
+        for person, credit in sortedDebtors(credits):
             if currentLoad == fullLoad: break
             if result[person] >= limits[person]: continue
             if operatingWithDebts and credit >= 0: continue

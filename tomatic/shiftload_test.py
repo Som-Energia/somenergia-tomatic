@@ -820,6 +820,21 @@ class ShiftLoadTest(unittest.TestCase):
         self.assertEqual(format(ctx.exception),
             "Total load 7 is not divisible by 2 lines")
 
+    def test_sortedCreditors(self):
+        self.assertEqual(list(
+            shiftload.sortedCreditors(ns(alice=1, bob=2, carol=-1))), [
+                ('bob',2),
+                ('alice',1),
+                ('carol',-1),
+            ])
+
+    def test_sortedDebtors(self):
+        self.assertEqual(list(
+            shiftload.sortedDebtors(ns(alice=1, bob=2, carol=-1))), [
+                ('carol',-1),
+                ('alice',1),
+                ('bob',2),
+            ])
 
     def test_compensateDebtsAndCredits_noDebtNorCredit(self):
         self.assertNsEqual(
