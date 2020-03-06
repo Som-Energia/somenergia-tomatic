@@ -322,7 +322,6 @@ def main():
     args = parseArgs()
 
     step('Carregant configuració {}...', args.config_file)
-    from yamlns import namespace as ns
     try:
         config = ns.load(args.config_file)
     except:
@@ -466,10 +465,10 @@ def main():
         if 'ningu' not in clusterized:
             clusterized.ningu = [0]*config.nTelefons
 
-        loadContent = '\n'.join(
+        loadContent = '\n'.join(sorted(
             u'\t'.join([person]+[str(lineload) for lineload in lineloads])
             for person, lineloads in clusterized.items()
-        )
+        ))
         clusterfile = Path("carrega-{}.csv".format(config.monday))
         step("Desant càrrega distribuida en linies com a {}", clusterfile)
         clusterfile.write_text(loadContent, encoding='utf8')
@@ -477,7 +476,7 @@ def main():
 
     finalLoad = sum(v for k,v in final.items())
     if finalLoad == fullLoad:
-        success("S'ha pogut aconseguir una càrrega {} torns", finalLoad)
+        success("S'ha aconseguit amb èxit una càrrega de {} torns", finalLoad)
     else:
         fail("Només s'han pogut aconseguir {} torns dels {} necessaris", -1, finalLoad, fullLoad)
 
