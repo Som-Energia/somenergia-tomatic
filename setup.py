@@ -40,14 +40,14 @@ setup(
         'pathlib2',
         'erppeek',
         'websocket-server',
-    ] + [
+    ] + ([
         'Flask<1.1',
         'jinja2<3.0',
         'pony<0.7',
     ] if sys.version_info[0] <3 else [
         'Flask',
         'pony',
-    ] + [
+    ]) + [
     #],
     #tests_require=[
         'nose',
