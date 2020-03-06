@@ -6,7 +6,6 @@ from itertools import product as xproduct
 from datetime import date, timedelta
 import random
 import datetime
-import glob
 import codecs
 import requests
 from builtins import range
@@ -271,9 +270,11 @@ class Backtracker(object):
         self.companys = list(self.torns.keys())                         # Persons only
 
         self.topesDiaris = self.llegeixTopesDiaris(self.companys)       # Person with it's day limit
-        busyFiles = config.get('busyFiles',
-            ['oneshot.conf']+
-            glob.glob('indisponibilitats*.conf'))
+        busyFiles = config.get('busyFiles', [
+            'oneshot.conf',
+            'indisponibilitats.conf',
+            'indisponibilitats-vacances.conf',
+            ])
 
         self.busy = self.initBusyTable(*busyFiles)                # (day,turn,person) is available?
         self.undesiredShifts = self.initUndesiredTable(*busyFiles)                # (day,turn,person) reason

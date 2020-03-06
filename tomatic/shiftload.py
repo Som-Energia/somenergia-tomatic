@@ -10,7 +10,6 @@ import random
 from pathlib2 import Path
 import datetime
 from . import busy
-import glob
 
 
 def ponderatedLoad(idealLoad, businessDays, daysoff, leaves):
@@ -393,9 +392,11 @@ def main():
         nhours=busy.nturns,
         persons=idealLoad.keys(),
     )
-    busyFiles = config.get('busyFiles',
-        ['oneshot.conf']+
-        glob.glob('indisponibilitats*.conf'))
+    busyFiles = config.get('busyFiles', [
+        'oneshot.conf',
+        'indisponibilitats.conf',
+        'indisponibilitats-vacances.conf',
+    ])
 
     for busyfile in busyFiles:
         busyTable.load(busyfile,
