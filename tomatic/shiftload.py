@@ -105,6 +105,12 @@ def loadSubstract(minuend, subtrahend):
         for person in set(minuend.keys()).union(subtrahend.keys())
     )
 
+def loadSum(a, b):
+    return ns(
+        (person, a.get(person, 0) + b.get(person, 0))
+        for person in set(a.keys()).union(b.keys())
+    )
+
 def loadMin(a, b):
     return ns(
         (person, min(a.get(person, 0), b.get(person, 0)))
