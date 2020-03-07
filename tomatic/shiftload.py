@@ -151,11 +151,19 @@ def clusterize(nlines, load):
     return result
 
 def sortedCreditors(credits, strict=False):
+    """
+    Generates a sequence of creditors sorted by credit.
+    In strict mode, debtors (zero or negative credit) are excluded
+    """
     for person, credit in sorted(credits.items(), key=lambda x: (-x[1],x[0])):
         if strict and credit<=0: break
         yield person
 
 def sortedDebtors(credits, strict=False):
+    """
+    Generates a sequence of debtors sorted by debit (negative credit).
+    In strict mode, creditors (zero or positive credit) are excluded
+    """
     for person, credit in sorted(credits.items(), key=lambda x: (x[1],x[0])):
         if strict and credit>=0: break
         yield person
