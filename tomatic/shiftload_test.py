@@ -780,6 +780,14 @@ class ShiftLoadTest(unittest.TestCase):
                 ns(alice=1, bob=1),
             ),  ns(alice=1, bob=0, carol=0))
 
+    def test_loadMin_threeParams(self):
+        self.assertNsEqual(
+            shiftload.loadMin(
+                ns(alice=3, carol=4),
+                ns(alice=1, bob=1),
+                ns(alice=4, bob=-1, dick=20),
+            ),  ns(alice=1, bob=-1, carol=0, dick=0))
+
 
     def test_augmentLoad_byDefault(self):
         self.assertNsEqual(

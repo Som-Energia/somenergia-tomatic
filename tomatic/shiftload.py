@@ -112,10 +112,11 @@ def loadSum(*args):
         for person in persons
     )
 
-def loadMin(a, b):
+def loadMin(*args):
+    persons = set().union(*(arg.keys() for arg in args))
     return ns(
-        (person, min(a.get(person, 0), b.get(person, 0)))
-        for person in set(a.keys()).union(b.keys())
+        (person, min(arg.get(person, 0) for arg in args))
+        for person in persons
     )
 
 def augmentLoad(load, addend=1):
