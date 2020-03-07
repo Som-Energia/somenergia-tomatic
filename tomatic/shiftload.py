@@ -100,12 +100,22 @@ def dayCapacity(busy, maxPerDay):
 
 
 def loadSubstract(minuend, subtrahend):
+    """
+    Computes the substraction of subtrahend load from minuend load,
+    person to person, considering 0 when a person is not
+    in a side.
+    """
     return ns(
         (person, minuend.get(person, 0) - subtrahend.get(person, 0))
         for person in set(minuend.keys()).union(subtrahend.keys())
     )
 
 def loadSum(*args):
+    """
+    Computes the addition of all loads passed as arguments,
+    person to person, if a person is missing in an argument
+    is considered to be 0.
+    """
     persons = set().union(*(arg.keys() for arg in args))
     return ns(
         (person, sum(arg.get(person, 0) for arg in args))
@@ -113,6 +123,11 @@ def loadSum(*args):
     )
 
 def loadMin(*args):
+    """
+    Computes the minimum of all loads passed as arguments,
+    person to person, if a person is missing in an argument
+    is considered to be 0.
+    """
     persons = set().union(*(arg.keys() for arg in args))
     return ns(
         (person, min(arg.get(person, 0) for arg in args))
@@ -120,6 +135,9 @@ def loadMin(*args):
     )
 
 def augmentLoad(load, addend=1):
+    """
+    Returns a load resulting of adding addend to every person.
+    """
     return ns(
         (person, value+addend)
         for person, value in load.items()
@@ -127,8 +145,13 @@ def augmentLoad(load, addend=1):
 
 def clusterize(nlines, load):
     """
-    Deals persons load on lines so that every person load
-    tend to be on a single line, increasing search space cuts.
+    Distributes persons load on lines so that every line has the
+    same total load.
+    This distribution makes every person load to be concentrated
+    on a single line when feasible.
+    This increases cuts of the search space of the backtraking.
+    In some situations this distribution could lead to unfeasible
+    configurations that could be feasible in a diferent distribution.
     """
     totalLoad = sum(load.values())
     if totalLoad % nlines:
@@ -147,7 +170,7 @@ def clusterize(nlines, load):
             result[person][line]+=transferedLoad
             linesTotal[line]+=transferedLoad
             load-=transferedLoad
-            
+
     return result
 
 def sortedCreditors(credits, strict=False):
