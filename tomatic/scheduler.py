@@ -1004,6 +1004,7 @@ def main():
     config.weekShifts = config.get('weekShifts') or args.weekshifts or 'carrega.csv'
 
     if not args.keep:
+
         if mustDownloadShifts:
             baixaCarrega(config, args.certificate)
         if not config.get('busyFiles'):

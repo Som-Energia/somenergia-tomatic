@@ -11,7 +11,7 @@ def main():
             for filename in sys.argv[2:]
         ))
     elif sys.argv[1] == 'subs':
-        result = loadSum(*(
+        result = loadSubstract(*(
             ns.load(filename)
             for filename in sys.argv[2:4]
         ))
