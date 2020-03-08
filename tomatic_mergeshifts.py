@@ -5,6 +5,9 @@ from tomatic.shiftload import loadSum, loadMin, loadSubstract
 from yamlns import namespace as ns
 
 def main():
+    nonzero = 'nonzero' in sys.argv
+    if nonzero: sys.argv.remove('nonzero')
+
     if sys.argv[1] == 'min':
         result = loadMin(*(
             ns.load(filename)
@@ -32,7 +35,11 @@ def main():
             for filename in sys.argv[1:]
         ))
 
-    result = ns((p,round(v,1)) for p,v in sorted(result.items()))
+    result = ns(
+        (p,round(v,1))
+        for p,v in sorted(result.items())
+        if not nonzero or v
+    )
     print(result.dump())
 
 if __name__ == "__main__":
