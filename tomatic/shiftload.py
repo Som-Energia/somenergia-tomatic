@@ -382,6 +382,7 @@ def main():
 
     config.personsfile = args.personsfile or config.get('personsfile', 'persons.yaml')
     if not args.keep and not args.personsfile:
+        step("Baixant informacio persones del Tomatic...")
         baixaPersones(config)
 
     if config.personsfile and Path(config.personsfile).exists():
@@ -406,27 +407,41 @@ def main():
     config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.csv'
 
     if not args.keep:
+        step("Baixant persones de baixa del drive...")
         baixaLeaves(config, args.certificate)
         if mustDownloadShifts:
+            step("Baixant carrega ideal del drive...")
             baixaCarregaIdeal(config, args.certificate)
         if not config.get('busyFiles'):
+            step("Baixant indisponibilitats del Tomatic...")
             baixaIndisponibilitatsTomatic(config)
             if args.holidays == 'notoi':
+                step("Baixant vacances del gestor d'absencies...")
                 baixaVacancesNotoi(config)
             else: # args.holidays == 'drive':
+                step("Baixant vacances del drive...")
                 baixaVacancesDrive(config, args.certificate)
+        step("Baixant bossa d'hores del tomatic...")
         downloadShiftCredit(config)
 
     step('Generant càrrega...')
     step("  Carregant dades...")
-    businessDays = busy.laborableWeekDays(config.monday)
-    idealLoad = ns.load(config.idealshifts)
-    daysoffcontent = Path('indisponibilitats-vacances.conf').read_text(encoding='utf8').split("\n")
-    daysoff = list(busy.parseBusy(daysoffcontent, error))
-    leaves = Path('leaves.conf').read_text(encoding='utf8').split()
 
+    step("    Llegint festius...")
+    businessDays = busy.laborableWeekDays(config.monday)
+
+    step("    Llegint carrega ideal...")
+    idealLoad = ns.load(config.idealshifts)
     persons=list(idealLoad.keys())
 
+    step("    Llegint vacances...")
+    daysoffcontent = Path('indisponibilitats-vacances.conf').read_text(encoding='utf8').split("\n")
+    daysoff = list(busy.parseBusy(daysoffcontent, error))
+
+    step("    Llegint baixes...")
+    leaves = Path('leaves.conf').read_text(encoding='utf8').split()
+
+    step("    Llegint altres indisponibilitats...")
     busyTable = busy.BusyTable(
         days=businessDays,
         nhours=busy.nturns,
@@ -444,6 +459,11 @@ def main():
             justRequired = config.ignoreOptionalAbsences,
         )
 
+    step("    Llegint credits i deutes (bossa d'hores)...")
+    credits = ns.load('shiftcredit.yaml')
+    credits = ns((person, credits.get(person, 0)) for person in persons)
+
+
     step("  Ponderant la ideal...")
     ponderated = ponderatedLoad(
         idealLoad=idealLoad,
@@ -452,8 +472,8 @@ def main():
         leaves = leaves,
     )
 
-    rounded = ns((p, round(v)) for p,v in ponderated.items())
-    nrounded = int(sum(rounded.values()))
+    rounded = ns((p, int(round(v))) for p,v in ponderated.items())
+    nrounded = sum(rounded.values())
     success("    Surten {} torns", nrounded)
 
     step("  Limitant a la capacitat real...")
@@ -465,16 +485,16 @@ def main():
     augmented = augmentLoad(ponderated)
     upperBound = loadMin(augmented, loadCapacity)
     limited = loadMin(rounded, upperBound)
-    nlimited = sum(limited.values())
+
     for person in limited:
         if limited.get(person,0) == rounded.get(person,0):
             continue
-        warn("{} no te capacitat per fer {} torns sino {}...",
+        warn("Per indisponibilitats, {} no te capacitat per fer {} torns sino {}...",
             person, rounded.get(person,0), limited.get(person,0))
 
     fullLoad = len(businessDays) * busy.nturns * config.nTelefons
-    credits = ns.load('shiftcredit.yaml')
-    credits = ns((person, credits.get(person, 0)) for person in persons)
+    currentLoad = sum(limited.values())
+    step("  Completant la carrega de {} a {}...", currentLoad, fullLoad)
 
     complete = achieveFullLoad(
         fullLoad = fullLoad,
@@ -482,12 +502,20 @@ def main():
         limits = upperBound,
         credits = credits,
     )
+    success("    Carrega assolida {}",sum(complete.values()))
 
+    step("  Compensant deute amb credit...")
     compensated = compensateDebtsAndCredits(
         shifts = complete,
         credits = credits,
         limits = upperBound,
     )
+    compensations = '\n'.join(
+        "{}: {:.1f}".format(person, value)
+        for person, value in loadSubstract(compensated, complete).items()
+        if value)
+    if compensations:
+        success("    Compensacions fetes:\n{}",compensations)
 
     overload = loadSubstract(compensated, ponderated)
     overload = ns((p,round(v,1)) for p,v in sorted(overload.items()))

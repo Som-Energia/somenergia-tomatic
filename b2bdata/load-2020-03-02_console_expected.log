@@ -1,6 +1,11 @@
 [34;1m:: Carregant configuració config.yaml...[0m
 [34;1m:: Generant càrrega...[0m
 [34;1m::   Carregant dades...[0m
+[34;1m::     Llegint festius...[0m
+[34;1m::     Llegint carrega ideal...[0m
+[34;1m::     Llegint vacances...[0m
+[34;1m::     Llegint baixes...[0m
+[34;1m::     Llegint altres indisponibilitats...[0m
 [33mWarning: Ignorant una indisponibilitat de ningu, que no entra al repartiment[0m
 [33mWarning: Ignorant una indisponibilitat de ningu, que no entra al repartiment[0m
 [33mWarning: Ignorant una indisponibilitat de ningu, que no entra al repartiment[0m
@@ -20,9 +25,13 @@
 [33mWarning: Ignorant una indisponibilitat de fran, que no entra al repartiment[0m
 [33mWarning: Ignorant una indisponibilitat de fran, que no entra al repartiment[0m
 [33mWarning: Ignorant una indisponibilitat de fran, que no entra al repartiment[0m
+[34;1m::     Llegint credits i deutes (bossa d'hores)...[0m
 [34;1m::   Ponderant la ideal...[0m
 [32;1m>>     Surten 114 torns[0m
 [34;1m::   Limitant a la capacitat real...[0m
+[34;1m::   Completant la carrega de 114 a 120...[0m
+[32;1m>>     Carrega assolida 120[0m
+[34;1m::   Compensant deute amb credit...[0m
 La sobrecarrega d'aquesta setmana seria:
 carol: -0.2
 marta: 0.4
