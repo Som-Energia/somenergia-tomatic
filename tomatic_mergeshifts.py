@@ -21,12 +21,12 @@ def main():
     elif sys.argv[1] == "timetable":
         from collections import Counter
         timetable = ns.load(sys.argv[2])
-        result = ns(Counter(sorted((
+        result = ns(sorted((p,v) for p,v in Counter(
             shift
             for day in timetable.timetable.values()
             for turn in day
             for shift in turn
-        ))))
+        ).items()))
         print(result.dump())
         return
     else:
