@@ -450,7 +450,7 @@ def main():
     busyTable = busy.BusyTable(
         days=businessDays,
         nhours=busy.nturns,
-        persons=idealLoad.keys(),
+        persons=persons,
     )
     busyFiles = config.get('busyFiles', [
         'oneshot.conf',
