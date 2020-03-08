@@ -15,6 +15,17 @@ def main():
             ns.load(filename)
             for filename in sys.argv[2:4]
         ))
+    elif sys.argv[1] == "timetable":
+        from collections import Counter
+        timetable = ns.load(sys.argv[2])
+        result = ns(Counter(sorted((
+            shift
+            for day in timetable.timetable.values()
+            for turn in day
+            for shift in turn
+        ))))
+        print(result.dump())
+        return
     else:
         result = loadSum(*(
             ns.load(filename)
