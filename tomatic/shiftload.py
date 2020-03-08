@@ -476,6 +476,7 @@ def main():
         daysoff = daysoff,
         leaves = leaves,
     )
+    ns(ponderated).dump("ponderatedideal-{}.yaml".format(config.monday))
 
     rounded = ns((p, int(round(v))) for p,v in ponderated.items())
     nrounded = sum(rounded.values())
@@ -487,6 +488,8 @@ def main():
         config.maximHoresDiariesGeneral,
         config.maximHoresDiaries,
     )
+
+
     augmented = augmentLoad(ponderated)
     upperBound = loadMin(augmented, loadCapacity)
     limited = loadMin(rounded, upperBound)
