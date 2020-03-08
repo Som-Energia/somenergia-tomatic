@@ -215,6 +215,11 @@ def compensateDebtsAndCredits(shifts, credits, limits):
 
 
 def achieveFullLoad(fullLoad, shifts, limits, credits):
+    """
+    Uses current credit (or debit) to make the shift load to be fullLoad.
+    Once the credit (or debit) is not usable anymore, it generates
+    more debit (or credit) until we have the full load.
+    """
     currentLoad = sum(shifts.values())
     if currentLoad > fullLoad:
         return decreaseUntilFullLoad(fullLoad, shifts, limits, credits)
@@ -222,6 +227,13 @@ def achieveFullLoad(fullLoad, shifts, limits, credits):
 
 
 def decreaseUntilFullLoad(fullLoad, shifts, limits, credits):
+    """
+    Uses current credit to decrease the current load to reach the full one.
+    Once the credit cannot be used anymore, new debit is generated
+    to reach it.
+    Personal loads are kept zero or positive.
+    In each phase persons are selected by decreasing credit one at a time and repeat.
+    """
     result = ns(shifts)
     currentLoad = sum(shifts.values())
     operatingWithCredit = True
@@ -240,6 +252,13 @@ def decreaseUntilFullLoad(fullLoad, shifts, limits, credits):
 
 
 def increaseUntilFullLoad(fullLoad, shifts, limits, credits):
+    """
+    Uses current debit (negative credit) to increase the current load to reach the full one.
+    Once the debit cannot be used anymore, new credit is generated
+    to reach it.
+    Personal limits to the load are respected.
+    In each phase persons are selected by decreasing debit (negative credit) one at a time and repeat.
+    """
     result = ns(shifts)
     currentLoad = sum(shifts.values())
     operatingWithDebts = True
@@ -418,7 +437,6 @@ def main():
         'indisponibilitats.conf',
         'indisponibilitats-vacances.conf',
     ])
-
     for busyfile in busyFiles:
         busyTable.load(busyfile,
             monday = config.monday,
