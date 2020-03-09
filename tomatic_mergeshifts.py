@@ -27,8 +27,6 @@ def main():
             for turn in day
             for shift in turn
         ).items()))
-        print(result.dump())
-        return
     else:
         result = loadSum(*(
             ns.load(filename)
@@ -36,7 +34,7 @@ def main():
         ))
 
     result = ns(
-        (p,round(v,1))
+        (p,round(v,1) if type(v) is float else v)
         for p,v in sorted(result.items())
         if not nonzero or v
     )
