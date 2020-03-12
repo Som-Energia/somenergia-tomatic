@@ -63,9 +63,11 @@ class Storage(object):
             x for x in self._creditFiles()
             if x <= current
         ]
-        credit = ns.load(str(filenames[-1])) if filenames else ns()
+        creditFile = filenames[-1] if filenames else None
 
-        ignoredDate = self._yamldate(filenames[-1]) if filenames else '0000-00-00'
+        credit = ns.load(str(creditFile)) if creditFile else ns()
+
+        ignoredDate = self._yamldate(creditFile) if creditFile else '0000-00-00'
         lastExcludedTimetable = self._timetableFile(ignoredDate)
 
         currentTimetable = self._timetableFile(monday)
