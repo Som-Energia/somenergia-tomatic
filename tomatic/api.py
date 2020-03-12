@@ -8,19 +8,21 @@ from flask import (
     send_file,
     )
 from datetime import datetime, timedelta
+from threading import Semaphore, Thread
+import urllib.parse
+import decorator
+import erppeek
+from pathlib2 import Path
+from websocket_server import WebsocketServer
+from sheetfetcher import SheetFetcher
 from yamlns import namespace as ns
 from consolemsg import error, step, warn
+
 from .callinfo import CallInfo
-from websocket_server import WebsocketServer
 from . import schedulestorage
 from .pbxmockup import PbxMockup
 from .htmlgen import HtmlGen
 from .remote import remotewrite
-import erppeek
-from sheetfetcher import SheetFetcher
-from threading import Semaphore, Thread
-import urllib.parse
-from pathlib2 import Path
 
 try:
     import dbconfig
@@ -105,7 +107,12 @@ def publishStatic(graella):
 
 class ApiError(Exception): pass
 
-import decorator
+def yamlfy(status=200, data=[], **kwd):
+    return Response(ns(
+        data, **kwd
+        ).dump(), status,
+        mimetype = 'application/x-yaml',
+    )
 
 @decorator.decorator
 def yamlerrors(f,*args,**kwd):
@@ -298,6 +305,45 @@ def busy_post(person):
     data = ns.loads(request.data)
     return yamlfy(**busy.update_busy(person, data))
 
+@app.route('/api/busy/download/weekly')
+def downloadWeeklyBusy():
+    response = send_file(
+        '../indisponibilitats.conf',
+        as_attachment=True,
+        mimetype='text/plain',
+    )
+    print("response {}".format(response))
+    return response
+
+@app.route('/api/busy/download/oneshot')
+def downloadOneShotBusy():
+    return send_file(
+        '../oneshot.conf',
+        as_attachment=True,
+        mimetype='text/plain',
+    )
+
+@app.route('/api/shifts/download/credit/<week>')
+@yamlerrors
+def downloadWeekShiftCredit(week):
+    try:
+        credit = schedules.credit(week)
+    except schedulestorage.StorageError as e:
+        raise ApiError(e)
+    return yamlfy(**credit)
+
+@app.route('/api/shifts/download/credit')
+def downloadShiftCredit():
+    shiftcreditfile = Path('shiftcredit.yaml')
+    if not shiftcreditfile.exists():
+        persons = ns.load('persons.yaml').extensions.keys()
+        ns((p,0) for p in persons).dump('shiftcredit.yaml')
+
+    return send_file(
+        '../shiftcredit.yaml',
+        as_attachment=True,
+        mimetype='text/plain',
+    )
 
 @app.route('/api/info/phone/<phone>', methods=['GET'])
 @yamlerrors
@@ -692,53 +738,6 @@ def updateMyLog(ext):
         message=msg
     )
     return yamlfy(info=result)
-
-@app.route('/api/busy/download/weekly')
-def downloadWeeklyBusy():
-    response = send_file(
-        '../indisponibilitats.conf',
-        as_attachment=True,
-        mimetype='text/plain',
-    )
-    print("response {}".format(response))
-    return response
-
-@app.route('/api/busy/download/oneshot')
-def downloadOneShotBusy():
-    return send_file(
-        '../oneshot.conf',
-        as_attachment=True,
-        mimetype='text/plain',
-    )
-
-@app.route('/api/shifts/download/credit/<week>')
-@yamlerrors
-def downloadWeekShiftCredit(week):
-    try:
-        credit = schedules.credit(week)
-    except schedulestorage.StorageError as e:
-        raise ApiError(e)
-    return yamlfy(**credit)
-
-@app.route('/api/shifts/download/credit')
-def downloadShiftCredit():
-    shiftcreditfile = Path('shiftcredit.yaml')
-    if not shiftcreditfile.exists():
-        persons = ns.load('persons.yaml').extensions.keys()
-        ns((p,0) for p in persons).dump('shiftcredit.yaml')
-
-    return send_file(
-        '../shiftcredit.yaml',
-        as_attachment=True,
-        mimetype='text/plain',
-    )
-
-def yamlfy(status=200, data=[], **kwd):
-    return Response(ns(
-        data, **kwd
-        ).dump(), status,
-        mimetype = 'application/x-yaml',
-    )
 
 
 # vim: ts=4 sw=4 et
