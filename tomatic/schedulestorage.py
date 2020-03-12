@@ -4,6 +4,7 @@ from yamlns import namespace as ns
 import os
 import datetime
 import glob
+from pathlib2 import Path
 
 class Storage(object):
     "Stores schedules by week into a folder"
@@ -38,5 +39,19 @@ class Storage(object):
             filename[-len('yyyy-mm-dd.yaml'):-len('.yaml')]
             for filename in sorted(glob.glob(pattern))
             ]
+
+    def credit(self, monday):
+        filename = Path(self._dirname) / 'shiftcredit-{}.yaml'.format(monday)
+        if not filename.exists(): return ns()
+        return ns.load(str(filename))
+
+
+    def saveCredit(self, monday, credit):
+        filename = Path(self._dirname) / 'shiftcredit-{}.yaml'.format(monday)
+        credit.dump(str(filename))
+
+
+
+
 
 #vim: ts=4 sw=4 et
