@@ -16,7 +16,6 @@ from . import schedulestorage
 from .pbxmockup import PbxMockup
 from .htmlgen import HtmlGen
 from .remote import remotewrite
-import os
 import erppeek
 from sheetfetcher import SheetFetcher
 from threading import Semaphore, Thread
@@ -100,8 +99,7 @@ def publishStatic(graella):
     remotewrite(
         params.user,
         params.host,
-        os.path.join(params.path,
-            'graella-{week}.html'.format(**graella)),
+        Path(params.path)/'graella-{week}.html'.format(**graella),
         sched.html(),
         )
 
