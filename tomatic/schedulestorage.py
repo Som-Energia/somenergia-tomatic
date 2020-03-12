@@ -61,13 +61,13 @@ class Storage(object):
             lastExcludedTimetable = str(filenames[-1]).replace('shiftcredit', 'graella')
 
         currentTimetable = self._timetableFile(monday)
-        timetables = list(self._timetableFiles())
-        overloads = [
+        timetables = self._timetableFiles()
+        overloads = (
             ns.load(str(timetable)).get('overload',ns())
             for timetable in timetables
             if timetable <= currentTimetable
             and str(timetable) > lastExcludedTimetable
-        ]
+        )
 
         return loadSum(credit, *overloads)
 
