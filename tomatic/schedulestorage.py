@@ -38,7 +38,7 @@ class Storage(object):
         current = self._dirname / 'shiftcredit-{}.yaml'.format(monday)
         currentTimetable = self._dirname / 'graella-{}.yaml'.format(monday)
         if currentTimetable.exists():
-            return ns.load(str(currentTimetable)).overload
+            return ns.load(str(currentTimetable)).get('overload',ns())
         filenames = list(sorted(
             x for x in self._dirname.glob('shiftcredit-????-??-??.yaml')
             if x <= current
