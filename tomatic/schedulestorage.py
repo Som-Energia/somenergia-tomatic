@@ -13,9 +13,6 @@ class Storage(object):
     def __init__(self, dirname):
         self._dirname = Path(dirname)
 
-    def _filename(self, week):
-        return str(self._timetableFile(week))
-
     def _checkMonday(self, monday):
         date = datetime.datetime.strptime(monday,'%Y-%m-%d')
         if not date.weekday(): return
@@ -27,16 +24,16 @@ class Storage(object):
 
     def load(self, week):
         self._checkMonday(week)
-        filename = self._filename(week)
+        filename = self._timetableFile(week)
         try:
-            return ns.load(filename)
+            return ns.load(str(filename))
         except IOError:
             raise KeyError(week)
 
     def save(self, value):
         self._checkMonday(value.week)
-        filename = self._filename(value.week)
-        value.dump(filename)
+        filename = self._timetableFile(value.week)
+        value.dump(str(filename))
 
     def list(self):
         return [
