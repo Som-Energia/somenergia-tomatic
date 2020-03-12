@@ -58,7 +58,19 @@ class ScheduleStorage_Test(unittest.TestCase):
         data = self.storage.load("2012-11-10")
         self.assertEqual(data,ns.loads(yaml20121110))
 
-    def _test_save_missingDate(self): 'TODO'
+    def test_save_notADate(self):
+        with self.assertRaises(Exception) as ctx:
+            self.storage.save(ns(week='../../etc/passwd'))
+        self.assertEqual(format(ctx.exception),
+            "time data '../../etc/passwd' does not match format '%Y-%m-%d'")
+
+    def test_save_missingDate(self):
+        # TODO: a different error
+        with self.assertRaises(AttributeError) as ctx:
+            self.storage.save(ns())
+        self.assertEqual(format(ctx.exception),
+            "week")
+
     def _test_save_badDateValue(self): 'TODO'
     def _test_save_overwriting(self): 'TODO'
 
@@ -234,6 +246,7 @@ class ScheduleStorage_Test(unittest.TestCase):
             alice: 2
             bob: 7
         """)
+
 
 # TODO: Check mondays are dates (not in private functions)
 # TODO: Callers should consider credit is from the previous week to be computed

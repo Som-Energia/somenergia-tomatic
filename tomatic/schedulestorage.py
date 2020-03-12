@@ -14,11 +14,10 @@ class Storage(object):
         self._dirname = Path(dirname)
 
     def _filename(self, week):
-        week = datetime.datetime.strptime(week,'%Y-%m-%d')
-        return str(
-            self._dirname / "graella-{:%Y-%m-%d}.yaml".format(week))
+        return str(self._timetableFile(week))
 
     def load(self, week):
+        datetime.datetime.strptime(week,'%Y-%m-%d')
         filename = self._filename(week)
         try:
             return ns.load(filename)
@@ -26,6 +25,7 @@ class Storage(object):
             raise KeyError(week)
 
     def save(self, value):
+        datetime.datetime.strptime(value.week,'%Y-%m-%d')
         filename = self._filename(value.week)
         value.dump(filename)
 
@@ -85,9 +85,6 @@ class Storage(object):
     def saveCredit(self, monday, credit):
         filename = self._creditFile(monday)
         credit.dump(str(filename))
-
-
-
 
 
 #vim: ts=4 sw=4 et
