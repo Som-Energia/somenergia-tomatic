@@ -83,9 +83,6 @@ class ScheduleStorage_Test(unittest.TestCase):
         self.assertEqual(format(ctx.exception),
             "week")
 
-    def _test_save_overwriting(self): 'TODO'
-
-
     def test_list_whenEmpty(self):
         self.assertEqual(self.storage.list(),[
             ]
@@ -113,7 +110,7 @@ class ScheduleStorage_Test(unittest.TestCase):
             {}
         """)
 
-    def test_credit_withCredit(self):
+    def test_credit_withCreditSameDate(self):
         self.storage.saveCredit('2020-01-06', ns(
             alice=2,
             bob=-3,
