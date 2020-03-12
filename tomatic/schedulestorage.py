@@ -35,21 +35,33 @@ class Storage(object):
             for filename in sorted(self._dirname.glob('graella-*.yaml'))
             ]
 
+    def _creditFile(self, monday):
+        return self._dirname / 'shiftcredit-{}.yaml'.format(monday)
+
+    def _creditFiles(self):
+        return sorted(self._dirname.glob('shiftcredit-????-??-??.yaml'))
+
+    def _timetableFile(self, monday):
+        return self._dirname / 'graella-{}.yaml'.format(monday)
+
+    def _timetableFiles(self):
+        return sorted(self._dirname.glob('graella-????-??-??.yaml'))
+
     def credit(self, monday):
 
-        current = self._dirname / 'shiftcredit-{}.yaml'.format(monday)
-        filenames = list(sorted(
-            x for x in self._dirname.glob('shiftcredit-????-??-??.yaml')
+        current = self._creditFile(monday)
+        filenames = list(
+            x for x in self._creditFiles()
             if x <= current
-            ))
+            )
         credit = ns() if not filenames else ns.load(str(filenames[-1]))
 
         lastExcludedTimetable = ''
         if filenames:
             lastExcludedTimetable = str(filenames[-1]).replace('shiftcredit', 'graella')
 
-        currentTimetable = self._dirname / 'graella-{}.yaml'.format(monday)
-        timetables = list(self._dirname.glob('graella-????-??-??.yaml'))
+        currentTimetable = self._timetableFile(monday)
+        timetables = list(self._timetableFiles())
         overloads = [
             ns.load(str(timetable)).get('overload',ns())
             for timetable in timetables
@@ -61,7 +73,7 @@ class Storage(object):
 
 
     def saveCredit(self, monday, credit):
-        filename = self._dirname / 'shiftcredit-{}.yaml'.format(monday)
+        filename = self._creditFile(monday)
         credit.dump(str(filename))
 
 
