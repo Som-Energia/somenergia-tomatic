@@ -16,8 +16,17 @@ class Storage(object):
     def _filename(self, week):
         return str(self._timetableFile(week))
 
+    def _checkMonday(self, monday):
+        date = datetime.datetime.strptime(monday,'%Y-%m-%d')
+        if not date.weekday(): return
+        weekdays = "monday tuesday wednesday thursday friday saturday sunday".split()
+        raise Exception("{} is not a monday but a {}".format(
+            monday,
+            weekdays[date.weekday()]
+            ))
+
     def load(self, week):
-        datetime.datetime.strptime(week,'%Y-%m-%d')
+        self._checkMonday(week)
         filename = self._filename(week)
         try:
             return ns.load(filename)
@@ -25,7 +34,7 @@ class Storage(object):
             raise KeyError(week)
 
     def save(self, value):
-        datetime.datetime.strptime(value.week,'%Y-%m-%d')
+        self._checkMonday(value.week)
         filename = self._filename(value.week)
         value.dump(filename)
 

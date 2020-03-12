@@ -4,8 +4,8 @@ from . import schedulestorage
 from yamlns import namespace as ns
 import os
 
-yaml20121110 = "week: '2012-11-10'"
-yaml20030201 = "week: '2003-02-01'"
+yaml20121112 = "week: '2012-11-12'"
+yaml20030203 = "week: '2003-02-03'"
 
 class ScheduleStorage_Test(unittest.TestCase):
     
@@ -31,17 +31,17 @@ class ScheduleStorage_Test(unittest.TestCase):
             f.write(content)
 
     def test_load(self):
-        self.write('graella-2012-11-10.yaml', yaml20121110)
+        self.write('graella-2012-11-12.yaml', yaml20121112)
 
-        data = self.storage.load("2012-11-10")
-        self.assertEqual(data,ns.loads(yaml20121110))
+        data = self.storage.load("2012-11-12")
+        self.assertEqual(data,ns.loads(yaml20121112))
 
     def test_load_missing(self):
         with self.assertRaises(KeyError) as ctx:
-            self.storage.load("2000-01-02")
+            self.storage.load("2000-01-03")
 
         self.assertEqual(str(ctx.exception),
-            "'2000-01-02'")
+            "'2000-01-03'")
  
     def test_load_notADate(self):
         with self.assertRaises(Exception) as ctx:
@@ -50,13 +50,19 @@ class ScheduleStorage_Test(unittest.TestCase):
         self.assertEqual(str(ctx.exception),
             "time data '../../etc/passwd' does not match format '%Y-%m-%d'")
  
-    def _test_load_notMonday(self): 'TODO'
+    def test_load_notMonday(self):
+        with self.assertRaises(Exception) as ctx:
+            self.storage.load("2020-01-01") # not a monday
+
+        self.assertEqual(str(ctx.exception),
+            "2020-01-01 is not a monday but a wednesday")
+
     def _test_load_badFormat(self): 'TODO'
 
     def test_save(self):
-        self.storage.save(ns.loads(yaml20121110))
-        data = self.storage.load("2012-11-10")
-        self.assertEqual(data,ns.loads(yaml20121110))
+        self.storage.save(ns.loads(yaml20121112))
+        data = self.storage.load("2012-11-12")
+        self.assertEqual(data,ns.loads(yaml20121112))
 
     def test_save_notADate(self):
         with self.assertRaises(Exception) as ctx:
@@ -64,14 +70,12 @@ class ScheduleStorage_Test(unittest.TestCase):
         self.assertEqual(format(ctx.exception),
             "time data '../../etc/passwd' does not match format '%Y-%m-%d'")
 
-    def test_save_missingDate(self):
-        # TODO: a different error
+    def test_save_noWeekAttribute(self):
         with self.assertRaises(AttributeError) as ctx:
             self.storage.save(ns())
         self.assertEqual(format(ctx.exception),
             "week")
 
-    def _test_save_badDateValue(self): 'TODO'
     def _test_save_overwriting(self): 'TODO'
 
 
@@ -81,18 +85,18 @@ class ScheduleStorage_Test(unittest.TestCase):
         )
 
     def test_list_withOne(self):
-        self.storage.save(ns.loads(yaml20121110))
+        self.storage.save(ns.loads(yaml20121112))
         self.assertEqual(self.storage.list(),[
-            '2012-11-10',
+            '2012-11-12',
             ]
         )
 
     def test_list_withMany(self):
-        self.storage.save(ns.loads(yaml20121110))
-        self.storage.save(ns.loads(yaml20030201))
+        self.storage.save(ns.loads(yaml20121112))
+        self.storage.save(ns.loads(yaml20030203))
         self.assertEqual(self.storage.list(),[
-            '2003-02-01',
-            '2012-11-10',
+            '2003-02-03',
+            '2012-11-12',
             ]
         )
 
