@@ -28,10 +28,10 @@ try:
 except ImportError:
     dbconfig = None
 
-packagedir = os.path.join(os.path.dirname(__file__))
-schedules_path = os.path.join(packagedir,'..','graelles')
+packagedir = Path(__file__).parent
+staticpath = packagedir/'dist'
+schedules_path = packagedir/'..'/'graelles'
 schedules = schedulestorage.Storage(schedules_path)
-staticpath = os.path.join(packagedir,'dist')
 websockets = {}
 
 
@@ -129,7 +129,7 @@ def yamlerrors(f,*args,**kwd):
 @app.route('/')
 @app.route('/<file>')
 def tomatic(file=None):
-    return send_from_directory(staticpath, file or 'index.html')
+    return send_from_directory(str(staticpath), file or 'index.html')
 
 @app.route('/api/graella-<week>.yaml')
 @app.route('/api/graella/<week>')
