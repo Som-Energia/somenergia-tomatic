@@ -48,6 +48,12 @@ class Storage(object):
         return sorted(self._dirname.glob('graella-????-??-??.yaml'))
 
     def credit(self, monday):
+        """
+        Returns the shift credit consisting on adding up the overloads
+        in timetables up to the week of the specified monday, that week included.
+        If a previous week has a precomputed shift credit, it uses that
+        as base.
+        """
 
         current = self._creditFile(monday)
         filenames = [
