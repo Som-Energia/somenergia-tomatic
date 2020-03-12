@@ -53,7 +53,7 @@ class Storage(object):
     def list(self):
         return [
             filename.stem[-len('yyyy-mm-dd'):]
-            for filename in sorted(self._dirname.glob('graella-*.yaml'))
+            for filename in self._timetableFiles()
             ]
 
     def credit(self, monday):
