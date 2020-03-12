@@ -205,6 +205,20 @@ class ScheduleStorage_Test(unittest.TestCase):
             bob: 4
         """)
 
+    def test_credit_futureTimetable_ignored(self):
+        self.storage.save(ns(
+            week='2020-01-13',
+            overload = ns(alice=3, bob=-3),
+        ))
+        self.storage.save(ns(
+            week='2020-01-20',
+            overload = ns(bob=7),
+        ))
+        newCredit = self.storage.credit('2020-01-13')
+        self.assertNsEqual(newCredit, """\
+            alice: 3
+            bob: -3
+        """)
 
 
 

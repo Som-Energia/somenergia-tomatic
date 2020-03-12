@@ -41,6 +41,7 @@ class Storage(object):
         overloads = [
             ns.load(str(timetable)).get('overload',ns())
             for timetable in timetables
+            if timetable <= currentTimetable
         ]
 
         current = self._dirname / 'shiftcredit-{}.yaml'.format(monday)
