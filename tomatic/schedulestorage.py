@@ -47,6 +47,9 @@ class Storage(object):
     def _timetableFiles(self):
         return sorted(self._dirname.glob('graella-????-??-??.yaml'))
 
+    def _yamldate(self, path):
+        return str(path)[-len('yyyy-mm-dd.yaml'):-len('.yaml')]
+
     def credit(self, monday):
         """
         Returns the shift credit consisting on adding up the overloads
@@ -62,9 +65,8 @@ class Storage(object):
         ]
         credit = ns.load(str(filenames[-1])) if filenames else ns()
 
-        lastExcludedTimetable = ''
-        if filenames:
-            lastExcludedTimetable = str(filenames[-1]).replace('shiftcredit', 'graella')
+        ignoredDate = self._yamldate(filenames[-1]) if filenames else '0000-00-00'
+        lastExcludedTimetable = self._timetableFile(ignoredDate)
 
         currentTimetable = self._timetableFile(monday)
         timetables = self._timetableFiles()
@@ -72,7 +74,7 @@ class Storage(object):
             ns.load(str(timetable)).get('overload',ns())
             for timetable in timetables
             if timetable <= currentTimetable
-            and str(timetable) > lastExcludedTimetable
+            and timetable > lastExcludedTimetable
         )
 
         return loadSum(credit, *overloads)
