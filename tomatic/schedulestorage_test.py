@@ -220,7 +220,20 @@ class ScheduleStorage_Test(unittest.TestCase):
             bob: -3
         """)
 
-
+    def test_credit_oldTimetable_ignored(self):
+        self.storage.saveCredit('2020-01-06', ns(
+            alice=2,
+            bob=7,
+        ))
+        self.storage.save(ns(
+            week='2020-01-06',
+            overload = ns(alice=3, bob=-3),
+        ))
+        newCredit = self.storage.credit('2020-01-13')
+        self.assertNsEqual(newCredit, """\
+            alice: 2
+            bob: 7
+        """)
 
 
 # vim: ts=4 sw=4 et
