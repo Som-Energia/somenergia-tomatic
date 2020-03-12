@@ -264,10 +264,8 @@ class ScheduleStorage_Test(unittest.TestCase):
 
     def test_saveCredit_checksIsMonday(self):
         with self.assertRaises(Exception) as ctx:
-            self.storage.saveCredit('2020-01-10', ns(
-                alice=2,
-                bob=7,
-            ))
+            self.storage.saveCredit('2020-01-10', ns(bob=5))
+
         self.assertEqual(format(ctx.exception),
             "2020-01-10 is not a monday but a friday")
 
