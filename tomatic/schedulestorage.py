@@ -10,14 +10,12 @@ class Storage(object):
     "Stores schedules by week into a folder"
 
     def __init__(self, dirname):
-        self._old_dirname = dirname
+        self._dirname = Path(dirname)
 
     def _filename(self, week):
         week = datetime.datetime.strptime(week,'%Y-%m-%d')
-        return os.path.join(
-            self._old_dirname,
-            "graella-{:%Y-%m-%d}.yaml"
-            .format(week))
+        return str(
+            self._dirname / "graella-{:%Y-%m-%d}.yaml".format(week))
 
     def load(self, week):
         filename = self._filename(week)
@@ -31,19 +29,15 @@ class Storage(object):
         value.dump(filename)
 
     def list(self):
-        pattern = os.path.join(
-            self._old_dirname,
-            'graella-*.yaml'
-            )
         return [
-            filename[-len('yyyy-mm-dd.yaml'):-len('.yaml')]
-            for filename in sorted(glob.glob(pattern))
+            filename.stem[-len('yyyy-mm-dd'):]
+            for filename in sorted(self._dirname.glob('graella-*.yaml'))
             ]
 
     def credit(self, monday):
-        current = Path(self._old_dirname) / 'shiftcredit-{}.yaml'.format(monday)
+        current = self._dirname / 'shiftcredit-{}.yaml'.format(monday)
         filenames = list(sorted(
-            x for x in Path(self._old_dirname).glob('shiftcredit-????-??-??.yaml')
+            x for x in self._dirname.glob('shiftcredit-????-??-??.yaml')
             if x <= current
             ))
         if not filenames: return ns()
@@ -51,7 +45,7 @@ class Storage(object):
 
 
     def saveCredit(self, monday, credit):
-        filename = Path(self._old_dirname) / 'shiftcredit-{}.yaml'.format(monday)
+        filename = self._dirname / 'shiftcredit-{}.yaml'.format(monday)
         credit.dump(str(filename))
 
 
