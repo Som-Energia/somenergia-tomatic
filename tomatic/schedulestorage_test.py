@@ -36,6 +36,13 @@ class ScheduleStorage_Test(unittest.TestCase):
         data = self.storage.load("2012-11-12")
         self.assertEqual(data,ns.loads(yaml20121112))
 
+    def test_load_badFormat(self):
+        self.write('graella-2012-11-12.yaml', "\ttabs are not yaml")
+
+        import yaml
+        with self.assertRaises(yaml.error.YAMLError) as ctx:
+            self.storage.load("2012-11-12")
+
     def test_load_missing(self):
         with self.assertRaises(KeyError) as ctx:
             self.storage.load("2000-01-03")
@@ -56,8 +63,6 @@ class ScheduleStorage_Test(unittest.TestCase):
 
         self.assertEqual(str(ctx.exception),
             "2020-01-01 is not a monday but a wednesday")
-
-    def _test_load_badFormat(self): 'TODO'
 
     def test_save(self):
         self.storage.save(ns.loads(yaml20121112))
