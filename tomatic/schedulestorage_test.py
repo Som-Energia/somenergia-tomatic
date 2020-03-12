@@ -3,6 +3,7 @@ import unittest
 from . import schedulestorage
 from yamlns import namespace as ns
 import os
+from pathlib2 import Path
 
 yaml20121112 = "week: '2012-11-12'"
 yaml20030203 = "week: '2003-02-03'"
@@ -265,6 +266,62 @@ class ScheduleStorage_Test(unittest.TestCase):
 
         self.assertEqual(format(ctx.exception),
             "2020-01-10 is not a monday but a friday")
+
+    def assertContent(self, expected):
+        self.assertNsEqual(ns(content=[
+            str(x) for x in sorted(self.storage._dirname.glob('**/*'))
+        ]), expected)
+
+    def test_assertContent(self):
+        self.storage.save(ns(week='2020-01-13'))
+        self.storage.saveCredit('2020-01-06', ns(
+            alice=2,
+            bob=7,
+        ))
+        self.assertContent("""
+            content:
+            - deleteme/graella-2020-01-13.yaml
+            - deleteme/shiftcredit-2020-01-06.yaml
+        """)
+
+    def test_retireOld(self):
+        self.storage.save(ns(
+            week='2020-01-06',
+            overload = ns(bob=1),
+        ))
+        self.storage.save(ns(
+            week='2020-01-13',
+            overload = ns(bob=5),
+        ))
+        self.storage.save(ns(
+            week='2020-01-20',
+            overload = ns(bob=7),
+        ))
+        self.storage.saveCredit('2020-01-06', ns(
+            alice=10,
+            bob=20,
+        ))
+
+        self.storage.retireOld('2020-01-13')
+
+        self.assertContent("""
+            content:
+            - deleteme/graella-2020-01-20.yaml
+            - deleteme/old
+            - deleteme/old/graella-2020-01-06.yaml
+            - deleteme/old/graella-2020-01-13.yaml
+            - deleteme/old/shiftcredit-2020-01-06.yaml
+            - deleteme/shiftcredit-2020-01-13.yaml
+        """)
+        self.assertNsEqual(
+            Path('deleteme/shiftcredit-2020-01-13.yaml').read_text(),
+            """
+            alice: 10
+            bob: 25
+            """)
+
+
+
 
 # TODO: Callers should consider credit is from the previous week to be computed
 

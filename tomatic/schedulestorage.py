@@ -93,5 +93,23 @@ class Storage(object):
         filename = self._creditFile(monday)
         credit.dump(str(filename))
 
+    def retireOld(self, monday):
+        credit = self.credit(monday)
+
+        retirementDir = self._dirname / 'old'
+        if not retirementDir.exists():
+            retirementDir.mkdir()
+
+        currentCreditFile = self._creditFile(monday)
+        for creditfile in self._creditFiles():
+            if creditfile >= currentCreditFile: continue
+            creditfile.rename(retirementDir/creditfile.name)
+
+        currentTimetable = self._timetableFile(monday)
+        for timetable in self._timetableFiles():
+            if timetable > currentTimetable: continue
+            timetable.rename(retirementDir/timetable.name)
+
+        self.saveCredit(monday, credit)
 
 #vim: ts=4 sw=4 et
