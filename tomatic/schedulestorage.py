@@ -50,10 +50,10 @@ class Storage(object):
     def credit(self, monday):
 
         current = self._creditFile(monday)
-        filenames = list(
+        filenames = [
             x for x in self._creditFiles()
             if x <= current
-            )
+        ]
         credit = ns() if not filenames else ns.load(str(filenames[-1]))
 
         lastExcludedTimetable = ''
