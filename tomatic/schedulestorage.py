@@ -1,10 +1,11 @@
 # -*- encoding: utf-8 -*-
 
-from yamlns import namespace as ns
 import os
 import datetime
 import glob
 from pathlib2 import Path
+from yamlns import namespace as ns
+from .shiftload import loadSum
 
 class Storage(object):
     "Stores schedules by week into a folder"
@@ -38,7 +39,6 @@ class Storage(object):
         currentTimetable = self._dirname / 'graella-{}.yaml'.format(monday)
         timetables = list(self._dirname.glob('graella-????-??-??.yaml'))
 
-        from .shiftload import loadSum
 
         if timetables:
             return loadSum(*[
