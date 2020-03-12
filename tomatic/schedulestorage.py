@@ -52,7 +52,7 @@ class Storage(object):
 
     def list(self):
         return [
-            filename.stem[-len('yyyy-mm-dd'):]
+            self._yamldate(filename)
             for filename in self._timetableFiles()
             ]
 
