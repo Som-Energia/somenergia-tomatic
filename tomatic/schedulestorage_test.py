@@ -7,6 +7,7 @@ from pathlib2 import Path
 
 yaml20121112 = "week: '2012-11-12'"
 yaml20030203 = "week: '2003-02-03'"
+StorageError = schedulestorage.StorageError
 
 class ScheduleStorage_Test(unittest.TestCase):
 
@@ -54,14 +55,14 @@ class ScheduleStorage_Test(unittest.TestCase):
             "'2000-01-03'")
  
     def test_load_notADate(self):
-        with self.assertRaises(schedulestorage.StorageError) as ctx:
+        with self.assertRaises(StorageError) as ctx:
             self.storage.load("../../etc/passwd")
 
         self.assertEqual(str(ctx.exception),
             "time data '../../etc/passwd' does not match format '%Y-%m-%d'")
  
     def test_load_notMonday(self):
-        with self.assertRaises(schedulestorage.StorageError) as ctx:
+        with self.assertRaises(StorageError) as ctx:
             self.storage.load("2020-01-01") # not a monday
 
         self.assertEqual(str(ctx.exception),
@@ -73,7 +74,7 @@ class ScheduleStorage_Test(unittest.TestCase):
         self.assertEqual(data,ns.loads(yaml20121112))
 
     def test_save_notADate(self):
-        with self.assertRaises(schedulestorage.StorageError) as ctx:
+        with self.assertRaises(StorageError) as ctx:
             self.storage.save(ns(week='../../etc/passwd'))
         self.assertEqual(format(ctx.exception),
             "time data '../../etc/passwd' does not match format '%Y-%m-%d'")
@@ -255,13 +256,13 @@ class ScheduleStorage_Test(unittest.TestCase):
         """)
 
     def test_credit_checksIsMonday(self):
-        with self.assertRaises(schedulestorage.StorageError) as ctx:
+        with self.assertRaises(StorageError) as ctx:
             self.storage.credit('2020-01-10')
         self.assertEqual(format(ctx.exception),
             "2020-01-10 is not a monday but a friday")
 
     def test_saveCredit_checksIsMonday(self):
-        with self.assertRaises(schedulestorage.StorageError) as ctx:
+        with self.assertRaises(StorageError) as ctx:
             self.storage.saveCredit('2020-01-10', ns(bob=5))
 
         self.assertEqual(format(ctx.exception),
