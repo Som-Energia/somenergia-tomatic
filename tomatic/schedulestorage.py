@@ -51,8 +51,8 @@ class Storage(object):
             x for x in self._dirname.glob('shiftcredit-????-??-??.yaml')
             if x <= current
             ))
-        if not filenames: return ns()
-        return ns.load(str(filenames[-1]))
+        credit = ns() if not filenames else ns.load(str(filenames[-1]))
+        return credit
 
 
     def saveCredit(self, monday, credit):
