@@ -29,7 +29,7 @@ class Storage(object):
         return sorted(self._dirname.glob('graella-????-??-??.yaml'))
 
     def _yamldate(self, path):
-        return str(path)[-len('yyyy-mm-dd.yaml'):-len('.yaml')]
+        return path.stem[-len('yyyy-mm-dd'):]
 
     def _creditFile(self, monday):
         return self._dirname / 'shiftcredit-{}.yaml'.format(monday)
