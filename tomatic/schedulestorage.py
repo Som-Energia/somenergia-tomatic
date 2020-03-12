@@ -54,8 +54,8 @@ class Storage(object):
         """
         Returns the shift credit consisting on adding up the overloads
         in timetables up to the week of the specified monday, that week included.
-        If a previous week has a precomputed shift credit, it uses that
-        as base.
+        If a week has a precomputed shift credit, that is used instead of
+        overloads of that week's timetable and earlier.
         """
 
         current = self._creditFile(monday)
