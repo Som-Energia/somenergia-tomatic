@@ -715,6 +715,11 @@ def downloadOneShotBusy():
         mimetype='text/plain',
     )
 
+@app.route('/api/shifts/download/credit/<week>')
+def downloadWeekShiftCredit(week=None):
+    credit = schedules.credit(week)
+    return yamlfy(**credit)
+
 @app.route('/api/shifts/download/credit')
 def downloadShiftCredit():
     shiftcreditfile = Path('shiftcredit.yaml')
