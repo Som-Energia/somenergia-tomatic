@@ -130,6 +130,37 @@ class ScheduleStorage_Test(unittest.TestCase):
         """)
 
 
+    def test_toplevel_withManyCredits_takesLastDate(self):
+        self.storage.saveCredit('2020-01-06', ns(
+            alice=2,
+            bob=-3,
+        ))
+        self.storage.saveCredit('2020-01-13', ns(
+            alice=20,
+            bob=-30,
+        ))
+        newCredit = self.storage.credit('2020-01-20')
+        self.assertNsEqual(newCredit, """\
+            alice: 20
+            bob: -30
+        """)
+
+    def test_toplevel_withManyCredits_ignoresFutureCredit(self):
+        self.storage.saveCredit('2020-01-06', ns(
+            alice=2,
+            bob=-3,
+        ))
+        self.storage.saveCredit('2020-01-13', ns(
+            alice=20,
+            bob=-30,
+        ))
+        newCredit = self.storage.credit('2020-01-06')
+        self.assertNsEqual(newCredit, """\
+            alice: 2
+            bob: -3
+        """)
+
+
 
 
 

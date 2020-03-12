@@ -41,9 +41,13 @@ class Storage(object):
             ]
 
     def credit(self, monday):
-        filenames = list(Path(self._dirname).glob('shiftcredit-????-??-??.yaml'))
+        current = Path(self._dirname) / 'shiftcredit-{}.yaml'.format(monday)
+        filenames = list(sorted(
+            x for x in Path(self._dirname).glob('shiftcredit-????-??-??.yaml')
+            if x <= current
+            ))
         if not filenames: return ns()
-        return ns.load(str(filenames[0]))
+        return ns.load(str(filenames[-1]))
 
 
     def saveCredit(self, monday, credit):
