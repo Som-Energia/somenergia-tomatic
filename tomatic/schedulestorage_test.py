@@ -235,5 +235,8 @@ class ScheduleStorage_Test(unittest.TestCase):
             bob: 7
         """)
 
+# TODO: Check mondays are dates (not in private functions)
+# TODO: Callers should consider credit is from the previous week to be computed
+
 
 # vim: ts=4 sw=4 et
