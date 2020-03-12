@@ -7,6 +7,8 @@ from pathlib2 import Path
 from yamlns import namespace as ns
 from .shiftload import loadSum
 
+class StorageError(Exception): pass
+
 class Storage(object):
     "Stores schedules by week into a folder"
 
@@ -14,10 +16,14 @@ class Storage(object):
         self._dirname = Path(dirname)
 
     def _checkMonday(self, monday):
-        date = datetime.datetime.strptime(monday,'%Y-%m-%d')
+        try:
+            date = datetime.datetime.strptime(monday,'%Y-%m-%d')
+        except ValueError as e:
+            raise StorageError(e)
+
         if not date.weekday(): return
         weekdays = "monday tuesday wednesday thursday friday saturday sunday".split()
-        raise Exception("{} is not a monday but a {}".format(
+        raise StorageError("{} is not a monday but a {}".format(
             monday,
             weekdays[date.weekday()]
             ))
