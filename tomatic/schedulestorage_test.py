@@ -2,11 +2,10 @@
 import unittest
 from . import schedulestorage
 from yamlns import namespace as ns
-import os
 from pathlib2 import Path
 
-yaml20121112 = "week: '2012-11-12'"
-yaml20030203 = "week: '2003-02-03'"
+yaml20121112 = u"week: '2012-11-12'"
+yaml20030203 = u"week: '2003-02-03'"
 StorageError = schedulestorage.StorageError
 
 class ScheduleStorage_Test(unittest.TestCase):
@@ -14,25 +13,21 @@ class ScheduleStorage_Test(unittest.TestCase):
     from yamlns.testutils import assertNsEqual
     
     def setUp(self):
-        import os
-        self.storagedir = "deleteme"
+        self.storagedir = Path("deleteme")
         self.cleanUp()
 
-        os.makedirs(self.storagedir)
+        self.storagedir.mkdir(exist_ok=True)
         self.storage = schedulestorage.Storage(self.storagedir)
 
     def tearDown(self):
         self.cleanUp()
 
     def cleanUp(self):
-        import shutil
-        try:
-            shutil.rmtree(self.storagedir)
-        except: pass
+        for p in reversed(sorted(self.storagedir.glob('**/*'))):
+            p.rmdir() if p.is_dir() else p.unlink()
 
     def write(self, filename, content):
-        with open(os.path.join(self.storagedir, filename),'w') as f:
-            f.write(content)
+        (self.storagedir/filename).write_text(content, encoding='utf8')
 
     def test_load(self):
         self.write('graella-2012-11-12.yaml', yaml20121112)
@@ -41,7 +36,7 @@ class ScheduleStorage_Test(unittest.TestCase):
         self.assertEqual(data,ns.loads(yaml20121112))
 
     def test_load_badFormat(self):
-        self.write('graella-2012-11-12.yaml', "\ttabs are not yaml")
+        self.write('graella-2012-11-12.yaml', u"\ttabs are not yaml")
 
         import yaml
         with self.assertRaises(yaml.error.YAMLError) as ctx:

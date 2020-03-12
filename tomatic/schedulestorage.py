@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
 
-import os
 import datetime
 import glob
 from pathlib2 import Path
