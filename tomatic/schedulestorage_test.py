@@ -84,21 +84,6 @@ class ScheduleStorage_Test(unittest.TestCase):
             ]
         )
 
-    def _test_toplevel_goal(self):
-        self.storage.saveCredit('2020-01-06', ns(
-            alice=2,
-            bob=-3,
-        ))
-        self.storage.save(ns(week='2020-01-06',
-            overload = ns(bob=7)
-        ))
-        self.storage.save(ns(week='2020-01-13'))
-        newCredit = self.storage.credit('2020-01-27')
-        self.assertNsEqual(newCredit, """\
-            alice: 2
-            bob: 4
-        """)
-
     from yamlns.testutils import assertNsEqual
 
     def test_credit_noFiles(self):
@@ -159,6 +144,26 @@ class ScheduleStorage_Test(unittest.TestCase):
             bob: -3
         """)
 
+    def test_credit_justFutureCredit_ignoresAll(self):
+        self.storage.saveCredit('2020-01-13', ns(
+            alice=2,
+            bob=-3,
+        ))
+        newCredit = self.storage.credit('2020-01-06')
+        self.assertNsEqual(newCredit, """\
+            {}
+        """)
+
+
+    def test_credit_withOverload(self):
+        self.storage.save(ns(
+            week='2020-01-13',
+            overload = ns(bob=7)
+        ))
+        newCredit = self.storage.credit('2020-01-13')
+        self.assertNsEqual(newCredit, """\
+            bob: 7
+        """)
 
 
 
