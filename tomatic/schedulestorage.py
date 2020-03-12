@@ -54,7 +54,7 @@ class Storage(object):
             x for x in self._creditFiles()
             if x <= current
         ]
-        credit = ns() if not filenames else ns.load(str(filenames[-1]))
+        credit = ns.load(str(filenames[-1])) if filenames else ns()
 
         lastExcludedTimetable = ''
         if filenames:
