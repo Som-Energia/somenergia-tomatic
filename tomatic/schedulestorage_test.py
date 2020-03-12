@@ -314,12 +314,11 @@ class ScheduleStorage_Test(unittest.TestCase):
             - deleteme/old/shiftcredit-2020-01-06.yaml
             - deleteme/shiftcredit-2020-01-13.yaml
         """)
-        self.assertNsEqual(
-            Path('deleteme/shiftcredit-2020-01-13.yaml').read_text(),
-            """
+        creditContent = Path('deleteme/shiftcredit-2020-01-13.yaml').read_text()
+        self.assertNsEqual(creditContent, """
             alice: 10
             bob: 25
-            """)
+        """)
 
 
 
