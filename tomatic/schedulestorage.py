@@ -58,17 +58,17 @@ class Storage(object):
         overloads of that week's timetable and earlier.
         """
 
-        current = self._creditFile(monday)
+        currentCreditFile = self._creditFile(monday)
         filenames = [
             x for x in self._creditFiles()
-            if x <= current
+            if x <= currentCreditFile
         ]
         creditFile = filenames[-1] if filenames else None
 
         credit = ns.load(str(creditFile)) if creditFile else ns()
 
-        ignoredDate = self._yamldate(creditFile) if creditFile else '0000-00-00'
-        lastExcludedTimetable = self._timetableFile(ignoredDate)
+        precomputedDate = self._yamldate(creditFile) if creditFile else '0000-00-00'
+        lastTimetableToIgnore = self._timetableFile(precomputedDate)
 
         currentTimetable = self._timetableFile(monday)
         timetables = self._timetableFiles()
@@ -76,7 +76,7 @@ class Storage(object):
             ns.load(str(timetable)).get('overload',ns())
             for timetable in timetables
             if timetable <= currentTimetable
-            and timetable > lastExcludedTimetable
+            and timetable > lastTimetableToIgnore
         )
 
         return loadSum(credit, *overloads)
