@@ -8,6 +8,8 @@ yaml20121112 = "week: '2012-11-12'"
 yaml20030203 = "week: '2003-02-03'"
 
 class ScheduleStorage_Test(unittest.TestCase):
+
+    from yamlns.testutils import assertNsEqual
     
     def setUp(self):
         import os
@@ -104,8 +106,6 @@ class ScheduleStorage_Test(unittest.TestCase):
             '2012-11-12',
             ]
         )
-
-    from yamlns.testutils import assertNsEqual
 
     def test_credit_noFiles(self):
         newCredit = self.storage.credit('2020-01-27')
