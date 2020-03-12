@@ -175,6 +175,20 @@ class ScheduleStorage_Test(unittest.TestCase):
             {}
         """)
 
+    def test_credit_manyTimetables(self):
+        self.storage.save(ns(
+            week='2020-01-06',
+            overload = ns(alice=3, bob=-3),
+        ))
+        self.storage.save(ns(
+            week='2020-01-13',
+            overload = ns(bob=7),
+        ))
+        newCredit = self.storage.credit('2020-01-13')
+        self.assertNsEqual(newCredit, """\
+            alice: 3
+            bob: 4
+        """)
 
 
 

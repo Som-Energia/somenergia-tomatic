@@ -35,10 +35,18 @@ class Storage(object):
             ]
 
     def credit(self, monday):
-        current = self._dirname / 'shiftcredit-{}.yaml'.format(monday)
         currentTimetable = self._dirname / 'graella-{}.yaml'.format(monday)
-        if currentTimetable.exists():
-            return ns.load(str(currentTimetable)).get('overload',ns())
+        timetables = list(self._dirname.glob('graella-????-??-??.yaml'))
+
+        from .shiftload import loadSum
+
+        if timetables:
+            return loadSum(*[
+                ns.load(str(timetable)).get('overload',ns())
+                for timetable in timetables
+            ])
+
+        current = self._dirname / 'shiftcredit-{}.yaml'.format(monday)
         filenames = list(sorted(
             x for x in self._dirname.glob('shiftcredit-????-??-??.yaml')
             if x <= current
