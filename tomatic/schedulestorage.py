@@ -44,9 +44,9 @@ class Storage(object):
             ))
         credit = ns() if not filenames else ns.load(str(filenames[-1]))
 
-        lastExcludedTimetable = None
+        lastExcludedTimetable = ''
         if filenames:
-            lastExcludedTimetable = Path(str(filenames[-1]).replace('shiftcredit', 'graella'))
+            lastExcludedTimetable = str(filenames[-1]).replace('shiftcredit', 'graella')
 
         currentTimetable = self._dirname / 'graella-{}.yaml'.format(monday)
         timetables = list(self._dirname.glob('graella-????-??-??.yaml'))
@@ -54,7 +54,7 @@ class Storage(object):
             ns.load(str(timetable)).get('overload',ns())
             for timetable in timetables
             if timetable <= currentTimetable
-            and (not lastExcludedTimetable or timetable > lastExcludedTimetable)
+            and str(timetable) > lastExcludedTimetable
         ]
 
         return loadSum(credit, *overloads)
