@@ -101,13 +101,13 @@ class ScheduleStorage_Test(unittest.TestCase):
 
     from yamlns.testutils import assertNsEqual
 
-    def test_toplevel_noFiles(self):
+    def test_credit_noFiles(self):
         newCredit = self.storage.credit('2020-01-27')
         self.assertNsEqual(newCredit, """\
             {}
         """)
 
-    def test_toplevel_withCredit(self):
+    def test_credit_withCredit(self):
         self.storage.saveCredit('2020-01-06', ns(
             alice=2,
             bob=-3,
@@ -118,7 +118,7 @@ class ScheduleStorage_Test(unittest.TestCase):
             bob: -3
         """)
 
-    def test_toplevel_withOlderCredit(self):
+    def test_credit_withOlderCredit(self):
         self.storage.saveCredit('2020-01-06', ns(
             alice=2,
             bob=-3,
@@ -129,8 +129,7 @@ class ScheduleStorage_Test(unittest.TestCase):
             bob: -3
         """)
 
-
-    def test_toplevel_withManyCredits_takesLastDate(self):
+    def test_credit_withManyCredits_takesLastDate(self):
         self.storage.saveCredit('2020-01-06', ns(
             alice=2,
             bob=-3,
@@ -145,7 +144,7 @@ class ScheduleStorage_Test(unittest.TestCase):
             bob: -30
         """)
 
-    def test_toplevel_withManyCredits_ignoresFutureCredit(self):
+    def test_credit_withManyCredits_ignoresFutureCredit(self):
         self.storage.saveCredit('2020-01-06', ns(
             alice=2,
             bob=-3,
