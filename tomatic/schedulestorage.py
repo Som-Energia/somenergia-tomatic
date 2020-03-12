@@ -66,7 +66,7 @@ class Storage(object):
         If a week has a precomputed shift credit, that is used instead of
         overloads of that week's timetable and earlier.
         """
-
+        self._checkMonday(monday)
         currentCreditFile = self._creditFile(monday)
         filenames = [
             x for x in self._creditFiles()
@@ -92,6 +92,7 @@ class Storage(object):
 
 
     def saveCredit(self, monday, credit):
+        self._checkMonday(monday)
         filename = self._creditFile(monday)
         credit.dump(str(filename))
 

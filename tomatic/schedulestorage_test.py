@@ -251,8 +251,21 @@ class ScheduleStorage_Test(unittest.TestCase):
             bob: 7
         """)
 
+    def test_credit_checksIsMonday(self):
+        with self.assertRaises(Exception) as ctx:
+            self.storage.credit('2020-01-10')
+        self.assertEqual(format(ctx.exception),
+            "2020-01-10 is not a monday but a friday")
 
-# TODO: Check mondays are dates (not in private functions)
+    def test_saveCredit_checksIsMonday(self):
+        with self.assertRaises(Exception) as ctx:
+            self.storage.saveCredit('2020-01-10', ns(
+                alice=2,
+                bob=7,
+            ))
+        self.assertEqual(format(ctx.exception),
+            "2020-01-10 is not a monday but a friday")
+
 # TODO: Callers should consider credit is from the previous week to be computed
 
 
