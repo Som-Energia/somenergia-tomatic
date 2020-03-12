@@ -43,16 +43,14 @@ class Storage(object):
             for timetable in timetables
         ]
 
-        if timetables:
-            return loadSum(*overloads)
-
         current = self._dirname / 'shiftcredit-{}.yaml'.format(monday)
         filenames = list(sorted(
             x for x in self._dirname.glob('shiftcredit-????-??-??.yaml')
             if x <= current
             ))
         credit = ns() if not filenames else ns.load(str(filenames[-1]))
-        return credit
+
+        return loadSum(credit, *overloads)
 
 
     def saveCredit(self, monday, credit):
