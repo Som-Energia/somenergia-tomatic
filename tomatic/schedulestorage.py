@@ -22,6 +22,21 @@ class Storage(object):
             weekdays[date.weekday()]
             ))
 
+    def _timetableFile(self, monday):
+        return self._dirname / 'graella-{}.yaml'.format(monday)
+
+    def _timetableFiles(self):
+        return sorted(self._dirname.glob('graella-????-??-??.yaml'))
+
+    def _yamldate(self, path):
+        return str(path)[-len('yyyy-mm-dd.yaml'):-len('.yaml')]
+
+    def _creditFile(self, monday):
+        return self._dirname / 'shiftcredit-{}.yaml'.format(monday)
+
+    def _creditFiles(self):
+        return sorted(self._dirname.glob('shiftcredit-????-??-??.yaml'))
+
     def load(self, week):
         self._checkMonday(week)
         filename = self._timetableFile(week)
@@ -40,21 +55,6 @@ class Storage(object):
             filename.stem[-len('yyyy-mm-dd'):]
             for filename in sorted(self._dirname.glob('graella-*.yaml'))
             ]
-
-    def _creditFile(self, monday):
-        return self._dirname / 'shiftcredit-{}.yaml'.format(monday)
-
-    def _creditFiles(self):
-        return sorted(self._dirname.glob('shiftcredit-????-??-??.yaml'))
-
-    def _timetableFile(self, monday):
-        return self._dirname / 'graella-{}.yaml'.format(monday)
-
-    def _timetableFiles(self):
-        return sorted(self._dirname.glob('graella-????-??-??.yaml'))
-
-    def _yamldate(self, path):
-        return str(path)[-len('yyyy-mm-dd.yaml'):-len('.yaml')]
 
     def credit(self, monday):
         """
