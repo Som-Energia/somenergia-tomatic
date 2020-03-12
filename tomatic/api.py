@@ -715,7 +715,7 @@ def downloadOneShotBusy():
 
 @app.route('/api/shifts/download/credit/<week>')
 @yamlerrors
-def downloadWeekShiftCredit(week=None):
+def downloadWeekShiftCredit(week):
     try:
         credit = schedules.credit(week)
     except schedulestorage.StorageError as e:
