@@ -12,6 +12,7 @@ from builtins import range
 from pathlib2 import Path
 
 from consolemsg import step, error, warn, out, u
+from yamlns import namespace as ns
 from sheetfetcher import SheetFetcher
 from .htmlgen import HtmlGen
 from . import busy
@@ -36,27 +37,20 @@ def createTable(defaultValue, *iterables) :
     """Creates a table with as many cells as the cross product of the iterables"""
     return dict((keys, defaultValue) for keys in xproduct(*iterables))
 
-def baixaCarrega(config, certificat):
-    step('Autentificant al Google Drive')
-    fetcher = SheetFetcher(
-        documentName=config.documentDrive,
-        credentialFilename=certificat,
-        )
-
+def downloadShiftload(config):
     step('Baixant carrega setmanal...')
+    url = config.baseUrl + '/api/shifts/download/shiftload/{}'.format(config.monday)
+    step("  Baixant {} from {}", config.weekShifts, url)
+    r = requests.get(url)
+    r.raise_for_status()
+    Path(config.weekShifts).write_bytes(r.content)
 
-    carregaRangeName = config.intervalCarrega.format(
-        *config.monday.timetuple())
-    step("  Descarregant el rang '{}'...".format(carregaRangeName))
-    carrega = fetcher.get_range(config.fullCarrega, carregaRangeName)
-    step("  Guardant-ho com '{}'...".format(config.weekShifts))
-    with open(config.weekShifts,'w') as phoneload :
-        phoneload.write(
-            "\n".join(
-                '\t'.join(c for c in row)
-                for row in carrega
-                )
-            )
+def downloadOverload(config):
+    url = config.baseUrl + '/api/shifts/download/overload/{}'.format(config.monday)
+    step("  Baixant {} from {}", config.overloadfile, url)
+    r = requests.get(url)
+    r.raise_for_status()
+    Path(config.overloadfile).write_bytes(r.content)
 
 def baixaCarregaIdeal(config, certificat):
     step('Autentificant al Google Drive')
@@ -74,7 +68,6 @@ def baixaCarregaIdeal(config, certificat):
     values = fetcher.get_range(
         config.fullCarregaIdeal, config.idealLoadValuesRange)
     step("  Guardant-ho com '{}'...".format(config.idealshifts))
-    from yamlns import namespace as ns
     carregaIdeal = ns(
         (transliterate(name[0]), int(value[0]))
         for name, value in zip(names,values))
@@ -105,7 +98,7 @@ def baixaPersones(config):
     from yamlns import namespace as ns
     persons = ns.loads(r.content)
     persons.persons.dump(config.personsfile)
-    
+
 
 def baixaIndisponibilitatsTomatic(config):
     step("Baixant indisponibilitats del tomatic...")
@@ -263,6 +256,8 @@ class Backtracker(object):
                 .format(', '.join((x for x in set(self.dies)-set(workDays)))))
 
         self.dies = [day for day in self.dies if day in workDays]
+
+        self.overload = ns.load(config.overloadfile)
 
         # Main Solution
         self.caselles = list(xproduct(self.dies, range(len(self.hours)), range(self.ntelefons)))    # all (day,turn,slot) combinations required to be filled
@@ -829,7 +824,9 @@ class Backtracker(object):
             personalColors = htmlgen.htmlColors()
             header = htmlgen.htmlHeader()
             subheader = htmlgen.htmlSubHeader()
-            htmlgen.getYaml().dump(self.outputYaml)
+            timetable = htmlgen.getYaml()
+            timetable.overload = self.overload
+            timetable.dump(self.outputYaml)
             with open(self.outputFile,'w') as output:
                 output.write(
                     header+
@@ -962,6 +959,12 @@ def parseArgs():
         help="fitxer tsv amb la carrega a cada torn (columna) de cada persona (fila)",
     )
 
+    parser.add_argument(
+        '--overload',
+        default=None,
+        help="fitxer yaml de sortida amb la sobrecàrrega final sobre l'ideal ponderat de cada persona",
+    )
+
     return parser.parse_args()
 
 args=None
@@ -1006,10 +1009,15 @@ def main():
     mustDownloadShifts = not args.weekshifts and not config.get('weekShifts')
     config.weekShifts = config.get('weekShifts') or args.weekshifts or 'carrega.csv'
 
+    mustDownloadOverload = not args.overload
+    config.overloadfile = args.overload or "overload-{}.yaml".format(config.monday)
+
     if not args.keep:
 
         if mustDownloadShifts:
-            baixaCarrega(config, args.certificate)
+            downloadShiftload(config)
+        if mustDownloadOverload:
+            downloadOverload(config)
         if not config.get('busyFiles'):
             baixaIndisponibilitatsTomatic(config)
             if args.holidays == 'notoi':

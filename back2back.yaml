@@ -6,6 +6,7 @@ testcases:
                 --keep \
                 --config-file b2bdata/inputs/config-2days2lines.yaml \
                 --weekshifts b2bdata/inputs/carrega-2days2lines.csv \
+                --overload b2bdata/inputs/emptyoverload.yaml \
                 --personsfile '' \
                 --lines 2 \
                 --search-days dm,dj \
@@ -20,6 +21,7 @@ testcases:
                 --keep \
                 --config-file b2bdata/inputs/config-3days6lines.yaml \
                 --weekshifts b2bdata/inputs/carrega-3days6lines.csv \
+                --overload b2bdata/inputs/emptyoverload.yaml \
                 --personsfile '' \
                 --lines 6 \
                 --search-days dl,dx,dv \
@@ -34,6 +36,7 @@ testcases:
                 --keep \
                 --config-file b2bdata/inputs/config-4days6lines.yaml \
                 --weekshifts b2bdata/inputs/carrega-4days6lines.csv \
+                --overload b2bdata/inputs/emptyoverload.yaml \
                 --personsfile '' \
                 --lines 6 \
                 --stop-penalty 86 \

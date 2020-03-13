@@ -325,6 +325,7 @@ names:
   contestado: '>>>CONTESTADOR<<<'
   albertsimo: AlbertSi
   jaume: JaumeA
+overload: {}
 penalties:
 - - 5
   - carme té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dl
