@@ -29,6 +29,9 @@ def transliterate(word):
         word = word.replace(old,new)
     return word
 
+def addDays(date, ndays):
+    return date + datetime.timedelta(days=nDays)
+
 def createTable(defaultValue, *iterables) :
     """Creates a table with as many cells as the cross product of the iterables"""
     return dict((keys, defaultValue) for keys in xproduct(*iterables))
@@ -120,7 +123,7 @@ def baixaIndisponibilitatsTomatic(config):
 
 def downloadShiftCredit(config):
     step("Baixant crèdit de torns del tomatic...")
-    pastMonday = config.monday - datetime.timedelta(days=7)
+    pastMonday = addDays(config.monday,-7)
     url = config.baseUrl + '/api/shifts/download/credit/{}'.format(pastMonday)
     filename='shiftcredit.yaml'
     step("  Baixant {} from {}", filename, url)
@@ -138,7 +141,7 @@ def baixaVacancesDrive(config, certificat):
 
     step('Baixant vacances del drive...')
 
-    nextFriday = config.monday+datetime.timedelta(days=4)
+    nextFriday = addDays(config.monday, 4)
     mondayYear = config.monday.year
     startingSemester = 1 if config.monday < date(mondayYear,7,1) else 2
 
@@ -190,8 +193,8 @@ def baixaVacancesNotoi(config):
         verify=False
     )
     token = login.json()['token']
-    firstDay = config.monday - datetime.timedelta(days=1)
-    lastDay = config.monday + datetime.timedelta(days=5)
+    firstDay = addDays(config.monday, -1)
+    lastDay = addDays(config.monday, +5)
     next = notoi.service_url + notoi.query_ep.format(firstDay, lastDay)
     absences = []
     while(next):
@@ -223,7 +226,7 @@ def baixaVacancesNotoi(config):
             days = [
                 translate_days[day]
                 for day in range(5)
-                if start <= config.monday + datetime.timedelta(days=day) <= end
+                if start <= addDays(config.monday, day) <= end
             ]
             for day in days:
                 out("+{} {} # vacances", name, day)
@@ -989,11 +992,11 @@ def main():
     if args.date is not None:
         # take the monday of the week including that date
         givenDate = datetime.datetime.strptime(args.date,"%Y-%m-%d").date()
-        config.monday = givenDate - datetime.timedelta(days=givenDate.weekday())
+        config.monday = addDays(givenDate, -givenDate.weekday())
     else:
         # If no date provided, take the next monday
         today = date.today()
-        config.monday = today + datetime.timedelta(days=7-today.weekday())
+        config.monday = addDays(today, 7-today.weekday())
 
     if args.lines:
         config.nTelefons = args.lines
