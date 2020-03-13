@@ -515,7 +515,6 @@ def callingPhone():
 @app.route('/api/socketInfo', methods=['GET'])
 def getConnectionInfo():
     result = ns(
-        ip=CONFIG.websocket_ip,
         port_ws=CONFIG.websocket_port,
         message="ok"
     )
@@ -569,10 +568,10 @@ def client_left(client, server):
         warn("New client")
 
 
-def startCallInfoWS(app):
+def startCallInfoWS(app, host):
     app.wserver = WebsocketServer(
-        CONFIG.websocket_port,
-        host=CONFIG.websocket_ip
+        host=host,
+        port=CONFIG.websocket_port,
     )
     app.wserver.set_fn_message_received(on_message_recieved)
     app.wserver.set_fn_client_left(client_left)

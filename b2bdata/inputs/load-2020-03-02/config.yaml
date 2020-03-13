@@ -119,7 +119,6 @@ commented_forced:
     - 2
     - 4
   : ningu
-websocket_ip: 0.0.0.0
 websocket_port: 4445
 call_reasons_document: Trucades_3354
 credential_name: drive-certificate.json

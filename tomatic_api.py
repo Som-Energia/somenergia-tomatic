@@ -51,7 +51,7 @@ def main(fake, debug, host, port, printrules):
             print(rule)
 
     step("Starting WS thread")
-    wsthread = startCallInfoWS(app)
+    wsthread = startCallInfoWS(app, host=host)
     step("Starting API")
     app.run(debug=debug, host=host, port=port, processes=1)
     step("API stopped")

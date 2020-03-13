@@ -320,7 +320,6 @@ names:
   albertsimo: AlbertSi
   jaume: JaumeA
 forced: {}
-websocket_ip: 192.168.35.244
 websocket_port: 4445 
 call_reasons_document: "Trucades_3354"
 credential_name: "drive-certificate.json"

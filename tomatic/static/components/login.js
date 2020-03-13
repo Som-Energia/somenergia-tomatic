@@ -16,9 +16,7 @@ var Callinfo = require('./callinfo');
 var Login = {};
 var iden = "0";
 var websock = null;
-var ip = "";
 var port_ws = 0;
-
 
 var getServerSockInfo = function() {
     m.request({
@@ -31,7 +29,6 @@ var getServerSockInfo = function() {
             console.debug("Error get data: ", response.info.message);
 			return;
 		}
-		ip = response.info.ip;
 		port_ws = response.info.port_ws;
 		connectWebSocket();
     }, function(error) {
@@ -57,7 +54,7 @@ function sendIdentification() {
 }
 
 var connectWebSocket = function() {
-    var addr = 'ws://'+ip+':'+port_ws+'/';
+    var addr = 'ws://'+window.location.hostname+':'+port_ws+'/';
     websock = new WebSocket(addr);
     websock.onopen = sendIdentification;
     websock.onmessage = function (event) {
