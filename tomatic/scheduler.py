@@ -30,7 +30,7 @@ def transliterate(word):
     return word
 
 def addDays(date, ndays):
-    return date + datetime.timedelta(days=nDays)
+    return date + datetime.timedelta(days=ndays)
 
 def createTable(defaultValue, *iterables) :
     """Creates a table with as many cells as the cross product of the iterables"""
