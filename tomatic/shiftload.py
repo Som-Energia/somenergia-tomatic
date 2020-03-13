@@ -411,19 +411,12 @@ def main():
         baixaLeaves(config, args.certificate)
 
         if mustDownloadShifts:
-            step("Baixant carrega ideal del drive...")
             baixaCarregaIdeal(config, args.certificate)
-
         if not config.get('busyFiles'):
-            step("Baixant indisponibilitats del Tomatic...")
             baixaIndisponibilitatsTomatic(config)
-
             if args.holidays == 'notoi':
-                step("Baixant vacances del gestor d'absencies...")
                 baixaVacancesNotoi(config)
-
             else: # args.holidays == 'drive':
-                step("Baixant vacances del drive...")
                 baixaVacancesDrive(config, args.certificate)
 
         step("Baixant bossa d'hores del tomatic...")

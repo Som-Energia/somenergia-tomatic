@@ -179,7 +179,7 @@ def baixaVacancesDrive(config, certificat):
 
 
 def baixaVacancesNotoi(config):
-    step('Baixant vacances de no toi...')
+    step("Baixant vacances del gestor d'absencies...")
     import dbconfig
     notoi = dbconfig.tomatic.notoi_data
 
