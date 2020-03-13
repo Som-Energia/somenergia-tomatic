@@ -540,6 +540,18 @@ var Penalties = function(grid) {
 	]);
 };
 
+var Overloads = function(grid) {
+	return m('.graella', [
+		m('h5', 'Sobrecarrega respecte l\'ideal'),
+		m('ul.overloads', [
+			grid.overload?[]: m('li', 'La graella no te sobrecarregues apuntades'),
+			Object.keys(grid.overload || {}).map(function (person) {
+				return m('li',person,': ',grid.overload[person]);
+			}),
+		]),
+	]);
+};
+
 var GridsPage = {
     view: function() {
         var grid = Tomatic.grid();
@@ -567,6 +579,7 @@ var GridsPage = {
 				Forwardings(),
 				Changelog(grid),
 				Penalties(grid),
+				Overloads(grid),
 			]),
         ]);
     },

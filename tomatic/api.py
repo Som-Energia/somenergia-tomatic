@@ -153,6 +153,9 @@ def editSlot(week, day, houri, turni, name):
     # TODO: Ensure day, houri, turni and name are in graella
     oldName = graella.timetable[day][int(houri)][int(turni)]
     graella.timetable[day][int(houri)][int(turni)] = name
+    graella.overload = graella.get('overload', ns())
+    graella.overload[oldName] = graella.overload.get(oldName, 0) -1
+    graella.overload[name] = graella.overload.get(name, 0) +1
     logmsg = (
         "{}: {} ha canviat {} {}-{} {} de {} a {}".format(
         datetime.now(),
