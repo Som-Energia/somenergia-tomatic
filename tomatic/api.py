@@ -327,17 +327,24 @@ def downloadWeekShiftCredit(week):
         raise ApiError(e)
     return yamlfy(**credit)
 
-@app.route('/api/shifts/download/credit')
-def downloadShiftCredit():
-    shiftcreditfile = Path('shiftcredit.yaml')
-    if not shiftcreditfile.exists():
-        persons = ns.load('persons.yaml').extensions.keys()
-        ns((p,0) for p in persons).dump('shiftcredit.yaml')
+@app.route('/api/shifts/download/shiftload/<week>')
+def downloadShiftLoad(week):
+    loadfile = Path('carrega-{}.csv'.format(week))
 
     return send_file(
-        '../shiftcredit.yaml',
+        str('..'/loadfile),
         as_attachment=True,
-        mimetype='text/plain',
+        mimetype='text/csv',
+    )
+
+@app.route('/api/shifts/download/overload/<week>')
+def downloadOverload(week):
+    loadfile = Path('overload-{}.yaml'.format(week))
+
+    return send_file(
+        str('..'/loadfile),
+        as_attachment=True,
+        mimetype = 'application/x-yaml',
     )
 
 @app.route('/api/info/phone/<phone>', methods=['GET'])
