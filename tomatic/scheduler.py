@@ -120,7 +120,8 @@ def baixaIndisponibilitatsTomatic(config):
 
 def downloadShiftCredit(config):
     step("Baixant crèdit de torns del tomatic...")
-    url = config.baseUrl + '/api/shifts/download/credit'
+    pastMonday = config.monday - datetime.timedelta(days=-7)
+    url = config.baseUrl + '/api/shifts/download/credit/{}'.format(pastMonday)
     filename='shiftcredit.yaml'
     step("  Baixant {} from {}", filename, url)
     r = requests.get(url)
