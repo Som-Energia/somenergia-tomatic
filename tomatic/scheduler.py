@@ -224,14 +224,13 @@ def baixaVacancesNotoi(config):
                 '%Y-%m-%dT%H:%M:%S'
             ).date()
             days = [
-                translate_days[day]
-                for day in range(5)
-                if start <= addDays(config.monday, day) <= end
+                translate_days[weekday]
+                for weekday in range(5)
+                if start <= addDays(config.monday, weekday) <= end
             ]
             for day in days:
                 out("+{} {} # vacances", name, day)
                 holidaysfile.write("+{} {} # vacances\n".format(name, day))
-
 
 class Backtracker(object):
     class ErrorConfiguracio(Exception): pass
