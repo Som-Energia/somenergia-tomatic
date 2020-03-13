@@ -138,13 +138,11 @@ def tomatic(file=None):
 
 @app.route('/api/graella-<week>.yaml')
 @app.route('/api/graella/<week>')
+@yamlerrors
 def graellaYaml(week):
     schedule = schedules.load(week)
 
-    return Response(
-        schedule.dump(),
-        mimetype = 'application/x-yaml',
-        )
+    return yamlfy(**schedule)
 
 @app.route('/api/graella/<week>/<day>/<int:houri>/'
         '<int:turni>/<name>', methods=['UPDATE'])
@@ -176,9 +174,7 @@ def editSlot(week, day, houri, turni, name):
 
 @app.route('/api/graella/list')
 def listGraelles():
-    return Response(
-        ns(weeks=schedules.list()).dump(),
-        mimetype = 'application/x-yaml')
+    return yamlfy(weeks=schedules.list())
 
 @app.route('/api/graella', methods=['POST'])
 @yamlerrors
