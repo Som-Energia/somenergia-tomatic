@@ -139,9 +139,6 @@ def tomatic(file=None):
 @app.route('/api/graella-<week>.yaml')
 @app.route('/api/graella/<week>')
 def graellaYaml(week):
-    # TODO: ensure week is an iso date
-    # TODO: ensure week is monday
-
     schedule = schedules.load(week)
 
     return Response(
@@ -154,7 +151,6 @@ def graellaYaml(week):
 @yamlerrors
 def editSlot(week, day, houri, turni, name):
     myname = request.data.split('"')[1]
-    # TODO: Same ensures than graella
     graella = schedules.load(week)
     # TODO: Ensure day, houri, turni and name are in graella
     oldName = graella.timetable[day][int(houri)][int(turni)]
