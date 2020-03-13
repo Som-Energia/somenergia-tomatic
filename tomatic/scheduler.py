@@ -3,7 +3,7 @@
 
 from __future__ import print_function
 from itertools import product as xproduct
-from datetime import date, timedelta
+from datetime import date
 import random
 import datetime
 import codecs
@@ -138,7 +138,7 @@ def baixaVacancesDrive(config, certificat):
 
     step('Baixant vacances del drive...')
 
-    nextFriday = config.monday+timedelta(days=4)
+    nextFriday = config.monday+datetime.timedelta(days=4)
     mondayYear = config.monday.year
     startingSemester = 1 if config.monday < date(mondayYear,7,1) else 2
 
@@ -190,8 +190,8 @@ def baixaVacancesNotoi(config):
         verify=False
     )
     token = login.json()['token']
-    firstDay = config.monday - timedelta(days=1)
-    lastDay = config.monday + timedelta(days=5)
+    firstDay = config.monday - datetime.timedelta(days=1)
+    lastDay = config.monday + datetime.timedelta(days=5)
     next = notoi.service_url + notoi.query_ep.format(firstDay, lastDay)
     absences = []
     while(next):
@@ -223,7 +223,7 @@ def baixaVacancesNotoi(config):
             days = [
                 translate_days[day]
                 for day in range(5)
-                if start <= config.monday + timedelta(days=day) <= end
+                if start <= config.monday + datetime.timedelta(days=day) <= end
             ]
             for day in days:
                 out("+{} {} # vacances", name, day)
@@ -989,11 +989,11 @@ def main():
     if args.date is not None:
         # take the monday of the week including that date
         givenDate = datetime.datetime.strptime(args.date,"%Y-%m-%d").date()
-        config.monday = givenDate - timedelta(days=givenDate.weekday())
+        config.monday = givenDate - datetime.timedelta(days=givenDate.weekday())
     else:
         # If no date provided, take the next monday
         today = date.today()
-        config.monday = today + timedelta(days=7-today.weekday())
+        config.monday = today + datetime.timedelta(days=7-today.weekday())
 
     if args.lines:
         config.nTelefons = args.lines
