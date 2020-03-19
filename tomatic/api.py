@@ -101,7 +101,7 @@ def publishStatic(graella):
     remotewrite(
         params.user,
         params.host,
-        Path(params.path)/'graella-{week}.html'.format(**graella),
+        str(Path(params.path) / 'graella-{week}.html'.format(**graella)),
         sched.html(),
         )
 
