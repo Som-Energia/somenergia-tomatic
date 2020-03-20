@@ -233,14 +233,17 @@ def baixaVacancesNotoi(config):
     firstDay = addDays(config.monday, -1)
     lastDay = addDays(config.monday, +5)
     absences = notoiApi.absences(firstDay, lastDay)
-    persons = notoiApi.persons()
-    print(ns(absences=absences).dump())
-   
-    print(ns(persons=persons).dump())
+    notoipersons = [ns(p) for p in notoiApi.persons()]
+    email2tomatic = {
+        email: id
+        for id, email in config.emails.items()
+    }
+    notoi2tomatic = {
+        p.id: email2tomatic[p.email]
+        for p in notoipersons
+    }
+
     step("  Guardant indisponibilitats per vacances a 'indisponibilitats-vacances.conf'...")
-    notoi_names = {}
-    for key, value in config.notoi_ids.items():
-        notoi_names[value] = key
     translate_days = ['dl', 'dm', 'dx', 'dj', 'dv']
 
     def dateFromIso(isoString):
@@ -251,7 +254,7 @@ def baixaVacancesNotoi(config):
 
     with open('indisponibilitats-vacances.conf', 'w') as holidaysfile:
         for absence in absences:
-            name = notoi_names.get(absence['worker'])
+            name = notoi2tomatic.get(absence['worker'])
             start = dateFromIso(absence['start_time'])
             end = dateFromIso(absence['end_time'])
             days = [
