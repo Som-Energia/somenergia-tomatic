@@ -241,17 +241,17 @@ def baixaVacancesNotoi(config):
         notoi_names[value] = key
     translate_days = ['dl', 'dm', 'dx', 'dj', 'dv']
 
+    def dateFromIso(isoString):
+        return datetime.datetime.strptime(
+                isoString,
+                '%Y-%m-%dT%H:%M:%S'
+            ).date()
+
     with open('indisponibilitats-vacances.conf', 'w') as holidaysfile:
         for absence in absences:
             name = notoi_names.get(absence['worker'])
-            start = datetime.datetime.strptime(
-                absence['start_time'],
-                '%Y-%m-%dT%H:%M:%S'
-            ).date()
-            end = datetime.datetime.strptime(
-                absence['end_time'],
-                '%Y-%m-%dT%H:%M:%S'
-            ).date()
+            start = dateFromIso(absence['start_time'])
+            end = dateFromIso(absence['end_time'])
             days = [
                 translate_days[weekday]
                 for weekday in range(5)
