@@ -183,12 +183,12 @@ class Notoi(object):
         self.service_url = service_url
         self.token = self.login(user, password)
 
-    def url(self, ep):
+    def _url(self, ep):
         return self.service_url + ep
 
     def login(self, username, password):
         login = requests.post(
-            self.url(Notoi.login_ep),
+            self._url(Notoi.login_ep),
             data=dict(
                 username = username,
                 password = password,
@@ -207,7 +207,7 @@ class Notoi(object):
         return self._pagedGet('/absencies/workers')
 
     def _pagedGet(self, endpoint, **params):
-        url = self.url(endpoint)
+        url = self._url(endpoint)
         result = []
         while url:
             response = requests.get(
