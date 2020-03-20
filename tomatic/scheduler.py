@@ -184,6 +184,7 @@ class Notoi(object):
         self.service_url = service_url
         self.username = user
         self.password = password
+        self.token = self.login()
 
     def url(self, ep):
         return self.service_url + ep
@@ -198,7 +199,19 @@ class Notoi(object):
             verify=False,
         )
         return login.json()['token']
-        
+
+    def absences(self, firstDate, lastDate):
+        url = self.url(Notoi.absences_ep.format(firstDate, lastDate))
+        absences = []
+        while(url):
+            response = requests.get(
+                url,
+                headers={'Authorization': Notoi.token_head + self.token},
+                verify=False
+            )
+            url = response.json()['next']
+            absences.extend(response.json()['results'])
+        return absences
 
 
 
@@ -208,20 +221,12 @@ def baixaVacancesNotoi(config):
     import dbconfig
     notoi = dbconfig.tomatic.notoi_data
     notoiApi = Notoi(**notoi)
-    token = notoiApi.login()
 
     firstDay = addDays(config.monday, -1)
     lastDay = addDays(config.monday, +5)
-    next = notoi.service_url + Notoi.absences_ep.format(firstDay, lastDay)
-    absences = []
-    while(next):
-        response = requests.get(
-            next,
-            headers={'Authorization': Notoi.token_head + token},
-            verify=False
-        )
-        next = response.json()['next']
-        absences.extend(response.json()['results'])
+    absences = notoiApi.absences(firstDay, lastDay)
+
+    print(ns(absences=absences).dump())
 
     step("  Guardant indisponibilitats per vacances a 'indisponibilitats-vacances.conf'...")
     notoi_names = {}
