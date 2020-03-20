@@ -217,8 +217,7 @@ def baixaVacancesNotoi(config):
     step("Baixant vacances del gestor d'absencies...")
 
     import dbconfig
-    notoi = dbconfig.tomatic.notoi_data
-    notoiApi = Notoi(**notoi)
+    notoiApi = Notoi(**dbconfig.tomatic.notoi_data)
 
     firstDay = addDays(config.monday, -1)
     lastDay = addDays(config.monday, +5)
