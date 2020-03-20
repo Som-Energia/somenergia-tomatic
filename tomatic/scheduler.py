@@ -209,7 +209,7 @@ class Notoi(object):
     def _pagedGet(self, endpoint, **params):
         url = self.url(endpoint)
         result = []
-        while(url):
+        while url:
             response = requests.get(
                 url,
                 params=params,
