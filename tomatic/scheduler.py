@@ -188,8 +188,11 @@ class Notoi(object):
     def login(self):
         login = requests.post(
             self.service_url + Notoi.login_ep,
-            data={'username': self.username, 'password': self.password},
-            verify=False
+            data=dict(
+                username = self.username,
+                password = self.password,
+            ),
+            verify=False,
         )
         return login.json()['token']
         
