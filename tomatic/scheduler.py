@@ -182,19 +182,17 @@ class Notoi(object):
 
     def __init__(self, service_url, user, password):
         self.service_url = service_url
-        self.username = user
-        self.password = password
-        self.token = self.login()
+        self.token = self.login(user, password)
 
     def url(self, ep):
         return self.service_url + ep
 
-    def login(self):
+    def login(self, username, password):
         login = requests.post(
             self.url(Notoi.login_ep),
             data=dict(
-                username = self.username,
-                password = self.password,
+                username = username,
+                password = password,
             ),
             verify=False,
         )
