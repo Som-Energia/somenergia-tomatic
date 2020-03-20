@@ -213,7 +213,9 @@ class Notoi(object):
             response = requests.get(
                 url,
                 params=params,
-                headers={'Authorization': Notoi.token_head + self.token},
+                headers={
+                    'Authorization': Notoi.token_head + self.token,
+                },
                 verify=False
             )
             params = None
