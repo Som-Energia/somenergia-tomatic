@@ -178,7 +178,6 @@ class Notoi(object):
     'Abstracts Notoi API'
     login_ep = '/login/'
     token_head='JWT '
-    persons_ep = '/absencies/workers'
 
     def __init__(self, service_url, user, password):
         self.service_url = service_url
@@ -205,7 +204,7 @@ class Notoi(object):
         )
 
     def persons(self):
-        return self._pagedGet(Notoi.persons_ep)
+        return self._pagedGet('/absencies/workers')
 
     def _pagedGet(self, endpoint, **params):
         url = self.url(endpoint)
