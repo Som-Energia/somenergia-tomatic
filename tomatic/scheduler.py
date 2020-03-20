@@ -216,6 +216,7 @@ class Notoi(object):
                 headers={'Authorization': Notoi.token_head + self.token},
                 verify=False
             )
+            params = None
             url = response.json()['next']
             result.extend(response.json()['results'])
         return result
