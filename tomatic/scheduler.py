@@ -177,7 +177,6 @@ def baixaVacancesDrive(config, certificat):
 class Notoi(object):
     'Abstracts Notoi API'
     login_ep = '/login/'
-    absences_ep = '/absencies/absences?start_period={}&end_period={}'
     token_head='JWT '
     persons_ep = '/absencies/workers'
 
@@ -200,17 +199,21 @@ class Notoi(object):
         return login.json()['token']
 
     def absences(self, firstDate, lastDate):
-        return self._pagedGet(Notoi.absences_ep.format(firstDate, lastDate))
+        return self._pagedGet('/absencies/absences',
+            start_period = firstDate,
+            end_period = lastDate,
+        )
 
     def persons(self):
         return self._pagedGet(Notoi.persons_ep)
 
-    def _pagedGet(self, endpoint):
+    def _pagedGet(self, endpoint, **params):
         url = self.url(endpoint)
         result = []
         while(url):
             response = requests.get(
                 url,
+                params=params,
                 headers={'Authorization': Notoi.token_head + self.token},
                 verify=False
             )
