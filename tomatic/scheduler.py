@@ -200,20 +200,13 @@ class Notoi(object):
         return login.json()['token']
 
     def absences(self, firstDate, lastDate):
-        url = self.url(Notoi.absences_ep.format(firstDate, lastDate))
-        absences = []
-        while(url):
-            response = requests.get(
-                url,
-                headers={'Authorization': Notoi.token_head + self.token},
-                verify=False
-            )
-            url = response.json()['next']
-            absences.extend(response.json()['results'])
-        return absences
+        return self._pagedGet(Notoi.absences_ep.format(firstDate, lastDate))
 
     def persons(self):
-        url = self.url(Notoi.persons_ep)
+        return self._pagedGet(Notoi.persons_ep)
+
+    def _pagedGet(self, endpoint):
+        url = self.url(endpoint)
         result = []
         while(url):
             response = requests.get(
@@ -224,7 +217,6 @@ class Notoi(object):
             url = response.json()['next']
             result.extend(response.json()['results'])
         return result
-
 
 
 def baixaVacancesNotoi(config):
