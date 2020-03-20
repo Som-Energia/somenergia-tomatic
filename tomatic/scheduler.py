@@ -177,23 +177,27 @@ def baixaVacancesDrive(config, certificat):
 
 def baixaVacancesNotoi(config):
     step("Baixant vacances del gestor d'absencies...")
+    login_ep = '/login/'
+    absences_ep = '/absencies/absences?start_period={}&end_period={}'
+    token_head='JWT '
+
     import dbconfig
     notoi = dbconfig.tomatic.notoi_data
 
     login = requests.post(
-        notoi.service_url + notoi.login_ep,
+        notoi.service_url + login_ep,
         data={'username': notoi.user, 'password': notoi.password},
         verify=False
     )
     token = login.json()['token']
     firstDay = addDays(config.monday, -1)
     lastDay = addDays(config.monday, +5)
-    next = notoi.service_url + notoi.query_ep.format(firstDay, lastDay)
+    next = notoi.service_url + absences_ep.format(firstDay, lastDay)
     absences = []
     while(next):
         response = requests.get(
             next,
-            headers={'Authorization': notoi.token_head + token},
+            headers={'Authorization': token_head + token},
             verify=False
         )
         next = response.json()['next']
