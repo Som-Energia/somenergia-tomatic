@@ -179,6 +179,7 @@ class Notoi(object):
     login_ep = '/login/'
     absences_ep = '/absencies/absences?start_period={}&end_period={}'
     token_head='JWT '
+    persons_ep = '/absencies/workers'
 
     def __init__(self, service_url, user, password):
         self.service_url = service_url
@@ -211,6 +212,19 @@ class Notoi(object):
             absences.extend(response.json()['results'])
         return absences
 
+    def persons(self):
+        url = self.url(Notoi.persons_ep)
+        result = []
+        while(url):
+            response = requests.get(
+                url,
+                headers={'Authorization': Notoi.token_head + self.token},
+                verify=False
+            )
+            url = response.json()['next']
+            result.extend(response.json()['results'])
+        return result
+
 
 
 def baixaVacancesNotoi(config):
@@ -222,9 +236,10 @@ def baixaVacancesNotoi(config):
     firstDay = addDays(config.monday, -1)
     lastDay = addDays(config.monday, +5)
     absences = notoiApi.absences(firstDay, lastDay)
-
+    persons = notoiApi.persons()
     print(ns(absences=absences).dump())
-
+   
+    print(ns(persons=persons).dump())
     step("  Guardant indisponibilitats per vacances a 'indisponibilitats-vacances.conf'...")
     notoi_names = {}
     for key, value in config.notoi_ids.items():
