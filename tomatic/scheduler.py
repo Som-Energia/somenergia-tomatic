@@ -174,30 +174,44 @@ def baixaVacancesDrive(config, certificat):
             for day in days:
                 holidaysfile.write("+{} {} # vacances\n".format(name, day))
 
-
-def baixaVacancesNotoi(config):
-    step("Baixant vacances del gestor d'absencies...")
+class Notoi(object):
+    'Abstracts Notoi API'
     login_ep = '/login/'
     absences_ep = '/absencies/absences?start_period={}&end_period={}'
     token_head='JWT '
 
+    def __init__(self, service_url, user, password):
+        self.service_url = service_url
+        self.username = user
+        self.password = password
+
+    def login(self):
+        login = requests.post(
+            self.service_url + Notoi.login_ep,
+            data={'username': self.username, 'password': self.password},
+            verify=False
+        )
+        return login.json()['token']
+        
+
+
+
+def baixaVacancesNotoi(config):
+    step("Baixant vacances del gestor d'absencies...")
+
     import dbconfig
     notoi = dbconfig.tomatic.notoi_data
+    notoiApi = Notoi(**notoi)
+    token = notoiApi.login()
 
-    login = requests.post(
-        notoi.service_url + login_ep,
-        data={'username': notoi.user, 'password': notoi.password},
-        verify=False
-    )
-    token = login.json()['token']
     firstDay = addDays(config.monday, -1)
     lastDay = addDays(config.monday, +5)
-    next = notoi.service_url + absences_ep.format(firstDay, lastDay)
+    next = notoi.service_url + Notoi.absences_ep.format(firstDay, lastDay)
     absences = []
     while(next):
         response = requests.get(
             next,
-            headers={'Authorization': token_head + token},
+            headers={'Authorization': Notoi.token_head + token},
             verify=False
         )
         next = response.json()['next']
