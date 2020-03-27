@@ -1,3 +1,4 @@
+# You should link this file to /etc/cron.d
 SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 TOMATIC_PATH=/home/somenergia/somenergia/somenergia-tomatic
