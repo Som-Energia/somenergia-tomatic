@@ -37,12 +37,19 @@ def tomatic_sandbox(fromdate  ,linenumber):
         destination = Path(graellaFolder+'/config.yaml')
         step("Creating file {}", source)
         copyfile(source, destination)
+
         if linenumber:
             step("Adding number of lines {} to file {}", linenumber, source)
             text = destination.read_text()
             text2fix = re.compile(r'nTelefons: \d+')
             text = text.replace(text2fix.findall(text)[0], "nTelefons: "+str(linenumber))
             destination.write_text(text)
+
+        source = Path('holidays.conf')
+        destination = Path(graellaFolder+'/holidays.conf')
+        step("Creating {} file", source)
+        copyfile(source, destination)
+
     except Exception as e:
         error(e)
         raise
