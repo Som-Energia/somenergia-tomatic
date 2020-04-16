@@ -125,7 +125,6 @@ def downloadShiftCredit(config):
     Path(filename).write_bytes(r.content)
 
 def baixaVacancesDrive(config, certificat):
-
     step('Autentificant al Google Drive')
     fetcher = SheetFetcher(
         documentName=config.documentDrive,
@@ -174,55 +173,10 @@ def baixaVacancesDrive(config, certificat):
             for day in days:
                 holidaysfile.write("+{} {} # vacances\n".format(name, day))
 
-class Notoi(object):
-    'Abstracts Notoi API'
-    login_ep = '/login/'
-    token_head='JWT '
-
-    def __init__(self, service_url, user, password):
-        self.service_url = service_url
-        self.token = self.login(user, password)
-
-    def _url(self, ep):
-        return self.service_url + ep
-
-    def login(self, username, password):
-        login = requests.post(
-            self._url(Notoi.login_ep),
-            data=dict(
-                username = username,
-                password = password,
-            ),
-            verify=False,
-        )
-        return login.json()['token']
-
-    def absences(self, firstDate, lastDate):
-        return self._pagedGet('/absencies/absences',
-            start_period = firstDate,
-            end_period = lastDate,
-        )
-
-    def persons(self):
-        return self._pagedGet('/absencies/workers')
-
-    def _pagedGet(self, endpoint, **params):
-        url = self._url(endpoint)
-        result = []
-        while url:
-            response = requests.get(
-                url,
-                params=params,
-                headers={
-                    'Authorization': Notoi.token_head + self.token,
-                },
-                verify=False
-            )
-            params = None
-            url = response.json()['next']
-            result.extend(response.json()['results'])
-        return result
-
+from . retriever import (
+    baixaVacancesNotoi,
+    Notoi,
+)
 
 def baixaVacancesNotoi(config):
     step("Baixant vacances del gestor d'absencies...")
