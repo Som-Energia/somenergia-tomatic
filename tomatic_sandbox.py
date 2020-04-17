@@ -3,21 +3,27 @@
 
 import click
 import re
-from consolemsg import warn, step, error
+from consolemsg import warn, step, error, u
 from datetime import datetime, timedelta
 from shutil import copyfile
-from pathlib import Path
+from pathlib2 import Path
+from slugify import slugify
 
 @click.command()
 @click.help_option()
 
+@click.option('-d', '--description',
+    help="Description tagline to add to the schedule",
+)
 @click.option('--fromdate',
     default=datetime.today().strftime("%Y-%m-%d"),
-    help="Choose a monday for computing schedules. Format: YYYY-MM-DD",)
+    help="Choose a monday for computing schedules. Format: YYYY-MM-DD",
+)
 @click.option('--linenumber',
      default=7,
-     help="Choose the numer of lines to attend calls")
-def tomatic_sandbox(fromdate  ,linenumber):
+     help="Choose the numer of lines to attend calls",
+)
+def tomatic_sandbox(fromdate, description, linenumber):
     try:
         step("Generating graella sandbox for week {}",fromdate)
 
@@ -25,6 +31,8 @@ def tomatic_sandbox(fromdate  ,linenumber):
         if not fromdate.weekday() == 0:
             fromdate = fromdate + timedelta(days=-fromdate.weekday(), weeks=1)
         graellaFolder = fromdate.strftime("%Y-%m-%d")
+        if description:
+            graellaFolder = '{}-{}'.format(graellaFolder, slugify(description))
 
         step("Generating directory {}", graellaFolder)
         Path(graellaFolder).mkdir()
@@ -36,7 +44,7 @@ def tomatic_sandbox(fromdate  ,linenumber):
         source = Path('config.yaml')
         destination = Path(graellaFolder+'/config.yaml')
         step("Creating file {}", source)
-        copyfile(source, destination)
+        copyfile(u(source), u(destination))
 
         if linenumber:
             step("Adding number of lines {} to file {}", linenumber, source)
@@ -48,7 +56,7 @@ def tomatic_sandbox(fromdate  ,linenumber):
         source = Path('holidays.conf')
         destination = Path(graellaFolder+'/holidays.conf')
         step("Creating {} file", source)
-        copyfile(source, destination)
+        copyfile(u(source), u(destination))
 
     except Exception as e:
         error(e)

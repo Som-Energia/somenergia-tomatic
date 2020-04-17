@@ -31,6 +31,7 @@ setup(
         'jsmin',
         'py-Asterisk',
         'paramiko',
+        'slugify',
         #'ooop==0.2.2-xt',
         'PyMySQL',
         'click',
