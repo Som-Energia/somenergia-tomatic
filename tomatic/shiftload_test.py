@@ -320,6 +320,16 @@ class ShiftLoadTest(unittest.TestCase):
             alice: 3
         """)
 
+    def test_capacity_withLeaves(self):
+        busytable = self.setupBusy(
+            '+alice dl 1001 # forbides 2 on monday\n'
+        )
+        c = shiftload.capacity(busytable,2,leaves=['alice'])
+
+        self.assertNsEqual(c, """\
+            alice: 0
+        """)
+
     def test_achieveFullLoad_alreadyComplete(self):
         newShifts = shiftload.achieveFullLoad(
             fullLoad=4,

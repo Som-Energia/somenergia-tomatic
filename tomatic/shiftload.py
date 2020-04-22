@@ -46,7 +46,7 @@ def workingDays(person, businessDays, daysoff, leaves):
             )
     return len(businessDays)-ndaysoff
 
-def capacity(busytable, generalMaxPerDay, maxPerDay=ns()):
+def capacity(busytable, generalMaxPerDay, maxPerDay=ns(), leaves=[]):
     """Returns an upper bound to the actual week capacity
     of every person to answer the phone given some constraints
     for working confort and the unavailabilities defined
@@ -59,7 +59,7 @@ def capacity(busytable, generalMaxPerDay, maxPerDay=ns()):
                 for day in busytable._days
             ],
             maxPerDay = maxPerDay.get(person, generalMaxPerDay),
-        ))
+        ) if not leaves else 0)
         for person in busytable._persons
     )
 
