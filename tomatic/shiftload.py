@@ -59,7 +59,7 @@ def capacity(busytable, generalMaxPerDay, maxPerDay=ns(), leaves=[]):
                 for day in busytable._days
             ],
             maxPerDay = maxPerDay.get(person, generalMaxPerDay),
-        ) if not leaves else 0)
+        ) if person not in leaves else 0)
         for person in busytable._persons
     )
 
