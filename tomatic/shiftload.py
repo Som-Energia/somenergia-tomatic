@@ -479,7 +479,8 @@ def main():
     loadCapacity = capacity(
         busyTable,
         config.maximHoresDiariesGeneral,
-        config.maximHoresDiaries,
+        maxPerDay = config.maximHoresDiaries,
+        leaves = leaves,
     )
 
 
