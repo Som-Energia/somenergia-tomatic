@@ -232,8 +232,8 @@ class Backtracker(object):
         self.globalMaxTurnsADay = config.maximHoresDiariesGeneral
 
         # Dimensional variables
-        self.ntelefons = config.nTelefons                               # Phone slots
-        self.hours = self.llegeixHores()                                # Turns (1st, 2nd, 3rd or 4th)
+        self.nlines = config.nTelefons
+        self.hours = self.llegeixHores()
         self.dies = config.diesCerca
 
         errorDays = set(self.dies) - set(config.diesVisualitzacio)
@@ -255,11 +255,11 @@ class Backtracker(object):
         self.overload = ns.load(config.overloadfile)
 
         # Main Solution
-        self.caselles = list(xproduct(self.dies, range(len(self.hours)), range(self.ntelefons)))    # all (day,turn,slot) combinations required to be filled
+        self.caselles = list(xproduct(self.dies, range(len(self.hours)), range(self.nlines)))    # all (day,turn,slot) combinations required to be filled
 
         # Constraints
 		
-        self.torns = self.readShifts(config.weekShifts, self.ntelefons)   # Persons and slots to be done
+        self.torns = self.readShifts(config.weekShifts, self.nlines)   # Persons and slots to be done
         self.companys = list(self.torns.keys())                         # Persons only
         if not config.aleatori:
             self.companys.sort()
@@ -365,22 +365,22 @@ class Backtracker(object):
         lines = [u(h) for h in self.config.hours ]
         return ['-'.join((h1,h2)) for h1,h2 in zip(lines,lines[1:]) ]
 
-    def readShifts(self, tornsfile, ntelefons):
+    def readShifts(self, tornsfile, nlines):
         result = dict()
         with open(tornsfile) as thefile:
             for numline, line in enumerate(thefile):
                 if not line.strip(): continue
                 row = [col.strip() for col in line.split('\t') ]
                 name = row[0]
-                if len(row)!=ntelefons+1 :
+                if len(row)!=nlines+1 :
                     raise Backtracker.ErrorConfiguracio(
                         "{}:{}: S'experaven {} telefons per {} pero tenim {}".format(
-                            tornsfile, numline, ntelefons, name, len(row)-1
+                            tornsfile, numline, nlines, name, len(row)-1
                         ))
                 result[name] = [int(c) for c in row[1:]]
 
         # checks
-        for telefon in range(ntelefons):
+        for telefon in range(nlines):
             horesTelefon = sum(v[telefon] for nom, v in result.items())
             if horesTelefon == len(self.dies)*len(self.hours):
                 continue
@@ -390,7 +390,7 @@ class Backtracker(object):
         if self.config.discriminateLines:
             return result
         return {
-            name: [sum(values)]+(ntelefons-1)*[0]
+            name: [sum(values)]+(nlines-1)*[0]
             for name, values in result.items()
             }
 
