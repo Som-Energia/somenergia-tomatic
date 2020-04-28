@@ -16,6 +16,7 @@ standard_library.install_aliases()
 
 from flask import (
     Flask,
+    Blueprint,
     redirect,
     send_file,
     )
@@ -29,16 +30,16 @@ from pathlib2 import Path
 from consolemsg import step, success, warn
 from yamlns import namespace as ns
 
-app = Flask("Background runner")
+api = Blueprint("Background runner", __name__)
 
 from execution import Execution
 
 
-@app.route('/')
+@api.route('/')
 def default():
     return redirect('/list')
 
-@app.route('/list')
+@api.route('/list')
 def list():
     return  "\n".join([
         """<p><a href='/run'>New</a></p>"""
@@ -53,23 +54,26 @@ def list():
         for execution in Execution.list()
     ])
 
-@app.route('/run')
+@api.route('/run')
 def run():
     execution = Execution.start()
     return redirect("/list".format(execution))
 
-@app.route('/status/<execution>')
+@api.route('/status/<execution>')
 def status(execution):
     executionOutput = Execution(execution).outputFile
     return send_file(str(executionOutput))
 
-@app.route('/stop/<execution>')
+@api.route('/stop/<execution>')
 def stop(execution):
     execution = Execution(execution)
     execution.stop()
     return redirect("/list", code=302)
 
+if __name__ == '__main__':
+    app = Flask("Background runner")
+    app.register_blueprint(api)
+    app.run()
 
-app.run()
 
 # vim: ts=4 sw=4 et
