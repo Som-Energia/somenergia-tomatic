@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
 from tomatic.dbasterisk import DbAsterisk
-from tomatic.schedulestorage import Storage
-from tomatic.scheduling import choosers, Scheduling
 import dbconfig
 import sys
 import click

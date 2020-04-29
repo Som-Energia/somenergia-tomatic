@@ -14,11 +14,6 @@ TODO:
 from future import standard_library
 standard_library.install_aliases()
 
-from flask import (
-    Flask,
-    redirect,
-    send_file,
-    )
 import os
 import signal
 import errno

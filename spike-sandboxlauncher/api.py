@@ -20,20 +20,10 @@ from flask import (
     redirect,
     send_file,
     )
-import os
-import signal
-import errno
-import subprocess
-import uuid
-import datetime
-from pathlib2 import Path
-from consolemsg import step, success, warn
-from yamlns import namespace as ns
-
-api = Blueprint("Background runner", __name__)
-
 from execution import Execution
 
+
+api = Blueprint("Background runner", __name__)
 
 @api.route('/')
 def default():
