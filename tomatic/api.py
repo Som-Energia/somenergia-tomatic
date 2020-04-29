@@ -213,7 +213,7 @@ def retireOldTimeTable():
     try:
         schedules.load(twoMondaysAgo)
     except:
-        raise ApiError("Graella {} no trobada, potser ja ha estat retirada".format(today))
+        raise ApiError("Graella {} no trobada, potser ja ha estat retirada".format(twoMondaysAgo))
     else:
         schedules.retireOld(twoMondaysAgo)
     return yamlfy(result='ok')
