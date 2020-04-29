@@ -8,17 +8,19 @@ def main():
     nonzero = 'nonzero' in sys.argv
     if nonzero: sys.argv.remove('nonzero')
 
-    if sys.argv[1] == 'min':
+    subcommand = sys.argv[1]
+
+    if subcommand == 'min':
         result = loadMin(*(
             ns.load(filename)
             for filename in sys.argv[2:]
         ))
-    elif sys.argv[1] == 'subs':
+    elif subcommand == 'subs':
         result = loadSubstract(*(
             ns.load(filename)
             for filename in sys.argv[2:4]
         ))
-    elif sys.argv[1] == "timetable":
+    elif subcommand == "timetable":
         from collections import Counter
         timetable = ns.load(sys.argv[2])
         result = ns(sorted((p,v) for p,v in Counter(
