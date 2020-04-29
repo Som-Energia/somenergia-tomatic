@@ -204,6 +204,21 @@ def uploadGraella(week=None):
     publishStatic(graella)
     return yamlfy(result='ok')
 
+@app.route('/api/graella/retireold')
+@yamlerrors
+def retireOldTimeTable():
+    today = datetime.today()
+    twoMondaysAgo = str((today - timedelta(days=today.weekday()+7*2)).date())
+    step("Retiring timetables older than {}", twoMondaysAgo)
+    try:
+        schedules.load(twoMondaysAgo)
+    except:
+        error("Unable to retire")
+        raise
+    else:
+        schedules.retireOld(twoMondaysAgo)
+    return yamlfy(result='ok')
+
 @app.route('/api/queue')
 def get_queue():
     return yamlfy(
