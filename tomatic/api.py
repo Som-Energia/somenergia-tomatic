@@ -182,13 +182,13 @@ def listGraelles():
 @app.route('/api/graella', methods=['POST'])
 @yamlerrors
 def uploadGraella(week=None):
-    print("uploading {}".format(request.files))
+    step("uploading {}".format(request.files))
     if 'yaml' not in request.files:
-        print("Cap graella pujada")
+        error("Cap graella pujada")
         return "KO"
     yaml = request.files['yaml']
     if yaml.content_length > 30:
-        print("Pujat yaml sospitosament llarg: {} bytes"
+        warn("Pujat yaml sospitosament llarg: {} bytes"
             .format(yaml.content_length))
         return "KO"
     graella = ns.load(yaml.stream)
