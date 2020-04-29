@@ -22,6 +22,14 @@ tomatic:
           extension: yaml
           filename: carrega-{monday}.yaml
 
+    retireold:
+      script: curl http://192.168.35.244:4555/api/graella/retireold
+      title: Retira les graelles antigues
+      description: >
+        Amaga les graelles antigues conservant només la de la setmana anterior.
+        Les sobrecarregues de les graelles retirades es conservaran
+        a la bossa d'hores.
+
     resum:
       script: SOME_SRC/somenergia-tomatic/tomatic_calls.py  summary
       title: Resum de trucades del dia
