@@ -199,7 +199,7 @@ def uploadGraella(week=None):
         graella.week,
         ))
     graella.setdefault('log',[])
-    print(logmsg)
+    graella.log.append(logmsg)
     schedules.save(graella)
     publishStatic(graella)
     return yamlfy(result='ok')
