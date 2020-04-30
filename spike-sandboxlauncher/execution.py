@@ -29,7 +29,7 @@ executionRoot = Path('executions')
 class Execution(object):
 
     @staticmethod
-    def start():
+    def start(name=None, command=None):
         executionName = "{}-{}".format(datetime.datetime.now(), uuid.uuid4())
         execution = Execution(executionName)
         step("Running task '{}'", executionName )
@@ -45,6 +45,7 @@ class Execution(object):
             stderr=log,
         )
         success("Running child: {}", process.pid)
+        #(execution.path / 'pid').write_text(u(process.pid))
         return executionName
 
     @staticmethod
