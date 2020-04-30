@@ -29,7 +29,7 @@ class Execution(object):
         executionName = "{}-{}".format(datetime.datetime.now(), uuid.uuid4())
         execution = Execution(executionName)
         step("Running task '{}'", executionName )
-        execution.path.mkdir()
+        execution.createSandbox()
         command = "../../example.sh /usr".split()
         #command = "launcherwrapper.sh tomatic_scheduler.py afasdflkjas "
         step("Running {}", command)
@@ -106,6 +106,18 @@ class Execution(object):
             killDisplay = 'inline' if self.state == 'Running' else 'none',
             state = self.state,
             )
+
+    def createSandbox(self):
+        self.path.mkdir()
+
+
+class PlannerExecution(Execution):
+
+    def createSandbox(self):
+        super(self, Execution).createSandbox()
+
+
+# TODO: Testing del sandbox
 
 
 
