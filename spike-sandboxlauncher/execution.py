@@ -117,27 +117,31 @@ class Execution(object):
 
     """
 
+from slugify import slugify
 
 class PlannerExecution(Execution):
 
-    def __init__(self, monday, configPath, description=''):
+    def __init__(self, monday, configPath,
+            description='',
+            nlines=7,
+            ):
+        self.nlines = nlines
         name = monday
         if description:
-            name = "{}-{}".format(monday, description)
+            name = "{}-{}".format(monday, slugify(description))
         super(PlannerExecution, self).__init__(name=name)
         self.configPath = Path(configPath)
 
     def createSandbox(self):
         super(PlannerExecution, self).createSandbox()
-        (self.path/'config.yaml').write_bytes(
-            (self.configPath/'config.yaml').read_bytes()
-            )
+        config = ns.load(self.configPath/'config.yaml')
+        config.nTelefons = self.nlines
+        config.dump(self.path/'config.yaml')
         (self.path/'holidays.conf').write_bytes(
             (self.configPath/'holidays.conf').read_bytes()
             )
-        (self.path/'drive-certificate.json').write_bytes(
-            (self.configPath/'drive-certificate.json').read_bytes()
-            )
+        (self.path/'drive-certificate.json').symlink_to(
+            (self.configPath/'drive-certificate.json').resolve())
 
 
 # TODO: Testing del sandbox
