@@ -62,13 +62,13 @@ class Execution(object):
 
     def run(self, command):
         output = self.outputFile.open('w')
-        p = subprocess.Popen(
+        process = subprocess.Popen(
             command,
             cwd=str(self.path),
             stdout=output,
             stderr=output,
         )
-        self.pidFile.write_text('{}'.format(p.pid))
+        self.pidFile.write_text('{}'.format(process.pid))
 
     @property
     def outputFile(self):
