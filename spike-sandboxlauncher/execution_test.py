@@ -6,15 +6,17 @@ from execution import (
 )
 from pathlib2 import Path
 
+def removeRecursive(f):
+    if not f.exists():
+        return
+    if not f.is_dir():
+        f.unlink()
+        return
+    for sub in f.iterdir():
+        removeRecursive(sub)
+    f.rmdir()
 
 def cleanExecutionDir(self):
-    def removeRecursive(f):
-        if not f.is_dir():
-            f.unlink()
-            return
-        for sub in f.iterdir():
-            removeRecursive(sub)
-        f.rmdir()
     removeRecursive(executionRoot)
 
 def assertSandboxes(self, expected):
@@ -55,6 +57,18 @@ class PlannerExecution_Test(unittest.TestCase):
     def setUp(self):
         self.cleanExecutionDir()
         executionRoot.mkdir()
+        self.configPath = Path('dummyconfig')
+        removeRecursive(self.configPath)
+        self.configPath.mkdir()
+        (self.configPath/'config.yaml').write_text("""
+            nTelefons: 7
+        """)
+        (self.configPath/'holidays.conf').write_text(
+            "2020-12-25\tNadal"
+        )
+        (self.configPath/'drive-certificate.json').write_text(
+            "{}"
+        )
 
     cleanExecutionDir = cleanExecutionDir
     assertSandboxes = assertSandboxes
@@ -62,6 +76,7 @@ class PlannerExecution_Test(unittest.TestCase):
     def test_createSandbox_baseCase(self):
         e = PlannerExecution(
             monday='2020-05-04',
+            configPath=self.configPath,
         )
 
         e.createSandbox()

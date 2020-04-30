@@ -120,7 +120,7 @@ class Execution(object):
 
 class PlannerExecution(Execution):
 
-    def __init__(self, monday):
+    def __init__(self, monday, configPath):
         name = monday
         super(PlannerExecution, self).__init__(name=name)
 
