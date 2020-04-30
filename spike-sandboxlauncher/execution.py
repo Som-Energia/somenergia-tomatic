@@ -2,13 +2,8 @@
 
 """
 TODO:
-- Obtain scheduler's pid
-- Send a signal to the scheduler
 - Function to create sandbox
-- Current path
-- Wrapper para controlar ejecucion
-    - Standard error
-    - Exit code
+- Exit code
 """
 
 from future import standard_library

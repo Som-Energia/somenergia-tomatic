@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
-TODO:
-- Function to create sandbox
-- Exit code
-"""
-
 from future import standard_library
 standard_library.install_aliases()
 
