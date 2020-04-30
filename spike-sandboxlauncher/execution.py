@@ -89,6 +89,9 @@ class Execution(object):
         self._pid = int(self.pidFile.read_text())
         return self._pid
 
+    def stop(self):
+        os.kill(self.pid, signal.SIGINT)
+
     """
     @property
     def isAlive(self):

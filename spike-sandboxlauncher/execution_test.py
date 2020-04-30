@@ -85,11 +85,12 @@ class Execution_Test(unittest.TestCase):
             "First",
         ])
 
-    def waitExist(self, file):
-        for i in range(100):
+    def waitExist(self, file, miliseconds=100):
+        for i in range(miliseconds):
             if file.exists():
-                return
+                return True
             time.sleep(0.001)
+        return False
         
 
     def test_run_executesCommand(self):
@@ -100,8 +101,9 @@ class Execution_Test(unittest.TestCase):
             "-c",
             "open('{}','w').write('hola')".format(execution.path.resolve()/'itworks'),
         ])
-        self.waitExist(execution.path/'itworks')
+        self.assertEqual(self.waitExist(execution.path/'itworks',1000), True)
         self.assertEqual((execution.path/'itworks').read_text(), 'hola')
+        self.assertEqual(self.waitExist(execution.path/'itworks',1000), True)
 
     def test_run_inSandbox(self):
         execution = Execution(name="One")
@@ -184,6 +186,59 @@ class Execution_Test(unittest.TestCase):
         execution.pidFile.unlink() # This is new
         self.assertEqual(p.pid, execution.pid)
 
+    def test_stop_sendsSigInt_python(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        execution.run([
+            "python",
+            "-c",
+            "import signal, time;\n"
+            "from pathlib2 import Path;\n"
+            "def touch(f):\n"
+            "  with open(f,'w') as a:\n"
+            "    a.write('')\n"
+            "terminated=False;\n"
+            "def terminate(signal, frame):\n"
+            "  global terminated\n"
+            "  terminated=True\n"
+            "signal.signal(signal.SIGINT, terminate)\n"
+            "Path('ready').touch()\n"
+            "while not terminated: time.sleep(0.01)\n"
+            "Path('ended').touch()\n"
+            ,
+        ])
+        self.assertEqual(self.waitExist(execution.path/'ready',1000), True)
+        self.assertEqual((execution.path/'ended').exists(), False)
+        execution.stop()
+        self.assertEqual(self.waitExist(execution.path/'ended',1000), True)
+
+    def test_stop_sendsSigInt_bash(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        execution.run([
+            "bash",
+            "-c",
+            "stopped=0\n"
+            "function stop() {\n"
+            "    touch stopping\n"
+            "    stopped=1\n"
+            "}\n"
+            "trap 'stop' SIGINT\n"
+            "touch ready\n"
+            "while true; do\n"
+            "  [ $stopped == 1 ] && {\n"
+            "    touch stopped\n"
+            "    break\n"
+            "}\n"
+            "done\n"
+            "touch ended\n"
+            ,
+        ])
+        self.assertEqual(self.waitExist(execution.path/'ready',1000), True)
+        self.assertEqual((execution.path/'ended').exists(), False)
+        execution.stop()
+        self.assertEqual(self.waitExist(execution.path/'ended',1000), True)
+
 
 class PlannerExecution_Test(unittest.TestCase):
 
@@ -207,7 +262,6 @@ class PlannerExecution_Test(unittest.TestCase):
             "{}"
         )
 
-
     def test_path_noDescription(self):
         e = PlannerExecution(
             monday='2020-05-04',
@@ -224,7 +278,6 @@ class PlannerExecution_Test(unittest.TestCase):
         )
         self.assertEqual(e.path,
             executionRoot/'2020-05-04-description')
-
 
     def test_path_withDescription_withSlug(self):
         e = PlannerExecution(
@@ -274,7 +327,6 @@ class PlannerExecution_Test(unittest.TestCase):
             self.configPath/'holidays.conf',
             e.path/'holidays.conf')
 
-
     def test_createSandbox_linksCertificate(self):
         e = PlannerExecution(
             monday='2020-05-04',
@@ -292,7 +344,6 @@ class PlannerExecution_Test(unittest.TestCase):
         self.assertEqual(
             (self.configPath/'drive-certificate.json').resolve(),
             (e.path/'drive-certificate.json').resolve())
-
 
     def test_createSandbox_changingLines(self):
         e = PlannerExecution(
