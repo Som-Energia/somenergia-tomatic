@@ -56,6 +56,7 @@ class Execution(object):
     def __init__(self, name):
         self.name = name
         self.path = executionRoot/name
+        self._pid = None
 
     def createSandbox(self):
         self.path.mkdir()
@@ -81,7 +82,7 @@ class Execution(object):
 
     @property
     def pid(self):
-        if hasattr(self, '_pid'):
+        if self._pid:
             return self._pid
         if not self.pidFile.exists():
             return None
