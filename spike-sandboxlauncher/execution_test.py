@@ -90,9 +90,9 @@ class Execution_Test(unittest.TestCase):
     # [x] Comprobar que se ejecuta el script en el sandbox
     # [x] Crear un pdiFile
     # [x] Comprobar que el pidfile tiene el pid del proceso
+    # [x] Crear un outputFile con stdout
+    # [x] Crear un outputFile con stderr
     # Matar el script
-    # Crear un outputFile con stdout
-    # Crear un outputFile con stderr
 
     def waitExist(self, file):
         for i in range(100):

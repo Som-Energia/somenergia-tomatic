@@ -95,8 +95,6 @@ class Execution(object):
             return False
         status = psutil.Process(self.pid).status()
         if status == psutil.STATUS_ZOMBIE:
-            children[self.pid].wait()
-            del children[self.pid]
             return False
         if status == psutil.STATUS_DEAD:
             return False
@@ -112,6 +110,8 @@ class Execution(object):
         warn("Stoping {}", self.pid)
         try:
             os.kill(self.pid, signal.SIGINT)
+            children[self.pid].wait()
+            del children[self.pid]
         except OSError as err:
             if err.errno == errno.ESRCH: # Process not found
                 print(type(err))
