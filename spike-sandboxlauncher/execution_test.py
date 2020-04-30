@@ -152,6 +152,17 @@ class Execution_Test(unittest.TestCase):
         self.waitExist(execution.path/'ended')
         self.assertEqual((execution.outputFile).read_text(), "Hola") 
 
+    def test_run_badCommand(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        with self.assertRaises(OSError) as ctx:
+            execution.run([
+                "badcommandthatdoesnotexist",
+            ])
+        self.assertEqual(format(ctx.exception),
+            "[Errno 2] No such file or directory")
+
+        # TODO: This should be more detectable for the listing
 
 class PlannerExecution_Test(unittest.TestCase):
 
