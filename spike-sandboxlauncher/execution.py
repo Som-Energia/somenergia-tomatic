@@ -34,12 +34,15 @@ class Execution(object):
         execution = Execution(executionName)
         step("Running task '{}'", executionName )
         execution.path.mkdir()
-        command = "../../example.sh /usr > '{}' 2>&1".format(execution.outputFile.name)
-        step("running {}", command)
+        command = "../../example.sh /usr"
+        step("Running {}", command)
+        log = execution.outputFile.open('w')
         process = subprocess.Popen(
             command,
             shell=True,
             cwd=str(execution.path),
+            stdout=log,
+            stderr=log,
         )
         success("Running child: ", process.pid)
         return executionName
