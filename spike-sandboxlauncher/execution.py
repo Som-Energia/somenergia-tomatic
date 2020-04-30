@@ -60,6 +60,12 @@ class Execution(object):
     def createSandbox(self):
         self.path.mkdir()
 
+    def run(self, command):
+        p = subprocess.Popen(
+            command,
+            cwd=str(self.path),
+        )
+
     @property
     def outputFile(self):
         return self.path / 'output.txt'

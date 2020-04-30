@@ -1,4 +1,5 @@
 import unittest
+import time
 from execution import (
     Execution,
     executionRoot,
@@ -76,6 +77,44 @@ class Execution_Test(unittest.TestCase):
             "Last",
             "First",
         ])
+
+    # [x] Comprobar que se ejecuta el script
+    # [ ] Comprobar que se ejecuta el script en el sandbox
+    # Matar el script
+    # Crear un outputFile con stdout
+    # Crear un outputFile con stderr
+    # Crear un pdiFile
+    # Comprobar que el pidfile tiene el pid del proceso
+
+    def waitExist(self, file):
+        for i in range(100):
+            if file.exists():
+                return
+            time.sleep(0.001)
+        
+
+    def test_run_executesCommand(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        execution.run([
+            "python",
+            "-c",
+            "open('{}','w').write('hola')".format(execution.path.resolve()/'itworks'),
+        ])
+        self.waitExist(execution.path/'itworks')
+        self.assertEqual((execution.path/'itworks').read_text(), 'hola')
+
+    def test_run_inSandbox(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        execution.run([
+            "python",
+            "-c",
+            "open('{}','w').write('hola')".format('itworks'),
+        ])
+        self.waitExist(execution.path/'itworks')
+        self.assertEqual((execution.path/'itworks').read_text(), 'hola')
+
 
 class PlannerExecution_Test(unittest.TestCase):
 
