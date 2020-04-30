@@ -53,6 +53,30 @@ class Execution_Test(unittest.TestCase):
             'executions/hola',
         ])
 
+    def test_list_noExecutions(self):
+        result = [x for x in sorted(e.name for e in Execution.list())]
+        self.assertEqual(result,[
+        ])
+
+    def test_list_singleExecution(self):
+        execution = Execution(name="First")
+        execution.createSandbox()
+        result = [x for x in sorted(e.name for e in Execution.list())]
+        self.assertEqual(result,[
+            "First",
+        ])
+
+    def test_list_manyExecutions(self):
+        execution1 = Execution(name="First")
+        execution1.createSandbox()
+        execution2 = Execution(name="Last")
+        execution2.createSandbox()
+        result = [e.name for e in Execution.list()]
+        self.assertEqual(result,[
+            "Last",
+            "First",
+        ])
+
 class PlannerExecution_Test(unittest.TestCase):
 
     cleanExecutionDir = cleanExecutionDir

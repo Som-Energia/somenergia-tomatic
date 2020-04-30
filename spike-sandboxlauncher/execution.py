@@ -2,7 +2,6 @@
 
 """
 TODO:
-- Function to create sandbox
 - Exit code
 """
 
@@ -44,14 +43,15 @@ class Execution(object):
         (execution.path / 'pid').write_text(u(process.pid))
         children[process.pid] = process
         return executionName
-
+    """
     @staticmethod
     def list():
-        return (
-            Execution(executiondir.name)
-            for executiondir in sorted(executionRoot.iterdir(), reverse=True)
-        )
-    """
+        return [
+            p for p in reversed(sorted(
+                executionRoot.iterdir(),
+                key=lambda x: x.stat().st_ctime,
+            ))
+        ]
 
     def __init__(self, name):
         self.name = name
