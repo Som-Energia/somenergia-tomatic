@@ -41,6 +41,7 @@ setup(
         'pathlib2',
         'erppeek',
         'websocket-server',
+        'psutil',
     ] + ([
         'Flask<1.1',
         'jinja2<3.0',

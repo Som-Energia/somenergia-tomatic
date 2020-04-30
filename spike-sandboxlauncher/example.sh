@@ -5,7 +5,7 @@ function stop() {
 }
 function ignore() {
  	false
-	echo "SIGUP!!"
+	echo "SIGHUP!!"
 }
 trap 'stop' SIGINT
 trap 'ignore' SIGHUP # Avoid stop on parent process detach
@@ -13,8 +13,6 @@ trap 'ignore' SIGHUP # Avoid stop on parent process detach
 echo Current path: $(pwd)
 echo This is an error message >&2
 echo PID: $$
-echo $$ > pid
-
 
 echo "Esperando 10s"
 for a in 10 9 8 7 6 5 4 3 2 1 0; do
