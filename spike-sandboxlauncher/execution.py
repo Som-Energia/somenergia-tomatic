@@ -32,7 +32,7 @@ class Execution(object):
     def start():
         executionName = "{}-{}".format(datetime.datetime.now(), uuid.uuid4())
         execution = Execution(executionName)
-        step("Running task {}", executionName )
+        step("Running task '{}'", executionName )
         execution.path.mkdir()
         command = "../../example.sh /usr > '{}' 2>&1".format(execution.outputFile.name)
         step("running {}", command)
