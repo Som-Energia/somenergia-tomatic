@@ -44,7 +44,7 @@ class Execution(object):
             stdout=log,
             stderr=log,
         )
-        success("Running child: ", process.pid)
+        success("Running child: {}", process.pid)
         return executionName
 
     @staticmethod
