@@ -34,12 +34,13 @@ class Execution(object):
         execution = Execution(executionName)
         step("Running task '{}'", executionName )
         execution.path.mkdir()
-        command = "../../example.sh /usr"
+        command = "../../example.sh /usr".split()
+        #command = "launcherwrapper.sh tomatic_scheduler.py afasdflkjas "
         step("Running {}", command)
         log = execution.outputFile.open('w')
         process = subprocess.Popen(
             command,
-            shell=True,
+            #shell=True,
             cwd=str(execution.path),
             stdout=log,
             stderr=log,
