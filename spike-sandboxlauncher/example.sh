@@ -10,6 +10,7 @@ trap 'stop' SIGINT
 trap 'ignore' SIGHUP # Avoid stop on parent process detach
 
 echo Current path: $(pwd)
+echo This is an error message >&2
 echo PID: $$
 echo $$ > pid
 echo "Esperando 10s"
