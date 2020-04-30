@@ -69,6 +69,7 @@ class Execution(object):
             stderr=output,
         )
         self.pidFile.write_text('{}'.format(process.pid))
+        return process
 
     @property
     def outputFile(self):
@@ -78,7 +79,6 @@ class Execution(object):
     def pidFile(self):
         return self.path / 'pid'
 
-    """
     @property
     def pid(self):
         if hasattr(self, '_pid'):
@@ -88,6 +88,7 @@ class Execution(object):
         self._pid = int(self.pidFile.read_text())
         return self._pid
 
+    """
     @property
     def isAlive(self):
         import psutil

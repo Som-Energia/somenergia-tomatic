@@ -50,6 +50,7 @@ class Execution_Test(unittest.TestCase):
         self.assertEqual(e.path, executionRoot/'hola')
         self.assertEqual(e.outputFile, executionRoot/'hola'/'output.txt')
         self.assertEqual(e.pidFile, executionRoot/'hola'/'pid')
+        self.assertEqual(e.pid, None)
 
     def test_createSandbox(self):
         e = Execution(name="hola")
@@ -163,6 +164,26 @@ class Execution_Test(unittest.TestCase):
             "[Errno 2] No such file or directory")
 
         # TODO: This should be more detectable for the listing
+
+    def test_pid_whenNotRunning(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        self.assertEqual(None, execution.pid)
+
+    def test_pid_afterRunning(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        p = execution.run('ls') # This is new
+        self.assertEqual(p.pid, execution.pid)
+
+    def test_pid_onceRunningIsCached(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        p = execution.run('ls')
+        execution.pid # this access caches
+        execution.pidFile.unlink() # This is new
+        self.assertEqual(p.pid, execution.pid)
+
 
 class PlannerExecution_Test(unittest.TestCase):
 
