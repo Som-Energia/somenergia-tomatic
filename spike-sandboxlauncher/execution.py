@@ -66,6 +66,7 @@ class Execution(object):
             command,
             cwd=str(self.path),
             stdout=output,
+            stderr=output,
         )
         self.pidFile.write_text('{}'.format(p.pid))
 

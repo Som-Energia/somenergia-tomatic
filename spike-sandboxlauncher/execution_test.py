@@ -149,6 +149,19 @@ class Execution_Test(unittest.TestCase):
         self.waitExist(execution.path/'ended')
         self.assertEqual((execution.outputFile).read_text(), "Hola") 
 
+    def test_run_capturesStdErr(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        execution.run([
+            "python",
+            "-c",
+            "import sys;"
+                "sys.stderr.write('Hola'); sys.stderr.flush();"
+                "open('ended','w').write('')",
+        ])
+        self.waitExist(execution.path/'ended')
+        self.assertEqual((execution.outputFile).read_text(), "Hola") 
+
 
 class PlannerExecution_Test(unittest.TestCase):
 
