@@ -5,6 +5,7 @@ from execution import (
     PlannerExecution,
 )
 from pathlib2 import Path
+from yamlns import namespace as ns
 
 def removeRecursive(f):
     if not f.exists():
@@ -72,6 +73,13 @@ class PlannerExecution_Test(unittest.TestCase):
 
     cleanExecutionDir = cleanExecutionDir
     assertSandboxes = assertSandboxes
+    from yamlns.testutils import assertNsEqual
+
+    def assertContentEqual(self, path1, path2):
+        self.assertMultiLineEqual(
+            path1.read_text(encoding='utf8'),
+            path2.read_text(encoding='utf8'),
+        )
 
     def test_createSandbox_baseCase(self):
         e = PlannerExecution(
@@ -87,8 +95,26 @@ class PlannerExecution_Test(unittest.TestCase):
             'executions/2020-05-04/holidays.conf',
         ])
 
-        #config = ns.load('executions/2020-05-04/config.yaml')
-        #self.assertEqual(config.nTelefons, 7)
+        self.assertContentEqual(
+            self.configPath/'config.yaml',
+            e.path/'config.yaml')
+        self.assertContentEqual(
+            self.configPath/'holidays.conf',
+            e.path/'holidays.conf')
+        self.assertContentEqual(
+            self.configPath/'drive-certificate.json',
+            e.path/'drive-certificate.json')
+
+    def test_path_withDescription(self):
+        e = PlannerExecution(
+            monday='2020-05-04',
+            description="description",
+            configPath=self.configPath,
+        )
+        self.assertEqual(e.path,
+            executionRoot/'2020-05-04-description')
+
+        
 
 
 """

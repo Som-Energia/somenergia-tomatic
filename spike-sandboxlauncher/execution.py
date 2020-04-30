@@ -120,15 +120,24 @@ class Execution(object):
 
 class PlannerExecution(Execution):
 
-    def __init__(self, monday, configPath):
+    def __init__(self, monday, configPath, description=''):
         name = monday
+        if description:
+            name = "{}-{}".format(monday, description)
         super(PlannerExecution, self).__init__(name=name)
+        self.configPath = Path(configPath)
 
     def createSandbox(self):
         super(PlannerExecution, self).createSandbox()
-        (self.path/'config.yaml').write_text("")
-        (self.path/'holidays.conf').write_text("")
-        (self.path/'drive-certificate.json').write_text("")
+        (self.path/'config.yaml').write_bytes(
+            (self.configPath/'config.yaml').read_bytes()
+            )
+        (self.path/'holidays.conf').write_bytes(
+            (self.configPath/'holidays.conf').read_bytes()
+            )
+        (self.path/'drive-certificate.json').write_bytes(
+            (self.configPath/'drive-certificate.json').read_bytes()
+            )
 
 
 # TODO: Testing del sandbox
