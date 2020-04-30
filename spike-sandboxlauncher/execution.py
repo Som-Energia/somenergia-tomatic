@@ -23,7 +23,7 @@ executionRoot = Path('executions')
 children = {}
 
 class Execution(object):
-
+    """
     @staticmethod
     def start(name=None, command=None):
         executionName = "{}-{}".format(datetime.datetime.now(), uuid.uuid4())
@@ -51,19 +51,31 @@ class Execution(object):
             Execution(executiondir.name)
             for executiondir in sorted(executionRoot.iterdir(), reverse=True)
         )
+    """
 
     def __init__(self, name):
         self.name = name
         self.path = executionRoot/name
 
+    def createSandbox(self):
+        self.path.mkdir()
+
+    @property
+    def outputFile(self):
+        return self.path / 'output.txt'
+
+    @property
+    def pidFile(self):
+        return self.path / 'pid'
+
+    """
     @property
     def pid(self):
         if hasattr(self, '_pid'):
             return self._pid
-        pidfile = self.path / 'pid'
-        if not pidfile.exists():
+        if not self.pidFile.exists():
             return None
-        self._pid = int(pidfile.read_text())
+        self._pid = int(self.pidFile.read_text())
         return self._pid
 
     @property
@@ -96,10 +108,6 @@ class Execution(object):
                 return
             raise
 
-    @property
-    def outputFile(self):
-        return self.path / 'output.txt'
-
     def listInfo(self):
         return ns(
             name = self.name,
@@ -107,14 +115,20 @@ class Execution(object):
             state = self.state,
             )
 
-    def createSandbox(self):
-        self.path.mkdir()
+    """
 
 
 class PlannerExecution(Execution):
 
+    def __init__(self, monday):
+        name = monday
+        super(PlannerExecution, self).__init__(name=name)
+
     def createSandbox(self):
-        super(self, Execution).createSandbox()
+        super(PlannerExecution, self).createSandbox()
+        (self.path/'config.yaml').write_text("")
+        (self.path/'holidays.conf').write_text("")
+        (self.path/'drive-certificate.json').write_text("")
 
 
 # TODO: Testing del sandbox
