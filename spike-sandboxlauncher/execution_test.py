@@ -28,6 +28,12 @@ def assertSandboxes(self, expected):
     ]
     self.assertEqual(result, expected)
 
+def assertContentEqual(self, path1, path2):
+    self.assertMultiLineEqual(
+        path1.read_text(encoding='utf8'),
+        path2.read_text(encoding='utf8'),
+    )
+
 
 class Execution_Test(unittest.TestCase):
 
@@ -37,6 +43,8 @@ class Execution_Test(unittest.TestCase):
 
     cleanExecutionDir = cleanExecutionDir
     assertSandboxes = assertSandboxes
+    assertContentEqual = assertContentEqual
+
 
     def test_simpleProperties(self):
         e = Execution(name="hola")
@@ -79,12 +87,12 @@ class Execution_Test(unittest.TestCase):
         ])
 
     # [x] Comprobar que se ejecuta el script
-    # [ ] Comprobar que se ejecuta el script en el sandbox
+    # [x] Comprobar que se ejecuta el script en el sandbox
+    # Crear un pdiFile
+    # Comprobar que el pidfile tiene el pid del proceso
     # Matar el script
     # Crear un outputFile con stdout
     # Crear un outputFile con stderr
-    # Crear un pdiFile
-    # Comprobar que el pidfile tiene el pid del proceso
 
     def waitExist(self, file):
         for i in range(100):
@@ -115,11 +123,25 @@ class Execution_Test(unittest.TestCase):
         self.waitExist(execution.path/'itworks')
         self.assertEqual((execution.path/'itworks').read_text(), 'hola')
 
+    def test_run_generatesPidFile(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        execution.run([
+            "python",
+            "-c",
+            "import os; open('mypid','w').write('{}'.format(os.getpid()))",
+        ])
+        
+        self.waitExist(execution.path/'mypid')
+        self.assertContentEqual(
+            execution.path/'mypid',
+            execution.pidFile)
 
 class PlannerExecution_Test(unittest.TestCase):
 
     cleanExecutionDir = cleanExecutionDir
     assertSandboxes = assertSandboxes
+    assertContentEqual = assertContentEqual
     from yamlns.testutils import assertNsEqual
 
     def setUp(self):
@@ -136,12 +158,6 @@ class PlannerExecution_Test(unittest.TestCase):
         )
         (self.configPath/'drive-certificate.json').write_text(
             "{}"
-        )
-
-    def assertContentEqual(self, path1, path2):
-        self.assertMultiLineEqual(
-            path1.read_text(encoding='utf8'),
-            path2.read_text(encoding='utf8'),
         )
 
 

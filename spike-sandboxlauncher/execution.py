@@ -65,6 +65,7 @@ class Execution(object):
             command,
             cwd=str(self.path),
         )
+        self.pidFile.write_text('{}'.format(p.pid))
 
     @property
     def outputFile(self):
