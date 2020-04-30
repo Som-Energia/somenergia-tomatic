@@ -21,9 +21,6 @@ def removeRecursive(f):
         removeRecursive(sub)
     f.rmdir()
 
-def cleanExecutionDir(self):
-    removeRecursive(executionRoot)
-
 def assertSandboxes(self, expected):
     result = [
         str(p)
@@ -40,14 +37,12 @@ def assertContentEqual(self, path1, path2):
 
 class Execution_Test(unittest.TestCase):
 
-    def setUp(self):
-        self.cleanExecutionDir()
-        executionRoot.mkdir()
-
-    cleanExecutionDir = cleanExecutionDir
     assertSandboxes = assertSandboxes
     assertContentEqual = assertContentEqual
 
+    def setUp(self):
+        removeRecursive(executionRoot)
+        executionRoot.mkdir()
 
     def test_simpleProperties(self):
         e = Execution(name="hola")
@@ -88,14 +83,6 @@ class Execution_Test(unittest.TestCase):
             "Last",
             "First",
         ])
-
-    # [x] Comprobar que se ejecuta el script
-    # [x] Comprobar que se ejecuta el script en el sandbox
-    # [x] Crear un pdiFile
-    # [x] Comprobar que el pidfile tiene el pid del proceso
-    # [x] Crear un outputFile con stdout
-    # [x] Crear un outputFile con stderr
-    # Matar el script
 
     def waitExist(self, file):
         for i in range(100):
@@ -168,16 +155,15 @@ class Execution_Test(unittest.TestCase):
 
 class PlannerExecution_Test(unittest.TestCase):
 
-    cleanExecutionDir = cleanExecutionDir
     assertSandboxes = assertSandboxes
     assertContentEqual = assertContentEqual
     from yamlns.testutils import assertNsEqual
 
     def setUp(self):
-        self.cleanExecutionDir()
-        executionRoot.mkdir()
         self.configPath = Path('dummyconfig')
         removeRecursive(self.configPath)
+        removeRecursive(executionRoot)
+        executionRoot.mkdir()
         self.configPath.mkdir()
         (self.configPath/'config.yaml').write_text("""
             nTelefons: 7
