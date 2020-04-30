@@ -88,8 +88,8 @@ class Execution_Test(unittest.TestCase):
 
     # [x] Comprobar que se ejecuta el script
     # [x] Comprobar que se ejecuta el script en el sandbox
-    # Crear un pdiFile
-    # Comprobar que el pidfile tiene el pid del proceso
+    # [x] Crear un pdiFile
+    # [x] Comprobar que el pidfile tiene el pid del proceso
     # Matar el script
     # Crear un outputFile con stdout
     # Crear un outputFile con stderr
@@ -131,11 +131,24 @@ class Execution_Test(unittest.TestCase):
             "-c",
             "import os; open('mypid','w').write('{}'.format(os.getpid()))",
         ])
-        
         self.waitExist(execution.path/'mypid')
         self.assertContentEqual(
             execution.path/'mypid',
             execution.pidFile)
+
+    def test_run_capturesStdOut(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        execution.run([
+            "python",
+            "-c",
+            "import sys;"
+                "sys.stdout.write('Hola'); sys.stdout.flush();"
+                "open('ended','w').write('')",
+        ])
+        self.waitExist(execution.path/'ended')
+        self.assertEqual((execution.outputFile).read_text(), "Hola") 
+
 
 class PlannerExecution_Test(unittest.TestCase):
 

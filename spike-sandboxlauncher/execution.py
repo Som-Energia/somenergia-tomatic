@@ -61,9 +61,11 @@ class Execution(object):
         self.path.mkdir()
 
     def run(self, command):
+        output = self.outputFile.open('w')
         p = subprocess.Popen(
             command,
             cwd=str(self.path),
+            stdout=output,
         )
         self.pidFile.write_text('{}'.format(p.pid))
 
