@@ -22,28 +22,20 @@ executionRoot = Path('executions')
 children = {}
 
 class Execution(object):
-    """
     @staticmethod
-    def start(name=None, command=None):
-        executionName = "{}-{}".format(datetime.datetime.now(), uuid.uuid4())
+    def start(name=None, description=None, command=None):
+        executionName = "{}-{}".format(
+            name if name else datetime.datetime.now(),
+            description if description else uuid.uuid4())
         execution = Execution(executionName)
+        return executionName
         step("Running task '{}'", executionName )
         execution.createSandbox()
-        command = "../../example.sh /usr".split()
-        #command = "launcherwrapper.sh tomatic_scheduler.py afasdflkjas "
-        step("Running {}", command)
-        log = execution.outputFile.open('w')
-        process = subprocess.Popen(
-            command,
-            cwd=str(execution.path),
-            stdout=log,
-            stderr=log,
-        )
-        success("Running child: {}", process.pid)
-        (execution.path / 'pid').write_text(u(process.pid))
+        process = execution.run("../../example.sh /usr".split())
+        success("Running child: {}", execution.pid)
         children[process.pid] = process
         return executionName
-    """
+
     @staticmethod
     def list():
         return [
