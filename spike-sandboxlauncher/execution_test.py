@@ -3,13 +3,14 @@ from __future__ import unicode_literals
 
 import unittest
 import time
+import datetime
+from pathlib2 import Path
+from yamlns import namespace as ns
 from execution import (
     Execution,
     executionRoot,
     PlannerExecution,
 )
-from pathlib2 import Path
-from yamlns import namespace as ns
 
 def removeRecursive(f):
     if not f.exists() and not f.is_symlink():
@@ -250,10 +251,23 @@ class Execution_Test(unittest.TestCase):
         stopped = execution.stop()
         self.assertEqual(stopped, False)
 
-    @skip("Case implemented but do not know how to test")
+    @unittest.skip("Case implemented but do not know how to test")
     def test_stop_otherOSErrorsPassThrough(self): pass
-        
 
+    def test_start(self):
+        sandbox = Execution.start(
+            name="One",
+            command=[
+                "bash",
+                "-c"
+                "touch itworked",
+            ])
+        self.assertRegexpMatches(sandbox,
+            r'{:%Y-%m-%d %H:%M:%S}@s\.[0-9]{{1-6}}-One-.*'.format(
+            datetime.datetime.now()))
+        execution = Execution(sandbox)
+        self.assertEqual((execution.path/'itworked').exists(), True)
+        
 
 class PlannerExecution_Test(unittest.TestCase):
 
