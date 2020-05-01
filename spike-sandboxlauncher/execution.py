@@ -90,7 +90,13 @@ class Execution(object):
         return self._pid
 
     def stop(self):
-        os.kill(self.pid, signal.SIGINT)
+        try:
+            os.kill(self.pid, signal.SIGINT)
+        except OSError as err:
+            if err.errno == errno.ESRCH: # Process not found
+                return False
+            raise
+        return True
 
     """
     @property
@@ -110,18 +116,6 @@ class Execution(object):
         if self.pid is None: return 'Launching'
         if self.isAlive: return 'Running'
         return 'Stopped'
-
-    def stop(self):
-        warn("Stoping {}", self.pid)
-        try:
-            os.kill(self.pid, signal.SIGINT)
-            children[self.pid].wait()
-            del children[self.pid]
-        except OSError as err:
-            if err.errno == errno.ESRCH: # Process not found
-                print(type(err))
-                return
-            raise
 
     def listInfo(self):
         return ns(

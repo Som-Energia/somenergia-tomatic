@@ -236,8 +236,23 @@ class Execution_Test(unittest.TestCase):
         ])
         self.assertEqual(self.waitExist(execution.path/'ready',1000), True)
         self.assertEqual((execution.path/'ended').exists(), False)
-        execution.stop()
+        found = execution.stop()
+        self.assertEqual(found, True)
         self.assertEqual(self.waitExist(execution.path/'ended',1000), True)
+
+    def test_stop_afterProcessEnds_exitsSilently(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        p = execution.run([
+            "false",
+        ])
+        p.wait()
+        stopped = execution.stop()
+        self.assertEqual(stopped, False)
+
+    @skip("Case implemented but do not know how to test")
+    def test_stop_otherOSErrorsPassThrough(self): pass
+        
 
 
 class PlannerExecution_Test(unittest.TestCase):

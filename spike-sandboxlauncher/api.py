@@ -46,6 +46,7 @@ def status(execution):
 @api.route('/stop/<execution>')
 def stop(execution):
     execution = Execution(execution)
+    warn("Stoping {}", execution.pid)
     execution.stop()
     return redirect("/list", code=302)
 
