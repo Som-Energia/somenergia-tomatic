@@ -251,7 +251,15 @@ class Execution_Test(unittest.TestCase):
     @unittest.skip("Case implemented but do not know how to test")
     def test_stop_otherOSErrorsPassThrough(self): pass
 
-    def test_start(self):
+    def test_name_byDefault(self):
+        execution = Execution(name='')
+        self.assertRegexpMatches(
+            execution.name,
+            r'^{:%Y-%m-%d-%H:%M:%S}-[0-9a-f-]{{36}}$'.format(
+                datetime.datetime.now()))
+
+
+    def _test_start(self):
         sandbox = Execution.start(
             name="One",
             command=[
@@ -260,7 +268,7 @@ class Execution_Test(unittest.TestCase):
                 "touch itworked",
             ])
         self.assertRegexpMatches(sandbox,
-            r'{:%Y-%m-%d %H:%M:%S}@s\.[0-9]{{1-6}}-One-.*'.format(
+            r'{:%Y-%m-%d-%H:%M:%S}\.[0-9]{{1-6}}-One-.*'.format(
             datetime.datetime.now()))
         execution = Execution(sandbox)
         self.assertEqual((execution.path/'itworked').exists(), True)

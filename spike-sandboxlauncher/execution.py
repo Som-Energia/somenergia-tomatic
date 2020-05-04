@@ -23,18 +23,16 @@ children = {}
 
 class Execution(object):
     @staticmethod
-    def start(name=None, description=None, command=None):
-        executionName = "{}-{}".format(
-            name if name else datetime.datetime.now(),
-            description if description else uuid.uuid4())
-        execution = Execution(executionName)
-        return executionName
-        step("Running task '{}'", executionName )
+    def start():
+        execution = Execution()
+        return execution.name
+
+        step("Running task '{}'", execution.name )
         execution.createSandbox()
         process = execution.run("../../example.sh /usr".split())
         success("Running child: {}", execution.pid)
         children[process.pid] = process
-        return executionName
+        return execution.name
 
     @staticmethod
     def list():
@@ -45,8 +43,10 @@ class Execution(object):
             ))
         ]
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, name=None):
+        self.name = name or "{:%Y-%m-%d-%H:%M:%S}-{}".format(
+            datetime.datetime.now(),
+            uuid.uuid4())
         self.path = executionRoot/name
         self._pid = None
 
