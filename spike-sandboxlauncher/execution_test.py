@@ -10,6 +10,7 @@ from execution import (
     Execution,
     executionRoot,
     PlannerExecution,
+    children,
 )
 
 def removeRecursive(f):
@@ -289,6 +290,17 @@ class Execution_Test(unittest.TestCase):
             ])
         execution = Execution(sandbox)
         self.assertEqual(self.waitExist(execution.path/'itworked',1000), True)
+
+    def test_start_extendChildren(self):
+        sandbox = Execution.start(
+            command=[
+                "bash",
+                "-c",
+                "touch itworked",
+            ])
+        execution = Execution(sandbox)
+        self.assertIn(execution.pid, children)
+        self.assertEqual(children[execution.pid].pid, execution.pid)
 
 class PlannerExecution_Test(unittest.TestCase):
 

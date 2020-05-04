@@ -26,13 +26,7 @@ class Execution(object):
     def start(command):
         execution = Execution()
         execution.createSandbox()
-        execution.run(command)
-        print(command)
-        return execution.name
-
-        step("Running task '{}'", execution.name )
-        process = execution.run("../../example.sh /usr".split())
-        success("Running child: {}", execution.pid)
+        process = execution.run(command)
         children[process.pid] = process
         return execution.name
 
