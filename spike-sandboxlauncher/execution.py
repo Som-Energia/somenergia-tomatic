@@ -22,6 +22,7 @@ executionRoot = Path('executions')
 children = {}
 
 class Execution(object):
+
     @staticmethod
     def start(command):
         execution = Execution()
@@ -33,7 +34,7 @@ class Execution(object):
     @staticmethod
     def list():
         return [
-            p for p in reversed(sorted(
+            Execution(p.name) for p in reversed(sorted(
                 executionRoot.iterdir(),
                 key=lambda x: x.stat().st_ctime,
             ))
