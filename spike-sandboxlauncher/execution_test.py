@@ -240,6 +240,12 @@ class Execution_Test(unittest.TestCase):
         stopped = execution.stop()
         self.assertEqual(stopped, False)
 
+    def test_stop_unlaunched_exitsSilently(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        stopped = execution.stop()
+        self.assertEqual(stopped, False)
+
     @unittest.skip("Case implemented but do not know how to test")
     def test_stop_otherOSErrorsPassThrough(self): pass
 

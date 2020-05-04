@@ -91,6 +91,7 @@ class Execution(object):
         return self._pid
 
     def stop(self):
+        if not self.pid: return False
         try:
             os.kill(self.pid, signal.SIGINT)
         except OSError as err:
