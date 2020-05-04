@@ -3,6 +3,7 @@
 from future import standard_library
 standard_library.install_aliases()
 
+from consolemsg import warn
 from flask import (
     Flask,
     Blueprint,
