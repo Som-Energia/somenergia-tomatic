@@ -113,6 +113,10 @@ class Execution(object):
             )
 
     """
+    # TODO: TEST
+    @staticmethod
+    def ensureRootExists():
+        executionRoot.mkdir(exist_ok=True)
 
 from slugify import slugify
 

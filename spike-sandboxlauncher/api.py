@@ -12,7 +12,6 @@ from flask import (
     )
 from execution import Execution
 
-
 api = Blueprint("Background runner", __name__)
 
 @api.route('/')
@@ -54,6 +53,7 @@ def stop(execution):
 if __name__ == '__main__':
     app = Flask("Background runner")
     app.register_blueprint(api)
+    Execution.ensureRootExists()
     app.run()
 
 
