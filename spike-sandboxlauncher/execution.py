@@ -23,12 +23,14 @@ children = {}
 
 class Execution(object):
     @staticmethod
-    def start():
+    def start(command):
         execution = Execution()
+        execution.createSandbox()
+        execution.run(command)
+        print(command)
         return execution.name
 
         step("Running task '{}'", execution.name )
-        execution.createSandbox()
         process = execution.run("../../example.sh /usr".split())
         success("Running child: {}", execution.pid)
         children[process.pid] = process
@@ -47,7 +49,7 @@ class Execution(object):
         self.name = name or "{:%Y-%m-%d-%H:%M:%S}-{}".format(
             datetime.datetime.now(),
             uuid.uuid4())
-        self.path = executionRoot/name
+        self.path = executionRoot/self.name
         self._pid = None
 
     def createSandbox(self):

@@ -259,20 +259,36 @@ class Execution_Test(unittest.TestCase):
                 datetime.datetime.now()))
 
 
-    def _test_start(self):
+    def test_start_namesByDefault(self):
         sandbox = Execution.start(
-            name="One",
             command=[
                 "bash",
-                "-c"
+                "-c",
                 "touch itworked",
             ])
         self.assertRegexpMatches(sandbox,
-            r'{:%Y-%m-%d-%H:%M:%S}\.[0-9]{{1-6}}-One-.*'.format(
-            datetime.datetime.now()))
+            r'^{:%Y-%m-%d-%H:%M:%S}-[0-9a-f-]{{36}}$'.format(
+                datetime.datetime.now()))
+
+    def test_start_createsSandbox(self):
+        sandbox = Execution.start(
+            command=[
+                "bash",
+                "-c",
+                "touch itworked",
+            ])
         execution = Execution(sandbox)
-        self.assertEqual((execution.path/'itworked').exists(), True)
-        
+        self.assertEqual(True, execution.path.exists())
+
+    def test_start_executesCommand(self):
+        sandbox = Execution.start(
+            command=[
+                "bash",
+                "-c",
+                "touch itworked",
+            ])
+        execution = Execution(sandbox)
+        self.assertEqual(self.waitExist(execution.path/'itworked',1000), True)
 
 class PlannerExecution_Test(unittest.TestCase):
 
