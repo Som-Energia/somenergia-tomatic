@@ -100,6 +100,15 @@ class Execution(object):
             raise
         return True
 
+    def kill(self):
+        if not self.pid: return False
+        try:
+            os.kill(self.pid, signal.SIGKILL)
+        except OSError as err:
+            if err.errno == errno.ESRCH: # Process not found
+                return False
+            raise
+        return True
 
     def remove(self):
         if not self.pid: return False

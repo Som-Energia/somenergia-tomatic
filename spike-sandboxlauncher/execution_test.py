@@ -344,6 +344,37 @@ class Execution_Test(unittest.TestCase):
         p.wait()
 
 
+    def test_kill_unstarted(self):
+        execution = Execution("One")
+        execution.createSandbox()
+        found = execution.kill()
+        self.assertEqual(found, False)
+
+    def test_kill_finished(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        p = execution.run([
+            "bash",
+            "-c",
+            "echo ended\n"
+        ])
+        p.wait()
+        found = execution.kill()
+        self.assertEqual(found, False)
+
+    def test_kill_running(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        p = execution.run([
+            "bash",
+            "-c",
+            "touch ready\n"
+            "while true; do sleep 1; done\n"
+        ])
+        self.waitExist(execution.path/'ready')
+        found = execution.kill()
+        self.assertEqual(found, True)
+
 class PlannerExecution_Test(unittest.TestCase):
 
     assertSandboxes = assertSandboxes
