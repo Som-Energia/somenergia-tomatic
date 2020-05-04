@@ -104,7 +104,6 @@ class Execution_Test(unittest.TestCase):
         ])
         self.assertEqual(self.waitExist(execution.path/'itworks',1000), True)
         self.assertEqual((execution.path/'itworks').read_text(), 'hola')
-        self.assertEqual(self.waitExist(execution.path/'itworks',1000), True)
 
     def test_run_inSandbox(self):
         execution = Execution(name="One")
@@ -195,14 +194,11 @@ class Execution_Test(unittest.TestCase):
             "-c",
             "import signal, time;\n"
             "from pathlib2 import Path;\n"
-            "def touch(f):\n"
-            "  with open(f,'w') as a:\n"
-            "    a.write('')\n"
             "terminated=False;\n"
-            "def terminate(signal, frame):\n"
+            "def stop(signal, frame):\n"
             "  global terminated\n"
             "  terminated=True\n"
-            "signal.signal(signal.SIGINT, terminate)\n"
+            "signal.signal(signal.SIGINT, stop)\n"
             "Path('ready').touch()\n"
             "while not terminated: time.sleep(0.01)\n"
             "Path('ended').touch()\n"
@@ -210,8 +206,9 @@ class Execution_Test(unittest.TestCase):
         ])
         self.assertEqual(self.waitExist(execution.path/'ready',1000), True)
         self.assertEqual((execution.path/'ended').exists(), False)
-        execution.stop()
+        found = execution.stop()
         self.assertEqual(self.waitExist(execution.path/'ended',1000), True)
+        self.assertEqual(found, True)
 
     def test_stop_sendsSigInt_bash(self):
         execution = Execution(name="One")
@@ -219,16 +216,16 @@ class Execution_Test(unittest.TestCase):
         execution.run([
             "bash",
             "-c",
-            "stopped=0\n"
+            "terminated=0\n"
             "function stop() {\n"
             "    touch stopping\n"
-            "    stopped=1\n"
+            "    terminated=1\n"
             "}\n"
             "trap 'stop' SIGINT\n"
             "touch ready\n"
             "while true; do\n"
-            "  [ $stopped == 1 ] && {\n"
-            "    touch stopped\n"
+            "  [ $terminated == 1 ] && {\n"
+            "    touch terminated\n"
             "    break\n"
             "}\n"
             "done\n"
