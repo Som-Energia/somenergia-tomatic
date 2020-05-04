@@ -27,7 +27,9 @@ class Execution(object):
     def start(command):
         execution = Execution()
         execution.createSandbox()
+        step("Running {}...", execution.name)
         process = execution.run(command)
+        step("Process {}...", execution.pid)
         children[process.pid] = process
         return execution.name
 
@@ -87,7 +89,8 @@ class Execution(object):
             raise
         return True
 
-    """
+
+    # TODO: TEST
     @property
     def isAlive(self):
         import psutil
@@ -100,12 +103,14 @@ class Execution(object):
             return False
         return True
 
+    # TODO: TEST
     @property
     def state(self):
         if self.pid is None: return 'Launching'
         if self.isAlive: return 'Running'
         return 'Stopped'
 
+    # TODO: TEST
     def listInfo(self):
         return ns(
             name = self.name,
@@ -113,7 +118,6 @@ class Execution(object):
             state = self.state,
             )
 
-    """
     # TODO: TEST
     @staticmethod
     def ensureRootExists():
