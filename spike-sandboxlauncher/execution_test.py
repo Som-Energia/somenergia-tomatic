@@ -63,14 +63,14 @@ class Execution_Test(unittest.TestCase):
         ])
 
     def test_list_noExecutions(self):
-        result = [x for x in sorted(e.name for e in Execution.list())]
+        result = [e.name for e in Execution.list()]
         self.assertEqual(result,[
         ])
 
     def test_list_singleExecution(self):
         execution = Execution(name="First")
         execution.createSandbox()
-        result = [x for x in sorted(e.name for e in Execution.list())]
+        result = [e.name for e in Execution.list()]
         self.assertEqual(result,[
             "First",
         ])
@@ -290,6 +290,10 @@ class PlannerExecution_Test(unittest.TestCase):
         (self.configPath/'drive-certificate.json').write_text(
             "{}"
         )
+
+    def tearDown(self):
+        removeRecursive(self.configPath)
+        removeRecursive(executionRoot)
 
     def test_path_noDescription(self):
         e = PlannerExecution(
