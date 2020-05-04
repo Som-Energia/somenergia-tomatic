@@ -10,18 +10,9 @@ from execution import (
     Execution,
     executionRoot,
     PlannerExecution,
+    removeRecursive,
     children,
 )
-
-def removeRecursive(f):
-    if not f.exists() and not f.is_symlink():
-        return
-    if not f.is_dir():
-        f.unlink()
-        return
-    for sub in f.iterdir():
-        removeRecursive(sub)
-    f.rmdir()
 
 def assertSandboxes(self, expected):
     result = [
@@ -303,6 +294,49 @@ class Execution_Test(unittest.TestCase):
         execution = Execution(sandbox)
         self.assertIn(execution.pid, children)
         self.assertEqual(children[execution.pid].pid, execution.pid)
+
+
+    def test_remove_whenFinished(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        p = execution.run([
+            "python",
+            "-c",
+            "from pathlib2 import Path\n"
+            "Path('ended').touch()",
+        ])
+        p.wait()
+        success = execution.remove()
+        self.assertEqual(Execution.list(), [])
+        self.assertEqual(success, True)
+
+    def test_remove_unstarted(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        success = execution.remove()
+        self.assertEqual([e.name for e in Execution.list()], ['One'])
+        self.assertEqual(success, False)
+
+    def test_remove_unfinished(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        p = execution.run([
+            "bash",
+            "-c",
+            "trap 'echo aborted; exit 0' SIGINT\n"
+            "touch ready\n"
+            "while true; do sleep 1; done\n"
+            "touch ended\n"
+            "echo ended\n"
+        ])
+        print(execution.outputFile.read_text())
+        self.waitExist(execution.path/'ready')
+        success = execution.remove()
+        self.assertEqual([e.name for e in Execution.list()], ['One'])
+        self.assertEqual(success, False)
+        execution.stop()
+        p.wait()
+
 
 class PlannerExecution_Test(unittest.TestCase):
 

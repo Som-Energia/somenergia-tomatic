@@ -3,7 +3,7 @@
 from future import standard_library
 standard_library.install_aliases()
 
-from consolemsg import warn
+from consolemsg import step, warn
 from flask import (
     Flask,
     Blueprint,
@@ -28,6 +28,7 @@ def list():
             <a href='/status/{name}'>{name}</a>
             {state}
             <a style='display:{killDisplay}' href='/stop/{name}'>Stop</a>
+            <a style='display:{removeDisplay}' href='/remove/{name}'>Remove</a>
         </li>
         """.format(**execution.listInfo())
         for execution in Execution.list()
@@ -46,9 +47,19 @@ def status(execution):
 @api.route('/stop/<execution>')
 def stop(execution):
     execution = Execution(execution)
-    warn("Stoping {}", execution.pid)
-    execution.stop()
+    step("Stopping {0.pid} {0.name}", execution)
+    if not execution.stop():
+        warn("Process {} not found", execution.pid)
     return redirect("/list", code=302)
+
+@api.route('/remove/<execution>')
+def remove(execution):
+    execution = Execution(execution)
+    step("Cleaning up {0.name}", execution)
+    if not execution.remove():
+        warn("Process {} not finished", execution.pid)
+    return redirect("/list", code=302)
+
 
 if __name__ == '__main__':
     app = Flask("Background runner")

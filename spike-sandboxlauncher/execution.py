@@ -21,6 +21,16 @@ from yamlns import namespace as ns
 executionRoot = Path('executions')
 children = {}
 
+def removeRecursive(f):
+    if not f.exists() and not f.is_symlink():
+        return
+    if not f.is_dir():
+        f.unlink()
+        return
+    for sub in f.iterdir():
+        removeRecursive(sub)
+    f.rmdir()
+
 class Execution(object):
 
     @staticmethod
@@ -90,6 +100,13 @@ class Execution(object):
         return True
 
 
+    def remove(self):
+        if not self.pid: return False
+        if self.isAlive: return False
+        removeRecursive(self.path)
+        return True
+
+
     # TODO: TEST
     @property
     def isAlive(self):
@@ -115,6 +132,7 @@ class Execution(object):
         return ns(
             name = self.name,
             killDisplay = 'inline' if self.state == 'Running' else 'none',
+            removeDisplay = 'inline' if self.state == 'Stopped' else 'none',
             state = self.state,
             )
 
