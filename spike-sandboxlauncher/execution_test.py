@@ -270,6 +270,8 @@ class Execution_Test(unittest.TestCase):
         self.assertRegexpMatches(sandbox,
             r'^{:%Y-%m-%d-%H:%M:%S}-[0-9a-f-]{{36}}$'.format(
                 datetime.datetime.now()))
+        execution = Execution(sandbox)
+        self.waitExist(execution.path/'itworked',1000)
 
     def test_start_createsSandbox(self):
         sandbox = Execution.start(
