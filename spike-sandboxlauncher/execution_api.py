@@ -28,9 +28,6 @@ def list():
             <td>{startTime}</td>
             <td><a href='/status/{name}'>{name}</a></td>
             <td>{state}</td>
-            <td>76/120</td>
-            <td>200</td>
-            <td>22h</td>
             <td>
             <td>
         """ + killAction + removeAction + """</td>
@@ -46,9 +43,6 @@ def list():
             <th>Start time</th>
             <th>Name</th>
             <th>State</th>
-            <th>Completion</th>
-            <th>Cost</th>
-            <th>Darrera bona</th>
             <th>Actions</th>
             </tr>
         """
