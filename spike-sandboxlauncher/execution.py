@@ -43,10 +43,10 @@ class Execution(object):
         children[process.pid] = process
         return execution.name
 
-    @staticmethod
-    def list():
+    @classmethod
+    def list(cls):
         return [
-            Execution(p.name) for p in reversed(sorted(
+            cls(p.name) for p in reversed(sorted(
                 executionRoot.iterdir(),
                 key=lambda x: x.stat().st_ctime,
             ))
@@ -159,7 +159,7 @@ from slugify import slugify
 
 class PlannerExecution(Execution):
 
-    def __init__(self, monday, configPath,
+    def __init__(self, monday, configPath=None,
             description='',
             nlines=7,
             ):
@@ -168,7 +168,8 @@ class PlannerExecution(Execution):
         if description:
             name = "{}-{}".format(monday, slugify(description))
         super(PlannerExecution, self).__init__(name=name)
-        self.configPath = Path(configPath)
+        if configPath:
+            self.configPath = Path(configPath)
 
     def createSandbox(self):
         super(PlannerExecution, self).createSandbox()
@@ -194,8 +195,6 @@ class PlannerExecution(Execution):
                 timeOfLastSolution=None,
             )
 
-
-# TODO: Testing del sandbox
 
 
 
