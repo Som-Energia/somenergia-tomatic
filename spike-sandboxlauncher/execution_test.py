@@ -308,6 +308,7 @@ class Execution_Test(unittest.TestCase):
         execution = Execution(sandbox)
         self.assertIn(execution.pid, children)
         self.assertEqual(children[execution.pid].pid, execution.pid)
+        self.waitExist(execution.path/'itworked',1000)
 
 
     def test_remove_whenFinished(self):
