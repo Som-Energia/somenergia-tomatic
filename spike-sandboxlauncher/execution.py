@@ -97,7 +97,7 @@ class Execution(object):
         except OSError as err:
             if err.errno == errno.ESRCH: # Process not found
                 return False
-            raise
+            raise # EPERM or any other
         return True
 
     def kill(self):
@@ -107,7 +107,7 @@ class Execution(object):
         except OSError as err:
             if err.errno == errno.ESRCH: # Process not found
                 return False
-            raise
+            raise # EPERM or any other
         return True
 
     def remove(self):
