@@ -117,8 +117,10 @@ class Execution(object):
         return True
 
     def isRunning(self):
-        if self.pid: return True
-        return False
+        import psutil
+        if not self.pid: return False
+        if not psutil.pid_exists(self.pid): return False
+        return True
 
     # TODO: TEST
     @property

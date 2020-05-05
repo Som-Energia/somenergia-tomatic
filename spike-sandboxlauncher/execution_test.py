@@ -408,6 +408,17 @@ class Execution_Test(unittest.TestCase):
         self.assertEqual(execution.isRunning(), True)
         execution.kill()
 
+    def test_isRunning_afterRunning(self):
+        execution = Execution(name="MyExecution")
+        execution.createSandbox()
+        p = execution.run([
+            'bash',
+            '-c',
+            "false"
+        ])
+        p.wait()
+        self.assertEqual(execution.isRunning(), False)
+
 
 
 
