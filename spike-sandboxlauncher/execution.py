@@ -181,6 +181,19 @@ class PlannerExecution(Execution):
         (self.path/'drive-certificate.json').symlink_to(
             (self.configPath/'drive-certificate.json').resolve())
 
+    def listInfo(self):
+        common = super(PlannerExecution, self).listInfo()
+        try:
+            return ns(common, **ns.load(self.path/'status.yaml'))
+        except IOError as e:
+            return ns(
+                common,
+                totalCells=None,
+                completedCells=None,
+                solutionCost=None,
+                timeOfLastSolution=None,
+            )
+
 
 # TODO: Testing del sandbox
 

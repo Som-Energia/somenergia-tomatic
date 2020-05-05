@@ -451,6 +451,20 @@ class Execution_Test(unittest.TestCase):
         execution = Execution("MyExecution")
         self.assertEqual(execution.startTime, None)
 
+    def test_listInfo_commonValues(self):
+        e = Execution("MyExecution")
+        e.createSandbox()
+        info = e.listInfo()
+        self.assertEqual(info.state, "Launching")
+        self.assertEqual(info.name, e.name)
+        self.assertEqual(info.startTime, e.startTime)
+
+    def test_listInfo_commonValues_noSandbox(self):
+        e = Execution("MyExecution")
+        info = e.listInfo()
+        self.assertEqual(info.state, "Launching")
+        self.assertEqual(info.name, e.name)
+        self.assertEqual(info.startTime, None)
 
 class PlannerExecution_Test(unittest.TestCase):
 
@@ -571,6 +585,62 @@ class PlannerExecution_Test(unittest.TestCase):
         e.createSandbox()
         config = ns.load(e.path/'config.yaml')
         self.assertEqual(config.nTelefons, 8)
+
+    def test_listInfo_commonValues_noSandbox(self):
+        e = PlannerExecution(
+            monday='2020-05-04',
+            configPath=self.configPath,
+            nlines=8,
+        )
+        info = e.listInfo()
+        self.assertEqual(info.state, "Launching")
+        self.assertEqual(info.name, e.name)
+        self.assertEqual(info.startTime, None)
+
+    def test_listInfo_commonValues(self):
+        e = PlannerExecution(
+            monday='2020-05-04',
+            configPath=self.configPath,
+            nlines=8,
+        )
+        e.createSandbox()
+        info = e.listInfo()
+        self.assertEqual(info.state, "Launching")
+        self.assertEqual(info.name, e.name)
+        self.assertEqual(info.startTime, e.startTime)
+
+    def test_listInfo_extendedValues(self):
+        e = PlannerExecution(
+            monday='2020-05-04',
+            configPath=self.configPath,
+            nlines=8,
+        )
+        e.createSandbox()
+        (e.path/'status.yaml').write_text("""\
+            totalCells: 120
+            completedCells: 72
+            solutionCost: 200
+            timeOfLastSolution: 2020-12-25 20:45:29
+        """)
+        info = e.listInfo()
+        self.assertEqual(info.totalCells, 120)
+        self.assertEqual(info.completedCells, 72)
+        self.assertEqual(info.solutionCost, 200)
+        self.assertEqual(info.timeOfLastSolution, datetime.datetime(2020,12,25,20,45,28))
+
+    def test_listInfo_extendedValues_withNoStatus(self):
+        e = PlannerExecution(
+            monday='2020-05-04',
+            configPath=self.configPath,
+            nlines=8,
+        )
+        e.createSandbox()
+        info = e.listInfo()
+        self.assertEqual(info.totalCells, None)
+        self.assertEqual(info.completedCells, None)
+        self.assertEqual(info.solutionCost, None)
+        self.assertEqual(info.timeOfLastSolution, None)
+
 
 
 # vim: ts=4 sw=4 et
