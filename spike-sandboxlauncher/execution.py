@@ -116,6 +116,9 @@ class Execution(object):
         removeRecursive(self.path)
         return True
 
+    def isRunning(self):
+        if self.pid: return True
+        return False
 
     # TODO: TEST
     @property

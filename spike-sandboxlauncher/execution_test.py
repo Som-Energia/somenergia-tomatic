@@ -286,6 +286,7 @@ class Execution_Test(unittest.TestCase):
             ])
         execution = Execution(sandbox)
         self.assertEqual(True, execution.path.exists())
+        self.waitExist(execution.path/'itworked',1000)
 
     def test_start_executesCommand(self):
         sandbox = Execution.start(
@@ -342,7 +343,6 @@ class Execution_Test(unittest.TestCase):
             "touch ended\n"
             "echo ended\n"
         ])
-        print(execution.outputFile.read_text())
         self.waitExist(execution.path/'ready')
         success = execution.remove()
         self.assertEqual([e.name for e in Execution.list()], ['One'])
@@ -390,6 +390,26 @@ class Execution_Test(unittest.TestCase):
         with self.assertRaises(OSError) as ctx:
             execution.kill()
         self.assertEqual(ctx.exception.errno, errno.EPERM)
+
+
+    def test_isRunning_beforeRun(self):
+        execution = Execution(name="MyExecution")
+        self.assertEqual(execution.isRunning(), False)
+
+ 
+    def test_isRunning_whenRunning(self):
+        execution = Execution(name="MyExecution")
+        execution.createSandbox()
+        execution.run([
+            'bash',
+            '-c',
+            "while true; do sleep 1; done"
+        ])
+        self.assertEqual(execution.isRunning(), True)
+        execution.kill()
+
+
+
 
 class PlannerExecution_Test(unittest.TestCase):
 
