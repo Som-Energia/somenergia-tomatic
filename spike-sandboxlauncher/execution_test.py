@@ -439,6 +439,16 @@ class Execution_Test(unittest.TestCase):
         self.assertEqual(execution.isRunning(), False)
         p.wait()
 
+    def test_startTime_sandboxCreated(self):
+        execution = Execution("MyExecution")
+        execution.createSandbox()
+        self.assertEqual(execution.startTime, execution.path.stat().st_ctime)
+
+    def test_startTime_sandboxNotCreated(self):
+        execution = Execution("MyExecution")
+        self.assertEqual(execution.startTime, None)
+
+
 
 
 
@@ -560,7 +570,6 @@ class PlannerExecution_Test(unittest.TestCase):
         e.createSandbox()
         config = ns.load(e.path/'config.yaml')
         self.assertEqual(config.nTelefons, 8)
-
 
 
 # vim: ts=4 sw=4 et

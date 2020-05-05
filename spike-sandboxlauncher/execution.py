@@ -116,6 +116,12 @@ class Execution(object):
         removeRecursive(self.path)
         return True
 
+    @property
+    def startTime(self):
+        if not self.path.exists(): return None
+        return self.path.stat().st_ctime
+
+
     def isRunning(self):
         import psutil
         if not self.pid: return False
@@ -128,6 +134,7 @@ class Execution(object):
             warn("Untested condition: process STATUS_DEAD")
             return False
         return True
+
 
     # TODO: TEST
     @property
