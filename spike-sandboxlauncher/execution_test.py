@@ -419,6 +419,18 @@ class Execution_Test(unittest.TestCase):
         p.wait()
         self.assertEqual(execution.isRunning(), False)
 
+    def test_isRunning_zombieStatus(self):
+        execution = Execution(name="MyExecution")
+        execution.createSandbox()
+        p = execution.run([
+            'bash',
+            '-c',
+            "touch ended"
+        ])
+        self.waitExist(execution.path/'ended')
+        self.assertEqual(execution.isRunning(), False)
+        p.wait()
+
 
 
 

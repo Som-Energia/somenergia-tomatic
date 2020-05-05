@@ -120,6 +120,13 @@ class Execution(object):
         import psutil
         if not self.pid: return False
         if not psutil.pid_exists(self.pid): return False
+        status = psutil.Process(self.pid).status()
+        if status == psutil.STATUS_ZOMBIE:
+            return False
+        # TODO: Untested condition
+        if status == psutil.STATUS_DEAD:
+            warn("Untested condition: process STATUS_DEAD")
+            return False
         return True
 
     # TODO: TEST
