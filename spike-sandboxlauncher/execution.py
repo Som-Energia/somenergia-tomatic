@@ -112,16 +112,16 @@ class Execution(object):
 
     def remove(self):
         if not self.pid: return False
-        if self.isAlive: return False
+        if self.isRunning: return False
         removeRecursive(self.path)
         return True
 
     @property
     def startTime(self):
         if not self.path.exists(): return None
-        return self.path.stat().st_ctime
+        return datetime.datetime.utcfromtimestamp(self.path.stat().st_ctime)
 
-
+    @property
     def isRunning(self):
         import psutil
         if not self.pid: return False
@@ -135,34 +135,19 @@ class Execution(object):
             return False
         return True
 
-
-    # TODO: TEST
-    @property
-    def isAlive(self):
-        import psutil
-        if not psutil.pid_exists(self.pid):
-            return False
-        status = psutil.Process(self.pid).status()
-        if status == psutil.STATUS_ZOMBIE:
-            return False
-        if status == psutil.STATUS_DEAD:
-            return False
-        return True
-
     # TODO: TEST
     @property
     def state(self):
         if self.pid is None: return 'Launching'
-        if self.isAlive: return 'Running'
+        if self.isRunning: return 'Running'
         return 'Stopped'
 
     # TODO: TEST
     def listInfo(self):
         return ns(
             name = self.name,
-            killDisplay = 'inline' if self.state == 'Running' else 'none',
-            removeDisplay = 'inline' if self.state == 'Stopped' else 'none',
             state = self.state,
+            startTime = self.startTime,
             )
 
     # TODO: TEST

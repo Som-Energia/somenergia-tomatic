@@ -28,11 +28,19 @@ def assertContentEqual(self, path1, path2):
         path2.read_text(encoding='utf8'),
     )
 
+def waitExist(self, file, miliseconds=100):
+    for i in range(miliseconds):
+        if file.exists():
+            return True
+        time.sleep(0.001)
+    return False
+        
 
 class Execution_Test(unittest.TestCase):
 
     assertSandboxes = assertSandboxes
     assertContentEqual = assertContentEqual
+    waitExist = waitExist
 
     def setUp(self):
         removeRecursive(executionRoot)
@@ -79,13 +87,6 @@ class Execution_Test(unittest.TestCase):
             "First",
         ])
 
-    def waitExist(self, file, miliseconds=100):
-        for i in range(miliseconds):
-            if file.exists():
-                return True
-            time.sleep(0.001)
-        return False
-        
 
     def test_run_executesCommand(self):
         execution = Execution(name="One")
@@ -402,7 +403,7 @@ class Execution_Test(unittest.TestCase):
 
     def test_isRunning_beforeRun(self):
         execution = Execution(name="MyExecution")
-        self.assertEqual(execution.isRunning(), False)
+        self.assertEqual(execution.isRunning, False)
 
  
     def test_isRunning_whenRunning(self):
@@ -413,7 +414,7 @@ class Execution_Test(unittest.TestCase):
             '-c',
             "while true; do sleep 1; done"
         ])
-        self.assertEqual(execution.isRunning(), True)
+        self.assertEqual(execution.isRunning, True)
         execution.kill()
 
     def test_isRunning_afterRunning(self):
@@ -425,7 +426,7 @@ class Execution_Test(unittest.TestCase):
             "false"
         ])
         p.wait()
-        self.assertEqual(execution.isRunning(), False)
+        self.assertEqual(execution.isRunning, False)
 
     def test_isRunning_zombieStatus(self):
         execution = Execution(name="MyExecution")
@@ -436,26 +437,26 @@ class Execution_Test(unittest.TestCase):
             "touch ended"
         ])
         self.waitExist(execution.path/'ended')
-        self.assertEqual(execution.isRunning(), False)
+        self.assertEqual(execution.isRunning, False)
         p.wait()
 
     def test_startTime_sandboxCreated(self):
         execution = Execution("MyExecution")
         execution.createSandbox()
-        self.assertEqual(execution.startTime, execution.path.stat().st_ctime)
+        now = datetime.datetime.utcnow()
+        differenceSeconds = (now - execution.startTime).seconds
+        self.assertLess(abs(differenceSeconds), 2)
 
     def test_startTime_sandboxNotCreated(self):
         execution = Execution("MyExecution")
         self.assertEqual(execution.startTime, None)
 
 
-
-
-
 class PlannerExecution_Test(unittest.TestCase):
 
     assertSandboxes = assertSandboxes
     assertContentEqual = assertContentEqual
+    waitExist = waitExist
     from yamlns.testutils import assertNsEqual
 
     def setUp(self):

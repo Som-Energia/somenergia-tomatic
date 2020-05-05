@@ -20,18 +20,43 @@ def default():
 
 @api.route('/list')
 def list():
+    def executionDescription(executionInfo):
+        killAction = """<a href='/stop/{name}'>Stop</a>""" if execution.state == 'Running' else ''
+        removeAction = """<a href='/remove/{name}'>Remove</a>""" if execution.state == 'Stopped' else ''
+        return ("""\
+            <tr>
+            <td>{startTime}</td>
+            <td><a href='/status/{name}'>{name}</a></td>
+            <td>{state}</td>
+            <td>76/120</td>
+            <td>200</td>
+            <td>22h</td>
+            <td>
+            <td>
+        """ + killAction + removeAction + """</td>
+        </tr>
+        """).format(**executionInfo)
+
     return  "\n".join([
         """<p><a href='/run'>New</a></p>"""
+        """<p><a href='/clear'>Clear</a></p>"""
+        """<table width=100%>"""
+        """
+            <tr>
+            <th>Start time</th>
+            <th>Name</th>
+            <th>State</th>
+            <th>Completion</th>
+            <th>Cost</th>
+            <th>Darrera bona</th>
+            <th>Actions</th>
+            </tr>
+        """
     ]+[
-        """\
-        <li>
-            <a href='/status/{name}'>{name}</a>
-            {state}
-            <a style='display:{killDisplay}' href='/stop/{name}'>Stop</a>
-            <a style='display:{removeDisplay}' href='/remove/{name}'>Remove</a>
-        </li>
-        """.format(**execution.listInfo())
+        executionDescription(execution.listInfo())
         for execution in Execution.list()
+    ]+[
+        """</table>"""
     ])
 
 @api.route('/run')
