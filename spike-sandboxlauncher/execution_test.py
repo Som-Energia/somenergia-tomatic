@@ -218,7 +218,6 @@ class Execution_Test(unittest.TestCase):
             "touch ready\n"
             "while true; do\n"
             "  [ $terminated == 1 ] && {\n"
-            "    touch terminated\n"
             "    break\n"
             "}\n"
             "done\n"
@@ -338,11 +337,19 @@ class Execution_Test(unittest.TestCase):
         p = execution.run([
             "bash",
             "-c",
-            "trap 'echo aborted; exit 0' SIGINT\n"
+            "terminated=0\n"
+            "function stop() {\n"
+            "    touch stopping\n"
+            "    terminated=1\n"
+            "}\n"
+            "trap 'stop' SIGINT\n"
             "touch ready\n"
-            "while true; do sleep 1; done\n"
+            "while true; do\n"
+            "  [ $terminated == 1 ] && {\n"
+            "    break\n"
+            "}\n"
+            "done\n"
             "touch ended\n"
-            "echo ended\n"
         ])
         self.waitExist(execution.path/'ready')
         success = execution.remove()
