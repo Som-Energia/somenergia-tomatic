@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
+from __future__ import unicode_literals
 from itertools import product as xproduct
 from datetime import date
 import random
 import datetime
-import codecs
+import io
 import requests
 from builtins import range
 from pathlib2 import Path
@@ -19,7 +20,7 @@ from . import busy
 
 # Dirty Hack: Behave like python3 open regarding unicode
 def open(*args, **kwd):
-    return codecs.open(encoding='utf8', *args, **kwd)
+    return io.open(encoding='utf8', *args, **kwd)
 
 def transliterate(word):
     word=u(word).lower().strip()
