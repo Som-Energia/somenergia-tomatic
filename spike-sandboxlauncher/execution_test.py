@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import unittest
 import time
 import datetime
+import errno
 from pathlib2 import Path
 from yamlns import namespace as ns
 from execution import (
@@ -246,8 +247,14 @@ class Execution_Test(unittest.TestCase):
         stopped = execution.stop()
         self.assertEqual(stopped, False)
 
-    @unittest.skip("Case implemented but do not know how to test")
-    def test_stop_otherOSErrorsPassThrough(self): pass
+    def test_stop_otherOSErrorsPassThrough(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        # Init process (1) belongs to root, cannot send it a signal
+        execution.pidFile.write_text("1")
+        with self.assertRaises(OSError) as ctx:
+            execution.stop()
+        self.assertEqual(ctx.exception.errno, errno.EPERM)
 
     def test_name_byDefault(self):
         execution = Execution(name='')
@@ -374,6 +381,15 @@ class Execution_Test(unittest.TestCase):
         self.waitExist(execution.path/'ready')
         found = execution.kill()
         self.assertEqual(found, True)
+
+    def test_kill_otherOSErrorsPassThrough(self):
+        execution = Execution(name="One")
+        execution.createSandbox()
+        # Init process (1) belongs to root, cannot send it a signal
+        execution.pidFile.write_text("1")
+        with self.assertRaises(OSError) as ctx:
+            execution.kill()
+        self.assertEqual(ctx.exception.errno, errno.EPERM)
 
 class PlannerExecution_Test(unittest.TestCase):
 
