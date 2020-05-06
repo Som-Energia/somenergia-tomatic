@@ -4,7 +4,7 @@ from future import standard_library
 standard_library.install_aliases()
 import datetime
 import decorator
-from consolemsg import step, warn, u
+from consolemsg import step, warn, u, b
 from flask import (
     Flask,
     Blueprint,
@@ -127,10 +127,14 @@ def run():
     return redirect("/list".format(execution), code=303)
 
 @api.route('/status/<execution>')
-@nocache
 def status(execution):
+    import deansi
     executionOutput = PlannerExecution(execution).outputFile
-    return send_file(str(executionOutput), cache_timeout=2)
+    return u"<style>pre {{ background-color: white; color: black}} {style} </style><pre>{content}</pre>".format(
+        style = deansi.styleSheet(),
+        content = deansi.deansi(executionOutput.read_text(encoding='utf8'))
+    )
+
 
 @api.route('/solution/<execution>')
 @nocache

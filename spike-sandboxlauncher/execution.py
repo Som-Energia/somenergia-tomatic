@@ -264,10 +264,10 @@ TODO's:
 - [x] Scheduler should dump status.yaml
 - [x] No cache for output and result
 - [x] Kill Action
-- [ ] Upload Action
-- [ ] Output Ansi codes -> html
-- [ ] Fix: Output when no output yet -> 500
+- [x] Upload Action
+- [x] Output Ansi codes -> html
 - [ ] Output html should contain overloads and penalties
+- [ ] Fix: Output when no output yet -> 500
 - [ ] Move spike to tomatic
 - [ ] Correct relative paths to scheduler script
 - [ ] Correct relative paths to config path
