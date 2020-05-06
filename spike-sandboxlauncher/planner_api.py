@@ -103,9 +103,13 @@ def list():
 
 @api.route('/run', methods=['POST'])
 def run():
+    nlines = request.form.get('nlines')
+    if nlines is not None:
+        nlines = int(nlines)
     execution = PlannerExecution.start(
         monday=request.form.get('monday',''),
         description=request.form.get('description',''),
+        nlines=nlines,
     )
     return redirect("/list".format(execution))
 
