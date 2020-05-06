@@ -3,6 +3,7 @@
 from future import standard_library
 standard_library.install_aliases()
 import datetime
+import decorator
 from consolemsg import step, warn, u
 from flask import (
     Flask,
@@ -36,6 +37,15 @@ def humanDuration(seconds):
 
 
 api = Blueprint("PlannerExecution", __name__)
+
+@decorator.decorator
+def nocache(f, *args, **kwds):
+    r = f(*args, **kwds)
+    r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    r.headers["Pragma"] = "no-cache"
+    r.headers["Expires"] = "0"
+    r.headers['Cache-Control'] = 'public, max-age=0'
+    return r
 
 @api.route('/')
 def default():
@@ -102,6 +112,7 @@ def list():
     ])
 
 @api.route('/run', methods=['POST'])
+@nocache
 def run():
     nlines = request.form.get('nlines')
     if nlines is not None:
@@ -111,17 +122,19 @@ def run():
         description=request.form.get('description',''),
         nlines=nlines,
     )
-    return redirect("/list".format(execution))
+    return redirect("/list".format(execution), code=303)
 
 @api.route('/status/<execution>')
+@nocache
 def status(execution):
     executionOutput = PlannerExecution(execution).outputFile
-    return send_file(str(executionOutput))
+    return send_file(str(executionOutput), cache_timeout=2)
 
 @api.route('/solution/<execution>')
+@nocache
 def solution(execution):
     executionOutput = PlannerExecution(execution).solutionHtml
-    return send_file(str(executionOutput))
+    return send_file(str(executionOutput), cache_timeout=2)
 
 @api.route('/stop/<execution>')
 def stop(execution):
@@ -129,7 +142,7 @@ def stop(execution):
     step("Stopping {0.pid} {0.name}", execution)
     if not execution.stop():
         warn("Process {} not found", execution.pid)
-    return redirect("/list", code=302)
+    return redirect("/list", code=303)
 
 @api.route('/remove/<execution>')
 def remove(execution):
@@ -137,7 +150,7 @@ def remove(execution):
     step("Cleaning up {0.name}", execution)
     if not execution.remove():
         warn("Process {} not finished", execution.pid)
-    return redirect("/list", code=302)
+    return redirect("/list", code=303)
 
 
 if __name__ == '__main__':
