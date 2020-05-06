@@ -230,12 +230,10 @@ class PlannerExecution(Execution):
         children[process.pid] = process
         return execution.name
 
-    # TODO: TEST
     @property
     def solutionHtml(self):
         return self.path/'graella-telefons-{}.html'.format(self.monday)
 
-    # TODO: TEST
     @property
     def solutionYaml(self):
         return self.path/'graella-telefons-{}.yaml'.format(self.monday)
@@ -251,15 +249,16 @@ def nextMonday(today=None):
 TODO's:
 - [x] Default description uses uuid
 - [x] Scheduler should dump status.yaml
-- [ ] No cache for output and result
+- [x] No cache for output and result
+- [x] Kill Action
+- [ ] Upload Action
 - [ ] Output Ansi codes -> html
-- [ ] Handle sandbox already exists
-- [ ] Correct relative paths to scheduler script
-- [ ] Correct relative paths to config path
 - [ ] Fix: Output when no output yet -> 500
 - [ ] Output html should contain overloads and penalties
-- [ ] Upload Action
-- [ ] Kill Action
+- [ ] Move spike to tomatic
+- [ ] Correct relative paths to scheduler script
+- [ ] Correct relative paths to config path
+- [ ] Handle sandbox already exists
 """
 
 
