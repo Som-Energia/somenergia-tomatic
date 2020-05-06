@@ -860,6 +860,14 @@ class Backtracker(object):
                     htmlgen.htmlFooter()
                 )
 
+            ns(
+                totalCells=len(self.caselles),
+                completedCells=len(partial),
+                solutionCost=cost,
+                timeOfLastSolution=u(datetime.datetime.utcnow()),
+            ).dump('status-temp.yaml')
+            # To avoid reading half written files
+            Path('status-temp.yaml').rename('status.yaml')
 
 def parseArgs():
     import argparse

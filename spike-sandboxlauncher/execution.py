@@ -194,17 +194,22 @@ class PlannerExecution(Execution):
             (self.configPath/'drive-certificate.json').resolve())
 
     def listInfo(self):
-        common = super(PlannerExecution, self).listInfo()
-        try:
-            return ns(common, **ns.load(self.path/'status.yaml'))
-        except IOError as e:
-            return ns(
-                common,
+        info = ns(
+                super(PlannerExecution, self).listInfo(),
                 totalCells=None,
                 completedCells=None,
                 solutionCost=None,
                 timeOfLastSolution=None,
             )
+        try:
+            specific = ns.load(self.path/'status.yaml')
+        except IOError as e:
+            return info
+
+        info.update(specific)
+        info.timeOfLastSolution = datetime.datetime.strptime(info.timeOfLastSolution,'%Y-%m-%d %H:%M:%S.%f')
+        return info
+            
 
     # TODO: TEST
     @staticmethod
@@ -243,16 +248,17 @@ def nextMonday(today=None):
 
 """
 TODO's:
-- [ ] Default description uses uuid
-- [ ] Upload solution
+- [x] Default description uses uuid
+- [x] Scheduler should dump status.yaml
+- [ ] No cache for output and result
 - [ ] Output Ansi codes -> html
 - [ ] Handle sandbox already exists
 - [ ] Correct relative paths to scheduler script
 - [ ] Correct relative paths to config path
-- [ ] No cache for output and result
 - [ ] Fix: Output when no output yet -> 500
 - [ ] Output html should contain overloads and penalties
-- [ ] Scheduler should dump status.yaml
+- [ ] Upload Action
+- [ ] Kill Action
 """
 
 

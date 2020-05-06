@@ -658,13 +658,13 @@ class PlannerExecution_Test(unittest.TestCase):
             totalCells: 120
             completedCells: 72
             solutionCost: 200
-            timeOfLastSolution: 2020-12-25 20:45:29
+            timeOfLastSolution: '2020-12-25 20:45:29.123456'
         """)
         info = e.listInfo()
         self.assertEqual(info.totalCells, 120)
         self.assertEqual(info.completedCells, 72)
         self.assertEqual(info.solutionCost, 200)
-        self.assertEqual(info.timeOfLastSolution, datetime.datetime(2020,12,25,20,45,28))
+        self.assertEqual(info.timeOfLastSolution, datetime.datetime(2020,12,25,20,45,29,123456))
 
     def test_listInfo_extendedValues_withNoStatus(self):
         e = PlannerExecution(

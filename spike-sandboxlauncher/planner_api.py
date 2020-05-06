@@ -30,6 +30,7 @@ def list():
             if info.completedCells
             and info.completedCells == info.totalCells
             else '')
+        now = datetime.datetime.utcnow()
         return ("""\
             <tr>
             <td>{startTime}</td>
@@ -43,8 +44,9 @@ def list():
         </tr>
         """).format(**dict(
                 info,
-                startTime = u(info.startTime)[:12],
-                timeSinceLastSolution = (datetime.datetime.utcnow()-info.timeOfLastSolution).seconds if info.timeOfLastSolution else "--",
+                startTime = u(info.startTime)[:len('YYYY-MM-DD HH:MM:SS')],
+                timeSinceLastSolution = "fa {} segons".format(
+                    (now-info.timeOfLastSolution).seconds) if info.timeOfLastSolution else "--",
                 completedCells = info.completedCells or '--',
                 totalCells = info.totalCells or '--',
                 solutionCost = info.solutionCost or '--',
