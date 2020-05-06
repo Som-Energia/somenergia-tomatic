@@ -217,6 +217,7 @@ class PlannerExecution(Execution):
         execution = PlannerExecution(
             monday=monday,
             description=description or u(uuid.uuid4()),
+            nlines=kwds.get('nlines'),
             configPath=Path('..'),
         )
         execution.createSandbox()
