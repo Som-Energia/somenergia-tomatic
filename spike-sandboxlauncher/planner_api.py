@@ -3,16 +3,17 @@
 from future import standard_library
 standard_library.install_aliases()
 import datetime
-from consolemsg import step, warn
+from consolemsg import step, warn, u
 from flask import (
     Flask,
     Blueprint,
     redirect,
+    request,
     send_file,
     )
-from execution import Execution, PlannerExecution
+from execution import PlannerExecution, nextMonday
 
-api = Blueprint("Background runner", __name__)
+api = Blueprint("PlannerExecution", __name__)
 
 @api.route('/')
 def default():
@@ -20,27 +21,42 @@ def default():
 
 @api.route('/list')
 def list():
-    def executionDescription(executionInfo):
-        killAction = """<a href='/stop/{name}'>Stop</a>""" if execution.state == 'Running' else ''
-        removeAction = """<a href='/remove/{name}'>Remove</a>""" if execution.state == 'Stopped' else ''
+    def executionDescription(info):
+        killAction = ("""<a href='/stop/{name}'>Stop</a>"""
+            if info.state == 'Running' else '')
+        removeAction = ("""<a href='/remove/{name}'>Remove</a>"""
+            if info.state == 'Stopped' else '')
+        uploadAction = ("""<a href='/upload/{name}'>Upload</a>"""
+            if info.completedCells
+            and info.completedCells == info.totalCells
+            else '')
         return ("""\
             <tr>
             <td>{startTime}</td>
             <td><a href='/status/{name}'>{name}</a></td>
             <td>{state}</td>
-            <td>{completedCells}/{totalCells}</td>
+            <td><a href='/solution/{name}'>{completedCells}/{totalCells}</a></td>
             <td>{solutionCost}</td>
             <td>{timeSinceLastSolution}</td>
             <td>
-        """ + killAction + removeAction + """</td>
+        """ + killAction + uploadAction + removeAction + """</td>
         </tr>
         """).format(**dict(
-                executionInfo,
-                timeSinceLastSolution = (datetime.datetime.utcnow()-executionInfo.timeOfLastSolution).seconds if executionInfo.timeOfLastSolution else "??"
+                info,
+                startTime = u(info.startTime)[:12],
+                timeSinceLastSolution = (datetime.datetime.utcnow()-info.timeOfLastSolution).seconds if info.timeOfLastSolution else "--",
+                completedCells = info.completedCells or '--',
+                totalCells = info.totalCells or '--',
+                solutionCost = info.solutionCost or '--',
             ))
 
     return  "\n".join([
-        """<p><a href='/run'>New</a></p>"""
+        """<p><form action='/run' method='post'>"""
+            """Dilluns&nbsp;(YYYY-MM-DD):&nbsp;<input name=monday type=text value={nexmonday} /><br/>"""
+            """Linies:&nbsp;<input name=nlines type=text value=7 /><br/>"""
+            """Descripció:&nbsp;<input name=description type=text /><br/>"""
+            """<input type=submit value='Llençar' />"""
+        """</form></p>"""
         """<p><a href='/clear'>Clear</a></p>"""
         """<table width=100%>"""
         """
@@ -53,7 +69,7 @@ def list():
             <th>Darrera bona</th>
             <th>Actions</th>
             </tr>
-        """
+        """.format(nexmonday=nextMonday())
     ]+[
         executionDescription(execution.listInfo())
         for execution in PlannerExecution.list()
@@ -61,19 +77,27 @@ def list():
         """</table>"""
     ])
 
-@api.route('/run')
+@api.route('/run', methods=['POST'])
 def run():
-    execution = Execution.start("../../example.sh /usr".split())
+    execution = PlannerExecution.start(
+        monday=request.form.get('monday',''),
+        description=request.form.get('description',''),
+    )
     return redirect("/list".format(execution))
 
 @api.route('/status/<execution>')
 def status(execution):
-    executionOutput = Execution(execution).outputFile
+    executionOutput = PlannerExecution(execution).outputFile
+    return send_file(str(executionOutput))
+
+@api.route('/solution/<execution>')
+def solution(execution):
+    executionOutput = PlannerExecution(execution).solutionHtml
     return send_file(str(executionOutput))
 
 @api.route('/stop/<execution>')
 def stop(execution):
-    execution = Execution(execution)
+    execution = PlannerExecution(execution)
     step("Stopping {0.pid} {0.name}", execution)
     if not execution.stop():
         warn("Process {} not found", execution.pid)
@@ -81,7 +105,7 @@ def stop(execution):
 
 @api.route('/remove/<execution>')
 def remove(execution):
-    execution = Execution(execution)
+    execution = PlannerExecution(execution)
     step("Cleaning up {0.name}", execution)
     if not execution.remove():
         warn("Process {} not finished", execution.pid)
@@ -91,7 +115,7 @@ def remove(execution):
 if __name__ == '__main__':
     app = Flask("Background runner")
     app.register_blueprint(api)
-    Execution.ensureRootExists()
+    PlannerExecution.ensureRootExists()
     app.run()
 
 
