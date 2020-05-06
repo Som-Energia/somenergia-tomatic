@@ -6,6 +6,7 @@ from tomatic import busy
 import sys
 import click
 from yamlns import namespace as ns
+from consolemsg import u
 from tomatic import __version__
 
 def open(*args, **kwd):
@@ -13,7 +14,7 @@ def open(*args, **kwd):
 	return codecs.open(encoding='utf8', *args, **kwd)
 
 def table(data):
-	return '\n'.join('\t'.join(unicode(c) for c in row) for row in data)
+	return '\n'.join('\t'.join(u(c) for c in row) for row in data)
 
 def nextMonday(date):
 	import datetime
@@ -86,7 +87,7 @@ def cli(date, person, optional, required):
 				len(busydays[weekday, hour])
 				for weekday in busy.weekdays
 			]
-			for hour in xrange(busy.nturns)
+			for hour in range(busy.nturns)
 		]))
 
 	print(table(
@@ -97,7 +98,7 @@ def cli(date, person, optional, required):
 				','.join(busydays[weekday, hour])
 				for weekday in busy.weekdays
 			]
-			for hour in xrange(busy.nturns)
+			for hour in range(busy.nturns)
 		]))
 	if person:
 		print(table(
@@ -108,7 +109,7 @@ def cli(date, person, optional, required):
 					1 if person in busydays[weekday, hour] else 0
 					for weekday in busy.weekdays
 				]
-				for hour in xrange(busy.nturns)
+				for hour in range(busy.nturns)
 			]))
 
 
