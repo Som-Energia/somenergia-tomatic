@@ -162,6 +162,13 @@ def remove(execution):
         warn("Process {} not finished", execution.pid)
     return redirect("/list", code=303)
 
+@api.route('/upload/<execution>')
+def upload(execution):
+    execution = PlannerExecution(execution)
+    step("Uploading {0.name}", execution)
+    execution.upload()
+    return redirect("/list", code=303)
+
 
 if __name__ == '__main__':
     app = Flask("Background runner")

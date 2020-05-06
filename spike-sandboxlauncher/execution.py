@@ -7,7 +7,7 @@ standard_library.install_aliases()
 TODO:
 - Exit code
 """
-
+import requests
 import os
 import signal
 import errno
@@ -15,7 +15,7 @@ import subprocess
 import uuid
 import datetime
 from pathlib2 import Path
-from consolemsg import step, success, warn, u
+from consolemsg import step, success, warn, error, u
 from yamlns import namespace as ns
 
 executionRoot = Path('executions')
@@ -237,6 +237,19 @@ class PlannerExecution(Execution):
     @property
     def solutionYaml(self):
         return self.path/'graella-telefons-{}.yaml'.format(self.monday)
+
+    # TODO: TEST
+    def upload(self):
+        # TODO: Do not use the service, but the function, we are on local
+        config = ns.load(self.path/'config.yaml')
+        timetable = ns.load(self.solutionYaml)
+        uploaduri = config.baseUrl + "/api/graella"
+        r = requests.post(
+            uploaduri,
+            files=dict(yaml=timetablefile.open(encoding='utf8'))
+            )
+        error(r.content)
+        r.raises_for_status()
 
 # TODO: Unify other implementations
 # TODO: TEST
