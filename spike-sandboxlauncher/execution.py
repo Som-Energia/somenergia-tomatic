@@ -135,20 +135,19 @@ class Execution(object):
             return False
         return True
 
-    # TODO: TEST
-    @property
-    def state(self):
-        if self.pid is None: return 'Launching'
-        if self.isRunning: return 'Running'
-        return 'Stopped'
-
-    # TODO: TEST
     def listInfo(self):
         return ns(
             name = self.name,
             state = self.state,
             startTime = self.startTime,
             )
+
+    # TODO: TEST
+    @property
+    def state(self):
+        if self.pid is None: return 'Launching'
+        if self.isRunning: return 'Running'
+        return 'Stopped'
 
     # TODO: TEST
     @staticmethod
