@@ -246,10 +246,10 @@ class PlannerExecution(Execution):
         uploaduri = config.baseUrl + "/api/graella"
         r = requests.post(
             uploaduri,
-            files=dict(yaml=timetablefile.open(encoding='utf8'))
+            files=dict(yaml=self.solutionYaml.open(encoding='utf8'))
             )
         error(r.content)
-        r.raises_for_status()
+        r.raise_for_status()
 
 # TODO: Unify other implementations
 # TODO: TEST
