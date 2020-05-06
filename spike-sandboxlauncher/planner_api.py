@@ -54,11 +54,13 @@ def default():
 @api.route('/list')
 def list():
     def executionDescription(info):
-        killAction = ("""<a href='/stop/{name}'>Stop</a>"""
+        killAction = ("""<a href='/kill/{name}'>Kill</a> """
             if info.state == 'Running' else '')
-        removeAction = ("""<a href='/remove/{name}'>Remove</a>"""
+        stopAction = ("""<a href='/stop/{name}'>Stop</a> """
+            if info.state == 'Running' else '')
+        removeAction = ("""<a href='/remove/{name}'>Remove</a> """
             if info.state == 'Stopped' else '')
-        uploadAction = ("""<a href='/upload/{name}'>Upload</a>"""
+        uploadAction = ("""<a href='/upload/{name}'>Upload</a> """
             if info.completedCells
             and info.completedCells == info.totalCells
             else '')
@@ -72,7 +74,7 @@ def list():
             <td>{solutionCost}</td>
             <td>{timeSinceLastSolution}</td>
             <td>
-        """ + killAction + uploadAction + removeAction + """</td>
+        """ + stopAction + uploadAction + removeAction + killAction + """</td>
         </tr>
         """).format(**dict(
                 info,
@@ -141,6 +143,14 @@ def stop(execution):
     execution = PlannerExecution(execution)
     step("Stopping {0.pid} {0.name}", execution)
     if not execution.stop():
+        warn("Process {} not found", execution.pid)
+    return redirect("/list", code=303)
+
+@api.route('/kill/<execution>')
+def kill(execution):
+    execution = PlannerExecution(execution)
+    step("Killing {0.pid} {0.name}", execution)
+    if not execution.kill():
         warn("Process {} not found", execution.pid)
     return redirect("/list", code=303)
 
