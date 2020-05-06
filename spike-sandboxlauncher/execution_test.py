@@ -519,6 +519,44 @@ class PlannerExecution_Test(unittest.TestCase):
         self.assertEqual(e.path,
             executionRoot/'2020-05-04-una-descripcion')
 
+    def test_attributes(self):
+        e = PlannerExecution(
+            monday='2020-05-04',
+            description=u"Una Descripción",
+            configPath=self.configPath,
+        )
+        self.assertEqual(e.monday, '2020-05-04')
+        self.assertEqual(e.description, u'Una Descripción')
+        self.assertEqual(e.nlines, 7)
+        self.assertEqual(e.configPath, self.configPath)
+        self.assertEqual(e.solutionYaml,
+            e.path / 'graella-telefons-2020-05-04.yaml')
+        self.assertEqual(e.solutionHtml,
+            e.path / 'graella-telefons-2020-05-04.html')
+
+    def test_construction_byName(self):
+        original = PlannerExecution(
+            monday='2020-05-04',
+            description=u"Una Descripción",
+            configPath=self.configPath,
+            nlines=8,
+        )
+        original.createSandbox()
+
+        e = PlannerExecution(name=original.name)
+
+        self.assertEqual(e.monday, '2020-05-04')
+        #self.assertEqual(e.description, u'Una Descripción')
+        #self.assertEqual(e.nlines, 8)
+        self.assertEqual(e.configPath, Path('.')) # Don't care, used to create sandbox
+        self.assertEqual(e.solutionYaml,
+            e.path / 'graella-telefons-2020-05-04.yaml')
+        self.assertEqual(e.solutionHtml,
+            e.path / 'graella-telefons-2020-05-04.html')
+
+        # TODO configs not in name
+
+
     def test_createSandbox_baseCase(self):
         e = PlannerExecution(
             monday='2020-05-04',

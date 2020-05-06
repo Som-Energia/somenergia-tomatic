@@ -158,17 +158,29 @@ from slugify import slugify
 
 class PlannerExecution(Execution):
 
-    def __init__(self, monday, configPath=None,
+    def __init__(self,
+            name=None,
+            monday=None,
+            configPath=None,
             description='',
             nlines=7,
             ):
-        self.nlines = nlines
-        name = monday
-        if description:
-            name = "{}-{}".format(monday, slugify(description))
+        if not name:
+            name = monday
+            if description:
+                name = "{}-{}".format(monday, slugify(description))
+        else:
+            monday = name[:len('YYYY-MM-DD')]
+            description = name[len('YYYY-MM-DD-'):]
+
         super(PlannerExecution, self).__init__(name=name)
-        if configPath:
-            self.configPath = Path(configPath)
+
+        self.monday = monday
+        self.description = description
+        self.nlines = nlines
+
+        # TODO: configless not tested
+        self.configPath = Path(configPath or '.')
 
     def createSandbox(self):
         super(PlannerExecution, self).createSandbox()
@@ -194,6 +206,54 @@ class PlannerExecution(Execution):
                 timeOfLastSolution=None,
             )
 
+    # TODO: TEST
+    @staticmethod
+    def start(monday, description, **kwds):
+        execution = PlannerExecution(
+            monday=monday,
+            description=description or u(uuid.uuid4()),
+            configPath=Path('..'),
+        )
+        execution.createSandbox()
+        step("Running {}...", execution.name)
+        process = execution.run([
+            str(Path('../tomatic_scheduler.py').resolve()),
+            monday or nextMonday(),
+        ])
+        step("Process {}...", execution.pid)
+        children[process.pid] = process
+        return execution.name
+
+    # TODO: TEST
+    @property
+    def solutionHtml(self):
+        return self.path/'graella-telefons-{}.html'.format(self.monday)
+
+    # TODO: TEST
+    @property
+    def solutionYaml(self):
+        return self.path/'graella-telefons-{}.yaml'.format(self.monday)
+
+# TODO: Unify other implementations
+# TODO: TEST
+def nextMonday(today=None):
+    today = today or datetime.date.today()
+    nextWeek = today + datetime.timedelta(days=7)
+    return u(nextWeek - datetime.timedelta(days=today.weekday()))
+
+"""
+TODO's:
+- [ ] Default description uses uuid
+- [ ] Upload solution
+- [ ] Output Ansi codes -> html
+- [ ] Handle sandbox already exists
+- [ ] Correct relative paths to scheduler script
+- [ ] Correct relative paths to config path
+- [ ] No cache for output and result
+- [ ] Fix: Output when no output yet -> 500
+- [ ] Output html should contain overloads and penalties
+- [ ] Scheduler should dump status.yaml
+"""
 
 
 
