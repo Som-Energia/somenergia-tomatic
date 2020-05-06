@@ -6,7 +6,6 @@ import datetime
 import decorator
 from consolemsg import step, warn, u, b
 from flask import (
-    Flask,
     Blueprint,
     redirect,
     request,
@@ -134,13 +133,13 @@ def status(execution):
         style = deansi.styleSheet(),
         content = deansi.deansi(executionOutput.read_text(encoding='utf8'))
     )
-
+        
 
 @api.route('/solution/<execution>')
 @nocache
 def solution(execution):
-    executionOutput = PlannerExecution(execution).solutionHtml
-    return send_file(str(executionOutput), cache_timeout=2)
+    solution = PlannerExecution(execution).solutionHtml
+    return send_file(b(solution), cache_timeout=2)
 
 @api.route('/stop/<execution>')
 def stop(execution):
@@ -175,10 +174,11 @@ def upload(execution):
 
 
 if __name__ == '__main__':
+    from flask import Flask
     app = Flask("Background runner")
     app.register_blueprint(api)
     PlannerExecution.ensureRootExists()
-    app.run()
+    app.run(host='0.0.0.0', debug=True)
 
 
 # vim: ts=4 sw=4 et
