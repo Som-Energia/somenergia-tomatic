@@ -13,6 +13,28 @@ from flask import (
     )
 from execution import PlannerExecution, nextMonday
 
+def humanDuration(seconds):
+    units = [
+        ('week', 7*24*60*60),
+        ('days', 24*60*60),
+        ('h', 60*60),
+        ('m', 60),
+        ('s', 1),
+    ]
+    unitNames = [x[0] for x in units]
+    unitSeconds=dict(units)
+    for bigger, lesser in zip(unitNames, unitNames[1:]):
+        if seconds < unitSeconds[bigger]: continue
+        manyBigger = seconds // unitSeconds[bigger]
+        remainding = seconds % unitSeconds[bigger]
+        manyLesser = remainding // unitSeconds[lesser]
+        return "{} {} {} {}".format(
+            manyBigger, bigger,
+            manyLesser, lesser,
+        )
+    return "{} seconds".format(seconds)
+
+
 api = Blueprint("PlannerExecution", __name__)
 
 @api.route('/')
@@ -45,14 +67,14 @@ def list():
         """).format(**dict(
                 info,
                 startTime = u(info.startTime)[:len('YYYY-MM-DD HH:MM:SS')],
-                timeSinceLastSolution = "fa {} segons".format(
-                    (now-info.timeOfLastSolution).seconds) if info.timeOfLastSolution else "--",
+                timeSinceLastSolution = "fa {}".format(
+                    humanDuration((now-info.timeOfLastSolution).seconds)) if info.timeOfLastSolution else "--",
                 completedCells = info.completedCells or '--',
                 totalCells = info.totalCells or '--',
                 solutionCost = info.solutionCost or '--',
             ))
 
-    return  "\n".join([
+    return "\n".join([
         """<p><form action='/run' method='post'>"""
             """Dilluns&nbsp;(YYYY-MM-DD):&nbsp;<input name=monday type=text value={nexmonday} /><br/>"""
             """Linies:&nbsp;<input name=nlines type=text value=7 /><br/>"""
