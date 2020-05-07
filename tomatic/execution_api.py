@@ -55,7 +55,7 @@ def list():
 
 @api.route('/run')
 def run():
-    execution = Execution.start("../../example.sh /usr".split())
+    execution = Execution.start("./execution_example.sh param1 param2".split())
     return redirect("/list".format(execution))
 
 @api.route('/status/<execution>')
