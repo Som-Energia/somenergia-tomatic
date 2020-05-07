@@ -218,12 +218,12 @@ class PlannerExecution(Execution):
             monday=monday,
             description=description or u(uuid.uuid4()),
             nlines=kwds.get('nlines'),
-            configPath=Path('..'),
+            configPath=Path('.'),
         )
         execution.createSandbox()
         step("Running {}...", execution.name)
         process = execution.run([
-            str(Path('../tomatic_scheduler.py').resolve()),
+            str(Path('./tomatic_scheduler.py').resolve()),
             monday or nextMonday(),
         ])
         step("Process {}...", execution.pid)
@@ -266,12 +266,14 @@ TODO's:
 - [x] Kill Action
 - [x] Upload Action
 - [x] Output Ansi codes -> html
-- [ ] Output html should contain overloads and penalties
+- [x] Move spike to tomatic
+- [x] Correct relative paths to scheduler script
+- [x] Correct relative paths to config path
+- [x] Correct redirections and links
+- [ ] Show the blocking cell for humans (ie dl 10:15 L7)
 - [ ] Fix: Output when no output yet -> 500
-- [ ] Move spike to tomatic
-- [ ] Correct relative paths to scheduler script
-- [ ] Correct relative paths to config path
-- [ ] Handle sandbox already exists
+- [ ] Output html should contain overloads and penalties
+- [ ] Handle sandbox already exists (same non-empty description)
 """
 
 

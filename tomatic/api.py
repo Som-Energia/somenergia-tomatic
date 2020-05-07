@@ -88,9 +88,12 @@ try:
 except ImportError:
     pass
 
+from .planner_api import api as Planner
+
 app = Flask(__name__)
 app.wserver = None
 app.drive_semaphore = Semaphore()
+app.register_blueprint(Planner, url_prefix='/api/planner')
 
 def publishStatic(graella):
     if not dbconfig: return

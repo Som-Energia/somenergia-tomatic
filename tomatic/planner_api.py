@@ -10,6 +10,7 @@ from flask import (
     redirect,
     request,
     send_file,
+    url_for,
     )
 from execution import PlannerExecution, nextMonday
 
@@ -35,7 +36,7 @@ def humanDuration(seconds):
     return "{} seconds".format(seconds)
 
 
-api = Blueprint("PlannerExecution", __name__)
+api = Blueprint("planner_execution", __name__)
 
 @decorator.decorator
 def nocache(f, *args, **kwds):
@@ -48,18 +49,18 @@ def nocache(f, *args, **kwds):
 
 @api.route('/')
 def default():
-    return redirect('/list')
+    return redirect(url_for('.list'), code=303)
 
 @api.route('/list')
 def list():
     def executionDescription(info):
-        killAction = ("""<a href='/kill/{name}'>Kill</a> """
+        killAction = ("""<a href='kill/{name}'>Kill</a> """
             if info.state == 'Running' else '')
-        stopAction = ("""<a href='/stop/{name}'>Stop</a> """
+        stopAction = ("""<a href='stop/{name}'>Stop</a> """
             if info.state == 'Running' else '')
-        removeAction = ("""<a href='/remove/{name}'>Remove</a> """
+        removeAction = ("""<a href='remove/{name}'>Remove</a> """
             if info.state == 'Stopped' else '')
-        uploadAction = ("""<a href='/upload/{name}'>Upload</a> """
+        uploadAction = ("""<a href='upload/{name}'>Upload</a> """
             if info.completedCells
             and info.completedCells == info.totalCells
             else '')
@@ -67,9 +68,9 @@ def list():
         return ("""\
             <tr>
             <td>{startTime}</td>
-            <td><a href='/status/{name}'>{name}</a></td>
+            <td><a href='status/{name}'>{name}</a></td>
             <td>{state}</td>
-            <td><a href='/solution/{name}'>{completedCells}/{totalCells}</a></td>
+            <td><a href='solution/{name}'>{completedCells}/{totalCells}</a></td>
             <td>{solutionCost}</td>
             <td>{timeSinceLastSolution}</td>
             <td>
@@ -86,13 +87,13 @@ def list():
             ))
 
     return "\n".join([
-        """<p><form action='/run' method='post'>"""
+        """<p><form action='run' method='post'>"""
             """Dilluns&nbsp;(YYYY-MM-DD):&nbsp;<input name=monday type=text value={nexmonday} /><br/>"""
             """Linies:&nbsp;<input name=nlines type=text value=7 /><br/>"""
             """Descripció:&nbsp;<input name=description type=text /><br/>"""
             """<input type=submit value='Llençar' />"""
         """</form></p>"""
-        """<p><a href='/clear'>Clear</a></p>"""
+        """<p><a href='clear'>Clear</a></p>"""
         """<table width=100%>"""
         """
             <tr>
@@ -123,7 +124,7 @@ def run():
         description=request.form.get('description',''),
         nlines=nlines,
     )
-    return redirect("/list".format(execution), code=303)
+    return redirect(url_for('.list'), code=303)
 
 @api.route('/status/<execution>')
 def status(execution):
@@ -138,8 +139,8 @@ def status(execution):
 @api.route('/solution/<execution>')
 @nocache
 def solution(execution):
-    solution = PlannerExecution(execution).solutionHtml
-    return send_file(b(solution), cache_timeout=2)
+    solution = PlannerExecution(execution).solutionHtml.resolve()
+    return send_file(solution.open('rb'), mimetype='text/html', cache_timeout=2)
 
 @api.route('/stop/<execution>')
 def stop(execution):
@@ -147,7 +148,7 @@ def stop(execution):
     step("Stopping {0.pid} {0.name}", execution)
     if not execution.stop():
         warn("Process {} not found", execution.pid)
-    return redirect("/list", code=303)
+    return redirect(url_for('.list'), code=303)
 
 @api.route('/kill/<execution>')
 def kill(execution):
@@ -155,7 +156,7 @@ def kill(execution):
     step("Killing {0.pid} {0.name}", execution)
     if not execution.kill():
         warn("Process {} not found", execution.pid)
-    return redirect("/list", code=303)
+    return redirect(url_for('.list'), code=303)
 
 @api.route('/remove/<execution>')
 def remove(execution):
@@ -163,19 +164,19 @@ def remove(execution):
     step("Cleaning up {0.name}", execution)
     if not execution.remove():
         warn("Process {} not finished", execution.pid)
-    return redirect("/list", code=303)
+    return redirect(url_for('.list'), code=303)
 
 @api.route('/upload/<execution>')
 def upload(execution):
     execution = PlannerExecution(execution)
     step("Uploading {0.name}", execution)
     execution.upload()
-    return redirect("/list", code=303)
+    return redirect(url_for('.list'), code=303)
 
 
 if __name__ == '__main__':
     from flask import Flask
-    app = Flask("Background runner")
+    app = Flask("Background planner runner")
     app.register_blueprint(api)
     PlannerExecution.ensureRootExists()
     app.run(host='0.0.0.0', debug=True)
