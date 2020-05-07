@@ -71,6 +71,7 @@ def list():
             <td><a href='status/{name}'>{name}</a></td>
             <td>{state}</td>
             <td><a href='solution/{name}'>{completedCells}/{totalCells}</a></td>
+            <td>{unfilledCell}</td>
             <td>{solutionCost}</td>
             <td>{timeSinceLastSolution}</td>
             <td>
@@ -84,6 +85,7 @@ def list():
                 completedCells = info.completedCells or '--',
                 totalCells = info.totalCells or '--',
                 solutionCost = info.solutionCost or '--',
+                unfilledCell = info.unfilledCell or '??',
             ))
 
     return "\n".join([
@@ -101,6 +103,7 @@ def list():
             <th>Name</th>
             <th>State</th>
             <th>Completion</th>
+            <th>Celda bloqueo</th>
             <th>Cost</th>
             <th>Darrera bona</th>
             <th>Actions</th>

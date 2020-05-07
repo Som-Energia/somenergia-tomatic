@@ -859,12 +859,18 @@ class Backtracker(object):
                     htmlgen.htmlFixExtensions()+
                     htmlgen.htmlFooter()
                 )
+            unfilled="Complete"
+            if len(partial)<len(self.caselles):
+                day, itime, line = self.caselles[len(partial)]
+                time = self.config.hours[itime]
+                unfilled = "{} {} L{}".format(day, time, line+1)
 
             ns(
                 totalCells=len(self.caselles),
                 completedCells=len(partial),
                 solutionCost=cost,
                 timeOfLastSolution=u(datetime.datetime.utcnow()),
+                unfilledCell=unfilled,
             ).dump('status-temp.yaml')
             # To avoid reading half written files
             Path('status-temp.yaml').rename('status.yaml')
