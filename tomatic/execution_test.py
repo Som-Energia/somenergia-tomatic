@@ -7,7 +7,7 @@ import datetime
 import errno
 from pathlib2 import Path
 from yamlns import namespace as ns
-from execution import (
+from .execution import (
     Execution,
     executionRoot,
     PlannerExecution,

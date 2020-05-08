@@ -10,7 +10,7 @@ from flask import (
     redirect,
     send_file,
     )
-from execution import Execution
+from .execution import Execution
 
 api = Blueprint("Background runner", __name__)
 

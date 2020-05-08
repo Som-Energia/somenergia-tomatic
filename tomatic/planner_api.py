@@ -12,7 +12,7 @@ from flask import (
     send_file,
     url_for,
     )
-from execution import PlannerExecution, nextMonday
+from .execution import PlannerExecution, nextMonday
 
 def humanDuration(seconds):
     units = [
