@@ -42,6 +42,7 @@ setup(
         'erppeek',
         'websocket-server',
         'psutil',
+        'MarkupSafe<2.0.0a1', # TODO: Indirect dependency that breaks
     ] + ([
         'Flask<1.1',
         'jinja2<3.0',
