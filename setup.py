@@ -24,6 +24,7 @@ setup(
         ],
     install_requires=[
         'setuptools>=20.4',
+        'MarkupSafe<1.2', # TODO: Indirect dependency that breaks
         'somutils',
         'yamlns',
         'consolemsg',
@@ -42,7 +43,6 @@ setup(
         'erppeek',
         'websocket-server',
         'psutil',
-        'MarkupSafe<2.0.0a1', # TODO: Indirect dependency that breaks
     ] + ([
         'Flask<1.1',
         'jinja2<3.0',
