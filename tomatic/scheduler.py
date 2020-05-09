@@ -143,7 +143,7 @@ def baixaVacancesDrive(config, certificat):
         mondayYear-=1
         startingSemester = 2
 
-    semesterFirsMonth = 1 if startingSemester is 1 else 7
+    semesterFirsMonth = 1 if startingSemester==1 else 7
     semesterFirstDay = date(mondayYear, semesterFirsMonth, 1)
     startingOffset = (config.monday - semesterFirstDay).days
 
@@ -500,7 +500,7 @@ class Backtracker(object):
             self.deeperCutLog = set()
             self.deeperCutDepth = len(partial)
 
-        if motiu is 'TotColocat':
+        if motiu == 'TotColocat':
             return # Not worth to log
 
         with open(self.config.monitoringFile,'a') as output:
@@ -607,7 +607,7 @@ class Backtracker(object):
             if cut: return
 
         if self.config.pruneRedundant:
-            lastPersonInTurn = next((person for person in partial[:-1-telefon:-1] if person is not 'ningu'), None)
+            lastPersonInTurn = next((person for person in partial[:-1-telefon:-1] if person != 'ningu'), None)
             companys = [person for person in self.companys if not lastPersonInTurn or person > lastPersonInTurn]
         else:
             companys=self.companys[:]
@@ -630,7 +630,7 @@ class Backtracker(object):
             # Force ordered persons within a turn to avoid redundant paths
             # Prefilter should do but forced may introduce them again
             if self.config.pruneRedundant:
-                if lastPersonInTurn and company is not 'ningu' and lastPersonInTurn > company:
+                if lastPersonInTurn and company != 'ningu' and lastPersonInTurn > company:
                     self.cut("Redundant", partial,
                         "Cami redundant, noms no ordenats {} -> {}"
                         .format(partial[-1], company))
