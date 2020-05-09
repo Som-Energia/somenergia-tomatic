@@ -1,9 +1,3 @@
-/home/vokimon/somenergia/somenergia-tomatic/tomatic/scheduler.py:146: SyntaxWarning: "is" with a literal. Did you mean "=="?
-  semesterFirsMonth = 1 if startingSemester is 1 else 7
-/home/vokimon/somenergia/somenergia-tomatic/tomatic/scheduler.py:610: SyntaxWarning: "is not" with a literal. Did you mean "!="?
-  lastPersonInTurn = next((person for person in partial[:-1-telefon:-1] if person is not 'ningu'), None)
-/home/vokimon/somenergia/somenergia-tomatic/tomatic/scheduler.py:633: SyntaxWarning: "is not" with a literal. Did you mean "!="?
-  if lastPersonInTurn and company is not 'ningu' and lastPersonInTurn > company:
 [34;1m:: Carregant configuració b2bdata/inputs/config-2days2lines.yaml...[0m
 [34;1m:: Muntant el solucionador...[0m
 [33mWarning: T'has deixat dies laborables: ['dl', 'dv', 'dx'][0m
