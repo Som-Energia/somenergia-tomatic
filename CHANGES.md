@@ -1,11 +1,34 @@
 # Changelog
 
-## 3.3.2  2020-02-??
+## 3.6.0
+
+- Web frontend to launch and monitor sandboxed schedulers /api/planner
+- Entry point and script launcher to retire old timetables
+- FIX: Health leaves had no effect in capacity
+
+## 3.5.0  2020-03-20
+
+- New functionality to keep track of shift credit across weeks
+- Day-off retrieval from notoi API
+	- Relates by emails
+	- Removed config params that shoud be constants
+	- Extracted Notoi proxy class
+- New script: `tomatic_uploadtimetable.py`
+- API: download shiftload and overload from last
+	`tomatic_shiftload.py` execution for the week
+	- /api/shifts/download/shiftload/<week>
+	- /api/shifts/download/overload/<week>
+
+## 3.4.0  2020-03-09
 
 - New script: `tomatic_shiftload.py` to automate weekly load generation
+- New script: `tomatic_mergedicts.py` to perform person by person manipulations
+	in person->value yaml dicts (add, substract, extract 
 - script `scheduler.py` renamed as `tomatic_schedule.py`
 - Scheduler: `--lines` option to indicate the number of lines
 - Scheduler: `--personsfile` option to indicate the persons file
+- Scheduler: Holidays are automatically removed from search days
+- Scheduler: Fix: people without table (ningu) is in table -1 (None)
 
 ## 3.3.1  2020-02-24
 
@@ -14,12 +37,15 @@
 
 ## 3.3.0  2020-02-24
 
+- Py3 compatibility
 - Scheduler: algorithm modifications to indiscriminate lines
 - Persons information is splitted out of the config.yaml file into persons.yaml
 - Scheduler: busy files and person info are downloaded from tomatic api
 - Scheduler: B2B tested, required stop conditions and deterministic execution
 
 ## 3.1.0  2019-10-18
+
+- Callinfo: ability to fill claims
 
 ## 3.0.0  2019-07-24
 

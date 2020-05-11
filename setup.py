@@ -8,7 +8,7 @@ readme = open("README.md").read()
 setup(
     name = "tomatic",
     version = __version__,
-    description = "Phone turns scheduler and shifter",
+    description = "Phone Support Helper",
     author = "David García Garzón",
     author_email = "david.garcia@somenergia.coop",
     url = 'https://github.com/Som-Energia/somenergia-tomatic',
