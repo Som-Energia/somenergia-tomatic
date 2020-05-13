@@ -1,10 +1,16 @@
 # Changelog
 
-## 3.6.0
+## Unreleased
+
+
+## 3.6.0  2020-05-11
 
 - Web frontend to launch and monitor sandboxed schedulers /api/planner
-- Entry point and script launcher to retire old timetables
+
+## 3.5.1  2020-04-29
+
 - FIX: Health leaves had no effect in capacity
+- Entry point and script launcher to retire old timetables
 
 ## 3.5.0  2020-03-20
 
