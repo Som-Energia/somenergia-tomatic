@@ -4,7 +4,6 @@
 from __future__ import print_function
 from tomatic.api import app, pbx, startCallInfoWS
 import click
-import dbconfig
 from consolemsg import warn, step
 from tomatic import __version__
 
@@ -41,6 +40,7 @@ def main(fake, debug, host, port, printrules):
     else:
         warn("Using real pbx")
         from tomatic.pbxasterisk import PbxAsterisk
+        import dbconfig
         pbx(PbxAsterisk(
             dbconfig.tomatic.storagepath,
             *dbconfig.tomatic.dbasterisk.args,
