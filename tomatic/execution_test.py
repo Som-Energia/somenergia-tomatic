@@ -5,6 +5,7 @@ import unittest
 import time
 import datetime
 import errno
+import sys
 from pathlib2 import Path
 from yamlns import namespace as ns
 from .execution import (
@@ -149,7 +150,21 @@ class Execution_Test(unittest.TestCase):
         self.waitExist(execution.path/'ended')
         self.assertEqual((execution.outputFile).read_text(), "Hola") 
 
-    def test_run_badCommand(self):
+    @unittest.skipIf(sys.version_info[0] < 3, "Just for Python 3")
+    def test_run_badCommand_py3(self):
+        # TODO: This should be more detectable for the listing
+        execution = Execution(name="One")
+        execution.createSandbox()
+        with self.assertRaises(OSError) as ctx:
+            execution.run([
+                "badcommandthatdoesnotexist",
+            ])
+        self.assertEqual(format(ctx.exception),
+            "[Errno 2] No such file or directory: 'badcommandthatdoesnotexist': 'badcommandthatdoesnotexist'")
+
+    @unittest.skipIf(sys.version_info[0] >= 3, "Just for Python 2")
+    def test_run_badCommand_py2(self):
+        # TODO: This should be more detectable for the listing
         execution = Execution(name="One")
         execution.createSandbox()
         with self.assertRaises(OSError) as ctx:
@@ -158,8 +173,6 @@ class Execution_Test(unittest.TestCase):
             ])
         self.assertEqual(format(ctx.exception),
             "[Errno 2] No such file or directory")
-
-        # TODO: This should be more detectable for the listing
 
     def test_pid_whenNotRunning(self):
         execution = Execution(name="One")
