@@ -91,10 +91,12 @@ Date.prototype.addHours = function(h) {
 }
 
 
-
 var getMyExt = function() {
     var cookie = document.cookie;
-    return (cookie !== "" ? cookie.split(":")[1].toString() : cookie);
+    if (cookie === undefined) return cookie;
+    if (cookie === "") return cookie;
+    console.log(cookie);
+    return cookie.split(":")[1].toString();
 }
 
 

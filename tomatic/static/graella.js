@@ -224,10 +224,13 @@ var editPerson = function(name) {
 	};
 	function maxValue(object) {
 		var keys = Object.keys(object);
-		var values = keys.map(function(key) { return object[key]; })
+		if (keys.length === 0) return 0;
+		var values = keys.map(function(key) { return object[key]; });
 		return Math.max.apply(null, values);
 	}
 	function range(n) {
+		if (n==0) return Array();
+		console.log(n);
 		return Array.apply(null, Array(n)).map(function (_, i) {return i;});
 	}
 
