@@ -222,14 +222,14 @@ var editPerson = function(name) {
 		console.log('setDataOnTomatic', name, changed);
 		Tomatic.setPersonData(name, data);
 	};
-    function maxValue(object) {
-        var keys = Object.keys(object);
-        var values = keys.map(function(key) { return object[key]; })
-        return Math.max.apply(null, values);
-    }
-    function range(n) {
-        return Array.apply(null, Array(n)).map(function (_, i) {return i;});
-    }
+	function maxValue(object) {
+		var keys = Object.keys(object);
+		var values = keys.map(function(key) { return object[key]; })
+		return Math.max.apply(null, values);
+	}
+	function range(n) {
+		return Array.apply(null, Array(n)).map(function (_, i) {return i;});
+	}
 
 	var data = getDataFromTomatic(name);
 	data.tables = {};
@@ -364,8 +364,8 @@ PersonEditor.view = function(vnode) {
 var Grid = function(grid) {
 	var editCell = function(day, houri, turni) {
 		var setPerson = function(name) {
-            var myname = Login.myName();
-            console.log(myname);
+			var myname = Login.myName();
+			console.log(myname);
 			Tomatic.editCell(day, houri, turni, name, myname)
 			Dialog.hide({id:'GridCellEditor'});
 		};
@@ -404,13 +404,13 @@ var Grid = function(grid) {
 		return m('td', {
 			class: name||'ningu',
 			onclick: function(ev) {
-                if(document.cookie===""){
-                    Login.askWhoAreYou();
-                }
-                else {
-    				editCell(day, houri, turni);
-    				ev.preventDefault();
-                }
+				if(document.cookie===""){
+					Login.askWhoAreYou();
+				}
+				else {
+					editCell(day, houri, turni);
+					ev.preventDefault();
+				}
 			}
 		}, [
 			Tomatic.formatName(name),
