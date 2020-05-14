@@ -251,58 +251,49 @@ def resume_line(person):
         currentQueue = p.currentQueue()
     )
 
-@app.route('/api/persons/')
-def personInfo():
+def persons():
     # TODO: Just load persons.yaml
     config = ns.load('config.yaml')
     if Path('persons.yaml').exists():
         persons = ns.load('persons.yaml')
         config.update(persons)
 
-    result = ns(
-        names = config.names,
-        extensions = config.extensions,
-        tables = config.tables,
-        colors = config.colors,
-        emails = config.emails,
-        groups = config.groups,
+    return ns(
+        names = config.get('names',ns()),
+        extensions = config.get('extensions',ns()),
+        tables = config.get('tables',ns()),
+        colors = config.get('colors',ns()),
+        emails = config.get('emails',ns()),
+        groups = config.get('groups',ns()),
     )
 
+@app.route('/api/persons/')
+def personInfo():
+    result=persons()
     return yamlfy(persons=result)
 
 @app.route('/api/person/<person>', methods=['POST'])
 def setPersonInfo(person):
-    # TODO: Just load persons.yaml
-    config = ns.load('config.yaml')
-    if Path('persons.yaml').exists():
-        persons = ns.load('persons.yaml')
-        config.update(persons)
+    result = persons()
     print(request.data)
     data = ns.loads(request.data)
     if 'name' in data:
-        config.names[person] = data.name
+        result.names[person] = data.name
     if 'extension' in data:
-        config.extensions[person] = data.extension
+        result.extensions[person] = data.extension
     if 'table' in data:
-        config.tables[person] = data.table
+        result.tables[person] = data.table
     if 'color' in data:
-        config.colors[person] = data.color
+        result.colors[person] = data.color
     if 'email' in data:
-        config.emails[person] = data.email
+        result.emails[person] = data.email
     if 'groups' in data:
-        for group, components in config.groups.items():
+        for group, components in result.groups.items():
             if person in components and group not in data.groups:
                 components.remove(person)
             if group in data.groups and person not in components:
                 components.append(person)
-    result = ns(
-        names = config.names,
-        extensions = config.extensions,
-        tables = config.tables,
-        colors = config.colors,
-        emails = config.emails,
-        groups = config.groups,
-    )
+
     result.dump('persons.yaml')
     return yamlfy(persons=result)
 
