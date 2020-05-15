@@ -33,6 +33,7 @@ setup(
         'py-Asterisk',
         'paramiko',
         'python-slugify',
+        'deansi',
         #'ooop==0.2.2-xt',
         'PyMySQL',
         'click',

@@ -80,6 +80,34 @@ class ScheduleStorage_Test(unittest.TestCase):
         self.assertEqual(format(ctx.exception),
             "week")
 
+    def test_save_overExistingOne(self):
+        timetable = ns.loads(yaml20121112)
+        self.storage.save(timetable)
+        timetable.modified = True
+        self.storage.save(timetable)
+
+        data = self.storage.load("2012-11-12")
+        self.assertEqual(data,timetable)
+        backups = list(Path('deleteme/backups').glob('*'))
+        self.assertEqual(1, len(backups))
+        backup = backups[0]
+        self.assertRegex(
+            backup.name,
+            r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}\+00:00-graella-2012-11-12.yaml$',
+            )
+        self.assertNsEqual(yaml20121112, ns.load(backup))
+
+    def test_save_secondBackup(self):
+        timetable = ns.loads(yaml20121112)
+        self.storage.save(timetable)
+        timetable.modified = True
+        self.storage.save(timetable)
+        timetable.remodified = True
+        self.storage.save(timetable)
+
+        backups = list(Path('deleteme/backups').glob('*'))
+        self.assertEqual(2, len(backups))
+
     def test_list_whenEmpty(self):
         self.assertEqual(self.storage.list(),[
             ]

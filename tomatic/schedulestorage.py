@@ -50,10 +50,23 @@ class Storage(object):
         except IOError:
             raise KeyError(week)
 
+    def _backupIfExist(self, week):
+        filename = self._timetableFile(week)
+        if not filename.exists(): return
+
+        backupdir = self._dirname / 'backups'
+        backupdir.mkdir(exist_ok=True)
+        backupfile = backupdir/'{}-{}'.format(
+            datetime.datetime.now(tz=datetime.timezone.utc).isoformat(),
+            filename.name)
+        backupfile.write_bytes(filename.read_bytes())
+
     def save(self, value):
         self._checkMonday(value.week)
         filename = self._timetableFile(value.week)
+        self._backupIfExist(week=value.week)
         value.dump(str(filename))
+
 
     def list(self):
         return [
