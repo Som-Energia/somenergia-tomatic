@@ -29,10 +29,8 @@ except ImportError:
 
 packagedir = Path(__file__).parent
 staticpath = packagedir/'dist'
-schedules_path = packagedir/'..'/'graelles'
-schedules = schedulestorage.Storage(schedules_path)
+schedules = schedulestorage.Storage.default()
 websockets = {}
-
 
 def fillConfigurationInfo():
     return ns.load('config.yaml')

@@ -142,6 +142,13 @@ class Storage(object):
 
         self.saveCredit(monday, credit)
 
+
+    @classmethod
+    def default(cls):
+        packagedir = Path(__file__).parent
+        schedules_path = packagedir/'..'/'graelles'
+        return schedulestorage.Storage(schedules_path)
+
 # TODO: Move anywhere
 from .htmlgen import HtmlGen
 from .remote import remotewrite
