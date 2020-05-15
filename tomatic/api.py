@@ -170,9 +170,8 @@ def editSlot(week, day, houri, turni, name):
         oldName,
         name
         ))
-    graella.setdefault('log',[])
     print(logmsg)
-    graella.log.append(logmsg)
+    graella.setdefault('log',[]).append(logmsg)
     schedules.save(graella)
     publishStatic(graella)
     return graellaYaml(week)
@@ -201,8 +200,7 @@ def uploadGraella(week=None):
         "nobody", # TODO: ERP user
         graella.week,
         ))
-    graella.setdefault('log',[])
-    graella.log.append(logmsg)
+    graella.setdefault('log',[]).append(logmsg)
     schedules.save(graella)
     publishStatic(graella)
     return yamlfy(result='ok')
