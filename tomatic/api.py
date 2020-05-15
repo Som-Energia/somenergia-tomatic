@@ -21,8 +21,6 @@ from consolemsg import error, step, warn
 from .callinfo import CallInfo
 from . import schedulestorage
 from .pbxmockup import PbxMockup
-from .htmlgen import HtmlGen
-from .remote import remotewrite
 
 try:
     import dbconfig
@@ -82,7 +80,6 @@ def thisweek():
     return format(now().date() - timedelta(days=now().weekday()))
 
 dbconfig=None
-
 try:
     import dbconfig
 except ImportError:
@@ -95,18 +92,6 @@ app.wserver = None
 app.drive_semaphore = Semaphore()
 app.register_blueprint(Planner, url_prefix='/api/planner')
 
-def publishStatic(graella):
-    if not dbconfig: return
-    if not hasattr(dbconfig, 'tomatic'): return
-    if not hasattr(dbconfig.tomatic, 'publishStatic'): return
-    params = dbconfig.tomatic.publishStatic
-    sched=HtmlGen(graella)
-    remotewrite(
-        params.user,
-        params.host,
-        str(Path(params.path) / 'graella-{week}.html'.format(**graella)),
-        sched.html(),
-        )
 
 class ApiError(Exception): pass
 
@@ -173,7 +158,7 @@ def editSlot(week, day, houri, turni, name):
     print(logmsg)
     graella.setdefault('log',[]).append(logmsg)
     schedules.save(graella)
-    publishStatic(graella)
+    schedulestorage.publishStatic(graella)
     return graellaYaml(week)
 
 
@@ -202,7 +187,7 @@ def uploadGraella(week=None):
         ))
     graella.setdefault('log',[]).append(logmsg)
     schedules.save(graella)
-    publishStatic(graella)
+    schedulestorage.publishStatic(graella)
     return yamlfy(result='ok')
 
 @app.route('/api/graella/retireold')

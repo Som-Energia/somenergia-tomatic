@@ -142,4 +142,26 @@ class Storage(object):
 
         self.saveCredit(monday, credit)
 
+# TODO: Move anywhere
+from .htmlgen import HtmlGen
+from .remote import remotewrite
+dbconfig=None
+try:
+    import dbconfig
+except ImportError:
+    pass
+
+def publishStatic(graella):
+    if not dbconfig: return
+    if not hasattr(dbconfig, 'tomatic'): return
+    if not hasattr(dbconfig.tomatic, 'publishStatic'): return
+    params = dbconfig.tomatic.publishStatic
+    sched=HtmlGen(graella)
+    remotewrite(
+        params.user,
+        params.host,
+        str(Path(params.path) / 'graella-{week}.html'.format(**graella)),
+        sched.html(),
+        )
+
 #vim: ts=4 sw=4 et
