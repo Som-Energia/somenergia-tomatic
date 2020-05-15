@@ -173,7 +173,7 @@ def remove(execution):
 def upload(execution):
     execution = PlannerExecution(execution)
     step("Uploading {0.name}", execution)
-    execution.upload()
+    execution.upload('nobody') # TODO: Take ERP user
     return redirect(url_for('.list'), code=303)
 
 

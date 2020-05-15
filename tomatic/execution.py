@@ -17,6 +17,7 @@ import datetime
 from pathlib2 import Path
 from consolemsg import step, success, warn, error, u
 from yamlns import namespace as ns
+from . import schedulestorage
 
 executionRoot = Path('executions')
 children = {}
@@ -240,17 +241,18 @@ class PlannerExecution(Execution):
         return self.path/'graella-telefons-{}.yaml'.format(self.monday)
 
     # TODO: TEST
-    def upload(self):
-        # TODO: Do not use the service, but the function, we are on local
-        config = ns.load(self.path/'config.yaml')
+    def upload(self, uploader):
+        schedules = schedulestorage.Storage.default()
         timetable = ns.load(self.solutionYaml)
-        uploaduri = config.baseUrl + "/api/graella"
-        r = requests.post(
-            uploaduri,
-            files=dict(yaml=self.solutionYaml.open(encoding='utf8'))
-            )
-        error(r.content)
-        r.raise_for_status()
+        logmsg = (
+            "{}: {} ha pujat {} ".format(
+            datetime.datetime.now(),
+            uploader,
+            timetable.week,
+            ))
+        timetable.setdefault('log',[]).append(logmsg)
+        schedules.save(timetable)
+        schedulestorage.publishStatic(timetable)
 
 # TODO: Unify other implementations
 # TODO: TEST
@@ -271,7 +273,7 @@ TODO's:
 - [x] Correct relative paths to scheduler script
 - [x] Correct relative paths to config path
 - [x] Correct redirections and links
-- [ ] Show the blocking cell for humans (ie dl 10:15 L7)
+- [x] Show the blocking cell for humans (ie dl 10:15 L7)
 - [ ] Fix: Output when no output yet -> 500
 - [ ] Output html should contain overloads and penalties
 - [ ] Handle sandbox already exists (same non-empty description)

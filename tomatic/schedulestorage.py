@@ -147,7 +147,7 @@ class Storage(object):
     def default(cls):
         packagedir = Path(__file__).parent
         schedules_path = packagedir/'..'/'graelles'
-        return schedulestorage.Storage(schedules_path)
+        return Storage(schedules_path)
 
 # TODO: Move anywhere
 from .htmlgen import HtmlGen
