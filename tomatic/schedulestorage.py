@@ -42,6 +42,10 @@ class Storage(object):
     def _creditFiles(self):
         return sorted(self._dirname.glob('shiftcredit-????-??-??.yaml'))
 
+    @property
+    def backupdir(self):
+        return self._dirname/'backups'
+
     def load(self, week):
         self._checkMonday(week)
         filename = self._timetableFile(week)
@@ -54,17 +58,25 @@ class Storage(object):
         filename = self._timetableFile(week)
         if not filename.exists(): return
 
-        backupdir = self._dirname / 'backups'
-        backupdir.mkdir(exist_ok=True)
-        backupfile = backupdir/'{}-{}'.format(
+        self.backupdir.mkdir(exist_ok=True)
+        backupfile = self.backupdir/'{}-{}'.format(
             datetime.datetime.now(tz=datetime.timezone.utc).isoformat(),
             filename.name)
         backupfile.write_bytes(filename.read_bytes())
 
+    def clearOldBackups(self):
+        now = datetime.datetime.now(datetime.timezone.utc)
+        twoWeeksAgo = (now - datetime.timedelta(days=14)).isoformat()
+
+        for backup in self.backupdir.glob('*'):
+            if backup.name <= twoWeeksAgo:
+                backup.unlink()
+
     def save(self, value):
         self._checkMonday(value.week)
         filename = self._timetableFile(value.week)
-        self._backupIfExist(week=value.week)
+        self.clearOldBackups()
+        self._backupIfExist(week=value.week) 
         value.dump(str(filename))
 
 

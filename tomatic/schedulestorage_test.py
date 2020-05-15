@@ -1,8 +1,9 @@
 # -*- encoding: utf-8 -*-
 import unittest
-from . import schedulestorage
+import datetime
 from yamlns import namespace as ns
 from pathlib2 import Path
+from . import schedulestorage
 
 yaml20121112 = u"week: '2012-11-12'"
 yaml20030203 = u"week: '2003-02-03'"
@@ -107,6 +108,33 @@ class ScheduleStorage_Test(unittest.TestCase):
 
         backups = list(Path('deleteme/backups').glob('*'))
         self.assertEqual(2, len(backups))
+
+    def test_backupRotate_withOldFile_removes(self):
+        now = datetime.datetime.now(datetime.timezone.utc)
+        twoWeeksAgo = now - datetime.timedelta(days=14)
+        oldFilename = twoWeeksAgo.isoformat()+'-graella-2012-11-12.yaml'
+        self.storage.backupdir.mkdir()
+        oldFile = self.storage.backupdir /oldFilename
+        oldFile.touch()
+
+        timetable = ns.loads(yaml20121112)
+        self.storage.save(timetable)
+
+        self.assertEqual(False, oldFile.exists())
+
+    def test_backupRotate_withRecentFile_keeps(self):
+        now = datetime.datetime.now(datetime.timezone.utc)
+        twoWeeksAgo = now - datetime.timedelta(days=13)
+        oldFilename = twoWeeksAgo.isoformat()+'-graella-2012-11-12.yaml'
+        self.storage.backupdir.mkdir()
+        oldFile = self.storage.backupdir /oldFilename
+        oldFile.touch()
+
+        timetable = ns.loads(yaml20121112)
+        self.storage.save(timetable)
+
+        self.assertEqual(True, oldFile.exists())
+
 
     def test_list_whenEmpty(self):
         self.assertEqual(self.storage.list(),[
