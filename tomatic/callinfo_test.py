@@ -2,6 +2,7 @@
 
 import unittest
 import b2btest
+import os
 from yamlns import namespace as ns
 from .callinfo import CallInfo
 
@@ -12,6 +13,8 @@ except ImportError:
     dbconfig = None
 
 @unittest.skip("PLEASE DEFRAGILIZE ME!!!!")
+@unittest.skipIf(os.environ.get("TRAVIS"),
+    "Database not available in Travis")
 @unittest.skipIf(not dbconfig or not dbconfig.erppeek,
     "Requires configuring dbconfig.erppeek")
 class CallInfo_Test(unittest.TestCase):
@@ -27,6 +30,7 @@ class CallInfo_Test(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        if os.environ.get("TRAVIS"): return
         if not dbconfig: return
         if not dbconfig.erppeek: return
         cls.O = erppeek.Client(**dbconfig.erppeek)
