@@ -47,6 +47,21 @@ npm run deploy # for production assets
 
 See below "deployment notes" on how deploy the required certificate.
 
+
+### Cron
+
+This is needed in order to enable automatic asterisk turn switch
+and hangouts notification.
+
+```bash
+sudo chown root:root crontab
+sudo chmod 755 crontab
+sudo ln -s $pwd/crontab /etc/cron.d/tomatic
+```
+
+You should run first, at least once, `tomatic_says.py` to get asked for Hangouts authentification.
+
+
 ## Configuration
 
 ### `config.yaml`
