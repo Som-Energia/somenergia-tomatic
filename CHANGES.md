@@ -1,10 +1,12 @@
 # Changelog
 
-## Unreleased
+## 3.6.1  2020-05-18
 
 - Auto-backup timetables on edit and upload
 - Fix: planner upload does it locally instead of calling manual upload api
 - Cron setup documented
+- Callinfo: Fix: downloading complaint reason freezed flask
+  threads while downloading info from drive. Tomatic load should be faster.
 
 ## 3.6.0  2020-05-11
 
