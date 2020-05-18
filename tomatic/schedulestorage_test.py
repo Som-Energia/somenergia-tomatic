@@ -110,7 +110,7 @@ class ScheduleStorage_Test(unittest.TestCase):
         self.assertEqual(2, len(backups))
 
     def test_backupRotate_withOldFile_removes(self):
-        now = datetime.datetime.now(datetime.timezone.utc)
+        now = schedulestorage.utcnow()
         twoWeeksAgo = now - datetime.timedelta(days=14)
         oldFilename = twoWeeksAgo.isoformat()+'-graella-2012-11-12.yaml'
         self.storage.backupdir.mkdir()
@@ -123,7 +123,7 @@ class ScheduleStorage_Test(unittest.TestCase):
         self.assertEqual(False, oldFile.exists())
 
     def test_backupRotate_withRecentFile_keeps(self):
-        now = datetime.datetime.now(datetime.timezone.utc)
+        now = schedulestorage.utcnow()
         twoWeeksAgo = now - datetime.timedelta(days=13)
         oldFilename = twoWeeksAgo.isoformat()+'-graella-2012-11-12.yaml'
         self.storage.backupdir.mkdir()

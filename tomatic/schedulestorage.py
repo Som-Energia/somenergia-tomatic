@@ -6,6 +6,14 @@ from pathlib2 import Path
 from yamlns import namespace as ns
 from .shiftload import loadSum
 
+def utcnow():
+	"Returns tz aware current datetime in UTC"
+	# Py2 compatible version
+	import pytz
+	return datetime.datetime.now(tz=pytz.utc)
+	# Py3 only version
+	#return datetime.datetime.now(tz=datetime.timezone.utc)
+
 class StorageError(Exception): pass
 
 class Storage(object):
@@ -60,13 +68,12 @@ class Storage(object):
 
         self.backupdir.mkdir(exist_ok=True)
         backupfile = self.backupdir/'{}-{}'.format(
-            datetime.datetime.now(tz=datetime.timezone.utc).isoformat(),
+            utcnow().isoformat(),
             filename.name)
         backupfile.write_bytes(filename.read_bytes())
 
     def clearOldBackups(self):
-        now = datetime.datetime.now(datetime.timezone.utc)
-        twoWeeksAgo = (now - datetime.timedelta(days=14)).isoformat()
+        twoWeeksAgo = (utcnow() - datetime.timedelta(days=14)).isoformat()
 
         for backup in self.backupdir.glob('*'):
             if backup.name <= twoWeeksAgo:
