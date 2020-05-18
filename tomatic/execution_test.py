@@ -160,7 +160,7 @@ class Execution_Test(unittest.TestCase):
                 "badcommandthatdoesnotexist",
             ])
         self.assertEqual(format(ctx.exception),
-            "[Errno 2] No such file or directory: 'badcommandthatdoesnotexist': 'badcommandthatdoesnotexist'")
+            "[Errno 2] No such file or directory: 'badcommandthatdoesnotexist'")
 
     @unittest.skipIf(sys.version_info[0] >= 3, "Just for Python 2")
     def test_run_badCommand_py2(self):
