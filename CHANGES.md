@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Auto-backup timetables on edit and upload
+- Fix: planner upload does it locally instead of calling manual upload api
+- Cron setup documented
 
 ## 3.6.0  2020-05-11
 
