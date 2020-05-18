@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+__doc__ = """\
+This script uploads a timetable (as yaml file)
+to the Tomatic server (at the uri indicated
+in config.yaml as baseUrl)
+"""
 
 import sys
 import requests
