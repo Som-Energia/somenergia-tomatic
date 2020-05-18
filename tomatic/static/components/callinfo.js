@@ -166,7 +166,7 @@ CallInfo.getReasons = function () {
         console.debug('Info GET apicall failed: ', error);
     });
 };
-CallInfo.getReasons();
+//CallInfo.getReasons();
 
 var getLog = function () {
     call["log_call_reasons"]=[];
