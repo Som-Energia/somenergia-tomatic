@@ -6,9 +6,9 @@ hours:
 - '2:45'
 - '4:00'
 turns:
-- T1
-- T2
-- T3
+- L1
+- L2
+- L3
 days:
 - dl
 - dm

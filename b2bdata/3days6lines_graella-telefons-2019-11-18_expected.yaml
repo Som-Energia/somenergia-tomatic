@@ -12,12 +12,12 @@ hours:
 - '12:45'
 - '14:00'
 turns:
-- T1
-- T2
-- T3
-- T4
-- T5
-- T6
+- L1
+- L2
+- L3
+- L4
+- L5
+- L6
 timetable:
   dl:
   - - adria

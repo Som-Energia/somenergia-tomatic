@@ -5,9 +5,9 @@ hores:
 - '10:15'
 - '11:30'
 torns:
-- T1
-- T2
-- T3
+- L1
+- L2
+- L3
 colors:
    marc:   'fbe8bc'
    eduard: 'd8b9c5'

@@ -386,7 +386,7 @@ class Backtracker(object):
             if horesTelefon == len(self.dies)*len(self.hours):
                 continue
             raise Backtracker.ErrorConfiguracio(
-                "Les hores de T{} sumen {} i no pas {}, revisa {}".format(
+                "Les hores de L{} sumen {} i no pas {}, revisa {}".format(
                     telefon+1, horesTelefon, len(self.dies)*len(self.hours), tornsfile))
         if self.config.discriminateLines:
             return result

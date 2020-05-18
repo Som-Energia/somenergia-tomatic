@@ -42,7 +42,7 @@ class Schedule_Test(unittest.TestCase):
             - '09:00'
             - '10:15'
             turns:
-            - T1
+            - L1
             colors:
               ana: aa11aa
             extensions:
@@ -60,7 +60,7 @@ class Schedule_Test(unittest.TestCase):
             h.htmlTable(),
             u"<table>\n"
             u"<tr><td></td><th colspan=1>dl</th></tr>\n"
-            u"<tr><td></td><th>T1</th>"
+            u"<tr><td></td><th>L1</th>"
             u"</tr>\n"""
             u"<tr><th>09:00-10:15</th>\n"
             u"<td class='ana'>Ana</td>\n"
@@ -78,8 +78,8 @@ class Schedule_Test(unittest.TestCase):
             - '09:00'
             - '10:15'
             turns:
-            - T1
-            - T2
+            - L1
+            - L2
             colors:
               ana: aa11aa
               jordi: ff9999
@@ -98,7 +98,7 @@ class Schedule_Test(unittest.TestCase):
             h.htmlTable(),
             u"""<table>\n"""
             u"""<tr><td></td><th colspan=2>dl</th></tr>\n"""
-            u"""<tr><td></td><th>T1</th><th>T2</th>"""
+            u"""<tr><td></td><th>L1</th><th>L2</th>"""
             u"""</tr>\n"""
             u"""<tr><th>09:00-10:15</th>\n"""
             u"""<td class='ana'>Ana</td>\n"""
@@ -120,8 +120,8 @@ class Schedule_Test(unittest.TestCase):
             - '10:15'
             - '11:30'
             turns:
-            - T1
-            - T2
+            - L1
+            - L2
             colors:
               ana: aa11aa
               jordi: ff9999
@@ -140,7 +140,7 @@ class Schedule_Test(unittest.TestCase):
             h.htmlTable(),
             u"""<table>\n"""
             u"""<tr><td></td><th colspan=2>dl</th></tr>\n"""
-            u"""<tr><td></td><th>T1</th><th>T2</th>"""
+            u"""<tr><td></td><th>L1</th><th>L2</th>"""
             u"""</tr>\n"""
             u"""<tr><th>09:00-10:15</th>\n"""
             u"""<td class='ana'>Ana</td>\n"""
@@ -175,8 +175,8 @@ class Schedule_Test(unittest.TestCase):
             - '10:15'
             - '11:30'
             turns:
-            - T1
-            - T2
+            - L1
+            - L2
             colors:
               ana: aa11aa
               jordi: ff9999
@@ -196,7 +196,7 @@ class Schedule_Test(unittest.TestCase):
             u"""<table>\n"""
             u"""<tr><td></td><th colspan=2>dl</th><td></td><th colspan=2>dm</th>"""
             u"""</tr>\n"""
-            u"""<tr><td></td><th>T1</th><th>T2</th><td></td><th>T1</th><th>T2</th>"""
+            u"""<tr><td></td><th>L1</th><th>L2</th><td></td><th>L1</th><th>L2</th>"""
             u"""</tr>\n"""
             u"""<tr><th>09:00-10:15</th>\n"""
             u"""<td class='ana'>Ana</td>\n"""
@@ -310,9 +310,9 @@ class Schedule_Test(unittest.TestCase):
             - '12:45'
             - '14:00'
             turns:
-            - T1
-            - T2
-            - T3
+            - L1
+            - L2
+            - L3
             names: # Els que no només cal posar en majúscules
               silvia: Sílvia
               monica: Mònica
@@ -330,11 +330,11 @@ class Schedule_Test(unittest.TestCase):
             u"""<td></td><th colspan=3>dj</th>"""
             u"""<td></td><th colspan=3>dv</th></tr>\n"""
             u"""<tr>"""
-            u"""<td></td><th>T1</th><th>T2</th><th>T3</th>"""
-            u"""<td></td><th>T1</th><th>T2</th><th>T3</th>"""
-            u"""<td></td><th>T1</th><th>T2</th><th>T3</th>"""
-            u"""<td></td><th>T1</th><th>T2</th><th>T3</th>"""
-            u"""<td></td><th>T1</th><th>T2</th><th>T3</th>"""
+            u"""<td></td><th>L1</th><th>L2</th><th>L3</th>"""
+            u"""<td></td><th>L1</th><th>L2</th><th>L3</th>"""
+            u"""<td></td><th>L1</th><th>L2</th><th>L3</th>"""
+            u"""<td></td><th>L1</th><th>L2</th><th>L3</th>"""
+            u"""<td></td><th>L1</th><th>L2</th><th>L3</th>"""
             u"""</tr>\n"""
             u"""<tr><th>09:00-10:15</th>\n"""
             u"""<td class='ana'>Ana</td>\n"""
@@ -617,9 +617,9 @@ class Schedule_Test(unittest.TestCase):
         - '12:45'
         - '14:00'
         turns:
-        - T1
-        - T2
-        - T3
+        - L1
+        - L2
+        - L3
         colors:
           marc: fbe8bc
           eduard: d8b9c5
@@ -767,9 +767,9 @@ class Schedule_Test(unittest.TestCase):
         - '12:45'
         - '14:00'
         turns:
-        - T1
-        - T2
-        - T3
+        - L1
+        - L2
+        - L3
         colors:
           marc: fbe8bc
           eduard: d8b9c5
@@ -832,7 +832,7 @@ class Schedule_Test(unittest.TestCase):
             - '09:00'
             - '10:15'
             turns:
-            - T1
+            - L1
             names: # Els que no només cal posar en majúscules
               silvia: Sílvia
               monica: Mònica
@@ -860,9 +860,9 @@ class Schedule_Test(unittest.TestCase):
         - '09:00'
         - '10:15'
         turns:
-        - T1
-        - T2
-        - T3
+        - L1
+        - L2
+        - L3
         colors:
           pere: 8f928e
           ana: aa11aa
@@ -894,9 +894,9 @@ class Schedule_Test(unittest.TestCase):
         - '09:00'
         - '10:15'
         turns:
-        - T1
-        - T2
-        - T3
+        - L1
+        - L2
+        - L3
         names: # Els que no només cal posar en majúscules
            silvia: Sílvia
            monica: Mònica
@@ -928,9 +928,9 @@ class Schedule_Test(unittest.TestCase):
         - '09:00'
         - '10:15'
         turns:
-        - T1
-        - T2
-        - T3
+        - L1
+        - L2
+        - L3
         colors:
           pere: 8f928e
           ana: aa11aa
@@ -965,9 +965,9 @@ class Schedule_Test(unittest.TestCase):
            victor: Víctor
 
         turns:
-        - T1
-        - T2
-        - T3
+        - L1
+        - L2
+        - L3
         colors:
           pere: 8f928e
           ana: aa11aa
@@ -1010,9 +1010,9 @@ class Schedule_Test(unittest.TestCase):
            victor: Víctor
 
         turns:
-        - T1
-        - T2
-        - T3
+        - L1
+        - L2
+        - L3
         colors:
           pere: 8f928e
           ana: aa11aa
@@ -1041,7 +1041,7 @@ class Schedule_Test(unittest.TestCase):
             - '09:00'
             - '10:15'
             turns:
-            - T1
+            - L1
             colors:
               pere: 8f928e
               ana: aa11aa
@@ -1169,9 +1169,9 @@ class Schedule_Test(unittest.TestCase):
             - '12:45'
             - '14:00'
             turns:
-            - T1
-            - T2
-            - T3
+            - L1
+            - L2
+            - L3
             colors:
               marc: fbe8bc
               eduard: d8b9c5

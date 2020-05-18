@@ -7,7 +7,7 @@
 		"12:45",
 		"14:00"
 		],
-	"turns": ["T1","T2","T3"],
+	"turns": ["L1","L2","L3"],
 	"days": ["dl","dm","dx","dj","dv"],
 	"timetable": {
 		"dl": [

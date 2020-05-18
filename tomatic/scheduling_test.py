@@ -465,7 +465,7 @@ class Scheduling_Test(unittest.TestCase):
             - '09:00'
             - '10:15'
             turns:
-            - 'T1'
+            - 'L1'
             timetable:
               dl:
               - - festiu
@@ -513,7 +513,7 @@ class Scheduling_Test(unittest.TestCase):
             - '09:00'
             - '10:15'
             turns:
-            - 'T1'
+            - 'L1'
             timetable:
               dl:
               - - ana
@@ -547,8 +547,8 @@ class Scheduling_Test(unittest.TestCase):
             - '09:00'
             - '10:15'
             turns:
-            - 'T1'
-            - 'T2'
+            - 'L1'
+            - 'L2'
             timetable:
               dl:
               - - ana
@@ -584,7 +584,7 @@ class Scheduling_Test(unittest.TestCase):
             - '10:15'
             - '11:30'
             turns:
-            - 'T1'
+            - 'L1'
             timetable:
               dl:
               - - ana
@@ -620,7 +620,7 @@ class Scheduling_Test(unittest.TestCase):
             - '09:00'
             - '10:15'
             turns:
-            - 'T1'
+            - 'L1'
             timetable:
               dl:
               - - ana
@@ -660,8 +660,8 @@ class Scheduling_Test(unittest.TestCase):
             - '10:15'
             - '11:30'
             turns:
-            - 'T1'
-            - 'T2'
+            - 'L1'
+            - 'L2'
             timetable:
               dl:
               - - ana
@@ -826,9 +826,9 @@ class Scheduling_Test(unittest.TestCase):
                 - '12:45'
                 - '14:00'
                 turns:
-                - T1
-                - T2
-                - T3
+                - L1
+                - L2
+                - L3
                 timetable:
                   dl:
                   - - jordi

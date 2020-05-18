@@ -49,7 +49,7 @@ class Asterisk_Test(unittest.TestCase):
         - '09:00'
         - '10:15'
         turns:
-        - T1
+        - L1
         extensions:
           ana: 217
         week: '2016-07-25'
@@ -76,9 +76,9 @@ class Asterisk_Test(unittest.TestCase):
             - '09:00'
             - '10:15'
             turns:
-            - T1
-            - T2
-            - T3
+            - L1
+            - L2
+            - L3
             colors:
               pere: 8f928e
               ana: 98bdc0
@@ -118,9 +118,9 @@ class Asterisk_Test(unittest.TestCase):
         - '09:00'
         - '10:15'
         turns:
-        - T1
-        - T2
-        - T3
+        - L1
+        - L2
+        - L3
         colors:
           pere: 8f928e
           ana: 98bdc0
@@ -168,7 +168,7 @@ class Asterisk_Test(unittest.TestCase):
         - '09:00'
         - '10:15'
         turns:
-        - T1
+        - L1
         extensions:
           ana: 217
           pere: 218
@@ -208,9 +208,9 @@ class Asterisk_Test(unittest.TestCase):
         - '10:15'
         - '11:30'
         turns:
-        - T1
-        - T2
-        - T3
+        - L1
+        - L2
+        - L3
 
         extensions:
           ana: 217
@@ -252,7 +252,7 @@ class Asterisk_Test(unittest.TestCase):
         - '09:00'
         - '10:15'
         turns:
-        - T1
+        - L1
         extensions:
           ana: 217
         week: '2016-07-25'
@@ -280,9 +280,9 @@ class Asterisk_Test(unittest.TestCase):
         - '09:00'
         - '10:15'
         turns:
-        - T1
-        - T2
-        - T3
+        - L1
+        - L2
+        - L3
         extensions:
           ana: 217
           pere: 218
@@ -310,7 +310,7 @@ class Asterisk_Test(unittest.TestCase):
         - '09:00'
         - '10:15'
         turns:
-        - T1
+        - L1
         extensions:
           ana: 217
         week: '2016-07-25'
@@ -339,9 +339,9 @@ class Asterisk_Test(unittest.TestCase):
         - '09:00'
         - '10:15'
         turns:
-        - T1
-        - T2
-        - T3
+        - L1
+        - L2
+        - L3
         extensions:
           ana: 217
           pere: 218
@@ -377,9 +377,9 @@ class Asterisk_Test(unittest.TestCase):
             - '09:00'
             - '10:15'
             turns:
-            - T1
-            - T2
-            - T3
+            - L1
+            - L2
+            - L3
             extensions:
               ana: 217
               pere: 218
