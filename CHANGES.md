@@ -5,6 +5,7 @@
 - Auto-backup timetables on edit and upload
 - Fix: planner upload does it locally instead of calling manual upload api
 - Cron setup documented
+- `tomatic_says.py` Target channel configured in config.yaml
 - Callinfo: Fix: downloading complaint reason freezed flask
   threads while downloading info from drive. Tomatic load should be faster.
 
