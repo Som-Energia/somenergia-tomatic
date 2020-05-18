@@ -162,7 +162,7 @@ td { padding: 1ex;}
 </div>
 <h3>Recordatori desviaments</h3>
 <ul>
-Lli>*60 Immediat</li>
+<li>*60 Immediat</li>
 <li>*63 Ocupat o no responem</li>
 <li>*64 Treure desviaments</li>
 <li>*90 Marcar número</li>
