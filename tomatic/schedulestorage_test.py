@@ -18,6 +18,7 @@ class ScheduleStorage_Test(unittest.TestCase):
         assertRegex = unittest.TestCase.assertRegexpMatches
 
     from yamlns.testutils import assertNsEqual
+
     def setUp(self):
         self.storagedir = Path("deleteme")
         self.cleanUp()
