@@ -1,4 +1,6 @@
 baseUrl: http://192.168.35.244:4555
+#hangoutChannel: 'UgwbNDnElaQHezX-qXN4AaABAQ' # it
+hangoutChannel: 'UgzYiKUaJZ1yCpn3R4J4AaABAQ' # petit dejuner
 documentDrive: Quadre de Vacances
 fullIndisponibilitats: Reunions i altres afers
 fullCarrega_4: o9rxhxk
