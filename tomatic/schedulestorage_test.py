@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 import unittest
 import datetime
+import sys
 from yamlns import namespace as ns
 from pathlib2 import Path
 from . import schedulestorage
@@ -9,10 +10,13 @@ yaml20121112 = u"week: '2012-11-12'"
 yaml20030203 = u"week: '2003-02-03'"
 StorageError = schedulestorage.StorageError
 
+
 class ScheduleStorage_Test(unittest.TestCase):
 
+    # Py2 compatibility
+    assertRegex = unittest.TestCase.assertRegexpMatches if sys.version_info < (3,2) else unittest.TestCase.assertRegex
+
     from yamlns.testutils import assertNsEqual
-    
     def setUp(self):
         self.storagedir = Path("deleteme")
         self.cleanUp()
