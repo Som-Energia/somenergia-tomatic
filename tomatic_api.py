@@ -58,6 +58,8 @@ def main(fake, debug, host, port, printrules, ring):
         step("Starting WS thread")
         wsthread = startCallInfoWS(app, host=host)
     step("Starting API")
+    for rule in app.url_map.iter_rules():
+        step("- {}", rule)
     app.run(debug=debug, host=host, port=port, processes=1)
     step("API stopped")
     if ring:

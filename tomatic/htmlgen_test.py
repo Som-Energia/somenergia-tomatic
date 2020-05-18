@@ -1564,6 +1564,134 @@ class Schedule_Test(unittest.TestCase):
         u"""member = SIP/214,3\n"""
         )
 
+    def test_penalties(self):
+        h=HtmlGen(self.ns("""\
+            week: '2016-07-25'
+            timetable:
+              dl:
+              - - ana
+            hours:
+            - '09:00'
+            - '10:15'
+            turns:
+            - T1
+            colors:
+              ana: aa11aa
+            extensions:
+              ana: 1001
+            names: # Els que no només cal posar en majúscules
+              silvia: Sílvia
+              monica: Mònica
+              tania: Tània
+              cesar: César
+              victor: Víctor
+            """)
+        )
+
+        self.assertEquals(h.htmlPenalties(),
+            "<h3>Penalitzacions</h3>\n"
+            "<p>Sense penalitzacions</p>\n"
+        )
+
+    def __test_penalties_cost_nopenalties(self):
+        h=HtmlGen(self.ns("""\
+            week: '2016-07-25'
+            timetable:
+              dl:
+              - - ana
+            hours:
+            - '09:00'
+            - '10:15'
+            turns:
+            - T1
+            colors:
+              ana: aa11aa
+            extensions:
+              ana: 1001
+            names: # Els que no només cal posar en majúscules
+              silvia: Sílvia
+              monica: Mònica
+              tania: Tània
+              cesar: César
+              victor: Víctor
+            cost: 123
+            """)
+        )
+
+        self.assertEquals(h.htmlPenalties(),
+            "<h3>Penalitzacions</h3>\n"
+            "<p>Sense penalitzacions</p>\n"
+        )
+
+    def __test_penalties_nocost_penalties(self):
+        h=HtmlGen(self.ns("""\
+            week: '2016-07-25'
+            timetable:
+              dl:
+              - - ana
+            hours:
+            - '09:00'
+            - '10:15'
+            turns:
+            - T1
+            colors:
+              ana: aa11aa
+            extensions:
+              ana: 1001
+            names: # Els que no només cal posar en majúscules
+              silvia: Sílvia
+              monica: Mònica
+              tania: Tània
+              cesar: César
+              victor: Víctor
+            penalties:
+            - - 20
+              - pol te dos torns
+            - - 30
+              - david te una indisponiblitats opcional
+            """)
+        )
+
+        self.assertEquals(h.htmlPenalties(),
+            "<h3>Penalitzacions</h3>\n"
+            "<p>Sense penalitzacions</p>\n"
+        )
+
+    def __test_penalties_cost_penalties(self):
+        h=HtmlGen(self.ns("""\
+            week: '2016-07-25'
+            timetable:
+              dl:
+              - - ana
+            hours:
+            - '09:00'
+            - '10:15'
+            turns:
+            - T1
+            colors:
+              ana: aa11aa
+            extensions:
+              ana: 1001
+            names: # Els que no només cal posar en majúscules
+              silvia: Sílvia
+              monica: Mònica
+              tania: Tània
+              cesar: César
+              victor: Víctor
+            cost: 123
+            penalties:
+            - - 20
+              - pol te dos torns
+            - - 30
+              - david te una indisponiblitats opcional
+            """)
+        )
+
+        self.assertEquals(h.htmlPenalties(),
+            "<h3>Penalitzacions</h3>\n"
+            "<p>Sense penalitzacions</p>\n"
+        )
+
 
 if __name__ == "__main__":
 

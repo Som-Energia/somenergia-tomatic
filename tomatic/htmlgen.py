@@ -199,6 +199,25 @@ class HtmlGen(object):
             '',
         ])
 
+    def htmlPenalties(self):
+        if not 'penalties' in self.yaml:
+            return (
+                u"""<h3>Penalitzacions</h3>\n"""
+                u"""<p>Sense penalitzacions</p>\n"""
+            )
+
+        return  '\n'.join([
+            "",
+            "<p>Penalitzacio: {}</p>".format(self.yaml.minimumCost),
+            "<ul>",
+            "\n".join(
+                u"<li>{}: {}</li>".format(*reason)
+                for reason in penalties
+            ),
+            "</ul>",
+            '',
+        ])
+
     def htmlFixExtensions(self):
         return (
             u"""<div class="extensions">\n"""

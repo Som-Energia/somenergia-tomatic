@@ -159,6 +159,7 @@ class Storage(object):
 # TODO: Move anywhere
 from .htmlgen import HtmlGen
 from .remote import remotewrite
+from consolemsg import step
 dbconfig=None
 try:
     import dbconfig
@@ -166,9 +167,13 @@ except ImportError:
     pass
 
 def publishStatic(graella):
+    step("publishStatic")
     if not dbconfig: return
+    step("publishStatic: dbconfig exists")
     if not hasattr(dbconfig, 'tomatic'): return
+    step("publishStatic: tomatic exists")
     if not hasattr(dbconfig.tomatic, 'publishStatic'): return
+    step("publishStatic: publishStatic exists {}", dbconfig.tomatic.publishStatic)
     params = dbconfig.tomatic.publishStatic
     sched=HtmlGen(graella)
     remotewrite(

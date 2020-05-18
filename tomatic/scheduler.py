@@ -259,7 +259,7 @@ class Backtracker(object):
         self.caselles = list(xproduct(self.dies, range(len(self.hours)), range(self.nlines)))    # all (day,turn,slot) combinations required to be filled
 
         # Constraints
-		
+
         self.torns = self.readShifts(config.weekShifts, self.nlines)   # Persons and slots to be done
         self.companys = list(self.torns.keys())                         # Persons only
         if not config.aleatori:
@@ -399,7 +399,7 @@ class Backtracker(object):
         if not self.config.discriminateLines: line = 0
         if line is not None:
             return self.torns[person][line]
-        return sum(self.torns[person])
+        return sum(self.torns[person])htmlPenalties
 
     def useShift(self, person, line):
         if not self.config.discriminateLines: line = 0
@@ -440,7 +440,7 @@ class Backtracker(object):
                 allentries = busy.parseBusy(thefile, errorHandler)
                 thisweekentries = busy.onWeek(self.config.monday, allentries)
                 for entry in thisweekentries:
-                    if not entry.optional:
+                    if not entry.optional:htmlPenalties
                         continue
                     for hora, isBusy in enumerate(entry.turns):
                         if isBusy!='1': continue
@@ -464,7 +464,7 @@ class Backtracker(object):
                     "{}:{}".format(filename, msg))
 
             table.load(
-                filename,
+                filename,htmlPenalties
                 monday = self.config.monday,
                 errorHandler = errorHandler,
                 justRequired = self.config.ignoreOptionalAbsences,
@@ -617,7 +617,7 @@ class Backtracker(object):
 
         # Is forced position? Take it
         if (day, hora+1, telefon+1) in self.config.forced:
-            companys = [self.config.forced[(day,hora+1,telefon+1)]]
+            companys = [self.config.forced[(htmlPenaltiesday,hora+1,telefon+1)]]
 
         for company in companys:
 
@@ -680,7 +680,7 @@ class Backtracker(object):
                 self.cut("NotEnoughIdleInGroup", partial, notEnoughIdleInGroup(company))
                 continue
 
-            # Ensure groups with a maximum phoning persons
+            # Ensure groups with a maximum phtmlPenaltieshoning persons
             def tooManyPhoningOnGroup(company):
                 for group in self.personGroups[company] :
                     if group not in self.config.maxPhoningInGroup: continue
@@ -743,7 +743,7 @@ class Backtracker(object):
                     self.config.costTaulaSorollosa * self.telefonsALaTaula[day, hora, taula],
                     "Crosstalk",
                     u"{} té altres {} persones amb telèfon a la mateixa taula a {}a hora del {}".format(
-                        company, self.telefonsALaTaula[day, hora, taula], hora+1, day))
+                        company, self.telefohtmlPenaltiesnsALaTaula[day, hora, taula], hora+1, day))
 
             # If penalty is too high also prune
 
@@ -814,21 +814,28 @@ class Backtracker(object):
         paddedPartial = partial + ['?']*(len(self.caselles)-len(partial))
         solution = dict(zip(self.caselles, paddedPartial))
         htmlgen=HtmlGen.fromSolution(self.config,solution,self.config.monday)
+        timetable = htmlgen.getYaml()
+        timetable.overload = self.overload
+        timetable.penalties = penalties
+        timetable.cost = cost
         if firstAtCost:
             # Is the first that good, start from scratch
             self.storedCost = (len(partial), cost)
+            timetable.dump(self.outputYaml)
             personalColors = htmlgen.htmlColors()
             header = htmlgen.htmlHeader()
             subheader = htmlgen.htmlSubHeader()
-            timetable = htmlgen.getYaml()
-            timetable.overload = self.overload
-            timetable.dump(self.outputYaml)
             with open(self.outputFile,'w') as output:
                 output.write(
                     header+
                     personalColors+
                     subheader+
-                    htmlgen.htmlSetmana()
+                    htmlgen.htmlSetmana() +
+                    htmlgen.htmlTable()+
+                    htmlgen.htmlPenalties()+
+                    htmlgen.htmlExtensions()+
+                    htmlgen.htmlFixExtensions()+
+                    htmlgen.htmlFooter()
                 )
             with open(self.config.monitoringFile,'w') as output:
                 output.write(
@@ -838,6 +845,7 @@ class Backtracker(object):
                 )
 
         penalitzacions = (
+                # replace with htmlgen.htmlPenalties()
             htmlgen.htmlPenalizations(
                 cost,
                 penalties
@@ -846,19 +854,9 @@ class Backtracker(object):
         with open(self.config.monitoringFile,'a') as output:
             output.write(htmlgen.htmlTable())
             output.write(penalitzacions)
-        if firstAtCost:
-            yaml = htmlgen.getYaml()
-            yaml.penalties = penalties
-            yaml.cost = cost
-            yaml.dump(self.outputYaml)
 
-            with open(self.outputFile,'a') as output:
-                output.write(
-                    htmlgen.htmlTable()+
-                    htmlgen.htmlExtensions()+
-                    htmlgen.htmlFixExtensions()+
-                    htmlgen.htmlFooter()
-                )
+        # Dump status for the planer executor
+        if firstAtCost:
             unfilled="Complete"
             if len(partial)<len(self.caselles):
                 day, itime, line = self.caselles[len(partial)]
