@@ -57,7 +57,7 @@ def cli(date, sandbox, optional, required):
 		'indisponibilitats.conf',
 		'indisponibilitats-vacances.conf',
 		]:
-		busytable.load(sandbox/busyfile, date, justOptional=optional, justRequired=required)
+		busytable.load(format(sandbox/busyfile), date, justOptional=optional, justRequired=required)
 
 	reasonTable = busytable.explain()
 	out("\n# Resum\n")
