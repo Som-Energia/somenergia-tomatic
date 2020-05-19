@@ -30,6 +30,17 @@ tomatic:
         Les sobrecarregues de les graelles retirades es conservaran
         a la bossa d'hores.
 
+    explainBusy:
+      script: SOME_SRC/somenergia-tomatic/runhere SOME_SRC/somenergia-tomatic/ ./tomatic_busy.py {monday} --required
+      title: Resum d'indisponibilitats per torn
+      description: >
+        Explica quanta gent hi ha indisponible a cada torn i perquè.
+        Atencio, només funciona amb setmanes amb càrrega ja generada.
+      parameters:
+        monday:
+          description: Dilluns de la setmana, en format AAAA-MM-DD
+          type: DATE
+
     resum:
       script: SOME_SRC/somenergia-tomatic/tomatic_calls.py  summary
       title: Resum de trucades del dia
