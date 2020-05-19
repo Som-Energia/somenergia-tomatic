@@ -1017,7 +1017,42 @@ class BusyTest(unittest.TestCase):
 			('dm', 2): 0,
 			('dm', 3): 0,
 		})
-		
+
+	def test_BusyTable_explain(self):
+		table = busy.BusyTable(
+			persons=['alice','bob'],
+			days=['dl','dm'],
+			nhours=4,
+		)
+		self.write("testfile",
+			"alice dl 0010 # My monday break\n"
+			"alice 0100 # My everyday break\n"
+			"bob dl 0110 # My monday break\n"
+		)
+		table.load("testfile", isodate('2020-02-10'))
+		self.assertNsEqual(table.explain(), {
+			('dl', 1): dict(
+				alice=[
+					'My everyday break',
+				],
+				bob=[
+					'My monday break',
+				],
+			),
+			('dl', 2): dict(
+				alice=[
+					'My monday break',
+				],
+				bob=[
+					'My monday break',
+				],
+			),
+			('dm', 1): dict(
+				alice=[
+					'My everyday break',
+				],
+			),
+		})
 
 
 

@@ -267,7 +267,7 @@ class BusyTable(object):
 					if isBusy!='1': continue
 					weekdays = [entry.weekday] if entry.weekday else self._days
 					for dia in weekdays:
-						self.setBusy(dia, hora, entry.person)
+						self.setBusy(dia, hora, entry.person, entry.reason)
 
 	def showDay(self, day, person):
 		return ''.join(
@@ -293,5 +293,13 @@ class BusyTable(object):
 				result[day,hour] += 1
 		return result
 
+	def explain(self):
+		result = {}
+		for (day, hour, person), busy in self._table.items():
+			if busy:
+				timeslot = result.setdefault((day,hour),{})
+				personreasons = timeslot.setdefault(person,[])
+				personreasons.append(busy)
+		return result
 
 # vim: noet ts=4 sw=4

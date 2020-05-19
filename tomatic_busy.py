@@ -1,13 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 
-from __future__ import print_function
+from __future__ import unicode_literals
 from tomatic import busy
 import sys
 import click
 from yamlns import namespace as ns
-from consolemsg import u
+from consolemsg import u, out
 from tomatic import __version__
+try:
+	from pathlib2 import Path
+except ImportError:
+	from pathlib import Path
 
 def open(*args, **kwd):
 	import codecs
@@ -21,34 +25,12 @@ def nextMonday(date):
 	today = date or datetime.datetime.today()
 	return format(today + datetime.timedelta(days=(7-today.weekday()) or 7))
 
-def busyTable(monday, *filenames, **kwds):
-	from itertools import product as xproduct
-	availability = dict(
-		((dia,hora), set())
-		for dia, hora in xproduct(busy.weekdays, range(busy.nturns))
-		)
-
-	for filename in filenames:
-		def errorHandler(msg):
-			raise Exception(
-				"{}:{}".format(filename, msg))
-
-		with open(filename) as thefile:	
-			allentries = busy.parseBusy(thefile, errorHandler)
-			thisweekentries = busy.onWeek(monday, allentries)
-			for entry in thisweekentries:
-				for hora, isBusy in enumerate(entry.turns):
-					if isBusy!='1': continue
-					busyWeekDays = [entry.weekday] if entry.weekday else busy.weekdays
-					for dia in busyWeekDays:
-						if kwds.get('optional') and not entry.optional:
-							continue
-						if kwds.get('required') and entry.optional:
-							continue
-						availability[dia, hora].add(entry.person)
-	return availability
-
-
+def personsFromLoad(loadFile):
+	content = loadFile.read_text(encoding='utf8')
+	return [
+		line.split()[0]
+		for line in content.split('\n')
+		]
 
 @click.command()
 @click.help_option()
@@ -56,9 +38,8 @@ def busyTable(monday, *filenames, **kwds):
 @click.argument('date',
 	default=None,
 	)
-@click.argument('person',
-	required=False,
-	default=None,
+@click.argument('sandbox',
+	default='',
 	)
 @click.option('--optional',
 	help=u"Mira només quants son opcionals",
@@ -68,49 +49,45 @@ def busyTable(monday, *filenames, **kwds):
 	help=u"Mira només quants son obligats",
 	is_flag=True,
 	)
-def cli(date, person, optional, required):
+def cli(date, sandbox, optional, required):
 	u'Manages busy hours that persons cannot be attending phone'
-	print(optional)
 	date = busy.isodate(date)
-	busydays = busyTable(date,
+	sandbox=Path(sandbox)
+	activePersons = personsFromLoad(sandbox/'carrega.csv')
+	busytable = busy.BusyTable(
+		days=busy.weekdays,
+		nhours = busy.nturns,
+		persons = activePersons,
+		)
+	for busyfile in [
 		'oneshot.conf',
 		'indisponibilitats.conf',
 		'indisponibilitats-vacances.conf',
-		optional=optional,
-		required=required,
-		)
-	print(table(
+		]:
+		busytable.load(sandbox/busyfile, date, justOptional=optional, justRequired=required)
+
+	reasonTable = busytable.explain()
+	out("\n# Resum\n")
+	out(table(
 		[['']+busy.weekdays] +
 		[
 			[hour]+
 			[
-				len(busydays[weekday, hour])
+				len(reasonTable[weekday, hour])
 				for weekday in busy.weekdays
 			]
 			for hour in range(busy.nturns)
 		]))
 
-	print(table(
-		[['']+busy.weekdays] +
-		[
-			[hour]+
-			[
-				','.join(busydays[weekday, hour])
-				for weekday in busy.weekdays
-			]
-			for hour in range(busy.nturns)
-		]))
-	if person:
-		print(table(
-			[['']+busy.weekdays] +
-			[
-				[hour]+
-				[
-					1 if person in busydays[weekday, hour] else 0
-					for weekday in busy.weekdays
-				]
-				for hour in range(busy.nturns)
-			]))
+	out("\n# Detall\n")
+	for weekday in busy.weekdays:
+		out("\n## {}\n", weekday)
+		for hour in range(busy.nturns):
+			busyAtTime = reasonTable.get((weekday, hour), {})
+			out("\n### {}a hora ({})\n", hour+1, len(busyAtTime))
+			for person, reasons in sorted(busyAtTime.items()):
+				for reason in reasons:
+					out("- {}: {}", person, reason)
 
 
 if __name__=='__main__':
