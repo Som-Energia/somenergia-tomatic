@@ -32,7 +32,11 @@ from tomatic import __version__
     is_flag=True,
     help="Prints the url patterns being serverd",
     )
-def main(fake, debug, host, port, printrules):
+@click.option('--ring',
+	is_flag=True,
+	help="Listen incommings calls",
+	)
+def main(fake, debug, host, port, printrules, ring):
     "Runs the Tomatic web and API"
     print(fake, debug, host, port, printrules)
     if fake:
@@ -50,14 +54,16 @@ def main(fake, debug, host, port, printrules):
         for rule in app.url_map.iter_rules():
             print(rule)
 
-    step("Starting WS thread")
-    wsthread = startCallInfoWS(app, host=host)
+    if ring:
+        step("Starting WS thread")
+        wsthread = startCallInfoWS(app, host=host)
     step("Starting API")
     app.run(debug=debug, host=host, port=port, processes=1)
     step("API stopped")
-    app.wserver.server_close()
-    wsthread.join(0)
-    step("WS thread stopped")
+    if ring:
+        app.wserver.server_close()
+        wsthread.join(0)
+        step("WS thread stopped")
 
 if __name__=='__main__':
     main()
