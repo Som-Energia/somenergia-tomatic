@@ -25,13 +25,6 @@ def nextMonday(date):
 	today = date or datetime.datetime.today()
 	return format(today + datetime.timedelta(days=(7-today.weekday()) or 7))
 
-def personsFromLoad(loadFile):
-	content = loadFile.read_text(encoding='utf8')
-	return [
-		line.split()[0]
-		for line in content.split('\n')
-		]
-
 @click.command()
 @click.help_option()
 @click.version_option(__version__)
@@ -53,7 +46,7 @@ def cli(date, sandbox, optional, required):
 	u'Manages busy hours that persons cannot be attending phone'
 	date = busy.isodate(date)
 	sandbox=Path(sandbox)
-	activePersons = personsFromLoad(sandbox/'carrega.csv')
+	activePersons = ns.load(sandbox/'ponderatedideal-{}.yaml'.format(date)).keys()
 	busytable = busy.BusyTable(
 		days=busy.weekdays,
 		nhours = busy.nturns,
