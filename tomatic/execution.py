@@ -202,6 +202,7 @@ class PlannerExecution(Execution):
                 solutionCost=None,
                 timeOfLastSolution=None,
                 unfilledCell=None,
+                busyReasons={},
             )
         try:
             specific = ns.load(self.path/'status.yaml')

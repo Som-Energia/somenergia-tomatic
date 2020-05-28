@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
 from future import standard_library
 standard_library.install_aliases()
 import datetime
@@ -64,6 +65,17 @@ def list():
             if info.completedCells
             and info.completedCells == info.totalCells
             else '')
+        busyReasons = "".join([
+            """<div class=tooltip>"""
+            """<h3>Indisponibilitats de {}</h3>""".format(info.unfilledCell)
+            ]+[
+                "<b>{name}:</b> {reason}<br>"
+                    .format(name=u(name), reason=u(reason))
+                for name, reasons in info.busyReasons.items()
+                for reason in reasons
+            ]+[
+            """</div>"""
+        ]) if info.busyReasons else ""
         now = datetime.datetime.utcnow()
         return ("""\
             <tr>
@@ -71,7 +83,7 @@ def list():
             <td><a href='status/{name}'>{name}</a></td>
             <td>{state}</td>
             <td><a href='solution/{name}'>{completedCells}/{totalCells}</a></td>
-            <td>{unfilledCell}</td>
+            <td>{unfilledCell} {busyReasons}</td>
             <td>{solutionCost}</td>
             <td>{timeSinceLastSolution}</td>
             <td>
@@ -86,9 +98,13 @@ def list():
                 totalCells = info.totalCells or '--',
                 solutionCost = info.solutionCost or '--',
                 unfilledCell = info.unfilledCell or '??',
+                busyReasons = busyReasons,
             ))
 
     return "\n".join([
+        """<style>"""
+            """.tooltip {{ visibility: hidden; position:absolute; cursor: link; width: 20em; background: #ffa; border: 1px solid grey; padding:1ex}}"""
+            """td:hover .tooltip {{ visibility: visible}}</style>"""
         """<p><form action='run' method='post'>"""
             """Dilluns&nbsp;(YYYY-MM-DD):&nbsp;<input name=monday type=text value={nexmonday} /><br/>"""
             """Linies:&nbsp;<input name=nlines type=text value=7 /><br/>"""

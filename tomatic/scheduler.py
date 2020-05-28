@@ -273,6 +273,7 @@ class Backtracker(object):
             ])
 
         self.busy = self.initBusyTable(*busyFiles)                # (day,turn,person) is available?
+        self.busyReasons = self.busy.explain()
         self.undesiredShifts = self.initUndesiredTable(*busyFiles)                # (day,turn,person) reason
 
         self.teTelefon = createTable(False,  self.dies, range(len(self.hours)), self.companys)  # (day,turn,person) has phone?
@@ -815,6 +816,7 @@ class Backtracker(object):
         solution = dict(zip(self.caselles, paddedPartial))
         htmlgen=HtmlGen.fromSolution(self.config,solution,self.config.monday)
         timetable = htmlgen.getYaml()
+        # TODO: This should be passed to fromSolution with defaults
         timetable.overload = self.overload
         timetable.penalties = penalties
         timetable.cost = cost
@@ -858,17 +860,19 @@ class Backtracker(object):
         # Dump status for the planer executor
         if firstAtCost:
             unfilled="Complete"
+            busyReasons={}
             if len(partial)<len(self.caselles):
                 day, itime, line = self.caselles[len(partial)]
                 time = self.config.hours[itime]
                 unfilled = "{} {} L{}".format(day, time, line+1)
-
+                busyReasons = self.busyReasons[day, itime]
             ns(
                 totalCells=len(self.caselles),
                 completedCells=len(partial),
                 solutionCost=cost,
                 timeOfLastSolution=u(datetime.datetime.utcnow()),
                 unfilledCell=unfilled,
+                busyReasons=busyReasons,
             ).dump('status-temp.yaml')
             # To avoid reading half written files
             Path('status-temp.yaml').rename('status.yaml')
