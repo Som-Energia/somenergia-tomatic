@@ -208,7 +208,7 @@ class HtmlGen(object):
 
         return  '\n'.join([
             "",
-            "<p>Penalitzacio: {}</p>".format(self.yaml.minimumCost),
+            "<p>Penalitzacio: {}</p>".format(self.yaml.cost),
             "<ul>",
             "\n".join(
                 u"<li>{}: {}</li>".format(*reason)
