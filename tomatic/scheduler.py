@@ -834,7 +834,8 @@ class Backtracker(object):
                     subheader+
                     htmlgen.htmlSetmana() +
                     htmlgen.htmlTable()+
-                    htmlgen.htmlPenalties()+
+                    # TODO: Uncomment when it works
+                    #htmlgen.htmlPenalties()+
                     htmlgen.htmlExtensions()+
                     htmlgen.htmlFixExtensions()+
                     htmlgen.htmlFooter()
