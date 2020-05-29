@@ -209,7 +209,7 @@ class HtmlGen(object):
         if 'penalties' not in self.yaml:
             return (
                 u"""<h3>Penalitzacions</h3>\n"""
-                u"""<p>Penalitzacio: {}</p>\n""".format(self.yaml.cost),
+                u"""<p>Penalitzacio: {}</p>\n""".format(self.yaml.cost)
             )
 
         return '\n'.join([
