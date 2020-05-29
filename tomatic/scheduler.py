@@ -834,8 +834,7 @@ class Backtracker(object):
                     subheader+
                     htmlgen.htmlSetmana() +
                     htmlgen.htmlTable()+
-                    # TODO: Uncomment when it works
-                    #htmlgen.htmlPenalties()+
+                    htmlgen.htmlPenalties()+
                     htmlgen.htmlExtensions()+
                     htmlgen.htmlFixExtensions()+
                     htmlgen.htmlFooter()
@@ -848,11 +847,7 @@ class Backtracker(object):
                 )
 
         penalitzacions = (
-            # replace with htmlgen.htmlPenalties()
-            htmlgen.htmlPenalizations(
-                cost,
-                penalties
-            )
+            htmlgen.htmlPenalties()
         )
         with open(self.config.monitoringFile,'a') as output:
             output.write(htmlgen.htmlTable())

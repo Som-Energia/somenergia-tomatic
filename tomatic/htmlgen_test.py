@@ -1624,7 +1624,7 @@ class Schedule_Test(unittest.TestCase):
             "<p>Penalitzacio: {}</p>\n".format(cost)
         )
 
-    def __test_penalties_nocost_penalties(self):
+    def test_penalties_nocost_penalties(self):
         h=HtmlGen(self.ns("""\
             week: '2016-07-25'
             timetable:
@@ -1655,10 +1655,14 @@ class Schedule_Test(unittest.TestCase):
 
         self.assertEquals(h.htmlPenalties(),
             "<h3>Penalitzacions</h3>\n"
-            "<p>Sense penalitzacions</p>\n"
+            "<ul>\n"
+                "<li>20: pol te dos torns</li>\n"
+                "<li>30: david te una indisponiblitats opcional</li>\n"
+            "</ul>\n"
+            ''
         )
 
-    def __test_penalties_cost_penalties(self):
+    def test_penalties_cost_penalties(self):
         h=HtmlGen(self.ns("""\
             week: '2016-07-25'
             timetable:
@@ -1690,7 +1694,12 @@ class Schedule_Test(unittest.TestCase):
 
         self.assertEquals(h.htmlPenalties(),
             "<h3>Penalitzacions</h3>\n"
-            "<p>Sense penalitzacions</p>\n"
+            "<p>Penalitzacio: 123</p>\n"
+            "<ul>\n"
+                "<li>20: pol te dos torns</li>\n"
+                "<li>30: david te una indisponiblitats opcional</li>\n"
+            "</ul>\n"
+            ''
         )
 
 

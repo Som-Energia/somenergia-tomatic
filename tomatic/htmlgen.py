@@ -186,6 +186,8 @@ class HtmlGen(object):
             self.htmlFixExtensions()+
             self.htmlFooter()
         )
+
+    # TODO deprecated
     def htmlPenalizations(self,minimumCost,penalties):
         return  '\n'.join([
             "",
@@ -212,9 +214,12 @@ class HtmlGen(object):
                 u"""<p>Penalitzacio: {}</p>\n""".format(self.yaml.cost)
             )
 
-        return '\n'.join([
-            "<h3>Penalitzacions</h3>",
-            "<p>Penalitzacio: {}</p>".format(self.yaml.cost),
+        html = "<h3>Penalitzacions</h3>\n"
+
+        if 'cost' in self.yaml:
+            html += "<p>Penalitzacio: {}</p>\n".format(self.yaml.cost)
+
+        html += '\n'.join([
             "<ul>",
             "\n".join(
                 u"<li>{}: {}</li>".format(*reason)
@@ -223,6 +228,8 @@ class HtmlGen(object):
             "</ul>",
             '',
         ])
+
+        return html
 
     def htmlFixExtensions(self):
         return (
