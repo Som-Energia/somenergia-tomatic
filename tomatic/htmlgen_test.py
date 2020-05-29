@@ -1593,7 +1593,8 @@ class Schedule_Test(unittest.TestCase):
             "<p>Sense penalitzacions</p>\n"
         )
 
-    def __test_penalties_cost_nopenalties(self):
+    def test_penalties_cost_nopenalties(self):
+        cost = 123
         h=HtmlGen(self.ns("""\
             week: '2016-07-25'
             timetable:
@@ -1614,13 +1615,13 @@ class Schedule_Test(unittest.TestCase):
               tania: Tània
               cesar: César
               victor: Víctor
-            cost: 123
-            """)
+            cost: {}
+            """.format(cost))
         )
 
         self.assertEquals(h.htmlPenalties(),
             "<h3>Penalitzacions</h3>\n"
-            "<p>Sense penalitzacions</p>\n"
+            "<p>Penalitzacio: {}</p>\n".format(cost)
         )
 
     def __test_penalties_nocost_penalties(self):

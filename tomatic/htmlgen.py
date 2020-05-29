@@ -200,19 +200,25 @@ class HtmlGen(object):
         ])
 
     def htmlPenalties(self):
-        if not 'penalties' in self.yaml:
+        if 'cost' not in self.yaml and 'penalties' not in self.yaml:
             return (
                 u"""<h3>Penalitzacions</h3>\n"""
                 u"""<p>Sense penalitzacions</p>\n"""
             )
 
-        return  '\n'.join([
-            "",
+        if 'penalties' not in self.yaml:
+            return (
+                u"""<h3>Penalitzacions</h3>\n"""
+                u"""<p>Penalitzacio: {}</p>\n""".format(self.yaml.cost),
+            )
+
+        return '\n'.join([
+            "<h3>Penalitzacions</h3>",
             "<p>Penalitzacio: {}</p>".format(self.yaml.cost),
             "<ul>",
             "\n".join(
                 u"<li>{}: {}</li>".format(*reason)
-                for reason in penalties
+                for reason in self.yaml['penalties']
             ),
             "</ul>",
             '',
