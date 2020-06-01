@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.6.2  2020-06-01
+
+- api: `--ring` option to enable incoming call notifications
+- `tomatic_busy.py`
+	- explains the reasons why people is busy each time
+	- takes persons from ponderatedIdeal
+	- scriptlauncher item to call it
+
 ## 3.6.1  2020-05-18
 
 - Auto-backup timetables on edit and upload
