@@ -223,7 +223,7 @@ class HtmlGen(object):
             "<ul>",
             "\n".join(
                 u"<li>{}: {}</li>".format(*reason)
-                for reason in self.yaml['penalties']
+                for reason in self.yaml.penalties
             ),
             "</ul>",
             '',
