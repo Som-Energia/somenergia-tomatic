@@ -10,6 +10,7 @@ fullCarregaIdeal: "IDEALS_6t_Càrrega telèfon"
 intervalCarrega: carrega{:02d}{:02d}{:02d}
 idealLoadNamesRange: carregaideal_noms
 idealLoadValuesRange: carregaideal_valors
+leavesSheet: Baixes
 monitoringFile: taula.html
 nTelefons: 6
 diesCerca:

@@ -80,7 +80,7 @@ def baixaLeaves(config, certificat):
         documentName=config.documentDrive,
         credentialFilename=certificat,
         )
-    leavesSheet = "Baixes"
+    leavesSheet = config.get('leavesSheet',"Baixes")
     leavesFile = "leaves.conf"
 
     step('Baixant baixes...')

@@ -1,6 +1,7 @@
 fullIndisponibilitats: 'Reunions i altres afers' # 'oyfu0hb' # Fulla del drive on estan les indisponibilitats
 fullCarrega: 'o9rxhxk' # 'Càrrega setmanal de telèfon' # Fulla del drive on estan les càrregues
 intervalCarrega: carrega{:02d}{:02d}{:02d} # Patró pel nom de l'interval on buscar les càrregues (Y,m,d)
+leavesSheet: Leaves
 monitoringFile: taula.html
 
 nTelefons: 4
