@@ -34,8 +34,9 @@ This software is used within SomEnergia cooperative to manage phone support to m
 
 
 
-## Install
+## Setup
 
+### Dependencies and assets building
 
 ```bash
 sudo apt-get install gcc libpython2.7-dev libffi-dev libssl-dev nodejs-legacy npm
@@ -45,13 +46,10 @@ npm run build # for development assets
 npm run deploy # for production assets
 ```
 
-See below "deployment notes" on how deploy the required certificate.
+### Setting up cron tasks
 
-
-### Cron
-
-This is needed in order to enable automatic asterisk turn switch
-and hangouts notification.
+This is needed in order to enable automatic asterisk turn switching
+and hangouts notifications.
 
 ```bash
 sudo chown root:root crontab
@@ -59,13 +57,64 @@ sudo chmod 755 crontab
 sudo ln -s $pwd/crontab /etc/cron.d/tomatic
 ```
 
-You should run first, at least once, `tomatic_says.py` to get asked for Hangouts authentification.
+### Setting up Hangouts notification
 
+This can be done by using the hangups application that should have been installed as dependency.
+If your main environment is still Python2, you should setup a separate Python3 virtualenv to use `hangup`.
+since it is not compatible with Python 2.
+
+- Create an account for the boot in hangouts.google.com.
+- Generate an access key
+  ```
+  $ hangups --manual-login
+  ```
+  The key will be stored in `~/.cache/hangups/refresh_token.txt`
+- Figure out the target channel ID. You can do so by running this hangups example:
+  [`build_conversation_list.py`](https://raw.githubusercontent.com/tdryer/hangups/master/examples/build_conversation_list.py)
+  which requires this other file to be in the same dir:
+  [`common.py`](https://raw.githubusercontent.com/tdryer/hangups/master/examples/common.py)
+- Write down channel ID in `config.yaml` as `hangoutChannel`
+- You can test it by running `tomatic_says.py hello world`
+
+### Google Drive data sources
+
+Unless you specify the `--keep` option, some input data required
+to compute every person load is taken from
+a Google Drive Spreadsheet document.
+
+
+ configuration data is
+downloaded from the Google Drive spreadsheet where ideal phone load, holidays and
+leaves are written down.
+
+In order to access it you will require a oauth2 certificate and to grant it
+access to the Document.
+
+Follow instructions in http://gspread.readthedocs.org/en/latest/oauth2.html
+
+You can skip steps 5 (already in installation section in this document) and
+step 6 (code related) but **don't skip step 7**.
+
+Create a link named 'certificate.json' pointing to the actual certificate.
+
+Related parameters in `config.yaml` file are:
+
+- `documentDrive`: the title of the spreadsheet, it must be accessible by the key
+- `fullCarregaIdeal`: the spreadsheet sheet where the ideal shift load is stored.
+- `idealLoadValuesRange`: The range name in document and sheet with the values of the ideal load values for each person
+- `idealLoadValuesName`: The range name in document and sheet with the corresponding names of each person
+- `leavesSheet`: The document sheet where a person off in leave appear in every row
+
+Holidays are taken from a sheet named as the year, pe. `2020`
+containing named ranges like `Vacances202Semester1`
+which are tables a column for each semester day and a row per person.
 
 ## Configuration
 
-
 ### `config.yaml`
+
+
+
 
 ## Usage
 
@@ -153,68 +202,31 @@ If you don't want to download the configuration data from the Google Drive
 SpreadSheet, you can provide the `--keep` option.
 
 
-## Certificates
-
-Unless you specify the `--keep` option, required configuration data is
-downloaded from the Google Drive spreadsheet where phone load, holidays and
-availability are written down.
-
-In order to access it you will require a oauth2 certificate and to grant it
-access to the Document.
-
-Follow instructions in http://gspread.readthedocs.org/en/latest/oauth2.html
-
-You can skip steps 5 (already in installation section in this document) and
-step 6 (code related) but **don't skip step 7**.
-
-Create a link named 'certificate.json' pointing to the actual certificate.
-
-
-
-
 
 # TODO's
 
-
+- Hangout
+	- [ ] Configurable token file path
+	- [ ] List channels when no channel has been configured yet
+	- [ ] Choose output channel by CLI
+	- [ ] Choose token file by CLI
+- Planner:
+	- [ ] Refactor as Single Page App
+	- [ ] Style it
+	- [ ] Show cutting reasons of best solutions
+	- [ ] Ask before deleting, killing, uploading...
 - Scheduler:
-	- [x] Do not read busy entries from gdrive, just holidays and load
-- Page:
-	- [x] Quitar segundo return del Panel
-	- [x] Header funcionando en Chrome
-- Busy:
-	- [x] Disable ok until all fields are valid
-	- [x] If cancel remove items
-	- [x] Poner el nombre de personas en el dialogo
-	- [x] Save changes as they are done
-	- [x] Reason field not clear a field
-	- [x] Revisar default date next monday
-	- Validate one turn selected
-	- Mejorar el selector de fecha
-	- ESC en el busy entry editor cierra los dos dialogos
-	- Sort busy entries on file
-	- Filter out old oneshot entries
-	- Focus on first item
-- Person:
-	- Disable ok until all fields are valid
-	- Check extension not taken already
-	- Focus on first item
-- Move config data to its own private repo
-- Commit interactive changes to config files
+	- [ ] Join load computation into the script
+- Person editor:
+	- [ ] Disable ok until all fields are valid
+	- [ ] Check extension not taken already
+	- [ ] Focus on first item
+	- [ ] Take person info from holidays manager
 - Callinfo
-	- Simplify yaml structure
-	- Refactor tests
-	- [x] Link in a new window to helpscout last emails
-	- Missing field:
-		- [x] contract number
-		- [x] contract address
-		- [x] contract persons (payer, owner, host)
-			- [x] Email and helpscout link
-			- [x] DNI
-			- Phone
+	- [ ] Simplify yaml structure
+	- [ ] Refactor tests
 	- Alerts:
-		- [x] Delayed invoicing
-		- [x] Pending or recent ATR cases
-		- Unpaid invoices
+		- [ ] Unpaid invoices
 
 
 

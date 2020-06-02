@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.6.3  2020-06-03
+
+- Penalties info is included in html timetable uploaded to the tomatic-static website
+- Penalties info is included in html timetable shown in the planner execution result
+- Busy reasons are displayed in planner when hovering over the blocking time slot
+
 ## 3.6.2  2020-06-01
 
 - api: `--ring` option to enable incoming call notifications

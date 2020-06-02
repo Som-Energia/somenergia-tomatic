@@ -1,11 +1,14 @@
-fullIndisponibilitats: 'Reunions i altres afers' # 'oyfu0hb' # Fulla del drive on estan les indisponibilitats
-fullCarrega: 'o9rxhxk' # 'Càrrega setmanal de telèfon' # Fulla del drive on estan les càrregues
-intervalCarrega: carrega{:02d}{:02d}{:02d} # Patró pel nom de l'interval on buscar les càrregues (Y,m,d)
+baseUrl: http://example.com:4555 # The Tomatic instance url base for the cli tools to access the API
+hangoutChannel: 'EwCesKUaJZ1yCpn3R4J4AaABAQ' # the channel id used to warn operators
+# Drive spreadsheet with input information to compute scheduling
+documentDrive: Tomatic Control
+fullCarregaIdeal: "Ideal Load"
+idealLoadNamesRange: idealload_names
+idealLoadValuesRange: idealload_values
 leavesSheet: Leaves
 monitoringFile: taula.html
-
 nTelefons: 4
-diesCerca: ['dm', 'dv', 'dx', 'dl', 'dj',] # Els mes conflictius davant
+diesCerca: ['dm', 'dv', 'dx', 'dl', 'dj',] # Harder to fit, first
 diesVisualitzacio: ['dl','dm','dx','dj','dv']
 
 hours:  # La darrera es per tancar
