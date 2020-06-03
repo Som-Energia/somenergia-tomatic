@@ -1,46 +1,53 @@
-baseUrl: http://example.com:4555 # The Tomatic instance url base for the cli tools to access the API
+baseUrl: http://example.com:4555 # CLI tools will use that base url to retrieve info from the API
 hangoutChannel: 'EwCesKUaJZ1yCpn3R4J4AaABAQ' # the channel id used to warn operators
 # Drive spreadsheet with input information to compute scheduling
-documentDrive: Tomatic Control
-fullCarregaIdeal: "Ideal Load"
-idealLoadNamesRange: idealload_names
-idealLoadValuesRange: idealload_values
-leavesSheet: Leaves
-monitoringFile: taula.html
-nTelefons: 4
-diesCerca: ['dm', 'dv', 'dx', 'dl', 'dj',] # Harder to fit, first
-diesVisualitzacio: ['dl','dm','dx','dj','dv']
+documentDrive: Tomatic Control # Drive document name with the input information
+fullCarregaIdeal: "Ideal Load" # Drive sheet name containing ideal load
+idealLoadNamesRange: idealload_names # Range name for the ideal load person names
+idealLoadValuesRange: idealload_values # Range name for the ideal load values
+leavesSheet: Leaves # Drive sheet name containing the list of people in leave
+monitoringFile: taula.html # file to dump the partial solutions in, for monitoring
+nTelefons: 6 # Number of lines
+diesCerca: ['dm', 'dv', 'dx', 'dl', 'dj',] # Search order, recommendation: harder to fit, first
+diesVisualitzacio: ['dl','dm','dx','dj','dv'] # Visualization order
 
-hours:  # La darrera es per tancar
+hours:  # Time slot limits. Last hour is the closing one
 - '09:00'
 - '10:15'
 - '11:30'
 - '12:45'
 - '14:00'
-mostraCami:  false   # mostra el cami de cerca que va fent (molt lent)
-maximCamiAMostrar: 60   # fins a quin nivell mostra el camí de cerca
-aleatori: true   # si l'ordre de provar entre els companys a cada casella es aleatori
-backtrackDepth: 10000   # Comprovacions a una via abans de rendir-se i provar una altra
-costLimit: 100   # No et molestis en comprobar solucions que no sigui millors
-descartaNoPrometedores: true # Pot descartar solucions bones, pero agilitza molt
-deixaEsmorzar: true     # Si hom ha de tenir una de les hores d'esmorzar lliures
-noVolenEsmorzar:
-- david
-maximPerTaula: 2   # maxim nombre de telefons simultanis a una mateixa taula
-maximsT1PerDia: 1   # maxim nombre de torns primaris diaris per a una persona
-maximHoresDiariesGeneral: 2  # maxim nombre de torns diaris per una persona
-maximHoresDiaries:   # excepcions al maximHoresDiariesGeneral
-   manel: 2
-   xuanin: 2
-   silvia: 2
-costHoresDiscontinues: 40   # Per cada salt que te una persona entre dos hores de telefon un mateix dia
-costHoresConcentrades: 1   # Es multiplica per n·(n-1)/2 on n es el nombre d'hores diaries d'una mateixa persona
-costTaulaSorollosa: 5   # Es multiplica per n·(n-1)/2 on n es el nombre de telefons simultanis a una taula
-costHoraNoDesitjada: 0   # No implementat
-sempreUnLliure: {}
-randomColors: false # Si vols generar colors aleatoris o fer cas de 'colors'
+discriminateLines: true # True to consider a different line ordering a different solution
+pruneRedundant: false # Activate to prune line ordering other than the sorted names one
+newYearHack: false # To activate at the end of the semester or year when holidays table continues beyond the year
+ignoreOptionalAbsences: true # False to enforce optional absences not to be optional
+mostraCami: false   # show the trail while it search for a solution
+maximCamiAMostrar: 60   # max level to show the trail for
+aleatori: true   # True to randomize order to choose persons (recommended unless you want deterministic testing)
+stopPenalty: 0 # The solver will stop when a complete solution with this penalty is found
+backtrackDepth: 10000000000 # How long, in node visits on the search tree, the algorithm will execute
+maxNodesToPersevere: 10000 # How long, in node visits on the search tree, the search shoul perservere on one way before try a different one
+costLimit: 200 # Minimum cost to consider, partial solutions above that will be discarded
+descartaNoPrometedores: true # Prune partial solutions which already have bad penalty (proportional cost is very beyond the limit)
+deixaEsmorzar: true     # True to force free one of the middle time slot to lunch
+noVolenEsmorzar: # Specific persons that do not want to lunch
+- ningu
+maximPerTaula: 2   # Maximum number of persons attending phone at the same time on the same table, to avoid cacophonies
+maximsT1PerDia: 1   # Maximum number of shifts on first line per day, when the first line is the busiest one
+maximHoresDiariesGeneral: 2  # Maximum number of shift per days, in general
+maximHoresDiaries: # Exceptions to the general maximum number of shifts per day, dictionary for each person
+  ningu: 4
+costHoresDiscontinues: 40   # Penalty for a person having non-continuous shifts a day. Overall effect multipies this cost by n·(n-1)/2, being n the number of non-continuous hours
+costHoresConcentrades: 1   # Penalty for a person having continuous shift a day. Overall effect multipies this cost by n·(n-1)/2, being n the number of continuous hours
+costTaulaSorollosa: 5   # Penalty for having a simultaneus persons on the same table. Overall effect multipies this cost by n·(n-1)/2, being n the number of person on the same table.
+costHoraNoDesitjada: 0   # Penalty for having a shift that a person marked as optionally busy
+maxPhoningInGroup: # A limit for the persons simultaneously doing shifts in that group
+  ningu: 8
+minIdleInGroup: # A limit for the persons simultaneously NOT doing shifts in each group
+  it: 4
+randomColors: false # True to assign random colors instead of using persons' color
 
-forced:
+forced: # Forced timetable slots, mapping "[day, time, line]: person". pe. "[dx, 1, 1]: ningu" forces wenesday, first hour, first line to be nobody (empty), you load should allow that.
   [dl, 1, 4]: ningu
   [dl, 2, 4]: ningu
   [dm, 1, 4]: ningu
