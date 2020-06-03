@@ -2,12 +2,7 @@ baseUrl: http://192.168.35.244:4555
 #hangoutChannel: 'UgwbNDnElaQHezX-qXN4AaABAQ' # it
 hangoutChannel: 'UgzYiKUaJZ1yCpn3R4J4AaABAQ' # petit dejuner
 documentDrive: Quadre de Vacances
-fullIndisponibilitats: Reunions i altres afers
-fullCarrega_4: o9rxhxk
-fullCarrega_5: opm82es
-fullCarrega: om1qfyn
 fullCarregaIdeal: "IDEALS_6t_Càrrega telèfon"
-intervalCarrega: carrega{:02d}{:02d}{:02d}
 idealLoadNamesRange: carregaideal_noms
 idealLoadValuesRange: carregaideal_valors
 leavesSheet: Baixes
@@ -56,7 +51,6 @@ costHoresDiscontinues: 40
 costHoresConcentrades: 1
 costTaulaSorollosa: 5
 costHoraNoDesitjada: 10
-sempreUnLliure: {}
 maxPhoningInGroup:
   infern: 2
   casademont: 4
