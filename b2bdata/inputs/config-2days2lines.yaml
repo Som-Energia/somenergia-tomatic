@@ -1,9 +1,5 @@
 documentDrive: Quadre de Vacances
 fullIndisponibilitats: Reunions i altres afers
-fullCarrega_4: o9rxhxk
-fullCarrega_5: opm82es
-fullCarrega: om1qfyn
-intervalCarrega: carrega{:02d}{:02d}{:02d}
 monitoringFile: taula.html
 nTelefons: 2
 diesCerca:
@@ -118,7 +114,6 @@ tables:
   albertsimo: 99
   clara: 99
   jaume: 99
-sempreUnLliure: {}
 groups: {}
 maxPhoningInGroup: {}
 minIdleInGroup: {}
