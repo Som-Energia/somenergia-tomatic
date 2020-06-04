@@ -91,24 +91,32 @@ async def resolveChannel(client, channel):
         name = conversation.name or 'Unnamed Conversation'
         out('    {} ({})'.format(name, conversation.id_))
 
+    return None
+
 async def send_message(client, channel, message):
-    step("Resolving channel: {}", channel)
-    channel = await resolveChannel(client, channel)
-    step("Channel selected: {}", channel)
-    request = SendChatMessageRequest(
-        request_header = client.get_request_header(),
-        event_request_header = EventRequestHeader(
-            conversation_id = ConversationId(
-                id = channel,
+    try:
+        step("Resolving channel: {}", channel)
+        channel = await resolveChannel(client, channel)
+        if not channel:
+            error("Message couldn't be sent")
+            return
+        step("Channel selected: {}", channel)
+        request = SendChatMessageRequest(
+            request_header = client.get_request_header(),
+            event_request_header = EventRequestHeader(
+                conversation_id = ConversationId(
+                    id = channel,
+                ),
+                client_generated_id=client.get_client_generated_id(),
             ),
-            client_generated_id=client.get_client_generated_id(),
-        ),
-        message_content = MessageContent(
-            segment=[hangups.ChatMessageSegment(message).serialize()],
-        ),
-    )
-    await client.send_chat_message(request)
-    await client.disconnect()
+            message_content = MessageContent(
+                segment=[hangups.ChatMessageSegment(message).serialize()],
+            ),
+        )
+        await client.send_chat_message(request)
+        success("Message sent")
+    finally:
+        await client.disconnect()
 
 
 @click.command()
