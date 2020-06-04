@@ -135,7 +135,7 @@ async def send_message(client, channel, message):
 @click.option('-t', '--tokenfile',
     help='Token file instead the default one',
     )
-def main(tokenfile, message, channel):
+def main(tokenfile, channel, message):
     if not message:
         message = sys.stdin.read()
     else:
@@ -155,7 +155,6 @@ def main(tokenfile, message, channel):
     )
     loop = asyncio.get_event_loop()
     loop.run_until_complete(client.connect())
-    success('Sent')
 
 
 if __name__ == '__main__':
