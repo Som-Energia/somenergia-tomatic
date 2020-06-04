@@ -78,14 +78,10 @@ since it is not compatible with Python 2.
 
 ### Google Drive data sources
 
-Unless you specify the `--keep` option, some input data required
-to compute every person load is taken from
+In order  to compute personal load,
+scheduler requires some input data to be taken from
 a Google Drive Spreadsheet document.
-
-
- configuration data is
-downloaded from the Google Drive spreadsheet where ideal phone load, holidays and
-leaves are written down.
+You might also use `--keep` option to relay in local files instead,
 
 In order to access it you will require a oauth2 certificate and to grant it
 access to the Document.
@@ -108,11 +104,6 @@ Related parameters in `config.yaml` file are:
 Holidays are taken from a sheet named as the year, pe. `2020`
 containing named ranges like `Vacances202Semester1`
 which are tables a column for each semester day and a row per person.
-
-## Configuration
-
-### `config.yaml`
-
 
 
 
@@ -184,6 +175,8 @@ $ ./tomatic_rtqueue.py show
 ```
 
 
+
+
 ## Deployment notes
 
 In order to access the configuration available in the Google Drive SpreadSheet
@@ -206,10 +199,10 @@ SpreadSheet, you can provide the `--keep` option.
 # TODO's
 
 - Hangout
-	- [ ] Configurable token file path
+	- [x] Configurable token file path
+	- [x] Choose output channel by CLI
+	- [x] Choose token file by CLI
 	- [ ] List channels when no channel has been configured yet
-	- [ ] Choose output channel by CLI
-	- [ ] Choose token file by CLI
 - Planner:
 	- [ ] Refactor as Single Page App
 	- [ ] Style it
