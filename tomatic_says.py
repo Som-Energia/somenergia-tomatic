@@ -71,13 +71,15 @@ async def resolveChannel(client, channel):
         step("Sending message to unknown gaia_id {}", channel)
         return await open_conversation(client, "Tomatic", channel)
 
-    for conversation in conversation_list.get_all(include_archived=True):
-        if channel and channel == conversation.name:
-            return channel.id_.gaia_id
-        if channel and conversation.id_.gaia_id:
-            return channel
-    all_users = user_list.get_all()
     all_conversations = conversation_list.get_all(include_archived=True)
+    for conversation in all_conversations:
+        if channel == conversation.name:
+            step("Sending message to Group {0.name} ({0.id_})", conversation)
+            return conversation.id_
+        if channel == conversation.id_:
+            step("Sending message to Group {0.name} ({0.id_})", conversation)
+            return conversation.id_
+
     error("No matching conversation target")
     out('{} known users'.format(len(all_users)))
     for user in all_users:
