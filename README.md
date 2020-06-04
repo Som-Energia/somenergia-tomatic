@@ -202,7 +202,7 @@ SpreadSheet, you can provide the `--keep` option.
 - Change version number in
 	- `package.json`
 	- `tomatic/__init__.py`
-- Add versions changes at the end of README.md
+- Add versions changes to `CHANGES.md`
 - Commit
 - `git tag tomatic-M.m.r` Major minor release
 - `git push`

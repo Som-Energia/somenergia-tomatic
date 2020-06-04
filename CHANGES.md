@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 3.6.4  2020-06-04
 
 - Documentation:
     - How to setup drive data sources
