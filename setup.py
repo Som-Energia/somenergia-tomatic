@@ -52,6 +52,7 @@ setup(
     ] if sys.version_info[0] <3 else [
         'Flask',
         'pony',
+        'hangups',
     ]) + [
     #],
     #tests_require=[
