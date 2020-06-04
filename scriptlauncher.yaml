@@ -60,10 +60,19 @@ tomatic:
         Un llistat bastan cru de totes les trucades del dia
 
     says:
-      script: SOME_SRC/somenergia-tomatic/tomatic_says.py  {quelcom}
+      script: SOME_SRC/somenergia-tomatic/tomatic_says.py  -c {qui} {quelcom}
       title: Tomàtic diu
-      description: Digues quelcom com si fossis en Tomàtic
+      description: |
+        Digues quelcom com si fossis en Tomàtic.
+        Si no poses destinatari anirà a "Petit Dejuner".
+        Posa una bejenada per veure llista de persones i converses disponibles.
+        Adreça-ho a una persona posant el seu id de tomatic (david), correu (david.garcia@upf.edu), nom complert al hangouts (David Garcia) o l'id de hangouts (numero de 20 digits).
+        Adreça-ho a una conversa posant el seu titol complert, o l'id de hangouts (molts digits i .
+        Tomatic no veure les converses on no està convidat.
       parameters:
+        qui:
+          description: Destinatari
+          default: Hola Supers!
         quelcom:
           description: Text enviat
           default: Hola Supers!
