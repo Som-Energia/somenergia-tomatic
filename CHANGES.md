@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+- Documentation:
+    - How to setup drive data sources
+    - How to setup Hangouts notifications
+- Dependency fixes for old Python2
+- `tomatic_says.py`:
+    - Migrated to `async/await` syntax (unsupported by python 3.4 and earlier)
+    - README indicates how to setup: authentication, token files...
+    - new option `-t,--tokenfile` to change the default token file (implies changing sender)
+    - new option `-c,--channel` to change the default target of the message (config.yaml/hangoutsChannel)
+    - Addressing a conversation by full name or hangouts id (base64 code)
+    - Addressing a person by tomatic id, email, full hangouts name, or hangouts `gaia_id` (21 digits)
+    - When target is not found a list of available targets is displayed
+
 ## 3.6.3  2020-06-03
 
 - Penalties info is included in html timetable uploaded to the tomatic-static website
