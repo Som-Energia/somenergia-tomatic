@@ -82,9 +82,17 @@ async def resolveChannel(client, channel):
             return conversation.id_
 
     error("No matching conversation target")
+
+    emails = dict((email, person) for person, email in persons.emails.items())
     out('{} known users'.format(len(all_users)))
     for user in all_users:
-        out('    {}: {}'.format(user.full_name, user.id_.gaia_id))
+        email = user.emails[0] if user.emails else '???'
+        out('    {} {} <{}> [{}]',
+            user.full_name,
+            '({})'.format(emails.get(email)) if email in emails else '',
+            email,
+            user.id_.gaia_id,
+        )
 
     out('{} known conversations'.format(len(all_conversations)))
     for conversation in all_conversations:
