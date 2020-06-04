@@ -195,6 +195,20 @@ If you don't want to download the configuration data from the Google Drive
 SpreadSheet, you can provide the `--keep` option.
 
 
+# Developers notes
+
+## How to release
+
+- Change version number in
+	- `package.json`
+	- `tomatic/__init__.py`
+- Add versions changes at the end of README.md
+- Commit
+- `git tag tomatic-M.m.r` Major minor release
+- `git push`
+- `git push --tags`
+
+
 
 # TODO's
 
