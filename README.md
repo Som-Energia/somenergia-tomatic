@@ -209,6 +209,22 @@ SpreadSheet, you can provide the `--keep` option.
 - `git push --tags`
 
 
+## How to deploy upgrades (specific for Som Energia's deployment)
+
+```bash
+git fetch
+git rebase
+# Rebase changes the properties of crontab file
+sudo chown root:root crontab
+sudo chmod 755 crontab
+# Npm commands just if the release modified the js part
+npm install
+npm run build # for development assets
+npm run deploy # for production assets
+sudo pip install -e .
+sudo supervisorctl restart tomatic
+```
+
 
 # TODO's
 
@@ -216,7 +232,7 @@ SpreadSheet, you can provide the `--keep` option.
 	- [x] Configurable token file path
 	- [x] Choose output channel by CLI
 	- [x] Choose token file by CLI
-	- [ ] List channels when no channel has been configured yet
+	- [x] List channels when no channel has been configured yet
 - Planner:
 	- [ ] Refactor as Single Page App
 	- [ ] Style it
