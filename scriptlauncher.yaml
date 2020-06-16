@@ -60,7 +60,7 @@ tomatic:
         Un llistat bastan cru de totes les trucades del dia
 
     says:
-      script: SOME_SRC/somenergia-tomatic/tomatic_says.py  -c {qui} {quelcom}
+      script: SOME_SRC/somenergia-tomatic/runhere SOME_SRC/somenergia-tomatic/ ./tomatic_says.py  -c "{qui}" {quelcom}
       title: Tomàtic diu
       description: |
         Digues quelcom com si fossis en Tomàtic.
@@ -72,7 +72,7 @@ tomatic:
       parameters:
         qui:
           description: Destinatari
-          default: Hola Supers!
+          default: ''
         quelcom:
           description: Text enviat
           default: Hola Supers!
