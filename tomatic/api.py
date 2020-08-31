@@ -253,10 +253,10 @@ def personInfoFromExtension(extension):
     allpersons=persons()
     names = [name for name,ext in allpersons.extensions.items() if ext == extension]
     if not names:
-        return yamlfy(name=None)
+        return 'nobody@somenergia.coop'
     name = names[0]
     email = allpersons.emails[name]
-    return yamlfy(name=name,email=email,extension=extension)
+    return email
 
 @app.route('/api/persons/')
 def personInfo():
