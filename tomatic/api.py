@@ -248,6 +248,16 @@ def persons():
         groups = config.get('groups',ns()),
     )
 
+@app.route('/api/persons/extension/<extension>')
+def personInfoFromExtension(extension):
+    allpersons=persons()
+    names = [name for name,ext in allpersons.extensions.items() if ext == extension]
+    if not names:
+        return yamlfy(name=None)
+    name = names[0]
+    email = allpersons.emails[name]
+    return yamlfy(name=name,email=email,extension=extension)
+
 @app.route('/api/persons/')
 def personInfo():
     result=persons()
