@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.6.5  2020-09-16
+
+- Fix: shiftload stalled when compensation don't get a better credit
+- Fix: scriptlauncher entry for `tomatic_says` failed
+- Cron warn each operator by hangouts individually on new turn
+- Experimental API /api/persons/extension/<extension> to get the email for a given extension
+- Documentation:
+	- How to upgrade
+
 ## 3.6.4  2020-06-04
 
 - Documentation:
