@@ -950,5 +950,26 @@ class ShiftLoadTest(unittest.TestCase):
         self.assertNsEqual(shifts, # unmodified
             ns(alice=2, bob=4, claire=2))
 
+    def test_compensateDebtsAndCredits_unbalancedCompensation_notApplied(self):
+        self.assertNsEqual(
+            shiftload.compensateDebtsAndCredits(
+                shifts=ns(alice=2, bob=4),
+                credits=ns(alice=-0.4, bob=0.2),
+                limits=ns(alice=100, bob=100),
+            ),
+            ns(alice=2, bob=4),
+        )
+
+    def test_compensateDebtsAndCredits_equivalentCompensation_notApplied(self):
+        self.assertNsEqual(
+            shiftload.compensateDebtsAndCredits(
+                shifts=ns(alice=2, bob=4),
+                credits=ns(alice=-0.5, bob=0.5),
+                limits=ns(alice=100, bob=100),
+            ),
+            ns(alice=2, bob=4),
+        )
+
+
 
 # vim: et ts=4 sw=4

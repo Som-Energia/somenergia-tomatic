@@ -206,6 +206,10 @@ def compensateDebtsAndCredits(shifts, credits, limits):
                 ):
             if result[creditor]<=0: continue
             if result[debtor]>=limits[debtor]: continue
+            currentImbalance = abs(credits[debtor]) + abs(credits[creditor])
+            proposedImbalance = abs(credits[debtor]+1) + abs(credits[creditor]-1)
+            if proposedImbalance >= currentImbalance: continue
+
             result[debtor] += 1
             credits[debtor] += 1
             result[creditor] -= 1
