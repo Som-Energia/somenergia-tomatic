@@ -3,7 +3,8 @@
 from tomatic.dbasterisk import DbAsterisk
 from tomatic.schedulestorage import Storage
 from tomatic.scheduling import choosers, Scheduling
-from consolemsg import u
+from tomatic.remote import Remote
+from consolemsg import u, step, out
 import dbconfig
 import sys
 import click
@@ -116,6 +117,20 @@ def preview(queue, date, time):
 		for name in sched.peekQueue(dow, time)
 		if sched.extension(name)
 	)))
+
+@cli.command()
+@queue_option
+def status(queue):
+	"Provisional: returns the queue status command line"
+	step("Connectant a la centraleta")
+	remote = Remote(**dbconfig.tomatic.ssh)
+	sortida = remote.run("asterisk -rx 'queue show {}'".format(queue))
+	click.echo(sortida)
+	sortida = remote.run('''echo 'select * from queue_members join sippeers on queue_members.interface = concat("SIP/", sippeers.name);' | sudo mysql asterisk''')
+	click.echo(sortida)
+
+
+
 
 
 if __name__=='__main__':

@@ -41,6 +41,12 @@ tomatic:
           description: Dilluns de la setmana, en format AAAA-MM-DD
           type: DATE
 
+    queuestatus:
+      script: SOME_SRC/somenergia-tomatic/runhere SOME_SRC/somenergia-tomatic/ ./tomatic_rtqueue.py status
+      title: Estat de la centraleta
+      description: >
+        Mostra l'estat dels operadors del torn actual
+
     resum:
       script: SOME_SRC/somenergia-tomatic/tomatic_calls.py  summary
       title: Resum de trucades del dia
