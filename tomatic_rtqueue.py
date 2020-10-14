@@ -126,7 +126,7 @@ def status(queue):
 	remote = Remote(**dbconfig.tomatic.ssh)
 	sortida = remote.run("asterisk -rx 'queue show {}'".format(queue))
 	click.echo(sortida)
-	sortida = remote.run('''echo 'select callerid paused, sippeers.* from queue_members join sippeers on queue_members.interface = concat("SIP/", sippeers.name);' | sudo mysql asterisk''')
+	sortida = remote.run('''echo 'select callerid, paused, sippeers.* from queue_members join sippeers on queue_members.interface = concat("SIP/", sippeers.name);' | sudo mysql asterisk''')
 	click.echo(sortida)
 
 
