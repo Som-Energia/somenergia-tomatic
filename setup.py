@@ -44,14 +44,13 @@ setup(
         'erppeek',
         'websocket-server',
         'psutil',
+        'pony',
     ] + ([
         'Flask<1.1',
         'jinja2<3.0',
-        'pony<0.7',
         'itsdangerous<2',
     ] if sys.version_info[0] <3 else [
         'Flask',
-        'pony',
         'hangups',
     ]) + [
     #],
