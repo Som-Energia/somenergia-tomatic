@@ -13,6 +13,7 @@ from pony.orm import (
     db_session,
     sum as ag_sum,
     count as ag_count,
+    group_concat,
 )
 import sys
 import codecs
@@ -98,9 +99,9 @@ def summary(date):
     with db_session():
         calls = select((
             c.dstchannel[4:8],
-            ag_count(c.duration),
+            ag_count(c),
             ag_sum(c.billsec),
-            c.clid,
+            group_concat(c.clid, ', '),
             c.lastapp,
             c.lastdata,
             c.disposition,
@@ -108,27 +109,36 @@ def summary(date):
             for c in Calls
             if c.calldate.date() == adate
             and c.dst=='s'
-            ).order_by(-3)
-        print('\t'.join('trucades minuts extensio '.split()))
+            ).order_by(-3,1)
+
+        config = ns.load(yamlconfigpath)
+        print('\t'.join('trucades - minuts - compa '.split()))
+        lost = ns()
         for call in calls:
             extension, trucades, segons, callid, lastapp, lastdata, disposition = call
             minuts="{:02}:{:02} min".format(*divmod(segons,60))
             lastdata = ''.join(lastdata.split('/')[-1:])
             #if len(extension)!=4: continue
-            if extension:
-                config = ns.load(yamlconfigpath)
-                header = u"{} {}".format(extension, properNameByExtension(config, extension))
+            if disposition != 'ANSWERED':
+                lost.setdefault(disposition, []).append(properNameByExtension(config, extension))
+                continue
+            elif extension:
+                header = u"{}".format(properNameByExtension(config, extension))
             elif lastapp == 'Hangup':
                 header = lastapp
             elif lastapp == 'Playback':
                 header = ''.join(lastdata.split('/')[-1:])
-            elif disposition in ('NO ANSWER', 'BUSY'):
+            elif disposition != 'ANSWERED':
+                print(disposition)
+                continue
                 header = disposition
             else:
                 header = '???'
-            print('\t'.join([
-                u(trucades), minuts, header
-                ]))
+            print(u'{} - {} - {}'.format(
+                u(trucades), minuts, header) # , lastapp, lastdata, disposition, callid
+                )
+        print(u(ns({k:len(v) for k,v in lost.items()}).dump()))
+
 @cli.command()
 @date_option
 def all(date):
