@@ -13,6 +13,7 @@ from hangups.hangouts_pb2 import (
     CreateConversationRequest,
     CONVERSATION_TYPE_ONE_TO_ONE,
     InviteeID,
+    SEGMENT_TYPE_LINE_BREAK,
 )
 import sys
 import appdirs
@@ -109,6 +110,14 @@ async def send_message(client, channel, message):
             error("Message couldn't be sent")
             return
         step("Channel selected: {}", channel)
+
+        segments = sum([[
+                hangups.ChatMessageSegment(m),
+                hangups.ChatMessageSegment('',segment_type=SEGMENT_TYPE_LINE_BREAK),
+                ]
+            for m in message.splitlines()
+            ],[])[:-1]
+
         request = SendChatMessageRequest(
             request_header = client.get_request_header(),
             event_request_header = EventRequestHeader(
@@ -118,7 +127,9 @@ async def send_message(client, channel, message):
                 client_generated_id=client.get_client_generated_id(),
             ),
             message_content = MessageContent(
-                segment=[hangups.ChatMessageSegment(message).serialize()],
+                segment=[segment.serialize()
+                    for segment in segments
+                ],
             ),
         )
         await client.send_chat_message(request)
