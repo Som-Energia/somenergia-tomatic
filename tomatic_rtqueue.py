@@ -202,7 +202,7 @@ somenergia has 0 calls (max unlimited) in 'leastrecent' strategy (4s holdtime, 3
 				paused = " [PAUSAT]" if peer.paused else "",
 				incall = " [En trucada]" if peer.incall else "",
 				available = " [Comunica]" if not peer.available and not peer.incall else "",
-				flags = ''.join(" [{}]".format(flag) for flag in peer.flags),
+				flags = ''.join(" {{}}".format(flag) for flag in peer.flags),
 			)
 		))
 
