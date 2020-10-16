@@ -141,9 +141,6 @@ def status(queue):
 	"Provisional: returns the queue status command line"
 
 	step("Connectant a la centraleta")
-	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
-	paused = dict(db.queue(queue))
-	#paused = dict([('3063', True),('3188',False),])
 
 	sortida="""\
 somenergia has 0 calls (max unlimited) in 'leastrecent' strategy (4s holdtime, 340s talktime), W:0, C:159, A:88, SL:100.0% within 30s
@@ -169,7 +166,7 @@ somenergia has 0 calls (max unlimited) in 'leastrecent' strategy (4s holdtime, 3
 		peer = ns()
 		peer.extension = extract('\(SIP/([0-9]+)\)', line, '????')
 		peer.name = nameByExtension(peer.extension)
-		peer.paused = paused.get(peer.extension, False)
+		peer.paused = '(paused)' in line
 		peer.disconnected = '(Unavailable)' in line
 		peer.available = '(Not in use)' in line
 		peer.incall = '(in call)' in line
@@ -183,6 +180,7 @@ somenergia has 0 calls (max unlimited) in 'leastrecent' strategy (4s holdtime, 3
 				'In use', # ignored, expected to be negated of 'Not in use'
 				'in call',
 				'Unavailable',
+				'paused',
 				'realtime', # ignored
 				'ringinuse disabled', # ignored
 			]
