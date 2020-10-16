@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- encoding: utf8 -*-
+
 
 from tomatic.dbasterisk import DbAsterisk
 from tomatic.schedulestorage import Storage
@@ -41,20 +43,6 @@ def now(date, time):
 		now.time() if time is None else datetime.time(*[int(x) for x in(time.split(":"))])
 		)
 
-
-def nameByExtension(extension):
-	if not hasattr(nameByExtension, 'extensions2names'):
-		srcpath = os.path.dirname(os.path.abspath(__file__))
-		yamlconfigpath = os.path.join(srcpath,'persons.yaml')
-		config = ns.load(yamlconfigpath)
-		nameByExtension.names = config.names
-		nameByExtension.extensions2names = dict(
-			(e,n) for n,e in config.extensions.items()
-		)
-	name = nameByExtension.extensions2names.get(extension,extension)
-	if name in nameByExtension.names:
-		return nameByExtension.names[name]
-	return name.title()
 
 @click.group()
 @click.help_option()
@@ -135,13 +123,59 @@ def preview(queue, date, time):
 		if sched.extension(name)
 	)))
 
-@cli.command()
-@queue_option
-def status(queue):
-	"Provisional: returns the queue status command line"
 
-	step("Connectant a la centraleta")
+def persons():
+	if not hasattr(persons, 'persons'):
+		srcpath = os.path.dirname(os.path.abspath(__file__))
+		yamlconfigpath = os.path.join(srcpath,'persons.yaml')
+		persons.persons = ns.load(yamlconfigpath)
+	return persons.persons
 
+def keyByExtension(key):
+	if not hasattr(keyByExtension,'map'):
+		keyByExtension.map = dict(
+			(e,n) for n,e in persons().extensions.items()
+		)
+	return keyByExtension.map.get(key,key)
+
+def nameByKey(key):
+	 return persons().names.get(key,key.title())
+
+def extract(pattern, string, default=None):
+	import re
+	matches = re.search(pattern, string)
+	return matches.group(1) if matches else default
+
+def extractQueuepeerInfo(line):
+	peer = ns()
+	peer.extension = extract('\(SIP/([0-9]+)\)', line, '????')
+	peer.key = keyByExtension(peer.extension)
+	peer.name = nameByKey(peer.key)
+	peer.paused = '(paused)' in line
+	peer.disconnected = '(Unavailable)' in line
+	peer.available = '(Not in use)' in line
+	peer.incall = '(in call)' in line
+	peer.ncalls = int(extract('has taken ([0-9]+) calls', line, '0'))
+	peer.secondsSinceLastCall = int(extract('last was ([0-9]+) secs ago', line, '0'))
+	import re
+	peer.flags = [ flag
+		for flag in re.findall(r"\(([^)]+)\)",line)
+		if flag not in [
+			'Not in use',
+			'In use', # ignored, expected to be negated of 'Not in use'
+			'in call',
+			'Unavailable',
+			'paused',
+			'realtime', # ignored
+			'ringinuse disabled', # ignored
+		]
+		and not flag.startswith('has taken ')
+		and not flag.startswith('last was ')
+		and not flag.startswith('SIP/')
+	]
+	return peer
+
+def queueStatus(queue):
 	sortida="""\
 somenergia has 0 calls (max unlimited) in 'leastrecent' strategy (4s holdtime, 340s talktime), W:0, C:159, A:88, SL:100.0% within 30s
    Members: 
@@ -154,47 +188,24 @@ somenergia has 0 calls (max unlimited) in 'leastrecent' strategy (4s holdtime, 3
       SIP/2902@bustia_veu (SIP/2902) (ringinuse disabled) (realtime) (in call) (In use) has taken 2 calls (last was 1367 secs ago)
    No Callers
 """
+	#step("Connectant a la centraleta")
 	remote = Remote(**dbconfig.tomatic.ssh)
 	sortida = remote.run("asterisk -rx 'queue show {}'".format(queue))
-
-	def extract(pattern, string, default=None):
-		import re
-		matches = re.search(pattern, string)
-		return matches.group(1) if matches else default
-
-	def extractQueuepeerInfo(line):
-		peer = ns()
-		peer.extension = extract('\(SIP/([0-9]+)\)', line, '????')
-		peer.name = nameByExtension(peer.extension)
-		peer.paused = '(paused)' in line
-		peer.disconnected = '(Unavailable)' in line
-		peer.available = '(Not in use)' in line
-		peer.incall = '(in call)' in line
-		peer.ncalls = int(extract('has taken ([0-9]+) calls', line, '0'))
-		peer.secondsSinceLastCall = int(extract('last was ([0-9]+) secs ago', line, '0'))
-		import re
-		peer.flags = [ flag
-			for flag in re.findall(r"\(([^)]+)\)",line)
-			if flag not in [
-				'Not in use',
-				'In use', # ignored, expected to be negated of 'Not in use'
-				'in call',
-				'Unavailable',
-				'paused',
-				'realtime', # ignored
-				'ringinuse disabled', # ignored
-			]
-			and not flag.startswith('has taken ')
-			and not flag.startswith('last was ')
-			and not flag.startswith('SIP/')
-		]
-		return peer
-
-	queuepeer = [
+	return [
 		extractQueuepeerInfo(line)
 		for line in sortida.splitlines()
 		if line.strip().startswith('SIP/')
 	]
+
+@cli.command()
+@queue_option
+def status(queue):
+	"Provisional: returns the queue status command line"
+
+	queuepeer = queueStatus(queue)
+	if not queuepeer:
+		click.echo(u"No hi ha ningú a la cua")
+
 	for peer in queuepeer:
 		click.echo('{name} ({extension}) Porta {ncalls} trucades. {disconnected}{paused}{incall}{available}{flags} '.format(
 			**dict(peer,
