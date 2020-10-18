@@ -161,7 +161,7 @@ somenergia has 0 calls (max unlimited) in 'leastrecent' strategy (4s holdtime, 3
 	  SIP/3188@bustia_veu (SIP/3188) (ringinuse disabled) (realtime) (in call) (In use) has taken 3 calls (last was 630 secs ago)
 	  SIP/3043@bustia_veu (SIP/3043) (ringinuse disabled) (realtime) (Not in use) has taken 4 calls (last was 257 secs ago)
 	  SIP/3084@bustia_veu (SIP/3084) (ringinuse disabled) (realtime) (Not in use) has taken 6 calls (last was 187 secs ago)
-	  SIP/2905@bustia_veu (SIP/2905) (ringinuse disabled) (realtime) (in call) (In use) has taken 5 calls (last was 564 secs ago)
+	  SIP/2905@bustia_veu (SIP/2905) (ringinuse disabled) (realtime) (Ringing) (In use) has taken 5 calls (last was 564 secs ago)
 	  SIP/3048@bustia_veu (SIP/3048) (ringinuse disabled) (realtime) (Not in use) has taken 4 calls (last was 189 secs ago)
 	  SIP/2902@bustia_veu (SIP/2902) (ringinuse disabled) (realtime) (in call) (In use) has taken 2 calls (last was 1367 secs ago)
    No Callers
@@ -181,13 +181,13 @@ somenergia has 0 calls (max unlimited) in 'leastrecent' strategy (4s holdtime, 3
 		click.echo(u"No hi ha ningú a la cua")
 
 	for peer in queuepeers:
-		click.echo(u'{name} ({extension}) Porta {ncalls} trucades. La darrera fa {minutes} minuts. {disconnected}{paused}{incall}{available}{ringing}{flags} '.format(
+		click.echo(u'{name} ({extension}) Porta {ncalls} trucades finalitzades. La darrera fa {minutes} minuts. {disconnected}{paused}{incall}{available}{ringing}{flags} '.format(
 			**dict(peer,
 				minutes = peer.secondsSinceLastCall//60,
 				disconnected = " [DESCONECTAT!!]" if peer.disconnected else "",
 				paused = " [PAUSAT]" if peer.paused else "",
-				incall = " [En trucada]" if peer.incall else "",
-				ringing = " [Ringing]" if peer.ringing else "",
+				incall = " [Trucada en curs]" if peer.incall else "",
+				ringing = " [Ring]" if peer.ringing else "",
 				available = " [Comunica]" if not peer.available and not peer.incall and not peer.ringing else "",
 				flags = u''.join(u" {{{}}}".format(u(flag)) for flag in peer.flags),
 			)

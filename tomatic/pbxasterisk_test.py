@@ -440,18 +440,19 @@ class Parser_Test(unittest.TestCase):
         ))
 
     def test_extractqueuepeerinfo_unexpectedflags(self):
-        line = "      sip/3063@bustia_veu (sip/3063) (ringinuse disabled) (realtime) (not in use) (unexpected) has taken 6 calls (last was 181 secs ago)"
-        self.assertnsequal(
-            pbxasterisk.extractqueuepeerinfo(line),
+        line = "      SIP/3063@bustia_veu (SIP/3063) (ringinuse disabled) (realtime) (Not in use) (unexpected) has taken 6 calls (last was 181 secs ago)"
+        self.assertNsEqual(
+            pbxasterisk.extractQueuepeerInfo(line),
             self.base(
                 flags = ['unexpected']
         ))
 
     def test_extractqueuepeerinfo_ringing(self):
-        line = "      sip/3063@bustia_veu (sip/3063) (Ringinuse disabled) (realtime) (not in use) (unexpected) has taken 6 calls (last was 181 secs ago)"
-        self.assertnsequal(
-            pbxasterisk.extractqueuepeerinfo(line),
+        line = "      SIP/3063@bustia_veu (SIP/3063) (ringinuse disabled) (realtime) (Ringing) (In use) has taken 6 calls (last was 181 secs ago)"
+        self.assertNsEqual(
+            pbxasterisk.extractQueuepeerInfo(line),
             self.base(
+                available = False,
                 ringing = True,
         ))
 
