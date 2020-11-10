@@ -5,7 +5,7 @@ tomatic:
 
     carregues:
       script: SOME_SRC/somenergia-tomatic/runhere SOME_SRC/somenergia-tomatic/ ./tomatic_shiftload.py {monday} --clusterize --lines {numberOfLines} --weekshifts {load}
-      title: Generació de càrregues setmanals
+      title: Graelles: Generació de càrregues setmanals
       description: >
         Resum de les trucades rebudes del dia.
       parameters:
@@ -24,7 +24,7 @@ tomatic:
 
     retireold:
       script: curl -q http://192.168.35.244:4555/api/graella/retireold
-      title: Retira les graelles antigues
+      title: Graelles: Retira les graelles antigues
       description: >
         Amaga les graelles antigues conservant només la de la setmana anterior.
         Les sobrecarregues de les graelles retirades es conservaran
@@ -32,7 +32,7 @@ tomatic:
 
     explainBusy:
       script: SOME_SRC/somenergia-tomatic/runhere SOME_SRC/somenergia-tomatic/ ./tomatic_busy.py {monday} --required
-      title: Resum d'indisponibilitats per torn
+      title: Graelles: Resum d'indisponibilitats per torn
       description: >
         Explica quanta gent hi ha indisponible a cada torn i perquè.
         Atencio, només funciona amb setmanes amb càrrega ja generada.
@@ -43,13 +43,13 @@ tomatic:
 
     queuestatus:
       script: SOME_SRC/somenergia-tomatic/runhere SOME_SRC/somenergia-tomatic/ ./tomatic_rtqueue.py status
-      title: Estat de la centraleta
+      title: Centraleta: Estat de la centraleta
       description: >
         Mostra l'estat dels operadors del torn actual
 
     resum:
       script: SOME_SRC/somenergia-tomatic/tomatic_calls.py  summary
-      title: Resum de trucades del dia
+      title: Centraleta: Resum de trucades del dia
       description: >
         Resum de les trucades rebudes del dia.
 
