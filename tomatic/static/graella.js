@@ -645,8 +645,8 @@ const applicationPages = [
 var tabs = applicationPages.map(function(name) {
     return {
         label: name,
+		element: m.route.Link,
         url: {
-            oncreate: m.route.link,
             href: '/'+name
         },
     };
