@@ -761,6 +761,7 @@ def updateClaims():
 def getClaims():
     message = 'ok'
     claims = []
+    claims_dict = []
     try:
         f = open(CONFIG.claims_file, "r")
         for line in f:
@@ -768,13 +769,13 @@ def getClaims():
         f.close()
     except IOError:
         message = "error"
-        error("File of claims does not exists")
+        error("File of claims does not exist")
 
     try:
         claims_dict = ns.load(CONFIG.claims_dict_file)
     except IOError:
         message = "error"
-        error("File of claims dict does not exists")
+        error("File of claims dict does not exist")
 
     result = ns(
         message=message,
