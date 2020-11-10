@@ -65,6 +65,26 @@ tomatic:
       description: >
         Un llistat bastan cru de totes les trucades del dia
 
+    reloadqueue:
+      script: SOME_SRC/somenergia-tomatic/tomatic_rtqueue.py set
+      title: Centraleta: Recarrega el torn de telefon actual (amb cura!)
+      description: >
+        Fer servir amb cura!!!!
+        Aquest script programa la centraleta per a que les trucades
+        arribin a les persones que estan a la graella.
+        Normalment es crida automáticament cada canvi de torn.
+        Fer servir només en cas de que la cua hagi quedat moolt malmessa.
+
+    reloadextensions:
+      script: SOME_SRC/somenergia-tomatic/tomatic_extensions.py load
+      title: Centraleta: Recarrega les extensions
+      description: >
+        Fer servir amb cura!!!! Es possible que talli trucades.
+        Aquest script actualitza les extensions assignades a cada
+        persona. Normalment es crida automaticament cada divendres a la tarda.
+        Fer servir només quan es canvia alguna extensió o si es creen usuaris nous
+        i no es poden esperar a divendres.
+
     says:
       script: SOME_SRC/somenergia-tomatic/runhere SOME_SRC/somenergia-tomatic/ ./tomatic_says.sh  -c "{qui}" {quelcom}
       title: Tomàtic diu
