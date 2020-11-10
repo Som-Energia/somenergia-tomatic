@@ -55,13 +55,13 @@ tomatic:
 
     perdudes:
       script: SOME_SRC/somenergia-tomatic/tomatic_calls.py  unanswered
-      title: Detall de trucades fallides del dia
+      title: Centraleta: Detall de trucades fallides del dia
       description: >
         Un llistat bastan cru de les trucades fallides del dia
 
     detall:
       script: SOME_SRC/somenergia-tomatic/tomatic_calls.py all
-      title: Detall de totes les trucades del dia
+      title: Centraleta: Detall de totes les trucades del dia
       description: >
         Un llistat bastan cru de totes les trucades del dia
 
