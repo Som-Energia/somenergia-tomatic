@@ -1,5 +1,5 @@
 import unittest
-import persons
+from . import persons
 from pathlib2 import Path
 from yamlns import namespace as ns
 
