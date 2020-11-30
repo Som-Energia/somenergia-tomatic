@@ -1,17 +1,21 @@
 #!/usr/bin/env python
 
-from tomatic.dbasterisk import DbAsterisk
 import dbconfig
-import sys
 import click
 from yamlns import namespace as ns
+
 from tomatic import __version__
-from pathlib2 import Path
+from tomatic import persons
+from tomatic.dbasterisk import DbAsterisk
 
 def table(data):
 	return u'\n'.join(u'\t'.join(unicode(c) for c in row) for row in data)
 
-
+def initBackend():
+	return DbAsterisk(
+		*dbconfig.tomatic.dbasterisk.args,
+		**dbconfig.tomatic.dbasterisk.kwds
+	)
 
 @click.group()
 @click.help_option()
@@ -22,53 +26,40 @@ def cli():
 @cli.command()
 def show():
 	"Shows current queue status"
-	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
-	click.echo(table(db.extensions()))
+	backend = initBackend()
+	click.echo(table(backend.extensions()))
 
 @cli.command()
 def clear():
 	"Clears the queue"
-	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
-	db.clearExtensions()
+	backend = initBackend()
+	backend.clearExtensions()
 
 @cli.command()
 @click.argument('extension')
 @click.argument('fullname')
 def add(extension, fullname):
 	"Adds a new extension"
-	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
-	db.addExtension(extension,fullname)
+	backend = initBackend()
+	backend.addExtension(extension,fullname)
 
 @cli.command()
 @click.argument('extension')
 def remove(extension):
 	"Removes the extension"
-	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
-	db.removeExtension(extension)
-
-
-def properName(persons, name):
-	names = persons.get('names',{})
-	if name in names:
-		return names[name]
-	return name.title()
+	backend = initBackend()
+	backend.removeExtension(extension)
 
 
 @cli.command()
 def load():
-	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
-	persons = ns()
-	for config in ['config.yaml', 'persons.yaml']:
-		if Path(config).exists():
-			persons.update(ns.load(config))
-	db.clearExtensions()
-	for name, extension in persons.extensions.iteritems():
-		db.addExtension(
+	backend = initBackend()
+	backend.clearExtensions()
+	for name, extension in persons.persons().extensions.values():
+		backend.addExtension(
 			unicode(extension),
-			properName(persons, name)
-			)
-
-
+			persons.nameByExtension(extension),
+		)
 
 if __name__=='__main__':
 	cli()
