@@ -128,7 +128,7 @@ var PersonPicker = {
 	view: function(vnode) {
 		var pickCell = function(name) {
 			return m('.extension', {
-				class: name,
+				className: name,
 				onclick: vnode.state.picked.bind(vnode,name),
 				},
 				Tomatic.formatName(name)
@@ -166,7 +166,7 @@ const ButtonIcon = function(msvg) {
 		icon: {
 			svg: msvg
 		},
-		class: 'colored',
+		className: 'colored',
 		ink: true,
 		wash: true,
 	});
@@ -398,7 +398,7 @@ var Grid = function(grid) {
 	var cell = function(day, houri, turni) {
 		var name = Tomatic.cell(day,houri,turni);
 		return m('td', {
-			class: name||'ningu',
+			className: name||'ningu',
 			onclick: function(ev) {
 				if(document.cookie===""){
 					Login.askWhoAreYou();
@@ -447,7 +447,7 @@ var Persons = function(extensions) {
 		m('.extensions', [
 			Object.keys(extensions || {}).sort().map(function(name) {
 				return m('.extension', {
-					class: name,
+					className: name,
 					_onclick: function() {
 						editPerson(name);
 					},
@@ -460,7 +460,7 @@ var Persons = function(extensions) {
 							icon: { svg: iconDate },
 							compact: true,
 							wash: true,
-							class: 'colored',
+							className: 'colored',
 							events: {
 							onclick: function() { editAvailabilities(name); },
 							},
@@ -469,7 +469,7 @@ var Persons = function(extensions) {
 							icon: { svg: iconEdit },
 							compact: true,
 							wash: true,
-							class: 'colored',
+							className: 'colored',
 							events: {
 							onclick: function() { editPerson(name); },
 							},
@@ -492,7 +492,7 @@ var Extensions = function(extensions) {
 	return [
 		m('.extensions',
 			Object.keys(extensions || {}).sort().map(function(name) {
-				return m('.extension', {class: name}, [
+				return m('.extension', {className: name}, [
 					Tomatic.formatName(name),
 					m('br'),
 					extensions[name],

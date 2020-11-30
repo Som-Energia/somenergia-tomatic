@@ -35,7 +35,7 @@ var BusyList = {
 							icon: { svg: iconPlus, },
 							compact: true,
 							wash: true,
-							class: 'colored',
+							className: 'colored',
 							events: {
 								onclick: function () {
 									var newEntry = {
@@ -74,7 +74,7 @@ var BusyList = {
 								icon: { svg: iconDelete },
 								compact: true,
 								wash: true,
-								class: 'colored',
+								className: 'colored',
 								events: {
 									onclick: function() {
 										vnode.attrs.entries.splice(index, 1);

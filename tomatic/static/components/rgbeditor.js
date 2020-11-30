@@ -41,7 +41,7 @@ module.exports = function() {
 					return m(Slider, {
 						min: 0,
 						max: 255,
-						class: color,
+						className: color,
 						value: vnode.state[color],
 						onChange: function(state) {
 							vnode.state[color](state.value);
