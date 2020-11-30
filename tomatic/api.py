@@ -28,7 +28,8 @@ except ImportError:
     dbconfig = None
 
 packagedir = Path(__file__).parent
-staticpath = packagedir/'dist'
+distpath = packagedir/'dist'
+staticpath = packagedir/'static'
 schedules = schedulestorage.Storage.default()
 websockets = {}
 
@@ -120,11 +121,11 @@ def yamlerrors(f,*args,**kwd):
 @app.route('/')
 @app.route('/<file>')
 def tomatic(file=None):
-    return send_from_directory(str(staticpath), file or 'index.html')
+    return send_from_directory(str(distpath), file or 'index.html')
 
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory('static', 'favicon.ico')
+    return send_from_directory(str(staticpath), 'favicon.ico')
 
 @app.route('/api/graella-<week>.yaml')
 @app.route('/api/graella/<week>')
