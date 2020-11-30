@@ -108,7 +108,7 @@ def set(queue, date, time):
 	sched = Scheduling(storage.load(week))
 	db = pbx()
 	db.setQueue(queue, [
-		sched.extension(name)
+		name
 		for name in sched.peekQueue(dow, time)
 		if sched.extension(name)
 	])
