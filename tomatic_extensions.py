@@ -9,7 +9,7 @@ from tomatic import persons
 from tomatic.dbasterisk import DbAsterisk
 
 def table(data):
-	return u'\n'.join(u'\t'.join(unicode(c) for c in row) for row in data)
+	return u'\n'.join(u'\t'.join(type(u'')(c) for c in row) for row in data)
 
 def initBackend():
 	return DbAsterisk(
@@ -57,7 +57,7 @@ def load():
 	backend.clearExtensions()
 	for name, extension in persons.persons().extensions.values():
 		backend.addExtension(
-			unicode(extension),
+			type(u'')(extension),
 			persons.nameByExtension(extension),
 		)
 
