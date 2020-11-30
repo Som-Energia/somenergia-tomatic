@@ -122,6 +122,10 @@ def yamlerrors(f,*args,**kwd):
 def tomatic(file=None):
     return send_from_directory(str(staticpath), file or 'index.html')
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('static', 'favicon.ico')
+
 @app.route('/api/graella-<week>.yaml')
 @app.route('/api/graella/<week>')
 @yamlerrors
