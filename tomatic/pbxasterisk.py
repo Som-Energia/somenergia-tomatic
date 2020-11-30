@@ -11,7 +11,7 @@ class PbxAsterisk(object):
 
     def __init__(self, path, *dbargs, **dbkwd):
         self.storage = Storage(path)
-        self.db = DbAsterisk(*dbargs, **dbkwd)
+        self.backend = DbAsterisk(*dbargs, **dbkwd)
 
     def _currentSched(self, when=None):
         when = when or datetime.datetime.now()
@@ -25,10 +25,10 @@ class PbxAsterisk(object):
     def setSchedQueue(self, when):
         sched = self._currentSched(when)
         if sched is None:
-            self.db.setQueue('somenergia', [])
+            self.backend.setQueue('somenergia', [])
             return
         week, dow, time = choosers(when)
-        self.db.setQueue('somenergia', [
+        self.backend.setQueue('somenergia', [
             sched.extension(name)
             for name in sched.peekQueue(dow, time)
         ])
@@ -43,20 +43,20 @@ class PbxAsterisk(object):
                 paused=bool(paused),
             )
             for extension, paused
-            in self.db.queue('somenergia')
+            in self.backend.queue('somenergia')
         ]
 
     
     def pause(self, name):
         sched = self._currentSched()
-        self.db.pause('somenergia', sched.extension(name))
+        self.backend.pause('somenergia', sched.extension(name))
     def resume(self, name):
         sched = self._currentSched()
-        self.db.resume('somenergia', sched.extension(name))
+        self.backend.resume('somenergia', sched.extension(name))
 
     def addLine(self, name):
         sched = self._currentSched()
-        self.db.add('somenergia', sched.extension(name))
+        self.backend.add('somenergia', sched.extension(name))
 
 
 def extract(pattern, string, default=None):
