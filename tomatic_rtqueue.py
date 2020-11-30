@@ -3,6 +3,7 @@
 
 
 from tomatic.dbasterisk import DbAsterisk
+from tomatic.pbxareavoip import AreaVoip
 from tomatic.schedulestorage import Storage
 from tomatic.scheduling import choosers, Scheduling
 from tomatic.remote import Remote
@@ -19,7 +20,7 @@ def table(data):
 
 
 queue_option = click.option('--queue', '-q',
-	default='somenergia',
+	default=10,
 	help="nom de la cua"
 	)
 members_option = click.option('--member', '-m',
@@ -43,6 +44,10 @@ def now(date, time):
 		now.time() if time is None else datetime.time(*[int(x) for x in(time.split(":"))])
 		)
 
+def pbx():
+    return AreaVoip()
+    return DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
+
 
 @click.group()
 @click.help_option()
@@ -54,7 +59,7 @@ def cli():
 @queue_option
 def show(queue):
 	"Shows current queue status"
-	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
+	db = pbx()
 	click.echo(table(db.queue(queue)))
 
 
@@ -62,7 +67,7 @@ def show(queue):
 @queue_option
 def clear(queue):
 	"Clears the queue"
-	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
+	db = pbx()
 	db.setQueue(queue, [])
 
 @cli.command()
@@ -70,7 +75,7 @@ def clear(queue):
 @members_option
 def pause(queue,member):
 	"Pauses a set of members"
-	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
+	db = pbx()
 	for amember in member:
 		db.pause(queue,amember)
 
@@ -79,7 +84,7 @@ def pause(queue,member):
 @members_option
 def resume(queue,member):
 	"Resumes a set of members"
-	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
+	db = pbx()
 	for amember in member:
 		db.resume(queue,amember)
 
@@ -88,7 +93,7 @@ def resume(queue,member):
 @members_option
 def add(queue,member):
 	"Resumes a set of members"
-	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
+	db = pbx()
 	for amember in member:
 		db.add(queue,amember)
 
@@ -101,7 +106,7 @@ def set(queue, date, time):
 	week, dow, time = choosers(now(date,time))
 	storage = Storage(dbconfig.tomatic.storagepath)
 	sched = Scheduling(storage.load(week))
-	db = DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
+	db = pbx()
 	db.setQueue(queue, [
 		sched.extension(name)
 		for name in sched.peekQueue(dow, time)
@@ -136,42 +141,13 @@ def extractQueueInfo(output):
 @queue_option
 @click.option('--yaml',
 	is_flag=True,
-	help="Use HTML output"
+	help="Use YAML output"
 	)
-@click.option('--raw',
-	is_flag=True,
-	help="Show raw asterisk output"
-	)
-@click.option('--fake',
-	is_flag=True,
-	help="Use fake situation to avoid asterisk connection"
-	)
-@click.option('--sql',
-	is_flag=True,
-	help="Shows the content of the database regarding the extensions in queue"
-	)
-def status(queue, yaml=False, raw=False, fake=False, sql=False):
+def status(queue, yaml=False):
 	"Provisional: returns the queue status command line"
+	db = pbx()
+	queuepeers = db.queue(queue)
 
-	if fake:
-		output = u"""\
-somenergia has 0 calls (max unlimited) in 'leastrecent' strategy (4s holdtime, 340s talktime), W:0, C:159, A:88, SL:100.0% within 30s
-   Members: 
-	  SIP/3063@bustia_veu (SIP/3063) (ringinuse disabled) (realtime) (Not in use) (paused) has taken 6 calls (last was 181 secs ago)
-	  SIP/3188@bustia_veu (SIP/3188) (ringinuse disabled) (realtime) (in call) (In use) has taken 3 calls (last was 630 secs ago)
-	  SIP/3043@bustia_veu (SIP/3043) (ringinuse disabled) (realtime) (Not in use) has taken 4 calls (last was 257 secs ago)
-	  SIP/3084@bustia_veu (SIP/3084) (ringinuse disabled) (realtime) (Not in use) has taken 6 calls (last was 187 secs ago)
-	  SIP/2905@bustia_veu (SIP/2905) (ringinuse disabled) (realtime) (Ringing) (In use) has taken 5 calls (last was 564 secs ago)
-	  SIP/3048@bustia_veu (SIP/3048) (ringinuse disabled) (realtime) (Not in use) has taken 4 calls (last was 189 secs ago)
-	  SIP/2902@bustia_veu (SIP/2902) (ringinuse disabled) (realtime) (in call) (In use) has taken 2 calls (last was 1367 secs ago)
-   No Callers
-"""
-	else:
-		remote = Remote(**dbconfig.tomatic.ssh)
-		output = remote.run("asterisk -rx 'queue show {}'".format(queue))
-
-	queuepeers = extractQueueInfo(output)
-	
 	if yaml:
 		click.echo(ns(queue=queuepeers).dump())
 		return
@@ -194,12 +170,32 @@ somenergia has 0 calls (max unlimited) in 'leastrecent' strategy (4s holdtime, 3
 		))
 	click.echo(80*"=")
 
+
+def lala():
+	if fake:
+		output = u"""\
+somenergia has 0 calls (max unlimited) in 'leastrecent' strategy (4s holdtime, 340s talktime), W:0, C:159, A:88, SL:100.0% within 30s
+   Members: 
+	  SIP/3063@bustia_veu (SIP/3063) (ringinuse disabled) (realtime) (Not in use) (paused) has taken 6 calls (last was 181 secs ago)
+	  SIP/3188@bustia_veu (SIP/3188) (ringinuse disabled) (realtime) (in call) (In use) has taken 3 calls (last was 630 secs ago)
+	  SIP/3043@bustia_veu (SIP/3043) (ringinuse disabled) (realtime) (Not in use) has taken 4 calls (last was 257 secs ago)
+	  SIP/3084@bustia_veu (SIP/3084) (ringinuse disabled) (realtime) (Not in use) has taken 6 calls (last was 187 secs ago)
+	  SIP/2905@bustia_veu (SIP/2905) (ringinuse disabled) (realtime) (Ringing) (In use) has taken 5 calls (last was 564 secs ago)
+	  SIP/3048@bustia_veu (SIP/3048) (ringinuse disabled) (realtime) (Not in use) has taken 4 calls (last was 189 secs ago)
+	  SIP/2902@bustia_veu (SIP/2902) (ringinuse disabled) (realtime) (in call) (In use) has taken 2 calls (last was 1367 secs ago)
+   No Callers
+"""
+	else:
+		remote = Remote(**dbconfig.tomatic.ssh)
+		output = remote.run("asterisk -rx 'queue show {}'".format(queue))
+
 	if raw:
 		click.echo(output)
-
 	if sql:
 		sortida = remote.run('''echo 'select callerid, paused, sippeers.* from queue_members join sippeers on queue_members.interface = concat("SIP/", sippeers.name);' | sudo mysql asterisk''')
 		click.echo(sortida)
+
+
 
 
 

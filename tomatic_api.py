@@ -43,9 +43,10 @@ def main(fake, debug, host, port, printrules, ring):
         warn("Using fake pbx")
     else:
         warn("Using real pbx")
-        from tomatic.pbxasterisk import PbxAsterisk
+        from tomatic.pbxareavoip import PbxAreaVoip as Pbx
+        #from tomatic.pbxasterisk import PbxAsterisk as Pbx
         import dbconfig
-        pbx(PbxAsterisk(
+        pbx(Pbx(
             dbconfig.tomatic.storagepath,
             *dbconfig.tomatic.dbasterisk.args,
             **dbconfig.tomatic.dbasterisk.kwds))
