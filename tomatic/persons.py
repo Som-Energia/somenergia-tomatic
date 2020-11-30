@@ -47,7 +47,7 @@ def name(key):
     """
     Returns the person full name having the person key
     """
-    return persons().names.get(key,key.title())
+    return persons().get('names',{}).get(key,key.title())
 
 def nameByExtension(extension):
     return name(byExtension(extension))

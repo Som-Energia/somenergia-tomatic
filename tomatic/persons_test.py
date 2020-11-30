@@ -95,6 +95,20 @@ class Persons_Test(unittest.TestCase):
         self.assertEqual(
             persons.name('missing'),
             'Missing')
+
+    def test_name_withoutNames(self):
+        Path('p.yaml').write_text(u"""\
+            {}
+            """)
+
+        persons.persons('p.yaml')
+        self.assertEqual(
+            persons.name('jm'),
+            'Jm')
+
+        self.assertEqual(
+            persons.name('missing'),
+            'Missing')
         
     def test_nameByExtension(self):
         Path('p.yaml').write_text(u"""\
