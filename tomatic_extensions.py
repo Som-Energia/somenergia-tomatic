@@ -55,7 +55,7 @@ def remove(extension):
 def load():
 	backend = initBackend()
 	backend.clearExtensions()
-	for name, extension in persons.persons().extensions.values():
+	for extension in persons.persons().extensions.values():
 		backend.addExtension(
 			type(u'')(extension),
 			persons.nameByExtension(extension),
