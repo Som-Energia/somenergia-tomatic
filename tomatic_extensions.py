@@ -9,7 +9,7 @@ from tomatic import __version__
 from pathlib2 import Path
 
 def table(data):
-	return u'\n'.join(u'\t'.join(unicode(c) for c in row) for row in data)
+	return u'\n'.join(u'\t'.join(type(u'')(c) for c in row) for row in data)
 
 
 
@@ -62,9 +62,9 @@ def load():
 		if Path(config).exists():
 			persons.update(ns.load(config))
 	db.clearExtensions()
-	for name, extension in persons.extensions.iteritems():
+	for name, extension in persons.extensions.items():
 		db.addExtension(
-			unicode(extension),
+			type(u'')(extension),
 			properName(persons, name)
 			)
 
