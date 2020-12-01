@@ -1,13 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 
-from __future__ import absolute_import
-from .pbxmockup import weekday
 import unittest
 from datetime import datetime, timedelta
 from yamlns.dateutils import Date
 from yamlns import namespace as ns
-from .scheduling import weekstart, nextweek, choosers, Scheduling
+
+from .scheduling import (
+    weekday,
+    weekstart,
+    nextweek,
+    choosers,
+    Scheduling,
+)
 
 class Scheduling_Test(unittest.TestCase):
 
@@ -72,7 +77,7 @@ class Scheduling_Test(unittest.TestCase):
             nextweek(Date("2017-10-06")),
             Date("2017-10-09"))
 
-    # extension
+    # Scheduling.extension
 
     def test_extension_existing(self):
         schedule = Scheduling("""\
@@ -121,7 +126,7 @@ class Scheduling_Test(unittest.TestCase):
             schedule.extensionToName('100'),
             '100')
 
-    # properName
+    # Scheduling.properName
 
     def test_properName_whenPresent(self):
         schedule = Scheduling("""\
@@ -149,7 +154,7 @@ class Scheduling_Test(unittest.TestCase):
             schedule.properName('perico'),
             u'Perico')
 
-    # intervals
+    # Scheduling.intervals
 
     def test_intervals_withOneDate_notEnough(self):
         schedule = Scheduling("""\
@@ -184,7 +189,7 @@ class Scheduling_Test(unittest.TestCase):
             '10:15-11:30',
             ])
 
-    # peekInterval
+    # Scheduling.peekInterval
 
     def test_peekInterval_beforeAnyInterval(self):
         schedule = Scheduling("""\
@@ -263,7 +268,7 @@ class Scheduling_Test(unittest.TestCase):
             choosers(now),
             ("2017-10-16", 'dv', "15:25"))
 
-    # peekQueue
+    # Scheduling.peekQueue
 
     def test_peekQueue_oneSlot_oneTurn(self):
         schedule = Scheduling(u"""\
@@ -407,7 +412,7 @@ class Scheduling_Test(unittest.TestCase):
     @unittest.skip("TODO")
     def test_peekQueue_withNobodySlots(self): pass
 
-    # fromSolution
+    # Scheduling.fromSolution
 
     def config_singleSlot(self):
         return ns.loads("""\

@@ -32,6 +32,9 @@ def choosers(now):
         )
 
 class Scheduling(object):
+    """
+        Encapsulates a week timetable scheduling yaml.
+    """
 
     def __init__(self, yaml):
         if type(yaml) in (ns, dict):
