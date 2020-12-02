@@ -20,6 +20,7 @@ class PbxMockup_Test(unittest.TestCase):
         self.persons.write_text(u"""\
             extensions:
               cesar: 200
+              eduard: 201
         """)
         ps = persons.persons('p.yaml')
 

@@ -16,6 +16,7 @@ def persons(path=None):
         if hasattr(persons,'cache'):
             del persons.cache
         return
+
     if not hasattr(persons,'cache'):
         persons.path = Path(path) if path else (srcpath / '../persons.yaml').resolve()
         persons.mtime = persons.path.stat().st_mtime

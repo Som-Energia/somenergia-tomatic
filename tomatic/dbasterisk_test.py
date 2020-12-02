@@ -14,11 +14,22 @@ class DbAsterisk_Test(unittest.TestCase):
         self.a = DbAsterisk("sqlite", 'demo.sqlite', create_db=True)
         db_session.__enter__()
 
+        self.persons = Path('p.yaml')
+
+        self.persons.write_text(u"""\
+            extensions:
+              cesar: 200
+              eduard: 201
+        """)
+        ps = persons.persons('p.yaml')
+
     def tearDown(self):
         rollback()
         db_session.__exit__()
         try: os.unlink('tomatic/demo.sqlite')
         except: pass
+        persons.persons(False) # reset
+        self.persons.unlink()
 
     def fixture(self):
         return self.a
