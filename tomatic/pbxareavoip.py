@@ -34,10 +34,10 @@ class AreaVoip(object):
         return result.text.strip()
 
 
-    def setQueue(self, queue, extensions):
+    def setQueue(self, queue, names):
         self.clear(queue)
-        for extension in extensions:
-            self.add(queue, extension)
+        for name in names:
+            self.add(queue, name)
 
 
     def queue(self, queue):
