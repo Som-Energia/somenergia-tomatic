@@ -123,6 +123,38 @@ class Persons_Test(unittest.TestCase):
             persons.nameByExtension('6666'),
             'Jose Miguel')
 
+    def test_extension_whenPresent(self):
+        Path('p.yaml').write_text(u"""\
+            extensions:
+                jm: "6666"
+            """)
+
+        persons.persons('p.yaml')
+        self.assertEqual(
+            persons.extension('jm'),
+            '6666')
+
+    def test_extension_missingPerson(self):
+        Path('p.yaml').write_text(u"""\
+            extensions:
+                jm: "6666"
+            """)
+
+        persons.persons('p.yaml')
+        self.assertEqual(
+            persons.extension('missing'),
+            None)
+
+    def test_extension_noExtensions(self):
+        Path('p.yaml').write_text(u"""\
+            {}
+            """)
+
+        persons.persons('p.yaml')
+        self.assertEqual(
+            persons.extension('missing'),
+            None)
+
         
 
 

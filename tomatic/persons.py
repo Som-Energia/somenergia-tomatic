@@ -52,7 +52,8 @@ def name(key):
 def nameByExtension(extension):
     return name(byExtension(extension))
 
-
+def extension(key):
+    return persons().get('extensions',{}).get(key)
 
 
 # vim: et ts=4 sw=4
