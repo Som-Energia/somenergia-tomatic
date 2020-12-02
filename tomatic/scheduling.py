@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 from __future__ import unicode_literals
 from bisect import bisect
-from datetime import timedelta
+import datetime
 from yamlns import namespace as ns
 
 def weekday(date):
@@ -14,12 +14,12 @@ def weekday(date):
 
 def weekstart(date):
     "Returns the monday of the week of the given date"
-    return date - timedelta(days=date.weekday())
+    return date - datetime.timedelta(days=date.weekday())
 
 def nextweek(date):
     "Returns the start of the next week of the given date"
 
-    return date + timedelta(days=7-date.weekday())
+    return date + datetime.timedelta(days=7-date.weekday())
 
 def choosers(now):
     """Given a datetime, returns a tuple: week, dow and time
@@ -32,9 +32,7 @@ def choosers(now):
         )
 
 class Scheduling(object):
-    """
-        Encapsulates a week timetable scheduling yaml.
-    """
+    """Encapsulates a week timetable scheduling yaml."""
 
     def __init__(self, yaml):
         if type(yaml) in (ns, dict):
@@ -119,7 +117,6 @@ def solution2schedule(config, solution, date=None):
                     (day,time,tel),
                     'festiu'
                 ).lower()
-    import datetime
     if not date:
         date = nextweek(datetime.date.today())
     else:
