@@ -5,7 +5,7 @@ import datetime
 from yamlns import namespace as ns
 import requests
 import dbconfig
-
+import json
 from .schedulestorage import Storage
 from .dbasterisk import DbAsterisk
 from .scheduling import choosers, Scheduling
@@ -25,7 +25,7 @@ class AreaVoip(object):
             **kwds))
         print((result.request.url))
         print(result.text)
-        if 'action' in kwds:
+        if 'action' in kwds and kwds.get('format') != 'json':
             if result.text.strip() != 'OK':
                 raise Exception(result.text.strip())
             return True
@@ -93,6 +93,49 @@ class AreaVoip(object):
             number = queue,
         )
 
+    def addExtension(self, extension, fullname):
+        extensions = self._api('MANAGEDB', object='extension', action='list', format='json')
+        for id, extensionInfo in extensions.items():
+            if extensionInfo['ex_number'] == extension:
+                break
+        else:
+            return
+        jsondata = json.dumps(dict(
+            ex_name = fullname,
+        ))
+        self._api('MANAGEDB',
+            object='extension',
+            action='update',
+            objectid=id,
+            jsondata=jsondata,
+            format='json',
+        )
+
+    def removeExtension(self, extension):
+        self.addExtension(extension,'')
+
+    def clearExtensions(self):
+        extensions = self._api('MANAGEDB', object='extension', action='list', format='json')
+        for id, extensionInfo in extensions.items():
+            if not extensionInfo.get('ex_name'):
+                continue
+            self._api('MANAGEDB',
+                object='extension',
+                action='update',
+                objectid=id,
+                jsondata='{"ex_name": ""}',
+                format='json',
+            )
+
+    def extensions(self):
+        extensions = self._api('MANAGEDB', object='extension', action='list', format='json')
+        return [(
+            extensionInfo['ex_number'],
+            extensionInfo['ex_name'],
+            )
+            for id, extensionInfo in extensions.items()
+        ]
+
 
 class PbxAreaVoip(object):
 
@@ -135,6 +178,8 @@ class PbxAreaVoip(object):
 
     def clear(self):
         self.backend.clear(self.config.queue)
+
+
 
 
 # vim: ts=4 sw=4 et
