@@ -229,6 +229,20 @@ sudo supervisorctl restart tomatic
 
 # TODO's
 
+- Refactoring
+	- [ ] use persons interface everywhere
+		- [ ] api uses persons
+			- [ ] persons() set attributes with ns() if not found
+			- [ ] persons.update(person, **kwds)
+		- [ ] scheduler use persons
+		- [ ] tomatic_says use persons
+		- [ ] tomatic_calls uses persons
+		- [ ] shiftload uses persons
+	- [ ] use pbx backends instead of current pbx interface
+		- [ ] remove use setScheduledQueue (mostly in tests)
+		- [ ] unify backend interfaces
+			- [ ] dbasterisk works with names not extensions
+
 - Hangout
 	- [x] Configurable token file path
 	- [x] Choose output channel by CLI
