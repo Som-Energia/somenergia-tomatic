@@ -7,6 +7,7 @@ from tomatic.pbxareavoip import AreaVoip
 from tomatic.schedulestorage import Storage
 from tomatic.scheduling import choosers, Scheduling
 from tomatic.remote import Remote
+from tomatic.persons import extension
 from consolemsg import u, step, out
 import dbconfig
 import sys
@@ -103,15 +104,10 @@ def add(queue,member):
 @time_option
 def set(queue, date, time):
 	"Sets the queue according Tomatic's schedule"
-	week, dow, time = choosers(now(date,time))
 	storage = Storage(dbconfig.tomatic.storagepath)
-	sched = Scheduling(storage.load(week))
+	members = storage.queueScheduledFor(now(date,time))
 	db = pbx()
-	db.setQueue(queue, [
-		name
-		for name in sched.peekQueue(dow, time)
-		if sched.extension(name)
-	])
+	db.setQueue(queue, members)
 
 @cli.command()
 @queue_option
@@ -119,23 +115,14 @@ def set(queue, date, time):
 @time_option
 def preview(queue, date, time):
 	"Tells the queue according Tomatic's schedule, does no set"
-	week, dow, time = choosers(now(date,time))
 	storage = Storage(dbconfig.tomatic.storagepath)
-	sched = Scheduling(storage.load(week))
+	members = storage.queueScheduledFor(now(date,time))
 	click.echo(', '.join((
 		name
-		for name in sched.peekQueue(dow, time)
-		if sched.extension(name)
+		for name in members
+		if extension(name)
 	)))
 
-from tomatic.pbxasterisk import extract, extractQueuepeerInfo
-
-def extractQueueInfo(output):
-	return [
-		extractQueuepeerInfo(line)
-		for line in output.splitlines()
-		if line.strip().startswith('SIP/')
-	]
 
 @cli.command()
 @queue_option
@@ -170,6 +157,16 @@ def status(queue, yaml=False):
 		))
 	click.echo(80*"=")
 
+
+
+from tomatic.pbxasterisk import extract, extractQueuepeerInfo
+
+def extractQueueInfo(output):
+	return [
+		extractQueuepeerInfo(line)
+		for line in output.splitlines()
+		if line.strip().startswith('SIP/')
+	]
 
 def lala():
 	if fake:
