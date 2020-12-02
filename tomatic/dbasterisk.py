@@ -12,6 +12,7 @@ from pony.orm import (
     composite_index,
 )
 import time
+from . import persons
 
 class DbAsterisk(object):
 
@@ -47,13 +48,13 @@ class DbAsterisk(object):
         self._sipPeers = SipPeerTable
 
     @db_session
-    def setQueue(self, queue, extensions):
+    def setQueue(self, queue, names):
         delete(
             m for m in self._queueMembers
             if m.queue_name == queue
             )
-        for extension in extensions:
-            self.add(queue, extension)
+        for name in names:
+            self.add(queue, name)
             # KLUDGE: Let asterisk do its stuff so the wueue gets ordered
             #time.sleep(1)
 
@@ -71,7 +72,8 @@ class DbAsterisk(object):
             ]
 
     @db_session
-    def pause(self, queue, extension, paused=True):
+    def pause(self, queue, name, paused=True):
+        extension = persons.extension(name)
         interface = 'SIP/{}'.format(extension)
         member = self._queueMembers.get(
             lambda m: m.interface == interface
@@ -79,11 +81,12 @@ class DbAsterisk(object):
         if member is None: return
         member.paused = paused
 
-    def resume(self, queue, extension):
-        self.pause(queue, extension, False)
+    def resume(self, queue, name):
+        self.pause(queue, name, False)
 
     @db_session
-    def add(self, queue, extension):
+    def add(self, queue, name):
+        extension = persons.extension(name)
         self._queueMembers(
             queue_name=queue,
             membername='SIP/{}@bustia_veu'.format(extension),
