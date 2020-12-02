@@ -1588,7 +1588,7 @@ class Schedule_Test(unittest.TestCase):
             """)
         )
 
-        self.assertEquals(h.htmlPenalties(),
+        self.assertEqual(h.htmlPenalties(),
             "<h3>Penalitzacions</h3>\n"
             "<p>Sense penalitzacions</p>\n"
         )
@@ -1619,7 +1619,7 @@ class Schedule_Test(unittest.TestCase):
             """.format(cost))
         )
 
-        self.assertEquals(h.htmlPenalties(),
+        self.assertEqual(h.htmlPenalties(),
             "<h3>Penalitzacions</h3>\n"
             "<p>Penalitzacio: {}</p>\n".format(cost)
         )
@@ -1653,7 +1653,7 @@ class Schedule_Test(unittest.TestCase):
             """)
         )
 
-        self.assertEquals(h.htmlPenalties(),
+        self.assertEqual(h.htmlPenalties(),
             "<h3>Penalitzacions</h3>\n"
             "<ul>\n"
                 "<li>20: pol te dos torns</li>\n"
@@ -1692,7 +1692,7 @@ class Schedule_Test(unittest.TestCase):
             """)
         )
 
-        self.assertEquals(h.htmlPenalties(),
+        self.assertEqual(h.htmlPenalties(),
             "<h3>Penalitzacions</h3>\n"
             "<p>Penalitzacio: 123</p>\n"
             "<ul>\n"
