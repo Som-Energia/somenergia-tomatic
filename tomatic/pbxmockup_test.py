@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from .pbxmockup import PbxMockup, weekday
 import unittest
 from datetime import datetime, timedelta
+from pathlib2 import Path
 from yamlns import namespace as ns
+
+from . import persons
+from .pbxmockup import PbxMockup, weekday
 
 class PbxMockup_Test(unittest.TestCase):
 
@@ -12,6 +15,17 @@ class PbxMockup_Test(unittest.TestCase):
         self.today = weekday(now)
         self.currentHour = now.hour
         self.nextday = weekday(now+timedelta(days=1))
+        self.persons = Path('p.yaml')
+
+        self.persons.write_text(u"""\
+            extensions:
+              cesar: 200
+        """)
+        ps = persons.persons('p.yaml')
+
+    def tearDown(self):
+        persons.persons(False) # reset
+        self.persons.unlink()
 
     def pbx(self):
         return PbxMockup()
