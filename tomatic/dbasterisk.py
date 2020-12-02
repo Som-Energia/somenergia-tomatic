@@ -85,8 +85,8 @@ class DbAsterisk(object):
     @db_session
     def add(self, queue, extension):
         self._queueMembers(
-            membername='SIP/{}@bustia_veu'.format(extension),
             queue_name=queue,
+            membername='SIP/{}@bustia_veu'.format(extension),
             interface='SIP/{}'.format(extension),
             penalty=0,
             paused=False,
