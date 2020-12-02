@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from .dbasterisk import DbAsterisk
-from pony.orm import db_session, rollback
 import os
+from pony.orm import db_session, rollback
+from pathlib2 import Path
+from . import persons
+from .dbasterisk import DbAsterisk
+
 
 class DbAsterisk_Test(unittest.TestCase):
 
     def setUp(self):
-        rollback()
         try: os.unlink('tomatic/demo.sqlite')
         except: pass
         self.a = DbAsterisk("sqlite", 'demo.sqlite', create_db=True)
-        db_session.__enter__()
 
         self.persons = Path('p.yaml')
 
@@ -24,8 +25,6 @@ class DbAsterisk_Test(unittest.TestCase):
         ps = persons.persons('p.yaml')
 
     def tearDown(self):
-        rollback()
-        db_session.__exit__()
         try: os.unlink('tomatic/demo.sqlite')
         except: pass
         persons.persons(False) # reset
