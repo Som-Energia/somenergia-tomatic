@@ -10,6 +10,11 @@ yaml20121112 = u"week: '2012-11-12'"
 yaml20030203 = u"week: '2003-02-03'"
 StorageError = schedulestorage.StorageError
 
+def timestamp(strdate):
+    return datetime.datetime.strptime(
+        strdate,
+        "%Y-%m-%d %H:%M"
+        )
 
 class ScheduleStorage_Test(unittest.TestCase):
 
@@ -376,6 +381,103 @@ class ScheduleStorage_Test(unittest.TestCase):
             alice: 10
             bob: 25
         """)
+
+
+    def test_queueScheduledFor_matchingTimetable(self):
+        self.storage.save(ns.loads("""\
+        week: '2020-01-06'
+        hours:
+        - '09:00'
+        - '10:00'
+        timetable:
+          dl:
+          - - first
+        """))
+        queue = self.storage.queueScheduledFor(timestamp("2020-01-06 09:40"))
+        self.assertEqual(queue, ['first'])
+
+    def test_queueScheduledFor_missingWeek(self):
+        self.storage.save(ns.loads("""\
+        week: '2020-01-06'
+        hours:
+        - '09:00'
+        - '10:00'
+        timetable:
+          dl:
+          - - first
+        """))
+        queue = self.storage.queueScheduledFor(timestamp("2020-01-13 09:40"))
+        self.assertEqual(queue, [])
+
+    def test_queueScheduledFor_missingDoW(self):
+        self.storage.save(ns.loads("""\
+        week: '2020-01-06'
+        hours:
+        - '09:00'
+        - '10:00'
+        timetable:
+          dl:
+          - - first
+        """))
+        queue = self.storage.queueScheduledFor(timestamp("2020-01-07 09:40"))
+        self.assertEqual(queue, [])
+
+    def test_queueScheduledFor_matchingTimetable(self):
+        self.storage.save(ns.loads("""\
+        week: '2020-01-06'
+        hours:
+        - '09:00'
+        - '10:00'
+        timetable:
+          dl:
+          - - first
+        """))
+        queue = self.storage.queueScheduledFor(timestamp("2020-01-06 11:40"))
+        self.assertEqual(queue, [])
+
+    def test_queueScheduledFor_manyPersons(self):
+        self.storage.save(ns.loads("""\
+        week: '2020-01-06'
+        hours:
+        - '09:00'
+        - '10:00'
+        timetable:
+          dl:
+          - - first
+            - second
+        """))
+        queue = self.storage.queueScheduledFor(timestamp("2020-01-06 09:40"))
+        self.assertEqual(queue, ['first','second'])
+
+    def test_queueScheduledFor_choosesTime(self):
+        self.storage.save(ns.loads("""\
+        week: '2020-01-06'
+        hours:
+        - '09:00'
+        - '10:00'
+        - '11:00'
+        timetable:
+          dl:
+          - - first
+          - - second
+        """))
+        queue = self.storage.queueScheduledFor(timestamp("2020-01-06 10:40"))
+        self.assertEqual(queue, ['second'])
+
+    def test_queueScheduledFor_choosesDoW(self):
+        self.storage.save(ns.loads("""\
+        week: '2020-01-06'
+        hours:
+        - '09:00'
+        - '10:00'
+        timetable:
+          dl:
+          - - first
+          dm:
+          - - second
+        """))
+        queue = self.storage.queueScheduledFor(timestamp("2020-01-07 09:40"))
+        self.assertEqual(queue, ['second'])
 
 
 

@@ -171,6 +171,29 @@ class PbxMockup_Test(unittest.TestCase):
             ns( key='eduard', paused=False),
             ])
 
+    def test_pause_unexistingLine(self):
+        pbx = self.pbx()
+        pbx.reconfigure(ns.loads(u"""\
+            timetable:
+              {today}:
+              -
+                - cesar
+                - eduard
+            hours:
+            - '00:00'
+            - '23:59'
+
+            extensions:
+              cesar: 200
+            """.format(
+                today=self.today
+            )))
+        pbx.pause('notexisting')
+        self.assertEqual(pbx.currentQueue(), [
+            ns( key='cesar', paused=False),
+            ns( key='eduard', paused=False),
+            ])
+
     def test_resume(self):
         pbx = self.pbx()
         pbx.reconfigure(ns.loads(u"""\

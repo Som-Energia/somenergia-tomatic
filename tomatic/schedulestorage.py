@@ -5,6 +5,7 @@ import glob
 from pathlib2 import Path
 from yamlns import namespace as ns
 from .shiftload import loadSum
+from .scheduling import Scheduling, choosers
 
 def utcnow():
 	"Returns tz aware current datetime in UTC"
@@ -149,6 +150,12 @@ class Storage(object):
 
         self.saveCredit(monday, credit)
 
+    def queueScheduledFor(self, timestamp):
+        week, dow, time = choosers(timestamp)
+        try: data = self.load(week)
+        except KeyError: return []
+        scheduling = Scheduling(data)
+        return scheduling.peekQueue(dow, time)
 
     @classmethod
     def default(cls):
