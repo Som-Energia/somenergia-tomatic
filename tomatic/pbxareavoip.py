@@ -68,10 +68,12 @@ class AreaVoip(object):
         ]
     
     def pause(self, queue, name, paused=True):
+        extension = persons.extensions(name)
+        if not extension: return
         response = self._api('AGENT',
             action='pause' if paused else 'unpause',
             queue = queue,
-            extension = persons.persons().extensions[name],
+            extension = extension,
             reason = 'notimplemented',
         )
 
@@ -79,9 +81,11 @@ class AreaVoip(object):
         self.pause(queue, name, False)
 
     def add(self, queue, name):
+        extension = persons.extensions(name)
+        if not extension: return
         response = self._api('QUEUE', action='add',
             number = queue,
-            extension = persons.persons().extensions[name],
+            extension = extension,
         )
 
     def clear(self, queue):
