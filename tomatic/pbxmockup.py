@@ -55,9 +55,9 @@ class PbxMockup(object):
         if who in self._paused:
             self._paused.remove(who)
 
-    def addLine(self, person):
+    def addLine(self, who):
         "Adds a new line at the end of the queue"
-        self._extraLines.append(person)
+        self._extraLines.append(who)
 
 
 # vim: ts=4 sw=4 et
