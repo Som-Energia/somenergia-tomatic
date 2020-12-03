@@ -134,6 +134,7 @@ class AreaVoip(object):
             extensionInfo['ex_name'],
             )
             for id, extensionInfo in extensions.items()
+            if extensionInfo['ex_name']
         ]
 
 
