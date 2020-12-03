@@ -19,6 +19,12 @@ class Persons_Test(unittest.TestCase):
         ps = persons.persons('p.yaml')
         self.assertNsEqual(ps, """\
             hola: tu
+            names: {}
+            extensions: {}
+            tables: {}
+            colors: {}
+            emails: {}
+            groups: {}
         """)
         self.assertEqual(persons.persons.path, Path('p.yaml'))
 
@@ -46,6 +52,12 @@ class Persons_Test(unittest.TestCase):
         ps = persons.persons('p.yaml')
         self.assertNsEqual(ps, """\
             hola: tu
+            names: {}
+            extensions: {}
+            tables: {}
+            colors: {}
+            emails: {}
+            groups: {}
         """)
 
     def test_persons_updated(self):
@@ -57,6 +69,12 @@ class Persons_Test(unittest.TestCase):
         ps = persons.persons()
         self.assertNsEqual(ps, """\
             hola: you
+            names: {}
+            extensions: {}
+            tables: {}
+            colors: {}
+            emails: {}
+            groups: {}
         """)
 
     def test_persons_differentPath(self):
@@ -66,6 +84,12 @@ class Persons_Test(unittest.TestCase):
         ps = persons.persons('p2.yaml')
         self.assertNsEqual(ps, """\
             hola: yo
+            names: {}
+            extensions: {}
+            tables: {}
+            colors: {}
+            emails: {}
+            groups: {}
         """)
 
     def test_byExtension(self):

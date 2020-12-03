@@ -3,6 +3,19 @@ from pathlib2 import Path
 
 srcpath = Path(__file__).absolute().parent
 
+def _load(path):
+    loaded = ns.load(path)
+    for key in (
+        'names',
+        'extensions',
+        'tables',
+        'colors',
+        'emails',
+        'groups',
+    ):
+        loaded.setdefault(key, ns())
+    return loaded
+
 def persons(path=None):
     """
     Cached load of personal information.
@@ -20,18 +33,18 @@ def persons(path=None):
     if not hasattr(persons,'cache'):
         persons.path = Path(path) if path else (srcpath / '../persons.yaml').resolve()
         persons.mtime = persons.path.stat().st_mtime
-        persons.cache = ns.load(persons.path)
+        persons.cache = _load(persons.path)
         return persons.cache
 
     if path:
         persons.path = Path(path)
         persons.mtime = persons.path.stat().st_mtime
-        persons.cache = ns.load(persons.path)
+        persons.cache = _load(persons.path)
         return persons.cache
 
     if persons.mtime != persons.path.stat().st_mtime:
         persons.mtime = persons.path.stat().st_mtime
-        persons.cache = ns.load(persons.path)
+        persons.cache = _load(persons.path)
 
     return persons.cache
 
