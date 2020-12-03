@@ -179,6 +179,127 @@ class Persons_Test(unittest.TestCase):
             persons.extension('missing'),
             None)
 
+    def test_update_nameAndBasics(self):
+        Path('p.yaml').write_text(u"""\
+                extensions:
+                  someone: '777'
+                  someother: '222'
+            """)
+        persons.persons('p.yaml')
+        persons.update('someone', ns(
+            name = 'namevalue',
+            extension = '666',
+            table = 4,
+            color = '00ff00',
+            email = 'name@home.com',
+        ))
+        self.assertNsEqual(persons.persons(), """\
+            names:
+              someone: namevalue
+            extensions:
+              someone: '666' # overwritten
+              someother: '222' # kept
+            tables:
+              someone: 4
+            colors:
+              someone: 00ff00
+            emails:
+              someone: name@home.com
+            groups: {}
+        """)
+
+    def test_update_groups_addedNew(self):
+        Path('p.yaml').write_text(u"""\
+                names: {}
+            """)
+        persons.persons('p.yaml')
+        persons.update('someone', ns(
+            groups = ['mygroup']
+        ))
+        self.assertNsEqual(persons.persons(), """\
+            names: {}
+            extensions: {}
+            tables: {}
+            colors: {}
+            emails: {}
+            groups:
+              mygroup:
+              - someone
+        """)
+
+    def test_update_groups_addedExisting(self):
+        Path('p.yaml').write_text(u"""\
+            groups:
+              mygroup:
+              - anotherone
+            """)
+        persons.persons('p.yaml')
+        persons.update('someone', ns(
+            groups = ['mygroup']
+        ))
+        self.assertNsEqual(persons.persons(), """\
+            names: {}
+            extensions: {}
+            tables: {}
+            colors: {}
+            emails: {}
+            groups:
+              mygroup:
+              - anotherone
+              - someone
+        """)
+
+    def test_update_groups_removeGroup(self):
+        Path('p.yaml').write_text(u"""\
+            groups:
+              mygroup:
+              - someone
+              - someother
+            """)
+        persons.persons('p.yaml')
+        persons.update('someone', ns(
+            groups = []
+        ))
+        self.assertNsEqual(persons.persons(), """\
+            names: {}
+            extensions: {}
+            tables: {}
+            colors: {}
+            emails: {}
+            groups:
+              mygroup:
+              - someother
+        """)
+
+
+    def test_update_groups_removeLastMemberOfGroup(self):
+        Path('p.yaml').write_text(u"""\
+            groups:
+              mygroup:
+              - someone
+            """)
+        persons.persons('p.yaml')
+        persons.update('someone', ns(
+            groups = []
+        ))
+        self.assertNsEqual(persons.persons(), """\
+            names: {}
+            extensions: {}
+            tables: {}
+            colors: {}
+            emails: {}
+            groups: {}
+        """)
+
+
+
+
+
+
+
+
+
+
         
 
 

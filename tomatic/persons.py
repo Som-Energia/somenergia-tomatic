@@ -69,5 +69,27 @@ def nameByExtension(extension):
 def extension(key):
     return persons().get('extensions',{}).get(key)
 
+def update(key, data):
+    result = persons()
+    if 'name' in data:
+        result.names[key] = data.name
+    if 'extension' in data:
+        result.extensions[key] = data.extension
+    if 'table' in data:
+        result.tables[key] = data.table
+    if 'color' in data:
+        result.colors[key] = data.color
+    if 'email' in data:
+        result.emails[key] = data.email
+    if 'groups' in data:
+        for group in data.groups:
+            result.groups.setdefault(group, []).append(key)
+        for group, components in result.groups.items():
+            if group not in data.groups:
+                result.groups[group].remove(key)
+                if not result.groups[group]:
+                    del result.groups[group]
+
+
 
 # vim: et ts=4 sw=4
