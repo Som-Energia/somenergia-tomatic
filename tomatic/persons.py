@@ -90,7 +90,7 @@ def update(key, data):
             result.groups[group].remove(key)
             if not result.groups[group]:
                 del result.groups[group]
-
+    result.dump(persons.path)
 
 
 # vim: et ts=4 sw=4

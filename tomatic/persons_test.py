@@ -291,6 +291,24 @@ class Persons_Test(unittest.TestCase):
             groups: {}
         """)
 
+    def test_update_getSaved(self):
+        Path('p.yaml').write_text(u"""\
+                extensions: {}
+            """)
+        persons.persons('p.yaml')
+        persons.update('someone', ns(
+            extension = '666',
+        ))
+
+        self.assertNsEqual(ns.load('p.yaml'), """\
+            names: {}
+            extensions:
+              someone: '666' # overwritten
+            tables: {}
+            colors: {}
+            emails: {}
+            groups: {}
+        """)
 
 
 
