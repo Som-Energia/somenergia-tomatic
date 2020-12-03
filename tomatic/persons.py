@@ -85,10 +85,11 @@ def update(key, data):
         for group in data.groups:
             result.groups.setdefault(group, []).append(key)
         for group, components in result.groups.items():
-            if group not in data.groups:
-                result.groups[group].remove(key)
-                if not result.groups[group]:
-                    del result.groups[group]
+            if group in data.groups:
+                continue
+            result.groups[group].remove(key)
+            if not result.groups[group]:
+                del result.groups[group]
 
 
 
