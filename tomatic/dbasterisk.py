@@ -11,6 +11,7 @@ from pony.orm import (
     db_session,
     composite_index,
 )
+from yamlns import namespace as ns
 import time
 from . import persons
 
@@ -60,16 +61,29 @@ class DbAsterisk(object):
 
     @db_session
     def queue(self, queue):
+        return [
+            ns(
+                key = persons.byExtension(extension),
+                extension = extension,
+                name = persons.name(persons.byExtension(extension)),
+                paused = bool(paused),
+            )
+            for extension, paused
+            in self.queueExtensions(queue)
+        ]
+
+    @db_session
+    def queueExtensions(self, queue):
         return [(
             m.interface.split('/')[-1],
-            m.paused,
-            )
-            for m in select(
-                q for q in self._queueMembers
-                if queue is None
-                or q.queue_name == queue
-                ).order_by("q.uniqueid")
-            ]
+            bool(m.paused),
+        )
+        for m in select(
+            q for q in self._queueMembers
+            if queue is None
+            or q.queue_name == queue
+            ).order_by("q.uniqueid")
+        ]
 
     @db_session
     def pause(self, queue, name, paused=True):
@@ -87,6 +101,7 @@ class DbAsterisk(object):
     @db_session
     def add(self, queue, name):
         extension = persons.extension(name)
+        if not extension: return
         self._queueMembers(
             queue_name=queue,
             membername='SIP/{}@bustia_veu'.format(extension),

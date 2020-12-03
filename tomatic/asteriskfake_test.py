@@ -10,8 +10,6 @@ class AsteriskFake_Test(unittest.TestCase):
 
     from yamlns.testutils import assertNsEqual
     def setUp(self):
-        self.a = AsteriskFake()
-
         self.persons = Path('p.yaml')
 
         self.persons.write_text(u"""\
@@ -24,11 +22,18 @@ class AsteriskFake_Test(unittest.TestCase):
               fanny: '404'
         """)
         ps = persons.persons(self.persons)
+        self.a = self.setupPbx()
 
     def tearDown(self):
+        self.tearDownPbx()
         persons.persons(False) # reset
         self.persons.unlink()
 
+    def setupPbx(self):
+        return AsteriskFake()
+
+    def tearDownPbx(self):
+        pass
     def fixture(self):
         return self.a
 
