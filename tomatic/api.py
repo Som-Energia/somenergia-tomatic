@@ -21,6 +21,7 @@ from consolemsg import error, step, warn
 from .callinfo import CallInfo
 from . import schedulestorage
 from .pbxmockup import PbxMockup
+from . import persons
 
 try:
     import dbconfig
@@ -237,25 +238,9 @@ def resume_line(person):
         currentQueue = p.currentQueue()
     )
 
-def persons():
-    # TODO: Just load persons.yaml
-    config = ns.load('config.yaml')
-    if Path('persons.yaml').exists():
-        persons = ns.load('persons.yaml')
-        config.update(persons)
-
-    return ns(
-        names = config.get('names',ns()),
-        extensions = config.get('extensions',ns()),
-        tables = config.get('tables',ns()),
-        colors = config.get('colors',ns()),
-        emails = config.get('emails',ns()),
-        groups = config.get('groups',ns()),
-    )
-
 @app.route('/api/persons/extension/<extension>')
 def personInfoFromExtension(extension):
-    allpersons=persons()
+    allpersons=persons.persons()
     names = [name for name,ext in allpersons.extensions.items() if ext == extension]
     if not names:
         return 'nobody@somenergia.coop'
@@ -265,33 +250,14 @@ def personInfoFromExtension(extension):
 
 @app.route('/api/persons/')
 def personInfo():
-    result=persons()
+    result=persons.persons()
     return yamlfy(persons=result)
 
 @app.route('/api/person/<person>', methods=['POST'])
 def setPersonInfo(person):
-    result = persons()
-    print(request.data)
     data = ns.loads(request.data)
-    if 'name' in data:
-        result.names[person] = data.name
-    if 'extension' in data:
-        result.extensions[person] = data.extension
-    if 'table' in data:
-        result.tables[person] = data.table
-    if 'color' in data:
-        result.colors[person] = data.color
-    if 'email' in data:
-        result.emails[person] = data.email
-    if 'groups' in data:
-        for group, components in result.groups.items():
-            if person in components and group not in data.groups:
-                components.remove(person)
-            if group in data.groups and person not in components:
-                components.append(person)
-
-    result.dump('persons.yaml')
-    return yamlfy(persons=result)
+    persons.update(person, data)
+    return yamlfy(persons=persons.persons())
 
 @app.route('/api/busy/<person>', methods=['GET'])
 def busy(person):
