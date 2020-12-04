@@ -93,9 +93,15 @@ class AreaVoip(object):
             id = queue,
         )
 
+    def _allExtensions(self):
+        return self._api('MANAGEDB',
+            object='extension',
+            action='list',
+            format='json',
+        )
+
     def addExtension(self, extension, fullname):
-        extensions = self._api('MANAGEDB', object='extension', action='list', format='json')
-        for id, extensionInfo in extensions.items():
+        for id, extensionInfo in self._allExtensions.items():
             if extensionInfo['ex_number'] == extension:
                 break
         else:
@@ -115,8 +121,7 @@ class AreaVoip(object):
         self.addExtension(extension,'')
 
     def clearExtensions(self):
-        extensions = self._api('MANAGEDB', object='extension', action='list', format='json')
-        for id, extensionInfo in extensions.items():
+        for id, extensionInfo in self._allExtensions.items():
             if not extensionInfo.get('ex_name'):
                 continue
             self._api('MANAGEDB',
@@ -128,12 +133,11 @@ class AreaVoip(object):
             )
 
     def extensions(self):
-        extensions = self._api('MANAGEDB', object='extension', action='list', format='json')
         return [(
             extensionInfo['ex_number'],
             extensionInfo['ex_name'],
             )
-            for id, extensionInfo in extensions.items()
+            for id, extensionInfo in self._allExtensions.items()
             if extensionInfo['ex_name']
         ]
 
