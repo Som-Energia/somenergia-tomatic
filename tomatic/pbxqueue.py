@@ -1,17 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from yamlns import namespace as ns
-import datetime
-
-from .schedulestorage import Storage
-from .dbasterisk import DbAsterisk
-from .scheduling import choosers, Scheduling
-from .remote import Remote
-from . import persons
-
-import dbconfig
-
 class PbxQueue(object):
+    """A wrapper for pbx's which allows to assume 
+    always the same queue"""
 
     def __init__(self, pbx, queue='somenergia'):
         self._queue = queue
