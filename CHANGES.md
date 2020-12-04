@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.7.0  2020-11-30
+
+- PBX backend to use the Areavoip (Nubelphon) API
+- PBX backenda now use agent ids instead extensions
+- scriptlauncher: Fix: failed to load because of colons in titles
+- Added a nice favicon
+- Few remaining Py3 fixes
+
 ## 3.6.5  2020-09-16
 
 - Fix: shiftload stalled when compensation don't get a better credit
