@@ -272,7 +272,7 @@ class Execution_Test(unittest.TestCase):
 
     def test_name_byDefault(self):
         execution = Execution(name='')
-        self.assertRegexpMatches(
+        self.assertRegex(
             execution.name,
             r'^{:%Y-%m-%d-%H:%M:%S}-[0-9a-f-]{{36}}$'.format(
                 datetime.datetime.now()))
@@ -285,7 +285,7 @@ class Execution_Test(unittest.TestCase):
                 "-c",
                 "touch itworked",
             ])
-        self.assertRegexpMatches(sandbox,
+        self.assertRegex(sandbox,
             r'^{:%Y-%m-%d-%H:%M:%S}-[0-9a-f-]{{36}}$'.format(
                 datetime.datetime.now()))
         execution = Execution(sandbox)

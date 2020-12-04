@@ -506,7 +506,7 @@ class Schedule_Test(unittest.TestCase):
             """.marc      { background-color: #fbe8bc; }"""
         )
 
-        self.assertRegexpMatches(
+        self.assertRegex(
             colors,
             r"\.marc    * \{ background-color: #[0-9a-f]{6}; }",
         )
@@ -517,7 +517,7 @@ class Schedule_Test(unittest.TestCase):
               cesar: 555
                 """)
         )
-        self.assertRegexpMatches(
+        self.assertRegex(
             h.htmlColors(),
             r"\.cesar    *\{ background-color: #[0-9a-f]{6}; \}",
             )
