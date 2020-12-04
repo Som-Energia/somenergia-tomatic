@@ -84,13 +84,13 @@ class AreaVoip(object):
         extension = persons.extension(name)
         if not extension: return
         response = self._api('QUEUE', action='add',
-            number = queue,
+            id = queue,
             extension = extension,
         )
 
     def clear(self, queue):
         response = self._api('QUEUE', action='clean',
-            number = queue,
+            id = queue,
         )
 
     def addExtension(self, extension, fullname):
