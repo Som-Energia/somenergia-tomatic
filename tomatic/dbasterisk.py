@@ -14,6 +14,8 @@ from pony.orm import (
 from yamlns import namespace as ns
 import time
 from . import persons
+from .asteriskcli import queueFromSsh
+import dbconfig
 
 class DbAsterisk(object):
 
@@ -61,6 +63,9 @@ class DbAsterisk(object):
 
     @db_session
     def queue(self, queue):
+        if 'ssh' in dbconfig.tomatic:
+            return queueFromSsh(queue)
+
         return [
             ns(
                 key = persons.byExtension(extension),
@@ -144,6 +149,5 @@ class DbAsterisk(object):
             for m in self._sipPeers.select(
                 lambda m: True
         )]
-
 
 # vim: ts=4 sw=4 et

@@ -4,10 +4,10 @@ import unittest
 from yamlns import namespace as ns
 from pathlib2 import Path
 
-from . import pbxqueue
+from . import asteriskcli
 from . import persons
 
-class Parser_Test(unittest.TestCase):
+class AsteriskCli_Test(unittest.TestCase):
 
     personfile = Path('p.yaml')
     from yamlns.testutils import assertNsEqual
@@ -46,13 +46,13 @@ class Parser_Test(unittest.TestCase):
 
     def test_extract_notfound(self):
         self.assertEqual(
-            pbxqueue.extract("strip([0-9]+)", "un 55 strip3333 numero"),
+            asteriskcli.extract("strip([0-9]+)", "un 55 strip3333 numero"),
             "3333")
 
     def test_extractQueuepeerInfo_base(self):
         line = "      SIP/3063@bustia_veu (SIP/3063) (ringinuse disabled) (realtime) (Not in use) has taken 6 calls (last was 181 secs ago)"
         self.assertNsEqual(
-            pbxqueue.extractQueuepeerInfo(line),
+            asteriskcli.extractQueuepeerInfo(line),
             self.base()
         )
  
@@ -60,7 +60,7 @@ class Parser_Test(unittest.TestCase):
         persons.persons.cache.extensions = ns()
         line = "      SIP/3063@bustia_veu (SIP/3063) (ringinuse disabled) (realtime) (Not in use) has taken 6 calls (last was 181 secs ago)"
         self.assertNsEqual(
-            pbxqueue.extractQueuepeerInfo(line),
+            asteriskcli.extractQueuepeerInfo(line),
             self.base(
                 key = '3063',
                 name = '3063',
@@ -70,7 +70,7 @@ class Parser_Test(unittest.TestCase):
         persons.persons.cache.names = ns()
         line = "      SIP/3063@bustia_veu (SIP/3063) (ringinuse disabled) (realtime) (Not in use) has taken 6 calls (last was 181 secs ago)"
         self.assertNsEqual(
-            pbxqueue.extractQueuepeerInfo(line),
+            asteriskcli.extractQueuepeerInfo(line),
             self.base(
                 name = 'Perico',
         ))
@@ -78,7 +78,7 @@ class Parser_Test(unittest.TestCase):
     def test_extractQueuepeerInfo_paused(self):
         line = "      SIP/3063@bustia_veu (SIP/3063) (ringinuse disabled) (realtime) (Not in use) (paused) has taken 6 calls (last was 181 secs ago)"
         self.assertNsEqual(
-            pbxqueue.extractQueuepeerInfo(line),
+            asteriskcli.extractQueuepeerInfo(line),
             self.base(
                 paused = True,
         ))
@@ -86,7 +86,7 @@ class Parser_Test(unittest.TestCase):
     def test_extractQueuepeerInfo_unavailable(self):
         line = "      SIP/3063@bustia_veu (SIP/3063) (ringinuse disabled) (realtime) (Not in use) (Unavailable) has taken 6 calls (last was 181 secs ago)"
         self.assertNsEqual(
-            pbxqueue.extractQueuepeerInfo(line),
+            asteriskcli.extractQueuepeerInfo(line),
             self.base(
                 disconnected = True,
         ))
@@ -94,7 +94,7 @@ class Parser_Test(unittest.TestCase):
     def test_extractQueuepeerInfo_busy(self):
         line = "      SIP/3063@bustia_veu (SIP/3063) (ringinuse disabled) (realtime) (In use) has taken 6 calls (last was 181 secs ago)"
         self.assertNsEqual(
-            pbxqueue.extractQueuepeerInfo(line),
+            asteriskcli.extractQueuepeerInfo(line),
             self.base(
                 available = False,
         ))
@@ -102,7 +102,7 @@ class Parser_Test(unittest.TestCase):
     def test_extractQueuepeerInfo_incall(self):
         line = "      SIP/3063@bustia_veu (SIP/3063) (ringinuse disabled) (realtime) (In use) (in call) has taken 6 calls (last was 181 secs ago)"
         self.assertNsEqual(
-            pbxqueue.extractQueuepeerInfo(line),
+            asteriskcli.extractQueuepeerInfo(line),
             self.base(
                 available = False,
                 incall = True,
@@ -111,7 +111,7 @@ class Parser_Test(unittest.TestCase):
     def test_extractqueuepeerinfo_unexpectedflags(self):
         line = "      SIP/3063@bustia_veu (SIP/3063) (ringinuse disabled) (realtime) (Not in use) (unexpected) has taken 6 calls (last was 181 secs ago)"
         self.assertNsEqual(
-            pbxqueue.extractQueuepeerInfo(line),
+            asteriskcli.extractQueuepeerInfo(line),
             self.base(
                 flags = ['unexpected']
         ))
@@ -119,7 +119,7 @@ class Parser_Test(unittest.TestCase):
     def test_extractqueuepeerinfo_ringing(self):
         line = "      SIP/3063@bustia_veu (SIP/3063) (ringinuse disabled) (realtime) (Ringing) (In use) has taken 6 calls (last was 181 secs ago)"
         self.assertNsEqual(
-            pbxqueue.extractQueuepeerInfo(line),
+            asteriskcli.extractQueuepeerInfo(line),
             self.base(
                 available = False,
                 ringing = True,
