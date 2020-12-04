@@ -1,62 +1,39 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
+from yamlns import namespace as ns
+import datetime
+
 from .schedulestorage import Storage
 from .dbasterisk import DbAsterisk
 from .scheduling import choosers, Scheduling
-import datetime
-from yamlns import namespace as ns
+from .remote import Remote
+from . import persons
 
-class PbxAsterisk(object):
+import dbconfig
 
-    def __init__(self, path, *dbargs, **dbkwd):
-        self.storage = Storage(path)
-        self.backend = DbAsterisk(*dbargs, **dbkwd)
+class PbxQueue(object):
 
-    def _currentSched(self, when=None):
-        when = when or datetime.datetime.now()
-        week, dow, time = choosers(when)
-        try:
-            yaml=self.storage.load(week)
-        except KeyError:
-            return None
-        return Scheduling(yaml)
+    def __init__(self, pbx, queue='somenergia'):
+        self._queue = queue
+        self.backend = pbx
 
-    def setSchedQueue(self, when):
-        sched = self._currentSched(when)
-        if sched is None:
-            self.backend.setQueue('somenergia', [])
-            return
-        week, dow, time = choosers(when)
-        self.backend.setQueue('somenergia', [
-            sched.extension(name)
-            for name in sched.peekQueue(dow, time)
-        ])
+    def setQueue(self, names):
+        self.backend.setQueue(self._queue, names)
 
-    def currentQueue(self):
-        sched = self._currentSched()
-        if sched is None:
-            return []
-        return [
-            ns(
-                key=sched.extensionToName(extension),
-                paused=bool(paused),
-            )
-            for extension, paused
-            in self.backend.queue('somenergia')
-        ]
+    def queue(self):
+        if 'ssh' in dbconfig.tomatic:
+            return queueFromSsh(self._queue)
 
+        return self.backend.queue(self._queue)
     
     def pause(self, name):
-        sched = self._currentSched()
-        self.backend.pause('somenergia', sched.extension(name))
-    def resume(self, name):
-        sched = self._currentSched()
-        self.backend.resume('somenergia', sched.extension(name))
+        self.backend.pause(self._queue, name)
 
-    def addLine(self, name):
-        sched = self._currentSched()
-        self.backend.add('somenergia', sched.extension(name))
+    def resume(self, name):
+        self.backend.resume(self._queue, name)
+
+    def add(self, name):
+        self.backend.add(self._queue, name)
 
 
 def extract(pattern, string, default=None):
@@ -64,8 +41,14 @@ def extract(pattern, string, default=None):
     matches = re.search(pattern, string)
     return matches.group(1) if matches else default
 
-from . import persons
-
+def queueFromSsh(queue):
+    remote = Remote(**dbconfig.tomatic.ssh)
+    output = remote.run("asterisk -rx 'queue show {}'".format(self._queue))
+    return [
+        extractQueuepeerInfo(line)
+        for line in output.splitlines()
+        if line.strip().startswith('SIP/')
+    ]
 def extractQueuepeerInfo(line):
     peer = ns()
     peer.extension = extract('\(SIP/([0-9]+)\)', line, '????')
@@ -105,14 +88,7 @@ def extractQueuepeerInfo(line):
 Remainders for full queue info to recover whenever we are back to direct asterisk usage
 """
 
-def extractQueueInfo(output):
-    return [
-        extractQueuepeerInfo(line)
-        for line in output.splitlines()
-        if line.strip().startswith('SIP/')
-    ]
-
-def lala():
+def ignored():
     if fake:
         output = u"""\
 somenergia has 0 calls (max unlimited) in 'leastrecent' strategy (4s holdtime, 340s talktime), W:0, C:159, A:88, SL:100.0% within 30s
@@ -126,14 +102,8 @@ somenergia has 0 calls (max unlimited) in 'leastrecent' strategy (4s holdtime, 3
       SIP/2902@bustia_veu (SIP/2902) (ringinuse disabled) (realtime) (in call) (In use) has taken 2 calls (last was 1367 secs ago)
    No Callers
 """
-    else:
-        remote = Remote(**dbconfig.tomatic.ssh)
-        output = remote.run("asterisk -rx 'queue show {}'".format(queue))
-
-    info = extractQueueInfo(output)
-    if raw:
-        click.echo(output)
     if sql:
+        remote = Remote(**dbconfig.tomatic.ssh)
         sortida = remote.run('''echo 'select callerid, paused, sippeers.* from queue_members join sippeers on queue_members.interface = concat("SIP/", sippeers.name);' | sudo mysql asterisk''')
         click.echo(sortida)
 
