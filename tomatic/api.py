@@ -20,7 +20,8 @@ from consolemsg import error, step, warn
 
 from .callinfo import CallInfo
 from . import schedulestorage
-from .pbxmockup import PbxMockup
+from .asteriskfake import AsteriskFake
+from .pbxqueue import PbxQueue
 from . import persons
 
 try:
@@ -61,20 +62,21 @@ LOGS = {
 }
 
 
-def pbx(alternative = None):
+def pbx(alternative = None, queue=None):
     if alternative:
-        pbx.cache = alternative
+        pbx.cache = PbxQueue(alternative, queue)
     if not hasattr(pbx,'cache'):
-        p = PbxMockup(now)
-        p.reconfigure(schedules.load(thisweek()))
-        pbx.cache = p
+        # A fake PBX loaded with the queue scheduled for now
+        p = pbx(AsteriskFake(), 'somenergia')
+        initialQueue = schedules.queueScheduledFor(now())
+        p.setQueue(initialQueue)
     return pbx.cache
 
 def now():
     return datetime.now()
 
 def anow():
-    return datetime(2016,12,27,10,23,23)
+    return datetime(2020,11,9,10,23,23)
 
 def thisweek():
     return format(now().date() - timedelta(days=now().weekday()))
@@ -211,15 +213,15 @@ def retireOldTimeTable():
 @app.route('/api/queue')
 def get_queue():
     return yamlfy(
-        currentQueue = pbx().currentQueue()
+        currentQueue = pbx().queue()
     )
 
 @app.route('/api/queue/add/<person>')
 def add_line(person):
     p = pbx()
-    p.addLine(person)
+    p.add(person)
     return yamlfy(
-        currentQueue = p.currentQueue()
+        currentQueue = p.queue()
     )
 
 @app.route('/api/queue/pause/<person>')
@@ -227,7 +229,7 @@ def pause_line(person):
     p = pbx()
     p.pause(person)
     return yamlfy(
-        currentQueue = p.currentQueue()
+        currentQueue = p.queue()
     )
 
 @app.route('/api/queue/resume/<person>')
@@ -235,7 +237,7 @@ def resume_line(person):
     p = pbx()
     p.resume(person)
     return yamlfy(
-        currentQueue = p.currentQueue()
+        currentQueue = p.queue()
     )
 
 @app.route('/api/persons/extension/<extension>')
