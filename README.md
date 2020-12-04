@@ -226,22 +226,67 @@ sudo pip install -e .
 sudo supervisorctl restart tomatic
 ```
 
+# Code map
+
+## API
+
+- `api.py`: Main Flask application, includes
+	- Person management API
+	- Busy management API
+	- Timetable editing API
+	- PBX state control API
+	- Callinfo (CRM) API
+- `planner_api.py`: Flask blueprint to launch timetable schedulers in background
+- `execution_api.py`: Flask blueprint using execution.py to launch arbitrary commands (not mounted just to test execution infrastructure)
+
+## PBX control
+
+- `asteriskfake.py`: A fake implementation of a pbx to be controlled
+- `asteriskcli.py`: Partial pbx controller implementation using asterisk CLI thru ssh (complements dbasterisk)
+- `dbasterisk.py`: A pbx controller using the realtime Asterisk DB
+- `pbxareavoip.py`: A pbx controller using areavoip API
+- `pbxqueue.py`: Pbx controller wrapper to assume the same queue on construction
+
+## Tools
+
+- `execution.py`: Encapsulates an asynchronous execution of a sandboxed process (used by `planner_api.py`)
+- `remote.py`: Simplifies remote process execution and access to files via SSH
+
+## Information Access
+
+- `retriever.py`: Encapsulates NoToi API (holidays and other personal information)
+- `busy.py`: Encapsulates person availability information
+- `persons.py`: Encapsulates person profiles (name, extension, email, color, groups, table...)
+- `schedulestorage.py`: Encapsulates the timetables directory
+- `scheduling.py`: Encapsulates access to timetable structure (yaml)
+- `htmlgen.py`: Generates a timetable html, old code, a template would do
+
+## Timetable generation
+
+- `shiftload.py`: Compute how many shifts each person has to do weekly
+- `scheduler.py`: The main timetable solver
+
+## CRM
+
+- `callinfo.py`: Retrieves incomming call information from the ERP
+
+
 
 # TODO's
 
 - Refactoring
-	- [ ] use persons interface everywhere
-		- [ ] api uses persons
-			- [ ] persons() set attributes with ns() if not found
-			- [ ] persons.update(person, **kwds)
+	- [x] use persons interface everywhere
+		- [x] api uses persons
+			- [x] persons() set attributes with ns() if not found
+			- [x] persons.update(person, **kwds)
 		- [ ] scheduler use persons
 		- [ ] tomatic_says use persons
 		- [ ] tomatic_calls uses persons
 		- [ ] shiftload uses persons
-	- [ ] use pbx backends instead of current pbx interface
-		- [ ] remove use setScheduledQueue (mostly in tests)
-		- [ ] unify backend interfaces
-			- [ ] dbasterisk works with names not extensions
+	- [x] use pbx backends instead of current pbx interface
+		- [x] remove use setScheduledQueue (mostly in tests)
+		- [x] unify backend interfaces
+		- [x] dbasterisk works with names not extensions
 
 - Hangout
 	- [x] Configurable token file path
