@@ -1,9 +1,32 @@
 # Changelog
 
+## Unreleased
+
+- Fix: areavoip: send 'ids' not 'numbers' in `add` and `clear`
+- `tomatic_rtqueue.py` takes `tomatic.areavoip.queue` as default
+- areavoip supports extensions interface, adapting
+  semantics to assign and remove names instead of adding
+  and removing the extensions, a forbiden operation in the platform.
+- Api CLI options `--date` and `--time` make fake pbx (`--fake`)
+  to preload the queue at that moment acording to the timetables.
+- Persons hegemony:
+	- Fix: Persons information no more queried to the timetable
+		but the persons module based on `persons.yaml`
+	- Queue `pause`, `add` and derivatives are safely ignored
+		when the person has no extension in persons.yaml
+	- `persons.update()` to centralize info updating
+- Refactorings to unify pbx backends interfaces
+	- Operations in PBX backends dealing with timetibles
+	  have been extracted out
+	- `ScheduleStorage.queueScheduleFor` can provide
+	  a queue for a given time
+	- Api uses a wrapper which methods have an implicit default queue
+- Cleaned some of the test warnings
+
 ## 3.7.0  2020-11-30
 
 - PBX backend to use the Areavoip (Nubelphon) API
-- PBX backenda now use agent ids instead extensions
+- PBX backends now use agent ids instead extensions
 - scriptlauncher: Fix: failed to load because of colons in titles
 - Added a nice favicon
 - Few remaining Py3 fixes
