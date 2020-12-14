@@ -18,11 +18,14 @@ class AreaVoip(object):
 
     def _api(self, request, **kwds):
         print(request,kwds)
-        result = requests.get(self.config.baseurl, params=dict(
-            reqtype = request,
-            tenant = self.config.tenant,
-            key = self.config.apikey,
-            **kwds))
+        result = requests.get(self.config.baseurl,
+            params=dict(
+                reqtype = request,
+                tenant = self.config.tenant,
+                key = self.config.apikey,
+                **kwds),
+            timeout=2, # seconds
+            )
         print((result.request.url))
         print(result.text)
         if 'action' in kwds and kwds.get('format') != 'json':
