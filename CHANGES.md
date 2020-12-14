@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- areavoip: api calls have a time out, to avoid thread locks
 - Fix: areavoip: send 'ids' not 'numbers' in `add` and `clear`
 - `tomatic_rtqueue.py` takes `tomatic.areavoip.queue` as default
 - areavoip supports extensions interface, adapting
