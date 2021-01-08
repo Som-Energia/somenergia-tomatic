@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2021 holidays
+- Common error handling to all entry points
 - areavoip: api calls have a time out, to avoid thread locks
 - Fix: areavoip: send 'ids' not 'numbers' in `add` and `clear`
 - `tomatic_rtqueue.py` takes `tomatic.areavoip.queue` as default
@@ -10,7 +12,7 @@
   and removing the extensions, a forbiden operation in the platform.
 - Api CLI options `--date` and `--time` make fake pbx (`--fake`)
   to preload the queue at that moment acording to the timetables.
-- Persons hegemony:
+- Persons rule:
 	- Fix: Persons information no more queried to the timetable
 		but the persons module based on `persons.yaml`
 	- Queue `pause`, `add` and derivatives are safely ignored
