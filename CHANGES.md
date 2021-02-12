@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.9.0  2021-02-12
+
+- areavoip: Take stats from api and send them daily by mail
+
 ## 3.8.0  2021-02-12
 
 - Added 2021 holidays
