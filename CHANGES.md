@@ -1,8 +1,8 @@
 # Changelog
 
-## Unreleased
+## 3.8.0  2021-02-12
 
-- 2021 holidays
+- Added 2021 holidays
 - Common error handling to all entry points
 - areavoip: api calls have a time out, to avoid thread locks
 - Fix: areavoip: send 'ids' not 'numbers' in `add` and `clear`
