@@ -61,7 +61,10 @@ def cli():
 def show(queue):
 	"Shows current queue status"
 	db = pbx()
-	click.echo(table(db.queue(queue)))
+	rows = db.queue(queue)
+	if rows:
+		keys = list(rows[0].keys())
+		click.echo(table([keys] + [[row[key] for key in keys] for row in rows]))
 
 
 @cli.command()
