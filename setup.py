@@ -45,6 +45,7 @@ setup(
         'websocket-server',
         'psutil',
         'pony',
+        'emili',
     ] + ([
         'Flask<1.1',
         'jinja2<3.0',
