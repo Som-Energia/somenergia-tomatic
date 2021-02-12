@@ -75,18 +75,41 @@ Temps d'espera:
 """
 import dbconfig
 
+fields = [
+    'DATE',
+    'CALLSRECEIVED',
+    'ANSWEREDCALLS',
+    'ABANDONEDCALLS',
+    'TIMEDOUTCALLS',
+    'TALKTIME',
+    'AVERAGETALKTIME',
+    'HOLDTIME',
+    'AVERAGEHOLDTIME',
+    'MAXHOLDTIME',
+]
+
 def cli():
     from tomatic.pbxareavoip import AreaVoip;
     pbx = AreaVoip()
-    stats = ns(pbx._api('INFO',
-        info='queue',
-        id=dbconfig.tomatic.areavoip.queue,
-        format='json',
-    ))
+    stats = ns(
+        pbx._api('INFO',
+            info='queue',
+            id=dbconfig.tomatic.areavoip.queue,
+            format='json',
+        ),
+        DATE='{:%Y-%m-%d}'.format(datetime.date.today()),
+    )
+
+    statsfile = Path('stats.csv')
+    if not statsfile.exists():
+        statsfile.write_text('\t'.join(fields) + '\n', encoding='utf8')
+    with statsfile.open(mode='a', encoding='utf8') as csv:
+        csv.write('\t'.join(str(stats[field]) for field in fields) + '\n')
+
     sendMail(
         sender=dbconfig.tomatic.dailystats.sender,
         to=dbconfig.tomatic.dailystats.recipients,
-        subject="Informe diari de trucades - {:%Y-%m-%d}".format(datetime.date.today()),
+        subject="Informe diari de trucades - {DATE}".format(**stats),
         md=template.format(**stats),
         config='dbconfig.py',
         verbose=True,
