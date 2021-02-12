@@ -6,6 +6,7 @@
 - Common error handling to all entry points
 - areavoip: api calls have a time out, to avoid thread locks
 - Fix: areavoip: send 'ids' not 'numbers' in `add` and `clear`
+- Fix: `tomatic_rtqueue.py show` repeates table headers and no content
 - `tomatic_rtqueue.py` takes `tomatic.areavoip.queue` as default
 - areavoip supports extensions interface, adapting
   semantics to assign and remove names instead of adding
