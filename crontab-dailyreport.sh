@@ -8,5 +8,5 @@ missatge="$(
 #  ./tomatic_calls.py summary
 )"
 ./tomatic_says.sh "$missatge"
-./areavoip_dailyreport.py
+./areavoip_dailyreport.sh
 
