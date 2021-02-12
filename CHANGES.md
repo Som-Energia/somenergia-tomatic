@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.9.1  2021-02-12
+
+- `areavoip_dailyreport.py` dumps daily stats in a csv
+- `areavoip_dailyreport.py` temporary wrapper to run it on current server
+- FIX: missing dependency on emili
+
 ## 3.9.0  2021-02-12
 
 - areavoip: Take stats from api and send them daily by mail
