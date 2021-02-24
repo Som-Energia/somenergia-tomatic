@@ -89,6 +89,7 @@ class AreaVoip(object):
         response = self._api('QUEUE', action='add',
             id = queue,
             extension = extension,
+            type='NF', # agent type: non-follow
         )
 
     def clear(self, queue):
