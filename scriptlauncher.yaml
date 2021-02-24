@@ -3,6 +3,19 @@ tomatic:
   description: Tomàtic (Centraleta)
   scripts:
 
+    statshistory:
+      script: cp SOME_SRC/somenergia-tomatic/stats.csv {output}
+      title: Centraleta - Serie histórica d'estadístiques
+      description: >
+        Retorna les estadístiques de la centraleta que s'envien cada dia
+        en un CSV amb una fila per dia.
+      parameters:
+
+        output:
+          type: FILEDOWN
+          extension: csv
+          filename: centraleta-historic-estadistiques.csv
+
     carregues:
       script: SOME_SRC/somenergia-tomatic/runhere SOME_SRC/somenergia-tomatic/ ./tomatic_shiftload.py {monday} --clusterize --lines {numberOfLines} --weekshifts {load}
       title: Graelles - Generació de càrregues setmanals
