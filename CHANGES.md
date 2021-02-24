@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.9.2  2021-02-24
+
+- FIX: arevoip api requires new parameter to add agents to queue
+
 ## 3.9.1  2021-02-12
 
 - `areavoip_dailyreport.py` dumps daily stats in a csv
