@@ -35,6 +35,13 @@ tomatic:
           extension: yaml
           filename: carrega-{monday}.yaml
 
+    forgivedebts:
+      title: Graelles - Condonar deutes de torns
+      description: >
+        Posa a zero tots els deutes de torns acumulats positius y negatius
+      script: SOME_SRC/somenergia-tomatic/runhere SOME_SRC/somenergia-tomatic/ ./tomatic_resetshiftcredit.sh
+      parameters: {}
+
     retireold:
       script: curl -q http://192.168.35.244/api/graella/retireold
       title: Graelles - Retira les graelles antigues
