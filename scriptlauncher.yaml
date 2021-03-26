@@ -17,7 +17,8 @@ tomatic:
           filename: centraleta-historic-estadistiques.csv
 
     carregues:
-      script: SOME_SRC/somenergia-tomatic/runhere SOME_SRC/somenergia-tomatic/ ./tomatic_shiftload.py {monday} --clusterize --lines {numberOfLines} --weekshifts {load}
+      script: SOME_SRC/somenergia-tomatic/runhere SOME_SRC/somenergia-tomatic/ ./tomatic_shiftload.py {monday} --clusterize --lines {numberOfLines} --summary {summary} --forgive
+      # --weekshifts {load} 
       title: Graelles - Generació de càrregues setmanals
       description: >
         Resum de les trucades rebudes del dia.
@@ -29,11 +30,14 @@ tomatic:
           description: Nombre de linies obertes simultàneament
           type: INT
           default: 6
-
-        load:
+        #load:
+        #  type: FILEDOWN
+        #  extension: yaml
+        #  filename: carrega-{monday}.tsv
+        summary:
           type: FILEDOWN
-          extension: yaml
-          filename: carrega-{monday}.yaml
+          extension: tsv
+          filename: summary-{monday}.tsv
 
     forgivedebts:
       title: Graelles - Condonar deutes de torns
