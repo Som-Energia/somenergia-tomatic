@@ -358,6 +358,12 @@ def parseArgs():
         help="fitxer yaml de sortida amb la sobrecàrrega final sobre l'ideal ponderat de cada persona",
     )
 
+    parser.add_argument(
+        '--forgive',
+        action='store_true',
+        help="Deactivate any past debts and credits",
+    )
+
     return parser.parse_args()
 
 from .scheduler import (
@@ -386,7 +392,6 @@ def main():
 
     config.personsfile = args.personsfile or config.get('personsfile', 'persons.yaml')
     if not args.keep and not args.personsfile:
-        step("Baixant informacio persones del Tomatic...")
         baixaPersones(config)
 
     if config.personsfile and Path(config.personsfile).exists():
@@ -462,8 +467,13 @@ def main():
         )
 
     step("    Llegint credits i deutes (bossa d'hores)...")
-    credits = ns.load('shiftcredit.yaml')
-    credits = ns((person, credits.get(person, 0)) for person in persons)
+    loadedCredit = ns.load('shiftcredit.yaml')
+    loadedCredit = ns((person, loadedCredit.get(person, 0)) for person in persons)
+    if args.forgive:
+        credits = ns(((person, 0) for person in loadedCredit))
+    else:
+        credits = ns(loadedCredit)
+    originalCredit = ns(credits)
 
 
     step("  Ponderant la ideal...")
@@ -564,6 +574,36 @@ def main():
         success("S'ha aconseguit amb èxit una càrrega de {} torns", finalLoad)
     else:
         fail("Només s'han pogut aconseguir {} torns dels {} necessaris", -1, finalLoad, fullLoad)
+
+    summaryColumns=ns()
+    summaryColumns['Ideal'] = idealLoad
+    summaryColumns['Proporcional'] = ponderated
+    summaryColumns['Augmentada'] = augmented
+    summaryColumns['CapacitatReal'] = loadCapacity
+    summaryColumns['Topall'] = upperBound
+    summaryColumns['AplicatTopall'] = limited
+    summaryColumns['CobrintTorns'] = complete
+    summaryColumns['CompensantDeutes'] = compensated
+    summaryColumns['Final'] = final
+    summaryColumns['Sobrecarrega'] = overload
+    summaryColumns['CreditCarregat'] = loadedCredit
+    summaryColumns['CreditInicial'] = originalCredit
+    summaryColumns['CreditFinal'] = credits
+
+    summary=ns()
+    for column, data in summaryColumns.items():
+        for person, value in data.items():
+            summary.setdefault(person,ns())[column]=value
+
+    summarycontent = '\n'.join([
+        '\t'.join(['Nom'] + list(summaryColumns))
+    ] + [
+        '\t'.join([person] + [str(data.get(column,'-')) for column in summaryColumns])
+        for person, data in summary.items()
+    ])
+
+    print(summarycontent)
+    Path("shift-load-summary-{}.tsv".format(config.monday)).write_text(summarycontent, encoding='utf8')
 
 
 if __name__ == '__main__':
