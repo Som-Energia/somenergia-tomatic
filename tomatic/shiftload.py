@@ -359,6 +359,12 @@ def parseArgs():
     )
 
     parser.add_argument(
+        '--summary',
+        default=None,
+        help="fitxer tsv amb els detalls de com s'ha anat calculant la càrrega",
+    )
+
+    parser.add_argument(
         '--forgive',
         action='store_true',
         help="Deactivate any past debts and credits",
@@ -603,7 +609,8 @@ def main():
     ])
 
     print(summarycontent)
-    Path("shift-load-summary-{}.tsv".format(config.monday)).write_text(summarycontent, encoding='utf8')
+    if args.summary:
+        Path(args.summary).write_text(summarycontent, encoding='utf8')
 
 
 if __name__ == '__main__':
