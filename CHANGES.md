@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.9.3 2021-03-27
+
+- Areavoip stats history available in the scriptlauncher
+- Script to reset accomulated credit/debit
+- `tomatic_shiftload`
+	- option `--forgive` to not take any debit or credit from the past
+	- option `--summary file.tsv` dumps the stages of the computation
+	- all those options made available in script launcher
+
 ## 3.9.2  2021-02-24
 
 - FIX: arevoip api requires new parameter to add agents to queue
