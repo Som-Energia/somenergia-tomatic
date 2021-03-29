@@ -731,11 +731,7 @@ def postAtrCase():
     atc_info = ns.loads(request.data)
 
     today = datetime.today()
-    file_name = "atc_cases/{}{}{}.yaml".format(
-        today.year,
-        today.month if today.month//10 != 0 else "0{}".format(today.month),
-        today.day if today.day//10 != 0 else "0{}".format(today.day),
-    )
+    file_name = "atc_cases/{:%Y%m%d}.yaml".format(today)
     if not os.path.isfile(file_name):
         with open(file_name, "w+"): pass
 
@@ -777,11 +773,7 @@ def postInfoCase():
     info = ns.loads(request.data)
 
     today = datetime.today()
-    file_name = "info_cases/{}{}{}.yaml".format(
-        today.year,
-        today.month if today.month//10 != 0 else "0{}".format(today.month),
-        today.day if today.day//10 != 0 else "0{}".format(today.day),
-    )
+    file_name = "info_cases/{:%Y%m%d}.yaml".format(today)
     if not os.path.isfile(file_name):
         with open(file_name, "w+"): pass
 
