@@ -732,10 +732,9 @@ def postAtrCase():
 
     today = datetime.today()
     file_name = "atc_cases/{:%Y%m%d}.yaml".format(today)
-    if not os.path.isfile(file_name):
-        with open(file_name, "w+"): pass
-
-    atc_cases = ns.load(file_name) or ns()
+    atc_cases = ns()
+    if os.path.isfile(file_name):
+        atc_cases = ns.load(file_name)
 
     if atc_info.person not in atc_cases:
         atc_cases[atc_info.person] = []
@@ -774,10 +773,9 @@ def postInfoCase():
 
     today = datetime.today()
     file_name = "info_cases/{:%Y%m%d}.yaml".format(today)
-    if not os.path.isfile(file_name):
-        with open(file_name, "w+"): pass
-
-    info_cases = ns.load(file_name) or ns()
+    info_cases = ns()
+    if os.path.isfile(file_name):
+        info_cases = ns.load(file_name)
 
     if info.person not in info_cases:
         info_cases[info.person] = []
