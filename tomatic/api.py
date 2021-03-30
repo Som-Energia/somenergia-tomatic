@@ -646,7 +646,6 @@ def getPhoneLog(phone):
     return yamlfy(info=result)
 
 
-@app.route('/api/personlog/', methods=['GET'])
 @app.route('/api/personlog/<ext>', methods=['GET'])
 def getMyLog(ext=-1):
     message = 'ok'
