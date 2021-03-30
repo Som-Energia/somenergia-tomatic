@@ -16,7 +16,7 @@ import erppeek
 from pathlib2 import Path
 from sheetfetcher import SheetFetcher
 from yamlns import namespace as ns
-from consolemsg import error, step, warn
+from consolemsg import error, step, warn, u
 
 from .callinfo import CallInfo
 from . import schedulestorage
@@ -482,23 +482,17 @@ def callingPhone():
     clients = app.websocket_kalinfo_server.websockets.get(ext, [])
     time = datetime.now().strftime('%m-%d-%Y %H:%M:%S')
 
-    if not os.path.exists('atc_cases'):
-        os.makedirs('atc_cases')
+    callRegistry = Path(CONFIG.my_calls_log)
+    if not callRegistry.dirname().exists():
+        callRegistry.dirname().mkdir()
 
-    if not os.path.isfile(CONFIG.my_calls_log):
+    if not callRegistry.exist():
         error("[U] Opening file {} but it doesn't exists", CONFIG.my_calls_log)
         step("Creating file...")
-
-        f = open(CONFIG.my_calls_log, "w+")
-        f.close()
         logs = ns()
     else:
-        logs = ns.load(CONFIG.my_calls_log)
+        logs = ns.load(callRegistry)
 
-    if ext not in logs:
-        logs[ext] = []
-    elif len(logs[ext]) == 20:
-        logs[ext].pop(0)
     info = {
         "data": time,
         "telefon": phone,
@@ -506,8 +500,10 @@ def callingPhone():
         "partner": "",
         "contracte": "",
     }
-    logs[ext].append(info)
-    logs.dump(CONFIG.my_calls_log)
+    logs.setdefault(ext, []).append(info)
+    if len(logs[ext]) > 20:
+        logs[ext].pop(0)
+    logs.dump(callRegistry)
 
     if not clients:
         error("Calling {} but has no client.", ext)
@@ -690,14 +686,10 @@ def updateClaims():
     claims = Claims(o)
     erp_claims = claims.get_claims()
 
-    f = open(CONFIG.claims_file, "w+")
-    for claim in erp_claims:
-        try:
-            f.write(claim.encode('utf-8'))
-        except:
-            f.write(claim)
-        f.write('\n')
-    f.close()
+    Path(CONFIG.claims_file).write_text(
+        '\n'.join([u(x) for x in erp_claims]),
+        encoding='utf8',
+    )
 
     result = ns(
         message=message
@@ -708,13 +700,10 @@ def updateClaims():
 @app.route('/api/getClaims', methods=['GET'])
 def getClaims():
     message = 'ok'
-    claims = []
     claims_dict = []
     try:
-        f = open(CONFIG.claims_file, "r")
-        for line in f:
-            claims.append(line.strip())
-        f.close()
+        with open(CONFIG.claims_file, "r") as f:
+            claims = [ line.strip() for line in f ]
     except IOError:
         message = "error"
         error("File of claims does not exist")
