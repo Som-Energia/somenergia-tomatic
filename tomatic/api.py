@@ -652,14 +652,15 @@ def getCallLog(ext):
     mylog = ""
     try:
         logs = ns.load(CONFIG.my_calls_log)
-        if ext in logs:
-            mylog = logs[ext]
-        else:
-            message = 'not_registers_yet'
-            error("{} does not appear in the register.", ext)
     except IOError:
-        message = 'not_register_yet'
-        error("There are not calls in the register yet.")
+        return yamlinfoerror('not_register_yet',
+            "There are not calls in the register yet.")
+
+    if ext not in logs:
+        return yamlinfoerror('not_registers_yet',
+            "{} does not appear in the register.", ext)
+
+    mylog = logs[ext]
     result = ns(
         info=mylog,
         message=message,
@@ -669,28 +670,23 @@ def getCallLog(ext):
 
 @app.route('/api/updatelog/<ext>', methods=['POST'])
 def updateCallLog(ext):
-    msg = 'ok'
-
     try:
         logs = ns.load(CONFIG.my_calls_log)
         info = ns.loads(request.data)
-        if ext not in logs:
-            logs[ext] = [info]
         for call in logs[ext]:
             if call.data == info.data:
-                i = logs[ext].index(call)
-                logs[ext].pop(i)
-                logs[ext].insert(i, info)
+                call.update(info)
                 break
+        else: # exiting when not found
+            logs.getdefault([]).append(info)
+
         logs.dump(CONFIG.my_calls_log)
         app.websocket_kalinfo_server.say_logcalls_has_changed(ext)
     except ValueError:
-        msg = 'error_update_log'
-        error("[U] Opening file {}: unexpected", CONFIG.my_calls_log)
-    result = ns(
-        message=msg
-    )
-    return yamlfy(info=result)
+        return yamlinfoerror('error_update_log',
+            "[U] Opening file {}: unexpected", CONFIG.my_calls_log)
+
+    return yamlfy(info=ns(message='ok'))
 
 
 @app.route('/api/updateClaims', methods=['GET'])
