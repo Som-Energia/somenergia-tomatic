@@ -496,10 +496,10 @@ def callingPhone():
     time = datetime.now().strftime('%m-%d-%Y %H:%M:%S')
 
     callRegistry = Path(CONFIG.my_calls_log)
-    if not callRegistry.dirname().exists():
-        callRegistry.dirname().mkdir()
+    if not callRegistry.parent.exists():
+        callRegistry.parent.mkdirs()
 
-    if not callRegistry.exist():
+    if not callRegistry.exists():
         error("[U] Opening file {} but it doesn't exists", CONFIG.my_calls_log)
         step("Creating file...")
         logs = ns()
