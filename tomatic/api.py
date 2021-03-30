@@ -526,6 +526,7 @@ def getConnectionInfo():
     return yamlfy(info=result)
 
 
+# Deprecated: not in drive, now in erp
 @app.route('/api/callReasons/<info_type>', methods=['GET'])
 def getReasonsInfo(info_type):
     message = 'ok'
@@ -548,6 +549,7 @@ def getReasonsInfo(info_type):
     return yamlfy(info=result)
 
 
+# Deprecated: not in drive, now in erp
 @app.route('/api/infoReasons', methods=['POST'])
 def savePhoneInfosLog():
     message = 'ok'
@@ -575,6 +577,7 @@ def savePhoneInfosLog():
     return yamlfy(info=result)
 
 
+# Deprecated: not in drive, now in erp
 @app.route('/api/claimReasons', methods=['POST'])
 def savePhoneClaimsLog():
     message = 'ok'
@@ -607,7 +610,7 @@ def savePhoneClaimsLog():
     )
     return yamlfy(info=result)
 
-
+# Deprecated: not in drive, now in erp
 @app.route('/api/log/<phone>', methods=['GET'])
 def getPhoneLog(phone):
     message = 'ok'
