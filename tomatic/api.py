@@ -40,6 +40,14 @@ def fillConfigurationInfo():
     return ns.load('config.yaml')
 
 
+def appendToPersonDailyInfo(prefix, info, date=datetime.today()):
+    path = Path(prefix) / '{:%Y%m%d}.yaml'.format(date)
+    dailyInfo = ns()
+    if path.exists():
+        dailyInfo = ns.load(str(path))
+    dailyInfo.setdefault(info.person, []).append(info)
+    dailyInfo.dump(str(path))
+
 CONFIG = fillConfigurationInfo()
 
 
@@ -729,20 +737,7 @@ def getClaims():
 def postAtrCase():
 
     atc_info = ns.loads(request.data)
-
-    today = datetime.today()
-    file_name = "atc_cases/{:%Y%m%d}.yaml".format(today)
-    atc_cases = ns()
-    if os.path.isfile(file_name):
-        atc_cases = ns.load(file_name)
-
-    if atc_info.person not in atc_cases:
-        atc_cases[atc_info.person] = []
-
-    atc_cases[atc_info.person].append(atc_info)
-
-    atc_cases.dump(file_name)
-
+    appendToPersonDailyInfo('atc_cases', atc_info)
     return yamlfy(info=ns(
         message="ok"
     ))
@@ -770,20 +765,7 @@ def getInfos():
 def postInfoCase():
 
     info = ns.loads(request.data)
-
-    today = datetime.today()
-    file_name = "info_cases/{:%Y%m%d}.yaml".format(today)
-    info_cases = ns()
-    if os.path.isfile(file_name):
-        info_cases = ns.load(file_name)
-
-    if info.person not in info_cases:
-        info_cases[info.person] = []
-
-    info_cases[info.person].append(info)
-
-    info_cases.dump(file_name)
-
+    appendToPersonDailyInfo('info_cases', info)
     return yamlfy(info=ns(
         message="ok"
     ))
