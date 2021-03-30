@@ -339,134 +339,147 @@ def downloadOverload(week):
         mimetype = 'application/x-yaml',
     )
 
+def yamlinfoerror(code, message, *args, **kwds):
+    error(message, *args, **kwds)
+    return yamlfy(info=ns(
+        info='',
+        message=code,
+    ))
+
 @app.route('/api/info/phone/<phone>', methods=['GET'])
 @yamlerrors
 def getInfoPersonByPhone(phone):
-    message = 'ok'
     o = erppeek.Client(**dbconfig.erppeek)
     info = CallInfo(o)
-    data = None
+
     try:
         data = info.getByPhone(phone)
-        if (not data.partners):
-            message = 'no_info'
-        elif data.partners == "Masses resultats":
-            message = 'response_too_long'
     except ValueError:
-        message = 'error_getByPhone'
-        error("Getting information from {}.", phone)
-    result = ns(
+        return yamlinfoerror('error_getByPhone',
+            "Getting information from {}.", phone)
+
+    message = 'ok'
+    if not data.partners:
+        message = 'no_info'
+    elif data.partners == "Masses resultats":
+        message = 'response_too_long'
+
+    return yamlfy(info=ns(
         info=data,
         message=message,
-    )
-    return yamlfy(info=result)
+    ))
 
 
 @app.route('/api/info/name/<name>', methods=['GET'])
 def getInfoPersonByName(name):
     decoded_name = urllib.parse.unquote(name)
-    message = 'ok'
     o = erppeek.Client(**dbconfig.erppeek)
     info = CallInfo(o)
-    data = None
     try:
         data = info.getByName(decoded_name)
-        if (not data.partners):
-            message = 'no_info'
-        elif (data.partners == "Masses resultats"):
-            message = 'response_too_long'
     except ValueError:
-        message = 'error_getByName'
-        error("Getting information from {}.", name)
-    result = ns(
+        return yamlinfoerror('error_getByName',
+            "Getting information from {}.", name)
+
+    message = 'ok'
+    if not data.partners:
+        message = 'no_info'
+    elif data.partners == "Masses resultats":
+        message = 'response_too_long'
+
+    return yamlfy(info=ns(
         info=data,
         message=message,
-    )
-    return yamlfy(info=result)
+    ))
 
 
 @app.route('/api/info/nif/<nif>', methods=['GET'])
 def getInfoPersonByNif(nif):
-    message = 'ok'
     o = erppeek.Client(**dbconfig.erppeek)
     info = CallInfo(o)
-    data = None
+
     try:
         data = info.getByDni(nif)
-        if (not data.partners):
-            message = 'no_info'
-        elif (data.partners == "Masses resultats"):
-            message = 'response_too_long'
     except ValueError:
-        message = 'error_getByDni'
-        error("Getting information from {}.", nif)
-    result = ns(
+        return yamlinfoerror('error_getByDni',
+            "Getting information from {}.", nif)
+
+    message = 'ok'
+    if not data.partners:
+        message = 'no_info'
+    elif data.partners == "Masses resultats":
+        message = 'response_too_long'
+
+    return yamlfy(info=ns(
         info=data,
         message=message,
-    )
-    return yamlfy(info=result)
+    ))
 
 
 @app.route('/api/info/soci/<iden>', methods=['GET'])
 def getInfoPersonBySoci(iden):
-    message = 'ok'
     o = erppeek.Client(**dbconfig.erppeek)
     info = CallInfo(o)
-    data = None
+
     try:
         data = info.getBySoci(iden)
-        if (not data.partners):
-            message = 'no_info'
-        elif (data.partners == "Masses resultats"):
-            message = 'response_too_long'
     except ValueError:
-        message = 'error_getBySoci'
-        error("Getting information from {}.", iden)
-    result = ns(
+        return yamlinfoerror('error_getBySoci',
+            "Getting information from {}.", iden)
+
+    message = 'ok'
+    if not data.partners:
+        message = 'no_info'
+    elif data.partners == "Masses resultats":
+        message = 'response_too_long'
+
+    return yamlfy(info=ns(
         info=data,
         message=message,
-    )
-    return yamlfy(info=result)
+    ))
 
 
 @app.route('/api/info/email/<email>', methods=['GET'])
 def getInfoPersonByEmail(email):
-    message = 'ok'
     o = erppeek.Client(**dbconfig.erppeek)
     info = CallInfo(o)
-    data = None
+
     try:
         data = info.getByEmail(email)
-        if (not data.partners):
-            message = 'no_info'
-        elif (data.partners == "Masses resultats"):
-            message = 'response_too_long'
     except ValueError:
-        message = 'error_getByEmail'
-        error("Getting information from {}.", email)
-    result = ns(
+        return yamlinfoerror('error_getByEmail',
+            "Getting information from {}.", email)
+
+    message = 'ok'
+    if not data.partners:
+        message = 'no_info'
+    elif data.partners == "Masses resultats":
+        message = 'response_too_long'
+
+    return yamlfy(info=ns(
         info=data,
         message=message,
-    )
-    return yamlfy(info=result)
+    ))
 
 
 @app.route('/api/info/all/<field>', methods=['GET'])
 def getInfoPersonBy(field):
     decoded_field = urllib.parse.unquote(field)
-    message = 'ok'
     o = erppeek.Client(**dbconfig.erppeek)
     info = CallInfo(o)
     data = None
     try:
         data = info.getByData(decoded_field)
-        if (not data.partners):
-            message = 'no_info'
-        elif (data.partners == "Masses resultats"):
-            message = 'response_too_long'
     except ValueError:
-        message = 'error_getByData'
-        error("Getting information from {}.", field)
+        return yamlinfoerror('error_getByData',
+            "Getting information from {}.", field)
+
+    message = 'ok'
+    if not data.partners:
+        message = 'no_info'
+    elif data.partners == "Masses resultats":
+        message = 'response_too_long'
+
     result = ns(
         info=data,
         message=message,
