@@ -106,6 +106,18 @@ Holidays are taken from a sheet named as the year, pe. `2020`
 containing named ranges like `Vacances202Semester1`
 which are tables a column for each semester day and a row per person.
 
+### Callerid API for PBX callback
+
+In order for Callinfo page to update whenever you receive a call,
+the PBX should send a POST to the `/api/info/ringring` API entrypoint.
+The postdata should contain two variables `phone` and `ext`
+containing the caller id and the receiving extension.
+
+For example, with curl:
+
+```bash
+$ curl -X POST  $BASEURL/api/info/ringring --data ext=101 --data phone=555441234
+```
 
 
 ## Usage
@@ -272,7 +284,71 @@ sudo supervisorctl restart tomatic
 
 
 
+# Files
+
+- `call_log`:
+	- "registre de trucades (reclamació i no reclamacio)"
+	- `atc_cases/today_calls.yaml`
+	- `config.my_calls_log`
+	- person dict to a list of incomming calls of the day
+- `info_call_log`:
+	- "registre de motius no reclamació"
+	- `info_cases/YYYYMMDD.yaml`
+	- person dict to a list of info cases
+- `info_call_types`:
+	- "tipus de motius no reclamacio"
+	- `info_cases/info_cases.yaml`
+	- `config.info_cases`
+	- NOT A YAML!
+	- a line for each type description
+	- Venen d'un drive de la comi de telefon
+- `claim_log`:
+	- "registre de motius reclamació"
+	- `atc_cases/YYYYMMDD.yaml`
+	- person dict to a list of atc cases (in ordre to create claims in the ERP)
+- `claim_types_keywords`:
+	- "paraules clau dels tipus de motius reclamacio"
+	- `claims_dict.yaml`
+	- `config.claims_dict_file`
+	- dictionary classificacio dels motius
+- `claim_types`:
+	- "tipus de reclamacions"
+	- `claims.yaml`
+	- `config.claims_file`
+	- NOT A YAML!
+	- A line for each type of claim
+
+
+Atc Cases: Formal claims
+Info Cases: The rest of calls not a claim
+
+
+
 # TODO's
+
+- CallInfo
+	- /api/getInfos -> /api/call/infotypes
+	- Pujar infos a l'ERP
+	- Commit `info_cases/info_cases.yaml`
+	- Commit `claims_dict.yaml`
+	- /api/updateClaims -> /api/call/claimtypes/update
+	- /api/getClaims -> /api/call/claimtypes
+	- /api/updatelog/<ext> -> /api/call/log/<ext>
+	- /api/personlog without <ext> has no sense, remove it
+	- /api/personlog/<ext> en els casos de fallada returnar una llista buida sense errors (no son de fallada, encara no hi ha logs i prou)
+	- /api/personlog/<ext> /api/call/log/<ext>
+	- /api/api/log Deprecated
+	- components/call.js:getLog Deprecrated
+	- /api/claimReasons Deprecated (no ui code aparently)
+	- /api/infoReasons Deprecated (no ui code aparently)
+	- /api/callReasons Deprecated (no ui code aparently)
+	- Revisar handshaking dels websockets
+	- /api/info/ringring -> /api/call/ringring
+	- Fer la data ISO al call_log
+	- /api/info/all/<field> -> /api/info/by/any/<value>
+	- /api/info/xxxx/<field> -> /api/info/by/xxxx/<value>
+	- Refactoritzar codi comu dels getInfoPersonByXXXX
+
 
 - Refactoring
 	- [x] use persons interface everywhere

@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.10.0 2021-03-29
+
+- CallInfo interface reworked
+
 ## 3.9.3 2021-03-27
 
 - Areavoip stats history available in the scriptlauncher
