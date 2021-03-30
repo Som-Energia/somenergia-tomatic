@@ -3,6 +3,11 @@
 ## 3.10.0 2021-03-29
 
 - CallInfo interface reworked
+- Refactoring Callinfo interface in separated components
+- Added contract more information
+- Refactored calls register. Now saved in local (not in drive)
+- Added claims script to save cases to ERP
+
 
 ## 3.9.3 2021-03-27
 
