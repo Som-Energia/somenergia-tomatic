@@ -647,7 +647,7 @@ def getPhoneLog(phone):
 
 
 @app.route('/api/personlog/<ext>', methods=['GET'])
-def getMyLog(ext=-1):
+def getCallLog(ext):
     message = 'ok'
     mylog = ""
     try:
@@ -668,7 +668,7 @@ def getMyLog(ext=-1):
 
 
 @app.route('/api/updatelog/<ext>', methods=['POST'])
-def updateMyLog(ext):
+def updateCallLog(ext):
     msg = 'ok'
 
     try:
@@ -694,7 +694,7 @@ def updateMyLog(ext):
 
 
 @app.route('/api/updateClaims', methods=['GET'])
-def updateClaims():
+def updateClaimTypes():
     message = 'ok'
 
     o = erppeek.Client(**dbconfig.erppeek)
@@ -713,7 +713,7 @@ def updateClaims():
 
 
 @app.route('/api/getClaims', methods=['GET'])
-def getClaims():
+def getClaimTypes():
     message = 'ok'
     claims_dict = []
     try:
