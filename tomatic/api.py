@@ -163,8 +163,8 @@ def editSlot(week, day, houri, turni, name):
         datetime.now(),
         myname, # TODO: ERP user
         day,
-        graella.hours[int(houri)], 
-        graella.hours[int(houri)+1], 
+        graella.hours[int(houri)],
+        graella.hours[int(houri)+1],
         graella.turns[int(turni)],
         oldName,
         name
