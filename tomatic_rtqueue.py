@@ -8,6 +8,7 @@ from tomatic.schedulestorage import Storage
 from tomatic.scheduling import choosers, Scheduling
 from tomatic.remote import Remote
 from tomatic.persons import extension
+from tomatic.directmessage.hangouts import send
 from consolemsg import u, step, out
 import dbconfig
 import sys
@@ -159,6 +160,36 @@ def status(queue, yaml=False):
 			)
 		))
 	click.echo(80*"=")
+
+
+@cli.command()
+@queue_option
+def monitor(queue):
+    def disconnected(agents):
+        return {
+            agent.key
+            for agent in agents
+            if agent.disconnected and not agent.paused
+        }
+
+    db = pbx()
+    try:
+        previous = ns.load('monitor.yaml').queue
+    except:
+        previous = []
+
+    current = db.queue(queue)
+
+    newDisconnected = disconnected(current) - disconnected(previous)
+
+    if newDisconnected:
+        print("Compte: agents desconectades: {}".format(', '.join(list(newDisconnected))))
+        if dbconfig.tomatic.get('monitorChatChannel', None):
+            send(dbconfig.tomatic.monitorChatChannel,
+                "Compte: agents desconectades: {}".format(', '.join(list(newDisconnected))))
+
+    # Store the current for the next monitoring
+    ns(queue=current).dump('monitor.yaml')
 
 
 
