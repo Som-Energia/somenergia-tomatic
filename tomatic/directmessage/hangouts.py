@@ -15,7 +15,6 @@ from hangups.hangouts_pb2 import (
     InviteeID,
     SEGMENT_TYPE_LINE_BREAK,
 )
-import sys
 import appdirs
 import os
 from yamlns import namespace as ns
