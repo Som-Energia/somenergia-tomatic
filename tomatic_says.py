@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
-from tomatic.directmessage.hangouts import send
+from tomatic.directmessage import send
 from consolemsg import step
 
 if __name__ == '__main__':

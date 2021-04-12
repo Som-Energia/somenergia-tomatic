@@ -8,7 +8,7 @@ from tomatic.schedulestorage import Storage
 from tomatic.scheduling import choosers, Scheduling
 from tomatic.remote import Remote
 from tomatic.persons import extension
-from tomatic.directmessage.hangouts import send
+from tomatic.directmessage import send
 from consolemsg import u, step, out
 import dbconfig
 import sys
