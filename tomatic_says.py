@@ -21,8 +21,6 @@ import os
 from yamlns import namespace as ns
 from consolemsg import success, step, error, out
 
-import click
-
 
 config = ns.load('config.yaml')
 persons = ns.load('persons.yaml')
@@ -138,21 +136,7 @@ async def send_message(client, channel, message):
         await client.disconnect()
 
 
-@click.command()
-@click.argument('message', nargs=-1)
-@click.option('-c', '--channel',
-    help='message target: a hangout channel id, email or tomatic user',
-    )
-@click.option('-t', '--tokenfile',
-    help='Token file instead the default one',
-    )
-def main(tokenfile, channel, message):
-    if not message:
-        message = sys.stdin.read()
-    else:
-        message=' '.join(message)
-    step("Sending: '{}'", message)
-
+def send(channel, message, tokenfile=None):
     if not tokenfile:
         dirs = appdirs.AppDirs('hangups', 'hangups')
         tokenfile = os.path.join(dirs.user_cache_dir, 'refresh_token.txt')
@@ -169,6 +153,25 @@ def main(tokenfile, channel, message):
 
 
 if __name__ == '__main__':
+    import click
+
+    @click.command()
+    @click.argument('message', nargs=-1)
+    @click.option('-c', '--channel',
+        help='message target: a hangout channel id, email or tomatic user',
+        )
+    @click.option('-t', '--tokenfile',
+        help='Token file instead the default one',
+        )
+    def main(channel, message, tokenfile):
+        if not message:
+            message = sys.stdin.read()
+        else:
+            message=' '.join(message)
+        step("Sending: '{}'", message)
+
+        send(channel, message, tokenfile)
+
     main()
 
 # vim: et ts=4 sw=4
