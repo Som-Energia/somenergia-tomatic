@@ -19,10 +19,9 @@ import appdirs
 import os
 from yamlns import namespace as ns
 from consolemsg import success, step, error, out
-
+from ..persons import persons
 
 config = ns.load('config.yaml')
-persons = ns.load('persons.yaml')
 
 
 async def open_conversation(client, conversation_name, *gaia_ids):
@@ -46,10 +45,10 @@ async def resolveChannel(client, channel):
         channel = config.hangoutChannel
 
     # If the convesation is a tomatic person, get its email
-    if channel in persons.emails:
+    if channel in persons().emails:
         step("Tomatic person {} with email {}",
-            channel, persons.emails[channel])
-        channel = persons.emails[channel]
+            channel, persons().emails[channel])
+        channel = persons().emails[channel]
 
     user_list, conversation_list = (
         await hangups.build_user_conversation_list(client)
@@ -81,7 +80,7 @@ async def resolveChannel(client, channel):
 
     error("No matching conversation target")
 
-    emails = dict((email, person) for person, email in persons.emails.items())
+    emails = dict((email, person) for person, email in persons().emails.items())
     out('{} known users'.format(len(all_users)))
     for user in all_users:
         email = user.emails[0] if user.emails else '???'
