@@ -308,6 +308,7 @@ def parseArgs():
     parser.add_argument(
         '--holidays',
         default='drive',
+        choices='drive notoi odoo'.split(),
         help="Origen d'on agafa les vacances",
     )
 
@@ -372,11 +373,13 @@ def parseArgs():
 
     return parser.parse_args()
 
+from .retriever import (
+    downloadVacations,
+)
+
 from .scheduler import (
     baixaPersones,
     baixaIndisponibilitatsTomatic,
-    baixaVacancesNotoi,
-    baixaVacancesDrive,
     baixaCarregaIdeal,
     baixaLeaves,
     downloadShiftCredit,
@@ -429,10 +432,8 @@ def main():
             baixaCarregaIdeal(config, args.certificate)
         if not config.get('busyFiles'):
             baixaIndisponibilitatsTomatic(config)
-            if args.holidays == 'notoi':
-                baixaVacancesNotoi(config)
-            else: # args.holidays == 'drive':
-                baixaVacancesDrive(config, args.certificate)
+            config.driveCertificate = args.certificate
+            downloadVacations(config, source=args.holidays)
 
         step("Baixant bossa d'hores del tomatic...")
         downloadShiftCredit(config)

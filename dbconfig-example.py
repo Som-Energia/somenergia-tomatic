@@ -39,6 +39,19 @@ tomatic=ns(
         user='webmaster',
         path='/home/webmaster/timetables/',
     ),
+    # Configure this to download vacations from Notoi API
+    no_notoi_data = ns(
+        service_url = "https://....",
+        user = "myuser",
+        password = "mypassword",
+    ),
+    # Configure this to download vacations from odoo
+    no_holidaysodoo = ns(
+        server='https://xxx.xxx.xxx.xxx:xxxx',
+        db="odoo",
+        user="tomatic",
+        password="mypasword",
+    ),
 
     # from and to mails for daily stats report
     dailystats = ns(
@@ -47,6 +60,8 @@ tomatic=ns(
             'supervisor@mycompany.com',
         ],
     ),
+    # Hangout channel to warn managers
+    monitorChatChannel = 'Telefon',
 )
 # Used to send mails
 smtp = ns(

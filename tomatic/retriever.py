@@ -3,12 +3,25 @@
 
 from __future__ import print_function
 import requests
-from consolemsg import step, out
+from consolemsg import step, out, warn, fail, u
+import datetime
 
 # Dirty Hack: Behave like python3 open regarding unicode
 def open(*args, **kwd):
-    import codecs
-    return codecs.open(encoding='utf8', *args, **kwd)
+    import io
+    return io.open(encoding='utf8', *args, **kwd)
+
+def transliterate(word):
+    word=u(word).lower().strip()
+    for old, new in zip(
+        u'àèìòùáéíóúçñ',
+        u'aeiouaeioucn',
+    ) :
+        word = word.replace(old,new)
+    return word
+
+def addDays(date, ndays):
+    return date + datetime.timedelta(days=ndays)
 
 
 class Notoi(object):
@@ -61,7 +74,7 @@ class Notoi(object):
         return result
 
 
-def baixaVacancesNotoi(config):
+def downloadVacations_notoi(config):
     step("Baixant vacances del gestor d'absencies...")
 
     import dbconfig
@@ -103,8 +116,106 @@ def baixaVacancesNotoi(config):
                 out("+{} {} # vacances", name, day)
                 holidaysfile.write("+{} {} # vacances\n".format(name, day))
 
+def downloadVacations_odoo(config):
+    step("Baixant vacances de l'odoo...")
+
+    import dbconfig
+    import erppeek
+    erp = erppeek.Client(**dbconfig.tomatic.holidaysodoo)
+    firstDay = addDays(config.monday, 0)
+    lastDay = addDays(config.monday, 4)
+    absences = erp.model('hr.leave').get_leaves(str(firstDay), str(lastDay))
+
+    def dateFromIso(isoString):
+        return datetime.datetime.strptime(
+                isoString,
+                '%Y-%m-%d %H:%M:%S'
+            ).date()
+    email2tomatic = {
+        email: id
+        for id, email in config.emails.items()
+    }
+
+    step("  Guardant indisponibilitats per vacances a 'indisponibilitats-vacances.conf'...")
+    weekdays = ['dl', 'dm', 'dx', 'dj', 'dv']
+    days = [addDays(config.monday, i) for i in range(5)]
+    with open('indisponibilitats-vacances.conf', 'w') as holidaysfile:
+        for absence in absences:
+            name = email2tomatic.get(absence['worker'])
+            if name is None:
+                warn("Ignorant les vacances de {} que no està al Tomàtic",
+                    absence['worker'])
+                continue
+
+            start = dateFromIso(absence['start_time'])
+            end = dateFromIso(absence['end_time'])
+            for weekday, day in zip(weekdays, days):
+                if start <= day <= end:
+                    out("+{} {} # vacances", name, weekday)
+                    holidaysfile.write("+{} {} # vacances\n".format(name, weekday))
 
 
+
+def downloadVacations_drive(config):
+    from sheetfetcher import SheetFetcher
+    step('Autentificant al Google Drive')
+    fetcher = SheetFetcher(
+        documentName=config.documentDrive,
+        credentialFilename=config.driveCertificate,
+    )
+
+    step('Baixant vacances del drive...')
+
+    nextFriday = addDays(config.monday, 4)
+    mondayYear = config.monday.year
+    startingSemester = 1 if config.monday < datetime.date(mondayYear,7,1) else 2
+
+    # HACK: Activate this flag until we have holidays spreadsheet for the new year
+    if config.get("newYearHack",False):
+        mondayYear-=1
+        startingSemester = 2
+
+    semesterFirsMonth = 1 if startingSemester==1 else 7
+    semesterFirstDay = datetime.date(mondayYear, semesterFirsMonth, 1)
+    startingOffset = (config.monday - semesterFirstDay).days
+
+    holidays2SRange = 'Vacances{}Semestre{}'.format(
+        mondayYear,
+        startingSemester,
+        )
+    step("  Baixant vacances de l'interval {}".format(holidays2SRange))
+    holidays2S = fetcher.get_range(u(mondayYear), holidays2SRange)
+
+    # TODO: Compose from two semesters (won't happen till 2018 Jan)
+#    endingSemester = 1 if nextFriday < datetime.date(mondayYear,7,1) else 2
+#    if startingSemester == endingSemester :
+    who = [row[0] for row in holidays2S ]
+    holidays = [
+        (transliterate(name), [
+            day for day, value in zip(
+                ['dl','dm','dx','dj','dv'],
+                row[startingOffset+1:startingOffset+6]
+                )
+            if value.strip()
+            ])
+        for name, row in zip(who, holidays2S)
+        ]
+    step("  Guardant indisponibilitats per vacances a 'indisponibilitats-vacances.conf'...")
+    with open('indisponibilitats-vacances.conf','w') as holidaysfile:
+        for name, days in holidays:
+            for day in days:
+                holidaysfile.write("+{} {} # vacances\n".format(name, day))
+
+
+def downloadVacations(config, source=None):
+    if source=='notoi':
+        return downloadVacations_notoi(config)
+    if source=='odoo':
+        return downloadVacations_odoo(config)
+    if source=='drive':
+        return downloadVacations_drive(config)
+
+    fail("Bad source for vacations: {}".format(source))
 
 
 # vim: et ts=4 sw=4

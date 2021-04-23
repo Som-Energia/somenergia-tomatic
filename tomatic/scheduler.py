@@ -17,22 +17,16 @@ from yamlns import namespace as ns
 from sheetfetcher import SheetFetcher
 from .htmlgen import HtmlGen
 from . import busy
+from .retriever import (
+    downloadVacations,
+    addDays,
+    transliterate,
+)
+
 
 # Dirty Hack: Behave like python3 open regarding unicode
 def open(*args, **kwd):
     return io.open(encoding='utf8', *args, **kwd)
-
-def transliterate(word):
-    word=u(word).lower().strip()
-    for old, new in zip(
-        u'àèìòùáéíóúçñ',
-        u'aeiouaeioucn',
-    ) :
-        word = word.replace(old,new)
-    return word
-
-def addDays(date, ndays):
-    return date + datetime.timedelta(days=ndays)
 
 def createTable(defaultValue, *iterables) :
     """Creates a table with as many cells as the cross product of the iterables"""
@@ -125,101 +119,6 @@ def downloadShiftCredit(config):
     r.raise_for_status()
     Path(filename).write_bytes(r.content)
 
-def baixaVacancesDrive(config, certificat):
-    step('Autentificant al Google Drive')
-    fetcher = SheetFetcher(
-        documentName=config.documentDrive,
-        credentialFilename=certificat,
-    )
-
-    step('Baixant vacances del drive...')
-
-    nextFriday = addDays(config.monday, 4)
-    mondayYear = config.monday.year
-    startingSemester = 1 if config.monday < date(mondayYear,7,1) else 2
-
-    # HACK: Activate this flag until we have holidays spreadsheet for the new year
-    if config.get("newYearHack",False):
-        mondayYear-=1
-        startingSemester = 2
-
-    semesterFirsMonth = 1 if startingSemester==1 else 7
-    semesterFirstDay = date(mondayYear, semesterFirsMonth, 1)
-    startingOffset = (config.monday - semesterFirstDay).days
-
-    holidays2SRange = 'Vacances{}Semestre{}'.format(
-        mondayYear,
-        startingSemester,
-        )
-    step("  Baixant vacances de l'interval {}".format(holidays2SRange))
-    holidays2S = fetcher.get_range(u(mondayYear), holidays2SRange)
-
-    # TODO: Compose from two semesters (won't happen till 2018 Jan)
-#    endingSemester = 1 if nextFriday < date(mondayYear,7,1) else 2
-#    if startingSemester == endingSemester :
-    who = [row[0] for row in holidays2S ]
-    holidays = [
-        (transliterate(name), [
-            day for day, value in zip(
-                ['dl','dm','dx','dj','dv'],
-                row[startingOffset+1:startingOffset+6]
-                )
-            if value.strip()
-            ])
-        for name, row in zip(who, holidays2S)
-        ]
-    step("  Guardant indisponibilitats per vacances a 'indisponibilitats-vacances.conf'...")
-    with open('indisponibilitats-vacances.conf','w') as holidaysfile:
-        for name, days in holidays:
-            for day in days:
-                holidaysfile.write("+{} {} # vacances\n".format(name, day))
-
-from . retriever import (
-    baixaVacancesNotoi,
-    Notoi,
-)
-
-def baixaVacancesNotoi(config):
-    step("Baixant vacances del gestor d'absencies...")
-
-    import dbconfig
-    notoiApi = Notoi(**dbconfig.tomatic.notoi_data)
-
-    firstDay = addDays(config.monday, -1)
-    lastDay = addDays(config.monday, +5)
-    absences = notoiApi.absences(firstDay, lastDay)
-    notoipersons = [ns(p) for p in notoiApi.persons()]
-    email2tomatic = {
-        email: id
-        for id, email in config.emails.items()
-    }
-    notoi2tomatic = {
-        p.id: email2tomatic[p.email]
-        for p in notoipersons
-    }
-
-    step("  Guardant indisponibilitats per vacances a 'indisponibilitats-vacances.conf'...")
-    translate_days = ['dl', 'dm', 'dx', 'dj', 'dv']
-
-    def dateFromIso(isoString):
-        return datetime.datetime.strptime(
-                isoString,
-                '%Y-%m-%dT%H:%M:%S'
-            ).date()
-
-    with open('indisponibilitats-vacances.conf', 'w') as holidaysfile:
-        for absence in absences:
-            name = notoi2tomatic.get(absence['worker'])
-            start = dateFromIso(absence['start_time'])
-            end = dateFromIso(absence['end_time'])
-            days = [
-                translate_days[weekday]
-                for weekday in range(5)
-                if start <= addDays(config.monday, weekday) <= end
-            ]
-            for day in days:
-                out("+{} {} # vacances", name, day)
-                holidaysfile.write("+{} {} # vacances\n".format(name, day))
 
 class Backtracker(object):
     class ErrorConfiguracio(Exception): pass
@@ -916,6 +815,7 @@ def parseArgs():
     parser.add_argument(
         '--holidays',
         default='drive',
+        choices='drive notoi odoo'.split(),
         help="Origen d'on agafa les vacances",
     )
 
@@ -1028,10 +928,8 @@ def main():
             downloadOverload(config)
         if not config.get('busyFiles'):
             baixaIndisponibilitatsTomatic(config)
-            if args.holidays == 'notoi':
-                baixaVacancesNotoi(config)
-            else: # args.holidays == 'drive':
-                baixaVacancesDrive(config, args.certificate)
+            config.drive_certificate = args.certificate
+            downloadVacations(config, source=args.holidays)
 
     if args.search_days:
         config.diesCerca = args.search_days.split(',')
