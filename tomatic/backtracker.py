@@ -837,14 +837,13 @@ def main():
     config.overloadfile = args.overload or "overload-{}.yaml".format(config.monday)
 
     if not args.keep:
-
+        config.driveCertificate = args.certificate
         if mustDownloadShifts:
             downloadShiftload(config)
         if mustDownloadOverload:
             downloadOverload(config)
         if not config.get('busyFiles'):
             downloadBusy(config)
-            config.drive_certificate = args.certificate
             downloadVacations(config, source=args.holidays)
 
     if args.search_days:
