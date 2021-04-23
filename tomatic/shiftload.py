@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import csv
-from sheetfetcher import SheetFetcher
 from consolemsg import error, warn, step, success, fail, out
 from yamlns import namespace as ns
 import os.path
@@ -373,21 +372,18 @@ def parseArgs():
 
     return parser.parse_args()
 
-from .retriever import (
-    downloadVacations,
-)
-
-from .scheduler import (
-    baixaPersones,
-    baixaIndisponibilitatsTomatic,
-    baixaCarregaIdeal,
-    baixaLeaves,
-    downloadShiftCredit,
-)
-
 args=None
 
 def main():
+    from .retriever import (
+        downloadPersons,
+        downloadLeaves,
+        downloadIdealLoad,
+        downloadBusy,
+        downloadVacations,
+        downloadShiftCredit,
+    )
+
     global args
 
     args = parseArgs()
@@ -401,7 +397,7 @@ def main():
 
     config.personsfile = args.personsfile or config.get('personsfile', 'persons.yaml')
     if not args.keep and not args.personsfile:
-        baixaPersones(config)
+        downloadPersons(config)
 
     if config.personsfile and Path(config.personsfile).exists():
         config.update(ns.load(config.personsfile))
@@ -426,13 +422,13 @@ def main():
 
     if not args.keep:
         step("Baixant persones de baixa del drive...")
-        baixaLeaves(config, args.certificate)
+        config.driveCertificate = args.certificate
+        downloadLeaves(config, args.certificate)
 
         if mustDownloadShifts:
-            baixaCarregaIdeal(config, args.certificate)
+            downloadIdealLoad(config, args.certificate)
         if not config.get('busyFiles'):
-            baixaIndisponibilitatsTomatic(config)
-            config.driveCertificate = args.certificate
+            downloadBusy(config)
             downloadVacations(config, source=args.holidays)
 
         step("Baixant bossa d'hores del tomatic...")

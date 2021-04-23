@@ -3,8 +3,11 @@
 
 from __future__ import print_function
 import requests
-from consolemsg import step, out, warn, fail, u
 import datetime
+from pathlib2 import Path
+from consolemsg import step, out, warn, fail, u
+from yamlns import namespace as ns
+from sheetfetcher import SheetFetcher
 
 # Dirty Hack: Behave like python3 open regarding unicode
 def open(*args, **kwd):
@@ -157,7 +160,6 @@ def downloadVacations_odoo(config):
 
 
 def downloadVacations_drive(config):
-    from sheetfetcher import SheetFetcher
     step('Autentificant al Google Drive')
     fetcher = SheetFetcher(
         documentName=config.documentDrive,
@@ -216,6 +218,93 @@ def downloadVacations(config, source=None):
         return downloadVacations_drive(config)
 
     fail("Bad source for vacations: {}".format(source))
+
+def downloadShiftload(config):
+    step('Baixant carrega setmanal...')
+    url = config.baseUrl + '/api/shifts/download/shiftload/{}'.format(config.monday)
+    step("  Baixant {} from {}", config.weekShifts, url)
+    r = requests.get(url)
+    r.raise_for_status()
+    Path(config.weekShifts).write_bytes(r.content)
+
+def downloadOverload(config):
+    url = config.baseUrl + '/api/shifts/download/overload/{}'.format(config.monday)
+    step("  Baixant {} from {}", config.overloadfile, url)
+    r = requests.get(url)
+    r.raise_for_status()
+    Path(config.overloadfile).write_bytes(r.content)
+
+def downloadIdealLoad(config, certificat):
+    step('Autentificant al Google Drive')
+    fetcher = SheetFetcher(
+        documentName=config.documentDrive,
+        credentialFilename=certificat,
+        )
+
+    step('Baixant carrega setmanal...')
+
+    step("  Descarregant el rang '{}'...", config.idealLoadNamesRange)
+    names = fetcher.get_range(
+        config.fullCarregaIdeal, config.idealLoadNamesRange)
+    step("  Descarregant el rang '{}'...", config.idealLoadValuesRange)
+    values = fetcher.get_range(
+        config.fullCarregaIdeal, config.idealLoadValuesRange)
+    step("  Guardant-ho com '{}'...".format(config.idealshifts))
+    carregaIdeal = ns(
+        (transliterate(name[0]), int(value[0]))
+        for name, value in zip(names,values))
+    carregaIdeal.dump(config.idealshifts)
+
+def downloadLeaves(config, certificat):
+    step('Autentificant al Google Drive')
+    fetcher = SheetFetcher(
+        documentName=config.documentDrive,
+        credentialFilename=certificat,
+        )
+    leavesSheet = config.get('leavesSheet',"Baixes")
+    leavesFile = "leaves.conf"
+
+    step('Baixant baixes...')
+
+    step("  Descarregant fulla '{}'...", leavesSheet)
+    leaves = fetcher.get_fullsheet(leavesSheet)
+    leaves = u'\n'.join([person for line in leaves for person in line])
+    step("  Guardant-ho com '{}'...".format(leavesFile))
+    Path(leavesFile).write_text(leaves, encoding='utf8')
+
+def downloadPersons(config):
+    step("Baixant informació de les persones del tomatic...")
+    url = config.baseUrl + '/api/persons'
+    r = requests.get(url)
+    r.raise_for_status()
+    from yamlns import namespace as ns
+    persons = ns.loads(r.content)
+    persons.persons.dump(config.personsfile)
+
+
+def downloadBusy(config):
+    step("Baixant indisponibilitats del tomatic...")
+
+    baseUrl = config.baseUrl + '/api/busy/download/'
+    for name, filename in [
+            ('weekly', 'indisponibilitats.conf'),
+            ('oneshot', 'oneshot.conf'),
+        ]:
+        url = baseUrl + name
+        step("  Baixant {} from {}", filename, url)
+        r = requests.get(url)
+        r.raise_for_status()
+        Path(filename).write_bytes(r.content)
+
+def downloadShiftCredit(config):
+    step("Baixant crèdit de torns del tomatic...")
+    pastMonday = addDays(config.monday,-7)
+    url = config.baseUrl + '/api/shifts/download/credit/{}'.format(pastMonday)
+    filename='shiftcredit.yaml'
+    step("  Baixant {} from {}", filename, url)
+    r = requests.get(url)
+    r.raise_for_status()
+    Path(filename).write_bytes(r.content)
 
 
 # vim: et ts=4 sw=4
