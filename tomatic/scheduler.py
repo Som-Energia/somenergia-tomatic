@@ -17,12 +17,6 @@ from yamlns import namespace as ns
 from sheetfetcher import SheetFetcher
 from .htmlgen import HtmlGen
 from . import busy
-from .retriever import (
-    downloadVacations,
-    downloadBusy,
-    addDays,
-    transliterate,
-)
 
 
 # Dirty Hack: Behave like python3 open regarding unicode
@@ -792,6 +786,14 @@ def parseArgs():
 args=None
 
 def main():
+    from .retriever import (
+        downloadPersons,
+        downloadVacations,
+        downloadBusy,
+        downloadShiftload,
+        downloadOverload,
+        addDays,
+    )
     global args
 
     args = parseArgs()
