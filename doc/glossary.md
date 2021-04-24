@@ -31,7 +31,10 @@ incorporació en el codi font.
 - **indisponibilitat puntual:** (_oneshot busy_) La que succedeix puntualment un dia
 - **indisponibilitat opcional:** (_optional busy_) La que es podria negociar en cas de que no hi hagi graelles viables.
 - **indisponibilitat forçosa:** (_unavoidable busy_) La que no es pot negociar
-- **càrrega:** (_load_) Nombre de torns que fa algú en una setmana. Pot ser discriminada per linies o no
+- **càrrega:** (_load_) Nombre de torns que fa algú en una setmana.
+- **càrrega discriminada (_discriminated load_):**
+	La càrrega es discriminada per línies si considerem que no es el mateix esforç fer una primera línia que una darrera.
+	En aquest cas, hem de dir quants torns farà cadascú a primera, a segona, a tercera... linia.
 - **càrrega ideal:** (_ideal load_) Càrrega que asumeix setmanalment cada persona pel seu perfil i antiguitat
 - **absència alliberadora** (_free day off_) Indisponibilitats que redueixen la càrrega setmanal d'una persona.
     - Ara considerem alliberadores: Festius, vacances, baixes i viatges laborals
