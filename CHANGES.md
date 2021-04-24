@@ -2,6 +2,9 @@
 
 ## 3.10.0 2021-03-29
 
+- Monitor agents not connected, notified by hangouts
+- Vacations taken from odoo
+- Split scheduler into retriever and backtracker
 - CallInfo: Nicer user interface
 - Callinfo: Refactoring ui in separated components
 - Callinfo: Added more contract information (meter readings, invoices...)
