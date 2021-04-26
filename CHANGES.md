@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.10.0 2021-03-29
+## unreleased
 
 - Monitor agents not connected, notified by hangouts
 - Vacations taken from odoo
@@ -10,7 +10,6 @@
 - Callinfo: Added more contract information (meter readings, invoices...)
 - Callinfo: Calls register now saved in local (not in drive)
 - Callinfo: Added claims script to save cases to ERP
-
 
 ## 3.9.3 2021-03-27
 

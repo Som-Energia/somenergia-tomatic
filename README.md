@@ -7,7 +7,7 @@ Somenergia Phone Support Helper
 
 This software is used within SomEnergia cooperative to manage phone support to members and clients.
 
-- Distributes turns among the staff.
+- Distributes helpline shifts among the staff.
 
 	Given the ideal load and availability for everyone, and some restrictions
 	to ensure staff wellbeing and service quality,
@@ -18,9 +18,9 @@ This software is used within SomEnergia cooperative to manage phone support to m
 	Often unscheduled meetings and other issues makes the computed timetable unpractical.
 	The web interface can be used to swap turns and keep track of the changes.
 
-- Asterisk queues programming according the timetable.
+- Programming Asterisk queues according the timetable.
 
-	Each turn, the Asterisk queue is reloaded in order to meet the timetable.
+	Asterisk queue is reload for each turn automatically.
 
 - Pause/Resume extensions or adding more lines during service
 
@@ -30,9 +30,9 @@ This software is used within SomEnergia cooperative to manage phone support to m
 
 - Incomming call info
 
-	Call id is used to retrieve information from the ERP useful
-	for resolving calls faster and better.
-
+	For each incomming call agents get a refreshed view of the ERP
+	information related to that number: contracts, invoices, alerts,
+	previous notes... this way agents can resolve calls faster and better.
 
 
 ## Setup
@@ -40,16 +40,20 @@ This software is used within SomEnergia cooperative to manage phone support to m
 ### Dependencies and assets building
 
 ```bash
-sudo apt-get install gcc libpython2.7-dev libffi-dev libssl-dev nodejs-legacy npm
-python setup develop
+sudo apt-get install gcc libpython2.7-dev libffi-dev libssl-dev nodejs-legacy npm virtualenvwrapper
 npm install
 npm run build # for development assets
 npm run deploy # for production assets
+mkvirtualenvwrapper tomatic
+python setup develop
 ```
+
+### Configuration
+
 
 ### Setting up cron tasks
 
-This is needed in order to enable automatic asterisk turn switching
+This is needed in order to enable automatic asterisk shift switching
 and hangouts notifications.
 
 ```bash
@@ -77,22 +81,25 @@ since it is not compatible with Python 2.
 - Write down channel ID in `config.yaml` as `hangoutChannel`
 - You can test it by running `tomatic_says.py hello world`
 
-### Google Drive data sources
+## Google Drive data sources
 
-In order  to compute personal load,
-scheduler requires some input data to be taken from
-a Google Drive Spreadsheet document.
-You might also use `--keep` option to relay in local files instead,
+Computing timetables requires access to a Google Drive Spreadsheet
+where you store the source configuration: vacations, leaves, ideal work load...
+In order to access it, you must provide a certificate.
+Google change the interface so often is hard to provide a set of steps.
+In overall it would be:
 
-In order to access it you will require a oauth2 certificate and to grant it
-access to the Document.
+- Create a project in https://console.developers.google.com/project
+- Create a service account within the project (service email address)
+- Create a credential key within the service account (will result in a json file with a key)
+- Save that file as `drive-certificate.json` in the root folder of tomatic code
+- Take the `client_email` key in the json file and grant that mail access to the spreadsheet
 
-Follow instructions in http://gspread.readthedocs.org/en/latest/oauth2.html
+The gspread library, this is using provide a more detailed and up to date steps:
+http://gspread.readthedocs.org/en/latest/oauth2.html
 
-You can skip steps 5 (already in installation section in this document) and
-step 6 (code related) but **don't skip step 7**.
-
-Create a link named 'certificate.json' pointing to the actual certificate.
+If you don't want to download the configuration data from the Google Drive
+SpreadSheet, you can provide the `--keep` option to the commands.
 
 Related parameters in `config.yaml` file are:
 
@@ -118,7 +125,6 @@ For example, with curl:
 ```bash
 $ curl -X POST  $BASEURL/api/info/ringring --data ext=101 --data phone=555441234
 ```
-
 
 ## Usage
 
@@ -189,25 +195,6 @@ $ ./tomatic_rtqueue.py show
 
 
 
-
-## Deployment notes
-
-In order to access the configuration available in the Google Drive SpreadSheet
-you must provide a 
-
-- Create a Google Apps credential:
-    - Create a project in https://console.developers.google.com/project
-    - Go to “Credentials” and hit “Create new Client ID”.
-    - Select “Service account”. Hitting “Create Client ID” will generate a new
-      Public/Private key pair.
-    - Download and save it as 'credential.json' in the same folder the script is
-    - Take the `client_email` key in the json file and grant it access to the
-      'Vacances' file as it was a google user
-
-If you don't want to download the configuration data from the Google Drive
-SpreadSheet, you can provide the `--keep` option.
-
-
 # Developers notes
 
 ## How to release
@@ -217,7 +204,7 @@ SpreadSheet, you can provide the `--keep` option.
 	- `tomatic/__init__.py`
 - Add versions changes to `CHANGES.md`
 - Commit
-- `git tag tomatic-M.m.r` Major minor release
+- `git tag tomatic-M.m.r` (Major minor release)
 - `git push`
 - `git push --tags`
 
@@ -266,7 +253,7 @@ sudo supervisorctl restart tomatic
 
 ## Information Access
 
-- `retriever.py`: Encapsulates NoToi API (holidays and other personal information)
+- `retriever.py`: Encapsulates access to data sources (API's, drive documents...)
 - `busy.py`: Encapsulates person availability information
 - `persons.py`: Encapsulates person profiles (name, extension, email, color, groups, table...)
 - `schedulestorage.py`: Encapsulates the timetables directory
@@ -276,7 +263,7 @@ sudo supervisorctl restart tomatic
 ## Timetable generation
 
 - `shiftload.py`: Compute how many shifts each person has to do weekly
-- `scheduler.py`: The main timetable solver
+- `backtracker.py`: The main timetable solver
 
 ## CRM
 
@@ -326,6 +313,7 @@ Info Cases: The rest of calls not a claim
 
 # TODO's
 
+- GSpread docs say that moving the credential to `~/.config/gspread/service_account.json` avoids having to pass it around as parameter
 - CallInfo
 	- [ ] /api/getInfos -> /api/call/infotypes
 	- [ ] Pujar infos a l'ERP
