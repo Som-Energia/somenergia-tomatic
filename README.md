@@ -39,12 +39,41 @@ This software is used within SomEnergia cooperative to manage phone support to m
 
 ### Dependencies and assets building
 
+- Install pyenv in the running user. Follow ["Basic githup install"](https://github.com/pyenv/pyenv#basic-github-checkout)
+
 ```bash
-sudo apt-get install gcc libpython2.7-dev libffi-dev libssl-dev nodejs-legacy npm virtualenvwrapper
+sudo apt-get update; sudo apt-get install --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev git nodejs npm
+sudo mkdir -p /opt/www/somenergia-tomatic
+sudo chown tomatic:tomatic /opt/www/somenergia-tomatic
+sudo su tomatic # the user that will run it
+
+git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.bashrc
+exec "$SHELL"
+pyenv install 3.9.4 --verbose
+pyenv global 3.9.4
+pip install -U virtualenv
+cd /opt/www/somenergia-tomatic
+git clone https://github.com/Som-Energia/somenergia-tomatic.git .
+virtualenv .venv
+source .venv/bin/activate
+python setup develop
+npm install
+npm run build # for development assets
+#npm run deploy # for production assets # TODO failing
+```
+
+
+```bash
+sudo apt-get install git gcc libffi-dev libssl-dev nodejs npm
+git clone https://github.com/Som-Energia/somenergia-tomatic.git
+cd somenergia-tomatic
 npm install
 npm run build # for development assets
 npm run deploy # for production assets
-mkvirtualenvwrapper tomatic
+virtualenv .venv
 python setup develop
 ```
 
