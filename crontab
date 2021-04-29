@@ -3,9 +3,9 @@
 #    sudo chmod 755 crontab
 #    sudo ln -s $(pwd)/crontab /etc/cron.d/tomatic
 SHELL=/bin/bash
-PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-TOMATIC_PATH=/home/somenergia/somenergia/somenergia-tomatic
-TOMATIC_CRONLOG=/home/somenergia/tomatic-canvitorn.log
+TOMATIC_PATH=/opt/www/somenergia-tomatic
+PATH=/opt/www/somenergia-tomatic/.venv/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+TOMATIC_CRONLOG=/opt/www/somenergia-tomatic/crontab.log
 
 # m h dom mon dow user  command
 00  9   * * 1-5  somenergia    (echo "$(date -Iseconds) Updating queue"; cd $TOMATIC_PATH; tomatic_rtqueue.py set ; tomatic_rtqueue.py show) >> $TOMATIC_CRONLOG 2>&1
