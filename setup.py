@@ -24,7 +24,7 @@ setup(
         ],
     install_requires=[
         'setuptools>=20.4',
-        'MarkupSafe<1.2', # TODO: Indirect dependency that breaks
+        'MarkupSafe',
         'somutils',
         'yamlns',
         'consolemsg',
