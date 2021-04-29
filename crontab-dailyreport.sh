@@ -7,6 +7,6 @@ missatge="$(
     echo "Gràcies per la feina feta!"
 #  ./tomatic_calls.py summary
 )"
-./tomatic_says.sh "$missatge"
-./areavoip_dailyreport.sh
+./tomatic_says.py "$missatge"
+./areavoip_dailyreport.py
 

@@ -110,7 +110,7 @@ tomatic:
         i no es poden esperar a divendres.
 
     says:
-      script: SOME_SRC/somenergia-tomatic/runhere SOME_SRC/somenergia-tomatic/ ./tomatic_says.sh  -c "{qui}" {quelcom}
+      script: SOME_SRC/somenergia-tomatic/runhere SOME_SRC/somenergia-tomatic/ ./tomatic_says.py  -c "{qui}" {quelcom}
       title: Tomàtic diu
       description: |
         Digues quelcom com si fossis en Tomàtic.
