@@ -65,6 +65,7 @@ npm run build # for development assets
 #npm run deploy # for production assets # TODO failing
 ```
 
+Development setup
 
 ```bash
 sudo apt-get install git gcc libffi-dev libssl-dev nodejs npm
@@ -79,6 +80,9 @@ python setup develop
 
 ### Configuration
 
+- Copy `config-example.yaml` as `config.yaml` and edit it
+- Copy `dbconfig-example.py` as `dbconfig.py` and edit it
+- `echo '{}' > persons.yaml`
 
 ### Setting up cron tasks
 
