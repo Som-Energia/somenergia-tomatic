@@ -146,49 +146,5 @@ class AreaVoip(object):
         ]
 
 
-class PbxAreaVoip(object):
-
-    def __init__(self, path, *dbargs, **dbkwd):
-        self.backend = AreaVoip()
-        self.config = dbconfig.tomatic.areavoip
-        self.storage = Storage(path)
-
-    def _currentSched(self, when=None):
-        when = when or datetime.datetime.now()
-        week, dow, time = choosers(when)
-        try:
-            yaml=self.storage.load(week)
-        except KeyError:
-            return None
-        return Scheduling(yaml)
-
-    def setSchedQueue(self, when):
-        sched = self._currentSched(when)
-        if sched is None:
-            self.clear()
-            return
-        week, dow, time = choosers(when)
-        self.backend.setQueue(
-            self.config.queue,
-            sched.peekQueue(dow, time),
-            )
-
-    def currentQueue(self):
-        return self.backend.queue(self.config.queue)
-
-    def pause(self, name):
-        self.backend.pause(self.config.queue, name)
-
-    def resume(self, name):
-        self.backend.resume(self.config.queue, name)
-
-    def addLine(self, name):
-        self.backend.add(self.config.queue, name)
-
-    def clear(self):
-        self.backend.clear(self.config.queue)
-
-
-
 
 # vim: ts=4 sw=4 et
