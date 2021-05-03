@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import csv
-from consolemsg import error, warn, step, success, fail, out
+from consolemsg import error, warn, step, success, fail, out, u
 from yamlns import namespace as ns
 import os.path
 import random
@@ -607,7 +607,7 @@ def main():
 
     print(summarycontent)
     if args.summary:
-        Path(args.summary).write_text(summarycontent, encoding='utf8')
+        Path(args.summary).write_text(u(summarycontent), encoding='utf8')
 
 
 if __name__ == '__main__':
