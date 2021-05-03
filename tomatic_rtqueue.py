@@ -147,9 +147,16 @@ def status(queue, yaml=False):
 		click.echo(u"No hi ha ningú a la cua")
 
 	for peer in queuepeers:
-		click.echo(u'{name} ({extension}) Porta {ncalls} trucades finalitzades. La darrera fa {minutes} minuts. {disconnected}{paused}{incall}{available}{ringing}{flags} '.format(
+            click.echo(
+                u'{name} ({extension}) Porta {ncalls} trucades finalitzades. '
+                u'Les ha atés en {callminutes}:{callseconds} minuts. '
+                u'La darrera fa {minutes}:{seconds:02} minuts. '
+                '{disconnected}{paused}{incall}{available}{ringing}{flags} '.format(
 			**dict(peer,
+				callminutes = peer.secondsInCalls//60,
+				callseconds = peer.secondsInCalls%60,
 				minutes = peer.secondsSinceLastCall//60,
+				seconds = peer.secondsSinceLastCall%60,
 				disconnected = " [DESCONECTAT!!]" if peer.disconnected else "",
 				paused = " [PAUSAT]" if peer.paused else "",
 				incall = " [Trucada en curs]" if peer.incall else "",
