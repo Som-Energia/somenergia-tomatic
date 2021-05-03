@@ -386,10 +386,10 @@ Info Cases: The rest of calls not a claim
 		- [x] api uses persons
 			- [x] persons() set attributes with ns() if not found
 			- [x] persons.update(person, **kwds)
+		- [x] tomatic_says use persons
 		- [ ] scheduler use persons
-		- [ ] tomatic_says use persons
-		- [ ] tomatic_calls uses persons
 		- [ ] shiftload uses persons
+		- [ ] tomatic_calls uses persons
 	- [x] use pbx backends instead of current pbx interface
 		- [x] remove use setScheduledQueue (mostly in tests)
 		- [x] unify backend interfaces
