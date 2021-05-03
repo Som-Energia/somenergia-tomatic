@@ -97,13 +97,18 @@ var QueueWidget = {
 	view: function(vnode) {
 		return m('.queueeditor',
 			Tomatic.queue().map(function(line) {
-				return m('.queueitem.'+line.key, {
-					'class': line.paused?'paused':'resumed',
+				return m('.queueitem.'
+					+ line.key
+					+ (line.paused?'.paused':'.resumed')
+					+ (line.disconnected?".disconnected":"")
+					+ (line.ringing?".ringing":"")
+					+ (line.incall?".incall":"")
+					, {
 					onclick: line.paused?
 						vnode.state.resume.bind(vnode.state,line.key):
 						vnode.state.pause.bind(vnode.state,line.key),
 					},
-					Tomatic.extension(line.key)
+					Tomatic.extension(line.key),
 				);
 			}),
 			m('.queueitem.add', {
