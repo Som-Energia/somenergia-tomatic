@@ -283,6 +283,8 @@ sudo supervisorctl restart tomatic
 
 - `execution.py`: Encapsulates an asynchronous execution of a sandboxed process (used by `planner_api.py`)
 - `remote.py`: Simplifies remote process execution and access to files via SSH
+- `directmessage`: modules that abstract actual direct message (hangouts or equivalents)
+- `directmessage/hangouts`: Google hangouts implementation of directmessage
 
 ## Information Access
 
