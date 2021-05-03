@@ -163,6 +163,29 @@ body, html, #tomatic {
 	background-color: #fee;
 	border-color: red;
 }
+@keyframes ringing {
+	from { transform: rotate(-2deg); }
+	to { transform: rotate(2deg); }
+}
+@keyframes incall {
+	from { transform: scale(1); }
+	to { transform: scale(1.001); }
+}
+.queueitem.ringing
+{
+	animation: ringing .1s linear infinite alternate;
+}
+.queueitem.incall
+{
+	box-shadow: 3px 3px 4px #888888;
+	transform: translate(-1px, -1px);
+}
+.queueitem.disconnected,
+.pe-dark-theme .queueitem.disconnected
+{
+	transform: rotate(180deg);
+	border-color: red;
+}
 .queueitem:hover {
 	opacity: .8;
 }
