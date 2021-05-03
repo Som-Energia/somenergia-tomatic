@@ -123,6 +123,7 @@ credential_name: drive-certificate.json
 
 threshold_hits: 21
 assign_user: ASSIGNAR USUARI 
-claims_file: claims.yaml
-claims_dict_file: claims_dict.yaml
-my_calls_log: atc_cases/today_calls.yaml
+claims_file: callinfo/claim_types.txt
+claims_dict_file: callinfo/claims_dict.yaml
+my_calls_log: callinfo/dailycalls.yaml
+info_cases: callinfo/info_cases.yaml

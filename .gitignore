@@ -65,4 +65,4 @@ target/
 drive-certificate.json
 
 # callinfo
-claims.yaml
+claim_types.txt

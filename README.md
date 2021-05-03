@@ -306,37 +306,45 @@ sudo supervisorctl restart tomatic
 
 # Files
 
+This is a review of the callinfo files.
+
+- `info_call_log`:
+	- "registre de motius no reclamació"
+	- `info_cases/YYYYMMDD.yaml`
+	- person dict to a list of info cases
+	- voki: removed
+- `claim_log`:
+	- "registre de motius reclamació"
+	 `atc_cases/YYYYMMDD.yaml`
+	- person dict to a list of atc cases (in ordre to create claims in the ERP)
+	- voki: removed
 - `call_log`:
 	- "registre de trucades (reclamació i no reclamacio)"
 	- `atc_cases/today_calls.yaml`
 	- `config.my_calls_log`
 	- person dict to a list of incomming calls of the day
-- `info_call_log`:
-	- "registre de motius no reclamació"
-	- `info_cases/YYYYMMDD.yaml`
-	- person dict to a list of info cases
+	- voki: renamed in config as `callinfo/dailycalls.yaml`
 - `info_call_types`:
 	- "tipus de motius no reclamacio"
-	- `info_cases/info_cases.yaml`
+	- `callinfo/info_cases.yaml`
 	- `config.info_cases`
 	- NOT A YAML!
 	- a line for each type description
 	- Venen d'un drive de la comi de telefon
-- `claim_log`:
-	- "registre de motius reclamació"
-	- `atc_cases/YYYYMMDD.yaml`
-	- person dict to a list of atc cases (in ordre to create claims in the ERP)
+	- voki: renamed in config as `callinfo/info_types.txt`
 - `claim_types_keywords`:
 	- "paraules clau dels tipus de motius reclamacio"
 	- `claims_dict.yaml`
 	- `config.claims_dict_file`
 	- dictionary classificacio dels motius
+	- voki: renamed in config as `callinfo/claims_dict.yaml`
 - `claim_types`:
 	- "tipus de reclamacions"
 	- `claims.yaml`
 	- `config.claims_file`
 	- NOT A YAML!
 	- A line for each type of claim
+	- voki: renamed in config as `callinfo/claim_types.txt`
 
 
 Atc Cases: Formal claims
