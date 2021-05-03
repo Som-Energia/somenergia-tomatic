@@ -89,7 +89,7 @@ def downloadVacations_notoi(config):
     notoipersons = [ns(p) for p in notoiApi.persons()]
     email2tomatic = {
         email: id
-        for id, email in config.emails.items()
+        for id, email in persons().emails.items()
     }
     notoi2tomatic = {
         p.id: email2tomatic[p.email]
@@ -136,7 +136,7 @@ def downloadVacations_odoo(config):
             ).date()
     email2tomatic = {
         email: id
-        for id, email in config.emails.items()
+        for id, email in persons().emails.items()
     }
 
     step("  Guardant indisponibilitats per vacances a 'indisponibilitats-vacances.conf'...")
