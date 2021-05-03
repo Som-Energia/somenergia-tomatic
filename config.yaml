@@ -43,8 +43,8 @@ deixaEsmorzar: true
 noVolenEsmorzar:
 - david
 - ningu
-maximPerTaula: 2
-maximsT1PerDia: 2
+maximPerTaula: 7
+maximsT1PerDia: 4
 maximHoresDiariesGeneral: 2
 maximHoresDiaries:
   ningu: 10
