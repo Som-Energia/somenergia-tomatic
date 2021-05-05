@@ -176,7 +176,7 @@ Tomatic.setPersonData = function (name, data) {
 	m.request({
 		method: 'POST',
 		url: '/api/person/'+name,
-		data: postdata,
+		body: postdata,
 		extract: deyamlize,
 	})
 	.then( function(data) {
@@ -235,11 +235,11 @@ Tomatic.error = function(message) {
 };
 
 Tomatic.sendBusyData = function(name, data) {
-	console.log("retrieving", name,  '/api/busy/'+name);
+	console.log("updating", name,  '/api/busy/'+name);
 	m.request({
 		method: 'POST',
 		url: '/api/busy/'+name,
-		data: data,
+		body: data,
 		extract: deyamlize,
 	}).then(function(response){
 		console.debug("Busy POST Response: ",response);

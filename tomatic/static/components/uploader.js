@@ -13,7 +13,7 @@ var Uploader = {
 			m.request({
 				method: "POST",
 				url: vnode.attrs.url,
-				data: formData,
+				body: formData,
 				serialize: function(value) {return value},
 				extract: deyamlize,
 			}).then(vnode.attrs.onupload, vnode.attrs.onerror);
