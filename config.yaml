@@ -126,4 +126,4 @@ assign_user: ASSIGNAR USUARI
 claims_file: callinfo/claim_types.txt
 claims_dict_file: callinfo/claims_dict.yaml
 my_calls_log: callinfo/dailycalls.yaml
-info_cases: callinfo/info_cases.yaml
+info_cases: callinfo/info_types.txt
