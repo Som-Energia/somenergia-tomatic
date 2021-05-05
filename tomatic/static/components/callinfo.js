@@ -90,29 +90,32 @@ var updateClaims = function() {
 
 
 CallInfo.getLogPerson = function () {
-  log_calls=[];
-  if (Questionnaire.call.ext === -1) return 0;
-  log_calls.push("lookingfor");
+  log_calls = []
+  if (Questionnaire.call.ext === "" || Questionnaire.call.ext === -1) {
+    return 0
+  }
+  log_calls.push("lookingfor")
   m.request({
     method: 'GET',
     url: '/api/personlog/' + Questionnaire.call.ext,
     extract: deyamlize,
   }).then(function(response){
-    console.debug("Info GET Response: ",response);
+    console.debug("Info GET Response: ",response)
     if (response.info.message !== "ok" ) {
       console.debug("Error al obtenir trucades ateses.", response.info.message)
-      log_calls=[];
+      log_calls = []
     }
     else{
-      log_calls=response.info.info;
+      log_calls = response.info.info
     }
   }, function(error) {
-    log_calls=[];
-    console.debug('Info GET apicall failed: ', error);
+    log_calls = []
+    console.debug('Info GET apicall failed: ', error)
   });
 };
-if(Questionnaire.call.ext !== -1){
-  CallInfo.getLogPerson();
+
+if(Questionnaire.call.ext !== "" && Questionnaire.call.ext !== -1){
+  CallInfo.getLogPerson()
 }
 
 var searchIcon = function(){
@@ -277,16 +280,18 @@ var refreshCall = function(data) {
 }
 
 CallInfo.refreshIden = function(new_me) {
-  if (!refresh && new_me.iden !== "") return 0;
-  CallInfo.search = "";
-  clearCallInfo();
+  if (!refresh && (new_me.iden !== "" || new_me.iden !== -1)) {
+    return 0
+  }
+  CallInfo.search = ""
+  clearCallInfo()
   Questionnaire.call.date = ""
-  CallInfo.file_info = {};
-  log_calls = [];
-  Questionnaire.call.iden = new_me.iden;
-  Questionnaire.call.ext = new_me.ext;
-  if (Questionnaire.call.ext === -1) {
-    refresh = true;
+  CallInfo.file_info = {}
+  log_calls = []
+  Questionnaire.call.iden = new_me.iden
+  Questionnaire.call.ext = new_me.ext
+  if (Questionnaire.call.ext === -1 || Questionnaire.call.ext === "") {
+    refresh = true
   }
 }
 

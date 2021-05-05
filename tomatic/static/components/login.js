@@ -50,8 +50,14 @@ Login.myName = function() {
 }
 
 Login.logout = function(){
-    document.cookie = tomaticCookie + "=; expires = Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-	sendIdentification();
+    document.cookie = tomaticCookie + "=; expires = Thu, 01 Jan 1970 00:00:00 GMT;path=/"
+	sendIdentification()
+    var info = {
+        iden: "",
+        ext: -1
+    }
+    Callinfo.refreshIden(info)
+    Callinfo.getLogPerson()
 }
 
 function sendIdentification() {
