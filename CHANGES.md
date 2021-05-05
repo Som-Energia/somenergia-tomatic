@@ -2,9 +2,12 @@
 
 ## unreleased
 
+- Improved deployment
+- Dropped Python 2 support
 - Monitor agents not connected, notified by hangouts
 - Vacations taken from odoo
 - Split scheduler into retriever and backtracker
+- Queues: Display queue agents status with styles
 - CallInfo: Nicer user interface
 - Callinfo: Refactoring ui in separated components
 - Callinfo: Added more contract information (meter readings, invoices...)
