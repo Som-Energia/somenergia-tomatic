@@ -1,6 +1,6 @@
 # Changelog
 
-## unreleased
+## 3.10.0 2021-05-05
 
 - Improved deployment
 - Dropped Python 2 support
