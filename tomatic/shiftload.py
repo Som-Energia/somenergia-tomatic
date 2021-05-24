@@ -306,7 +306,7 @@ def parseArgs():
 
     parser.add_argument(
         '--holidays',
-        default='drive',
+        default='odoo',
         choices='drive notoi odoo'.split(),
         help="Origen d'on agafa les vacances",
     )
