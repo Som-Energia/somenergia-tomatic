@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.10.1 2021-05-24
+
+- Default vacations source odoo instead of drive
+- Fix: missing import tomatic.persons on retriever for odoo
+- Callinfo files reorganized
+
 ## 3.10.0 2021-05-05
 
 - Improved deployment
