@@ -8,6 +8,7 @@ from pathlib2 import Path
 from consolemsg import step, out, warn, fail, u
 from yamlns import namespace as ns
 from sheetfetcher import SheetFetcher
+from .persons import persons
 
 # Dirty Hack: Behave like python3 open regarding unicode
 def open(*args, **kwd):
