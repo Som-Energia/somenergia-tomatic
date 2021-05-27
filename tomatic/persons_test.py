@@ -13,6 +13,8 @@ class Persons_Test(unittest.TestCase):
 
     def tearDown(self):
         persons.persons(False)
+        Path('p.yaml').unlink(missing_ok=True)
+        Path('p2.yaml').unlink(missing_ok=True)
 
     def test_persons_explicitPath(self):
         Path('p.yaml').write_text(u"hola: tu")
