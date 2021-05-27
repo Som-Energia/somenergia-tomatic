@@ -627,7 +627,8 @@ def updateClaimTypes():
 @app.route('/api/getClaims', methods=['GET'])
 def getClaimTypes():
     message = 'ok'
-    claims_dict = []
+    claims_dict = ns()
+    claims = []
     try:
         with open(CONFIG.claims_file, "r") as f:
             claims = [ line.strip() for line in f ]
