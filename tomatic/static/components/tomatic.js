@@ -18,7 +18,7 @@ Tomatic.queue = m.prop([]);
 Tomatic.persons = m.prop({});
 Tomatic.init = function() {
 	this.requestWeeks();
-	this.requestQueue();
+	this.updateQueuePeriodically();
 	this.requestPersons();
 };
 Tomatic.requestPersons = function() {
@@ -59,6 +59,14 @@ Tomatic.pauseLine = function(line) {
 Tomatic.restoreLine = function(line) {
 	Tomatic.requestQueue('/resume/'+line);
 };
+
+Tomatic.queueTimer = 0;
+Tomatic.updateQueuePeriodically = function() {
+	console.log("Refreshing queue")
+	clearTimeout(Tomatic.queueTimer);
+	Tomatic.queueTimer = setTimeout(Tomatic.updateQueuePeriodically, 10000);
+	Tomatic.requestQueue();
+}
 
 Tomatic.grid = m.prop({});
 Tomatic.weekdays = {
@@ -320,7 +328,6 @@ Tomatic.retrieveBusyDataFake = function(name, callback) {
 		});
 	},1000);
 };
-
 
 return Tomatic;
 }();
