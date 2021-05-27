@@ -154,10 +154,11 @@ body, html, #tomatic {
 	border: 2pt solid;
 	margin: 2pt;
 	cursor: pointer;
+	transition: transform 1s, border-color 1s;
 }
 .queueitem.paused,
 .pe-dark-theme .queueitem.paused
- {
+{
 	color: red;
 	text-decoration: line-through;
 	background-color: #fee;
@@ -179,12 +180,14 @@ body, html, #tomatic {
 {
 	box-shadow: 3px 3px 4px #888888;
 	transform: translate(-1px, -1px);
+	transition: transform 1s, box-shadow 1s;
 }
 .queueitem.disconnected,
 .pe-dark-theme .queueitem.disconnected
 {
 	transform: rotate(180deg);
 	border-color: red;
+	transition: transform 1s, border-color 1s;
 }
 .queueitem:hover {
 	opacity: .8;
