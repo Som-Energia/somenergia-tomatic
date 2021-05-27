@@ -107,6 +107,7 @@ var QueueWidget = {
 					onclick: line.paused?
 						vnode.state.resume.bind(vnode.state,line.key):
 						vnode.state.pause.bind(vnode.state,line.key),
+					key: line.key,
 					},
 					Tomatic.extension(line.key),
 				);
