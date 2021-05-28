@@ -219,11 +219,20 @@ def retireOldTimeTable():
         schedules.retireOld(twoMondaysAgo)
     return yamlfy(result='ok')
 
+
+def cached_queue(force=False):
+    now = datetime.now()
+    if not force and hasattr(cached_queue, 'value') and cached_queue.timestamp > now:
+        return cached_queue.value
+    cached_queue.timestamp = now + timedelta(seconds=30)
+    cached_queue.value = pbx().queue()
+    return cached_queue.value
+
 @app.route('/api/queue')
 @yamlerrors
 def get_queue():
     return yamlfy(
-        currentQueue = pbx().queue()
+        currentQueue = cached_queue()
     )
 
 @app.route('/api/queue/add/<person>')
@@ -232,7 +241,7 @@ def add_line(person):
     p = pbx()
     p.add(person)
     return yamlfy(
-        currentQueue = p.queue()
+        currentQueue = cached_queue(force=True)
     )
 
 @app.route('/api/queue/pause/<person>')
@@ -241,7 +250,7 @@ def pause_line(person):
     p = pbx()
     p.pause(person)
     return yamlfy(
-        currentQueue = p.queue()
+        currentQueue = cached_queue(force=True)
     )
 
 @app.route('/api/queue/resume/<person>')
@@ -250,7 +259,7 @@ def resume_line(person):
     p = pbx()
     p.resume(person)
     return yamlfy(
-        currentQueue = p.queue()
+        currentQueue = cached_queue(force=True)
     )
 
 @app.route('/api/persons/extension/<extension>')
