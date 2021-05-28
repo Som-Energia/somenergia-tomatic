@@ -220,13 +220,13 @@ def retireOldTimeTable():
     return yamlfy(result='ok')
 
 
-def cached_queue(force=False):
+def cachedQueueStatus(force=False):
     now = datetime.now()
-    if not force and hasattr(cached_queue, 'value') and cached_queue.timestamp > now:
-        return cached_queue.value
-    cached_queue.timestamp = now + timedelta(seconds=30)
-    cached_queue.value = pbx().queue()
-    return cached_queue.value
+    if not force and hasattr(cachedQueueStatus, 'value') and cachedQueueStatus.timestamp > now:
+        return cachedQueueStatus.value
+    cachedQueueStatus.timestamp = now + timedelta(seconds=5)
+    cachedQueueStatus.value = pbx().queue()
+    return cachedQueueStatus.value
 
 @app.route('/api/queue')
 @yamlerrors
