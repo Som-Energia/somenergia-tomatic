@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.10.2 2021-05-28
+
+- Avoid crashing when having no claims type file
+- Automatic queue status refresh with animations
+
 ## 3.10.1 2021-05-24
 
 - Default vacations source odoo instead of drive
