@@ -108,6 +108,12 @@ var QueueWidget = {
 						vnode.state.resume.bind(vnode.state,line.key):
 						vnode.state.pause.bind(vnode.state,line.key),
 					key: line.key,
+					title: (''
+						+ (line.paused?"Pausa. ":'')
+						+ (line.disconnected?"Desconexió. ":"")
+						+ (line.ringing?"Ring!! ":"")
+						+ (line.incall?"En Trucada. ":"")
+					) || "Disponible.",
 					},
 					Tomatic.extension(line.key),
 				);
