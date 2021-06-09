@@ -46,6 +46,7 @@ def appendToPersonDailyInfo(prefix, info, date=datetime.today()):
     if path.exists():
         dailyInfo = ns.load(str(path))
     dailyInfo.setdefault(info.person, []).append(info)
+    path.parent.mkdir(parents=True, exist_ok=True)
     dailyInfo.dump(str(path))
 
 CONFIG = fillConfigurationInfo()
