@@ -12,89 +12,27 @@ var Ripple = require('polythene-mithril-ripple').Ripple;
 
 var styleLogin = require('./callinfo_style.styl');
 var Tomatic = require('./tomatic');
-var Callinfo = require('./callinfo');
 
 var Login = {};
-var iden = "0";
-var websock = null;
-var port_ws = 0;
 var tomaticCookie = "tomaticCookie"
-
-function deyamlize(xhr) {
-	return jsyaml.safeLoad(xhr.responseText);
-}
-
-var getServerSockInfo = function() {
-    m.request({
-        method: 'GET',
-        url: '/api/socketInfo',
-        extract: deyamlize,
-    }).then(function(response){
-        console.debug("Info GET Response: ",response);
-        if (response.info.message !== "ok" ) {
-            console.debug("Error get data: ", response.info.message);
-			return;
-		}
-		port_ws = response.info.port_ws;
-		connectWebSocket();
-    }, function(error) {
-        console.debug('Info GET apicall failed WebSock: ', error);
-    });
-}
-getServerSockInfo();
 
 Login.myName = function() {
     info = whoAreYou();
     aux = info.split(":");
     return aux[0];
 }
+Login.onLogout = [];
+Login.onLogin = [];
 
 Login.logout = function(){
     document.cookie = tomaticCookie + "=; expires = Thu, 01 Jan 1970 00:00:00 GMT;path=/"
-	sendIdentification()
     var info = {
         iden: "",
         ext: -1
     }
-    Callinfo.refreshIden(info)
-    Callinfo.getLogPerson()
-}
-
-function sendIdentification() {
-    message = "IDEN:"+getMyExt()+":"+Login.myName()+":";
-    websock.send(message);
-}
-
-var connectWebSocket = function() {
-    var addr = 'ws://'+window.location.hostname+':'+port_ws+'/';
-    websock = new WebSocket(addr);
-    websock.onopen = sendIdentification;
-    websock.onmessage = function (event) {
-        var message = event.data.split(":");
-        var type_of_message = message[0];
-        if (type_of_message === "IDEN") {
-            var iden = message[1];
-            var ext = getMyExt();
-            var info = {
-                iden: iden,
-                ext: (ext === "" ? -1 : ext),
-            }
-            Callinfo.refreshIden(info);
-            Callinfo.getLogPerson();
-        }
-        else if (type_of_message === "PHONE") {
-            var phone = message[1];
-            var date = message[2]+":"+message[3]+":"+message[4];
-            Callinfo.refreshPhone(phone, date);
-            Callinfo.getLogPerson();
-        }
-        else if (type_of_message === "REFRESH") {
-            Callinfo.getLogPerson();
-        }
-        else {
-            console.debug("Message recieved from WebSockets and type not recognized.");
-        }
-    }
+    Login.onLogout.map(function(callback) {
+        callback(info);
+    })
 }
 
 Date.prototype.addHours = function(h) {
@@ -108,6 +46,15 @@ var getMyExt = function() {
     if (cookie_value === ":") return "";
     return cookie_value.split(":")[1].toString();
 }
+Login.getMyExt = getMyExt;
+
+var currentExtension = function() {
+    var cookie_value = getCookie(tomaticCookie);
+    if (cookie_value === ":") return "";
+    var extension = cookie_value.split(":")[1].toString();
+    return extension === "" ? -1 : extension;
+}
+Login.currentExtension = currentExtension;
 
 
 var setCookieInfo = function(vnode){
@@ -127,7 +74,9 @@ var setCookieInfo = function(vnode){
         var expires = "expires="+ exp.toUTCString();
         document.cookie = tomaticCookie + "=" + value + ";" + expires + ";path=/";
     }
-    sendIdentification();
+    Login.onLogin.map(function(callback) {
+        callback();
+    })
 }
 
 
@@ -205,9 +154,6 @@ Login.identification = function() {
         var id = aux[0];
         nom = Tomatic.formatName(id);
         color = "#" + aux[2];
-        if(iden !== nom || websock === null){
-            iden = nom;
-        }
     }
 
     return m('.login-buttons', [

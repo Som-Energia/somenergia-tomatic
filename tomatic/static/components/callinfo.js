@@ -17,10 +17,14 @@ var PartnerInfo = require('./partnerinfo');
 var Calls = require('./calls');
 var ContractInfo = require('./contract');
 var Questionnaire = require('./questionnaire');
+var Login = require('./login');
 
 var styleCallinfo = require('./callinfo_style.styl');
 
 var CallInfo = {};
+
+var websock = null;
+var port_ws = 0;
 
 
 CallInfo.file_info = {};
@@ -478,6 +482,68 @@ CallInfo.mainPage = function() {
     ])
   ]);
 }
+
+var getServerSockInfo = function() {
+    m.request({
+        method: 'GET',
+        url: '/api/socketInfo',
+        extract: deyamlize,
+    }).then(function(response){
+        console.debug("Info GET Response: ",response);
+        if (response.info.message !== "ok" ) {
+            console.debug("Error get data: ", response.info.message);
+			return;
+		}
+		port_ws = response.info.port_ws;
+		connectWebSocket();
+    }, function(error) {
+        console.debug('Info GET apicall failed WebSock: ', error);
+    });
+}
+getServerSockInfo();
+
+var connectWebSocket = function() {
+    var addr = 'ws://'+window.location.hostname+':'+port_ws+'/';
+    websock = new WebSocket(addr);
+    websock.onopen = sendIdentification;
+    websock.onmessage = function (event) {
+        var message = event.data.split(":");
+        var type_of_message = message[0];
+        if (type_of_message === "IDEN") {
+            var iden = message[1];
+            var ext = Login.currentExtension();
+            var info = {
+                iden: iden,
+                ext: ext,
+            }
+            CallInfo.refreshIden(info);
+            CallInfo.getLogPerson();
+        }
+        else if (type_of_message === "PHONE") {
+            var phone = message[1];
+            var date = message[2]+":"+message[3]+":"+message[4];
+            CallInfo.refreshPhone(phone, date);
+            CallInfo.getLogPerson();
+        }
+        else if (type_of_message === "REFRESH") {
+            CallInfo.getLogPerson();
+        }
+        else {
+            console.debug("Message recieved from WebSockets and type not recognized.");
+        }
+    }
+}
+
+function sendIdentification() {
+    message = "IDEN:"+Login.getMyExt()+":"+Login.myName()+":";
+    websock.send(message);
+}
+
+
+Login.onLogin.push(sendIdentification);
+Login.onLogout.push(sendIdentification);
+Login.onLogout.push(CallInfo.refreshIden);
+Login.onLogout.push(CallInfo.getLogPerson);
 
 return CallInfo;
 
