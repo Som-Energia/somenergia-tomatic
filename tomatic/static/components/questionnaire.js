@@ -12,6 +12,7 @@ var ListTile = require('polythene-mithril-list-tile').ListTile;
 var List = require ('polythene-mithril-list').List;
 var Checkbox = require('polythene-mithril-checkbox').Checkbox;
 
+var Login = require('./login');
 var PartnerInfo = require('./partnerinfo');
 
 var Questionnaire = {};
@@ -22,8 +23,6 @@ Questionnaire.call = {
     'reason': "",
     'extra': "",
     'log_call_reasons': [],
-    "iden": "",
-    "ext": "",
 };
 
 var extras_dict = {}
@@ -141,7 +140,7 @@ var updateCall = function(date, partner_number, contract_number) {
     }
     m.request({
         method: 'POST',
-        url: '/api/' + 'updatelog/'+ Questionnaire.call.ext,
+        url: '/api/' + 'updatelog/'+ Login.getMyExt(),
         body: info,
         extract: deyamlize,
     }).then(function(response){
@@ -252,7 +251,7 @@ var onlyInfosDialog = function() {
   var enviar = function() {
     saveLogCalls(
       Questionnaire.call.phone,
-      Questionnaire.call.iden,
+      Login.myName(),
       "",
       { "number": "", "cups": "" },
       ""
@@ -322,7 +321,7 @@ var onlyInfosDialog = function() {
             Questionnaire.call.reason === "" ||
             Questionnaire.call.extra === "" ||
             Questionnaire.call.date === "" ||
-            Questionnaire.call.iden === ""
+            Login.myName() === ""
           ),
         }, m(Ripple)),
       ]
@@ -344,7 +343,7 @@ Questionnaire.infoQuestionnaire = function(visible=false) {
       border: 'true',
       disabled: (
         desar !== "Desa" ||
-        Questionnaire.call.iden === ""
+        Login.myName() === ""
       ),
     }, m(Ripple))
   : ""
@@ -356,7 +355,7 @@ Questionnaire.motiu = function(main_contract, partner_id) {
   var enviar = function(reclamacio = "") {
     saveLogCalls(
       Questionnaire.call.phone,
-      Questionnaire.call.iden,
+      Login.myName(),
       reclamacio,
       main_contract,
       partner_id
@@ -619,7 +618,7 @@ Questionnaire.motiu = function(main_contract, partner_id) {
             Questionnaire.call.reason === "" ||
             Questionnaire.call.extra === "" ||
             Questionnaire.call.date === "" ||
-            Questionnaire.call.iden === ""
+            Login.myName() === ""
           ),
         }, m(Ripple)),
       ]

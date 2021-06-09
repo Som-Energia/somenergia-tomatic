@@ -96,13 +96,14 @@ var updateClaims = function() {
 
 CallInfo.getLogPerson = function () {
   log_calls = []
-  if (Questionnaire.call.ext === "" || Questionnaire.call.ext === -1) {
+  var extension = Login.currentExtension();
+  if (extension === -1) {
     return 0
   }
   log_calls.push("lookingfor")
   m.request({
     method: 'GET',
-    url: '/api/personlog/' + Questionnaire.call.ext,
+    url: '/api/personlog/' + extension,
     extract: deyamlize,
   }).then(function(response){
     console.debug("Info GET Response: ",response)
