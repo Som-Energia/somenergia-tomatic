@@ -506,7 +506,7 @@ getServerSockInfo();
 var connectWebSocket = function() {
     var addr = 'ws://'+window.location.hostname+':'+port_ws+'/';
     websock = new WebSocket(addr);
-    websock.onopen = sendIdentification;
+    websock.onopen = CallInfo.sendIdentification;
     websock.onmessage = function (event) {
         var message = event.data.split(":");
         var type_of_message = message[0];
@@ -535,14 +535,14 @@ var connectWebSocket = function() {
     }
 }
 
-function sendIdentification() {
+CallInfo.sendIdentification = function() {
     message = "IDEN:"+Login.getMyExt()+":"+Login.myName()+":";
     websock.send(message);
 }
 
 
-Login.onLogin.push(sendIdentification);
-Login.onLogout.push(sendIdentification);
+Login.onLogin.push(CallInfo.sendIdentification);
+Login.onLogout.push(CallInfo.sendIdentification);
 Login.onLogout.push(CallInfo.refreshIden);
 Login.onLogout.push(CallInfo.getLogPerson);
 
