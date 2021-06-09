@@ -66,6 +66,7 @@ var getInfo = function () {
     }
     else{
       CallInfo.file_info=response.info.info;
+      Questionnaire.call.date = Date.now();
     }
   }, function(error) {
     console.debug('Info GET apicall failed: ', error);
@@ -294,7 +295,7 @@ CallInfo.refreshIden = function(new_me) {
   log_calls = []
   Questionnaire.call.iden = new_me.iden
   Questionnaire.call.ext = new_me.ext
-  if (Questionnaire.call.ext === -1 || Questionnaire.call.ext === "") {
+  if (Questionnaire.call.ext === -1) {
     refresh = true
   }
 }
