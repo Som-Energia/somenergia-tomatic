@@ -585,14 +585,9 @@ def getCallLog(ext):
 
 @app.route('/api/updatelog/<extension>', methods=['POST'])
 def updateCallLog(extension):
-    try:
-        fields = ns.loads(request.data)
-        CallRegistry().updateCall(extension, fields=fields)
-        app.websocket_kalinfo_server.say_logcalls_has_changed(extension)
-    except ValueError:
-        return yamlinfoerror('error_update_log',
-            "[U] Opening file {}: unexpected", call_log)
-
+    fields = ns.loads(request.data)
+    CallRegistry().updateCall(extension, fields=fields)
+    app.websocket_kalinfo_server.say_logcalls_has_changed(extension)
     return yamlfy(info=ns(message='ok'))
 
 
