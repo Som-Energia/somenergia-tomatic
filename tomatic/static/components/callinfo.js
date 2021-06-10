@@ -14,7 +14,6 @@ var Spinner = require(
   'polythene-mithril-material-design-spinner').MaterialDesignSpinner;
 
 var PartnerInfo = require('./partnerinfo');
-var Calls = require('./calls');
 var ContractInfo = require('./contract');
 var Questionnaire = require('./questionnaire');
 var Login = require('./login');
@@ -266,7 +265,6 @@ var infoPhone = function () {
   } else {
     return m('.call-info', [
       m('.plane-info', PartnerInfo.allInfo(CallInfo.file_info)),
-      Calls.logCalls(),
       ContractInfo.listOfContracts(
         CallInfo.file_info,
         PartnerInfo.main_partner

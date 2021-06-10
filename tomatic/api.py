@@ -53,26 +53,6 @@ def appendToPersonDailyInfo(prefix, info, date=datetime.today()):
 CONFIG = fillConfigurationInfo()
 
 
-SHEETS = {
-    "infos_log": 0,
-    "claims_log": 4,
-    "general_reasons": 2,
-    "specific_reasons": 3
-}
-
-LOGS = {
-    "date": 0,
-    "person": 1,
-    "phone": 2,
-    "partner": 3,
-    "contract": 4,
-    "reason": 5,
-    "proc": 6,
-    "improc": 7,
-    "extras": 8,
-}
-
-
 def pbx(alternative = None, queue=None):
     if alternative:
         pbx.cache = PbxQueue(alternative, queue)
@@ -523,29 +503,6 @@ def getConnectionInfo():
     return yamlfy(info=result)
 
 
-# Deprecated: not in drive, now in erp
-@app.route('/api/log/<phone>', methods=['GET'])
-def getPhoneLog(phone):
-    message = 'ok'
-    try:
-        fetcher = SheetFetcher(
-            documentName=CONFIG.call_reasons_document,
-            credentialFilename=CONFIG.credential_name,
-        )
-        log = fetcher.get_fullsheet(SHEETS["infos_log"])
-    except IOError:
-        log = []
-        message = 'error_get_fullsheet'
-        error("Getting reason calls from {}.", CONFIG.call_reasons_document)
-    reasons = [x for x in log if x[LOGS["phone"]] == phone]
-    reasons.sort(key=lambda x: datetime.strptime(x[0], '%d-%m-%Y %H:%M:%S'))
-    result = ns(
-        info=reasons,
-        message=message,
-    )
-    return yamlfy(info=result)
-
-
 class CallRegistry(object):
     def __init__(self, path=None, size=20):
         self.path = Path(path or CONFIG.my_calls_log)
@@ -573,7 +530,6 @@ class CallRegistry(object):
             calls[extension]=calls[extension][-self.size:]
 
         calls.dump(self.path)
-
 
 
 @app.route('/api/personlog/<ext>', methods=['GET'])
