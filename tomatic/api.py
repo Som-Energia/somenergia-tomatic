@@ -35,6 +35,7 @@ distpath = packagedir/'dist'
 staticpath = packagedir/'static'
 schedules = schedulestorage.Storage.default()
 
+erp = erppeek.Client(**dbconfig.erppeek)
 
 def fillConfigurationInfo():
     return ns.load('config.yaml')
@@ -359,9 +360,7 @@ def yamlinfoerror(code, message, *args, **kwds):
 @app.route('/api/info/phone/<phone>', methods=['GET'])
 @yamlerrors
 def getInfoPersonByPhone(phone):
-    o = erppeek.Client(**dbconfig.erppeek)
-    info = CallInfo(o)
-
+    info = CallInfo(erp)
     try:
         data = info.getByPhone(phone)
     except ValueError:
@@ -383,8 +382,7 @@ def getInfoPersonByPhone(phone):
 @app.route('/api/info/name/<name>', methods=['GET'])
 def getInfoPersonByName(name):
     decoded_name = urllib.parse.unquote(name)
-    o = erppeek.Client(**dbconfig.erppeek)
-    info = CallInfo(o)
+    info = CallInfo(erp)
     try:
         data = info.getByName(decoded_name)
     except ValueError:
@@ -405,8 +403,7 @@ def getInfoPersonByName(name):
 
 @app.route('/api/info/nif/<nif>', methods=['GET'])
 def getInfoPersonByNif(nif):
-    o = erppeek.Client(**dbconfig.erppeek)
-    info = CallInfo(o)
+    info = CallInfo(erp)
 
     try:
         data = info.getByDni(nif)
@@ -428,8 +425,7 @@ def getInfoPersonByNif(nif):
 
 @app.route('/api/info/soci/<iden>', methods=['GET'])
 def getInfoPersonBySoci(iden):
-    o = erppeek.Client(**dbconfig.erppeek)
-    info = CallInfo(o)
+    info = CallInfo(erp)
 
     try:
         data = info.getBySoci(iden)
@@ -451,8 +447,7 @@ def getInfoPersonBySoci(iden):
 
 @app.route('/api/info/email/<email>', methods=['GET'])
 def getInfoPersonByEmail(email):
-    o = erppeek.Client(**dbconfig.erppeek)
-    info = CallInfo(o)
+    info = CallInfo(erp)
 
     try:
         data = info.getByEmail(email)
@@ -475,8 +470,7 @@ def getInfoPersonByEmail(email):
 @app.route('/api/info/all/<field>', methods=['GET'])
 def getInfoPersonBy(field):
     decoded_field = urllib.parse.unquote(field)
-    o = erppeek.Client(**dbconfig.erppeek)
-    info = CallInfo(o)
+    info = CallInfo(erp)
     data = None
     try:
         data = info.getByData(decoded_field)
@@ -619,8 +613,7 @@ def updateCallLog(ext):
 def updateClaimTypes():
     message = 'ok'
 
-    o = erppeek.Client(**dbconfig.erppeek)
-    claims = Claims(o)
+    claims = Claims(erp)
     erp_claims = claims.get_claims()
 
     Path(CONFIG.claims_file).write_text(
