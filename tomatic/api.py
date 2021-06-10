@@ -7,7 +7,7 @@ from flask import (
     send_from_directory,
     send_file,
     )
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from threading import Semaphore
 import os.path
 import urllib.parse
@@ -497,7 +497,7 @@ def callingPhone():
     phone = data['phone']
     ext = data['ext']
     clients = app.websocket_kalinfo_server.websockets.get(ext, [])
-    time = datetime.now().strftime('%m-%d-%Y %H:%M:%S')
+    time = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
 
     callRegistry = Path(CONFIG.my_calls_log)
     if not callRegistry.parent.exists():

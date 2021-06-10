@@ -66,7 +66,7 @@ var getInfo = function () {
     }
     else{
       CallInfo.file_info=response.info.info;
-      Questionnaire.call.date = Date.now();
+      Questionnaire.call.date = new Date(Date.now()).toISOString();
     }
   }, function(error) {
     console.debug('Info GET apicall failed: ', error);

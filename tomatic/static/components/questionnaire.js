@@ -628,3 +628,4 @@ Questionnaire.motiu = function(main_contract, partner_id) {
 return Questionnaire;
 
 }();
+// vim: ts=2 sw=2 et
