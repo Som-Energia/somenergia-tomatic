@@ -25,7 +25,7 @@ Login.onLogout = [];
 Login.onLogin = [];
 
 Login.logout = function(){
-    document.cookie = tomaticCookie + "=; expires = Thu, 01 Jan 1970 00:00:00 GMT;path=/"
+    document.cookie = tomaticCookie + "=; expires = Thu, 01 Jan 1970 00:00:00 GMT;SameSite=Strict;path=/"
     var info = {
         iden: "",
         ext: -1
@@ -72,7 +72,7 @@ var setCookieInfo = function(vnode){
         var value = id + ":" + Tomatic.persons().extensions[id] + ":" + Tomatic.persons().colors[id];
         var exp = new Date().addHours(3);
         var expires = "expires="+ exp.toUTCString();
-        document.cookie = tomaticCookie + "=" + value + ";" + expires + ";path=/";
+        document.cookie = tomaticCookie + "=" + value + ";" + expires + ";SameSite=Strict;path=/";
     }
     Login.onLogin.map(function(callback) {
         callback();
