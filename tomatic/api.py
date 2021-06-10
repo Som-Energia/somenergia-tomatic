@@ -534,9 +534,11 @@ class CallRegistry(object):
 
 @app.route('/api/personlog/<ext>', methods=['GET'])
 def getCallLog(ext):
-    return ns(
-        info=CallRegistry().callsByExtension(ext),
-        message='ok',
+    return yamlfy(
+        info=ns(
+            info=CallRegistry().callsByExtension(ext),
+            message='ok',
+        )
     )
 
 @app.route('/api/updatelog/<extension>', methods=['POST'])
