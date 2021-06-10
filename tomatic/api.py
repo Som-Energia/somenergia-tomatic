@@ -498,13 +498,13 @@ def callingPhone():
     extension = data['ext']
     time = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
 
-    CallRegistry().updateCall(extension, call={
-        "data": time,
-        "telefon": phone,
-        "motius": "",
-        "partner": "",
-        "contracte": "",
-    })
+    CallRegistry().updateCall(extension, fields=ns(
+        data = time,
+        telefon = phone,
+        motius = "",
+        partner = "",
+        contracte = "",
+    ))
     clients = app.websocket_kalinfo_server.websockets.get(extension, [])
     if not clients:
         warn("Calling {} but has no client.", extension)
@@ -564,17 +564,17 @@ class CallRegistry(object):
     def callsByExtension(self, extension):
         return self._calls().get(extension,[])
 
-    def updateCall(self, extension, info):
+    def updateCall(self, extension, fields):
         calls = self._calls()
-        for call in calls.get(ext,[]):
-            if call.data == info.data:
-                call.update(info)
+        for call in calls.get(extension,[]):
+            if call.data == fields.data:
+                call.update(fields)
                 break
         else: # exiting when not found
-            calls.setdefault(ext, []).append(info)
+            calls.setdefault(extension, []).append(fields)
 
         if self.size:
-            calls[extension]=calls[extension][-size:]
+            calls[extension]=calls[extension][-self.size:]
 
         calls.dump(self.path)
 
@@ -590,8 +590,8 @@ def getCallLog(ext):
 @app.route('/api/updatelog/<extension>', methods=['POST'])
 def updateCallLog(extension):
     try:
-        call = ns.loads(request.data)
-        CallRegistry().updateCall(extension, call)
+        fields = ns.loads(request.data)
+        CallRegistry().updateCall(extension, fields=fields)
         app.websocket_kalinfo_server.say_logcalls_has_changed(extension)
     except ValueError:
         return yamlinfoerror('error_update_log',
