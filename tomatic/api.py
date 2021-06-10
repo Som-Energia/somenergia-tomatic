@@ -505,7 +505,7 @@ def callingPhone():
         partner = "",
         contracte = "",
     ))
-    nNotified = app.websocket_kalinfo_server.say_incoming_call(extension, phone)
+    nNotified = app.websocket_kalinfo_server.say_incoming_call(extension, phone, time)
     result = ns(
         notified=nNotified,
         phone=phone,
