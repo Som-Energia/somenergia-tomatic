@@ -50,7 +50,7 @@ Login.getMyExt = getMyExt;
 
 var currentExtension = function() {
     var cookie_value = getCookie(tomaticCookie);
-    if (cookie_value === ":") return "";
+    if (cookie_value === ":") return -1;
     var extension = cookie_value.split(":")[1].toString();
     return extension === "" ? -1 : extension;
 }
