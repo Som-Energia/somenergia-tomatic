@@ -29,6 +29,14 @@ class WebSocketTomaticServer(object):
         for client in clients:
             self.wserver.send_message(client, "IDEN:" + iden)
 
+    def say_incoming_call(self, extension, phone):
+        clients = self.websockets.get(extension, [])
+        if not clients:
+            warn("Calling {} but has no client.", extension)
+        for client in clients:
+            self.wserver.send_message(client, "PHONE:" + phone + ":" + time)
+        return len(clients)
+
 
     def say_logcalls_has_changed(self, extension):
         clients = self.websockets.get(extension, [])

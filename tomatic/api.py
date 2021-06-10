@@ -505,13 +505,9 @@ def callingPhone():
         partner = "",
         contracte = "",
     ))
-    clients = app.websocket_kalinfo_server.websockets.get(extension, [])
-    if not clients:
-        warn("Calling {} but has no client.", extension)
-    for client in clients:
-        app.websocket_kalinfo_server.wserver.send_message(client, "PHONE:" + phone + ":" + time)
+    nNotified = app.websocket_kalinfo_server.say_incoming_call(extension, phone)
     result = ns(
-        notified=len(clients),
+        notified=nNotified,
         phone=phone,
         ext=extension,
     )
