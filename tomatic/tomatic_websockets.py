@@ -38,7 +38,7 @@ class WebSocketTomaticServer(object):
             self.wserver.send_message(client, "REFRESH:" + extension)
 
 
-    def on_message_recieved(self, client, server, message):
+    def on_message_received(self, client, server, message):
         divided_message = message.split(":")
         type_of_message = divided_message[0]
         if type_of_message == "IDEN":
@@ -65,7 +65,7 @@ class WebSocketTomaticServer(object):
             host=host,
             port=CONFIG.websocket_port,
         )
-        self.wserver.set_fn_message_received(self.on_message_recieved)
+        self.wserver.set_fn_message_received(self.on_message_received)
         self.wserver.set_fn_client_left(self.client_left)
 
         self.wsthread = Thread(target=self.wserver.run_forever)
