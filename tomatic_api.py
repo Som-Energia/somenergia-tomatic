@@ -39,6 +39,11 @@ def now(date, time):
     default=4555,
     help="The port to listen to",
     )
+@click.option('--queue', '-q',
+    type=int,
+    default=None,
+    help="Override pbx queue configured in configuration",
+    )
 @click.option('--printrules',
     is_flag=True,
     help="Prints the url patterns being serverd",
@@ -55,7 +60,7 @@ def now(date, time):
     help="Hora del dia a simular en comptes d'ara"
     )
 
-def main(fake, debug, host, port, printrules, ring, date, time):
+def main(fake, debug, host, port, printrules, ring, date, time, queue):
     "Runs the Tomatic web and API"
     print(fake, debug, host, port, printrules, ring, date, time)
     if fake:
@@ -68,7 +73,7 @@ def main(fake, debug, host, port, printrules, ring, date, time):
         warn("Using real pbx")
         import dbconfig
         from tomatic.pbxareavoip import AreaVoip
-        pbx(AreaVoip(), dbconfig.tomatic.areavoip.queue)
+        pbx(AreaVoip(), queue or dbconfig.tomatic.areavoip.queue)
 
         #from tomatic.dbasterisk import DbAsterisk
         #pbx(
