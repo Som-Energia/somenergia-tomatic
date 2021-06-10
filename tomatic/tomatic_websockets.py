@@ -25,7 +25,7 @@ class WebSocketTomaticServer(object):
         step("Saying to the page that now {} is there", iden)
         clients = self.websockets.get(extension, [])
         if not clients:
-            error("Trying to send message to {} but has no client.", extension)
+            warn("Trying to send message to {} but has no client.", extension)
         for client in clients:
             self.wserver.send_message(client, "IDEN:" + iden)
 
@@ -41,7 +41,7 @@ class WebSocketTomaticServer(object):
     def say_logcalls_has_changed(self, extension):
         clients = self.websockets.get(extension, [])
         if not clients:
-            error("Trying to send message to {} but has no client.", extension)
+            warn("Trying to send message to {} but has no client.", extension)
         for client in clients:
             self.wserver.send_message(client, "REFRESH:" + extension)
 
