@@ -591,20 +591,21 @@ def getCallLog(ext):
 @app.route('/api/updatelog/<ext>', methods=['POST'])
 def updateCallLog(ext):
     try:
-        logs = ns.load(CONFIG.my_calls_log)
+        call_log = Path(CONFIG.my_calls_log)
+        logs = ns.load(call_log) if call_log.exists() else ns()
         info = ns.loads(request.data)
-        for call in logs[ext]:
+        for call in logs.get(ext,[]):
             if call.data == info.data:
                 call.update(info)
                 break
         else: # exiting when not found
-            logs.getdefault([]).append(info)
+            logs.setdefault(ext, []).append(info)
 
-        logs.dump(CONFIG.my_calls_log)
+        logs.dump(call_log)
         app.websocket_kalinfo_server.say_logcalls_has_changed(ext)
     except ValueError:
         return yamlinfoerror('error_update_log',
-            "[U] Opening file {}: unexpected", CONFIG.my_calls_log)
+            "[U] Opening file {}: unexpected", call_log)
 
     return yamlfy(info=ns(message='ok'))
 
