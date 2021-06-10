@@ -504,7 +504,7 @@ def callingPhone():
         callRegistry.parent.mkdirs()
 
     if not callRegistry.exists():
-        error("[U] Opening file {} but it doesn't exists", CONFIG.my_calls_log)
+        warn("[U] Opening file {} but it doesn't exists", CONFIG.my_calls_log)
         step("Creating file...")
         logs = ns()
     else:
