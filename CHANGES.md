@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Server has --queue option to enable a second 
+  Tomatic instance with a testing queue to make
+  experiments
+- Searches can be registered as atc/info cases
+  without having to receive an incomming call
+
 ## 3.10.2 2021-05-28
 
 - Avoid crashing when having no claims type file
