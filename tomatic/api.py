@@ -495,41 +495,25 @@ def getInfoPersonBy(field):
 def callingPhone():
     data = request.form.to_dict()
     phone = data['phone']
-    ext = data['ext']
-    clients = app.websocket_kalinfo_server.websockets.get(ext, [])
+    extension = data['ext']
     time = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
 
-    callRegistry = Path(CONFIG.my_calls_log)
-    if not callRegistry.parent.exists():
-        callRegistry.parent.mkdirs()
-
-    if not callRegistry.exists():
-        warn("[U] Opening file {} but it doesn't exists", CONFIG.my_calls_log)
-        step("Creating file...")
-        logs = ns()
-    else:
-        logs = ns.load(callRegistry)
-
-    info = {
+    CallRegistry().updateCall(extension, call={
         "data": time,
         "telefon": phone,
         "motius": "",
         "partner": "",
         "contracte": "",
-    }
-    logs.setdefault(ext, []).append(info)
-    if len(logs[ext]) > 20:
-        logs[ext].pop(0)
-    logs.dump(callRegistry)
-
+    })
+    clients = app.websocket_kalinfo_server.websockets.get(extension, [])
     if not clients:
-        error("Calling {} but has no client.", ext)
+        warn("Calling {} but has no client.", extension)
     for client in clients:
         app.websocket_kalinfo_server.wserver.send_message(client, "PHONE:" + phone + ":" + time)
     result = ns(
         notified=len(clients),
         phone=phone,
-        ext=ext,
+        ext=extension,
     )
     return yamlfy(info=result)
 
@@ -566,43 +550,49 @@ def getPhoneLog(phone):
     return yamlfy(info=result)
 
 
-@app.route('/api/personlog/<ext>', methods=['GET'])
-def getCallLog(ext):
-    message = 'ok'
-    mylog = ""
-    try:
-        logs = ns.load(CONFIG.my_calls_log)
-    except IOError:
-        return yamlinfoerror('not_register_yet',
-            "There are not calls in the register yet.")
+class CallRegistry(object):
+    def __init__(self, path=None, size=20):
+        self.path = Path(path or CONFIG.my_calls_log)
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.size = size
 
-    if ext not in logs:
-        return yamlinfoerror('not_registers_yet',
-            "{} does not appear in the register.", ext)
+    def _calls(self):
+        if not self.path.exists():
+            return ns()
+        return ns.load(self.path)
 
-    mylog = logs[ext]
-    result = ns(
-        info=mylog,
-        message=message,
-    )
-    return yamlfy(info=result)
+    def callsByExtension(self, extension):
+        return self._calls().get(extension,[])
 
-
-@app.route('/api/updatelog/<ext>', methods=['POST'])
-def updateCallLog(ext):
-    try:
-        call_log = Path(CONFIG.my_calls_log)
-        logs = ns.load(call_log) if call_log.exists() else ns()
-        info = ns.loads(request.data)
-        for call in logs.get(ext,[]):
+    def updateCall(self, extension, info):
+        calls = self._calls()
+        for call in calls.get(ext,[]):
             if call.data == info.data:
                 call.update(info)
                 break
         else: # exiting when not found
-            logs.setdefault(ext, []).append(info)
+            calls.setdefault(ext, []).append(info)
 
-        logs.dump(call_log)
-        app.websocket_kalinfo_server.say_logcalls_has_changed(ext)
+        if self.size:
+            calls[extension]=calls[extension][-size:]
+
+        calls.dump(self.path)
+
+
+
+@app.route('/api/personlog/<ext>', methods=['GET'])
+def getCallLog(ext):
+    return ns(
+        info=CallRegistry().callsByExtension(ext),
+        message='ok',
+    )
+
+@app.route('/api/updatelog/<extension>', methods=['POST'])
+def updateCallLog(extension):
+    try:
+        call = ns.loads(request.data)
+        CallRegistry().updateCall(extension, call)
+        app.websocket_kalinfo_server.say_logcalls_has_changed(extension)
     except ValueError:
         return yamlinfoerror('error_update_log',
             "[U] Opening file {}: unexpected", call_log)
