@@ -270,10 +270,10 @@ var infoPhone = function () {
   }
 };
 
-var refreshCall = function(data) {
+var refreshCall = function(phone) {
   clearCallInfo();
-  Questionnaire.call.phone = data;
-  CallInfo.search = data;
+  Questionnaire.call.phone = phone;
+  CallInfo.search = phone;
   CallInfo.file_info = { 1: "empty" };
   PartnerInfo.main_partner = 0;
   search_by = "phone";
