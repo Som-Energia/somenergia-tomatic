@@ -23,7 +23,6 @@ var styleCallinfo = require('./callinfo_style.styl');
 var CallInfo = {};
 
 var websock = null;
-var port_ws = 0;
 
 
 CallInfo.file_info = {};
@@ -492,18 +491,18 @@ var getServerSockInfo = function() {
         console.debug("Info GET Response: ",response);
         if (response.info.message !== "ok" ) {
             console.debug("Error get data: ", response.info.message);
-			return;
-		}
-		port_ws = response.info.port_ws;
-		connectWebSocket();
+            return;
+        }
+        var port = response.info.port_ws;
+        connectWebSocket(port);
     }, function(error) {
         console.debug('Info GET apicall failed WebSock: ', error);
     });
 }
 getServerSockInfo();
 
-var connectWebSocket = function() {
-    var addr = 'ws://'+window.location.hostname+':'+port_ws+'/';
+var connectWebSocket = function(port) {
+    var addr = 'ws://'+window.location.hostname+':'+port+'/';
     websock = new WebSocket(addr);
     websock.onopen = CallInfo.sendIdentification;
     websock.onmessage = function (event) {
