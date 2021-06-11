@@ -562,6 +562,15 @@ class CallRegistry(object):
             if line.strip()
         ]
 
+    def importClaimTypes(self, erp):
+        claims = Claims(erp)
+        erp_claims = claims.get_claims()
+
+        Path(CONFIG.claims_file).write_text(
+            '\n'.join([u(x) for x in erp_claims]),
+            encoding='utf8',
+        )
+
     def claimKeywords(self):
         return ns.load(CONFIG.claims_dict_file)
 
@@ -587,19 +596,8 @@ def updateCallLog(extension):
 def updateClaimTypes():
     message = 'ok'
 
-    claims = Claims(erp)
-    erp_claims = claims.get_claims()
-
-    Path(CONFIG.claims_file).write_text(
-        '\n'.join([u(x) for x in erp_claims]),
-        encoding='utf8',
-    )
-
-    result = ns(
-        message=message
-    )
-    return yamlfy(info=result)
-
+    CallRegistry().importClaimTypes(erp)
+    return yamlfy(info=ns(message='ok'))
 
 @app.route('/api/getClaims', methods=['GET'])
 def getClaimTypes():
