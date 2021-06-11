@@ -510,15 +510,16 @@ class CallRegistry(object):
 
     def updateCall(self, extension, fields):
         calls = self._calls()
-        for call in calls.get(extension,[]):
+        extensionCalls = calls.setdefault(extension,[])
+        for call in extensionCalls:
             if call.data == fields.data:
                 call.update(fields)
                 break
         else: # exiting when not found
-            calls.setdefault(extension, []).append(fields)
+            extensionCalls.append(fields)
 
         if self.size:
-            calls[extension]=calls[extension][-self.size:]
+            extensionCalls=extensionCalls[-self.size:]
 
         calls.dump(self.path)
 
