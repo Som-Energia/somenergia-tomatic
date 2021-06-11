@@ -168,7 +168,6 @@ var saveLogCalls = function(phone, person, reclamacio, contract_info, partner_nu
     "extra": Questionnaire.call.extra,
   }
   if (reclamacio == "") {
-    postInfo(info);
   }
   else {
     claim = {
@@ -185,8 +184,8 @@ var saveLogCalls = function(phone, person, reclamacio, contract_info, partner_nu
       "observations": Questionnaire.call.extra,
     }
     postClaim(claim);
-    postInfo(info);
   }
+  postInfo(info);
 }
 
 
