@@ -151,19 +151,22 @@ function isEmpty(obj) {
 }
 
 var responsesMessage = function(info) {
-  var data = info["data"];
-  var phone = info["telefon"];
-  var message = "("+ data +"): " + (phone !== "" ? phone : "Cercat");
-
-  var solved = info["motius"] != "";
-  if (solved) {
-    var partner = info["partner"];
-      message += ", " + (partner == "" ? "Sense informació" : partner);
-      if ("contracte" in info) {
-          message += ", " + info["contracte"];
-      }
-  }
-  return message;
+  var time = (new Date(info.data)).toLocaleTimeString();
+  return m('',
+    m('span.time', time),
+    ' ',
+    m('span.phone', info.telefon ? info.telefon : "Cerca Manual"),
+    m.trust('&nbsp;'),
+    m.trust('&nbsp;'),
+    info.motius?
+      m('span.partner', info.partner ? info.partner : "Sense informació") : '', 
+    (info.motius && info.contracte)? [
+      m.trust('&nbsp;'),
+      m('span.contract', info.contracte)
+    ]:'',
+    !info.motius ? m('span.pending', " Pendent d'anotar"):'',
+    ''
+  );
 }
 
 var atencionsLog = function() {
@@ -181,7 +184,6 @@ var atencionsLog = function() {
       ],
     }));
   }
-  console.log(log_calls)
   items = log_calls.slice(0).reverse().map(function(item, index) {
     var missatge = responsesMessage(item);
     var solved = item.motius != "";
@@ -193,7 +195,7 @@ var atencionsLog = function() {
           className: "registres",
           compact: true,
           selectable: false,
-          title: m('b', missatge),
+          title: missatge,
           selected: Questionnaire.call.date == item.data,
         }),
         m("span", { "class":tipus }, m(".main-text",text))
