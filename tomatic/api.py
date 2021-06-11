@@ -41,15 +41,6 @@ def fillConfigurationInfo():
     return ns.load('config.yaml')
 
 
-def appendToPersonDailyInfo(prefix, info, date=datetime.today()):
-    path = Path(prefix) / '{:%Y%m%d}.yaml'.format(date)
-    dailyInfo = ns()
-    if path.exists():
-        dailyInfo = ns.load(str(path))
-    dailyInfo.setdefault(info.person, []).append(info)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    dailyInfo.dump(str(path))
-
 CONFIG = fillConfigurationInfo()
 
 
@@ -531,12 +522,54 @@ class CallRegistry(object):
 
         calls.dump(self.path)
 
+    def annotateInfoRequest(self, data):
+        self._appendToExtensionDailyInfo('info_cases', data)
+
+    def annotateClaim(self, data):
+        self._appendToExtensionDailyInfo('atc_cases', data)
+
+    def _appendToExtensionDailyInfo(self, prefix, info, date=datetime.today()):
+        path = Path(prefix) / '{:%Y%m%d}.yaml'.format(date)
+        warn("Saving {}", path)
+        dailyInfo = ns()
+        if path.exists():
+            dailyInfo = ns.load(str(path))
+        dailyInfo.setdefault(info.person, []).append(info)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        dailyInfo.dump(str(path))
+
+    def infoRequestTypes(self):
+        try:
+            content = Path(CONFIG.info_cases).read_text(encoding='utf8')
+        except Exception as e:
+            error("Error carregant el tipus d'anotacions de trucades: {}", e)
+            return []
+        return [
+            line.strip()
+            for line in content.splitlines()
+            if line.strip()
+        ]
+    def claimTypes(self):
+        try:
+            content = Path(CONFIG.claims_file).read_text(encoding='utf8')
+        except Exception as e:
+            error("Error carregant el tipus d'anotacions de trucades: {}", e)
+            return []
+        return [
+            line.strip()
+            for line in content.splitlines()
+            if line.strip()
+        ]
+
+    def claimKeywords(self):
+        return ns.load(CONFIG.claims_dict_file)
 
 @app.route('/api/personlog/<ext>', methods=['GET'])
 def getCallLog(ext):
+    calls = CallRegistry().callsByExtension(ext)
     return yamlfy(
         info=ns(
-            info=CallRegistry().callsByExtension(ext),
+            info=calls,
             message='ok',
         )
     )
@@ -570,20 +603,22 @@ def updateClaimTypes():
 @app.route('/api/getClaims', methods=['GET'])
 def getClaimTypes():
     message = 'ok'
-    claims_dict = ns()
-    claims = []
-    try:
-        with open(CONFIG.claims_file, "r") as f:
-            claims = [ line.strip() for line in f ]
-    except IOError:
-        message = "error"
+    claims = CallRegistry().claimTypes()
+    if not claims:
         error("File of claims does not exist")
-
-    try:
-        claims_dict = ns.load(CONFIG.claims_dict_file)
-    except IOError:
-        message = "error"
+        return yamlfy(info=ns(
+            message="error",
+            claims=[],
+            dict={},
+        ))
+    claims_dict = CallRegistry().claimKeywords()
+    if not claims_dict:
         error("File of claims dict does not exist")
+        return yamlfy(info=ns(
+            message="error",
+            claims=[],
+            dict={},
+        ))
 
     result = ns(
         message=message,
@@ -597,7 +632,7 @@ def getClaimTypes():
 def postAtrCase():
 
     atc_info = ns.loads(request.data)
-    appendToPersonDailyInfo('atc_cases', atc_info)
+    CallRegistry().annotateClaim(atc_info)
     return yamlfy(info=ns(
         message="ok"
     ))
@@ -605,27 +640,21 @@ def postAtrCase():
 
 @app.route('/api/getInfos', methods=['GET'])
 def getInfos():
-    message = 'ok'
-    infos = []
-    try:
-        with open(CONFIG.info_cases, "r") as f:
-            infos = f.read().splitlines()
-    except IOError:
-        message = "error"
-        error("File of infos does not exist")
-
-    result = ns(
-        message=message,
+    infos = CallRegistry().infoRequestTypes()
+    if not infos:
+        return yamlinfoerror("error",
+            "Unable to info request types")
+    return yamlfy(info = ns(
+        message='ok',
         infos=infos,
-    )
-    return yamlfy(info=result)
+    ))
 
 
 @app.route('/api/infoCase', methods=['POST'])
 def postInfoCase():
 
     info = ns.loads(request.data)
-    appendToPersonDailyInfo('info_cases', info)
+    CallRegistry().annotateInfoRequest(info)
     return yamlfy(info=ns(
         message="ok"
     ))
