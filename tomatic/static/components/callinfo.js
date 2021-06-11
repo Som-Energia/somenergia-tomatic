@@ -64,7 +64,9 @@ var getInfo = function () {
     }
     else{
       CallInfo.file_info=response.info.info;
-      Questionnaire.call.date = new Date(Date.now()).toISOString();
+      if (Questionnaire.call.date === "") {
+        Questionnaire.call.date = new Date().toISOString();
+      }
     }
   }, function(error) {
     console.debug('Info GET apicall failed: ', error);
@@ -84,7 +86,7 @@ var updateClaims = function() {
     }
     else{
       actualitzant_reclamacions = false;
-      Questionnaire.getClaims;
+      Questionnaire.getClaims; // TODO: This seems a noop
     }
   }, function(error) {
     console.debug('Info GET apicall failed: ', error);
@@ -222,7 +224,6 @@ var atencionsLog = function() {
           }
           else {
             Questionnaire.call.date = item.data;
-            console.debug(item.telefon);
             refreshCall(item.telefon);
           }
         }
@@ -546,4 +547,4 @@ return CallInfo;
 
 }();
 
-// vim: noet ts=4 sw=4
+// vim: et ts=2 sw=2

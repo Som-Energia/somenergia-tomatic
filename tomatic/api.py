@@ -467,7 +467,7 @@ def callingPhone():
     postdata = request.form.to_dict()
     phone = postdata['phone']
     extension = postdata['ext']
-    time = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
+    time = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 
     CallRegistry().updateCall(extension, fields=ns(
         data = time,

@@ -158,9 +158,10 @@ var saveLogCalls = function(phone, person, reclamacio, contract_info, partner_nu
   desar = 'Desant';
   contract_number = contract_info.number;
   contract_cups = contract_info.cups;
-  updateCall(Questionnaire.call["date"], partner_number, contract_number);
+  isodate = new Date(Questionnaire.call.date).toISOString()
+  updateCall(isodate, partner_number, contract_number);
   info = {
-    "date": Questionnaire.call.date,
+    "date": isodate,
     "phone": Questionnaire.call.phone,
     "person": person,
     "reason": Questionnaire.call.reason,
@@ -171,7 +172,7 @@ var saveLogCalls = function(phone, person, reclamacio, contract_info, partner_nu
   }
   else {
     claim = {
-      "date": Questionnaire.call.date,
+      "date": isodate,
       "person": person,
       "reason": Questionnaire.call.reason,
       "partner": partner_number,
