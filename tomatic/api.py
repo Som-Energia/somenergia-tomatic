@@ -464,9 +464,9 @@ def getInfoPersonBy(field):
 
 @app.route('/api/info/ringring', methods=['POST'])
 def callingPhone():
-    data = request.form.to_dict()
-    phone = data['phone']
-    extension = data['ext']
+    postdata = request.form.to_dict()
+    phone = postdata['phone']
+    extension = postdata['ext']
     time = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
 
     CallRegistry().updateCall(extension, fields=ns(
