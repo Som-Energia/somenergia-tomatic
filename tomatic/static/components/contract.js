@@ -149,11 +149,8 @@ var meterReadings = function(readings) {
 }
 
 var lastInvoices = function(invoices) {
-  last_invoices = [];
-  for (invoice_index in invoices) {
-    invoice = invoices[invoice_index];
-    last_invoices.push(
-      m(".factura-info-item", [
+  return m(".factures", m(".factures-info", invoices.map(function(invoice) {
+    return m(".factura-info-item", [
         m("div", [
           m(".label-right", invoice.initial_date, " ⇨ ", invoice.final_date),
           m("", m(".label", "Factura: "), invoice.number),
@@ -177,10 +174,9 @@ var lastInvoices = function(invoices) {
             m("td", invoice.state),
           ])
         ])
-      ])
-    )
-  }
-  return m(".factures", m(".factures-info", last_invoices));
+      ]);
+    })
+  ));
 }
 
 var extraInfo = function(
