@@ -160,9 +160,7 @@ var saveLogCalls = function(phone, person, reclamacio, contract_info, partner_nu
   contract_cups = contract_info.cups;
   isodate = new Date(Questionnaire.call.date).toISOString()
   updateCall(isodate, partner_number, contract_number);
-  if (reclamacio == "") {
-  }
-  else {
+  if (reclamacio) {
     claim = {
       "date": isodate,
       "person": person,
