@@ -218,9 +218,9 @@ var atencionsLog = function() {
   return m(".logs-person", m(List, {compact: true, tiles: items}));
 }
 
-var logPerson = function() {
+var attendedCalls = function() {
   return m(Card, {
-    className: 'card-log-person',
+    className: 'card-attended-calls',
     content: [
       { primary: {
         title: m(".title", [ 'Trucades ateses:' ])
@@ -458,8 +458,8 @@ CallInfo.mainPage = function() {
       }],
     }),
     m(".all-info-call", [
+      attendedCalls(),
       infoPhone(),
-      m("", logPerson())
     ])
   ]);
 }
