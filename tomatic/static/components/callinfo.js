@@ -482,37 +482,45 @@ var getServerSockInfo = function() {
     });
 }
 getServerSockInfo();
+/*
+var url = new URL('/', window.location.href);
+url.protocol = url.protocol.replace('http', 'ws');
+var addr = url.href
+*/
 
 var connectWebSocket = function(port) {
     var addr = 'ws://'+window.location.hostname+':'+port+'/';
     websock = new WebSocket(addr);
     websock.onopen = CallInfo.sendIdentification;
-    websock.onmessage = function (event) {
-        var message = event.data.split(":");
-        var type_of_message = message[0];
-        if (type_of_message === "IDEN") {
-            var iden = message[1];
-            var ext = Login.currentExtension();
-            var info = {
-                iden: iden,
-                ext: ext,
-            }
-            CallInfo.refreshIden(info);
-            CallInfo.getLogPerson();
+    websock.onmessage = CallInfo.onMessageReceived;
+}
+
+CallInfo.onMessageReceived = function(event) {
+    var message = event.data.split(":");
+    var type_of_message = message[0];
+    if (type_of_message === "IDEN") {
+        var iden = message[1];
+        var ext = Login.currentExtension();
+        var info = {
+            iden: iden,
+            ext: ext,
         }
-        else if (type_of_message === "PHONE") {
-            var phone = message[1];
-            var date = message[2]+":"+message[3]+":"+message[4];
-            CallInfo.refreshPhone(phone, date);
-            CallInfo.getLogPerson();
-        }
-        else if (type_of_message === "REFRESH") {
-            CallInfo.getLogPerson();
-        }
-        else {
-            console.debug("Message recieved from WebSockets and type not recognized.");
-        }
+        CallInfo.refreshIden(info);
+        CallInfo.getLogPerson();
+        return;
     }
+    if (type_of_message === "PHONE") {
+        var phone = message[1];
+        var date = message[2]+":"+message[3]+":"+message[4];
+        CallInfo.refreshPhone(phone, date);
+        CallInfo.getLogPerson();
+        return;
+    }
+    if (type_of_message === "REFRESH") {
+        CallInfo.getLogPerson();
+        return
+    }
+    console.debug("Message received from WebSockets and type not recognized.");
 }
 
 CallInfo.sendIdentification = function() {
