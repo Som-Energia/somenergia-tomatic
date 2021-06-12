@@ -26,13 +26,13 @@
   },
   "homepage": "https://github.com/Som-Energia/somenergia-tomatic#readme",
   "dependencies": {
-    "js-yaml": "^3.13.1",
+    "js-yaml": "^3.14.1",
     "mithril": "^2.0.4",
     "mithril-datepicker": "*",
-    "polythene-core": "^1.0.0",
-    "polythene-css": "^1.0.0",
-    "polythene-mithril": "^1.0.0",
-    "polythene-utilities": "^1.0.0",
+    "polythene-core": "^1.7.5",
+    "polythene-css": "^1.7.5",
+    "polythene-mithril": "^1.7.5",
+    "polythene-utilities": "^1.7.5",
     "webpack-roboto": "^1.0.0"
   },
   "devDependencies": {
@@ -47,7 +47,7 @@
     "stylus-loader": "^3.0.1",
     "url-loader": "^2.0.1",
     "webpack": "^2.4.1",
-    "webpack-bundle-analyzer": ">=3.3.2",
-    "webpack-dev-server": ">=3.7.2"
+    "webpack-bundle-analyzer": "^4.4.2",
+    "webpack-dev-server": "^3.11.2"
   }
 }

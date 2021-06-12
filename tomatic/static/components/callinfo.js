@@ -187,47 +187,35 @@ var atencionsLog = function() {
     }));
   }
   items = log_calls.slice(0).reverse().map(function(item, index) {
+    var itemClicked = function(ev) {
+        if (item.data === Questionnaire.call.date) {
+          clearCallInfo();
+          Questionnaire.call.date = "";
+        }
+        else {
+          Questionnaire.call.date = item.data;
+          refreshCall(item.telefon);
+        }
+    }
     var missatge = responsesMessage(item);
     var solved = item.motius != "";
-    if (solved) {
-      var text = item.motius;
-      var tipus = index?"tooltiptext":"tooltiptext-first";
-      return m("div", {"class":"tooltip"}, [
-        m(ListTile, {
-          className: "registres",
-          compact: true,
-          selectable: false,
-          title: missatge,
-          selected: Questionnaire.call.date == item.data,
-        }),
-        m("span", { "class":tipus }, m(".main-text",text))
-      ]);
-    }
-
     return m(ListTile, {
       className: (
-        Questionnaire.call.date == item.data ?
-        "registres-red-selected" : "registres-red"
-      ),
-      compact: true,
-      selectable: true,
+        ! solved ? "registres" : (
+        Questionnaire.call.date == item.data ?  "registres-red-selected" :
+        "registres-red"
+      )),
+      className: "registres",
+      selectable: !solved,
+      hoverable: !solved,
       ink: true,
       ripple: {
         opacityDecayVelocity: '0.5',
       },
+      selected: Questionnaire.call.date == item.data,
       title: missatge,
-      events: {
-        onclick: function(ev) {
-          if (item.data === Questionnaire.call.date) {
-            clearCallInfo();
-            Questionnaire.call.date = "";
-          }
-          else {
-            Questionnaire.call.date = item.data;
-            refreshCall(item.telefon);
-          }
-        }
-      },
+      subtitle: item.motius,
+      events: solved? undefined : { onclick: itemClicked },
       disabled: !refresh,
     });
   })
