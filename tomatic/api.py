@@ -530,7 +530,7 @@ class CallRegistry(object):
         self._appendToExtensionDailyInfo('atc_cases', data)
 
     def _appendToExtensionDailyInfo(self, prefix, info, date=datetime.today()):
-        path = Path(prefix) / '{:%Y%m%d}.yaml'.format(date)
+        path = self.path.parent / prefix / '{:%Y%m%d}.yaml'.format(date)
         warn("Saving {}", path)
         dailyInfo = ns()
         if path.exists():
@@ -550,6 +550,7 @@ class CallRegistry(object):
             for line in content.splitlines()
             if line.strip()
         ]
+
     def claimTypes(self):
         try:
             content = Path(CONFIG.claims_file).read_text(encoding='utf8')
