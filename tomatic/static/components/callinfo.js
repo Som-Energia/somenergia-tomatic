@@ -239,24 +239,23 @@ var logPerson = function() {
 
 var infoPhone = function () {
   if (isEmpty(CallInfo.file_info)) {
-    return m('.plane-info', m("body", 'No hi ha informació.'));
+    return m('.plane-info', m(".body", 'No hi ha informació.'));
   }
-  else if (CallInfo.file_info[1] === "empty"){
+  if (CallInfo.file_info[1] === "empty"){
     return m('.plane-info', m(Spinner, { show: "true" } ));
   }
-  else if (CallInfo.file_info[1] === "toomuch"){
+  if (CallInfo.file_info[1] === "toomuch"){
     return m('.plane-info',
-      m("body", 'Cerca poc específica, retorna masses resultats.')
+      m(".body", 'Cerca poc específica, retorna masses resultats.')
     );
-  } else {
-    return m('.call-info', [
-      m('.plane-info', PartnerInfo.allInfo(CallInfo.file_info)),
-      ContractInfo.listOfContracts(
-        CallInfo.file_info,
-        PartnerInfo.main_partner
-      ),
-    ]);
   }
+  return m('.call-info', [
+    m('.plane-info', PartnerInfo.allInfo(CallInfo.file_info)),
+    ContractInfo.listOfContracts(
+      CallInfo.file_info,
+      PartnerInfo.main_partner
+    ),
+  ]);
 };
 
 var refreshCall = function(phone) {
