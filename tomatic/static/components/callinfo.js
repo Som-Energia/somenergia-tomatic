@@ -188,7 +188,8 @@ var atencionsLog = function() {
   }
   items = log_calls.slice(0).reverse().map(function(item, index) {
     var itemClicked = function(ev) {
-        if (item.data === Questionnaire.call.date) {
+        if (item.motius !== "") return;
+        if (Questionnaire.call.date === item.data) {
           clearCallInfo();
           Questionnaire.call.date = "";
         }
@@ -198,24 +199,19 @@ var atencionsLog = function() {
         }
     }
     var missatge = responsesMessage(item);
-    var solved = item.motius != "";
+    var solved = item.motius !== "";
     return m(ListTile, {
-      className: (
-        ! solved ? "registres" : (
-        Questionnaire.call.date == item.data ?  "registres-red-selected" :
-        "registres-red"
-      )),
-      className: "registres",
-      selectable: !solved,
+      className:
+        Questionnaire.call.date === item.data ?
+        "registres selected" : "registres",
+      selectable: true,
       hoverable: !solved,
-      ink: true,
-      ripple: {
-        opacityDecayVelocity: '0.5',
-      },
-      selected: Questionnaire.call.date == item.data,
+      ink: !solved,
       title: missatge,
       subtitle: item.motius,
-      events: solved? undefined : { onclick: itemClicked },
+      events: {
+        onclick: itemClicked,
+      },
       disabled: !refresh,
     });
   })
@@ -228,7 +224,7 @@ var logPerson = function() {
     content: [
       { primary: {
         title: m(".title", [ 'Trucades ateses:' ])
-      } },
+      }},
       { text: {
         content: (log_calls[0] === "lookingfor" ?
           m('center', m(Spinner, { show: "true" } )) : atencionsLog())
