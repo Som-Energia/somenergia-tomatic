@@ -161,10 +161,10 @@ var responsesMessage = function(info) {
     m.trust('&nbsp;'),
     m.trust('&nbsp;'),
     info.motius?
-      m('span.partner', info.partner ? info.partner : "Sense informació") : '', 
+      m('span.partner', {title: "Codi Titular"}, info.partner ? info.partner : "Sense informació") : '', 
     (info.motius && info.contracte)? [
       m.trust('&nbsp;'),
-      m('span.contract', info.contracte)
+      m('span.contract', {title: "Codi Contracte"}, info.contracte)
     ]:'',
     !info.motius ? m('span.pending', " Pendent d'anotar"):'',
     ''
