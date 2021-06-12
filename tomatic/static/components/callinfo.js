@@ -173,9 +173,8 @@ var responsesMessage = function(info) {
 
 var atencionsLog = function() {
   var aux = [];
-
   if (log_calls.length === 0) {
-    return m(".logs-person", m(List, {
+    return m(".attended-calls-list", m(List, {
       compact: true,
       tiles: [
         m(ListTile, {
@@ -209,13 +208,14 @@ var atencionsLog = function() {
       ink: !solved,
       title: missatge,
       subtitle: item.motius,
+      selected: false,
       events: {
         onclick: itemClicked,
       },
       disabled: !refresh,
     });
   })
-  return m(".logs-person", m(List, {compact: true, tiles: items}));
+  return m(".attended-calls-list", m(List, {compact: true, tiles: items}));
 }
 
 var attendedCalls = function() {
