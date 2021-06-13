@@ -11,7 +11,6 @@ var ContractInfo = require('./contract');
 
 var PartnerInfo = {};
 PartnerInfo.main_partner = 0;
-PartnerInfo.info = {};
 
 var infoPartner = function(info){
   var aux = info.email.split(",");
@@ -63,15 +62,8 @@ var buttons = function(info) {
 }
 
 var listOfPartners = function(partners, button) {
-  var partner = 0;
-  var numOfPartners = partners.length;
-  var aux = [];
-  for (partner; partner < numOfPartners; partner++) {
-    aux[partner] = specificPartnerCard(partners[partner], button);
-    PartnerInfo.info[partner] = partners[partner];
-
-  }
-  return aux[PartnerInfo.main_partner];
+  var partner = partners[PartnerInfo.main_partner];
+  return specificPartnerCard(partner, button);
 }
 
 var specificPartnerCard = function(partner, button) {
