@@ -235,14 +235,14 @@ var attendedCalls = function() {
 
 var infoPhone = function () {
   if (isEmpty(CallInfo.file_info)) {
-    return m('.plane-info', m(".body", 'No hi ha informació.'));
+    return m('.plane-info', m("p", 'No hi ha informació.'));
   }
   if (CallInfo.file_info[1] === "empty"){
     return m('.plane-info', m(Spinner, { show: "true" } ));
   }
   if (CallInfo.file_info[1] === "toomuch"){
     return m('.plane-info',
-      m(".body", 'Cerca poc específica, retorna masses resultats.')
+      m("p", 'Cerca poc específica, retorna masses resultats.')
     );
   }
   return m('.call-info', [
