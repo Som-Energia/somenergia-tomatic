@@ -245,12 +245,12 @@ var infoPhone = function () {
       m("p", 'Cerca poc específica, retorna masses resultats.')
     );
   }
-  return m('.call-info', [
-    m('.plane-info', PartnerInfo.allInfo(CallInfo.file_info)),
-    ContractInfo.listOfContracts(
-      CallInfo.file_info,
-      PartnerInfo.main_partner
-    ),
+  return m('.plane-info', [
+      PartnerInfo.allInfo(CallInfo.file_info),
+      ContractInfo.listOfContracts(
+        CallInfo.file_info,
+        PartnerInfo.main_partner
+      ),
   ]);
 };
 

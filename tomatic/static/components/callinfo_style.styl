@@ -2,16 +2,9 @@ body
   .callinfo
       .all-info-call
           width: 100%
-          display: flex;
-          flex-wrap: wrap;
-          .plane-info
-              flex: 50%;
-              margin: 10px
-          .contracts
-              flex: 50%;
-              margin: 10px
-              .no-info
-                margin-left: 200px
+          display: inline-flex
+          flex-flow: row wrap
+          justify-content: space-between
           .card-attended-calls
               margin: 10px
               .title
@@ -22,6 +15,20 @@ body
                   margin-right: 15px
                   min-width: 20px
                   margin-top: -5px
+          .plane-info
+              flex-grow: 2
+              justify-content: space-between
+              display: inline-flex
+              flex-flow: row wrap;
+              .contracts
+                  flex-grow: 1
+                  margin: 10px
+              .main-info-card
+                  flex-grow: 1
+                  margin: 10px
+              .no-info
+                  margin: auto
+                  font-size: 20pt
 
       .logs
           display: inline-block
@@ -34,7 +41,7 @@ body
 
       .attended-calls-list
           background-color: #EEEEEE
-          min-width: 350px
+          min-width: 250px
           max-width: 400px
           overflow-x: hidden
           .time
@@ -140,13 +147,11 @@ body
                   color: green
 
       .partner-card
-          display: inline-block
           .partner-tabs
-              max-width: 570px
               background-color: #8FBC8F
               .pe-tabs__row
                   max-width: 465px
-                  min-width: 475px
+                  min-width: 200px
                   min-height: 70px
                   .pe-button--selected
                       background-color: #ABD0AB
