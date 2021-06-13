@@ -19,7 +19,7 @@ var infoPartner = function(info){
   for(var i=0; i<aux.length; i++){
     emails.push(
       m(".partner-info-item",
-        m("a", {"href":url+aux[i], target:"_blank"}, aux[i])
+        m("a", {"href":url+aux[i], target:"_blank", title: "Cerca al Helpscout"}, aux[i])
       )
     );
   }
