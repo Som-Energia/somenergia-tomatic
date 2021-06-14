@@ -6,6 +6,7 @@ var deyamlize = require('./utils').deyamlize;
 var Ripple = require('polythene-mithril-ripple').Ripple;
 var Dialog = require('polythene-mithril-dialog').Dialog;
 var Button = require('polythene-mithril-button').Button;
+var IconButton = require('polythene-mithril-icon-button').IconButton;
 var Textfield = require('polythene-mithril-textfield').TextField;
 var Card = require('polythene-mithril-card').Card;
 var ListTile = require('polythene-mithril-list-tile').ListTile;
@@ -221,38 +222,57 @@ var atencionsLog = function() {
 var attendedCalls = function() {
   return m(Card, {
     className: 'card-attended-calls',
-    content: [
-      { primary: {
-        title: m(".title", [ 'Trucades ateses:' ])
-      }},
-      { text: {
+    content: [{
+      primary: {
+        title: m('.layout.horizontal', [
+          m(".title", 'Trucades ateses'),
+          m(".flex"), // expanding spacer
+          m(IconButton, {
+            className: 'btn-settings',
+            icon: settingsIcon(),
+            border: false,
+            wash: true,
+            compact: true,
+            events: {
+              onclick: function() {
+                settingsDialog();
+              },
+            },
+          }),
+          m(IconButton, {
+            className: 'btn-lock',
+            icon: (refresh ? lockIcon() : lockedIcon()),
+            border: false,
+            wash: true,
+            compact: true,
+            title: refresh ? "Actualitza el cas automàticament":"Fixa el cas actual",
+            events: {
+              onclick: function() {
+                refresh = !refresh
+              },
+            }
+          }),
+          m(IconButton, {
+            className: "btn-new-tab",
+            icon: newTabIcon(),
+            border: false,
+            wash: true,
+            compact: true,
+            title: "Obre una nova pestanya",
+            url: {
+              href: window.location,
+              target:"_blank",
+            }
+          }),
+        ])
+      }},{
+      text: {
         content: (log_calls[0] === "lookingfor" ?
           m('center', m(Spinner, { show: "true" } )) : atencionsLog())
       }},
     ]
   });
 }
-
-var infoPhone = function () {
-  if (isEmpty(CallInfo.file_info)) {
-    return m('.plane-info', m(".searching", 'No hi ha informació.'));
-  }
-  if (CallInfo.file_info[1] === "empty"){
-    return m('.plane-info', m(".searching", m(Spinner, { show: "true" } )));
-  }
-  if (CallInfo.file_info[1] === "toomuch"){
-    return m('.plane-info',
-      m(".searching", 'Cerca poc específica, retorna masses resultats.')
-    );
-  }
-  return m('.plane-info', [
-      PartnerInfo.allInfo(CallInfo.file_info),
-      ContractInfo.listOfContracts(
-        CallInfo.file_info,
-        PartnerInfo.main_partner
-      ),
-  ]);
-};
 
 var refreshCall = function(phone) {
   clearCallInfo();
@@ -305,31 +325,11 @@ var lookForPhoneInfo = function() {
   }
 }
 
-var lockCall = function() {
+var incommingCall = function() {
   return m(".num-entrant", [
     m(".text-info", [
       m(".label-text", "Número: "),
       m(".normal-text", Questionnaire.call['phone']),
-      m(Button, {
-        className: 'btn-lock',
-        label: (refresh ? lockIcon() : lockedIcon()),
-        border: 'true',
-        events: {
-          onclick: function() {
-            refresh = !refresh
-          },
-        },
-      }, m(Ripple)),
-      m(Button, {
-        className: "btn-new-tab",
-        label: newTabIcon(),
-        url: {
-          href: window.location,
-          target:"_blank",
-        },
-        border: 'true',
-      }, m(Ripple)),
-      settings(),
     ]),
   ]);
 }
@@ -354,13 +354,13 @@ var typeOfSearch = function() {
   );
 }
 
-var kalinfoBrowser = function() {
-  return m('.busca-info', [
-    m(".busca-info-title", [
+var customerSearch = function() {
+  return m('', {className:'busca-info'}, [
+    m(".busca-info-title.layout.horizontal", [
       typeOfSearch(),
-      m(".label", "Cercador: "),
       m(Textfield, {
-        className: 'txtf-phone',
+        className: 'txtf-phone flex',
+        placeholder: "Cerca",
         onChange: function(state) {
           CallInfo.search = state.value;
         },
@@ -429,37 +429,38 @@ var settingsDialog = function() {
 }
 
 var settings = function() {
-  return m(Button, {
-    className: 'btn-settings',
-    label: settingsIcon(),
-    border: 'true',
-    events: {
-      onclick: function() {
-        settingsDialog();
-      },
-    },
-  }, m(Ripple));
 }
 
 
 CallInfo.mainPage = function() {
   return m('', [
-    m(Card, {
-      content: [{
-        primary: {
-          title: m('',[
-            kalinfoBrowser(),
-            Questionnaire.infoQuestionnaire(
-              (isEmpty(CallInfo.file_info) || CallInfo.file_info[1] === "toomuch") && Questionnaire.call.date !== ""
-            ),
-            lockCall(),
-          ]),
-        },
-      }],
-    }),
-    m(".all-info-call", [
+    m(".all-info-call.layout.horizontal", [
       attendedCalls(),
-      infoPhone(),
+      m(".layout.horizontal.flex", [
+        m(".layout.vertical.flex", [
+          customerSearch(),
+          m('.plane-info',
+            isEmpty(CallInfo.file_info)?
+              m(".searching", 'No hi ha informació.',
+                Questionnaire.infoQuestionnaire(Questionnaire.call.date !== "")
+              ):(
+            CallInfo.file_info[1] === "empty"?
+              m(".searching", m(Spinner, { show: "true" } )):(
+            CallInfo.file_info[1] === "toomuch"?
+              m(".searching", 'Cerca poc específica, retorna masses resultats.',
+                Questionnaire.infoQuestionnaire(Questionnaire.call.date !== "")
+              ):(
+              m('.plane-info', [
+                  PartnerInfo.allInfo(CallInfo.file_info),
+                  ContractInfo.listOfContracts(
+                    CallInfo.file_info,
+                    PartnerInfo.main_partner
+                  ),
+              ])
+            ))),
+          ),
+        ])
+      ])
     ])
   ]);
 }

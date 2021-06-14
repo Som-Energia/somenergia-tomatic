@@ -326,12 +326,21 @@ var onlyInfosDialog = function() {
     }; }, { id: 'onlyInfosDialog' });
 }
 
+// TODO: Dupped from contract.js
+var clipboardIcon = function(){
+    return m(".icon-clipboard",
+    [
+        m("i.far.fa-clipboard"),
+    ]);
+}
 
 Questionnaire.infoQuestionnaire = function(visible=false) {
   return visible
   ? m(Button, {
       className: "infos",
-      label: "INFOS",
+      label: [
+        clipboardIcon(),
+      ],
       events: {
         onclick: function() {
           console.log("VEURE QÜESTIONARI INFOS")

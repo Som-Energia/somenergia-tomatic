@@ -208,11 +208,6 @@ var extraInfo = function(
     className: 'extra-info',
     content: [
       {
-        header: {
-          title: m(".title", "Altres:"),
-        },
-      },
-      {
         text: {
           content: info
         }
