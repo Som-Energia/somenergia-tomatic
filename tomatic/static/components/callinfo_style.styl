@@ -2,11 +2,14 @@ body
   .callinfo
       .all-info-call
           width: 100%
-          display: inline-flex
+          display: flex
           flex-flow: row wrap
           justify-content: space-between
           .card-attended-calls
               margin: 10px
+              max-height: calc(100vh - 220px)
+              height: calc(100vh - 220px)
+              width: 350px
               .title
                   font-weight: bold
               .refresh-button
@@ -17,9 +20,21 @@ body
                   margin-top: -5px
           .plane-info
               flex-grow: 2
-              justify-content: space-between
+              flex-shrink: 4
+              justify-content: space-evenly
               display: inline-flex
               flex-flow: row wrap;
+              .searching
+                  margin: 10px
+                  margin-top: 50px
+                  display: flex
+                  font-size: 30px
+                  justify-content: space-evenly
+                  align-content: center
+                  height: 300px
+                  text-align: center
+                  flex-grow: 1
+                  height: 50vh
               .contracts
                   flex-grow: 1
                   margin: 10px
@@ -41,9 +56,8 @@ body
 
       .attended-calls-list
           background-color: #EEEEEE
-          min-width: 250px
-          max-width: 400px
-          overflow-x: hidden
+          height: calc(100vh - 300px)
+          overflow-y: auto
           .time
               color: Coral
           .phone
