@@ -24,14 +24,10 @@ var styleCallinfo = require('./callinfo_style.styl');
 var CallInfo = {};
 
 var websock = null;
-
-
 CallInfo.file_info = {};
 CallInfo.search = "";
 var log_calls = [];
-
 var actualitzant_reclamacions = false;
-
 var refresh = true;
 var search_by = "phone";
 
@@ -512,6 +508,11 @@ var connectWebSocket = function(port) {
     websock.onmessage = CallInfo.onMessageReceived;
 }
 
+CallInfo.sendIdentification = function() {
+    message = "IDEN:"+Login.getMyExt()+":"+Login.myName()+":";
+    websock.send(message);
+}
+
 CallInfo.onMessageReceived = function(event) {
     var message = event.data.split(":");
     var type_of_message = message[0];
@@ -540,13 +541,8 @@ CallInfo.onMessageReceived = function(event) {
     console.debug("Message received from WebSockets and type not recognized.");
 }
 
-CallInfo.sendIdentification = function() {
-    message = "IDEN:"+Login.getMyExt()+":"+Login.myName()+":";
-    websock.send(message);
-}
-
-
 Login.onLogin.push(CallInfo.sendIdentification);
+Login.onLogin.push(CallInfo.getLogPerson);
 Login.onLogout.push(CallInfo.sendIdentification);
 Login.onLogout.push(CallInfo.refreshIden);
 Login.onLogout.push(CallInfo.getLogPerson);
