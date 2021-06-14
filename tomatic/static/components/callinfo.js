@@ -327,7 +327,7 @@ CallInfo.refreshPhone = function(phone, date) {
   }
 }
 
-var lookForPhoneInfo = function() {
+var searchCustomer = function() {
   clearCallInfo();
   if (CallInfo.search !== 0 && CallInfo.search !== ""){
     Questionnaire.call.phone = "";
@@ -371,6 +371,12 @@ var typeOfSearch = function() {
 }
 
 var customerSearch = function() {
+  function keyEventHandler(event) {
+    var char = event.which || event.keyCode;
+    if (char === 13) {
+      searchCustomer();
+    }
+  }
   return m('', {className:'busca-info'}, [
     m(".busca-info-title.layout.horizontal", [
       typeOfSearch(),
@@ -382,31 +388,25 @@ var customerSearch = function() {
         },
         events: {
           onkeypress: function(event){
-            uniCharCode(event)
+            keyEventHandler(event)
           }
         },
         disabled: !refresh,
       }),
-      m(Button, {
+      m(IconButton, {
         className: 'btn-search',
-        label: searchIcon(),
+        icon: searchIcon(),
         events: {
           onclick: function() {
-            lookForPhoneInfo();
+            searchCustomer();
           },
         },
         disabled: !refresh,
-      }, m(Ripple)),
+      }),
     ]),
   ]);
 }
 
-function uniCharCode(event) {
-  var char = event.which || event.keyCode;
-  if (char === 13) {
-    lookForPhoneInfo();
-  }
-}
 
 
 var settingsDialog = function() {
