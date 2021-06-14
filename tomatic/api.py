@@ -35,7 +35,13 @@ distpath = packagedir/'dist'
 staticpath = packagedir/'static'
 schedules = schedulestorage.Storage.default()
 
-erp = erppeek.Client(**dbconfig.erppeek)
+def erp():
+    # TODO: Further checks, is the connection still alive?
+    if hasattr(erp,'client'):
+        return erp.client
+    erp.client = erppeek.Client(**dbconfig.erppeek)
+    return erp.client
+erp() # Comment this out to connect the erp lazily
 
 def fillConfigurationInfo():
     return ns.load('config.yaml')
@@ -331,7 +337,7 @@ def yamlinfoerror(code, message, *args, **kwds):
 @app.route('/api/info/phone/<phone>', methods=['GET'])
 @yamlerrors
 def getInfoPersonByPhone(phone):
-    info = CallInfo(erp)
+    info = CallInfo(erp())
     try:
         data = info.getByPhone(phone)
     except ValueError:
@@ -353,7 +359,7 @@ def getInfoPersonByPhone(phone):
 @app.route('/api/info/name/<name>', methods=['GET'])
 def getInfoPersonByName(name):
     decoded_name = urllib.parse.unquote(name)
-    info = CallInfo(erp)
+    info = CallInfo(erp())
     try:
         data = info.getByName(decoded_name)
     except ValueError:
@@ -374,7 +380,7 @@ def getInfoPersonByName(name):
 
 @app.route('/api/info/nif/<nif>', methods=['GET'])
 def getInfoPersonByNif(nif):
-    info = CallInfo(erp)
+    info = CallInfo(erp())
 
     try:
         data = info.getByDni(nif)
@@ -396,7 +402,7 @@ def getInfoPersonByNif(nif):
 
 @app.route('/api/info/soci/<iden>', methods=['GET'])
 def getInfoPersonBySoci(iden):
-    info = CallInfo(erp)
+    info = CallInfo(erp())
 
     try:
         data = info.getBySoci(iden)
@@ -418,7 +424,7 @@ def getInfoPersonBySoci(iden):
 
 @app.route('/api/info/email/<email>', methods=['GET'])
 def getInfoPersonByEmail(email):
-    info = CallInfo(erp)
+    info = CallInfo(erp())
 
     try:
         data = info.getByEmail(email)
@@ -441,7 +447,7 @@ def getInfoPersonByEmail(email):
 @app.route('/api/info/all/<field>', methods=['GET'])
 def getInfoPersonBy(field):
     decoded_field = urllib.parse.unquote(field)
-    info = CallInfo(erp)
+    info = CallInfo(erp())
     data = None
     try:
         data = info.getByData(decoded_field)
@@ -597,7 +603,7 @@ def updateCallLog(extension):
 def updateClaimTypes():
     message = 'ok'
 
-    CallRegistry().importClaimTypes(erp)
+    CallRegistry().importClaimTypes(erp())
     return yamlfy(info=ns(message='ok'))
 
 @app.route('/api/getClaims', methods=['GET'])
