@@ -186,6 +186,7 @@ var atencionsLog = function() {
       ],
     }));
   }
+  var currentDate = new Date().toLocaleDateString();
   items = log_calls.slice(0).reverse().map(function(item, index) {
     var itemClicked = function(ev) {
         if (item.motius !== "") return;
@@ -198,23 +199,38 @@ var atencionsLog = function() {
           refreshCall(item.telefon);
         }
     }
+    var needsDate = false;
+    var itemDate = new Date(item.data).toLocaleDateString();
+    var itemWeekDay = new Date(item.data).toLocaleDateString(undefined, {weekday:'long'});
+    if (itemDate !== currentDate) {
+      currentDate = itemDate;
+      needsDate = true;
+    }
     var missatge = responsesMessage(item);
     var solved = item.motius !== "";
-    return m(ListTile, {
-      className:
-        Questionnaire.call.date === item.data ?
-        "registres selected" : "registres",
-      selectable: true,
-      hoverable: !solved,
-      ink: !solved,
-      title: missatge,
-      subtitle: item.motius,
-      selected: false,
-      events: {
-        onclick: itemClicked,
-      },
-      disabled: !refresh,
-    });
+    return [
+      needsDate? m(ListTile, {
+        className:'registres dateseparator',
+        title: itemWeekDay + " " + itemDate,
+        header: true,
+        disabled: true,
+      }):'',
+      m(ListTile, {
+        className:
+          Questionnaire.call.date === item.data ?
+          "registres selected" : "registres",
+        selectable: true,
+        hoverable: !solved,
+        ink: !solved,
+        title: missatge,
+        subtitle: item.motius,
+        selected: false,
+        events: {
+          onclick: itemClicked,
+        },
+        disabled: !refresh,
+      })
+    ];
   })
   return m(".attended-calls-list", m(List, {compact: true, tiles: items}));
 }
