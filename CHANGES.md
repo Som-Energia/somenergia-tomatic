@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- 3.11.0 2021-06-15
+  - Interface redesigned to be responsive and more usable
+  - Manual annotations (without an incomming call)
+  - Colored scrollable call log
+  - Backend info stored in a single directory
+  - More reliable backend info storage
 - Server has --queue option to enable a second 
   Tomatic instance with a testing queue to make
   experiments
