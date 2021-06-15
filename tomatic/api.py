@@ -6,7 +6,6 @@ from flask import (
     send_file,
     )
 from datetime import datetime, timedelta, timezone
-from threading import Semaphore
 import urllib.parse
 import decorator
 import erppeek
