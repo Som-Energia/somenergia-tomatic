@@ -31,6 +31,11 @@ distpath = packagedir/'dist'
 staticpath = packagedir/'static'
 schedules = schedulestorage.Storage.default()
 
+def fillConfigurationInfo():
+    return ns.load('config.yaml')
+CONFIG = fillConfigurationInfo()
+
+
 def erp():
     # TODO: Further checks, is the connection still alive?
     if hasattr(erp,'client'):
@@ -38,12 +43,6 @@ def erp():
     erp.client = erppeek.Client(**dbconfig.erppeek)
     return erp.client
 erp() # Comment this out to connect the erp lazily
-
-def fillConfigurationInfo():
-    return ns.load('config.yaml')
-
-
-CONFIG = fillConfigurationInfo()
 
 
 def pbx(alternative = None, queue=None):
@@ -65,16 +64,9 @@ def anow():
 def thisweek():
     return format(now().date() - timedelta(days=now().weekday()))
 
-dbconfig=None
-try:
-    import dbconfig
-except ImportError:
-    pass
-
 from .planner_api import api as Planner
 
 app = Flask(__name__)
-app.drive_semaphore = Semaphore()
 app.register_blueprint(Planner, url_prefix='/api/planner')
 
 
