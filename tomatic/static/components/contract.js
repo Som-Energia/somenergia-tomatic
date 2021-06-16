@@ -5,6 +5,7 @@ var m = require('mithril');
 var Ripple = require('polythene-mithril-ripple').Ripple;
 var Card = require('polythene-mithril-card').Card;
 var Button = require('polythene-mithril-button').Button;
+var IconButton = require('polythene-mithril-icon-button').IconButton;
 var Tabs = require('polythene-mithril-tabs').Tabs;
 
 var Questionnaire = require('./questionnaire');
@@ -42,18 +43,15 @@ var contractCard = function(info, partner_id) {
       m("", m(".label-right", from_til)),
       m("", m(".label","Número: "), s_num),
     ]),
-    m(
-      ".contract-info-item",
+    m(".contract-info-item",
       m('.label', "Nom del titular: "),
       info.titular_name
     ),
-    m(
-      ".contract-info-item",
+    m(".contract-info-item",
       m('.label', "CUPS: "),
       info.cups
     ),
-    m(
-      ".contract-info-item",
+    m(".contract-info-item",
       m('.label', "Adreça CUPS: "),
       info.cups_adress
     ),
@@ -63,30 +61,32 @@ var contractCard = function(info, partner_id) {
     m(".contract-info-item",
       m("", m('.label', "Tarifa: "), info.fare),
     ),
-    m(
-      ".contract-info-item",
+    m(".contract-info-item",
       m('.label', "Lot facturació: "),
       info.lot_facturacio
     ),
-    m(
-      ".contract-info-item",
+    m(".contract-info-item",
       m('.label', "Data última lectura facturada: "),
       last_invoiced
     ),
     m(".contract-info-item", [
       m(".label-right", [
-        m(Button, {
-          label: clipboardIcon(),
-          border: 'true',
+        m(IconButton, {
+          icon: clipboardIcon(),
+          wash: true,
+          compact: true,
           events: {
             onclick: function() {
               Questionnaire.motiu(
-                { 'cups': info.cups, 'number': s_num },
+                {
+                  'cups': info.cups,
+                  'number': s_num 
+                },
                 partner_id
               );
             },
           },
-        }, m(Ripple))
+        })
       ]),
       m('.label', "IBAN: "),
       info.iban
@@ -289,3 +289,4 @@ ContractInfo.listOfContracts = function(info, main_partner) {
 return ContractInfo;
 
 }();
+// vim: et sw=2 ts=2

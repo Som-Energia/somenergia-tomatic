@@ -6,6 +6,7 @@ var deyamlize = require('./utils').deyamlize;
 var Ripple = require('polythene-mithril-ripple').Ripple;
 var Dialog = require('polythene-mithril-dialog').Dialog;
 var Button = require('polythene-mithril-button').Button;
+var IconButton = require('polythene-mithril-button').IconButton;
 var Textfield = require('polythene-mithril-textfield').TextField;
 var Card = require('polythene-mithril-card').Card;
 var ListTile = require('polythene-mithril-list-tile').ListTile;
