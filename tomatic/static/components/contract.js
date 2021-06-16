@@ -98,10 +98,10 @@ var contractCard = function(info, partner_id) {
     ),
     m(".contract-info-item", [
       m(".label-right", [
-        (info.is_titular ? "T " : ""),
-        (info.is_partner ? "S " : ""),
-        (info.is_payer ? "P " : ""),
-        (info.is_notifier ? "N " : ""),
+        (info.is_titular ? m('span', {title: "Titular"}, "T ") : ""),
+        (info.is_partner ? m('span', {title: "Socia"}, "S ") : ""),
+        (info.is_payer ? m('span', {title: "Pagadora"}, "P ") : ""),
+        (info.is_notifier ? m('span', {title: "Rep les notificacions"}, "N ") : ""),
       ]),
       m(
         "",
