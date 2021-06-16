@@ -287,58 +287,59 @@ class CallInfo(object):
         ])
         all_contracts_dict = {c['id']: c for c in all_contracts if c}
         for contract_id in contracts_ids:
-            if contract_id in all_contracts_dict:
-                contract = all_contracts_dict[contract_id]
-                end_date = contract['data_baixa'] \
-                    if contract['data_baixa'] else ''
-                is_titular = contract['titular'] and \
-                    contract['titular'][0] == partner_id
-                is_partner = contract['soci'] and \
-                    contract['soci'][0] == partner_id
-                is_notifier = getPartnerId(
-                    contract['direccio_notificacio'][0]
-                ) == partner_id
-                is_payer = contract['pagador'] and \
-                    contract['pagador'][0] == partner_id
-                cups_adress = self.anonymize(
-                    getCUPSAdress(contract['cups'][0])
-                )
-                energetica = contract['soci'] and contract['soci'][0] == 38039
-                iban = self.anonymize(contract['bank'][1]) \
-                    if contract['bank'] else ''
-                lot_facturacio = contract['lot_facturacio'][1] \
-                    if contract['lot_facturacio'] else ''
-                lectures_comptadors = meterReadings(contract['comptadors'])
-                last_invoices = lastInvoices(contract['id'])
-                ret.contracts.append(
-                    ns(
-                        start_date=contract['data_alta'],
-                        end_date=end_date,
-                        power=contract['potencia'],
-                        cups=self.anonymize(contract['cups'][1]),
-                        fare=contract['tarifa'][1],
-                        state=contract['state'],
-                        number=contract['name'],
-                        last_invoiced=contract['data_ultima_lectura'],
-                        suspended_invoicing=contract['facturacio_suspesa'],
-                        pending_state=contract['pending_state'],
-                        open_cases=openCases(contract['id']),
-                        is_titular=is_titular,
-                        is_partner=is_partner,
-                        is_notifier=is_notifier,
-                        is_payer=is_payer,
-                        cups_adress=cups_adress,
-                        titular_name=self.anonymize(contract['titular'][1]),
-                        energetica=energetica,
-                        generation=hasGeneration(contract['id']),
-                        iban=iban,
-                        lot_facturacio=lot_facturacio,
-                        no_estimable=contract['no_estimable'],
-                        lectures_comptadors=lectures_comptadors,
-                        invoices=last_invoices,
+            if contract_id not in all_contracts_dict:
+                continue
+            contract = all_contracts_dict[contract_id]
+            end_date = contract['data_baixa'] \
+                if contract['data_baixa'] else ''
+            is_titular = contract['titular'] and \
+                contract['titular'][0] == partner_id
+            is_partner = contract['soci'] and \
+                contract['soci'][0] == partner_id
+            is_notifier = getPartnerId(
+                contract['direccio_notificacio'][0]
+            ) == partner_id
+            is_payer = contract['pagador'] and \
+                contract['pagador'][0] == partner_id
+            cups_adress = self.anonymize(
+                getCUPSAdress(contract['cups'][0])
+            )
+            energetica = contract['soci'] and contract['soci'][0] == 38039
+            iban = self.anonymize(contract['bank'][1]) \
+                if contract['bank'] else ''
+            lot_facturacio = contract['lot_facturacio'][1] \
+                if contract['lot_facturacio'] else ''
+            lectures_comptadors = meterReadings(contract['comptadors'])
+            last_invoices = lastInvoices(contract['id'])
+            ret.contracts.append(
+                ns(
+                    start_date=contract['data_alta'],
+                    end_date=end_date,
+                    power=contract['potencia'],
+                    cups=self.anonymize(contract['cups'][1]),
+                    fare=contract['tarifa'][1],
+                    state=contract['state'],
+                    number=contract['name'],
+                    last_invoiced=contract['data_ultima_lectura'],
+                    suspended_invoicing=contract['facturacio_suspesa'],
+                    pending_state=contract['pending_state'],
+                    open_cases=openCases(contract['id']),
+                    is_titular=is_titular,
+                    is_partner=is_partner,
+                    is_notifier=is_notifier,
+                    is_payer=is_payer,
+                    cups_adress=cups_adress,
+                    titular_name=self.anonymize(contract['titular'][1]),
+                    energetica=energetica,
+                    generation=hasGeneration(contract['id']),
+                    iban=iban,
+                    lot_facturacio=lot_facturacio,
+                    no_estimable=contract['no_estimable'],
+                    lectures_comptadors=lectures_comptadors,
+                    invoices=last_invoices,
 
-                    )
                 )
+            )
         return ret
 
     def getByPhone(self, phone):
