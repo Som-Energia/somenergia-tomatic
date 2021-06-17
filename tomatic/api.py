@@ -470,8 +470,8 @@ def callingPhone():
         contracte = "",
     ))
     nNotified = 0
-    if hasattr(app, "websocket_kalinfo_server"):
-        nNotified = app.websocket_kalinfo_server.say_incoming_call(extension, phone, time)
+    if hasattr(app, "sessionBackChannel"):
+        nNotified = app.sessionBackChannel.say_incoming_call(extension, phone, time)
     result = ns(
         notified=nNotified,
         phone=phone,
@@ -503,8 +503,8 @@ def getCallLog(ext):
 def updateCallLog(extension):
     fields = ns.loads(request.data)
     CallRegistry().updateCall(extension, fields=fields)
-    if hasattr(app, "websocket_kalinfo_server"):
-        app.websocket_kalinfo_server.say_logcalls_has_changed(extension)
+    if hasattr(app, "sessionBackChannel"):
+        app.sessionBackChannel.say_logcalls_has_changed(extension)
     return yamlfy(info=ns(message='ok'))
 
 

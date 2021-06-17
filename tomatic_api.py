@@ -89,15 +89,15 @@ def main(fake, debug, host, port, printrules, ring, date, time, queue):
 
     if ring:
         step("Starting WS thread")
-        app.websocket_kalinfo_server = WebSocketTomaticServer()
-        app.websocket_kalinfo_server.startCallInfoWS(host=host)
+        app.sessionBackChannel = WebSocketTomaticServer()
+        app.sessionBackChannel.startCallInfoWS(host=host)
     step("Starting API")
     for rule in app.url_map.iter_rules():
         step("- {}", rule)
     app.run(debug=debug, host=host, port=port, processes=1)
     step("API stopped")
     if ring:
-        app.websocket_kalinfo_server.stopCallInfoWS()
+        app.sessionBackChannel.stopCallInfoWS()
         step("WS thread stopped")
 
 if __name__=='__main__':
