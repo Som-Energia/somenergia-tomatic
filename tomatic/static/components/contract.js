@@ -18,21 +18,24 @@ function formatContractNumber(number) {
   while (result.length < 7) result = "0" + result;
 }
 
+function formatInterval(contract) {
+  var hasStart = contract.start_date !== false;
+  var hasEnd = contract.end_date != "";
+  if (!hasStart) {
+    return "No especificat";
+  }
+  if (!hasEnd) {
+    return contract.start_date + " ⇨ Actualitat";
+  }
+  return contract.start_date + " ⇨ " + contract.end_date;
+}
+
 var contractCard = function(contract, partner_id) {
-  var s_num = formatContractNumber(contract.number)
-  var from_til = (contract.start_date !== false ?
-    contract.start_date : "No especificat"
-  );
-  var aux = contract.end_date;
+  var s_num = formatContractNumber(contract.number);
+  var from_til = formatInterval(contract);
   var last_invoiced = (contract.last_invoiced != "" ?
     contract.last_invoiced : "No especificada"
   );
-  if (aux == "" && from_til !== "No especificat") {
-    from_til += " ⇨ Actualitat"
-  }
-  else if (from_til !== "No especificat") {
-    from_til += (" ⇨ " + aux);
-  }
   return m(".contract-info-box", [
     m(".contract-info-item", [
       m("", m(".label-right", from_til)),
