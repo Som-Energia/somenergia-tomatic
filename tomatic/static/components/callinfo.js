@@ -337,15 +337,6 @@ var searchCustomer = function() {
   }
 }
 
-var incommingCall = function() {
-  return m(".num-entrant", [
-    m(".text-info", [
-      m(".label-text", "Número: "),
-      m(".normal-text", Questionnaire.call['phone']),
-    ]),
-  ]);
-}
-
 var typeOfSearch = function() {
   return m("select",
     {
