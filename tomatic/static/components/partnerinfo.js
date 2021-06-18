@@ -63,7 +63,6 @@ var buttons = function(info) {
 
 var partnerCard = function(partners) {
   var partner = partners[CallInfo.currentPerson];
-  console.log(partner);
   return m(".partner-card", [
     m(".partner-tabs", [
       m(Tabs, {
