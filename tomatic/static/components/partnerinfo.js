@@ -7,10 +7,10 @@ var Card = require('polythene-mithril-card').Card;
 var Button = require('polythene-mithril-button').Button;
 var Tabs = require('polythene-mithril-tabs').Tabs;
 
+var CallInfo = require('./callinfo');
 var ContractInfo = require('./contract');
 
 var PartnerInfo = {};
-PartnerInfo.main_partner = 0;
 
 var infoPartner = function(info){
   var aux = info.email.split(",");
@@ -62,7 +62,7 @@ var buttons = function(info) {
 }
 
 var listOfPartners = function(partners, button) {
-  var partner = partners[PartnerInfo.main_partner];
+  var partner = partners[CallInfo.currentPerson];
   return specificPartnerCard(partner, button);
 }
 
@@ -78,8 +78,8 @@ var specificPartnerCard = function(partner, button) {
         },
         tabs: button,
         onChange: function(ev) {
-          PartnerInfo.main_partner = ev.index
-          ContractInfo.main_contract = 0
+          CallInfo.currentPerson = ev.index
+          CallInfo.currentContract = 0
         }
       }),
     ]),

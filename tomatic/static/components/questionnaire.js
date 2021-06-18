@@ -12,27 +12,17 @@ var Card = require('polythene-mithril-card').Card;
 var ListTile = require('polythene-mithril-list-tile').ListTile;
 var List = require ('polythene-mithril-list').List;
 var Checkbox = require('polythene-mithril-checkbox').Checkbox;
-
+var CallInfo = require('./callinfo');
 var Login = require('./login');
-var PartnerInfo = require('./partnerinfo');
 
 var Questionnaire = {};
 
-Questionnaire.call = {
-    'phone': "",
-    'date': "",
-    'reason': "",
-    'extra': "",
-    'log_call_reasons': [],
-};
+Questionnaire.call = CallInfo.call;
+
+var call_reasons = CallInfo.call_reasons;
 
 var extras_dict = {}
 var reason_filter = "";
-var call_reasons = {
-    'general': [],
-    'infos': [],
-    'extras': []
-}
 var desar = "Desa";
 
 
@@ -43,28 +33,6 @@ function getExtras(extras) {
   }
   return reasons;
 }
-
-var getClaims = function() {
-  m.request({
-      method: 'GET',
-      url: '/api/getClaims',
-      extract: deyamlize,
-  }).then(function(response){
-      console.debug("Info GET Response: ",response);
-      if (response.info.message !== "ok" ) {
-          console.debug("Error al obtenir les reclamacions: ", response.info.message)
-      }
-      else{
-        call_reasons.general = response.info.claims;
-        extras_dict = response.info.dict;
-        call_reasons.extras = Object.keys(response.info.dict);
-      }
-  }, function(error) {
-      console.debug('Info GET apicall failed: ', error);
-  });
-};
-getClaims();
-Questionnaire.getClaims = getClaims();
 
 var getInfos = function() {
   m.request({
@@ -209,7 +177,6 @@ var llistaMotius = function( all = true ) {
     }
   }
   else {
-    // list_reasons = [...call_reasons.infos, ...call_reasons.general];
     var filtered = list_reasons;
   }
 

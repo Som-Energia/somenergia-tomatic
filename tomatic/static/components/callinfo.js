@@ -3,9 +3,6 @@ module.exports = function() {
 var m = require('mithril');
 var deyamlize = require('./utils').deyamlize;
 
-var PartnerInfo = require('./partnerinfo');
-var ContractInfo = require('./contract');
-var Questionnaire = require('./questionnaire');
 var Login = require('./login');
 
 var styleCallinfo = require('./callinfo_style.styl');
@@ -19,15 +16,29 @@ CallInfo.callLog = [];
 CallInfo.updatingClaims = false;
 CallInfo.refresh = true;
 CallInfo.search_by = "phone";
+CallInfo.currentContract = 0;
+CallInfo.currentPerson = 0;
+CallInfo.call = {
+    'phone': "",
+    'date': "",
+    'reason': "",
+    'extra': "",
+    'log_call_reasons': [],
+};
+CallInfo.call_reasons = {
+    'general': [],
+    'infos': [],
+    'extras': []
+}
 
 var clearCallInfo = function() {
-  Questionnaire.call.phone = "";
-  Questionnaire.call.log_call_reasons = [];
-  Questionnaire.call.reason = "";
-  Questionnaire.call.extra = "";
-  Questionnaire.call.proc = false;
-  Questionnaire.call.improc = false;
-  ContractInfo.main_contract = 0;
+  CallInfo.call.phone = "";
+  CallInfo.call.log_call_reasons = [];
+  CallInfo.call.reason = "";
+  CallInfo.call.extra = "";
+  CallInfo.call.proc = false;
+  CallInfo.call.improc = false;
+  CallInfo.currentContract = 0;
   desar = "Desa";
   CallInfo.file_info = {};
 }
@@ -50,8 +61,8 @@ var getInfo = function () {
     }
     else{
       CallInfo.file_info=response.info.info;
-      if (Questionnaire.call.date === "") {
-        Questionnaire.call.date = new Date().toISOString();
+      if (CallInfo.call.date === "") {
+        CallInfo.call.date = new Date().toISOString();
       }
     }
   }, function(error) {
@@ -59,6 +70,26 @@ var getInfo = function () {
   });
 };
 
+CallInfo.getClaims = function() {
+  m.request({
+      method: 'GET',
+      url: '/api/getClaims',
+      extract: deyamlize,
+  }).then(function(response){
+      console.debug("Info GET Response: ",response);
+      if (response.info.message !== "ok" ) {
+          console.debug("Error al obtenir les reclamacions: ", response.info.message)
+      }
+      else{
+        CallInfo.call_reasons.general = response.info.claims;
+        extras_dict = response.info.dict;
+        CallInfo.call_reasons.extras = Object.keys(response.info.dict);
+      }
+  }, function(error) {
+      console.debug('Info GET apicall failed: ', error);
+  });
+};
+CallInfo.getClaims();
 
 var updateClaims = function() {
   CallInfo.updatingClaims = true;
@@ -73,7 +104,7 @@ var updateClaims = function() {
     }
     else{
       CallInfo.updatingClaims = false;
-      Questionnaire.getClaims; // TODO: This seems a noop
+      CallInfo.getClaims();
     }
   }, function(error) {
     console.debug('Info GET apicall failed: ', error);
@@ -107,16 +138,16 @@ CallInfo.getLogPerson = function () {
   });
 };
 
-if(Questionnaire.call.ext !== "" && Questionnaire.call.ext !== -1){
+if(CallInfo.call.ext !== "" && CallInfo.call.ext !== -1){
   CallInfo.getLogPerson()
 }
 
-var refreshCall = function(phone) {
+CallInfo.refreshCall = function(phone) {
   clearCallInfo();
-  Questionnaire.call.phone = phone;
+  CallInfo.call.phone = phone;
   CallInfo.search = phone;
   CallInfo.file_info = { 1: "empty" };
-  PartnerInfo.main_partner = 0;
+  CallInfo.currentPerson = 0;
   CallInfo.search_by = "phone";
   getInfo();
 }
@@ -127,20 +158,20 @@ CallInfo.refreshIden = function(new_me) {
   }
   CallInfo.search = ""
   clearCallInfo()
-  Questionnaire.call.date = ""
+  CallInfo.call.date = ""
   CallInfo.file_info = {}
   CallInfo.callLog = []
-  Questionnaire.call.iden = new_me.iden
-  Questionnaire.call.ext = new_me.ext
-  if (Questionnaire.call.ext === -1) {
+  CallInfo.call.iden = new_me.iden
+  CallInfo.call.ext = new_me.ext
+  if (CallInfo.call.ext === -1) {
     CallInfo.refresh = true
   }
 }
 
 CallInfo.refreshPhone = function(phone, date) {
   if (CallInfo.refresh) {
-    Questionnaire.call.date = date;
-    Questionnaire.call.phone = phone;
+    CallInfo.call.date = date;
+    CallInfo.call.phone = phone;
     CallInfo.search_by = "phone"
     CallInfo.search = phone
     CallInfo.file_info[1] = "empty"
@@ -151,13 +182,13 @@ CallInfo.refreshPhone = function(phone, date) {
 CallInfo.searchCustomer = function() {
   clearCallInfo();
   if (CallInfo.search !== 0 && CallInfo.search !== ""){
-    Questionnaire.call.phone = "";
+    CallInfo.call.phone = "";
     CallInfo.file_info = { 1: "empty" };
-    PartnerInfo.main_partner = 0;
+    CallInfo.currentPerson = 0;
     getInfo();
   }
   else {
-    Questionnaire.call.date = "";
+    CallInfo.call.date = "";
     CallInfo.file_info = {}
   }
 }

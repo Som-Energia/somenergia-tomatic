@@ -8,10 +8,10 @@ var Button = require('polythene-mithril-button').Button;
 var IconButton = require('polythene-mithril-icon-button').IconButton;
 var Tabs = require('polythene-mithril-tabs').Tabs;
 
+var CallInfo = require('./callinfo');
 var Questionnaire = require('./questionnaire');
 
 var ContractInfo = {};
-ContractInfo.main_contract = 0;
 
 function formatContractNumber(number) {
   var result = number+"";
@@ -240,7 +240,7 @@ var specificContractCard = function(contract, button, partner_id) {
         },
         tabs: button,
         onChange: function(ev) {
-          ContractInfo.main_contract = ev.index
+          CallInfo.currentContract = ev.index
         }
       }),
     ]),
@@ -265,7 +265,7 @@ ContractInfo.view = function(info, main_partner) {
   return m(
     ".contracts",
     specificContractCard(
-      contracts[ContractInfo.main_contract],
+      contracts[CallInfo.currentContract],
       buttons(info.partners[main_partner].contracts),
       info.partners[main_partner].id_soci
     )

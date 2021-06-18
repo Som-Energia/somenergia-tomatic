@@ -174,13 +174,13 @@ var atencionsLog = function() {
   items = CallInfo.callLog.slice(0).reverse().map(function(item, index) {
     var itemClicked = function(ev) {
         if (item.motius !== "") return;
-        if (Questionnaire.call.date === item.data) {
+        if (CallInfo.call.date === item.data) {
           clearCallInfo();
-          Questionnaire.call.date = "";
+          CallInfo.call.date = "";
         }
         else {
-          Questionnaire.call.date = item.data;
-          refreshCall(item.telefon);
+          CallInfo.call.date = item.data;
+          CallInfo.refreshCall(item.telefon);
         }
     }
     var needsDate = false;
@@ -201,7 +201,7 @@ var atencionsLog = function() {
       }):'',
       m(ListTile, {
         className:
-          Questionnaire.call.date === item.data ?
+          CallInfo.call.date === item.data ?
           "registres selected" : "registres",
         selectable: true,
         hoverable: !solved,
@@ -297,7 +297,7 @@ CallInfoPage.view = function() {
                   PartnerInfo.allInfo(CallInfo.file_info),
                   ContractInfo.view(
                     CallInfo.file_info,
-                    PartnerInfo.main_partner
+                    CallInfo.currentPerson
                   ),
               ])
             ))),
