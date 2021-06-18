@@ -44,21 +44,20 @@ var infoPartner = function(info){
   );
 }
 
-
-var buttons = function(partners) {
-  var partner = 0;
-  var numOfPartners = partners.length;
-  var aux = [];
-  for (partner; partner < numOfPartners; partner++) {
-    var name = partners[partner].name;
-    var aux2 = name.split(',');
-    if (!aux2[1]){
-      aux2 = name.split(' ');
-      aux2[1] = aux2[0];
-    }
-    aux[partner] = {label: aux2[1]};
+function nameFromFullName(name) {
+  var parts = name.split(',');
+  if (!parts[1]){
+    return name.split(' ')[0];
   }
-  return aux;
+  return  parts[1];
+}
+
+function buttons(partners) {
+  return partners.map(
+    (partner) => ({
+      label: nameFromFullName(partner.name),
+    })
+  );
 }
 
 var partnerCard = function(partners) {
