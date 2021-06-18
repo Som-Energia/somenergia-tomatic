@@ -243,111 +243,6 @@ var llistaMotius = function( all = true ) {
   }));
 }
 
-var onlyInfosDialog = function() {
-
-  var enviar = function() {
-    saveLogCalls(
-      Questionnaire.call.phone,
-      Login.myName(),
-      "",
-      { "number": "", "cups": "" },
-      ""
-    );
-    Questionnaire.call.reason = "";
-  }
-
-  Dialog.show( function() {
-    return {
-      className: 'card-annotate-case',
-      backdrop: true,
-      title: "Anotar trucada",
-      body: m(".layout.horizontal", [
-        m(".layout.vertical.flex", [
-          m(".final-motius", [
-            m("strong", "Trucada:"),
-
-            " Entrada manualment a les "+new Date(Questionnaire.call.date).toLocaleString(),
-          ]),
-          m(".final-motius", [
-            m("strong", "De:"),
-            " Cap persona especificada",
-          ]),
-          m(".final-motius", [
-            m("strong", "Referent al contracte:"),
-            " Cap contracte especificat",
-          ]),
-          m(".reason-filter", [
-            m(".motiu", 'Motiu: '),
-            m(".filter",
-              m(Textfield, {
-                className: "textfield-filter",
-                label: "Escriure per filtrar",
-                value: reason_filter,
-                dense: true,
-                onChange: function(params) {
-                  reason_filter = params.value
-                }
-              })),
-          ]),
-          llistaMotius( all=false ),
-          m(".final-motius", [
-            m("strong", "Comentaris:"),
-            m(Textfield, {
-              className: "textfield-comentaris",
-              label: "Comentaris",
-              help: "Especifica més informació",
-              multiLine: true,
-              floatingLabel: true,
-              rows: 5,
-              dense: true,
-              value: Questionnaire.call.extra,
-              onChange: function(params) {
-                Questionnaire.call.extra = params.value
-              },
-              disabled: (desar !== "Desa" || Questionnaire.call.date === ""),
-            }),
-          ]),
-        ]),
-      ]),
-      footerButtons: [
-        m(Button, {
-          label: "Sortir",
-          events: {
-              onclick: function() {
-                Dialog.hide({id:'onlyInfosDialog'});
-              },
-          },
-          raised: true,
-        }),
-        m(Button, {
-          className: "save",
-          label: desar,
-          events: {
-            onclick: function() {
-              var tag = getTag(Questionnaire.call.reason);
-              if (esReclamacio(tag)) {
-                emplenaReclamacio(tag);
-              }
-              else {
-                enviar();
-                Dialog.hide({id:'onlyInfosDialog'});
-              }
-            },
-          },
-          border: 'true',
-          disabled: (
-            desar !== "Desa" ||
-            Questionnaire.call.reason === "" ||
-            Questionnaire.call.extra === "" ||
-            Questionnaire.call.date === "" ||
-            Login.myName() === ""
-          ),
-        }, m(Ripple)),
-      ]
-    }; }, { id: 'onlyInfosDialog' });
-}
-
-// TODO: Dupped from contract.js
 var clipboardIcon = function(){
     return m(".icon-clipboard",
     [
@@ -358,6 +253,7 @@ var clipboardIcon = function(){
 Questionnaire.annotationButton = function(contract, partner_id) {
   return m("",
     m(IconButton, {
+      icon: m("i.far.fa-clipboard.icon-clipboard"),
       icon: clipboardIcon(),
       wash: true,
       compact: true,

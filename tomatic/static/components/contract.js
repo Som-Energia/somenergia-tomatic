@@ -14,13 +14,6 @@ var ContractInfo = {};
 
 ContractInfo.main_contract = 0;
 
-var clipboardIcon = function(){
-    return m(".icon-clipboard",
-    [
-        m("i.far.fa-clipboard"),
-    ]);
-}
-
 var contractCard = function(info, partner_id) {
   var from_til = (info.start_date !== false ?
     info.start_date : "No especificat"
@@ -113,7 +106,7 @@ var contractCard = function(info, partner_id) {
 var meterReadings = function(readings) {
   if (readings === null) {
     return m(".meter-readings", m("table", 
-      m('tr', m('td', "Carregant lectures..."))
+      m('tr', m('td', "Carregant Lectures..."))
     ));
   }
   if (readings.length == 0) {
