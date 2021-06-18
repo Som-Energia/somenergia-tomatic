@@ -321,126 +321,26 @@ def yamlinfoerror(code, message, *args, **kwds):
         message=code,
     ))
 
-@app.route('/api/info/phone/<phone>', methods=['GET'])
-@yamlerrors
-def getInfoPersonByPhone(phone):
+@app.route('/api/info/<field>/<value>', methods=['GET'])
+def getInfoPersonBy(field, value):
+    decoded_field = urllib.parse.unquote(value)
     info = CallInfo(erp())
-    try:
-        data = info.getByPhone(phone)
-    except ValueError:
-        return yamlinfoerror('error_getByPhone',
-            "Getting information from {}.", phone)
-
-    message = 'ok'
-    if not data.partners:
-        message = 'no_info'
-    elif data.partners == "Masses resultats":
-        message = 'response_too_long'
-
-    return yamlfy(info=ns(
-        info=data,
-        message=message,
-    ))
-
-
-@app.route('/api/info/name/<name>', methods=['GET'])
-def getInfoPersonByName(name):
-    decoded_name = urllib.parse.unquote(name)
-    info = CallInfo(erp())
-    try:
-        data = info.getByName(decoded_name)
-    except ValueError:
-        return yamlinfoerror('error_getByName',
-            "Getting information from {}.", name)
-
-    message = 'ok'
-    if not data.partners:
-        message = 'no_info'
-    elif data.partners == "Masses resultats":
-        message = 'response_too_long'
-
-    return yamlfy(info=ns(
-        info=data,
-        message=message,
-    ))
-
-
-@app.route('/api/info/nif/<nif>', methods=['GET'])
-def getInfoPersonByNif(nif):
-    info = CallInfo(erp())
-
-    try:
-        data = info.getByDni(nif)
-    except ValueError:
-        return yamlinfoerror('error_getByDni',
-            "Getting information from {}.", nif)
-
-    message = 'ok'
-    if not data.partners:
-        message = 'no_info'
-    elif data.partners == "Masses resultats":
-        message = 'response_too_long'
-
-    return yamlfy(info=ns(
-        info=data,
-        message=message,
-    ))
-
-
-@app.route('/api/info/soci/<iden>', methods=['GET'])
-def getInfoPersonBySoci(iden):
-    info = CallInfo(erp())
-
-    try:
-        data = info.getBySoci(iden)
-    except ValueError:
-        return yamlinfoerror('error_getBySoci',
-            "Getting information from {}.", iden)
-
-    message = 'ok'
-    if not data.partners:
-        message = 'no_info'
-    elif data.partners == "Masses resultats":
-        message = 'response_too_long'
-
-    return yamlfy(info=ns(
-        info=data,
-        message=message,
-    ))
-
-
-@app.route('/api/info/email/<email>', methods=['GET'])
-def getInfoPersonByEmail(email):
-    info = CallInfo(erp())
-
-    try:
-        data = info.getByEmail(email)
-    except ValueError:
-        return yamlinfoerror('error_getByEmail',
-            "Getting information from {}.", email)
-
-    message = 'ok'
-    if not data.partners:
-        message = 'no_info'
-    elif data.partners == "Masses resultats":
-        message = 'response_too_long'
-
-    return yamlfy(info=ns(
-        info=data,
-        message=message,
-    ))
-
-
-@app.route('/api/info/all/<field>', methods=['GET'])
-def getInfoPersonBy(field):
-    decoded_field = urllib.parse.unquote(field)
-    info = CallInfo(erp())
+    function = dict(
+        phone = info.getByPhone,
+        name = info.getByName,
+        nif = info.getByDni,
+        soci = info.getBySoci,
+        email = info.getByEmail,
+        all = info.getByData,
+    ).get(field)
+    if function is None:
+        return 404
     data = None
     try:
-        data = info.getByData(decoded_field)
+        data = function(decoded_field)
     except ValueError:
-        return yamlinfoerror('error_getByData',
-            "Getting information from {}.", field)
+        return yamlinfoerror('error_getBy'+field.title(),
+            "Getting information searching {}='{}'.", field, value)
 
     message = 'ok'
     if not data.partners:
