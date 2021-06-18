@@ -45,12 +45,12 @@ var infoPartner = function(info){
 }
 
 
-var buttons = function(info) {
+var buttons = function(partners) {
   var partner = 0;
-  var numOfPartners = info.length;
+  var numOfPartners = partners.length;
   var aux = [];
   for (partner; partner < numOfPartners; partner++) {
-    var name = info[partner].name;
+    var name = partners[partner].name;
     var aux2 = name.split(',');
     if (!aux2[1]){
       aux2 = name.split(' ');
