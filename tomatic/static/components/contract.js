@@ -189,10 +189,10 @@ var extraInfo = function(
   else {
     info = m("", [
       m("",
-        generation ? m(".label-generation","Té Generation.") : ""
+        generation ? m(".label-generation","Rep Generation.") : ""
       ),
       m("",
-        energetica ? m(".label-energetica","És Energetica.") : ""
+        energetica ? m(".label-energetica","És d'EnergEtica.") : ""
       ),
       m("",
         (suspended_invoicing ? m(".label-alert","Facturació suspesa.") : "")
