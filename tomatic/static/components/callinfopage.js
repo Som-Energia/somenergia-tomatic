@@ -246,7 +246,9 @@ var attendedCalls = function() {
             border: false,
             wash: true,
             compact: true,
-            title: CallInfo.refresh ? "Actualitza el cas automàticament":"Fixa el cas actual",
+            title: CallInfo.refresh ?
+              "Actualitza el cas automàticament":
+              "Fixa el cas actual",
             events: {
               onclick: function() {
                 CallInfo.refresh = !CallInfo.refresh

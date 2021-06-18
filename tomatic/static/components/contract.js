@@ -255,16 +255,16 @@ var contractCard = function(contracts, partner_id) {
 }
 
 
-ContractInfo.view = function(info, main_partner) {
-  if (info.partners[main_partner].contracts == undefined) {
+ContractInfo.view = function(info) {
+  var person = info.partners[CallInfo.currentPerson]
+  if (person.contracts == undefined) {
     return m(".contracts", [m(".no-info", "No hi ha contractes.")]);
   }
-  var contracts = info.partners[main_partner].contracts;
   return m(
     ".contracts",
     contractCard(
-      contracts,
-      info.partners[main_partner].id_soci
+      person.contracts,
+      person.id_soci
     )
   );
 }
