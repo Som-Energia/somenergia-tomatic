@@ -19,16 +19,14 @@ function formatContractNumber(number) {
 }
 
 var contractCard = function(contract, partner_id) {
+  var s_num = formatContractNumber(contract.number)
   var from_til = (contract.start_date !== false ?
     contract.start_date : "No especificat"
   );
   var aux = contract.end_date;
-  var num = contract.number
-  var s_num = num+"";
   var last_invoiced = (contract.last_invoiced != "" ?
     contract.last_invoiced : "No especificada"
   );
-  while (s_num.length < 7) s_num = "0" + s_num;
   if (aux == "" && from_til !== "No especificat") {
     from_til += " ⇨ Actualitat"
   }
