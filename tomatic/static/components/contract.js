@@ -101,11 +101,33 @@ var contractFields = function(contract, partner_id) {
         )
       ),
     ]),
-    extraInfo(
-      contract.generation, contract.energetica, contract.suspended_invoicing, contract.open_cases
-    ),
-    meterReadings(contract.lectures_comptadors),
-    lastInvoices(contract.invoices),
+  ]);
+}
+
+ContractInfo.extraView = function(info) {
+  var person = info.partners[CallInfo.currentPerson]
+  var contract = person.contracts[CallInfo.currentContract];
+  return m(".contract-details.flex", [
+    m(".partner-card", [
+      m(Card, {
+        className: 'card-info',
+        content: [
+          { text: {
+            content: m("", [
+              m(".contract-info-box", [
+                extraInfo(
+                  contract.generation, contract.energetica, contract.suspended_invoicing, contract.open_cases
+                ),
+                m('.card-part-header', "Darreres factures del contracte"),
+                lastInvoices(contract.invoices),
+                m('.card-part-header', "Darreres lectures del contracte"),
+                meterReadings(contract.lectures_comptadors),
+              ])
+            ])
+          }},
+        ]
+      }),
+    ])
   ]);
 }
 

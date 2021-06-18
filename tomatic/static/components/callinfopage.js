@@ -296,11 +296,15 @@ CallInfoPage.view = function() {
                 Questionnaire.annotationButton()
               ):(
               m('.plane-info', [
+                m(".layout.vertical.flex", [
                   PartnerInfo.allInfo(CallInfo.file_info),
                   ContractInfo.view(
                     CallInfo.file_info,
-                    CallInfo.currentPerson
                   ),
+                ]),
+                ContractInfo.extraView(
+                  CallInfo.file_info,
+                ),
               ])
             ))),
           ),
