@@ -212,12 +212,12 @@ var extraInfo = function(
   })
 }
 
-var buttons = function(info) {
+var buttons = function(contracts) {
     var contract = 0;
-    var numOfContracts = info.length;
+    var numOfContracts = contracts.length;
     var aux = [];
     for (contract; contract < numOfContracts; contract++) {
-        aux[contract] = {label: info[contract].number};
+        aux[contract] = {label: contracts[contract].number};
     }
 
     return aux;
