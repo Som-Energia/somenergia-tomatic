@@ -16,6 +16,7 @@ var ContractInfo = {};
 function formatContractNumber(number) {
   var result = number+"";
   while (result.length < 7) result = "0" + result;
+  return result;
 }
 
 function formatInterval(contract) {
@@ -30,7 +31,7 @@ function formatInterval(contract) {
   return contract.start_date + " ⇨ " + contract.end_date;
 }
 
-var contractCard = function(contract, partner_id) {
+var contractFields = function(contract, partner_id) {
   var s_num = formatContractNumber(contract.number);
   var from_til = formatInterval(contract);
   var last_invoiced = (contract.last_invoiced != "" ?
@@ -43,7 +44,7 @@ var contractCard = function(contract, partner_id) {
     ]),
     m(".contract-info-item",
       m('.label', "Nom del titular: "),
-      info.titular_name
+      contract.titular_name
     ),
     m(".contract-info-item", [
       m(".label-right", [
@@ -218,17 +219,13 @@ var extraInfo = function(
 }
 
 var buttons = function(contracts) {
-    var contract = 0;
-    var numOfContracts = contracts.length;
-    var aux = [];
-    for (contract; contract < numOfContracts; contract++) {
-        aux[contract] = {label: contracts[contract].number};
-    }
-
-    return aux;
+  return contracts.map(
+    (contract) =>  ({ label: contract.number })
+  );
 }
 
-var specificContractCard = function(contract, button, partner_id) {
+var contractCard = function(contracts, partner_id) {
+  var contract = contracts[CallInfo.currentContract];
   return m(".partner-card", [
     m(".partner-tabs", [
       m(Tabs, {
@@ -238,7 +235,7 @@ var specificContractCard = function(contract, button, partner_id) {
           activeSelected: "true",
           ink: "true",
         },
-        tabs: button,
+        tabs: buttons(contracts),
         onChange: function(ev) {
           CallInfo.currentContract = ev.index
         }
@@ -249,13 +246,14 @@ var specificContractCard = function(contract, button, partner_id) {
       content: [
         { text: {
           content: m("", [
-            contractCard(contract, partner_id),
+            contractFields(contract, partner_id),
           ])
         }},
       ]
     }),
   ]);
 }
+
 
 ContractInfo.view = function(info, main_partner) {
   if (info.partners[main_partner].contracts == undefined) {
@@ -264,9 +262,8 @@ ContractInfo.view = function(info, main_partner) {
   var contracts = info.partners[main_partner].contracts;
   return m(
     ".contracts",
-    specificContractCard(
-      contracts[CallInfo.currentContract],
-      buttons(info.partners[main_partner].contracts),
+    contractCard(
+      contracts,
       info.partners[main_partner].id_soci
     )
   );

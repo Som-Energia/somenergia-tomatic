@@ -61,12 +61,9 @@ var buttons = function(info) {
   return aux;
 }
 
-var listOfPartners = function(partners, button) {
+var partnerCard = function(partners) {
   var partner = partners[CallInfo.currentPerson];
-  return specificPartnerCard(partner, button);
-}
-
-var specificPartnerCard = function(partner, button) {
+  console.log(partner);
   return m(".partner-card", [
     m(".partner-tabs", [
       m(Tabs, {
@@ -76,7 +73,7 @@ var specificPartnerCard = function(partner, button) {
           activeSelected: "true",
           ink: "true",
         },
-        tabs: button,
+        tabs: buttons(partners),
         onChange: function(ev) {
           CallInfo.currentPerson = ev.index
           CallInfo.currentContract = 0
@@ -87,9 +84,7 @@ var specificPartnerCard = function(partner, button) {
       className: 'card-info',
       content: [
         { text: {
-          content: m("", [
-            infoPartner(partner),
-          ])
+          content: infoPartner(partner),
         }},
       ]
     })
@@ -100,7 +95,7 @@ var specificPartnerCard = function(partner, button) {
 PartnerInfo.allInfo = function(info) {
   return m(
     ".main-info-card", [
-      listOfPartners(info.partners, buttons(info.partners)),
+      partnerCard(info.partners),
     ]
   );
 }
@@ -108,3 +103,4 @@ PartnerInfo.allInfo = function(info) {
 return PartnerInfo;
 
 }();
+// vim: ts=2 sw=2 et
