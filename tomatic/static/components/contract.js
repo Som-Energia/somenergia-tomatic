@@ -111,6 +111,11 @@ var contractCard = function(info, partner_id) {
 }
 
 var meterReadings = function(readings) {
+  if (readings === null) {
+    return m(".meter-readings", m("table", 
+      m('tr', m('td', "Carregant lectures..."))
+    ));
+  }
   if (readings.length == 0) {
     return m(".contract-info-item", "No hi ha informació de comptadors.")
   }
@@ -140,6 +145,13 @@ var meterReadings = function(readings) {
 }
 
 var lastInvoices = function(invoices) {
+  if (invoices === null) {
+    return m(".factures",
+      m(".factures-info",
+        m(".factura-info-item", "Carregant Factures...")
+      )
+    );
+  }
   return m(".factures", m(".factures-info", invoices.map(function(invoice) {
     return m(".factura-info-item", [
         m("div", [
