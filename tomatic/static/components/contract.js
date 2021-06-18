@@ -11,18 +11,22 @@ var Tabs = require('polythene-mithril-tabs').Tabs;
 var Questionnaire = require('./questionnaire');
 
 var ContractInfo = {};
-
 ContractInfo.main_contract = 0;
 
-var contractCard = function(info, partner_id) {
-  var from_til = (info.start_date !== false ?
-    info.start_date : "No especificat"
+function formatContractNumber(number) {
+  var result = number+"";
+  while (result.length < 7) result = "0" + result;
+}
+
+var contractCard = function(contract, partner_id) {
+  var from_til = (contract.start_date !== false ?
+    contract.start_date : "No especificat"
   );
-  var aux = info.end_date;
-  var num = info.number
+  var aux = contract.end_date;
+  var num = contract.number
   var s_num = num+"";
-  var last_invoiced = (info.last_invoiced != "" ?
-    info.last_invoiced : "No especificada"
+  var last_invoiced = (contract.last_invoiced != "" ?
+    contract.last_invoiced : "No especificada"
   );
   while (s_num.length < 7) s_num = "0" + s_num;
   if (aux == "" && from_til !== "No especificat") {
@@ -44,7 +48,7 @@ var contractCard = function(info, partner_id) {
       m(".label-right", [
         Questionnaire.annotationButton(
             {
-              'cups': info.cups,
+              'cups': contract.cups,
               'number': s_num 
             },
             partner_id
