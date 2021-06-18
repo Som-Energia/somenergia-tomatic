@@ -223,15 +223,6 @@ var buttons = function(contracts) {
     return aux;
 }
 
-var listOfContracts = function(contracts, button, partner_id) {
-
-  return specificContractCard(
-    contracts[ContractInfo.main_contract],
-    button,
-    partner_id
-  )
-}
-
 var specificContractCard = function(contract, button, partner_id) {
   return m(".partner-card", [
     m(".partner-tabs", [
@@ -265,10 +256,11 @@ ContractInfo.listOfContracts = function(info, main_partner) {
   if (info.partners[main_partner].contracts == undefined) {
     return m(".contracts", [m(".no-info", "No hi ha contractes.")]);
   }
+  var contracts = info.partners[main_partner].contracts;
   return m(
     ".contracts",
-    listOfContracts(
-      info.partners[main_partner].contracts,
+    specificContractCard(
+      contracts[ContractInfo.main_contract],
       buttons(info.partners[main_partner].contracts),
       info.partners[main_partner].id_soci
     )
