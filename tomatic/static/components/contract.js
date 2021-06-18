@@ -224,18 +224,12 @@ var buttons = function(info) {
 }
 
 var listOfContracts = function(contracts, button, partner_id) {
-  var contract = 0;
-  var numOfContracts = contracts.length;
-  var aux = [];
 
-  for (contract; contract < numOfContracts; contract++) {
-    aux[contract] = specificContractCard(
-      contracts[contract],
-      button,
-      partner_id
-    );
-  }
-  return aux[ContractInfo.main_contract];
+  return specificContractCard(
+    contracts[ContractInfo.main_contract],
+    button,
+    partner_id
+  )
 }
 
 var specificContractCard = function(contract, button, partner_id) {
