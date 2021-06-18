@@ -54,54 +54,54 @@ var contractCard = function(contract, partner_id) {
       ]),
     m(".contract-info-item",
       m('.label', "CUPS: "),
-      info.cups
+      contract.cups
     ),
     m(".contract-info-item",
       m('.label', "Adreça CUPS: "),
-      info.cups_adress
+      contract.cups_adress
     ),
     m(".contract-info-item",
-      m("", m('.label', "Potència: "), info.power),
+      m("", m('.label', "Potència: "), contract.power),
     ),
     m(".contract-info-item",
-      m("", m('.label', "Tarifa: "), info.fare),
+      m("", m('.label', "Tarifa: "), contract.fare),
     ),
     m(".contract-info-item",
       m('.label', "Lot facturació: "),
-      info.lot_facturacio
+      contract.lot_facturacio
     ),
     m(".contract-info-item",
       m('.label', "Data última lectura facturada: "),
       last_invoiced
     ),
       m('.label', "IBAN: "),
-      info.iban
+      contract.iban
     ]),
     m(
       ".contract-info-item",
       m('.label', "Estat pendent: "),
-      (info.pending_state != "" ? info.pending_state : "No especificat")
+      (contract.pending_state != "" ? contract.pending_state : "No especificat")
     ),
     m(".contract-info-item", [
       m(".label-right", [
-        (info.is_titular ? m('span', {title: "Titular"}, "T ") : ""),
-        (info.is_partner ? m('span', {title: "Socia"}, "S ") : ""),
-        (info.is_payer ? m('span', {title: "Pagadora"}, "P ") : ""),
-        (info.is_notifier ? m('span', {title: "Rep les notificacions"}, "N ") : ""),
+        (contract.is_titular ? m('span', {title: "Titular"}, "T ") : ""),
+        (contract.is_partner ? m('span', {title: "Socia"}, "S ") : ""),
+        (contract.is_payer ? m('span', {title: "Pagadora"}, "P ") : ""),
+        (contract.is_notifier ? m('span', {title: "Rep les notificacions"}, "N ") : ""),
       ]),
       m(
         "",
-        (info.no_estimable ?
+        (contract.no_estimable ?
           m('.label', "No estimable.")
           : m('.label', "Estimable.")
         )
       ),
     ]),
     extraInfo(
-      info.generation, info.energetica, info.suspended_invoicing, info.open_cases
+      contract.generation, contract.energetica, contract.suspended_invoicing, contract.open_cases
     ),
-    meterReadings(info.lectures_comptadors),
-    lastInvoices(info.invoices),
+    meterReadings(contract.lectures_comptadors),
+    lastInvoices(contract.invoices),
   ]);
 }
 
