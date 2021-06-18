@@ -47,6 +47,16 @@ var contractCard = function(info, partner_id) {
       m('.label', "Nom del titular: "),
       info.titular_name
     ),
+    m(".contract-info-item", [
+      m(".label-right", [
+        Questionnaire.annotationButton(
+            {
+              'cups': info.cups,
+              'number': s_num 
+            },
+            partner_id
+        ),
+      ]),
     m(".contract-info-item",
       m('.label', "CUPS: "),
       info.cups
@@ -69,25 +79,6 @@ var contractCard = function(info, partner_id) {
       m('.label', "Data última lectura facturada: "),
       last_invoiced
     ),
-    m(".contract-info-item", [
-      m(".label-right", [
-        m(IconButton, {
-          icon: clipboardIcon(),
-          wash: true,
-          compact: true,
-          events: {
-            onclick: function() {
-              Questionnaire.motiu(
-                {
-                  'cups': info.cups,
-                  'number': s_num 
-                },
-                partner_id
-              );
-            },
-          },
-        })
-      ]),
       m('.label', "IBAN: "),
       info.iban
     ]),

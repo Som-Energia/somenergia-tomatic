@@ -6,7 +6,7 @@ var deyamlize = require('./utils').deyamlize;
 var Ripple = require('polythene-mithril-ripple').Ripple;
 var Dialog = require('polythene-mithril-dialog').Dialog;
 var Button = require('polythene-mithril-button').Button;
-var IconButton = require('polythene-mithril-button').IconButton;
+var IconButton = require('polythene-mithril-icon-button').IconButton;
 var Textfield = require('polythene-mithril-textfield').TextField;
 var Card = require('polythene-mithril-card').Card;
 var ListTile = require('polythene-mithril-list-tile').ListTile;
@@ -133,11 +133,11 @@ var postInfo = function(info) {
 
 var updateCall = function(date, partner_number, contract_number) {
     var info = {
-        'data': Questionnaire.call.date,
-        'telefon': Questionnaire.call.phone,
-        'partner': partner_number,
-        'contracte': contract_number,
-        'motius': Questionnaire.call.reason,
+        data: Questionnaire.call.date,
+        telefon: Questionnaire.call.phone,
+        partner: partner_number,
+        contracte: contract_number,
+        motius: Questionnaire.call.reason,
     }
     m.request({
         method: 'POST',
@@ -227,19 +227,17 @@ var llistaMotius = function( all = true ) {
         ),
         compact: true,
         selectable: true,
-        ink: 'true',
-        ripple: {
-          opacityDecayVelocity: '0.5',
-        },
+        ink: true,
+        hover: true,
         title: reason,
         selected: Questionnaire.call.reason == reason,
         events: {
           onclick: function(ev) {
-            Questionnaire.call['reason'] = reason
+            Questionnaire.call.reason = reason
           }
         },
         disabled: disabled,
-          bordered: true,
+        bordered: true,
        });
     }),
   }));
@@ -260,41 +258,57 @@ var onlyInfosDialog = function() {
 
   Dialog.show( function() {
     return {
-      className: 'card-motius',
+      className: 'card-annotate-case',
       backdrop: true,
-      title: m(".card-motius-title", [
-        m(".motiu", 'Motiu: '),
-        m(".filter",
-          m(Textfield, {
-            className: "textfield-filter",
-            label: "Escriure per filtrar",
-            value: reason_filter,
-            dense: true,
-            onChange: function(params) {
-              reason_filter = params.value
-            }
-          })),
-      ]),
-      body: [
-        m("", [
+      title: "Anotar trucada",
+      body: m(".layout.horizontal", [
+        m(".layout.vertical.flex", [
+          m(".final-motius", [
+            m("strong", "Trucada:"),
+
+            " Entrada manualment a les "+new Date(Questionnaire.call.date).toLocaleString(),
+          ]),
+          m(".final-motius", [
+            m("strong", "De:"),
+            " Cap persona especificada",
+          ]),
+          m(".final-motius", [
+            m("strong", "Referent al contracte:"),
+            " Cap contracte especificat",
+          ]),
+          m(".reason-filter", [
+            m(".motiu", 'Motiu: '),
+            m(".filter",
+              m(Textfield, {
+                className: "textfield-filter",
+                label: "Escriure per filtrar",
+                value: reason_filter,
+                dense: true,
+                onChange: function(params) {
+                  reason_filter = params.value
+                }
+              })),
+          ]),
           llistaMotius( all=false ),
           m(".final-motius", [
             m("strong", "Comentaris:"),
             m(Textfield, {
               className: "textfield-comentaris",
-              label: "Especifica més informació",
+              label: "Comentaris",
+              help: "Especifica més informació",
               multiLine: true,
-              rows: 2,
+              floatingLabel: true,
+              rows: 5,
               dense: true,
-              value: Questionnaire.call['extra'],
+              value: Questionnaire.call.extra,
               onChange: function(params) {
-                Questionnaire.call['extra'] = params.value
+                Questionnaire.call.extra = params.value
               },
               disabled: (desar !== "Desa" || Questionnaire.call.date === ""),
             }),
           ]),
-        ])
-      ],
+        ]),
+      ]),
       footerButtons: [
         m(Button, {
           label: "Sortir",
@@ -310,8 +324,14 @@ var onlyInfosDialog = function() {
           label: desar,
           events: {
             onclick: function() {
-              enviar();
-              Dialog.hide({id:'onlyInfosDialog'});
+              var tag = getTag(Questionnaire.call.reason);
+              if (esReclamacio(tag)) {
+                emplenaReclamacio(tag);
+              }
+              else {
+                enviar();
+                Dialog.hide({id:'onlyInfosDialog'});
+              }
             },
           },
           border: 'true',
@@ -335,37 +355,45 @@ var clipboardIcon = function(){
     ]);
 }
 
-Questionnaire.infoQuestionnaire = function(visible=false) {
-  return visible
-  ? m(Button, {
-      className: "infos",
-      label: [
-        clipboardIcon(),
-      ],
+Questionnaire.annotationButton = function(contract, partner_id) {
+  return m("",
+    m(IconButton, {
+      icon: clipboardIcon(),
+      wash: true,
+      compact: true,
+      title: "Anota la trucada fent servir aquest contracte",
       events: {
         onclick: function() {
           console.log("VEURE QÜESTIONARI INFOS")
-          onlyInfosDialog();
+          Questionnaire.openCaseAnnotationDialog(contract, partner_id);
         },
       },
-      border: 'true',
       disabled: (
         desar !== "Desa" ||
         Login.myName() === ""
       ),
-    }, m(Ripple))
-  : ""
+    }),
+  );
 }
 
 
-Questionnaire.motiu = function(main_contract, partner_id) {
+Questionnaire.openCaseAnnotationDialog = function(contract, partner_id) {
+  if (contract === undefined) {
+    contract = {
+      number: "",
+      cumps: "",
+    };
+  }
+  if (Questionnaire.call.date === "") {
+    Questionnaire.call.date = new Date().toISOString();
+  }
 
   var enviar = function(reclamacio = "") {
     saveLogCalls(
       Questionnaire.call.phone,
       Login.myName(),
       reclamacio,
-      main_contract,
+      contract,
       partner_id
     );
     Questionnaire.call.reason = "";
@@ -380,7 +408,7 @@ Questionnaire.motiu = function(main_contract, partner_id) {
   }
 
   var esReclamacio = function(type) {
-    info = "INFO";
+    const info = "INFO";
     return (type != info);
   }
 
@@ -561,40 +589,60 @@ Questionnaire.motiu = function(main_contract, partner_id) {
 
   Dialog.show(function() {
     return {
-      className: 'card-motius',
+      className: 'card-annotate-case',
       backdrop: true,
-      title: m(".card-motius-title", [
-        m(".motiu", 'Motiu: '),
-        m(".filter", m(Textfield, {
-          className: "textfield-filter",
-          label: "Escriure per filtrar",
-          value: reason_filter,
-          dense: true,
-          onChange: function(params) {
-            reason_filter = params.value
-          }
-        })),
-      ]),
-      body: [
-        m("", [
-          llistaMotius(),
+      title: "Anotar trucada",
+      body: m(".layout.horizontal", [
+        m(".layout.vertical.flex", [
+          m(".final-motius", [
+            m("strong", "Trucada:"),
+            " ",
+            Questionnaire.call.phone || "Entrada manualment ",
+            " a les "+new Date(Questionnaire.call.date).toLocaleString(),
+          ]),
+          m(".final-motius", [
+            m("strong", "De:"),
+            " ",
+            partner_id || "Cap persona especificada",
+          ]),
+          m(".final-motius", [
+            m("strong", "Referent al contracte:"),
+            " ",
+            contract.number || " Cap contracte especificat",
+          ]),
+          m(".reason-filter", [
+            m(".motiu", 'Motiu: '),
+            m(".filter",
+              m(Textfield, {
+                className: "textfield-filter",
+                label: "Escriure per filtrar",
+                value: reason_filter,
+                dense: true,
+                onChange: function(params) {
+                  reason_filter = params.value
+                }
+              })),
+          ]),
+          llistaMotius( all= !!partner_id ),
           m(".final-motius", [
             m("strong", "Comentaris:"),
             m(Textfield, {
               className: "textfield-comentaris",
-              label: "Especifica més informació",
+              label: "Comentaris",
+              help: "Especifica més informació",
               multiLine: true,
-              rows: 2,
+              floatingLabel: true,
+              rows: 5,
               dense: true,
-              value: Questionnaire.call['extra'],
+              value: Questionnaire.call.extra,
               onChange: function(params) {
-                Questionnaire.call['extra'] = params.value
+                Questionnaire.call.extra = params.value
               },
               disabled: (desar !== "Desa" || Questionnaire.call.date === ""),
             }),
           ]),
-        ])
-      ],
+        ]),
+      ]),
       footerButtons: [
         m(Button, {
           label: "Sortir",

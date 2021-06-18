@@ -445,13 +445,13 @@ CallInfo.mainPage = function() {
           m('.plane-info',
             isEmpty(CallInfo.file_info)?
               m(".searching", 'No hi ha informació.',
-                Questionnaire.infoQuestionnaire(Questionnaire.call.date !== "")
+                Questionnaire.annotationButton()
               ):(
             CallInfo.file_info[1] === "empty"?
               m(".searching", m(Spinner, { show: "true" } )):(
             CallInfo.file_info[1] === "toomuch"?
               m(".searching", 'Cerca poc específica, retorna masses resultats.',
-                Questionnaire.infoQuestionnaire(Questionnaire.call.date !== "")
+                Questionnaire.annotationButton()
               ):(
               m('.plane-info', [
                   PartnerInfo.allInfo(CallInfo.file_info),

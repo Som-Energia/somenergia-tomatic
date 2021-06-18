@@ -25,9 +25,10 @@ body
               display: inline-flex
               flex-flow: row wrap;
               .searching
-                  margin: 10px
+                  margin: auto
                   margin-top: 50px
                   display: flex
+                  flex: column
                   font-size: 30px
                   justify-content: space-evenly
                   align-content: center
@@ -333,27 +334,31 @@ body
           float: right
           margin-right: 15px
 
-  .card-motius
+  .card-annotate-case
     .pe-dialog__content
-      width: 580px
+      min-width: 50%
       .pe-dialog-pane__content
-        width: 580px
-    .card-motius-title
+        min-width: 100%
+      .pe-dialog-pane
+        max-width: none
+
+    .reason-filter
       display: flex
       align-items: baseline
       .motiu
         font-weight: bold
         margin-top: 5px
       .filter
+        width: 100%
         margin-left: 10px
         .textfield-filter
-            width: 445px
+            no_width: 445px
 
     .motius
-      display: inline-block
-      background-color: #EEEEEE
-      width: 530px
-      height: 460px
+      no-display: inline-block
+      background-color: #f5f5f5
+      no-width: 530px
+      height: 40vh
       overflow-y: auto
       .pe-list-tile--disabled
         .pe-list-tile__title
@@ -365,20 +370,9 @@ body
         font-size: 14px
         background-color: #eee
     .filter
-      margin-left: 10px
+      no-margin-left: 10px
       .textfield-filter
-        width: 445px
-    .final-motius
-      color: black
-      font-size: initial
-      margin-top: 10px
-      .textfield-comentaris
-        background-color: lemonchiffon
-        margin-top: 1px
-        display: inline-block
-        width: 530px
-    .save
-      padding-right: 10px
+        flex: 1
 
   .meter-readings
     max-height: 128px
