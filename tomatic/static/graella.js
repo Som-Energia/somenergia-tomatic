@@ -31,7 +31,7 @@ var Login = require('./components/login');
 var css = require('polythene-css');
 var customStyle = require('./style.styl');
 
-var CallInfo = require('./components/callinfo');
+var CallInfoPage = require('./components/callinfopage');
 var getCookie = require('./components/utils').getCookie;
 
 css.addLayoutStyles();
@@ -614,15 +614,6 @@ var PersonsPage = {
 			Persons(Tomatic.persons().extensions),
         ]);
     },
-};
-
-
-var CallInfoPage = {
-    view: function() {
-        return m('.callinfo',[
-             CallInfo.mainPage()
-             ]);
-    }
 };
 
 
