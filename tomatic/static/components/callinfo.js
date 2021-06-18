@@ -455,7 +455,7 @@ CallInfo.mainPage = function() {
               ):(
               m('.plane-info', [
                   PartnerInfo.allInfo(CallInfo.file_info),
-                  ContractInfo.listOfContracts(
+                  ContractInfo.view(
                     CallInfo.file_info,
                     PartnerInfo.main_partner
                   ),

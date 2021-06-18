@@ -252,7 +252,7 @@ var specificContractCard = function(contract, button, partner_id) {
   ]);
 }
 
-ContractInfo.listOfContracts = function(info, main_partner) {
+ContractInfo.view = function(info, main_partner) {
   if (info.partners[main_partner].contracts == undefined) {
     return m(".contracts", [m(".no-info", "No hi ha contractes.")]);
   }
