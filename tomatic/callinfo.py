@@ -394,11 +394,13 @@ class CallInfo(object):
         name_p_ids = self.partnerByName(name)
         return self.getByPartnersId(name_p_ids, shallow)
 
+    # TODO: Test
     def getByContract(self, number, shallow=False):
         name_p_ids = self.partnerByContract(number)
         return self.getByPartnersId(name_p_ids, shallow)
 
-    def getByData(self, data, shallow=False):
+    # TODO: Test
+    def getByAny(self, data, shallow=False):
         partner_ids = set()
         partner_ids += self.addressByPhone(data)
         partner_ids += self.partnerByAddressId(address_ids)
@@ -410,11 +412,28 @@ class CallInfo(object):
         partner_ids += self.partnerByContract(data)
         return self.getByPartnersId(list(partner_id), shallow)
 
+    #TODO: untested
+    def getByField(self, field, data, shallow=False):
+        function = dict(
+            phone = self.getByPhone,
+            name = self.getByName,
+            nif = self.getByDni,
+            soci = self.getBySoci,
+            email = self.getByEmail,
+            contract = self.getByContract,
+            all = self.getByAny,
+        ).get(field)
+
+        if function is None:
+            return None
+
+        return function(data, shallow)
+
     def getByPartnersId(self, partners_id, shallow=False):
         clean_partners_ids = list(set(partners_id))
         if self.results_limit and len(clean_partners_ids) > self.results_limit:
             return ns(partners='Masses resultats')
-        elif len(clean_partners_ids) == 0:
+        if len(clean_partners_ids) == 0:
             return ns(partners=None)
         result = ns()
         result.update(self.partnersInfo(clean_partners_ids, shallow))

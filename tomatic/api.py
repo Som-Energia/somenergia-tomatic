@@ -325,20 +325,11 @@ def yamlinfoerror(code, message, *args, **kwds):
 def getInfoPersonBy(field, value):
     decoded_field = urllib.parse.unquote(value)
     info = CallInfo(erp())
-    function = dict(
-        phone = info.getByPhone,
-        name = info.getByName,
-        nif = info.getByDni,
-        soci = info.getBySoci,
-        email = info.getByEmail,
-        contract = info.getByContract,
-        all = info.getByData,
-    ).get(field)
-    if function is None:
-        return 404
     data = None
     try:
-        data = function(decoded_field, shallow=True)
+        data = info.getByField(field, decoded_field, shallow=True)
+        if data is None:
+            return 404
     except ValueError:
         return yamlinfoerror('error_getBy'+field.title(),
             "Getting information searching {}='{}'.", field, value)
