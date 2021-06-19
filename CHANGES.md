@@ -10,9 +10,10 @@
 - Annotation dialog: show context, which call, which contract/partner
 - Implementation changes
   - Callinfo model and view split so that subviews can acces common state directly
-- Fix: Zero energy invoices shown as 0 not blank
+- Fix: Zero energy invoices now are shown as 0 not blank
 
 ## 3.11.0 2021-06-15
+
 - Call info
   - Interface redesigned to be responsive and more usable
   - Manual annotations (without an incomming call)
