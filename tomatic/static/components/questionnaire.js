@@ -43,12 +43,12 @@ var getInfos = function() {
 getInfos();
 
 
-var postClaim = function(info) {
+var postClaim = function(claim) {
   m.request({
     method: 'POST',
     url: '/api/atrCase',
     extract: deyamlize,
-    body: info
+    body: claim
   }).then(function(response){
     console.debug("Info GET Response: ",response);
     if (response.info.message !== "ok" ) {
@@ -64,7 +64,7 @@ var postClaim = function(info) {
 };
 
 
-var postInfo = function(info) {
+var postAnnotation = function(info) {
   m.request({
     method: 'POST',
     url: '/api/infoCase',
@@ -112,36 +112,37 @@ var updateCall = function(date, partner_number, contract_number) {
     });
 }
 
-var saveLogCalls = function(phone, person, reclamacio, contract_info, partner_number) {
+var saveLogCalls = function(phone, user, claim, contract, partner_code) {
   CallInfo.savingAnnotation = true;
-  contract_number = contract_info.number;
-  contract_cups = contract_info.cups;
-  isodate = new Date(CallInfo.call.date).toISOString()
-  updateCall(isodate, partner_number, contract_number);
-  if (reclamacio) {
-    claim = {
+  var contract_number = contract.number;
+  var isodate = new Date(CallInfo.call.date).toISOString()
+  updateCall(
+    isodate,
+    partner_code,
+    contract.number
+  );
+  if (claim) {
+    postClaim({
       "date": isodate,
-      "person": person,
+      "person": user,
       "reason": CallInfo.call.reason,
-      "partner": partner_number,
-      "contract": contract_number,
-      "procedente": (reclamacio.proc ? "x" : ""),
-      "improcedente": (reclamacio.improc ? "x" : ""),
-      "solved": (reclamacio.solved ? "x" : ""),
-      "user": (reclamacio.tag ? reclamacio.tag : "INFO"),
-      "cups": contract_cups,
+      "partner": partner_code,
+      "contract": contract.number,
+      "procedente": (claim.proc ? "x" : ""),
+      "improcedente": (claim.improc ? "x" : ""),
+      "solved": (claim.solved ? "x" : ""),
+      "user": (claim.tag ? claim.tag : "INFO"),
+      "cups": contract.cups,
       "observations": CallInfo.call.extra,
-    }
-    postClaim(claim);
+    });
   }
-  info = {
+  postAnnotation({
     "date": isodate,
     "phone": CallInfo.call.phone,
-    "person": person,
+    "person": user,
     "reason": CallInfo.call.reason,
     "extra": CallInfo.call.extra,
-  }
-  postInfo(info);
+  });
 }
 
 
