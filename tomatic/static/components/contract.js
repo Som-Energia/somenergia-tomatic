@@ -242,7 +242,10 @@ var extraInfo = function(
 
 var buttons = function(contracts) {
   return contracts.map(function(contract, index) {
-    return { label: contract.number };
+    return {
+      label: contract.number,
+      selected: index == CallInfo.currentContract,
+    };
   });
 }
 

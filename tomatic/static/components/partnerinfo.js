@@ -54,8 +54,9 @@ function nameFromFullName(name) {
 
 function buttons(partners) {
   return partners.map(
-    (partner) => ({
+    (partner, index) => ({
       label: nameFromFullName(partner.name),
+      selected: index == CallInfo.currentPerson,
     })
   );
 }
