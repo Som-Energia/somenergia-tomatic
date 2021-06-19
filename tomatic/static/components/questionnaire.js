@@ -88,18 +88,11 @@ var postAnnotation = function(annotation) {
   });
 }
 
-var updateCall = function(date, partner_number, contract_number) {
-    var info = {
-        data: CallInfo.call.date,
-        telefon: CallInfo.call.phone,
-        partner: partner_number,
-        contracte: contract_number,
-        motius: CallInfo.call.reason,
-    }
+var updateCall = function(date, data, contract) {
     m.request({
         method: 'POST',
         url: '/api/' + 'updatelog/'+ Login.getMyExt(),
-        body: info,
+        body: data,
         extract: deyamlize,
     }).then(function(response){
         console.debug("Info POST Response: ",response);
@@ -112,26 +105,31 @@ var updateCall = function(date, partner_number, contract_number) {
     });
 }
 
-var saveLogCalls = function(phone, user, claim, contract, partner_code) {
+var saveLogCalls = function(phone, user, claim, contract, partner) {
   CallInfo.savingAnnotation = true;
+  var partner_code = partner!==undefined ? partner.id_soci : "";
+  var contract_number = contract!==undefined ? contract.number : "";
+  var contract_cups = contract!==undefined ? contract.cups : "";
   var isodate = new Date(CallInfo.call.date).toISOString()
-  updateCall(
-    isodate,
-    partner_code,
-    contract.number
-  );
+  updateCall({
+    data: isodate,
+    telefon: CallInfo.call.phone,
+    partner: partner_code,
+    contracte: contract_number,
+    motius: CallInfo.call.reason,
+  })
   if (claim) {
     postClaim({
       "date": isodate,
       "person": user,
       "reason": CallInfo.call.reason,
       "partner": partner_code,
-      "contract": contract.number,
+      "contract": contract_number,
       "procedente": (claim.proc ? "x" : ""),
       "improcedente": (claim.improc ? "x" : ""),
       "solved": (claim.solved ? "x" : ""),
       "user": (claim.tag ? claim.tag : "INFO"),
-      "cups": contract.cups,
+      "cups": contract_cups,
       "observations": CallInfo.call.extra,
     });
   }
@@ -209,7 +207,7 @@ var clipboardIcon = function(){
     ]);
 }
 
-Questionnaire.annotationButton = function(contract, partner_id) {
+Questionnaire.annotationButton = function(contract, partner) {
   return m("",
     m(IconButton, {
       icon: m("i.far.fa-clipboard.icon-clipboard"),
@@ -220,7 +218,7 @@ Questionnaire.annotationButton = function(contract, partner_id) {
       events: {
         onclick: function() {
           console.log("VEURE QÜESTIONARI INFOS")
-          Questionnaire.openCaseAnnotationDialog(contract, partner_id);
+          Questionnaire.openCaseAnnotationDialog(contract, partner);
         },
       },
       disabled: (
@@ -232,13 +230,7 @@ Questionnaire.annotationButton = function(contract, partner_id) {
 }
 
 
-Questionnaire.openCaseAnnotationDialog = function(contract, partner_id) {
-  if (contract === undefined) {
-    contract = {
-      number: "",
-      cumps: "",
-    };
-  }
+Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
   if (CallInfo.call.date === "") {
     CallInfo.call.date = new Date().toISOString();
   }
@@ -249,7 +241,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner_id) {
       Login.myName(),
       reclamacio,
       contract,
-      partner_id
+      partner
     );
     CallInfo.call.reason = "";
   }
@@ -453,17 +445,27 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner_id) {
             m("strong", "Trucada:"),
             " ",
             CallInfo.call.phone || "Entrada manualment ",
-            " a les "+new Date(CallInfo.call.date).toLocaleString(),
+            m('strong', " el dia "), 
+            new Date(CallInfo.call.date).toLocaleDateString(),
+            m('strong', " a les "),
+            new Date(CallInfo.call.date).toLocaleTimeString(),
           ]),
           m(".final-motius", [
             m("strong", "De:"),
             " ",
-            partner_id || "Cap persona especificada",
+            partner !== undefined ? [
+              partner.id_soci,
+              partner.dni.replace("ES",""),
+              partner.name,
+              ].join(" - ")
+            : "Cap persona especificada",
           ]),
           m(".final-motius", [
             m("strong", "Referent al contracte:"),
             " ",
-            contract.number || " Cap contracte especificat",
+            contract !== undefined? (
+              contract.number + " - " + contract.cups_adress
+            ): " Cap contracte especificat",
           ]),
           m(".reason-filter", [
             m(".motiu", 'Motiu: '),
@@ -478,7 +480,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner_id) {
                 }
               })),
           ]),
-          llistaMotius(!!partner_id ),
+          llistaMotius(partner!==undefined),
           m(".final-motius", [
             m("strong", "Comentaris:"),
             m(Textfield, {

@@ -32,7 +32,7 @@ function formatInterval(contract) {
   return contract.start_date + " ⇨ " + contract.end_date;
 }
 
-var contractFields = function(contract, partner_id) {
+var contractFields = function(contract, partner) {
   var s_num = formatContractNumber(contract.number);
   var from_til = formatInterval(contract);
   var last_invoiced = (contract.last_invoiced != "" ?
@@ -49,13 +49,7 @@ var contractFields = function(contract, partner_id) {
     ),
     m(".contract-info-item", [
       m(".label-right", [
-        Questionnaire.annotationButton(
-            {
-              'cups': contract.cups,
-              'number': s_num 
-            },
-            partner_id
-        ),
+        Questionnaire.annotationButton(contract, partner),
       ]),
     m(".contract-info-item",
       m('.label', "CUPS: "),
@@ -106,8 +100,8 @@ var contractFields = function(contract, partner_id) {
 }
 
 ContractInfo.extraView = function(info) {
-  var person = info.partners[CallInfo.currentPerson]
-  var contract = person.contracts[CallInfo.currentContract];
+  var partner = info.partners[CallInfo.currentPerson]
+  var contract = partner.contracts[CallInfo.currentContract];
   return m(".contract-details.flex", [
     m(".partner-card", [
       m(Card, {
@@ -254,8 +248,8 @@ var buttons = function(contracts) {
   });
 }
 
-var contractCard = function(contracts, partner_id) {
-  var contract = contracts[CallInfo.currentContract];
+var contractCard = function(partner) {
+  var contract = partner.contracts[CallInfo.currentContract];
   return m(".partner-card", [
     m(".partner-tabs", [
       m(Tabs, {
@@ -265,7 +259,7 @@ var contractCard = function(contracts, partner_id) {
           activeSelected: "true",
           ink: "true",
         },
-        tabs: buttons(contracts),
+        tabs: buttons(partner.contracts),
         onChange: function(ev) {
           CallInfo.currentContract = ev.index
         }
@@ -276,7 +270,7 @@ var contractCard = function(contracts, partner_id) {
       content: [
         { text: {
           content: m("", [
-            contractFields(contract, partner_id),
+            contractFields(contract, partner),
           ])
         }},
       ]
@@ -286,16 +280,13 @@ var contractCard = function(contracts, partner_id) {
 
 
 ContractInfo.view = function(info) {
-  var person = info.partners[CallInfo.currentPerson]
-  if (person.contracts == undefined) {
+  var partner = info.partners[CallInfo.currentPerson]
+  if (partner.contracts == undefined) {
     return m(".contracts", [m(".no-info", "No hi ha contractes.")]);
   }
   return m(
     ".contracts",
-    contractCard(
-      person.contracts,
-      person.id_soci
-    )
+    contractCard(partner)
   );
 }
 
