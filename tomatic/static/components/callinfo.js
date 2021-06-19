@@ -273,7 +273,7 @@ var connectWebSocket = function(port) {
 }
 
 CallInfo.sendIdentification = function() {
-    message = "IDEN:"+Login.getMyExt()+":"+Login.myName()+":";
+    var message = "IDEN:"+Login.getMyExt()+":"+Login.myName()+":";
     websock.send(message);
 }
 
