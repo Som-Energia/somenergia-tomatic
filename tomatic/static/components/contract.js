@@ -75,7 +75,7 @@ var contractFields = function(contract, partner_id) {
       contract.lot_facturacio
     ),
     m(".contract-info-item",
-      m('.label', "Data última lectura facturada: "),
+      m('.label', "Data darrera lectura facturada: "),
       last_invoiced
     ),
       m('.label', "IBAN: "),
@@ -241,9 +241,9 @@ var extraInfo = function(
 }
 
 var buttons = function(contracts) {
-  return contracts.map(
-    (contract) =>  ({ label: contract.number })
-  );
+  return contracts.map(function(contract, index) {
+    return { label: contract.number };
+  });
 }
 
 var contractCard = function(contracts, partner_id) {

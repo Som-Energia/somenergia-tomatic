@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function() {
 
 var m = require('mithril');
@@ -17,22 +19,9 @@ var Login = require('./login');
 
 var Questionnaire = {};
 
-Questionnaire.call = CallInfo.call;
-
 var call_reasons = CallInfo.call_reasons;
-
-var extras_dict = {}
 var reason_filter = "";
-var desar = "Desa";
 
-
-function getExtras(extras) {
-  var reasons = [];
-  for (extra in extras) {
-    reasons.push(extras_dict[extras[extra]]);
-  }
-  return reasons;
-}
 
 var getInfos = function() {
   m.request({
@@ -67,7 +56,7 @@ var postClaim = function(info) {
     }
     else{
       console.debug("ATC case saved")
-      desar = 'Desa';
+      CallInfo.savingAnnotation = false;
     }
   }, function(error) {
     console.debug('Info GET apicall failed: ', error);
@@ -88,11 +77,11 @@ var postInfo = function(info) {
     }
     else {
       console.debug("INFO case saved")
-      desar = 'Desa';
-      Questionnaire.call.extra = "";
+      CallInfo.savingAnnotation = false;
+      CallInfo.call.extra = "";
       reason_filter = "";
-      Questionnaire.call.proc = false;
-      Questionnaire.call.improc = false;
+      CallInfo.call.proc = false;
+      CallInfo.call.improc = false;
     }
   }, function(error) {
     console.debug('Info POST apicall failed: ', error);
@@ -101,11 +90,11 @@ var postInfo = function(info) {
 
 var updateCall = function(date, partner_number, contract_number) {
     var info = {
-        data: Questionnaire.call.date,
-        telefon: Questionnaire.call.phone,
+        data: CallInfo.call.date,
+        telefon: CallInfo.call.phone,
         partner: partner_number,
         contracte: contract_number,
-        motius: Questionnaire.call.reason,
+        motius: CallInfo.call.reason,
     }
     m.request({
         method: 'POST',
@@ -117,23 +106,23 @@ var updateCall = function(date, partner_number, contract_number) {
         if (response.info.message !== "ok") {
             console.debug("Error al fer log dels motius: ", response.info.message)
         }
-        Questionnaire.call.date = "";
+        CallInfo.call.date = "";
     }, function(error) {
         console.debug('Info POST apicall failed: ', error);
     });
 }
 
 var saveLogCalls = function(phone, person, reclamacio, contract_info, partner_number) {
-  desar = 'Desant';
+  CallInfo.savingAnnotation = true;
   contract_number = contract_info.number;
   contract_cups = contract_info.cups;
-  isodate = new Date(Questionnaire.call.date).toISOString()
+  isodate = new Date(CallInfo.call.date).toISOString()
   updateCall(isodate, partner_number, contract_number);
   if (reclamacio) {
     claim = {
       "date": isodate,
       "person": person,
-      "reason": Questionnaire.call.reason,
+      "reason": CallInfo.call.reason,
       "partner": partner_number,
       "contract": contract_number,
       "procedente": (reclamacio.proc ? "x" : ""),
@@ -141,16 +130,16 @@ var saveLogCalls = function(phone, person, reclamacio, contract_info, partner_nu
       "solved": (reclamacio.solved ? "x" : ""),
       "user": (reclamacio.tag ? reclamacio.tag : "INFO"),
       "cups": contract_cups,
-      "observations": Questionnaire.call.extra,
+      "observations": CallInfo.call.extra,
     }
     postClaim(claim);
   }
   info = {
     "date": isodate,
-    "phone": Questionnaire.call.phone,
+    "phone": CallInfo.call.phone,
     "person": person,
-    "reason": Questionnaire.call.reason,
-    "extra": Questionnaire.call.extra,
+    "reason": CallInfo.call.reason,
+    "extra": CallInfo.call.extra,
   }
   postInfo(info);
 }
@@ -169,7 +158,7 @@ var llistaMotius = function( all = true ) {
     var filtered_regular = list_reasons.filter(contains);
     if (all) {
       var filtered_extras = call_reasons.extras.filter(contains);
-      var extras = getExtras(filtered_extras);
+      var extras = CallInfo.getExtras(filtered_extras);
       var filtered = filtered_regular.concat(extras);
     }
     else {
@@ -180,7 +169,7 @@ var llistaMotius = function( all = true ) {
     var filtered = list_reasons;
   }
 
-  var disabled = (desar === "Desant" || Questionnaire.call.date === "" );
+  var disabled = (CallInfo.savingAnnotation || CallInfo.call.date === "" );
 
   return m(".motius", m(List, {
     compact: true,
@@ -188,7 +177,7 @@ var llistaMotius = function( all = true ) {
     tiles: filtered.map(function(reason) {
       return m(ListTile, {
         className: (
-          Questionnaire.call.reason === reason
+          CallInfo.call.reason === reason
           ? "llista-motius-selected"
           : "llista-motius-unselected"
         ),
@@ -197,10 +186,10 @@ var llistaMotius = function( all = true ) {
         ink: true,
         hover: true,
         title: reason,
-        selected: Questionnaire.call.reason == reason,
+        selected: CallInfo.call.reason == reason,
         events: {
           onclick: function(ev) {
-            Questionnaire.call.reason = reason
+            CallInfo.call.reason = reason
           }
         },
         disabled: disabled,
@@ -232,7 +221,7 @@ Questionnaire.annotationButton = function(contract, partner_id) {
         },
       },
       disabled: (
-        desar !== "Desa" ||
+        CallInfo.savingAnnotation ||
         Login.myName() === ""
       ),
     }),
@@ -247,19 +236,19 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner_id) {
       cumps: "",
     };
   }
-  if (Questionnaire.call.date === "") {
-    Questionnaire.call.date = new Date().toISOString();
+  if (CallInfo.call.date === "") {
+    CallInfo.call.date = new Date().toISOString();
   }
 
   var enviar = function(reclamacio = "") {
     saveLogCalls(
-      Questionnaire.call.phone,
+      CallInfo.call.phone,
       Login.myName(),
       reclamacio,
       contract,
       partner_id
     );
-    Questionnaire.call.reason = "";
+    CallInfo.call.reason = "";
   }
 
   var getTag = function(reason) {
@@ -345,7 +334,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner_id) {
         checked: reclamacio.proc,
         label: "Procedente",
         onChange: function() {
-          reclamacio.proc = !Questionnaire.call.proc;
+          reclamacio.proc = !CallInfo.call.proc;
           reclamacio.improc = false
         },
       }),
@@ -356,7 +345,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner_id) {
         checked: reclamacio.improc,
         label: "Improcedente",
         onChange: function() {
-          reclamacio.improc = !Questionnaire.call.improc;
+          reclamacio.improc = !CallInfo.call.improc;
           reclamacio.proc = false
         },
       }),
@@ -460,8 +449,8 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner_id) {
           m(".final-motius", [
             m("strong", "Trucada:"),
             " ",
-            Questionnaire.call.phone || "Entrada manualment ",
-            " a les "+new Date(Questionnaire.call.date).toLocaleString(),
+            CallInfo.call.phone || "Entrada manualment ",
+            " a les "+new Date(CallInfo.call.date).toLocaleString(),
           ]),
           m(".final-motius", [
             m("strong", "De:"),
@@ -497,11 +486,11 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner_id) {
               floatingLabel: true,
               rows: 5,
               dense: true,
-              value: Questionnaire.call.extra,
+              value: CallInfo.call.extra,
               onChange: function(params) {
-                Questionnaire.call.extra = params.value
+                CallInfo.call.extra = params.value
               },
-              disabled: (desar !== "Desa" || Questionnaire.call.date === ""),
+              disabled: CallInfo.savingAnnotation || CallInfo.call.date === "",
             }),
           ]),
         ]),
@@ -518,10 +507,10 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner_id) {
         }),
         m(Button, {
           className: "save",
-          label: desar,
+          label: CallInfo.savingAnnotation?"Desant":"Desa",
           events: {
             onclick: function() {
-              var tag = getTag(Questionnaire.call.reason);
+              var tag = getTag(CallInfo.call.reason);
               if (esReclamacio(tag)) {
                 emplenaReclamacio(tag);
               }
@@ -533,10 +522,10 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner_id) {
           },
           border: 'true',
           disabled: (
-            desar !== "Desa" ||
-            Questionnaire.call.reason === "" ||
-            Questionnaire.call.extra === "" ||
-            Questionnaire.call.date === "" ||
+            CallInfo.savingAnnotation ||
+            CallInfo.call.reason === "" ||
+            CallInfo.call.extra === "" ||
+            CallInfo.call.date === "" ||
             Login.myName() === ""
           ),
         }, m(Ripple)),

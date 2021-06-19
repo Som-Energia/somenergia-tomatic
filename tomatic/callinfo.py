@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
 from yamlns import namespace as ns
 
 
@@ -110,7 +109,7 @@ class CallInfo(object):
                 contracts.append(contract_soci_id)
         return contracts
 
-    def partnersInfo(self, partners_ids):
+    def partnersInfo(self, partners_ids, shallow=False):
         no_partners = []
         result = ns(partners=[])
         partners_data = self.O.ResPartner.read(partners_ids, [
@@ -133,7 +132,7 @@ class CallInfo(object):
                     partner_data.id
                 )
                 partner_result.update(
-                    self.contractInfo(contracts_ids, partner_data.id)
+                    self.contractInfo(contracts_ids, partner_data.id, shallow)
                 )
                 if partner_result.id_soci.startswith('S'):
                     result.partners.append(partner_result)
@@ -147,7 +146,85 @@ class CallInfo(object):
         result.partners.extend(no_partners)
         return result
 
-    def contractInfo(self, contracts_ids, partner_id):
+    def lastInvoices(self, contract_id):
+        def getInvoice(invoice_id):
+            return self.O.GiscedataFacturacioFactura.read(
+                invoice_id, [
+                    'number',
+                    'data_inici',
+                    'data_final',
+                    'partner_id',
+                    'amount_total',
+                    'energia_kwh',
+                    'dies',
+                    'date_invoice',
+                    'date_due',
+                    'state',
+                ]
+            )
+
+        invoices = []
+        last_invoices_ids = self.O.GiscedataFacturacioFactura.search([
+            ('polissa_id', '=', contract_id),
+            ('state', '!=', 'draft'),
+            ('type', 'in', ['out_invoice', 'out_refund'])
+        ])[:self.invoices_limit]
+        for invoice_id in last_invoices_ids:
+            invoice = getInvoice(invoice_id)
+            invoices.append({
+                'number': self.anonymize(invoice['number']),
+                'initial_date': invoice['data_inici'],
+                'final_date': invoice['data_final'],
+                'payer': self.anonymize(invoice['partner_id'][1]),
+                'amount': invoice['amount_total'],
+                'energy_invoiced': invoice['energia_kwh'] or 0,
+                'days_invoiced': invoice['dies'],
+                'invoice_date': invoice['date_invoice'],
+                'due_date': invoice['date_due'],
+                'state': invoice['state'],
+            })
+        return invoices
+
+    def meterReadings(self, meter_ids):
+        print('input', meter_ids)
+        def getMeterReadings(meter_id):
+            return self.O.GiscedataLecturesComptador.read(
+                meter_id,
+                ['lectures', 'active', 'name']
+            )
+
+        def getReading(reading_id):
+            return self.O.GiscedataLecturesLectura.read(
+                reading_id,
+                ['name', 'lectura', 'origen_id', 'periode']
+            )
+
+        readings = []
+        for meter_id in meter_ids:
+            meter = getMeterReadings(meter_id)
+            if not meter['active']:
+                break
+            if not meter['lectures']:
+                break
+            meter_readings_ids = meter['lectures']
+            limited_meter_readings_ids = meter_readings_ids[
+                :self.meter_readings_limit
+            ]
+            for reading_id in limited_meter_readings_ids:
+                reading = getReading(reading_id)
+                data = {
+                    'comptador': self.anonymize(meter['name']),
+                    'data': reading['name'],
+                    'periode': reading['periode'][1],
+                    'lectura': self.anonymize(str(reading['lectura'])),
+                    'origen': reading['origen_id'][1],
+                }
+                readings.append(data)
+        print('readings', readings)
+        return readings
+
+
+    def contractInfo(self, contracts_ids, partner_id, shallow=False):
 
         def hasOpenATR(contract_id, case):
             cases = self.O.GiscedataSwitching.search([
@@ -183,81 +260,6 @@ class CallInfo(object):
                 ('end_date', '=', None),
             ])
             return len(assignations) > 0
-
-        def getMeterReadings(meter_id):
-            return self.O.GiscedataLecturesComptador.read(
-                meter_id,
-                ['lectures', 'active', 'name']
-            )
-
-        def getReading(reading_id):
-            return self.O.GiscedataLecturesLectura.read(
-                reading_id,
-                ['name', 'lectura', 'origen_id', 'periode']
-            )
-
-        def meterReadings(meter_ids):
-            readings = []
-            for meter_id in meter_ids:
-                meter = getMeterReadings(meter_id)
-                if not meter['active']:
-                    break
-                if not meter['lectures']:
-                    break
-                meter_readings_ids = meter['lectures']
-                limited_meter_readings_ids = meter_readings_ids[
-                    :self.meter_readings_limit
-                ]
-                for reading_id in limited_meter_readings_ids:
-                    reading = getReading(reading_id)
-                    data = {
-                        'comptador': self.anonymize(meter['name']),
-                        'data': reading['name'],
-                        'periode': reading['periode'][1],
-                        'lectura': self.anonymize(str(reading['lectura'])),
-                        'origen': reading['origen_id'][1],
-                    }
-                    readings.append(data)
-            return readings
-
-        def getInvoice(invoice_id):
-            return self.O.GiscedataFacturacioFactura.read(
-                invoice_id, [
-                    'number',
-                    'data_inici',
-                    'data_final',
-                    'partner_id',
-                    'amount_total',
-                    'energia_kwh',
-                    'dies',
-                    'date_invoice',
-                    'date_due',
-                    'state',
-                ]
-            )
-
-        def lastInvoices(contract_id):
-            invoices = []
-            last_invoices_ids = self.O.GiscedataFacturacioFactura.search([
-                ('polissa_id', '=', contract_id),
-                ('state', '!=', 'draft'),
-                ('type', 'in', ['out_invoice', 'out_refund'])
-            ])[:self.invoices_limit]
-            for invoice_id in last_invoices_ids:
-                invoice = getInvoice(invoice_id)
-                invoices.append({
-                    'number': self.anonymize(invoice['number']),
-                    'initial_date': invoice['data_inici'],
-                    'final_date': invoice['data_final'],
-                    'payer': self.anonymize(invoice['partner_id'][1]),
-                    'amount': invoice['amount_total'],
-                    'energy_invoiced': invoice['energia_kwh'],
-                    'days_invoiced': invoice['dies'],
-                    'invoice_date': invoice['date_invoice'],
-                    'due_date': invoice['date_due'],
-                    'state': invoice['state'],
-                })
-            return invoices
 
         if not contracts_ids:
             return ns(polisses=[])
@@ -309,8 +311,8 @@ class CallInfo(object):
                 if contract['bank'] else ''
             lot_facturacio = contract['lot_facturacio'][1] \
                 if contract['lot_facturacio'] else ''
-            lectures_comptadors = meterReadings(contract['comptadors'])
-            last_invoices = lastInvoices(contract['id'])
+            lectures_comptadors = None if shallow else self.meterReadings(contract['comptadors'])
+            last_invoices = None if shallow else self.lastInvoices(contract['id'])
             ret.contracts.append(
                 ns(
                     start_date=contract['data_alta'],
@@ -337,34 +339,33 @@ class CallInfo(object):
                     no_estimable=contract['no_estimable'],
                     lectures_comptadors=lectures_comptadors,
                     invoices=last_invoices,
-
                 )
             )
         return ret
 
-    def getByPhone(self, phone):
+    def getByPhone(self, phone, shallow=False):
         address_ids = self.addressByPhone(phone)
         partners_ids = self.partnerByAddressId(address_ids)
-        return self.getByPartnersId(partners_ids)
+        return self.getByPartnersId(partners_ids, shallow)
 
-    def getByEmail(self, email):
+    def getByEmail(self, email, shallow=False):
         email_ids = self.addressByEmail(email)
         email_p_ids = self.partnerByAddressId(email_ids)
-        return self.getByPartnersId(email_p_ids)
+        return self.getByPartnersId(email_p_ids, shallow)
 
-    def getBySoci(self, soci):
+    def getBySoci(self, soci, shallow=False):
         soci_p_ids = self.partnerBySoci(soci)
-        return self.getByPartnersId(soci_p_ids)
+        return self.getByPartnersId(soci_p_ids, shallow)
 
-    def getByDni(self, dni):
+    def getByDni(self, dni, shallow=False):
         dni_p_ids = self.partnerByDni(dni)
-        return self.getByPartnersId(dni_p_ids)
+        return self.getByPartnersId(dni_p_ids, shallow)
 
-    def getByName(self, name):
+    def getByName(self, name, shallow=False):
         name_p_ids = self.partnerByName(name)
-        return self.getByPartnersId(name_p_ids)
+        return self.getByPartnersId(name_p_ids, shallow)
 
-    def getByData(self, data):
+    def getByData(self, data, shallow=False):
         address_ids = self.addressByPhone(data)
         address_p_ids = self.partnerByAddressId(address_ids)
         email_ids = self.addressByEmail(data)
@@ -373,17 +374,36 @@ class CallInfo(object):
         dni_p_ids = self.partnerByDni(data)
         name_p_ids = self.partnerByName(data)
         ids = address_p_ids + email_p_ids + soci_p_ids + dni_p_ids + name_p_ids
-        return self.getByPartnersId(ids)
+        return self.getByPartnersId(ids, shallow)
 
-    def getByPartnersId(self, partners_id):
+    def getByPartnersId(self, partners_id, shallow=False):
         clean_partners_ids = list(set(partners_id))
         if self.results_limit and len(clean_partners_ids) > self.results_limit:
             return ns(partners='Masses resultats')
         elif len(clean_partners_ids) == 0:
             return ns(partners=None)
         result = ns()
-        result.update(self.partnersInfo(clean_partners_ids))
+        result.update(self.partnersInfo(clean_partners_ids, shallow))
         return result
 
+    #TODO: untested
+    def contractDetails(self, contract_numbers):
+        print("contracts_nums", contract_numbers)
+        contracts_ids = self.O.GiscedataPolissa.search([
+            ('name', 'in', contract_numbers),
+        ])
+        print("contracts_ids", contracts_ids)
+
+        contracts = self.O.GiscedataPolissa.read(contracts_ids, [
+            'name',
+            'comptadors'
+        ])
+        return ns(
+            (contract['name'], ns(
+                lectures_comptadors = self.meterReadings(contract['comptadors']),
+                invoices = self.lastInvoices(contract['id']),
+            ))
+            for contract in contracts
+        )
 
 # vim: ts=4 sw=4 et

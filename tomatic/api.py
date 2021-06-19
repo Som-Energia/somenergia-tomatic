@@ -337,7 +337,7 @@ def getInfoPersonBy(field, value):
         return 404
     data = None
     try:
-        data = function(decoded_field)
+        data = function(decoded_field, shallow=True)
     except ValueError:
         return yamlinfoerror('error_getBy'+field.title(),
             "Getting information searching {}='{}'.", field, value)
@@ -351,6 +351,18 @@ def getInfoPersonBy(field, value):
     result = ns(
         info=data,
         message=message,
+    )
+    return yamlfy(info=result)
+
+@app.route('/api/info/contractdetails', methods=['POST'])
+def getContractDetails():
+    step(request.data)
+    params = ns.loads(request.data)
+    info = CallInfo(erp())
+    data = info.contractDetails(params.contracts)
+    result = ns(
+        info=data,
+        message='ok',
     )
     return yamlfy(info=result)
 

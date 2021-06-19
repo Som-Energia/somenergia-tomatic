@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function() {
 
 var m = require('mithril');
@@ -30,6 +32,8 @@ CallInfo.call_reasons = {
     'infos': [],
     'extras': []
 }
+CallInfo.extras_dict = {};
+CallInfo.savingAnnotation = false;
 
 var clearCallInfo = function() {
   CallInfo.call.phone = "";
@@ -39,8 +43,32 @@ var clearCallInfo = function() {
   CallInfo.call.proc = false;
   CallInfo.call.improc = false;
   CallInfo.currentContract = 0;
-  desar = "Desa";
+  CallInfo.savingAnnotation = false;
   CallInfo.file_info = {};
+}
+
+function formatContractNumber(number) {
+  // some contract numbers get converted  to int and lose their padding
+  var result = number+"";
+  while (result.length < 7) result = "0" + result;
+  return result;
+}
+
+function contractNumbers(info) {
+  var result = {}
+  info.partners.map(function(partner) {
+    partner.contracts.map(function(contract) {
+      var number = formatContractNumber(contract.number);
+      result[number] = contract;
+    })
+  })
+  return Object.keys(result);
+}
+
+CallInfo.getExtras = function (extras) {
+  return extras.map(function(extra) {
+    return CallInfo.extras_dict[extra];
+  });
 }
 
 var getInfo = function () {
@@ -50,21 +78,40 @@ var getInfo = function () {
     extract: deyamlize,
   }).then(function(response){
     console.debug("Info GET Response: ", response);
+    if(response.info.message === "response_too_long") {
+      CallInfo.file_info = { 1: "toomuch" };
+      return;
+    }
     if (response.info.message !== "ok" ) {
-      if(response.info.message === "response_too_long") {
-        CallInfo.file_info = { 1: "toomuch" };
-      }
-      else {
-        CallInfo.file_info = {}
-      }
       console.debug("Error al obtenir les dades: ", response.info.message)
+      CallInfo.file_info = {}
+      return;
     }
-    else{
-      CallInfo.file_info=response.info.info;
-      if (CallInfo.call.date === "") {
-        CallInfo.call.date = new Date().toISOString();
-      }
+
+    CallInfo.file_info=response.info.info;
+    if (CallInfo.call.date === "") { // TODO: If selection is none
+      CallInfo.call.date = new Date().toISOString();
     }
+    // Keep the context, just in case a second query is started
+    // and CallInfo.file_info is overwritten
+    var context = CallInfo.file_info;
+    m.request({
+      method: 'POST',
+      url: '/api/info/contractdetails',
+      extract: deyamlize,
+      body: {
+        contracts: contractNumbers(context),
+      },
+    }).then(function(response) {
+      context.partners.map(function(partner) {
+        partner.contracts.map(function(contract) {
+          var number = formatContractNumber(contract.number);
+          var retrieved = response.info.info[number]
+          contract.invoices = retrieved.invoices;
+          contract.lectures_comptadors = retrieved.lectures_comptadors;
+        })
+      })
+    });
   }, function(error) {
     console.debug('Info GET apicall failed: ', error);
   });
@@ -82,7 +129,7 @@ CallInfo.getClaims = function() {
       }
       else{
         CallInfo.call_reasons.general = response.info.claims;
-        extras_dict = response.info.dict;
+        CallInfo.extras_dict = response.info.dict;
         CallInfo.call_reasons.extras = Object.keys(response.info.dict);
       }
   }, function(error) {
