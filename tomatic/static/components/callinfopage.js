@@ -60,6 +60,7 @@ var typeOfSearch = function() {
       m("option", {"value":"nif"}, "NIF"),
       m("option", {"value":"soci"}, "Número Soci"),
       m("option", {"value":"email"}, "Email"),
+      m("option", {"value":"contract"}, "Contracte"),
       m("option", {"value":"all"}, "Tot")
     ]
   );

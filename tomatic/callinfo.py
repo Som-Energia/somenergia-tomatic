@@ -68,6 +68,28 @@ class CallInfo(object):
             if address and address[0]
             ]
 
+    def partnerByContract(self, contract_number):
+        contract_ids = self.O.GiscedataPolissa.search([
+            ('name', '=', contract_number),
+        ])
+        if not contract_ids: return []
+        contracts = self.O.GiscedataPolissa.read(contract_ids, [
+            'name',
+            'titular',
+            'pagador',
+            'soci',
+            'direccio_notificacio',
+        ])
+        result = set()
+        for contract in contracts:
+            contract = ns(contract)
+            result.add(contract.titular[0])
+            result.add(contract.pagador[0])
+            result.add(contract.soci[0])
+            result.add(self.getPartnerId(contract.direccio_notificacio[0]))
+        print(result)
+        return list(result)
+
     def partnerInfo(self, partner_data):
         result = ns(
             id_soci=self.anonymize(partner_data.ref) if partner_data.ref else "",
@@ -221,6 +243,15 @@ class CallInfo(object):
                 readings.append(data)
         return readings
 
+    def getPartnerId(self, address_id):
+        partner_ids = self.O.ResPartnerAddress.read(
+            [address_id],
+            ['partner_id']
+        )
+        if partner_ids and partner_ids[0]['partner_id']:
+            return partner_ids[0]['partner_id'][0]
+        return None
+
 
     def contractInfo(self, contracts_ids, partner_id, shallow=False):
 
@@ -296,7 +327,7 @@ class CallInfo(object):
                 contract['titular'][0] == partner_id
             is_partner = contract['soci'] and \
                 contract['soci'][0] == partner_id
-            is_notifier = getPartnerId(
+            is_notifier = self.getPartnerId(
                 contract['direccio_notificacio'][0]
             ) == partner_id
             is_payer = contract['pagador'] and \
@@ -363,16 +394,21 @@ class CallInfo(object):
         name_p_ids = self.partnerByName(name)
         return self.getByPartnersId(name_p_ids, shallow)
 
+    def getByContract(self, number, shallow=False):
+        name_p_ids = self.partnerByContract(number)
+        return self.getByPartnersId(name_p_ids, shallow)
+
     def getByData(self, data, shallow=False):
-        address_ids = self.addressByPhone(data)
-        address_p_ids = self.partnerByAddressId(address_ids)
-        email_ids = self.addressByEmail(data)
-        email_p_ids = self.partnerByAddressId(email_ids)
-        soci_p_ids = self.partnerBySoci(data)
-        dni_p_ids = self.partnerByDni(data)
-        name_p_ids = self.partnerByName(data)
-        ids = address_p_ids + email_p_ids + soci_p_ids + dni_p_ids + name_p_ids
-        return self.getByPartnersId(ids, shallow)
+        partner_ids = set()
+        partner_ids += self.addressByPhone(data)
+        partner_ids += self.partnerByAddressId(address_ids)
+        partner_ids += self.addressByEmail(data)
+        partner_ids += self.partnerByAddressId(email_ids)
+        partner_ids += self.partnerBySoci(data)
+        partner_ids += self.partnerByDni(data)
+        partner_ids += self.partnerByName(data)
+        partner_ids += self.partnerByContract(data)
+        return self.getByPartnersId(list(partner_id), shallow)
 
     def getByPartnersId(self, partners_id, shallow=False):
         clean_partners_ids = list(set(partners_id))

@@ -3,6 +3,8 @@
 ## Unreleased
 
 - Loading shallow contract data first to speed up response
+- Search by contract number
+- Rich annotation contex
 - Display detail of contract information aside so it can fit
   in one screen and have more information at glance
 - Annotation dialog: available always regarding the search and selected call

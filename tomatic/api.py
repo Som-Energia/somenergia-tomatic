@@ -331,6 +331,7 @@ def getInfoPersonBy(field, value):
         nif = info.getByDni,
         soci = info.getBySoci,
         email = info.getByEmail,
+        contract = info.getByContract,
         all = info.getByData,
     ).get(field)
     if function is None:
