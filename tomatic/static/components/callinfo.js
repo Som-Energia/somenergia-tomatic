@@ -71,7 +71,7 @@ CallInfo.getExtras = function (extras) {
   });
 }
 
-var getInfo = function () {
+var retrieveInfo = function () {
   m.request({
     method: 'GET',
     url: '/api/info/'+CallInfo.search_by+"/"+CallInfo.search,
@@ -220,7 +220,7 @@ CallInfo.refreshCall = function(phone) {
   CallInfo.file_info = { 1: "empty" };
   CallInfo.currentPerson = 0;
   CallInfo.search_by = "phone";
-  getInfo();
+  retrieveInfo();
 }
 
 CallInfo.refreshIden = function(new_me) {
@@ -246,7 +246,7 @@ CallInfo.refreshPhone = function(phone, date) {
     CallInfo.search_by = "phone"
     CallInfo.search = phone
     CallInfo.file_info[1] = "empty"
-    getInfo();
+    retrieveInfo();
   }
 }
 
@@ -256,7 +256,7 @@ CallInfo.searchCustomer = function() {
     CallInfo.call.phone = "";
     CallInfo.file_info = { 1: "empty" };
     CallInfo.currentPerson = 0;
-    getInfo();
+    retrieveInfo();
   }
   else {
     CallInfo.call.date = "";

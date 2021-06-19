@@ -5,12 +5,14 @@
 - [x] Fix: Cambio de partner -> pestaña 0 de contratos
 - [x] Spinner when loading additional
 - [x] Search: Update the field whenever automatic search is done
+- [ ] Intercept connection errors and behave
 - [ ] Multithreaded ooop
 - [ ] Call Info: Report diferently, search cleared from no search found
 - [ ] Contract info: Add owner NIF
 - [ ] Contract info: Add provincia field
 - [ ] Contract info: Add Contract modifications
 - [ ] Annotate: Dissable button if logged out
+- [ ] Annotate: Context with person name and addresses
 - [ ] Cerca per contracte -> persones vinculades -> contractes vinculats
 - [ ] Call Registry: shorter on small screens
 - [ ] Call Registry: Codi titular -> Persona atesa
