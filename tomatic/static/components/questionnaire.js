@@ -64,12 +64,12 @@ var postClaim = function(claim) {
 };
 
 
-var postAnnotation = function(info) {
+var postAnnotation = function(annotation) {
   m.request({
     method: 'POST',
     url: '/api/infoCase',
     extract: deyamlize,
-    body: info
+    body: annotation
   }).then(function(response){
     console.debug("Info POST Response: ",response);
     if (response.info.message !== "ok" ) {
