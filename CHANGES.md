@@ -2,7 +2,18 @@
 
 ## Unreleased
 
-- 3.11.0 2021-06-15
+- Loading shallow contract data first to speed up response
+- Display detail of contract information aside so it can fit
+  in one screen and have more information at glance
+- Annotation dialog: available always regarding the search and selected call
+- Annotation dialog: wider layout
+- Annotation dialog: show context, which call, which contract/partner
+- Implementation changes
+  - Callinfo model and view split so that subviews can acces common state directly
+- Fix: Zero energy invoices shown as 0 not blank
+
+## 3.11.0 2021-06-15
+- Call info
   - Interface redesigned to be responsive and more usable
   - Manual annotations (without an incomming call)
   - Colored scrollable call log
