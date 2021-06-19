@@ -175,7 +175,7 @@ var atencionsLog = function() {
     var itemClicked = function(ev) {
         if (item.motius !== "") return;
         if (CallInfo.call.date === item.data) {
-          clearCallInfo();
+          CallInfo.clear();
           CallInfo.call.date = "";
         }
         else {

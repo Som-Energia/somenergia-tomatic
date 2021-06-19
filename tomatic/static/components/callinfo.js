@@ -35,7 +35,7 @@ CallInfo.call_reasons = {
 CallInfo.extras_dict = {};
 CallInfo.savingAnnotation = false;
 
-var clearCallInfo = function() {
+CallInfo.clear = function() {
   CallInfo.call.phone = "";
   CallInfo.call.log_call_reasons = [];
   CallInfo.call.reason = "";
@@ -190,7 +190,7 @@ if(CallInfo.call.ext !== "" && CallInfo.call.ext !== -1){
 }
 
 CallInfo.refreshCall = function(phone) {
-  clearCallInfo();
+  CallInfo.clear();
   CallInfo.call.phone = phone;
   CallInfo.search = phone;
   CallInfo.file_info = { 1: "empty" };
@@ -204,7 +204,7 @@ CallInfo.refreshIden = function(new_me) {
     return 0
   }
   CallInfo.search = ""
-  clearCallInfo()
+  CallInfo.clear()
   CallInfo.call.date = ""
   CallInfo.file_info = {}
   CallInfo.callLog = []
@@ -227,7 +227,7 @@ CallInfo.refreshPhone = function(phone, date) {
 }
 
 CallInfo.searchCustomer = function() {
-  clearCallInfo();
+  CallInfo.clear();
   if (CallInfo.search !== 0 && CallInfo.search !== ""){
     CallInfo.call.phone = "";
     CallInfo.file_info = { 1: "empty" };
