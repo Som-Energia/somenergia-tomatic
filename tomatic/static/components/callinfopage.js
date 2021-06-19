@@ -122,7 +122,7 @@ var customerSearch = function() {
             keyEventHandler(event)
           }
         },
-        disabled: !CallInfo.refresh,
+        disabled: !CallInfo.autoRefresh,
       }),
       m(IconButton, {
         className: 'btn-search',
@@ -132,7 +132,7 @@ var customerSearch = function() {
             CallInfo.searchCustomer();
           },
         },
-        disabled: !CallInfo.refresh,
+        disabled: !CallInfo.autoRefresh,
       }),
     ]),
   ]);
@@ -207,7 +207,7 @@ var atencionsLog = function() {
         events: {
           onclick: itemClicked,
         },
-        disabled: !CallInfo.refresh,
+        disabled: !CallInfo.autoRefresh,
       })
     ];
   })
@@ -237,16 +237,16 @@ var attendedCalls = function() {
           }),
           m(IconButton, {
             className: 'btn-lock',
-            icon: (CallInfo.refresh ? lockIcon() : lockedIcon()),
+            icon: (CallInfo.autoRefresh ? lockIcon() : lockedIcon()),
             border: false,
             wash: true,
             compact: true,
-            title: CallInfo.refresh ?
+            title: CallInfo.autoRefresh ?
               "Actualitza el cas automàticament":
               "Fixa el cas actual",
             events: {
               onclick: function() {
-                CallInfo.refresh = !CallInfo.refresh
+                CallInfo.autoRefresh = !CallInfo.autoRefresh
               },
             }
           }),

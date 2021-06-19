@@ -16,7 +16,7 @@ CallInfo.file_info = {};
 CallInfo.search = "";
 CallInfo.callLog = [];
 CallInfo.updatingClaims = false;
-CallInfo.refresh = true;
+CallInfo.autoRefresh = true;
 CallInfo.search_by = "phone";
 CallInfo.currentContract = 0;
 CallInfo.currentPerson = 0;
@@ -224,7 +224,7 @@ CallInfo.refreshCall = function(phone) {
 }
 
 CallInfo.refreshIden = function(new_me) {
-  if (!CallInfo.refresh && (new_me.iden !== "" || new_me.iden !== -1)) {
+  if (!CallInfo.autoRefresh && (new_me.iden !== "" || new_me.iden !== -1)) {
     return 0
   }
   CallInfo.search = ""
@@ -235,12 +235,12 @@ CallInfo.refreshIden = function(new_me) {
   CallInfo.call.iden = new_me.iden
   CallInfo.call.ext = new_me.ext
   if (CallInfo.call.ext === -1) {
-    CallInfo.refresh = true
+    CallInfo.autoRefresh = true
   }
 }
 
 CallInfo.refreshPhone = function(phone, date) {
-  if (CallInfo.refresh) {
+  if (CallInfo.autoRefresh) {
     CallInfo.call.date = date;
     CallInfo.call.phone = phone;
     CallInfo.search_by = "phone"
