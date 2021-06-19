@@ -186,7 +186,6 @@ class CallInfo(object):
         return invoices
 
     def meterReadings(self, meter_ids):
-        print('input', meter_ids)
         def getMeterReadings(meter_id):
             return self.O.GiscedataLecturesComptador.read(
                 meter_id,
@@ -220,7 +219,6 @@ class CallInfo(object):
                     'origen': reading['origen_id'][1],
                 }
                 readings.append(data)
-        print('readings', readings)
         return readings
 
 
@@ -388,11 +386,9 @@ class CallInfo(object):
 
     #TODO: untested
     def contractDetails(self, contract_numbers):
-        print("contracts_nums", contract_numbers)
         contracts_ids = self.O.GiscedataPolissa.search([
             ('name', 'in', contract_numbers),
         ])
-        print("contracts_ids", contracts_ids)
 
         contracts = self.O.GiscedataPolissa.read(contracts_ids, [
             'name',
