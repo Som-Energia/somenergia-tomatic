@@ -113,6 +113,7 @@ var customerSearch = function() {
       m(Textfield, {
         className: 'txtf-phone flex',
         placeholder: "Cerca",
+        value: CallInfo.search,
         onChange: function(state) {
           CallInfo.search = state.value;
         },
