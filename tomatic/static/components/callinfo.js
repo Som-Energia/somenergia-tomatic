@@ -189,6 +189,30 @@ if(CallInfo.call.ext !== "" && CallInfo.call.ext !== -1){
   CallInfo.getLogPerson()
 }
 
+CallInfo.isLogSelected = function(date) {
+  return CallInfo.call.date === date;
+}
+CallInfo.selectLog = function(date, phone) {
+  console.log("Selecting", date, phone, CallInfo.call.date);
+  CallInfo.call.date = date;
+  CallInfo.refreshCall(phone);
+}
+CallInfo.deselectLog = function() {
+  console.log("deselecting", CallInfo.call.date);
+  CallInfo.clear();
+  CallInfo.call.date = "";
+  CallInfo.search = "";
+}
+CallInfo.toggleLog = function(date, phone) {
+  console.log("Toggling", date, phone, CallInfo.call.date);
+  if (CallInfo.isLogSelected(date)) {
+    CallInfo.deselectLog();
+  }
+  else {
+    CallInfo.selectLog(date, phone);
+  }
+}
+
 CallInfo.refreshCall = function(phone) {
   CallInfo.clear();
   CallInfo.call.phone = phone;

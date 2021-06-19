@@ -173,16 +173,10 @@ var atencionsLog = function() {
   }
   var currentDate = new Date().toLocaleDateString();
   items = CallInfo.callLog.slice(0).reverse().map(function(item, index) {
+    var isSelected = CallInfo.isLogSelected(item.data);
     var itemClicked = function(ev) {
         if (item.motius !== "") return;
-        if (CallInfo.call.date === item.data) {
-          CallInfo.clear();
-          CallInfo.call.date = "";
-        }
-        else {
-          CallInfo.call.date = item.data;
-          CallInfo.refreshCall(item.telefon);
-        }
+        CallInfo.toggleLog(item.data, item.telefon)
     }
     var needsDate = false;
     var itemDate = new Date(item.data).toLocaleDateString();
@@ -202,7 +196,7 @@ var atencionsLog = function() {
       }):'',
       m(ListTile, {
         className:
-          CallInfo.call.date === item.data ?
+          CallInfo.isLogSelected(item.data)?
           "registres selected" : "registres",
         selectable: true,
         hoverable: !solved,
