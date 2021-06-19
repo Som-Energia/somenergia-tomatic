@@ -5,6 +5,7 @@
 - [x] Fix: Cambio de partner -> pestaña 0 de contratos
 - [x] Spinner when loading additional
 - [x] Search: Update the field whenever automatic search is done
+- [x] Annotate: Dissable button if logged out
 - [ ] Change websocket lib to enable sharing http port and debug mode
 - [ ] Intercept connection errors and behave
 - [ ] Multithreaded ooop
@@ -12,10 +13,9 @@
 - [ ] Contract info: Add owner NIF
 - [ ] Contract info: Add provincia field
 - [ ] Contract info: Add Contract modifications
-- [ ] Annotate: Dissable button if logged out
 - [ ] Annotate: Context with person name and addresses
 - [ ] Cerca per contracte -> persones vinculades -> contractes vinculats
 - [ ] Call Registry: shorter on small screens
 - [ ] Call Registry: Codi titular -> Persona atesa
-
+- [ ] Rol administrador
 

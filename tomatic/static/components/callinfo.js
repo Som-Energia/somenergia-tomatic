@@ -12,14 +12,14 @@ var styleCallinfo = require('./callinfo_style.styl');
 var CallInfo = {};
 
 var websock = null;
-CallInfo.file_info = {};
-CallInfo.search = "";
-CallInfo.callLog = [];
-CallInfo.updatingClaims = false;
-CallInfo.autoRefresh = true;
-CallInfo.search_by = "phone";
-CallInfo.currentContract = 0;
-CallInfo.currentPerson = 0;
+CallInfo.search = ""; // Search value
+CallInfo.search_by = "phone"; // Search file
+CallInfo.file_info = {}; // Retrieved search data
+CallInfo.currentPerson = 0; // Selected person from search data
+CallInfo.currentContract = 0; // Selected contract selected person
+CallInfo.callLog = []; // User call registry
+CallInfo.updatingClaims = false; // Whether we are still loading claim types
+CallInfo.autoRefresh = true; // whether we are auto searching on incomming calls
 CallInfo.call = {
     'phone': "",
     'date': "",
