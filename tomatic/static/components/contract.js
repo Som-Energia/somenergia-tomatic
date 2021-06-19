@@ -2,6 +2,7 @@ module.exports = function() {
 
 var m = require('mithril');
 
+var Spinner = require('polythene-mithril-material-design-spinner').MaterialDesignSpinner;
 var Ripple = require('polythene-mithril-ripple').Ripple;
 var Card = require('polythene-mithril-card').Card;
 var Button = require('polythene-mithril-button').Button;
@@ -133,9 +134,10 @@ ContractInfo.extraView = function(info) {
 
 var meterReadings = function(readings) {
   if (readings === null) {
-    return m(".meter-readings", m("table", 
-      m('tr', m('td', "Carregant Lectures..."))
-    ));
+    return m(".meter-readings", m(".loading.layout.vertical.center", [
+      "Carregant Lectures...",
+      m(Spinner, {show: true}),
+    ]));
   }
   if (readings.length == 0) {
     return m(".contract-info-item", "No hi ha informació de comptadors.")
@@ -169,7 +171,10 @@ var lastInvoices = function(invoices) {
   if (invoices === null) {
     return m(".factures",
       m(".factures-info",
-        m(".factura-info-item", "Carregant Factures...")
+        m(".loading.layout.vertical.center", [
+          "Carregant Factures...",
+          m(Spinner, {show: true}),
+        ])
       )
     );
   }

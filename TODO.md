@@ -3,6 +3,7 @@
 + Anotar trucada d'una persona encara no vinculada a som
 + Fix: CalRegistry: Selecting twice no longer deselects
 + Fix: Cambio de partner -> pestaña 0 de contratos
++ Spinner when loading additional
 - Search: Update the field whenever automatic search is done
 - Call Info: Report diferently, search cleared from no search found
 - Contract info: Add owner NIF
