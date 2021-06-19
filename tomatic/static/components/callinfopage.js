@@ -143,7 +143,7 @@ var responsesMessage = function(info) {
   return m('',
     m('span.time', time),
     ' ',
-    m('span.phone', info.telefon ? info.telefon : "Cerca Manual"),
+    m('span.phone', info.telefon ? info.telefon : "Registre Manual"),
     m.trust('&nbsp;'),
     m.trust('&nbsp;'),
     info.motius?
