@@ -5,6 +5,7 @@
 - [x] Fix: Cambio de partner -> pestaña 0 de contratos
 - [x] Spinner when loading additional
 - [x] Search: Update the field whenever automatic search is done
+- [ ] Change websocket lib to enable sharing http port and debug mode
 - [ ] Intercept connection errors and behave
 - [ ] Multithreaded ooop
 - [ ] Call Info: Report diferently, search cleared from no search found
