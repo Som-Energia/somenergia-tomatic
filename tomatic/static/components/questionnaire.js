@@ -114,7 +114,6 @@ var updateCall = function(date, partner_number, contract_number) {
 
 var saveLogCalls = function(phone, user, claim, contract, partner_code) {
   CallInfo.savingAnnotation = true;
-  var contract_number = contract.number;
   var isodate = new Date(CallInfo.call.date).toISOString()
   updateCall(
     isodate,
@@ -153,7 +152,10 @@ var llistaMotius = function( all = true ) {
     return contains;
   }
 
-  var list_reasons = all ? [...call_reasons.infos, ...call_reasons.general] : call_reasons.infos;
+  var list_reasons = (all ?
+    [...call_reasons.infos, ...call_reasons.general] :
+    call_reasons.infos
+  );
 
   if (reason_filter !== "") {
     var filtered_regular = list_reasons.filter(contains);

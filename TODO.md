@@ -13,9 +13,10 @@
 - [ ] Contract info: Add owner NIF
 - [ ] Contract info: Add provincia field
 - [ ] Contract info: Add Contract modifications
+- [ ] Contract info: Contract aministrator role
 - [ ] Annotate: Context with person name and addresses
 - [ ] Cerca per contracte -> persones vinculades -> contractes vinculats
 - [ ] Call Registry: shorter on small screens
 - [ ] Call Registry: Codi titular -> Persona atesa
-- [ ] Rol administrador
+- [ ] Detecting user changed by other tab or cookie timeout
 
