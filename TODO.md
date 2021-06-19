@@ -7,6 +7,7 @@
 - [x] Search: Update the field whenever automatic search is done
 - [x] Annotate: Dissable button if logged out
 - [x] Search by contract -> persones vinculades -> contractes vinculats
+- [x] Annotate: Context with person name and addresses
 - [ ] Change websocket lib to enable sharing http port and debug mode
 - [ ] Intercept connection errors and behave
 - [ ] Multithreaded ooop
@@ -15,7 +16,6 @@
 - [ ] Contract info: Add provincia field
 - [ ] Contract info: Add Contract modifications
 - [ ] Contract info: Contract aministrator role
-- [ ] Annotate: Context with person name and addresses
 - [ ] Call Registry: shorter on small screens
 - [ ] Call Registry: Codi titular -> Persona atesa
 - [ ] Detecting user changed by other tab or cookie timeout

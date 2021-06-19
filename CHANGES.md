@@ -4,15 +4,15 @@
 
 - Loading shallow contract data first to speed up response
 - Search by contract number
-- Rich annotation contex
+- Rich annotation context (partner name, contract address...)
 - Display detail of contract information aside so it can fit
   in one screen and have more information at glance
 - Annotation dialog: available always regarding the search and selected call
 - Annotation dialog: wider layout
 - Annotation dialog: show context, which call, which contract/partner
+- Fix: Zero energy invoices now are shown as 0 not blank
 - Implementation changes
   - Callinfo model and view split so that subviews can acces common state directly
-- Fix: Zero energy invoices now are shown as 0 not blank
 
 ## 3.11.0 2021-06-15
 
