@@ -427,15 +427,6 @@ async def notifyIncommingCall(phone: str, extension: str):
     return yamlfy(result='ok')
 
 
-@app.get('/api/socketInfo')
-def getConnectionInfo():
-    result = ns(
-        port_ws=CONFIG.websocket_port,
-        message="ok"
-    )
-    return yamlfy(info=result)
-
-
 @app.get('/api/personlog/{extension}')
 def getCallLog(extension):
     calls = CallRegistry().callsByExtension(extension)

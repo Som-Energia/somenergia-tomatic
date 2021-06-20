@@ -253,33 +253,11 @@ CallInfo.searchCustomer = function() {
 }
 
 
-var getServerSockInfo = function() {
-    m.request({
-        method: 'GET',
-        url: '/api/socketInfo',
-        extract: deyamlize,
-    }).then(function(response){
-        console.debug("Info GET Response: ",response);
-        if (response.info.message !== "ok" ) {
-            console.debug("Error get data: ", response.info.message);
-            return;
-        }
-        var port = response.info.port_ws;
-        connectWebSocket(port);
-    }, function(error) {
-        console.debug('Info GET apicall failed WebSock: ', error);
-    });
-}
-getServerSockInfo();
-/*
-var url = new URL('/', window.location.href);
-url.protocol = url.protocol.replace('http', 'ws');
-var addr = url.href
-*/
-
-var connectWebSocket = function(port) {
-    var addr = 'ws://'+window.location.hostname+':'+port+'/';
-    websock = new WebSocket(addr);
+var connectWebSocket = function() {
+    var url = new URL('/', window.location.href);
+    url.protocol = url.protocol.replace('http', 'ws');
+    console.log("Connecting WS",url.href)
+    websock = new WebSocket(url.href);
     websock.onmessage = CallInfo.onMessageReceived;
     websock.onopen = CallInfo.sendIdentification;
 }
@@ -313,6 +291,7 @@ Login.onLogout.push(CallInfo.sendIdentification);
 Login.onLogout.push(CallInfo.getLogPerson);
 Login.onUserChanged.push(CallInfo.changeUser);
 Login.onUserChanged.push(CallInfo.getLogPerson);
+connectWebSocket();
 
 return CallInfo;
 
