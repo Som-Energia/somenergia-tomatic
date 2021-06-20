@@ -21,10 +21,10 @@ CallInfo.callLog = []; // User call registry
 CallInfo.updatingClaims = false; // Whether we are still loading claim types
 CallInfo.autoRefresh = true; // whether we are auto searching on incomming calls
 CallInfo.call = {
-    'phone': "",
-    'date': "",
-    'reason': "",
-    'extra': "",
+    'phone': "", // phone of the currently selected call registry
+    'date': "", // isodate of the last unbinded search or the currently selected call registry
+    'reason': "", // annotated reason for the call
+    'extra': "", // annotated comments for the call
     'log_call_reasons': [],
 };
 CallInfo.call_reasons = {
