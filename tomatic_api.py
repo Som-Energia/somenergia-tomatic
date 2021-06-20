@@ -84,17 +84,18 @@ def main(fake, debug, host, port, printrules, ring, date, time, queue):
         #   "somenergia")
 
     if printrules:
-        for rule in app.url_map.iter_rules():
-            print(rule)
+        for rule in app.routes:
+            print(rule.path)
 
     if ring:
         step("Starting WS thread")
         app.sessionBackChannel = WebSocketTomaticServer()
         app.sessionBackChannel.startCallInfoWS(host=host)
     step("Starting API")
-    for rule in app.url_map.iter_rules():
-        step("- {}", rule)
-    app.run(debug=debug, host=host, port=port, processes=1)
+    for rule in app.routes:
+        step("- {}", rule.path)
+    import uvicorn
+    uvicorn.run(app, debug=debug, host=host, port=port)
     step("API stopped")
     if ring:
         app.sessionBackChannel.stopCallInfoWS()

@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from flask import (
-    Flask, Response, request,
-    send_from_directory,
-    send_file,
-    )
+from fastapi import (
+    FastAPI,
+    Request,
+    Form,
+    WebSocket,
+)
+from fastapi.responses import (
+    FileResponse,
+    Response,
+)
+
 from datetime import datetime, timedelta, timezone
 import urllib.parse
 import decorator
@@ -24,6 +30,7 @@ try:
     import dbconfig
 except ImportError:
     dbconfig = None
+
 
 packagedir = Path(__file__).parent
 distpath = packagedir/'dist'
@@ -64,19 +71,21 @@ def thisweek():
     return format(now().date() - timedelta(days=now().weekday()))
 
 from .planner_api import api as Planner
+from fastapi.websockets import WebSocket
 
-app = Flask(__name__)
-app.register_blueprint(Planner, url_prefix='/api/planner')
+app = FastAPI()
+#app.register_blueprint(Planner, url_prefix='/api/planner')
 
 
 class ApiError(Exception): pass
 
 def yamlfy(status=200, data=[], **kwd):
-    return Response(ns(
-        data, **kwd
-        ).dump(), status,
-        mimetype = 'application/x-yaml',
+    output = ns(data, **kwd)
+    return Response(output.dump(),
+        status,
+        media_type = 'application/x-yaml',
     )
+
 
 @decorator.decorator
 def yamlerrors(f,*args,**kwd):
@@ -95,28 +104,34 @@ def yamlerrors(f,*args,**kwd):
             status=500,
             )
 
-@app.route('/')
-@app.route('/<file>')
-def tomatic(file=None):
-    return send_from_directory(str(distpath), file or 'index.html')
 
-@app.route('/favicon.ico')
+@app.get('/favicon.ico')
 def favicon():
-    return send_from_directory(str(staticpath), 'favicon.ico')
+    return FileResponse(staticpath / 'favicon.ico')
 
-@app.route('/api/graella-<week>.yaml')
-@app.route('/api/graella/<week>')
+@app.get('/')
+@app.get('/{file}')
+def tomatic(file=None):
+    return FileResponse(distpath / (file or 'index.html'))
+
+@app.get('/api/graella/list')
+@yamlerrors
+def listGraelles():
+    step("runing listGraelles")
+    return yamlfy(weeks=schedules.list())
+
+@app.get('/api/graella-{week}.yaml')
+@app.get('/api/graella/{week}')
 @yamlerrors
 def graellaYaml(week):
     schedule = schedules.load(week)
 
     return yamlfy(**schedule)
 
-@app.route('/api/graella/<week>/<day>/<int:houri>/'
-        '<int:turni>/<name>', methods=['UPDATE'])
+@app.patch('/api/graella/{week}/{day}/{houri}/{turni}/{name}')
 @yamlerrors
-def editSlot(week, day, houri, turni, name):
-    myname = request.data.decode().split('"')[1]
+async def editSlot(week, day, houri: int, turni: int, name, request: Request):
+    user = await request.body().split('"')[1]
     graella = schedules.load(week)
     # TODO: Ensure day, houri, turni and name are in graella
     oldName = graella.timetable[day][int(houri)][int(turni)]
@@ -127,7 +142,7 @@ def editSlot(week, day, houri, turni, name):
     logmsg = (
         "{}: {} ha canviat {} {}-{} {} de {} a {}".format(
         datetime.now(),
-        myname, # TODO: ERP user
+        user, # TODO: ERP user
         day,
         graella.hours[int(houri)],
         graella.hours[int(houri)+1],
@@ -142,12 +157,7 @@ def editSlot(week, day, houri, turni, name):
     return graellaYaml(week)
 
 
-@app.route('/api/graella/list')
-@yamlerrors
-def listGraelles():
-    return yamlfy(weeks=schedules.list())
-
-@app.route('/api/graella', methods=['POST'])
+@app.post('/api/graella')
 @yamlerrors
 def uploadGraella(week=None):
     step("uploading {}".format(request.files))
@@ -171,7 +181,7 @@ def uploadGraella(week=None):
     schedulestorage.publishStatic(graella)
     return yamlfy(result='ok')
 
-@app.route('/api/graella/retireold')
+@app.get('/api/graella/retireold')
 @yamlerrors
 def retireOldTimeTable():
     today = datetime.today()
@@ -194,14 +204,14 @@ def cachedQueueStatus(force=False):
     cachedQueueStatus.value = pbx().queue()
     return cachedQueueStatus.value
 
-@app.route('/api/queue')
+@app.get('/api/queue')
 @yamlerrors
 def get_queue():
     return yamlfy(
         currentQueue = cachedQueueStatus()
     )
 
-@app.route('/api/queue/add/<person>')
+@app.get('/api/queue/add/{person}')
 @yamlerrors
 def add_line(person):
     p = pbx()
@@ -210,7 +220,7 @@ def add_line(person):
         currentQueue = cachedQueueStatus(force=True)
     )
 
-@app.route('/api/queue/pause/<person>')
+@app.get('/api/queue/pause/{person}')
 @yamlerrors
 def pause_line(person):
     p = pbx()
@@ -219,7 +229,7 @@ def pause_line(person):
         currentQueue = cachedQueueStatus(force=True)
     )
 
-@app.route('/api/queue/resume/<person>')
+@app.get('/api/queue/resume/{person}')
 @yamlerrors
 def resume_line(person):
     p = pbx()
@@ -228,7 +238,7 @@ def resume_line(person):
         currentQueue = cachedQueueStatus(force=True)
     )
 
-@app.route('/api/persons/extension/<extension>')
+@app.get('/api/persons/extension/{extension}')
 @yamlerrors
 def personInfoFromExtension(extension):
     allpersons=persons.persons()
@@ -239,53 +249,53 @@ def personInfoFromExtension(extension):
     email = allpersons.emails[name]
     return email
 
-@app.route('/api/persons/')
+@app.get('/api/persons/')
 @yamlerrors
 def personInfo():
     result=persons.persons()
     return yamlfy(persons=result)
 
-@app.route('/api/person/<person>', methods=['POST'])
+@app.post('/api/person/{person}')
 @yamlerrors
-def setPersonInfo(person):
-    data = ns.loads(request.data)
+async def setPersonInfo(person, request: Request):
+    data = ns.loads(await request.body())
     persons.update(person, data)
     return yamlfy(persons=persons.persons())
 
-@app.route('/api/busy/<person>', methods=['GET'])
+@app.get('/api/busy/{person}')
 @yamlerrors
 def busy(person):
     from . import busy
     return yamlfy(**busy.busy(person))
 
-@app.route('/api/busy/<person>', methods=['POST'])
+@app.post('/api/busy/{person}')
 @yamlerrors
-def busy_post(person):
+async def busy_post(person, request: Request):
     from . import busy
-    data = ns.loads(request.data)
+    data = ns.loads(await request.body())
     return yamlfy(**busy.update_busy(person, data))
 
-@app.route('/api/busy/download/weekly')
+@app.get('/api/busy/download/weekly')
 @yamlerrors
 def downloadWeeklyBusy():
-    response = send_file(
-        '../indisponibilitats.conf',
+    response = FileResponse(
+        path='../indisponibilitats.conf',
         as_attachment=True,
-        mimetype='text/plain',
+        media_type='text/plain',
     )
     print("response {}".format(response))
     return response
 
-@app.route('/api/busy/download/oneshot')
+@app.get('/api/busy/download/oneshot')
 @yamlerrors
 def downloadOneShotBusy():
-    return send_file(
+    return FileResponse(
         '../oneshot.conf',
         as_attachment=True,
-        mimetype='text/plain',
+        media_type='text/plain',
     )
 
-@app.route('/api/shifts/download/credit/<week>')
+@app.get('/api/shifts/download/credit/{week}')
 @yamlerrors
 def downloadWeekShiftCredit(week):
     try:
@@ -294,24 +304,24 @@ def downloadWeekShiftCredit(week):
         raise ApiError(e)
     return yamlfy(**credit)
 
-@app.route('/api/shifts/download/shiftload/<week>')
+@app.get('/api/shifts/download/shiftload/{week}')
 def downloadShiftLoad(week):
     loadfile = Path('carrega-{}.csv'.format(week))
 
-    return send_file(
+    return FileResponse(
         str('..'/loadfile),
         as_attachment=True,
-        mimetype='text/csv',
+        media_type='text/csv',
     )
 
-@app.route('/api/shifts/download/overload/<week>')
+@app.get('/api/shifts/download/overload/{week}')
 def downloadOverload(week):
     loadfile = Path('overload-{}.yaml'.format(week))
 
-    return send_file(
+    return FileResponse(
         str('..'/loadfile),
         as_attachment=True,
-        mimetype = 'application/x-yaml',
+        media_type = 'application/x-yaml',
     )
 
 def yamlinfoerror(code, message, *args, **kwds):
@@ -321,7 +331,7 @@ def yamlinfoerror(code, message, *args, **kwds):
         message=code,
     ))
 
-@app.route('/api/info/<field>/<value>', methods=['GET'])
+@app.get('/api/info/{field}/{value}')
 def getInfoPersonBy(field, value):
     decoded_field = urllib.parse.unquote(value)
     info = CallInfo(erp())
@@ -346,10 +356,9 @@ def getInfoPersonBy(field, value):
     )
     return yamlfy(info=result)
 
-@app.route('/api/info/contractdetails', methods=['POST'])
-def getContractDetails():
-    step(request.data)
-    params = ns.loads(request.data)
+@app.post('/api/info/contractdetails')
+async def getContractDetails(request: Request):
+    params = ns.loads(await request.body())
     info = CallInfo(erp())
     data = info.contractDetails(params.contracts)
     result = ns(
@@ -359,14 +368,11 @@ def getContractDetails():
     return yamlfy(info=result)
 
 
-@app.route('/api/info/ringring', methods=['POST'])
-def callingPhone():
-    postdata = request.form.to_dict()
-    phone = postdata['phone']
-    extension = postdata['ext']
+@app.post('/api/info/ringring')
+def callingPhone(phone: str = Form(...), ext: str = Form(...)):
     time = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 
-    CallRegistry().updateCall(extension, fields=ns(
+    CallRegistry().updateCall(ext, fields=ns(
         data = time,
         telefon = phone,
         motius = "",
@@ -375,16 +381,16 @@ def callingPhone():
     ))
     nNotified = 0
     if hasattr(app, "sessionBackChannel"):
-        nNotified = app.sessionBackChannel.say_incoming_call(extension, phone, time)
+        nNotified = app.sessionBackChannel.say_incoming_call(ext, phone, time)
     result = ns(
         notified=nNotified,
         phone=phone,
-        ext=extension,
+        ext=ext,
     )
     return yamlfy(info=result)
 
 
-@app.route('/api/socketInfo', methods=['GET'])
+@app.get('/api/socketInfo')
 def getConnectionInfo():
     result = ns(
         port_ws=CONFIG.websocket_port,
@@ -393,9 +399,9 @@ def getConnectionInfo():
     return yamlfy(info=result)
 
 
-@app.route('/api/personlog/<ext>', methods=['GET'])
-def getCallLog(ext):
-    calls = CallRegistry().callsByExtension(ext)
+@app.get('/api/personlog/{extension}')
+def getCallLog(extension):
+    calls = CallRegistry().callsByExtension(extension)
     return yamlfy(
         info=ns(
             info=calls,
@@ -403,23 +409,24 @@ def getCallLog(ext):
         )
     )
 
-@app.route('/api/updatelog/<extension>', methods=['POST'])
-def updateCallLog(extension):
-    fields = ns.loads(request.data)
+@app.post('/api/updatelog/{extension}')
+async def updateCallLog(extension, request: Request):
+    body = await request.body()
+    fields = ns.loads(body)
     CallRegistry().updateCall(extension, fields=fields)
     if hasattr(app, "sessionBackChannel"):
         app.sessionBackChannel.say_logcalls_has_changed(extension)
     return yamlfy(info=ns(message='ok'))
 
 
-@app.route('/api/updateClaims', methods=['GET'])
+@app.get('/api/updateClaims')
 def updateClaimTypes():
     message = 'ok'
 
     CallRegistry().importClaimTypes(erp())
     return yamlfy(info=ns(message='ok'))
 
-@app.route('/api/getClaims', methods=['GET'])
+@app.get('/api/getClaims')
 def getClaimTypes():
     message = 'ok'
     claims = CallRegistry().claimTypes()
@@ -447,17 +454,17 @@ def getClaimTypes():
     return yamlfy(info=result)
 
 
-@app.route('/api/atrCase', methods=['POST'])
-def postAtrCase():
+@app.post('/api/atrCase')
+async def postAtrCase(request: Request):
 
-    atc_info = ns.loads(request.data)
+    atc_info = ns.loads(await request.body())
     CallRegistry().annotateClaim(atc_info)
     return yamlfy(info=ns(
         message="ok"
     ))
 
 
-@app.route('/api/getInfos', methods=['GET'])
+@app.get('/api/getInfos')
 def getInfos():
     infos = CallRegistry().infoRequestTypes()
     if not infos:
@@ -469,10 +476,9 @@ def getInfos():
     ))
 
 
-@app.route('/api/infoCase', methods=['POST'])
-def postInfoCase():
-
-    info = ns.loads(request.data)
+@app.post('/api/infoCase')
+async def postInfoCase(request: Request):
+    info = ns.loads(await request.body())
     CallRegistry().annotateInfoRequest(info)
     return yamlfy(info=ns(
         message="ok"
