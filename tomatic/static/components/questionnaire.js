@@ -88,10 +88,10 @@ var postAnnotation = function(annotation) {
   });
 }
 
-var updateCall = function(date, data, contract) {
+var updateCall = function(data) {
     m.request({
         method: 'POST',
-        url: '/api/' + 'updatelog/'+ Login.getMyExt(),
+        url: '/api/updatelog/'+ Login.getMyExt(),
         body: data,
         extract: deyamlize,
     }).then(function(response){
@@ -112,11 +112,11 @@ var saveLogCalls = function(phone, user, claim, contract, partner) {
   var contract_cups = contract!==undefined ? contract.cups : "";
   var isodate = new Date(CallInfo.call.date).toISOString()
   updateCall({
-    data: isodate,
-    telefon: CallInfo.call.phone,
-    partner: partner_code,
-    contracte: contract_number,
-    motius: CallInfo.call.reason,
+    "data": isodate,
+    "telefon": CallInfo.call.phone,
+    "partner": partner_code,
+    "contracte": contract_number,
+    "motius": CallInfo.call.reason,
   })
   if (claim) {
     postClaim({
