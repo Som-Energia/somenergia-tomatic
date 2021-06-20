@@ -402,11 +402,11 @@ async def getContractDetails(request: Request):
 
 @app.get('/api/info/ringring')
 async def callingPhone(phone: str, extension: str):
-    return await notifyIncommingCall(extension, phone)
+    return await notifyIncommingCall(phone, extension)
 
 @app.post('/api/info/ringring')
 async def callingPhonePost(phone: str = Form(...), ext: str = Form(...)):
-    return await notifyIncommingCall(ext, phone)
+    return await notifyIncommingCall(phone, ext)
 
 async def notifyIncommingCall(phone: str, extension: str):
     time = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
