@@ -39,21 +39,16 @@ setup(
         'click',
         'decorator',
         'requests',
-        'future',
         'pathlib2',
         'erppeek',
-        'websocket-server',
         'psutil',
         'pony',
         'emili',
-    ] + ([
-        'Flask<1.1',
-        'jinja2<3.0',
-        'itsdangerous<2',
-    ] if sys.version_info[0] <3 else [
-        'Flask',
+        'fastapi',
+        'python-multipart', # formdata in fastapi
+        'uvicorn[standard]', # server for fastapi (standard for websockets)
+        'aiofiles', # Static files for fastapi
         'hangups',
-    ]) + [
     #],
     #tests_require=[
         'nose',
@@ -63,7 +58,6 @@ setup(
         'lxml',
         'wavefile',
         'erppeek',
-        'websocket-server',
         'ERPPeek-WST',
     ],
     test_suite = 'nose.collector',

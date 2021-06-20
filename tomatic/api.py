@@ -80,7 +80,7 @@ def anow():
 def thisweek():
     return format(now().date() - timedelta(days=now().weekday()))
 
-from .planner_api import api as Planner
+#from .planner_api import api as Planner
 from fastapi.websockets import WebSocket
 
 app = FastAPI()
