@@ -48,11 +48,11 @@ class BackChannel(object):
         del self._users[sessionId]
 
     def notifyIncommingCall(self, user, callerid, time):
-        self.broadCastUserSessions(user, f"PHONE:{callerid}:{time}")
+        return self.broadCastUserSessions(user, f"PHONE:{callerid}:{time}")
 
     def notifyCallLogChanged(self, user):
-        if user is None: return
-        self.broadCastUserSessions(user, f"REFRESH:{user}")
+        if user is None: return []
+        return self.broadCastUserSessions(user, f"REFRESH:{user}")
 
 
 
