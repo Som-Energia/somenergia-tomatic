@@ -79,7 +79,7 @@ var settingsDialog = function() {
         disabled: CallInfo.updatingClaims,
         events: {
           onclick: function() {
-            updateClaims();
+            CallInfo.updateClaims();
           },
         },
       }, m(Ripple)),

@@ -166,7 +166,7 @@ CallInfo.getClaims = function() {
 };
 CallInfo.getClaims();
 
-var updateClaims = function() {
+CallInfo.updateClaims = function() {
   CallInfo.updatingClaims = true;
   m.request({
     method: 'GET',
