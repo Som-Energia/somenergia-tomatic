@@ -48,10 +48,6 @@ def now(date, time):
     is_flag=True,
     help="Prints the url patterns being serverd",
     )
-@click.option('--ring',
-    is_flag=True,
-    help="Listen incommings calls",
-    )
 @click.option('--date', '-d',
     help="Data a simular en comptes d'avui"
     )
@@ -60,9 +56,9 @@ def now(date, time):
     help="Hora del dia a simular en comptes d'ara"
     )
 
-def main(fake, debug, host, port, printrules, ring, date, time, queue):
+def main(fake, debug, host, port, printrules, date, time, queue):
     "Runs the Tomatic web and API"
-    print(fake, debug, host, port, printrules, ring, date, time)
+    print(fake, debug, host, port, printrules, date, time)
     if fake:
         warn("Using fake pbx")
         from tomatic.asteriskfake import AsteriskFake
@@ -87,19 +83,12 @@ def main(fake, debug, host, port, printrules, ring, date, time, queue):
         for rule in app.routes:
             print(rule.path)
 
-    if ring:
-        step("Starting WS thread")
-        app.sessionBackChannel = WebSocketTomaticServer()
-        app.sessionBackChannel.startCallInfoWS(host=host)
     step("Starting API")
     for rule in app.routes:
         step("- {}", rule.path)
     import uvicorn
     uvicorn.run("tomatic.api:app", debug=debug, host=host, port=port, reload=debug)
     step("API stopped")
-    if ring:
-        app.sessionBackChannel.stopCallInfoWS()
-        step("WS thread stopped")
 
 if __name__=='__main__':
     main()
