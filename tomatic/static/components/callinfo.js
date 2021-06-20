@@ -219,17 +219,17 @@ CallInfo.isLogSelected = function(date) {
   return CallInfo.call.date === date;
 }
 CallInfo.selectLog = function(date, phone) {
-  console.log("Selecting", date, phone, CallInfo.call.date);
+  //console.log("Selecting", date, phone, CallInfo.call.date);
   CallInfo.callSelected(date, phone);
 }
 CallInfo.deselectLog = function() {
-  console.log("deselecting", CallInfo.call.date);
+  //console.log("deselecting", CallInfo.call.date);
   CallInfo.clear();
   CallInfo.call.date = "";
   CallInfo.search = "";
 }
 CallInfo.toggleLog = function(date, phone) {
-  console.log("Toggling", date, phone, CallInfo.call.date);
+  //console.log("Toggling", date, phone, CallInfo.call.date);
   if (CallInfo.isLogSelected(date)) {
     CallInfo.deselectLog();
   }
