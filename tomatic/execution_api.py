@@ -1,32 +1,35 @@
 # -*- coding: utf-8 -*-
 
-from future import standard_library
-standard_library.install_aliases()
+from consolemsg import step, warn, u, b
+from pathlib import Path
+from fastapi import(
+    FastAPI,
+    APIRouter,
+    Form,
+    Request,
+    HTTPException,
+)
+from fastapi.responses import (
+    Response,
+    RedirectResponse,
+    HTMLResponse,
+    FileResponse,
+)
 
-from consolemsg import step, warn
-from flask import (
-    Flask,
-    Blueprint,
-    redirect,
-    send_file,
-    )
 from .execution import Execution
 
-api = Blueprint("Background runner", __name__)
+api = APIRouter()
 
-@api.route('/')
-def default():
-    return redirect('/list')
 
-@api.route('/list')
+@api.get('/list', name='thelist', response_class=HTMLResponse)
 def list():
     def executionDescription(executionInfo):
-        killAction = """<a href='/stop/{name}'>Stop</a>""" if execution.state == 'Running' else ''
-        removeAction = """<a href='/remove/{name}'>Remove</a>""" if execution.state == 'Stopped' else ''
+        killAction = """<a href='stop/{name}'>Stop</a>""" if executionInfo.state == 'Running' else ''
+        removeAction = """<a href='remove/{name}'>Remove</a>""" if executionInfo.state == 'Stopped' else ''
         return ("""\
             <tr>
             <td>{startTime}</td>
-            <td><a href='/status/{name}'>{name}</a></td>
+            <td><a href='status/{name}'>{name}</a></td>
             <td>{state}</td>
             <td>
             <td>
@@ -35,8 +38,8 @@ def list():
         """).format(**executionInfo)
 
     return  "\n".join([
-        """<p><a href='/run'>New</a></p>"""
-        """<p><a href='/clear'>Clear</a></p>"""
+        """<p><a href='run'>New</a></p>"""
+        """<p><a href='clear'>Clear</a></p>"""
         """<table width=100%>"""
         """
             <tr>
@@ -53,38 +56,54 @@ def list():
         """</table>"""
     ])
 
-@api.route('/run')
-def run():
-    execution = Execution.start("./execution_example.sh param1 param2".split())
-    return redirect("/list".format(execution))
+def gotoList(request):
+    url = request.url_for('thelist')
+    return RedirectResponse(url, status_code=303)
 
-@api.route('/status/<execution>')
+@api.get('/')
+def default(request: Request):
+    return gotoList(request)
+
+@api.get('/run')
+def run(request: Request):
+    execution = Execution.start([
+        Path("./execution_example.sh").absolute(),
+        "param1",
+        "param2",
+    ])
+    return gotoList(request)
+
+@api.get('/status/{execution}')
 def status(execution):
     executionOutput = Execution(execution).outputFile
-    return send_file(str(executionOutput))
+    return FileResponse(str(executionOutput), media_type='text/plain')
 
-@api.route('/stop/<execution>')
-def stop(execution):
+@api.get('/stop/{execution}')
+def stop(request: Request, execution):
     execution = Execution(execution)
     step("Stopping {0.pid} {0.name}", execution)
     if not execution.stop():
         warn("Process {} not found", execution.pid)
-    return redirect("/list", code=302)
+    return gotoList(request)
 
-@api.route('/remove/<execution>')
-def remove(execution):
+@api.get('/remove/{execution}')
+def remove(request: Request, execution):
     execution = Execution(execution)
     step("Cleaning up {0.name}", execution)
     if not execution.remove():
         warn("Process {} not finished", execution.pid)
-    return redirect("/list", code=302)
+    return gotoList(request)
 
 
 if __name__ == '__main__':
-    app = Flask("Background runner")
-    app.register_blueprint(api)
+    from fastapi import FastAPI
+    import uvicorn
+    app = FastAPI()
+    app.include_router(api, prefix='/test')
+    for route in app.routes:
+        step(route.path)
     Execution.ensureRootExists()
-    app.run()
+    uvicorn.run(app, host='0.0.0.0')
 
 
 # vim: ts=4 sw=4 et

@@ -81,11 +81,11 @@ def anow():
 def thisweek():
     return format(now().date() - timedelta(days=now().weekday()))
 
-#from .planner_api import api as Planner
+from .planner_api import api as Planner
 from fastapi.websockets import WebSocket
 
 app = FastAPI()
-#app.register_blueprint(Planner, url_prefix='/api/planner')
+app.include_router(Planner, prefix='/api/planner')
 
 
 class ApiError(Exception): pass
@@ -181,7 +181,7 @@ async def editSlot(week, day, houri: int, turni: int, name, request: Request):
         oldName,
         name
         ))
-    print(logmsg)
+    step(logmsg)
     graella.setdefault('log',[]).append(logmsg)
     schedules.save(graella)
     schedulestorage.publishStatic(graella)

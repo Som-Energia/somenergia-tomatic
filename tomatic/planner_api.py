@@ -1,18 +1,22 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
-from future import standard_library
-standard_library.install_aliases()
 import datetime
 import decorator
 from consolemsg import step, warn, u, b
-from flask import (
-    Blueprint,
-    redirect,
-    request,
-    send_file,
-    url_for,
-    )
+from fastapi import(
+    FastAPI,
+    APIRouter,
+    Form,
+    Request,
+    HTTPException,
+)
+from fastapi.responses import (
+    Response,
+    RedirectResponse,
+    HTMLResponse,
+    FileResponse,
+)
+
 from .execution import PlannerExecution, nextMonday
 
 def humanDuration(seconds):
@@ -37,7 +41,7 @@ def humanDuration(seconds):
     return "{} seconds".format(seconds)
 
 
-api = Blueprint("planner_execution", __name__)
+api = APIRouter()
 
 @decorator.decorator
 def nocache(f, *args, **kwds):
@@ -48,11 +52,7 @@ def nocache(f, *args, **kwds):
     r.headers['Cache-Control'] = 'public, max-age=0'
     return r
 
-@api.route('/')
-def default():
-    return redirect(url_for('.list'), code=303)
-
-@api.route('/list')
+@api.get('/list', name='thelist', response_class=HTMLResponse)
 def list():
     def executionDescription(info):
         killAction = ("""<a href='kill/{name}'>Kill</a> """
@@ -132,20 +132,32 @@ def list():
         """</table>"""
     ])
 
-@api.route('/run', methods=['POST'])
+def gotoList(request):
+    url = request.url_for('thelist')
+    return RedirectResponse(url, status_code=303)
+
+@api.get('/')
+def default(request: Request):
+    return gotoList(request)
+
+@api.post('/run')
 @nocache
-def run():
-    nlines = request.form.get('nlines')
+def run(
+    request: Request,
+    nlines: int = Form(None),
+    monday: str = Form(''),
+    description: str = Form(''),
+):
     if nlines is not None:
         nlines = int(nlines)
     execution = PlannerExecution.start(
-        monday=request.form.get('monday',''),
-        description=request.form.get('description',''),
+        monday=monday,
+        description=description,
         nlines=nlines,
     )
-    return redirect(url_for('.list'), code=303)
+    return gotoList(request)
 
-@api.route('/status/<execution>')
+@api.get('/status/{execution}', response_class=HTMLResponse)
 def status(execution):
     import deansi
     executionOutput = PlannerExecution(execution).outputFile
@@ -155,50 +167,57 @@ def status(execution):
     )
         
 
-@api.route('/solution/<execution>')
+@api.get('/solution/{execution}', response_class=HTMLResponse)
 @nocache
 def solution(execution):
     solution = PlannerExecution(execution).solutionHtml.resolve()
-    return send_file(solution.open('rb'), mimetype='text/html', cache_timeout=2)
+    if not solution.exists():
+        raise HTTPException(404)
+    return FileResponse( solution, media_type='text/html',
+        #headers=dict(cache_timeout="2"), # Not fully migrated from Flask
+    )
 
-@api.route('/stop/<execution>')
-def stop(execution):
+@api.get('/stop/{execution}')
+def stop(request: Request, execution):
     execution = PlannerExecution(execution)
     step("Stopping {0.pid} {0.name}", execution)
     if not execution.stop():
         warn("Process {} not found", execution.pid)
-    return redirect(url_for('.list'), code=303)
+    return gotoList(request)
 
-@api.route('/kill/<execution>')
-def kill(execution):
+@api.get('/kill/{execution}')
+def kill(request: Request, execution):
     execution = PlannerExecution(execution)
     step("Killing {0.pid} {0.name}", execution)
     if not execution.kill():
         warn("Process {} not found", execution.pid)
-    return redirect(url_for('.list'), code=303)
+    return gotoList(request)
 
-@api.route('/remove/<execution>')
-def remove(execution):
+@api.get('/remove/{execution}')
+def remove(request: Request, execution):
     execution = PlannerExecution(execution)
     step("Cleaning up {0.name}", execution)
     if not execution.remove():
         warn("Process {} not finished", execution.pid)
-    return redirect(url_for('.list'), code=303)
+    return gotoList(request)
 
-@api.route('/upload/<execution>')
-def upload(execution):
+@api.get('/upload/{execution}')
+def upload(request: Request, execution):
     execution = PlannerExecution(execution)
     step("Uploading {0.name}", execution)
     execution.upload('nobody') # TODO: Take ERP user
-    return redirect(url_for('.list'), code=303)
+    return gotoList(request)
 
 
 if __name__ == '__main__':
-    from flask import Flask
-    app = Flask("Background planner runner")
-    app.register_blueprint(api)
+    from fastapi import FastAPI
+    import uvicorn
+    app = FastAPI()
+    app.include_router(api, prefix='/test')
+    for route in app.routes:
+        step(route.path)
     PlannerExecution.ensureRootExists()
-    app.run(host='0.0.0.0', debug=True)
+    uvicorn.run(app, host='0.0.0.0')
 
 
 # vim: ts=4 sw=4 et
