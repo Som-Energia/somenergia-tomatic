@@ -91,7 +91,7 @@ var postAnnotation = function(annotation) {
 var updateCall = function(data) {
     m.request({
         method: 'POST',
-        url: '/api/updatelog/'+ Login.getMyExt(),
+        url: '/api/updatelog/'+ Login.myName(),
         body: data,
         extract: deyamlize,
     }).then(function(response){

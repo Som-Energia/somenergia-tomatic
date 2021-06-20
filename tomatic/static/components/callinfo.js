@@ -42,10 +42,38 @@ CallInfo.clear = function() {
   CallInfo.call.extra = "";
   CallInfo.call.proc = false;
   CallInfo.call.improc = false;
+  CallInfo.currentPerson = 0;
   CallInfo.currentContract = 0;
   CallInfo.savingAnnotation = false;
   CallInfo.file_info = {};
 }
+
+CallInfo.changeUser = function(newUser) {
+  CallInfo.search = "";
+  CallInfo.clear();
+  CallInfo.call.date = "";
+  CallInfo.file_info = {};
+  CallInfo.callLog = [];
+  CallInfo.call.iden = newUser;
+  CallInfo.autoRefresh = true;
+}
+
+CallInfo.callReceived = function(date, phone) {
+  if (!CallInfo.autoRefresh) { return; }
+  CallInfo.callSelected(date,phone)
+}
+
+CallInfo.callSelected = function(date, phone) {
+  CallInfo.clear();
+  CallInfo.call.date = date;
+  CallInfo.call.phone = phone;
+  CallInfo.search = phone;
+  CallInfo.search_by = "phone";
+  CallInfo.file_info = { 1: "empty" };
+  retrieveInfo();
+}
+
+
 
 function formatContractNumber(number) {
   // some contract numbers get converted  to int and lose their padding
@@ -185,17 +213,14 @@ CallInfo.getLogPerson = function () {
   });
 };
 
-if(CallInfo.call.ext !== "" && CallInfo.call.ext !== -1){
-  CallInfo.getLogPerson()
-}
+CallInfo.getLogPerson()
 
 CallInfo.isLogSelected = function(date) {
   return CallInfo.call.date === date;
 }
 CallInfo.selectLog = function(date, phone) {
   console.log("Selecting", date, phone, CallInfo.call.date);
-  CallInfo.call.date = date;
-  CallInfo.refreshCall(phone);
+  CallInfo.callSelected(date, phone);
 }
 CallInfo.deselectLog = function() {
   console.log("deselecting", CallInfo.call.date);
@@ -210,43 +235,6 @@ CallInfo.toggleLog = function(date, phone) {
   }
   else {
     CallInfo.selectLog(date, phone);
-  }
-}
-
-CallInfo.refreshCall = function(phone) {
-  CallInfo.clear();
-  CallInfo.call.phone = phone;
-  CallInfo.search = phone;
-  CallInfo.file_info = { 1: "empty" };
-  CallInfo.currentPerson = 0;
-  CallInfo.search_by = "phone";
-  retrieveInfo();
-}
-
-CallInfo.refreshIden = function(new_me) {
-  if (!CallInfo.autoRefresh && (new_me.iden !== "" || new_me.iden !== -1)) {
-    return 0
-  }
-  CallInfo.search = ""
-  CallInfo.clear()
-  CallInfo.call.date = ""
-  CallInfo.file_info = {}
-  CallInfo.callLog = []
-  CallInfo.call.iden = new_me.iden
-  CallInfo.call.ext = new_me.ext
-  if (CallInfo.call.ext === -1) {
-    CallInfo.autoRefresh = true
-  }
-}
-
-CallInfo.refreshPhone = function(phone, date) {
-  if (CallInfo.autoRefresh) {
-    CallInfo.call.date = date;
-    CallInfo.call.phone = phone;
-    CallInfo.search_by = "phone"
-    CallInfo.search = phone
-    CallInfo.file_info[1] = "empty"
-    retrieveInfo();
   }
 }
 
@@ -292,33 +280,23 @@ var addr = url.href
 var connectWebSocket = function(port) {
     var addr = 'ws://'+window.location.hostname+':'+port+'/';
     websock = new WebSocket(addr);
-    websock.onopen = CallInfo.sendIdentification;
     websock.onmessage = CallInfo.onMessageReceived;
+    websock.onopen = CallInfo.sendIdentification;
 }
 
 CallInfo.sendIdentification = function() {
-    var message = "IDEN:"+Login.getMyExt()+":"+Login.myName()+":";
+    var message = "IDEN:"+Login.myName()+":";
     websock.send(message);
 }
 
 CallInfo.onMessageReceived = function(event) {
+    console.log("WS:", event.data);
     var message = event.data.split(":");
     var type_of_message = message[0];
-    if (type_of_message === "IDEN") {
-        var iden = message[1];
-        var ext = Login.currentExtension();
-        var info = {
-            iden: iden,
-            ext: ext,
-        }
-        CallInfo.refreshIden(info);
-        CallInfo.getLogPerson();
-        return;
-    }
     if (type_of_message === "PHONE") {
         var phone = message[1];
         var date = message[2]+":"+message[3]+":"+message[4];
-        CallInfo.refreshPhone(phone, date);
+        CallInfo.callReceived(date, phone);
         CallInfo.getLogPerson();
         return;
     }
@@ -332,8 +310,9 @@ CallInfo.onMessageReceived = function(event) {
 Login.onLogin.push(CallInfo.sendIdentification);
 Login.onLogin.push(CallInfo.getLogPerson);
 Login.onLogout.push(CallInfo.sendIdentification);
-Login.onLogout.push(CallInfo.refreshIden);
 Login.onLogout.push(CallInfo.getLogPerson);
+Login.onUserChanged.push(CallInfo.changeUser);
+Login.onUserChanged.push(CallInfo.getLogPerson);
 
 return CallInfo;
 

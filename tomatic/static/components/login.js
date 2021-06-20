@@ -16,13 +16,34 @@ var Tomatic = require('./tomatic');
 var Login = {};
 var tomaticCookie = "tomaticCookie"
 
+var previousLogin = null; // To detect login changes
+
+
+Login.loginWatchTimer = 0;
+Login.watchLoginChanges = function() {
+	clearTimeout(Login.loginWatchTimer);
+    var cookie = whoAreYou();
+    var user = cookie.split(":")[0];
+	if (user !== previousLogin) {
+		console.log("Detected login change",previousLogin,"->",user);
+		previousLogin = user;
+		Login.onUserChanged.map(function(callback) {
+			callback();
+		})
+		m.redraw();
+	}
+	Login.loginWatchTimer = setTimeout(
+		Login.watchLoginChanges, 500);
+}
+
 Login.myName = function() {
-    info = whoAreYou();
-    aux = info.split(":");
-    return aux[0];
+    var cookie = whoAreYou();
+    var user = cookie.split(":")[0];
+    return user;
 }
 Login.onLogout = [];
 Login.onLogin = [];
+Login.onUserChanged = [];
 
 Login.logout = function(){
     document.cookie = tomaticCookie + "=; expires = Thu, 01 Jan 1970 00:00:00 GMT;SameSite=Strict;path=/"
@@ -178,7 +199,7 @@ Login.identification = function() {
     ]);
 }
 
-
+Login.watchLoginChanges();
 
 return Login;
 

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Migrated to FastAPI. Fixes using different port for websocket.
 - Loading shallow contract data first to speed up response
 - Search by contract number
 - Rich annotation context (partner name, contract address...)
@@ -11,6 +12,7 @@
 - Annotation dialog: wider layout
 - Annotation dialog: show context, which call, which contract/partner
 - Fix: Zero energy invoices now are shown as 0 not blank
+- Fix: Better detection changing users on other tabs
 - Implementation changes
   - Callinfo model and view split so that subviews can acces common state directly
 

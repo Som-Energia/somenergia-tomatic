@@ -9,15 +9,18 @@
 - [x] Search by contract -> persones vinculades -> contractes vinculats
 - [x] Annotate: Context with person name and addresses
 - [x] erp connection pool
+- [x] Detecting user changed by other tab or cookie timeout
 - [ ] Change websocket lib to enable sharing http port and debug mode
-- [ ] Intercept connection errors and behave
-- [ ] Multithreaded ooop
+    - [ ] Fast api spike
+        - [x] Migrate main api
+        - [x] Migrate sockets
+        - [ ] Migrate planner api
+- [ ] Intercept backend connection errors and behave
 - [ ] Call Info: Report diferently, search cleared from no search found
 - [ ] Contract info: Add owner NIF
 - [ ] Contract info: Add provincia field
 - [ ] Contract info: Add Contract modifications
 - [ ] Contract info: Contract aministrator role
-- [ ] Call Registry: shorter on small screens
-- [ ] Call Registry: Codi titular -> Persona atesa
-- [ ] Detecting user changed by other tab or cookie timeout
-
+- [ ] Call Registry: shorter and wider on small screens
+- [x] Call Registry: Codi titular -> Persona atesa
+- [ ] Google login

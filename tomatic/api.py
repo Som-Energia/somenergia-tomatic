@@ -5,12 +5,13 @@ from fastapi import (
     Request,
     Form,
     WebSocket,
+    WebSocketDisconnect,
 )
 from fastapi.responses import (
     FileResponse,
     Response,
 )
-
+import asyncio
 from datetime import datetime, timedelta, timezone
 import urllib.parse
 import decorator
@@ -108,10 +109,80 @@ def yamlerrors(f,*args,**kwd):
             )
     except Exception as e:
         error("UnexpectedError: {}", e)
+        import traceback
+        error(''.join(traceback.format_exc()))
         return yamlfy(
             error=format(e),
             status=500,
             )
+
+class BackChannel(object):
+
+    def __init__(self):
+        self._sessions = {}
+        self._users = {}
+        self._senders = {}
+
+    def addSession(self, sessionId, session, sender):
+        step("WS {} addSession", sessionId)
+        self._sessions[sessionId] = session
+        self._senders[sessionId] = sender
+        self._users[sessionId] = None
+
+    def receiveMessage(self, sessionId, message):
+        step("WS {} receiveMessage {}", sessionId, message)
+        args = message.split(":")
+        type_of_message = args[0]
+        if type_of_message == "IDEN":
+            user = args[1]
+            self.onLoggedIn(sessionId, user)
+        else:
+            error("Type of message not recognized.")
+
+    def onLoggedIn(self, sessionId, user):
+        step("WS {} onLoggedIn {}",sessionId, user)
+        olduser = self._users.get(sessionId)
+        self._users[sessionId] = user
+
+    def onDisconnect(self, sessionId):
+        del self._sessions[sessionId]
+        del self._senders[sessionId]
+        del self._users[sessionId]
+
+    def notifyIncommingCall(self, user, callerid, time):
+        return [
+            self._senders[sessionId](f"PHONE:{callerid}:{time}")
+            for sessionId, sessionuser in self._users.items()
+            if user == sessionuser
+        ]
+
+    def notifyCallLogChanged(self, user):
+        if user is None: return
+        return [
+            self._senders[sessionId](f"REFRESH:whatever")
+            for sessionId, sessionuser in self._users.items()
+            if user == sessionuser
+        ]
+
+
+backchannel = BackChannel()
+
+@app.websocket('/')
+async def websocketSession(websocket: WebSocket):
+    await websocket.accept()
+    session_id = str(websocket.client)
+    def sender(message):
+        step("WS {} send: {}", session_id, message)
+        return websocket.send_text(message)
+
+    backchannel.addSession(session_id, websocket, sender)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            backchannel.receiveMessage(session_id, data)
+    except WebSocketDisconnect:
+        backchannel.onDisconnect(session_id)
+
 
 
 @app.get('/favicon.ico')
@@ -126,7 +197,6 @@ def tomatic(file=None):
 @app.get('/api/graella/list')
 @yamlerrors
 def listGraelles():
-    step("runing listGraelles")
     return yamlfy(weeks=schedules.list())
 
 @app.get('/api/graella-{week}.yaml')
@@ -292,7 +362,6 @@ def downloadWeeklyBusy():
         as_attachment=True,
         media_type='text/plain',
     )
-    print("response {}".format(response))
     return response
 
 @app.get('/api/busy/download/oneshot')
@@ -380,9 +449,10 @@ async def getContractDetails(request: Request):
 
 
 @app.post('/api/info/ringring')
-def callingPhone(phone: str = Form(...), ext: str = Form(...)):
+async def callingPhone(phone: str = Form(...), ext: str = Form(...)):
     time = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 
+    user = persons.byExtension(ext)
     CallRegistry().updateCall(ext, fields=ns(
         data = time,
         telefon = phone,
@@ -390,15 +460,10 @@ def callingPhone(phone: str = Form(...), ext: str = Form(...)):
         partner = "",
         contracte = "",
     ))
-    nNotified = 0
-    if hasattr(app, "sessionBackChannel"):
-        nNotified = app.sessionBackChannel.say_incoming_call(ext, phone, time)
-    result = ns(
-        notified=nNotified,
-        phone=phone,
-        ext=ext,
+    await asyncio.gather(
+        *backchannel.notifyIncommingCall(user, phone, time)
     )
-    return yamlfy(info=result)
+    return yamlfy(result='ok')
 
 
 @app.get('/api/socketInfo')
@@ -420,13 +485,15 @@ def getCallLog(extension):
         )
     )
 
-@app.post('/api/updatelog/{extension}')
-async def updateCallLog(extension, request: Request):
+@app.post('/api/updatelog/{user}')
+async def updateCallLog(user, request: Request):
     body = await request.body()
     fields = ns.loads(body)
+    extension = persons.extension(user)
     CallRegistry().updateCall(extension, fields=fields)
-    if hasattr(app, "sessionBackChannel"):
-        app.sessionBackChannel.say_logcalls_has_changed(extension)
+    await asyncio.gather(
+        *backchannel.notifyCallLogChanged(user)
+    )
     return yamlfy(info=ns(message='ok'))
 
 
