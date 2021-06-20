@@ -8,6 +8,7 @@
 - [x] Annotate: Dissable button if logged out
 - [x] Search by contract -> persones vinculades -> contractes vinculats
 - [x] Annotate: Context with person name and addresses
+- [x] erp connection pool
 - [ ] Change websocket lib to enable sharing http port and debug mode
 - [ ] Intercept connection errors and behave
 - [ ] Multithreaded ooop

@@ -41,14 +41,23 @@ def fillConfigurationInfo():
     return ns.load('config.yaml')
 CONFIG = fillConfigurationInfo()
 
-
+from contextlib import contextmanager
+@contextmanager
 def erp():
-    # TODO: Further checks, is the connection still alive?
-    if hasattr(erp,'client'):
-        return erp.client
-    erp.client = erppeek.Client(**dbconfig.erppeek)
-    return erp.client
-erp() # Comment this out to connect the erp lazily
+    if not hasattr(erp,'clients'):
+        erp.clients = []
+        erp.available = []
+    if not erp.available:
+        newclient = erppeek.Client(**dbconfig.erppeek)
+        erp.clients.append(newclient)
+        erp.available.append(newclient)
+    client = erp.available.pop()
+    try:
+        yield client
+    finally:
+        erp.available.append(client)
+
+
 
 
 def pbx(alternative = None, queue=None):
@@ -334,16 +343,16 @@ def yamlinfoerror(code, message, *args, **kwds):
 @app.get('/api/info/{field}/{value}')
 def getInfoPersonBy(field, value):
     decoded_field = urllib.parse.unquote(value)
-    info = CallInfo(erp())
     data = None
-    try:
-        data = info.getByField(field, decoded_field, shallow=True)
-        if data is None:
-            return 404
-    except ValueError:
-        return yamlinfoerror('error_getBy'+field.title(),
-            "Getting information searching {}='{}'.", field, value)
-
+    with erp() as O:
+        callinfo = CallInfo(O)
+        try:
+            data = callinfo.getByField(field, decoded_field, shallow=True)
+        except ValueError:
+            return yamlinfoerror('error_getBy'+field.title(),
+                "Getting information searching {}='{}'.", field, value)
+    if data is None:
+        return 404
     message = 'ok'
     if not data.partners:
         message = 'no_info'
@@ -359,8 +368,10 @@ def getInfoPersonBy(field, value):
 @app.post('/api/info/contractdetails')
 async def getContractDetails(request: Request):
     params = ns.loads(await request.body())
-    info = CallInfo(erp())
-    data = info.contractDetails(params.contracts)
+    with erp() as O:
+        info = CallInfo(O)
+        data = info.contractDetails(params.contracts)
+
     result = ns(
         info=data,
         message='ok',
@@ -422,8 +433,8 @@ async def updateCallLog(extension, request: Request):
 @app.get('/api/updateClaims')
 def updateClaimTypes():
     message = 'ok'
-
-    CallRegistry().importClaimTypes(erp())
+    with erp() as O:
+        CallRegistry().importClaimTypes(O)
     return yamlfy(info=ns(message='ok'))
 
 @app.get('/api/getClaims')
