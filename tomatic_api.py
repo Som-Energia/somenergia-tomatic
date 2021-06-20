@@ -4,9 +4,7 @@
 from __future__ import print_function
 import click
 from consolemsg import warn, step
-from tomatic.tomatic_websockets import WebSocketTomaticServer
 from tomatic.api import app, pbx, schedules
-from tomatic.pbxqueue import PbxQueue
 from tomatic import __version__
 
 def now(date, time):
