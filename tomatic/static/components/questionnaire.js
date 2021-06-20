@@ -110,7 +110,7 @@ var saveLogCalls = function(phone, user, claim, contract, partner) {
   var partner_code = partner!==undefined ? partner.id_soci : "";
   var contract_number = contract!==undefined ? contract.number : "";
   var contract_cups = contract!==undefined ? contract.cups : "";
-  var isodate = new Date(CallInfo.call.date).toISOString()
+  var isodate = CallInfo.call.date || new Date().toISOString()
   updateCall({
     "data": isodate,
     "telefon": CallInfo.call.phone,
