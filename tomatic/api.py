@@ -99,6 +99,25 @@ def yamlfy(status=200, data=[], **kwd):
         media_type = 'application/x-yaml',
     )
 
+@decorator.decorator
+async def ayamlerrors(f,*args,**kwd):
+    try:
+        return await f(*args,**kwd)
+    except ApiError as e:
+        error("ApiError: {}", e)
+        return yamlfy(
+            error=format(e),
+            status=400,
+            )
+    except Exception as e:
+        error("UnexpectedError: {}", e)
+        import traceback
+        error(''.join(traceback.format_exc()))
+        return yamlfy(
+            error=format(e),
+            status=500,
+            )
+
 
 @decorator.decorator
 def yamlerrors(f,*args,**kwd):
@@ -162,9 +181,10 @@ def graellaYaml(week):
     return yamlfy(**schedule)
 
 @app.patch('/api/graella/{week}/{day}/{houri}/{turni}/{name}')
-@yamlerrors
+@ayamlerrors
 async def editSlot(week, day, houri: int, turni: int, name, request: Request):
-    user = await request.body().split('"')[1]
+    # TODO: This should be some kind of auth
+    user = (await request.body()).decode('utf8').split('"')[1]
     graella = schedules.load(week)
     # TODO: Ensure day, houri, turni and name are in graella
     oldName = graella.timetable[day][int(houri)][int(turni)]
@@ -281,7 +301,7 @@ def personInfo():
     return yamlfy(persons=result)
 
 @app.post('/api/person/{person}')
-@yamlerrors
+@ayamlerrors
 async def setPersonInfo(person, request: Request):
     data = ns.loads(await request.body())
     persons.update(person, data)
@@ -294,7 +314,7 @@ def busy(person):
     return yamlfy(**busy.busy(person))
 
 @app.post('/api/busy/{person}')
-@yamlerrors
+@ayamlerrors
 async def busy_post(person, request: Request):
     from . import busy
     data = ns.loads(await request.body())
