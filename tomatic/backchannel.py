@@ -33,7 +33,7 @@ class BackChannel(object):
         return [
             self._senders[sessionId](message)
             for sessionId, sessionuser in self._users.items()
-            if user == sessionuser
+            if sessionuser == user
         ]
 
     def login(self, sessionId, user):
