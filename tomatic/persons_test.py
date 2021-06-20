@@ -3,6 +3,11 @@ from . import persons
 from pathlib2 import Path
 from yamlns import namespace as ns
 
+def safeRemove(filename):
+    f = Path(filename)
+    if f.exists():
+        f.unlink()
+
 class Persons_Test(unittest.TestCase):
 
     from yamlns.testutils import assertNsEqual
@@ -13,8 +18,8 @@ class Persons_Test(unittest.TestCase):
 
     def tearDown(self):
         persons.persons(False)
-        Path('p.yaml').unlink(missing_ok=True)
-        Path('p2.yaml').unlink(missing_ok=True)
+        safeRemove('p.yaml')
+        safeRemove('p2.yaml')
 
     def test_persons_explicitPath(self):
         Path('p.yaml').write_text(u"hola: tu")
