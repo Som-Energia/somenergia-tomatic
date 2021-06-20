@@ -448,21 +448,30 @@ async def getContractDetails(request: Request):
     return yamlfy(info=result)
 
 
-@app.post('/api/info/ringring')
-async def callingPhone(phone: str = Form(...), ext: str = Form(...)):
-    time = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+@app.get('/api/info/ringring')
+async def callingPhone(phone: str, extension: str):
+    return await notifyIncommingCall(extension, phone)
 
-    user = persons.byExtension(ext)
-    CallRegistry().updateCall(ext, fields=ns(
+@app.post('/api/info/ringring')
+async def callingPhonePost(phone: str = Form(...), ext: str = Form(...)):
+    return await notifyIncommingCall(ext, phone)
+
+async def notifyIncommingCall(phone: str, extension: str):
+    time = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+    user = persons.byExtension(extension)
+    CallRegistry().updateCall(extension, fields=ns(
         data = time,
         telefon = phone,
         motius = "",
         partner = "",
         contracte = "",
     ))
-    await asyncio.gather(
-        *backchannel.notifyIncommingCall(user, phone, time)
-    )
+    notifications = backchannel.notifyIncommingCall(user, phone, time)
+    if not notifications:
+        warn(
+            f"No sesion on extension {extension} "
+            f"to notify incomming call from {phone} at {time}")
+    await asyncio.gather(*notifications)
     return yamlfy(result='ok')
 
 
