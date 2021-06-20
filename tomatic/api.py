@@ -6,6 +6,8 @@ from fastapi import (
     Form,
     WebSocket,
     WebSocketDisconnect,
+    File,
+    UploadFile,
 )
 from fastapi.responses import (
     FileResponse,
@@ -190,17 +192,9 @@ async def editSlot(week, day, houri: int, turni: int, name, request: Request):
 
 @app.post('/api/graella')
 @yamlerrors
-def uploadGraella(week=None):
-    step("uploading {}".format(request.files))
-    if 'yaml' not in request.files:
-        error("Cap graella pujada")
-        return "KO"
-    yaml = request.files['yaml']
-    if yaml.content_length > 30:
-        warn("Pujat yaml sospitosament llarg: {} bytes"
-            .format(yaml.content_length))
-        return "KO"
-    graella = ns.load(yaml.stream)
+def uploadGraella(yaml: UploadFile = File(...), week=None):
+    step("uploading {}".format(yaml.filename))
+    graella = ns.load(yaml.file)
     logmsg = (
         "{}: {} ha pujat {} ".format(
         datetime.now(),
