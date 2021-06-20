@@ -95,7 +95,7 @@ def main(fake, debug, host, port, printrules, ring, date, time, queue):
     for rule in app.routes:
         step("- {}", rule.path)
     import uvicorn
-    uvicorn.run(app, debug=debug, host=host, port=port)
+    uvicorn.run("tomatic.api:app", debug=debug, host=host, port=port, reload=debug)
     step("API stopped")
     if ring:
         app.sessionBackChannel.stopCallInfoWS()
