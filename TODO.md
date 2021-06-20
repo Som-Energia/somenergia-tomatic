@@ -24,3 +24,5 @@
 - [ ] Call Registry: shorter and wider on small screens
 - [x] Call Registry: Codi titular -> Persona atesa
 - [ ] Google login
+- [ ] API tests in fastapi
+- [ ] Fix: annotations save date with miliseconds and duplicates existing entries

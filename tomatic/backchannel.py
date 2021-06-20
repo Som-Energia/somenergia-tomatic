@@ -1,6 +1,9 @@
 from consolemsg import step
 
 class BackChannel(object):
+    """
+    Encapsulates server initiated communications (websockets)
+    """
 
     def __init__(self):
         self._sessions = {}
@@ -19,34 +22,37 @@ class BackChannel(object):
         type_of_message = args[0]
         if type_of_message == "IDEN":
             user = args[1]
-            self.onLoggedIn(sessionId, user)
+            self.login(sessionId, user)
         else:
             error("Type of message not recognized.")
 
-    def onLoggedIn(self, sessionId, user):
-        step("WS {} onLoggedIn {}",sessionId, user)
+    def broadCastUserSessions(self, user, message):
+        """
+        Sends the same message to all sessions of the same user.
+        """
+        return [
+            self._senders[sessionId](message)
+            for sessionId, sessionuser in self._users.items()
+            if user == sessionuser
+        ]
+
+    def login(self, sessionId, user):
         olduser = self._users.get(sessionId)
+        step("WS {} login {} was {}", sessionId, user, olduser)
         self._users[sessionId] = user
 
     def onDisconnect(self, sessionId):
+        step("WS {} disconnect {}", sessionId, self._users.get(sessionId))
         del self._sessions[sessionId]
         del self._senders[sessionId]
         del self._users[sessionId]
 
     def notifyIncommingCall(self, user, callerid, time):
-        return [
-            self._senders[sessionId](f"PHONE:{callerid}:{time}")
-            for sessionId, sessionuser in self._users.items()
-            if user == sessionuser
-        ]
+        self.broadCastUserSessions(user, f"PHONE:{callerid}:{time}")
 
     def notifyCallLogChanged(self, user):
         if user is None: return
-        return [
-            self._senders[sessionId](f"REFRESH:whatever")
-            for sessionId, sessionuser in self._users.items()
-            if user == sessionuser
-        ]
+        self.broadCastUserSessions(user, f"REFRESH:{user}")
 
 
 
