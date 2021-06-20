@@ -328,7 +328,7 @@ def personInfoFromExtension(extension):
     email = allpersons.emails[name]
     return email
 
-@app.get('/api/persons/')
+@app.get('/api/persons')
 @yamlerrors
 def personInfo():
     result=persons.persons()
