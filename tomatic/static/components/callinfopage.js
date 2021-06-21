@@ -55,14 +55,20 @@ var typeOfSearch = function() {
       },
     },
     [
-      m("option", {"value":"phone"}, "Telèfon"),
-      m("option", {"value":"name"}, "Cognoms/Nom"),
-      m("option", {"value":"nif"}, "NIF"),
-      m("option", {"value":"soci"}, "Número Soci"),
-      m("option", {"value":"email"}, "Email"),
-      m("option", {"value":"contract"}, "Contracte"),
-      m("option", {"value":"all"}, "Tot")
-    ]
+      ["phone", "Telèfon"],
+      ["name", "Cognoms/Nom"],
+      ["nif", "NIF"],
+      ["soci", "Número Soci"],
+      ["email", "Email"],
+      ["contract", "Contracte"],
+      ["all", "Tot"],
+    ].map( ([name,text])=>{
+      return m("option", {
+        value: name,
+        selected: CallInfo.search_by === name,
+      }, text)
+
+    })
   );
 }
 
