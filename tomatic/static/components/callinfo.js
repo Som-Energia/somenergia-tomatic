@@ -254,7 +254,7 @@ CallInfo.searchCustomer = function() {
 
 
 var connectWebSocket = function() {
-    var url = new URL('/', window.location.href);
+    var url = new URL('/backchannel', window.location.href);
     url.protocol = url.protocol.replace('http', 'ws');
     console.log("Connecting WS",url.href)
     websock = new WebSocket(url.href);

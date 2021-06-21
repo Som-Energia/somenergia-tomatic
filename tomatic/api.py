@@ -140,7 +140,7 @@ def yamlerrors(f,*args,**kwd):
 
 backchannel = BackChannel()
 
-@app.websocket('/')
+@app.websocket('/backchannel')
 async def websocketSession(websocket: WebSocket):
     await websocket.accept()
     session_id = str(websocket.client)
