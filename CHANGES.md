@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Removing Spain prefix from callerids as the partner sends them
+- Websocket connection moved from / to /backchannel
+- Timetable changelog fully displayed
+- Fix: callinfo: empty contracts returned as 'polisses'
+
 ## 4.0.0 2021-06-21
 
 - Migrated to FastAPI. Fixes using different port for websocket.
