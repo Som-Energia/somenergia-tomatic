@@ -46,6 +46,7 @@ body
       .logs
           display: inline-block
           background-color: #EEEEEE
+          color: black
           width: 490px
           height: 290px
           overflow: auto
@@ -54,6 +55,7 @@ body
 
       .attended-calls-list
           background-color: #EEEEEE
+          color: black
           height: calc(100vh - 215px)
           overflow-y: auto
           .time
@@ -72,7 +74,10 @@ body
           .registres.selected
               background: #cdcdff
           .registres.dateseparator
-              background: #e2e8e2
+              .pe-list-tile__title
+                  background: #e2e5e2
+                  color: #888
+                  text-align: center
 
       .busca-info
           margin: 10px
