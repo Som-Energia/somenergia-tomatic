@@ -189,6 +189,11 @@ const menuOptions = () => { return [{
 		location.href = "/api/planner/";
 	},
 },{
+	title: "Estadístiques de trucades",
+	action: () => {
+		location.href = "http://tomatic.somenergia.lan:5000/runner/statshistory";
+	},
+},{
 	title: "En Tomàtic diu...",
 	action: () => {
 		location.href = "http://tomatic.somenergia.lan:5000/runner/says";
