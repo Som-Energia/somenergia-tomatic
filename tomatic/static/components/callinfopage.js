@@ -288,7 +288,7 @@ CallInfoPage.view = function() {
           customerSearch(),
           m('.plane-info',
             isEmpty(CallInfo.file_info)?
-              m(".searching", 'No hi ha informació.',
+              m(".searching", 'No s\'ha trobat cap resultat.',
                 Questionnaire.annotationButton()
               ):(
             CallInfo.file_info[1] === "empty"?
