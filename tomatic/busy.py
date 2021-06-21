@@ -3,7 +3,7 @@
 
 import datetime
 from yamlns import namespace as ns
-from consolemsg import warn, out, u
+from consolemsg import warn, out, error, u
 from pathlib import Path
 
 def open(*args, **kwd):
@@ -191,7 +191,8 @@ def update_busy(person, data):
 			with open(filename,'w') as f:
 				f.write(output[attribute])
 	except Exception as e:
-		out("{} {}", e, entry)
+		import traceback
+		error("{}\n{}", e, traceback.format_exc())
 		return ns(
 			result='error',
 			message=format(e),
