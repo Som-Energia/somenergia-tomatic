@@ -99,7 +99,7 @@ var contractFields = function(contract, partner) {
   ]);
 }
 
-ContractInfo.extraView = function(info) {
+ContractInfo.detailsPanel = function(info) {
   var partner = info.partners[CallInfo.currentPerson]
   if (
     partner === undefined ||
@@ -297,7 +297,7 @@ var contractCard = function(partner) {
 }
 
 
-ContractInfo.view = function(info) {
+ContractInfo.mainPanel = function(info) {
   var partner = info.partners[CallInfo.currentPerson]
   if (partner.contracts == undefined) {
     return m(".contracts", [m(".no-info", "No hi ha contractes.")]);

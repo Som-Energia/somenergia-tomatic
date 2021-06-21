@@ -300,11 +300,11 @@ CallInfoPage.view = function() {
               m('.plane-info', [
                 m(".layout.vertical.flex", [
                   PartnerInfo.allInfo(CallInfo.file_info),
-                  ContractInfo.view(
+                  ContractInfo.mainPanel(
                     CallInfo.file_info,
                   ),
                 ]),
-                ContractInfo.extraView(
+                ContractInfo.detailsPanel(
                   CallInfo.file_info,
                 ),
               ])
