@@ -1,11 +1,14 @@
 # Changelog
 
-## Unreleased
+## 4.0.1 2021-06-21
 
 - Removing Spain prefix from callerids as the partner sends them
 - Websocket connection moved from / to /backchannel
 - Timetable changelog fully displayed
 - Fix: callinfo: empty contracts returned as 'polisses'
+- Fix: search field select changes when programmatically changes
+- Fix: better behaviour and information on missing stuff
+  (contracts, readings, invoices...)
 
 ## 4.0.0 2021-06-21
 
