@@ -7,7 +7,11 @@ var Snackbar = require('polythene-mithril-snackbar').Snackbar;
 var Button = require('polythene-mithril-button').Button;
 var Dialog = require('polythene-mithril-dialog').Dialog;
 var Card = require('polythene-mithril-card').Card;
-//var HeaderPanel = require('polythene-mithril-header-panel');
+var ListTile = require('polythene-mithril-list-tile').ListTile;
+var List = require('polythene-mithril-list').List;
+var Shadow = require('polythene-mithril-shadow').Shadow;
+var Menu = require('polythene-mithril-menu').Menu;
+var Ripple = require('polythene-mithril-ripple').Ripple;
 var IconButton = require('polythene-mithril-icon-button').IconButton;
 var Tabs = require('polythene-mithril-tabs').Tabs;
 var Textfield = require('polythene-mithril-textfield').TextField;
@@ -173,25 +177,110 @@ var WeekList = {
 		}));
 	}
 };
-const ButtonIcon = function(msvg) {
-	return m(IconButton, {
-		icon: {
-			svg: msvg
-		},
-		class: 'colored',
-		ink: true,
-		wash: true,
+
+const menuOptions = () => { return [{
+	title: "Genera càrregues setmanals",
+	action: () => {
+		location.href = "http://tomatic.somenergia.lan:5000/runner/carregues";
+	},
+},{
+	title: "Planificador de Graelles",
+	action: () => {
+		location.href = "/api/planner/";
+	},
+},{
+	title: "En Tomàtic diu...",
+	action: () => {
+		location.href = "http://tomatic.somenergia.lan:5000/runner/says";
+	},
+},{
+	title: "Reomple el torn que toca a la cua",
+	action: () => {
+		location.href = "http://tomatic.somenergia.lan:5000/runner/reloadqueue";
+	},
+},{
+	title: "Altres scripts de Centraleta",
+	action: () => {
+		location.href = "http://tomatic.somenergia.lan:5000/";
+	},
+}]};
+
+const toolbarRow = function(title) {
+	return m('.pe-dark-tone.pe-toolbar.flex.layout',[
+		m(MenuButton, {
+			icon: iconMenu,
+			origin: 'top-left',
+		}),
+		m('.flex', title),
+		Login.identification(),
+		m(MenuButton, {
+			id: 'right-menu',
+			icon: iconMore,
+			origin: 'top-right',
+			options: menuOptions(),
+		}),
+	]);
+}
+
+
+
+const MenuContent = (options) => {
+	return m(List, {
+		compact: true,
+		tiles: options.map((item) => {
+			return m(ListTile, {
+				title: item.title,
+				ink: true,
+				hoverable: true,
+				className: 'colored',
+				disabled: item.disabled,
+				events: {
+					onclick: item.action,
+				},
+			});
+		}),
 	});
 };
 
-const toolbarRow = function(title) {
-	return m('.pe-toolbar.flex.layout',[
-		ButtonIcon(iconMenu),
-		m('.flex', title),
-		Login.identification(),
-        ButtonIcon(iconMore)
-	]);
-}
+const MenuButton = {
+	oninit: (vnode) => {
+		vnode.state.shown = false;
+		vnode.attrs.id = vnode.attrs.id || 'the_menu'
+	},
+	view: (vnode) => {
+		var attrs = vnode.attrs;
+		return m("", {
+			style: {
+				position: 'relative',
+			}
+		},[
+			m(Shadow),
+			m(Menu, {
+				target: `#${attrs.id}`,
+				origin: attrs.origin || false,
+				size: 5,
+				offset: 30,
+				show: vnode.state.shown,
+				didHide: () => ( vnode.state.shown = false ),
+				content: MenuContent(attrs.options || []),
+			}),
+			m(IconButton, {
+				icon: {
+					svg: attrs.icon || iconMore
+				},
+				className: 'colored',
+				id: attrs.id,
+				events: {
+					onclick: (ev) => {
+						vnode.state.shown = true;
+					},
+				},
+			}),
+		])
+	},
+
+};
+
 
 var editPerson = function(name) {
 	var taulaLabel = function(n) {
