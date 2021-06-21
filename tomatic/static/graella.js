@@ -629,7 +629,7 @@ var Changelog = function(grid) {
 		m('h5', 'Darrers canvis'),
 		m('ul.changelog', [
 			grid.log?[]: m('li', 'Cap canvi registrat'),
-			(grid.log || []).slice(-5).reverse().map(function(change) {
+			(grid.log || []).slice(0,-1).reverse().map(function(change) {
 				return m('li',change);
 			}),
 			(grid.log || []).length > 5 ?  m('li', m.trust("&hellip;")) : [],
