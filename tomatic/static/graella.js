@@ -40,6 +40,8 @@ var getCookie = require('./components/utils').getCookie;
 css.addLayoutStyles();
 css.addTypography();
 
+var kumato=false; // Dark interface
+
 var Todo = function(message) {
 	return m(Card, {
 		content: [{
@@ -178,10 +180,11 @@ var WeekList = {
 	}
 };
 
+const scriptLauncherBase = 'http://tomatic.somenergia.lan:5000';
 const menuOptions = () => { return [{
 	title: "Genera càrregues setmanals",
 	action: () => {
-		location.href = "http://tomatic.somenergia.lan:5000/runner/carregues";
+		location.href = scriptLauncherBase + "/runner/carregues";
 	},
 },{
 	title: "Planificador de Graelles",
@@ -207,6 +210,11 @@ const menuOptions = () => { return [{
 	title: "Altres scripts de Centraleta",
 	action: () => {
 		location.href = "http://tomatic.somenergia.lan:5000/";
+	},
+},{
+	title: "Kumato mode",
+	action: () => {
+		kumato = ! kumato;
 	},
 }]};
 
@@ -791,7 +799,7 @@ TomaticApp.view = function() {
 	console.log("Page: ", m.route.get());
     var currentTabIndex = indexForRoute(m.route.get());
     var current = m(pages[tabs[currentTabIndex].label]);
-    return m('',[
+    return m(kumato?'.pe-dark-tone':'',[
         PersonStyles(),
         m(Page, {content:current}),
     ]);

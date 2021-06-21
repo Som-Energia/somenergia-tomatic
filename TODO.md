@@ -28,3 +28,4 @@
 - [ ] Google login
 - [ ] API tests in fastapi
 - [ ] Accept fragile erp tests
+- [ ] Fix: Color picker does not pick initial color
