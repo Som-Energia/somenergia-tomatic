@@ -21,7 +21,11 @@ tomatic:
       # --weekshifts {load} 
       title: Graelles - Generació de càrregues setmanals
       description: >
-        Resum de les trucades rebudes del dia.
+        El primer pas abans de generar les graelles es generar les càrregues.
+        Determina quants torns haurà de fer cada persona per cobrir torns,
+        tenint en compte, per cada persona, la seva càrrega ideal,
+        la seva disponibilitat (vacances, festius, indisponibilitats...)
+        i sobrecàrregues o alliberaments d'anteriors setmanes.
       parameters:
         monday:
           description: Dilluns de la setmana, en format AAAA-MM-DD
