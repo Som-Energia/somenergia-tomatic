@@ -425,6 +425,8 @@ async def callingPhonePost(phone: str = Form(...), ext: str = Form(...)):
 async def notifyIncommingCall(phone: str, extension: str):
     time = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
     user = persons.byExtension(extension)
+    phone = phone.replace('+','').replace('-','').replace(' ','')
+    phone = re.replace(r'^[+]?0?0?34','', phone)
     CallRegistry().updateCall(extension, fields=ns(
         data = time,
         telefon = phone,
