@@ -16,13 +16,15 @@
         - [x] Migrate main api
         - [x] Migrate sockets
         - [x] Migrate planner api
+- [x] Fix: annotations save date with miliseconds and duplicates existing entries
+- [x] Menu for planner and scripts
 - [ ] Intercept backend connection errors and behave
 - [ ] Call Info: Report diferently, search cleared from no search found
 - [ ] Contract info: Add owner NIF
 - [ ] Contract info: Add provincia field
 - [ ] Contract info: Add Contract modifications
 - [ ] Contract info: Contract aministrator role (besides TPNS)
-- [ ] Call Registry: shorter and wider on small screens
+- [ ] Call Registry: layout shorter and wider on small screens
 - [ ] Google login
 - [ ] API tests in fastapi
-- [ ] Fix: annotations save date with miliseconds and duplicates existing entries
+- [ ] Accept fragile erp tests

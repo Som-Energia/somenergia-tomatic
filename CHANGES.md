@@ -15,6 +15,7 @@
 - Fix: Better detection changing users on other tabs
 - Implementation changes
   - Callinfo model and view split so that subviews can acces common state directly
+- Menú options to planter and scripts
 
 ## 3.11.0 2021-06-15
 
