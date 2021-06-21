@@ -1,6 +1,6 @@
 {
   "name": "somenergia-tomatic",
-  "version": "3.11.0",
+  "version": "4.0.0",
   "description": "Phone Support helper",
   "main": "index.js",
   "scripts": {

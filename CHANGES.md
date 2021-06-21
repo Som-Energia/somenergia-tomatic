@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 4.0.0 2021-06-21
 
 - Migrated to FastAPI. Fixes using different port for websocket.
 - Loading shallow contract data first to speed up response
@@ -16,6 +16,7 @@
 - Implementation changes
   - Callinfo model and view split so that subviews can acces common state directly
 - Menú options to planter and scripts
+- Kumato mode (dark style)
 
 ## 3.11.0 2021-06-15
 
