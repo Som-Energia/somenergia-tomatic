@@ -140,8 +140,10 @@ var meterReadings = function(readings) {
       m(Spinner, {show: true}),
     ]));
   }
-  if (readings.length == 0) {
-    return m(".contract-info-item", "No hi ha informació de comptadors.")
+  if (readings.length === 0) {
+    return m(".meter-readings", m(".loading.layout.vertical.center", [
+      "No hi ha lectures disponibles.",
+    ]));
   }
   meter_readings = [];
   meter_readings.push(
