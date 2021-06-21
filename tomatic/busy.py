@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from past.builtins import basestring
 import datetime
 from yamlns import namespace as ns
 from consolemsg import warn, out, u
-from pathlib2 import Path
+from pathlib import Path
 
 def open(*args, **kwd):
 	import codecs
@@ -160,7 +159,7 @@ def checkEntry(kind, entry):
 			"Bad value for 'optional'. Expected a boolean but was '{}'"
 			.format(entry.optional))
 
-	if not isinstance(entry.reason, basestring):
+	if not isinstance(entry.reason, str):
 		raise Exception(
 			"Invalid type '{}' for field 'reason'"
 			.format(type(entry.reason).__name__))

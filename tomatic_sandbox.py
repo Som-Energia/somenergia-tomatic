@@ -6,7 +6,7 @@ import re
 from consolemsg import warn, step, error, u
 from datetime import datetime, timedelta
 from shutil import copyfile
-from pathlib2 import Path
+from pathlib import Path
 from slugify import slugify
 
 @click.command()

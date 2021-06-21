@@ -6,7 +6,7 @@ import time
 import datetime
 import errno
 import sys
-from pathlib2 import Path
+from pathlib import Path
 from yamlns import namespace as ns
 from .execution import (
     Execution,
@@ -214,7 +214,7 @@ class Execution_Test(unittest.TestCase):
             "python",
             "-c",
             "import signal, time;\n"
-            "from pathlib2 import Path;\n"
+            "from pathlib import Path;\n"
             "terminated=False;\n"
             "def stop(signal, frame):\n"
             "  global terminated\n"
@@ -344,7 +344,7 @@ class Execution_Test(unittest.TestCase):
         p = execution.run([
             "python",
             "-c",
-            "from pathlib2 import Path\n"
+            "from pathlib import Path\n"
             "Path('ended').touch()",
         ])
         p.wait()

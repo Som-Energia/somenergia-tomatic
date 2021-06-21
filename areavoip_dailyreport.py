@@ -8,7 +8,7 @@ import os
 import click
 from tomatic import __version__
 from yamlns import namespace as ns
-from pathlib2 import Path
+from pathlib import Path
 from emili import sendMail
 
 

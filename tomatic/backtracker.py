@@ -10,7 +10,7 @@ import datetime
 import io
 import requests
 from builtins import range
-from pathlib2 import Path
+from pathlib import Path
 
 from consolemsg import step, error, warn, out, u
 from yamlns import namespace as ns

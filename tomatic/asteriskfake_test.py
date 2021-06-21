@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from pathlib2 import Path
+from pathlib import Path
 from . import persons
 from .asteriskfake import AsteriskFake
 

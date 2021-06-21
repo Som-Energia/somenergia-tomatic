@@ -2,7 +2,7 @@
 
 import datetime
 import glob
-from pathlib2 import Path
+from pathlib import Path
 from yamlns import namespace as ns
 from .shiftload import loadSum
 from .scheduling import Scheduling, choosers

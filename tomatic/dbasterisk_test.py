@@ -3,7 +3,7 @@
 import unittest
 import os
 from pony.orm import db_session, rollback
-from pathlib2 import Path
+from pathlib import Path
 from yamlns import namespace as ns
 from . import persons
 from .dbasterisk import DbAsterisk

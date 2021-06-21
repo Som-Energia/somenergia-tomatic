@@ -3,7 +3,7 @@ import unittest
 import datetime
 import sys
 from yamlns import namespace as ns
-from pathlib2 import Path
+from pathlib import Path
 from . import schedulestorage
 
 yaml20121112 = u"week: '2012-11-12'"

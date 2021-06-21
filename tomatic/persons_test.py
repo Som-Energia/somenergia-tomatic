@@ -1,6 +1,6 @@
 import unittest
 from . import persons
-from pathlib2 import Path
+from pathlib import Path
 from yamlns import namespace as ns
 
 def safeRemove(filename):

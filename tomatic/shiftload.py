@@ -6,7 +6,7 @@ from consolemsg import error, warn, step, success, fail, out, u
 from yamlns import namespace as ns
 import os.path
 import random
-from pathlib2 import Path
+from pathlib import Path
 import datetime
 from . import busy
 

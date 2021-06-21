@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from pathlib2 import Path
+from pathlib import Path
 from yamlns import namespace as ns
 from consolemsg import error, step, warn, u
 from .claims import Claims

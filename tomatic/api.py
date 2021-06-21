@@ -18,7 +18,7 @@ from datetime import datetime, timedelta, timezone
 import urllib.parse
 import decorator
 import erppeek
-from pathlib2 import Path
+from pathlib import Path
 from yamlns import namespace as ns
 from consolemsg import error, step, warn, u
 

@@ -4,7 +4,7 @@
 from __future__ import print_function
 import requests
 import datetime
-from pathlib2 import Path
+from pathlib import Path
 from consolemsg import step, out, warn, fail, u
 from yamlns import namespace as ns
 from sheetfetcher import SheetFetcher

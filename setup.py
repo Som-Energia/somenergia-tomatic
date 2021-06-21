@@ -39,7 +39,6 @@ setup(
         'click',
         'decorator',
         'requests',
-        'pathlib2',
         'erppeek',
         'psutil',
         'pony',

@@ -9,7 +9,7 @@ from yamlns import namespace as ns
 from consolemsg import u, out
 from tomatic import __version__
 try:
-	from pathlib2 import Path
+	from pathlib import Path
 except ImportError:
 	from pathlib import Path
 

@@ -2,7 +2,7 @@
 
 import unittest
 from yamlns import namespace as ns
-from pathlib2 import Path
+from pathlib import Path
 
 from . import asteriskcli
 from . import persons

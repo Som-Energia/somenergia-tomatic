@@ -3,7 +3,7 @@
 
 from __future__ import unicode_literals
 import unittest
-from pathlib2 import Path
+from pathlib import Path
 from yamlns import namespace as ns
 from . import shiftload
 from . import busy

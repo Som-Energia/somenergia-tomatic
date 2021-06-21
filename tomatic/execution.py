@@ -14,7 +14,7 @@ import errno
 import subprocess
 import uuid
 import datetime
-from pathlib2 import Path
+from pathlib import Path
 from consolemsg import step, success, warn, error, u
 from yamlns import namespace as ns
 from . import schedulestorage

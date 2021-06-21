@@ -9,7 +9,7 @@ in config.yaml as baseUrl)
 import sys
 import requests
 from io import open
-from pathlib2 import Path
+from pathlib import Path
 from yamlns import namespace as ns
 
 timetablefile = Path(sys.argv[1])
