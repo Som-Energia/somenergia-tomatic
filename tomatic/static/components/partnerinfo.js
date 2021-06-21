@@ -8,7 +8,6 @@ var Button = require('polythene-mithril-button').Button;
 var Tabs = require('polythene-mithril-tabs').Tabs;
 
 var CallInfo = require('./callinfo');
-var ContractInfo = require('./contract');
 
 var PartnerInfo = {};
 
