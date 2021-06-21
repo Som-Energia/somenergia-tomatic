@@ -6,7 +6,6 @@ m.prop = require('mithril/stream');
 var Snackbar = require('polythene-mithril-snackbar').Snackbar;
 var Button = require('polythene-mithril-button').Button;
 var Dialog = require('polythene-mithril-dialog').Dialog;
-var Ripple = require('polythene-mithril-ripple').Ripple;
 var Card = require('polythene-mithril-card').Card;
 //var HeaderPanel = require('polythene-mithril-header-panel');
 var IconButton = require('polythene-mithril-icon-button').IconButton;
@@ -141,7 +140,7 @@ var PersonPicker = {
 	view: function(vnode) {
 		var pickCell = function(name) {
 			return m('.extension', {
-				class: name,
+				className: name,
 				onclick: vnode.state.picked.bind(vnode,name),
 				},
 				Tomatic.formatName(name)
@@ -410,7 +409,7 @@ var Grid = function(grid) {
 	var cell = function(day, houri, turni) {
 		var name = Tomatic.cell(day,houri,turni);
 		return m('td', {
-			class: name||'ningu',
+			className: name||'ningu',
 			onclick: function(ev) {
 				if(getCookie("tomaticCookie")===":"){
 					Login.askWhoAreYou();
@@ -459,7 +458,7 @@ var Persons = function(extensions) {
 		m('.extensions', [
 			Object.keys(extensions || {}).sort().map(function(name) {
 				return m('.extension', {
-					class: name,
+					className: name,
 					_onclick: function() {
 						editPerson(name);
 					},
@@ -472,7 +471,7 @@ var Persons = function(extensions) {
 							icon: { svg: iconDate },
 							compact: true,
 							wash: true,
-							class: 'colored',
+							className: 'colored',
 							events: {
 							onclick: function() { editAvailabilities(name); },
 							},
@@ -481,13 +480,12 @@ var Persons = function(extensions) {
 							icon: { svg: iconEdit },
 							compact: true,
 							wash: true,
-							class: 'colored',
+							className: 'colored',
 							events: {
 							onclick: function() { editPerson(name); },
 							},
 						}),
 					]),
-					//m(Ripple),
 				]);
 			}),
 			m('.extension.add', {
@@ -504,7 +502,7 @@ var Extensions = function(extensions) {
 	return [
 		m('.extensions',
 			Object.keys(extensions || {}).sort().map(function(name) {
-				return m('.extension', {class: name}, [
+				return m('.extension', {className: name}, [
 					Tomatic.formatName(name),
 					m('br'),
 					extensions[name],
