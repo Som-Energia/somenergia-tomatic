@@ -291,7 +291,7 @@ class CallInfo(object):
             return len(assignations) > 0
 
         if not contracts_ids:
-            return ns(polisses=[])
+            return ns(contracts=[])
 
         ret = ns(contracts=[])
 
