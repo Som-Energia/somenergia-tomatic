@@ -194,22 +194,22 @@ const menuOptions = () => { return [{
 },{
 	title: "Estadístiques de trucades",
 	action: () => {
-		location.href = "http://tomatic.somenergia.lan:5000/runner/statshistory";
+		location.href = scriptLauncherBase + "/runner/statshistory";
 	},
 },{
 	title: "En Tomàtic diu...",
 	action: () => {
-		location.href = "http://tomatic.somenergia.lan:5000/runner/says";
+		location.href = scriptLauncherBase + "/runner/says";
 	},
 },{
 	title: "Reomple el torn que toca a la cua",
 	action: () => {
-		location.href = "http://tomatic.somenergia.lan:5000/runner/reloadqueue";
+		location.href = scriptLauncherBase + "/runner/reloadqueue";
 	},
 },{
 	title: "Altres scripts de Centraleta",
 	action: () => {
-		location.href = "http://tomatic.somenergia.lan:5000/";
+		location.href = scriptLauncherBase;
 	},
 },{
 	title: "Kumato mode",
