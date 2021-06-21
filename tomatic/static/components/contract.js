@@ -299,7 +299,10 @@ var contractCard = function(partner) {
 
 ContractInfo.mainPanel = function(info) {
   var partner = info.partners[CallInfo.currentPerson]
-  if (partner.contracts == undefined) {
+  if (
+    partner.contracts === undefined ||
+    partner.contracts.length === 0
+  ) {
     return m(".contracts", [m(".no-info", "No hi ha contractes.")]);
   }
   return m(
