@@ -181,6 +181,15 @@ var lastInvoices = function(invoices) {
       )
     );
   }
+  if (invoices.length === 0) {
+    return m(".factures",
+      m(".factures-info",
+        m(".loading.layout.vertical.center", [
+          "No hi ha factures disponibles"
+        ])
+      )
+    );
+  }
   return m(".factures", m(".factures-info", invoices.map(function(invoice) {
     return m(".factura-info-item", [
         m("div", [
