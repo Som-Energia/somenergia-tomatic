@@ -101,6 +101,13 @@ var contractFields = function(contract, partner) {
 
 ContractInfo.extraView = function(info) {
   var partner = info.partners[CallInfo.currentPerson]
+  if (
+    partner === undefined ||
+    partner.contracts === undefined ||
+    partner.contracts.length === 0
+  ) {
+    return null;
+  }
   var contract = partner.contracts[CallInfo.currentContract];
   return m(".contract-details.flex", [
     m(".partner-card", [
