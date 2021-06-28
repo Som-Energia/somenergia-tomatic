@@ -69,15 +69,12 @@ def crmSectionID(erp, section):
     sections_model = erp.CrmCaseSection
     return sections_model.search([('name', 'ilike', section)])[0]
 
+defaultSection = 'ASSIGNAR USUARI'
 
 class Claims(object):
 
     def __init__(self, erp):
         self.erp = erp
-        config = ns.load('config.yaml')
-
-        self.assign_user = config.assign_user
-        # self.emails = config.emails
 
     def get_claims(self):
         claims_model = self.erp.GiscedataSubtipusReclamacio
@@ -91,10 +88,9 @@ class Claims(object):
             )
             claim_section = claim.get("default_section")
 
+            section = defaultSection
             if claim_section:
                 section = claim_section[1].split("/")[-1].strip()
-            else:
-                section = self.assign_user
 
             message = u"[{}] {}. {}".format(
                 section,
