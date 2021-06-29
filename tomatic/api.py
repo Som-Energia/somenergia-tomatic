@@ -325,8 +325,8 @@ async def busy_post(person, request: Request):
 @yamlerrors
 def downloadWeeklyBusy():
     response = FileResponse(
-        path='../indisponibilitats.conf',
-        as_attachment=True,
+        path='indisponibilitats.conf',
+        #as_attachment=True,
         media_type='text/plain',
     )
     return response
@@ -335,8 +335,8 @@ def downloadWeeklyBusy():
 @yamlerrors
 def downloadOneShotBusy():
     return FileResponse(
-        '../oneshot.conf',
-        as_attachment=True,
+        'oneshot.conf',
+        #as_attachment=True,
         media_type='text/plain',
     )
 
@@ -354,8 +354,8 @@ def downloadShiftLoad(week):
     loadfile = Path('carrega-{}.csv'.format(week))
 
     return FileResponse(
-        str('..'/loadfile),
-        as_attachment=True,
+        str(loadfile),
+        #as_attachment=True,
         media_type='text/csv',
     )
 
@@ -364,8 +364,8 @@ def downloadOverload(week):
     loadfile = Path('overload-{}.yaml'.format(week))
 
     return FileResponse(
-        str('..'/loadfile),
-        as_attachment=True,
+        str(loadfile),
+        #as_attachment=True,
         media_type = 'application/x-yaml',
     )
 
