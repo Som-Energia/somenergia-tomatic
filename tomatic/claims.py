@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 from yamlns import namespace as ns
 
-PHONE = 2
+CHANNEL_PHONE_ID = 2
 COMERCIALIZADORA = 1
 RECLAMANTE = '01'
 
@@ -132,7 +132,7 @@ class Claims(object):
         data_crm = {
             'section_id': crm_section_id,
             'name': sectionName(self.erp, claim_section_id),
-            'canal_id': PHONE,
+            'canal_id': CHANNEL_PHONE_ID,
             'polissa_id': contractId(self.erp, case.contract),
             'partner_id': partner_id,
             'partner_address_id': partner_address.get('id'),
