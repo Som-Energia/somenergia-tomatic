@@ -207,6 +207,11 @@ const menuOptions = () => { return [{
 		location.href = scriptLauncherBase + "/runner/reloadqueue";
 	},
 },{
+	title: "Anotacions: Actualitza categories",
+	action: () => {
+		CallInfoPage.settingsDialog()
+	},
+},{
 	title: "Altres scripts de Centraleta",
 	action: () => {
 		location.href = scriptLauncherBase;

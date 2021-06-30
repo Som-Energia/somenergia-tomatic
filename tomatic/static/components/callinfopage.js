@@ -72,7 +72,7 @@ var typeOfSearch = function() {
   );
 }
 
-var settingsDialog = function() {
+CallInfoPage.settingsDialog = function() {
   Dialog.show(function() { return {
     className: 'dialog-settings',
     title: 'Configuració:',
@@ -230,18 +230,6 @@ var attendedCalls = function() {
         title: m('.layout.horizontal', [
           m(".title", 'Trucades ateses'),
           m(".flex"), // expanding spacer
-          m(IconButton, {
-            className: 'btn-settings',
-            icon: settingsIcon(),
-            border: false,
-            wash: true,
-            compact: true,
-            events: {
-              onclick: function() {
-                settingsDialog();
-              },
-            },
-          }),
           m(IconButton, {
             className: 'btn-lock',
             icon: (CallInfo.autoRefresh ? lockIcon() : lockedIcon()),
