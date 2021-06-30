@@ -40,3 +40,12 @@
 - [ ] Fix: Person color picker does not pick initial color
 - [ ] Strip spaces in the search
 - [ ] Edit previous annotations
+
+## Questions
+
+- [ ] DGG: Claims.partnerAddress: first partner addres taken as the good one, correct assumption?
+- [ ] DGG: why sections are called user sometimes?
+
+
+
+

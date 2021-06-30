@@ -25,7 +25,7 @@ setup(
     install_requires=[
         'setuptools>=20.4',
         'MarkupSafe',
-        'somutils',
+        'somutils>=1.7',
         'yamlns',
         'consolemsg',
         'parse',

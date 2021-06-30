@@ -12,10 +12,11 @@ def fillConfigurationInfo():
 CONFIG = fillConfigurationInfo()
 
 class CallRegistry(object):
-    def __init__(self, path=None, size=20):
+    def __init__(self, path=None, size=20, erp=None):
         self.path = Path(path or CONFIG.my_calls_log)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.size = size
+        self.erp = erp
 
     def _calls(self):
         if not self.path.exists():
@@ -45,6 +46,9 @@ class CallRegistry(object):
 
     def annotateClaim(self, data):
         self._appendToExtensionDailyInfo('atc_cases', data)
+        if self.erp:
+            claims = Claims(self.erp)
+            return claims.create_atc_case(data)
 
     def _appendToExtensionDailyInfo(self, prefix, info, date=datetime.today()):
         path = self.path.parent / prefix / '{:%Y%m%d}.yaml'.format(date)
