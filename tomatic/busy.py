@@ -7,8 +7,8 @@ from consolemsg import warn, out, error, u
 from pathlib import Path
 
 def open(*args, **kwd):
-	import codecs
-	return codecs.open(encoding='utf8', *args, **kwd)
+	import io
+	return io.open(encoding='utf8', *args, **kwd)
 
 nturns = 4
 weekdays = 'dl dm dx dj dv'.split()
