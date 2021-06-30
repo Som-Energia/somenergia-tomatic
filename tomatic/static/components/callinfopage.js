@@ -257,6 +257,7 @@ var attendedCalls = function() {
               target:"_blank",
             }
           }),
+          Questionnaire.annotationButton(),
         ])
       }},{
       text: {

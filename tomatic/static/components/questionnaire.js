@@ -107,9 +107,9 @@ var updateCall = function(data) {
 
 var saveLogCalls = function(phone, user, claim, contract, partner) {
   CallInfo.savingAnnotation = true;
-  var partner_code = partner!==undefined ? partner.id_soci : "";
-  var contract_number = contract!==undefined ? contract.number : "";
-  var contract_cups = contract!==undefined ? contract.cups : "";
+  var partner_code = partner!==null ? partner.id_soci : "";
+  var contract_number = contract!==null ? contract.number : "";
+  var contract_cups = contract!==null ? contract.cups : "";
   var isodate = CallInfo.call.date || new Date().toISOString()
   updateCall({
     "data": isodate,
@@ -207,7 +207,9 @@ var clipboardIcon = function(){
     ]);
 }
 
-Questionnaire.annotationButton = function(contract, partner) {
+Questionnaire.annotationButton = function() {
+  var partner = CallInfo.selectedPartner();
+  var contract = CallInfo.selectedContract();
   return m("",
     m(IconButton, {
       icon: m("i.far.fa-clipboard.icon-clipboard"),
@@ -453,7 +455,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
           m(".final-motius", [
             m("strong", "De:"),
             " ",
-            partner !== undefined ? [
+            partner !== null ? [
               partner.id_soci,
               partner.dni.replace("ES",""),
               partner.name,
@@ -463,7 +465,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
           m(".final-motius", [
             m("strong", "Referent al contracte:"),
             " ",
-            contract !== undefined? (
+            contract !== null? (
               contract.number + " - " + contract.cups_adress
             ): " Cap contracte especificat",
           ]),
@@ -480,7 +482,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
                 }
               })),
           ]),
-          llistaMotius(partner!==undefined),
+          llistaMotius(partner!==null),
           m(".final-motius", [
             m("strong", "Comentaris:"),
             m(Textfield, {

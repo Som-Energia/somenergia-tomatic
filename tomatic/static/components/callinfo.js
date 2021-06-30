@@ -99,6 +99,27 @@ CallInfo.getExtras = function (extras) {
   });
 }
 
+CallInfo.selectedPartner = function() {
+  if (!CallInfo.file_info) { return null; }
+  if (!CallInfo.file_info.partners) { return null; }
+  if (CallInfo.file_info.partners.length===0) { return null; }
+  var partner = CallInfo.file_info.partners[CallInfo.currentPerson];
+  if (partner === undefined) { return null; }
+  return partner;
+};
+
+CallInfo.selectedContract = function() {
+  var partner = CallInfo.selectedPartner();
+  if (partner === null) { return null; }
+  if (partner.contracts === undefined) { return null; }
+  if (partner.contracts.length === 0) { return null; }
+  return partner.contracts[CallInfo.currentContract];
+};
+
+CallInfo.selectContract = function(idx) {
+  CallInfo.currentContract = idx;
+};
+
 var retrieveInfo = function () {
   m.request({
     method: 'GET',
