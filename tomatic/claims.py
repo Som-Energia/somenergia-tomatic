@@ -105,9 +105,9 @@ class Claims(object):
         '''
         Expected case:
 
-        namespace(
+        namespace.loads("""
             person:
-                - date: D-M-YYYY H:M:S
+              - date: D-M-YYYY H:M:S
                 person: person
                 reason: '[´section.name´] ´claim.name´. ´claim.desc´'
                 partner: partner number
@@ -118,9 +118,9 @@ class Claims(object):
                 user: section.name
                 cups: cups number
                 observations: comments
-                - ...
+              - ...
             ...
-        )
+        """)
         '''
         partner_id = partnerId(self.erp, case.partner)
         partner_address = partnerAddress(self.erp, partner_id)
