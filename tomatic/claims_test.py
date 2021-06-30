@@ -27,7 +27,6 @@ class Claims_Test(unittest.TestCase):
             return
         self.erp = ClientWST(**dbconfig.erppeek)
         self.erp.begin()
-        self.data_atc = dbconfig.data_atc
 
     def tearDown(self):
         try:
