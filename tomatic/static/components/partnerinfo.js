@@ -11,33 +11,36 @@ var CallInfo = require('./callinfo');
 
 var PartnerInfo = {};
 
-var infoPartner = function(info){
-  var aux = info.email.split(",");
-  var emails = [];
-  var url = "https://secure.helpscout.net/search/?query=";
-  for(var i=0; i<aux.length; i++){
-    emails.push(
-      m(".partner-info-item",
-        m("a", {"href":url+aux[i], target:"_blank", title: "Cerca al Helpscout"}, aux[i])
-      )
-    );
-  }
-  var dni = (info.dni.slice(0,2) === 'ES' ? info.dni.slice(2) : info.dni)
+var infoPartner = function(){
+  var partner = CallInfo.selectedPartner()
+  var helpscouturl = "https://secure.helpscout.net/search/?query=";
+  var emails = partner.email.split(",");
+  var dni = (partner.dni.slice(0,2) === 'ES' ? partner.dni.slice(2) : partner.dni)
   return m(".partner-info",
     [
       m(".partner-info-item", [
-        m("", m(".label-right",info.id_soci)),
-        m("", m(".label",info.name))
+        m("", m(".label-right",partner.id_soci)),
+        m("", m(".label",partner.name))
       ]),
       m(".partner-info-item", dni),
-      m(".partner-info-item", [info.city, ", ", info.state]),
-      m(".partner-info-item", m("", emails)),
-      m(".partner-info-item", (info.energetica ?
+      m(".partner-info-item", [partner.city, ", ", partner.state]),
+      m(".partner-info-item", m("",
+        emails.map(function(email) {
+          return m(".partner-info-item",
+            m("a", {
+              href: helpscouturl+email,
+              target:"_blank",
+              title: "Cerca al Helpscout"
+            }, email)
+          );
+        })
+      )),
+      m(".partner-info-item", (partner.energetica ?
         m(".label-energetica","Soci d'Energetica.") : "")
       ),
       m(".partner-info-item", [
-        m("", m(".label-right",info.lang)),
-        m("", m(".label","Ha obert OV? "), (info.ov ? "Sí" : "No"))
+        m("", m(".label-right",partner.lang)),
+        m("", m(".label","Ha obert OV? "), (partner.ov ? "Sí" : "No"))
       ]),
     ]
   );
@@ -61,7 +64,6 @@ function buttons(partners) {
 }
 
 var partnerCard = function(partners) {
-  var partner = partners[CallInfo.currentPerson];
   return m(".partner-card", [
     m(".partner-tabs", [
       m(Tabs, {
@@ -82,7 +84,7 @@ var partnerCard = function(partners) {
       className: 'card-info',
       content: [
         { text: {
-          content: infoPartner(partner),
+          content: infoPartner(),
         }},
       ]
     })
