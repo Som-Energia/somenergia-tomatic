@@ -47,10 +47,6 @@ var contractFields = function(contract, partner) {
       m('.label', "Nom del titular: "),
       contract.titular_name
     ),
-    m(".contract-info-item", [
-      m(".label-right", [
-        Questionnaire.annotationButton(contract, partner),
-      ]),
     m(".contract-info-item",
       m('.label', "CUPS: "),
       contract.cups
@@ -73,14 +69,10 @@ var contractFields = function(contract, partner) {
       m('.label', "Data darrera lectura facturada: "),
       last_invoiced
     ),
+    m(".contract-info-item", [
       m('.label', "IBAN: "),
       contract.iban
     ]),
-    m(
-      ".contract-info-item",
-      m('.label', "Estat pendent: "),
-      (contract.pending_state != "" ? contract.pending_state : "No especificat")
-    ),
     m(".contract-info-item", [
       m(".label-right", [
         (contract.is_titular ? m('span', {title: "Titular"}, "T ") : ""),
@@ -89,6 +81,11 @@ var contractFields = function(contract, partner) {
         (contract.is_notifier ? m('span', {title: "Rep les notificacions"}, "N ") : ""),
       ]),
     ]),
+    m(
+      ".contract-info-item",
+      m('.label', "Estat pendent: "),
+      (contract.pending_state != "" ? contract.pending_state : "No especificat")
+    ),
   ]);
 }
 
