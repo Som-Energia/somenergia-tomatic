@@ -41,10 +41,6 @@ var refreshIcon = function(){
     return m(".icon-refresh", [ m("i.fas.fa-redo-alt") ]);
 }
 
-var settingsIcon = function() {
-  return m(".icon-settings", [ m("i.fas.fa-cog") ]);
-}
-
 var typeOfSearch = function() {
   return m("select",
     {
