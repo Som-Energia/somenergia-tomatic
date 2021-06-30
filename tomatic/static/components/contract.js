@@ -88,13 +88,6 @@ var contractFields = function(contract, partner) {
         (contract.is_payer ? m('span', {title: "Pagadora"}, "P ") : ""),
         (contract.is_notifier ? m('span', {title: "Rep les notificacions"}, "N ") : ""),
       ]),
-      m(
-        "",
-        (contract.no_estimable ?
-          m('.label', "No estimable.")
-          : m('.label', "Estimable.")
-        )
-      ),
     ]),
   ]);
 }
