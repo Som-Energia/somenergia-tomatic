@@ -18,24 +18,25 @@
         - [x] Migrate planner api
 - [x] Fix: annotations save date with miliseconds and duplicates existing entries
 - [x] Menu for planner and scripts
+- [x] As an agent i want to annotate about a partner having no contracts
+- [x] "No estimable" flag is obsolete. No contract is estimable now.
 - [ ] Create Claim case
 - [ ] Create Phone Call Case
 - [ ] One endpoint for call registry in API
 - [ ] One method for call registry in CallRegistry
-- [ ] As an agent i want to annotate about a partner having no contracts
+- [ ] Claim.get_claims -> Claim.get/update/retrieveClaimTypes
 - [ ] As an agent i want to be able to see ended contracts in callinfo (pe. for claims of unauthorized switching)
-- [ ] "No estimable" flag is obsolete. No contract is estimable now.
 - [ ] Call Info: Report diferently, search cleared from no search found
 - [ ] Intercept backend connection errors and behave
 - [ ] Contract info: Contract aministrator role (besides TPNS)
 - [ ] Contract info: Add owner NIF
 - [ ] Contract info: Add provincia field
-- [ ] Contract info: Add Contract modifications
+- [ ] Contract info: Add Contract modification list
+- [ ] Call info: List previous calls from same person/contract
 - [ ] Call Registry: layout shorter and wider on small screens
 - [ ] Google login
 - [ ] API tests in fastapi
 - [ ] Accept fragile erp tests
-- [ ] Fix: Color picker does not pick initial color
+- [ ] Fix: Person color picker does not pick initial color
 - [ ] Strip spaces in the search
-- [ ] Previous call from same person/contract
-- [ ] Claim.get_claims -> Claim.get/update/retrieveClaimTypes
+- [ ] Edit previous annotations

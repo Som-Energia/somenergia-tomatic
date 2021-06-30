@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Annotations without Contract or partner may have claims
+- Annotation icon moved to the call registry
+- Settings icon moved into menu (update claim categories)
+- CallInfo: No need to report estimatable contracts anymore
+
 ## 4.0.1 2021-06-21
 
 - Removing Spain prefix from callerids as the partner sends them
