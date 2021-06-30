@@ -482,7 +482,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
                 }
               })),
           ]),
-          llistaMotius(partner!==null),
+          llistaMotius(),
           m(".final-motius", [
             m("strong", "Comentaris:"),
             m(Textfield, {
