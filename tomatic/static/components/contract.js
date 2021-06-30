@@ -89,16 +89,9 @@ var contractFields = function(contract, partner) {
   ]);
 }
 
-ContractInfo.detailsPanel = function(info) {
-  var partner = info.partners[CallInfo.currentPerson]
-  if (
-    partner === undefined ||
-    partner.contracts === undefined ||
-    partner.contracts.length === 0
-  ) {
-    return null;
-  }
-  var contract = partner.contracts[CallInfo.currentContract];
+ContractInfo.detailsPanel = function() {
+  var contract = CallInfo.selectedContract();
+  if (contract === null) { return null; }
   return m(".contract-details.flex", [
     m(".partner-card", [
       m(Card, {
@@ -248,7 +241,9 @@ var extraInfo = function(
 }
 
 var buttons = function(contracts) {
-  return contracts.map(function(contract, index) {
+  var partner = CallInfo.selectedPartner()
+  if (partner === null) { return null; }
+  return partner.contracts.map(function(contract, index) {
     return {
       label: contract.number,
       selected: index == CallInfo.currentContract,
@@ -257,7 +252,7 @@ var buttons = function(contracts) {
 }
 
 var contractCard = function(partner) {
-  var contract = partner.contracts[CallInfo.currentContract];
+  var contract = CallInfo.selectedContract()
   return m(".partner-card", [
     m(".partner-tabs", [
       m(Tabs, {
@@ -267,9 +262,9 @@ var contractCard = function(partner) {
           activeSelected: "true",
           ink: "true",
         },
-        tabs: buttons(partner.contracts),
+        tabs: buttons(),
         onChange: function(ev) {
-          CallInfo.currentContract = ev.index
+          CallInfo.selectContract(ev.index);
         }
       }),
     ]),
@@ -288,8 +283,9 @@ var contractCard = function(partner) {
 
 
 ContractInfo.mainPanel = function(info) {
-  var partner = info.partners[CallInfo.currentPerson]
+  var partner = CallInfo.selectedPartner();
   if (
+    partner === null ||
     partner.contracts === undefined ||
     partner.contracts.length === 0
   ) {
