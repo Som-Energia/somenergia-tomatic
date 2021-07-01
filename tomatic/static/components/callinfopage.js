@@ -273,15 +273,11 @@ CallInfoPage.view = function() {
           customerSearch(),
           m('.plane-info',
             isEmpty(CallInfo.file_info)?
-              m(".searching", 'No s\'ha trobat cap resultat.',
-                Questionnaire.annotationButton()
-              ):(
+              m(".searching", 'No s\'ha trobat cap resultat.'):(
             CallInfo.file_info[1] === "empty"?
               m(".searching", m(Spinner, { show: "true" } )):(
             CallInfo.file_info[1] === "toomuch"?
-              m(".searching", 'Cerca poc específica, retorna masses resultats.',
-                Questionnaire.annotationButton()
-              ):(
+              m(".searching", 'Cerca poc específica, retorna masses resultats.'):(
               m('.plane-info', [
                 m(".layout.vertical.flex", [
                   PartnerInfo.allInfo(CallInfo.file_info),
