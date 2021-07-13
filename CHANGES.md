@@ -1,7 +1,8 @@
 # Changelog
 
-## Unreleased
+## 4.0.2 2021-07-13
 
+- Fix: retireold api url not available because of url priority in fastapi
 - Annotations without Contract or partner may have claims
 - Annotation icon moved to the call registry
 - Settings icon moved into menu (update claim categories)
