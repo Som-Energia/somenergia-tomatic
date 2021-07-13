@@ -173,6 +173,21 @@ def tomatic(file=None):
 def listGraelles():
     return yamlfy(weeks=schedules.list())
 
+@app.get('/api/graella/retireold')
+@yamlerrors
+def retireOldTimeTable():
+    today = datetime.today()
+    twoMondaysAgo = str((today - timedelta(days=today.weekday()+7*2)).date())
+    step("Retiring timetables older than {}", twoMondaysAgo)
+    try:
+        schedules.load(twoMondaysAgo)
+    except:
+        raise ApiError("Graella {} no trobada, potser ja ha estat retirada".format(twoMondaysAgo))
+    else:
+        schedules.retireOld(twoMondaysAgo)
+    return yamlfy(result='ok')
+
+
 @app.get('/api/graella-{week}.yaml')
 @app.get('/api/graella/{week}')
 @yamlerrors
@@ -211,6 +226,14 @@ async def editSlot(week, day, houri: int, turni: int, name, request: Request):
     return graellaYaml(week)
 
 
+def cachedQueueStatus(force=False):
+    now = datetime.now()
+    if not force and hasattr(cachedQueueStatus, 'value') and cachedQueueStatus.timestamp > now:
+        return cachedQueueStatus.value
+    cachedQueueStatus.timestamp = now + timedelta(seconds=5)
+    cachedQueueStatus.value = pbx().queue()
+    return cachedQueueStatus.value
+
 @app.post('/api/graella')
 @yamlerrors
 def uploadGraella(yaml: UploadFile = File(...), week=None):
@@ -226,29 +249,6 @@ def uploadGraella(yaml: UploadFile = File(...), week=None):
     schedules.save(graella)
     schedulestorage.publishStatic(graella)
     return yamlfy(result='ok')
-
-@app.get('/api/graella/retireold')
-@yamlerrors
-def retireOldTimeTable():
-    today = datetime.today()
-    twoMondaysAgo = str((today - timedelta(days=today.weekday()+7*2)).date())
-    step("Retiring timetables older than {}", twoMondaysAgo)
-    try:
-        schedules.load(twoMondaysAgo)
-    except:
-        raise ApiError("Graella {} no trobada, potser ja ha estat retirada".format(twoMondaysAgo))
-    else:
-        schedules.retireOld(twoMondaysAgo)
-    return yamlfy(result='ok')
-
-
-def cachedQueueStatus(force=False):
-    now = datetime.now()
-    if not force and hasattr(cachedQueueStatus, 'value') and cachedQueueStatus.timestamp > now:
-        return cachedQueueStatus.value
-    cachedQueueStatus.timestamp = now + timedelta(seconds=5)
-    cachedQueueStatus.value = pbx().queue()
-    return cachedQueueStatus.value
 
 @app.get('/api/queue')
 @yamlerrors
