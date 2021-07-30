@@ -468,10 +468,10 @@ async def updateCallLog(user, request: Request):
 
 @app.get('/api/updateClaims')
 def updateClaimTypes():
-    message = 'ok'
     with erp() as O:
         CallRegistry().importClaimTypes(O)
     return yamlfy(info=ns(message='ok'))
+
 
 @app.get('/api/getClaims')
 def getClaimTypes():
@@ -509,6 +509,13 @@ async def postAtrCase(request: Request):
     return yamlfy(info=ns(
         message="ok"
     ))
+
+
+@app.get('/api/updateCrmCategories')
+def updateCrmCategories():
+    with erp() as O:
+        CallRegistry().importCrmCategories(O)
+    return yamlfy(info=ns(message='ok'))
 
 
 @app.get('/api/getInfos')

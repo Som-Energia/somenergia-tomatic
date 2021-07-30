@@ -19,6 +19,7 @@ CallInfo.currentPerson = 0; // Selected person from search data
 CallInfo.currentContract = 0; // Selected contract selected person
 CallInfo.callLog = []; // User call registry
 CallInfo.updatingClaims = false; // Whether we are still loading claim types
+CallInfo.updatingCrmCategories = false; // Whether we are still loading crm categoies
 CallInfo.autoRefresh = true; // whether we are auto searching on incomming calls
 CallInfo.call = {
     'phone': "", // phone of the currently selected call registry
@@ -35,6 +36,7 @@ CallInfo.call_reasons = {
 CallInfo.extras_dict = {};
 CallInfo.savingAnnotation = false;
 
+
 CallInfo.clear = function() {
   CallInfo.call.phone = "";
   CallInfo.call.log_call_reasons = [];
@@ -48,6 +50,7 @@ CallInfo.clear = function() {
   CallInfo.file_info = {};
 }
 
+
 CallInfo.changeUser = function(newUser) {
   CallInfo.search = "";
   CallInfo.clear();
@@ -58,10 +61,12 @@ CallInfo.changeUser = function(newUser) {
   CallInfo.autoRefresh = true;
 }
 
+
 CallInfo.callReceived = function(date, phone) {
   if (!CallInfo.autoRefresh) { return; }
   CallInfo.callSelected(date,phone)
 }
+
 
 CallInfo.callSelected = function(date, phone) {
   CallInfo.clear();
@@ -74,13 +79,13 @@ CallInfo.callSelected = function(date, phone) {
 }
 
 
-
 function formatContractNumber(number) {
   // some contract numbers get converted  to int and lose their padding
   var result = number+"";
   while (result.length < 7) result = "0" + result;
   return result;
 }
+
 
 function contractNumbers(info) {
   var result = {}
@@ -93,11 +98,13 @@ function contractNumbers(info) {
   return Object.keys(result);
 }
 
+
 CallInfo.getExtras = function (extras) {
   return extras.map(function(extra) {
     return CallInfo.extras_dict[extra];
   });
 }
+
 
 CallInfo.selectedPartner = function() {
   if (!CallInfo.file_info) { return null; }
@@ -108,6 +115,7 @@ CallInfo.selectedPartner = function() {
   return partner;
 };
 
+
 CallInfo.selectedContract = function() {
   var partner = CallInfo.selectedPartner();
   if (partner === null) { return null; }
@@ -116,9 +124,11 @@ CallInfo.selectedContract = function() {
   return partner.contracts[CallInfo.currentContract];
 };
 
+
 CallInfo.selectContract = function(idx) {
   CallInfo.currentContract = idx;
 };
+
 
 var retrieveInfo = function () {
   m.request({
@@ -166,6 +176,7 @@ var retrieveInfo = function () {
   });
 };
 
+
 CallInfo.getClaims = function() {
   m.request({
       method: 'GET',
@@ -176,7 +187,7 @@ CallInfo.getClaims = function() {
       if (response.info.message !== "ok" ) {
           console.debug("Error al obtenir les reclamacions: ", response.info.message)
       }
-      else{
+      else {
         CallInfo.call_reasons.general = response.info.claims;
         CallInfo.extras_dict = response.info.dict;
         CallInfo.call_reasons.extras = Object.keys(response.info.dict);
@@ -186,6 +197,27 @@ CallInfo.getClaims = function() {
   });
 };
 CallInfo.getClaims();
+
+
+CallInfo.getInfos = function() {
+  m.request({
+      method: 'GET',
+      url: '/api/getInfos',
+      extract: deyamlize,
+  }).then(function(response){
+      console.debug("Info GET Response: ",response);
+      if (response.info.message !== "ok" ) {
+          console.debug("Error al obtenir els infos: ", response.info.message)
+      }
+      else {
+        CallInfo.call_reasons.infos = response.info.infos;
+      }
+  }, function(error) {
+      console.debug('Info GET apicall failed: ', error);
+  });
+};
+CallInfo.getInfos();
+
 
 CallInfo.updateClaims = function() {
   CallInfo.updatingClaims = true;
@@ -207,6 +239,25 @@ CallInfo.updateClaims = function() {
   });
 };
 
+CallInfo.updateCrmCategories = function() {
+  CallInfo.updatingCrmCategories = true;
+  m.request({
+    method: 'GET',
+    url: '/api/updateCrmCategories',
+    extract: deyamlize,
+  }).then(function(response){
+    console.debug("Info GET Response: ",response);
+    if (response.info.message !== "ok" ) {
+      console.debug("Error al actualitzar les categories de trucades telefòniques: ", response.info.message)
+    }
+    else{
+      CallInfo.updatingCrmCategories = false;
+      CallInfo.getInfos();
+    }
+  }, function(error) {
+    console.debug('Info GET apicall failed: ', error);
+  });
+};
 
 CallInfo.getLogPerson = function () {
   CallInfo.callLog = []

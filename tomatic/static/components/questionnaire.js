@@ -23,26 +23,6 @@ var call_reasons = CallInfo.call_reasons;
 var reason_filter = "";
 
 
-var getInfos = function() {
-  m.request({
-      method: 'GET',
-      url: '/api/getInfos',
-      extract: deyamlize,
-  }).then(function(response){
-      console.debug("Info GET Response: ",response);
-      if (response.info.message !== "ok" ) {
-          console.debug("Error al obtenir els infos: ", response.info.message)
-      }
-      else{
-        call_reasons.infos = response.info.infos;
-      }
-  }, function(error) {
-      console.debug('Info GET apicall failed: ', error);
-  });
-};
-getInfos();
-
-
 var postClaim = function(claim) {
   m.request({
     method: 'POST',
