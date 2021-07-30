@@ -88,7 +88,23 @@ CallInfoPage.settingsDialog = function() {
       CallInfo.updatingClaims ? [
         m("b", "Actualitzant reclamacions"),
         m("div", "Pot portar el seu temps, pots sortir mentrestant.")
-      ] : m("b", "Actualitzar llistat de reclamacions")
+      ] : m("b", "Actualitzar llistat de reclamacions"),
+      m("p"),
+      m(Button, {
+        className: 'btn-refresh',
+        label: refreshIcon(),
+        border: 'true',
+        disabled: CallInfo.updatingCrmCategories,
+        events: {
+          onclick: function() {
+            CallInfo.updateCrmCategories();
+          },
+        },
+      }, m(Ripple)),
+      CallInfo.updatingCrmCategories ? [
+        m("b", "Actualitzar categories (Trucades Telefòniques)"),
+        m("div", "Pot portar el seu temps, pots sortir mentrestant.")
+      ] : m("b", "Actualitzar categories (Trucades Telefòniques)")
     ],
     footerButtons: m(Button, {
       label: "Sortir",

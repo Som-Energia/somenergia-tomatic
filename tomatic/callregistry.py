@@ -5,6 +5,7 @@ from pathlib import Path
 from yamlns import namespace as ns
 from consolemsg import error, step, warn, u
 from .claims import Claims
+from .kalinfo.crmcase import CrmCase
 
 def fillConfigurationInfo():
     return ns.load('config.yaml')
@@ -86,6 +87,15 @@ class CallRegistry(object):
 
         Path(CONFIG.claims_file).write_text(
             '\n'.join([u(x) for x in erp_claims]),
+            encoding='utf8',
+        )
+
+    def importCrmCategories(self, erp):
+        categories = CrmCase(erp)
+        erp_crm_categories = categories.get_crm_categories()
+
+        Path(CONFIG.info_cases).write_text(
+            '\n'.join([u(x) for x in erp_crm_categories]),
             encoding='utf8',
         )
 
