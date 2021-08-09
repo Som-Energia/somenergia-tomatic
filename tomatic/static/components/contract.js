@@ -35,9 +35,14 @@ function formatInterval(contract) {
 var contractFields = function(contract, partner) {
   var s_num = formatContractNumber(contract.number);
   var from_til = formatInterval(contract);
-  var last_invoiced = (contract.last_invoiced != "" ?
-    contract.last_invoiced : "No especificada"
-  );
+
+  var powers = [];
+  Object.keys(contract.power).map(function(key, index) {
+    powers.push(
+      m("", m("b", key), `: ${contract.power[key]} kW`)
+    );
+  });
+
   return m(".contract-info-box", [
     m(".contract-info-item", [
       m("", m(".label-right", from_til)),
@@ -54,20 +59,12 @@ var contractFields = function(contract, partner) {
     m(".contract-info-item",
       m('.label', "Adreça CUPS: "),
       contract.cups_adress
-    ),
-    m(".contract-info-item",
-      m("", m('.label', "Potència: "), contract.power),
-    ),
+      ),
     m(".contract-info-item",
       m("", m('.label', "Tarifa: "), contract.fare),
     ),
     m(".contract-info-item",
-      m('.label', "Lot facturació: "),
-      contract.lot_facturacio
-    ),
-    m(".contract-info-item",
-      m('.label', "Data darrera lectura facturada: "),
-      last_invoiced
+      m("", powers),
     ),
     m(".contract-info-item", [
       m('.label', "IBAN: "),
@@ -84,7 +81,12 @@ var contractFields = function(contract, partner) {
     m(
       ".contract-info-item",
       m('.label', "Estat pendent: "),
-      (contract.pending_state != "" ? contract.pending_state : "No especificat")
+      (contract.pending_state != "" ? contract.pending_state : "Esborrany")
+    ),
+    m("br"),
+    extraInfo(
+      contract.generation, contract.energetica,
+      contract.suspended_invoicing, contract.has_debt
     ),
   ]);
 }
@@ -100,11 +102,10 @@ ContractInfo.detailsPanel = function() {
           { text: {
             content: m("", [
               m(".contract-info-box", [
-                extraInfo(
-                  contract.generation, contract.energetica, contract.suspended_invoicing, contract.open_cases
-                ),
                 m('.card-part-header', "Darreres factures del contracte"),
                 lastInvoices(contract.invoices),
+                m('.card-part-header', "Darrers casos ATR"),
+                atrCases(contract.atr_cases),
                 m('.card-part-header', "Darreres lectures del contracte"),
                 meterReadings(contract.lectures_comptadors),
               ])
@@ -115,6 +116,43 @@ ContractInfo.detailsPanel = function() {
     ])
   ]);
 }
+
+
+var atrCases = function(cases) {
+  if (cases === null) {
+    return m(".atr-cases", m(".loading.layout.vertical.center", [
+      "Carregant casos ATR...",
+      m(Spinner, {show: true}),
+    ]));
+  }
+  if (cases.length === 0) {
+    return m(".atr-cases", m(".loading.layout.vertical.center", [
+      "No hi ha casos ATR disponibles.",
+    ]));
+  }
+  atr_cases = [];
+  atr_cases.push(
+    m("tr", [
+      m("th", "Data"),
+      m("th", "Procés"),
+      m("th", "Pas"),
+      m("th", "Estat"),
+    ])
+  );
+  for (case_index in cases) {
+    atr_case = cases[case_index];
+    atr_cases.push(
+      m("tr", [
+        m("td", atr_case.date),
+        m("td", atr_case.proces),
+        m("td", atr_case.step),
+        m("td", m(atr_case.state != 'done' ? ".alert-case" : "", atr_case.state)),
+      ])
+    )
+  }
+  return m(".atr-cases", m("table", atr_cases));
+}
+
 
 var meterReadings = function(readings) {
   if (readings === null) {
@@ -204,13 +242,13 @@ var lastInvoices = function(invoices) {
 }
 
 var extraInfo = function(
-  generation, energetica, suspended_invoicing, open_cases
+  generation, energetica, suspended_invoicing, has_debt
 ) {
-  if (!generation && !energetica && !suspended_invoicing && open_cases.length == 0) {
+  if (!generation && !energetica && !suspended_invoicing && !has_debt) {
     info = m("no-info", "No hi ha informació extra.")
   }
   else {
-    info = m("", [
+    info = m(".extra-info", [
       m("",
         generation ? m(".label-generation","Rep Generation.") : ""
       ),
@@ -221,11 +259,8 @@ var extraInfo = function(
         (suspended_invoicing ? m(".label-alert","Facturació suspesa.") : "")
       ),
       m("",
-        (open_cases.length > 0 ?
-          m(".label-alert", ["Casos ATR oberts: ", open_cases])
-          : ""
-        )
-      ),
+        has_debt ? m(".label-alert", `Té deute: ${has_debt}`) : "",
+      )
     ])
   }
   return m(Card, {
@@ -293,7 +328,7 @@ ContractInfo.mainPanel = function(info) {
   }
   return m(
     ".contracts",
-    contractCard(partner)
+    contractCard(partner),
   );
 }
 

@@ -105,24 +105,17 @@ class CallInfo(object):
         return result
 
     def getPartnerRelatedContracts(self, partner_id):
-        contract_tp_ids = self.O.GiscedataPolissa.search([
-            ('titular.id', '=', partner_id),
-            ('pagador.id', '=', partner_id),
-            ])
         contract_titular_ids = self.O.GiscedataPolissa.search([
             ('titular.id', '=', partner_id),
-            ])
+        ])
         contract_pagador_ids = self.O.GiscedataPolissa.search([
             ('pagador.id', '=', partner_id),
-            ])
+        ])
         contract_soci_ids = self.O.GiscedataPolissa.search([
             ('soci.id', '=', partner_id),
-            ])
+        ])
 
-        contracts = contract_tp_ids
-        for contract_titular_id in contract_titular_ids:
-            if contract_titular_id not in contracts:
-                contracts.append(contract_titular_id)
+        contracts = contract_titular_ids
         for contract_pagador_id in contract_pagador_ids:
             if contract_pagador_id not in contracts:
                 contracts.append(contract_pagador_id)
@@ -243,6 +236,25 @@ class CallInfo(object):
                 readings.append(data)
         return readings
 
+    def atrCases(self, contract_id):
+        cases_ids = self.O.GiscedataSwitching.search([
+            ('cups_polissa_id', '=', contract_id)
+        ])
+        if not cases_ids:
+            return []
+
+        cases = self.O.GiscedataSwitching.read(
+            cases_ids, ['date', 'proces_id', 'step_id', 'state']
+        )
+        return [
+            dict(
+                date=case.get('date'),
+                proces=case.get('proces_id')[1],
+                step=case.get('step_id')[1],
+                state=case.get('state')
+            ) for case in cases
+        ]
+
     def getPartnerId(self, address_id):
         partner_ids = self.O.ResPartnerAddress.read(
             [address_id],
@@ -255,33 +267,11 @@ class CallInfo(object):
 
     def contractInfo(self, contracts_ids, partner_id, shallow=False):
 
-        def hasOpenATR(contract_id, case):
-            cases = self.O.GiscedataSwitching.search([
-                ('cups_polissa_id', '=', contract_id),
-                ('proces_id.name', '=', case),
-                ('state', '!=', 'done')
-            ])
-            return len(cases) > 0
-
-        def openCases(contract_id):
-            cases = self.O.GiscedataSwitching.browse([
-                ('cups_polissa_id', '=', contract_id),
-                ('state', '!=', 'done')
-            ])
-            return [case.proces_id.name for case in cases]
-
-        def getPartnerId(address_id):
-            partner_ids = self.O.ResPartnerAddress.read(
-                [address_id],
-                ['partner_id']
-            )
-            if partner_ids and partner_ids[0]['partner_id']:
-                return partner_ids[0]['partner_id'][0]
-            return None
-
         def getCUPSAdress(cups_id):
-            cups_data = self.O.GiscedataCupsPs.read([cups_id], ['direccio'])
-            return cups_data[0]['direccio']
+            cups_data = self.O.GiscedataCupsPs.read(
+                cups_id, ['direccio', 'id_provincia']
+            )
+            return f"{cups_data['direccio']} {cups_data['id_provincia'][1]}"
 
         def hasGeneration(contract_id):
             assignations = self.O.GenerationkwhAssignment.search([
@@ -289,6 +279,15 @@ class CallInfo(object):
                 ('end_date', '=', None),
             ])
             return len(assignations) > 0
+
+        def powers(powers):
+            power_model = self.O.GiscedataPolissaPotenciaContractadaPeriode
+            powers_dict = {
+                f'P{i+1}': power_model.read(
+                    power_id, ['potencia']
+                ).get('potencia') for i, power_id in enumerate(powers)
+            }
+            return powers_dict
 
         if not contracts_ids:
             return ns(contracts=[])
@@ -298,7 +297,7 @@ class CallInfo(object):
         all_contracts = self.O.GiscedataPolissa.read(contracts_ids, [
             'data_alta',
             'data_baixa',
-            'potencia',
+            'potencies_periode',
             'cups',
             'state',
             'active',
@@ -314,7 +313,8 @@ class CallInfo(object):
             'bank',
             'lot_facturacio',
             'no_estimable',
-            'comptadors'
+            'comptadors',
+            'debt_amount',
         ])
         all_contracts_dict = {c['id']: c for c in all_contracts if c}
         for contract_id in contracts_ids:
@@ -342,11 +342,16 @@ class CallInfo(object):
                 if contract['lot_facturacio'] else ''
             lectures_comptadors = None if shallow else self.meterReadings(contract['comptadors'])
             last_invoices = None if shallow else self.lastInvoices(contract['id'])
+            partner_vat = self.O.ResPartner.read(
+                contract['titular'][0], ['vat']
+            ).get('vat')[2:]
+            debt = contract['debt_amount']
+            atr_cases = None if shallow else self.atrCases(contract['id'])
             ret.contracts.append(
                 ns(
                     start_date=contract['data_alta'],
                     end_date=end_date,
-                    power=contract['potencia'],
+                    power=powers(contract['potencies_periode']),
                     cups=self.anonymize(contract['cups'][1]),
                     fare=contract['tarifa'][1],
                     state=contract['state'],
@@ -354,13 +359,13 @@ class CallInfo(object):
                     last_invoiced=contract['data_ultima_lectura'],
                     suspended_invoicing=contract['facturacio_suspesa'],
                     pending_state=contract['pending_state'],
-                    open_cases=openCases(contract['id']),
                     is_titular=is_titular,
                     is_partner=is_partner,
                     is_notifier=is_notifier,
                     is_payer=is_payer,
                     cups_adress=cups_adress,
-                    titular_name=self.anonymize(contract['titular'][1]),
+                    titular_name= \
+                        f"{self.anonymize(contract['titular'][1])} ({partner_vat})",
                     energetica=energetica,
                     generation=hasGeneration(contract['id']),
                     iban=iban,
@@ -368,6 +373,8 @@ class CallInfo(object):
                     no_estimable=contract['no_estimable'],
                     lectures_comptadors=lectures_comptadors,
                     invoices=last_invoices,
+                    has_debt=debt if debt > 0.0 else False,
+                    atr_cases=atr_cases,
                 )
             )
         return ret
@@ -449,10 +456,12 @@ class CallInfo(object):
             'name',
             'comptadors'
         ])
+
         return ns(
             (contract['name'], ns(
                 lectures_comptadors = self.meterReadings(contract['comptadors']),
                 invoices = self.lastInvoices(contract['id']),
+                atr_cases=self.atrCases(contract['id'])
             ))
             for contract in contracts
         )

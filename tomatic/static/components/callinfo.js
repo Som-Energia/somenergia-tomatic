@@ -168,6 +168,7 @@ var retrieveInfo = function () {
           var retrieved = response.info.info[number]
           contract.invoices = retrieved.invoices;
           contract.lectures_comptadors = retrieved.lectures_comptadors;
+          contract.atr_cases = retrieved.atr_cases;
         })
       })
     });
