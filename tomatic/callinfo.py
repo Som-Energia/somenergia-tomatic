@@ -105,6 +105,10 @@ class CallInfo(object):
         return result
 
     def getPartnerRelatedContracts(self, partner_id):
+        contract_tp_ids = self.O.GiscedataPolissa.search([
+            ('titular.id', '=', partner_id),
+            ('pagador.id', '=', partner_id),
+        ])
         contract_titular_ids = self.O.GiscedataPolissa.search([
             ('titular.id', '=', partner_id),
         ])
@@ -115,7 +119,10 @@ class CallInfo(object):
             ('soci.id', '=', partner_id),
         ])
 
-        contracts = contract_titular_ids
+        contracts = contract_tp_ids
+        for contract_titular_id in contract_titular_ids:
+            if contract_titular_id not in contracts:
+                contracts.append(contract_titular_id)
         for contract_pagador_id in contract_pagador_ids:
             if contract_pagador_id not in contracts:
                 contracts.append(contract_pagador_id)
