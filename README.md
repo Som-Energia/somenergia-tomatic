@@ -372,6 +372,7 @@ Info Cases: The rest of calls not a claim
 	- [ ] /api/info/all/<field> -> /api/info/by/any/<value>
 	- [ ] /api/info/xxxx/<field> -> /api/info/by/xxxx/<value>
 	- [ ] Refactoritzar codi comu dels getInfoPersonByXXXX
+        - [ ] Optimizar búsquedas callinfo
 
 
 - Refactoring
