@@ -8,7 +8,7 @@ from tomatic.schedulestorage import Storage
 from tomatic.scheduling import choosers, Scheduling
 from tomatic.remote import Remote
 from tomatic.persons import extension
-from tomatic.directmessage import send
+#from tomatic.directmessage import send
 from consolemsg import u, step, out
 import dbconfig
 import sys
@@ -192,8 +192,10 @@ def monitor(queue):
     if newDisconnected:
         print("Compte: agents desconectades: {}".format(', '.join(list(newDisconnected))))
         if dbconfig.tomatic.get('monitorChatChannel', None):
-            send(dbconfig.tomatic.monitorChatChannel,
-                "Compte: agents desconectades: {}".format(', '.join(list(newDisconnected))))
+						#send(dbconfig.tomatic.monitorChatChannel,
+            #    "Compte: agents desconectades: {}".format(', '.join(list(newDisconnected))))
+						# TODO: uncomment once hangouts dependency is fixed
+            pass
 
     # Store the current for the next monitoring
     ns(queue=current).dump('monitor.yaml')
