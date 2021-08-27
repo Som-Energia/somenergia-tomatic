@@ -458,11 +458,13 @@ class CallInfo(object):
         contracts_ids = self.O.GiscedataPolissa.search([
             ('name', 'in', contract_numbers),
         ])
-
         contracts = self.O.GiscedataPolissa.read(contracts_ids, [
             'name',
             'comptadors'
         ])
+
+        if not contracts:
+            return ns()
 
         return ns(
             (contract['name'], ns(
