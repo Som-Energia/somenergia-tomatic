@@ -102,10 +102,10 @@ ContractInfo.detailsPanel = function() {
           { text: {
             content: m("", [
               m(".contract-info-box", [
-                m('.card-part-header', "Darreres factures del contracte"),
-                lastInvoices(contract.invoices),
                 m('.card-part-header', "Darrers casos ATR"),
                 atrCases(contract.atr_cases),
+                m('.card-part-header', "Darreres factures del contracte"),
+                lastInvoices(contract.invoices),
                 m('.card-part-header', "Darreres lectures del contracte"),
                 meterReadings(contract.lectures_comptadors),
               ])
