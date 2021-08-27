@@ -251,14 +251,16 @@ class CallInfo(object):
             return []
 
         cases = self.O.GiscedataSwitching.read(
-            cases_ids, ['date', 'proces_id', 'step_id', 'state']
+            cases_ids,
+            ['date', 'proces_id', 'step_id', 'state', 'additional_info']
         )
         return [
             dict(
                 date=case.get('date'),
                 proces=case.get('proces_id')[1],
                 step=case.get('step_id')[1],
-                state=case.get('state')
+                state=case.get('state'),
+                additional_info=case.get('additional_info')
             ) for case in cases
         ]
 

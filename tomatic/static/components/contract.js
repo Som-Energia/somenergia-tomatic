@@ -137,6 +137,7 @@ var atrCases = function(cases) {
       m("th", "Procés"),
       m("th", "Pas"),
       m("th", "Estat"),
+      m("th", "Descripció")
     ])
   );
   for (case_index in cases) {
@@ -147,6 +148,7 @@ var atrCases = function(cases) {
         m("td", atr_case.proces),
         m("td", atr_case.step),
         m("td", m(atr_case.state != 'done' ? ".alert-case" : "", atr_case.state)),
+        m("td", m('span', {title: atr_case.additional_info}, atr_case.additional_info) )
       ])
     )
   }
