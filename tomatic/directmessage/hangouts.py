@@ -55,7 +55,7 @@ async def resolveChannel(client, channel):
     )
     all_users = user_list.get_all()
     for user in all_users:
-        if channel in user.emails:
+        if user.emails and channel in user.emails:
             step("Sending message to {.full_name} <{}>", user, channel)
             return await open_conversation(client, "Tomatic", user.id_.gaia_id)
         if channel == user.full_name:
