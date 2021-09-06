@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.0.3 2021-09-06
+
+- Fix: supporting removed hangout accounts which had emails as None, not []
+- New default channel for team communication
+
 ## 4.0.2 2021-07-13
 
 - Fix: retireold api url not available because of url priority in fastapi
