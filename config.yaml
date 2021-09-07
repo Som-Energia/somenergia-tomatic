@@ -1,6 +1,7 @@
 baseUrl: http://tomatic.somenergia.lan
 #hangoutChannel: 'UgwbNDnElaQHezX-qXN4AaABAQ' # it
-hangoutChannel: 'UgzYiKUaJZ1yCpn3R4J4AaABAQ' # petit dejuner
+#hangoutChannel: 'UgzYiKUaJZ1yCpn3R4J4AaABAQ' # petit dejuner
+hangoutChannel: 'Ugz7g64jUEDxQOzCUoh4AaABAQ' # Equip atenció telefònica i bústia info
 documentDrive: Quadre de Vacances
 driveCertificate: drive-certificate.json
 fullCarregaIdeal: "IDEALS_6t_Càrrega telèfon"
