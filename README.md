@@ -44,6 +44,7 @@ This software is used within SomEnergia cooperative to manage phone support to m
 ```bash
 sudo apt-get update; sudo apt-get install --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev git nodejs npm
 sudo mkdir -p /opt/www/somenergia-tomatic
+sudo mkdir -p /var/log/somenergia/
 sudo chown tomatic:tomatic /opt/www/somenergia-tomatic
 sudo su tomatic # the user that will run it
 
