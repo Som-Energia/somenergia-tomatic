@@ -39,7 +39,7 @@ setup(
         'click',
         'decorator',
         'requests',
-        'erppeek',
+        'ERPpeek',
         'psutil',
         'pony',
         'emili',
