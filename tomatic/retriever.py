@@ -220,6 +220,24 @@ def downloadVacations(config, source=None):
 
     fail("Bad source for vacations: {}".format(source))
 
+def downloadFestivities(config):
+    step("Baixant festivitats de l'odoo...")
+
+    import dbconfig
+    import erppeek
+    from yamlns.dateutils import Date
+    erp = erppeek.Client(**dbconfig.tomatic.holidaysodoo)
+    firstDay = addDays(config.monday, 0)
+    lastDay = addDays(config.monday, 4)
+    Festivities = erp.model('hr.holidays.public.line')
+    festivity_ids = Festivities.search([
+        ('date', '>=', str(firstDay)),
+        ('date', '<=', str(lastDay)),
+    ])
+    with Path('holidays.conf').open('w', encoding='utf8') as output:
+        for festivity in Festivities.read(festivity_ids, ['date','meeting_id']) or []:
+            output.write('{date}\t{meeting_id[1]}\n'.format(**festivity))
+
 def downloadShiftload(config):
     step('Baixant carrega setmanal...')
     url = config.baseUrl + '/api/shifts/download/shiftload/{}'.format(config.monday)

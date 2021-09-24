@@ -789,6 +789,7 @@ def main():
     from .retriever import (
         downloadPersons,
         downloadVacations,
+        downloadFestivities,
         downloadBusy,
         downloadShiftload,
         downloadOverload,
@@ -844,6 +845,7 @@ def main():
             downloadOverload(config)
         if not config.get('busyFiles'):
             downloadBusy(config)
+            downloadFestivities(config)
             downloadVacations(config, source=args.holidays)
 
     if args.search_days:

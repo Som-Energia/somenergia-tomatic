@@ -6,6 +6,7 @@ import os
 from . import busy
 from .busy import isodate
 from yamlns import namespace as ns
+from pathlib import Path
 
 def open(*args, **kwd):
 	import io
@@ -30,10 +31,21 @@ class BusyTest(unittest.TestCase):
 	def setUp(self):
 		self.maxDiff=None
 		self.todelete=[]
+		self.holidaysfile = Path('holidays.conf')
+		self.oldholidays = self.holidaysfile.read_text(encoding='utf8')
+		self.holidaysfile.write_text(
+			"2020-12-24\tNadal\n"
+			"2020-12-25\tNadal\n"
+			"2020-12-26\tNadal\n"
+			"",
+			encoding='utf8',
+		)
 
 	def tearDown(self):
 		for filename in self.todelete:
 			os.remove(filename)
+		self.holidaysfile.write_text(
+			self.oldholidays, encoding='utf8')
 
 	def write(self, filename, content):
 		with open(filename,'w') as f:

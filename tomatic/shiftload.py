@@ -379,8 +379,9 @@ def main():
         downloadPersons,
         downloadLeaves,
         downloadIdealLoad,
-        downloadBusy,
         downloadVacations,
+        downloadFestivities,
+        downloadBusy,
         downloadShiftCredit,
     )
 
@@ -429,6 +430,7 @@ def main():
             downloadIdealLoad(config, args.certificate)
         if not config.get('busyFiles'):
             downloadBusy(config)
+            downloadFestivities(config)
             downloadVacations(config, source=args.holidays)
 
         step("Baixant bossa d'hores del tomatic...")
