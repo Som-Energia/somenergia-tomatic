@@ -32,7 +32,9 @@ class BusyTest(unittest.TestCase):
 		self.maxDiff=None
 		self.todelete=[]
 		self.holidaysfile = Path('holidays.conf')
-		self.oldholidays = self.holidaysfile.read_text(encoding='utf8')
+		self.oldholidays = None
+		if self.holidaysfile.exists():
+			self.oldholidays = self.holidaysfile.read_text(encoding='utf8')
 		self.holidaysfile.write_text(
 			"2020-12-24\tNadal\n"
 			"2020-12-25\tNadal\n"
@@ -44,8 +46,11 @@ class BusyTest(unittest.TestCase):
 	def tearDown(self):
 		for filename in self.todelete:
 			os.remove(filename)
-		self.holidaysfile.write_text(
-			self.oldholidays, encoding='utf8')
+		if self.oldholidays is None:
+			self.holidaysfile.unlink()
+		else:
+			self.holidaysfile.write_text(
+				self.oldholidays, encoding='utf8')
 
 	def write(self, filename, content):
 		with open(filename,'w') as f:
