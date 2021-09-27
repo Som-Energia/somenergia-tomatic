@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.1.0 2021-09-27
+
+- Take festivities (public holidays) from odoo
+- All scripts are installed when installing tomatic
+- New script `areavoip_callapi.py` to call Area Voip API entry points from CLI
+- Removed scripts `tomatic_sandbox.py`
+
 ## 4.0.3 2021-09-06
 
 - Fix: supporting removed hangout accounts which had emails as None, not []
