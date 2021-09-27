@@ -30,7 +30,6 @@ setup(
         'tomatic_resetshiftcredit.sh',
         'tomatic_retrieve.py',
         'tomatic_rtqueue.py',
-        'tomatic_sandbox.py',
         'tomatic_says.py',
         'tomatic_scheduler.py',
         'tomatic_shiftload.py',
