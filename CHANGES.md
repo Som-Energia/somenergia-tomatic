@@ -5,6 +5,7 @@
 - Take festivities (public holidays) from odoo
 - All scripts are installed when installing tomatic
 - New script `areavoip_callapi.py` to call Area Voip API entry points from CLI
+- New script `tomatic_retriever.py` to diagnose file retrieval problems
 - Removed scripts `tomatic_sandbox.py`
 
 ## 4.0.3 2021-09-06
