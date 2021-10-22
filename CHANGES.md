@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- Callinfo: Show contract owner NIF
+- Callinfo: Show state of contracts (previously just showed city, not informative for small towns)
+- Callinfo: Contract details include full informed ATR cases
+- Callinfo: Display multiple powers for each period
+- Callinfo: Button to update crm categories from the ERP
+- Callinfo: Do not crash when not contracts available
+
 ## 4.1.1 2021-11-09
 
 - Fix: port param to upload static timetables was ignored
