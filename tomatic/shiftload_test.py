@@ -163,7 +163,7 @@ class ShiftLoadTest(unittest.TestCase):
             alice=60,
             bob=60,
         )
-        load = shiftload.ponderatedLoad(ideal, 
+        load = shiftload.ponderatedLoad(ideal,
             businessDays=['dl', 'dm', 'dx', 'dj', 'dv'],
             daysoff=[],
             leaves=[],
@@ -178,7 +178,7 @@ class ShiftLoadTest(unittest.TestCase):
             alice=10,
             bob=10,
         )
-        load = shiftload.ponderatedLoad(ideal, 
+        load = shiftload.ponderatedLoad(ideal,
             businessDays=['dm', 'dx', 'dj', 'dv'],
             daysoff=[
                 ns(
