@@ -274,7 +274,7 @@ class ShiftLoadTest(unittest.TestCase):
         tmpfile = Path("tempfile")
         tmpfile.write_text(lines)
         busytable.load(str(tmpfile), busy.isodate('2020-01-02'))
- 
+        tmpfile.unlink()
         return busytable
 
     def test_capacity_noLimits(self):
