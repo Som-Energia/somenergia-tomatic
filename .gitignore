@@ -3,6 +3,8 @@ tomatic/dist
 node_modules
 dbconfig.py
 cover
+graelles
+.venv
 
 .eggs
 
