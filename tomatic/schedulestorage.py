@@ -190,10 +190,8 @@ def publishStatic(graella):
     del params.user
     del params.path
     remotewrite(
-        params.user,
-        params.host,
-        str(Path(params.path) / 'graella-{week}.html'.format(**graella)),
-        sched.html(),
-        )
+        content = sched.html(),
+        **params
+    )
 
 #vim: ts=4 sw=4 et

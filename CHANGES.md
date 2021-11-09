@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Using port param when uploading to tomatic-static
+
 ## 4.1.0 2021-09-27
 
 - Take festivities (public holidays) from odoo
