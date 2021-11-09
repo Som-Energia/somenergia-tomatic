@@ -183,6 +183,12 @@ def publishStatic(graella):
     step("publishStatic: publishStatic exists {}", dbconfig.tomatic.publishStatic)
     params = dbconfig.tomatic.publishStatic
     sched=HtmlGen(graella)
+    params=ns(params,
+        username = params.user,
+        filename = str(Path(params.path) / 'graella-{week}.html'.format(**graella)),
+    )
+    del params.user
+    del params.path
     remotewrite(
         params.user,
         params.host,
