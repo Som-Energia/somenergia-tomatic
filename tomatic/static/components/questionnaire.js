@@ -414,7 +414,6 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
           ]),
           llistaMotius(),
           m(".final-motius", [
-            m("strong", "Comentaris:"),
             m(Textfield, {
               className: "textfield-comentaris",
               label: "Comentaris",
