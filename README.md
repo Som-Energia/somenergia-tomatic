@@ -76,7 +76,7 @@ source .venv/bin/activate
 python setup develop
 npm install
 npm run build # for development assets
-#npm run deploy # for production assets # TODO failing
+npm run deploy # for production assets
 ```
 
 ### Configuration
