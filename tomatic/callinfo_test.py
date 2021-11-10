@@ -355,7 +355,7 @@ class CallInfo_Test(unittest.TestCase):
                 is_administrator: False
                 administrator: ''
                 cups_adress: '...ig)'
-                titular_name: '...iol'
+                titular_name: '...iol (...82V)'
                 energetica: False
                 generation: True
                 iban: '...029'
@@ -397,7 +397,7 @@ class CallInfo_Test(unittest.TestCase):
                 is_administrator: False
                 administrator: ''
                 cups_adress: '...ig)'
-                titular_name: '...xes'
+                titular_name: '...xes (...550)'
                 energetica: False
                 generation: True
                 iban: '...200'
@@ -439,7 +439,7 @@ class CallInfo_Test(unittest.TestCase):
                 is_administrator: False
                 administrator: ''
                 cups_adress: '...ig)'
-                titular_name: '...ero'
+                titular_name: '...ero (TODO)'
                 energetica: False
                 generation: False
                 iban: '...835'
@@ -481,7 +481,7 @@ class CallInfo_Test(unittest.TestCase):
                 is_administrator: False
                 administrator: ''
                 cups_adress: '...ig)'
-                titular_name: '...nia'
+                titular_name: '...nia (...66B)'
                 energetica: False
                 generation: False
                 iban: '...768'
@@ -539,7 +539,7 @@ class CallInfo_Test(unittest.TestCase):
               is_administrator: False
               administrator: ''
               cups_adress: '...ig)'
-              titular_name: '...iol'
+              titular_name: '...iol (...82V)'
               energetica: False
               generation: True
               iban: '...029'
@@ -590,7 +590,7 @@ class CallInfo_Test(unittest.TestCase):
               is_administrator: False
               administrator: ''
               cups_adress: '...rú)'
-              titular_name: '...ger'
+              titular_name: '...ger (...57W)'
               energetica: False
               generation: False
               iban: '...445'
@@ -641,7 +641,7 @@ class CallInfo_Test(unittest.TestCase):
               is_administrator: False
               administrator: ''
               cups_adress: '...ón)'
-              titular_name: '...tín'
+              titular_name: '...tín (...11Z)'
               energetica: True
               generation: False
               iban: '...113'
@@ -693,7 +693,7 @@ class CallInfo_Test(unittest.TestCase):
               is_administrator: False
               administrator: ''
               cups_adress: '...La)'
-              titular_name: '...cís'
+              titular_name: '...cís (...80D)'
               energetica: False
               generation: False
               iban: '...195'
@@ -744,7 +744,7 @@ class CallInfo_Test(unittest.TestCase):
               is_administrator: False
               administrator: ''
               cups_adress: '...es)'
-              titular_name: '...Mar'
+              titular_name: '...Mar (...47C)'
               energetica: False
               generation: False
               iban: '...933'
@@ -796,7 +796,7 @@ class CallInfo_Test(unittest.TestCase):
               is_administrator: False
               administrator: ''
               cups_adress: '...da)'
-              titular_name: '...lex'
+              titular_name: '...lex (...95B)'
               energetica: False
               generation: False
               iban: '...839'
@@ -832,7 +832,7 @@ class CallInfo_Test(unittest.TestCase):
               is_administrator: False
               administrator: ''
               cups_adress: '...ès)'
-              titular_name: '...tse'
+              titular_name: '...tse (...48A)'
               energetica: False
               generation: False
               iban: '...163'
@@ -868,7 +868,7 @@ class CallInfo_Test(unittest.TestCase):
               is_administrator: False
               administrator: ''
               cups_adress: '...na)'
-              titular_name: '... Cb'
+              titular_name: '... Cb (...661)'
               energetica: False
               generation: False
               iban: '...809'
@@ -904,7 +904,7 @@ class CallInfo_Test(unittest.TestCase):
               is_administrator: False
               administrator: ''
               cups_adress: '...la)'
-              titular_name: '...tín'
+              titular_name: '...tín (...89W)'
               energetica: False
               generation: False
               iban: '...958'
@@ -940,7 +940,7 @@ class CallInfo_Test(unittest.TestCase):
               is_administrator: False
               administrator: ''
               cups_adress: '...da)'
-              titular_name: '... Mª'
+              titular_name: '... Mª (...05D)'
               energetica: False
               generation: False
               iban: '...920'
@@ -991,7 +991,7 @@ class CallInfo_Test(unittest.TestCase):
               is_administrator: False
               administrator: ''
               cups_adress: '...na)'
-              titular_name: '...rat'
+              titular_name: '...rat (...20A)'
               energetica: False
               generation: False
               iban: '...167'
@@ -1042,7 +1042,7 @@ class CallInfo_Test(unittest.TestCase):
               is_administrator: False
               administrator: ''
               cups_adress: '...eu)'
-              titular_name: '...deu'
+              titular_name: '...deu (...00G)'
               energetica: False
               generation: False
               iban: ''
@@ -1094,7 +1094,7 @@ class CallInfo_Test(unittest.TestCase):
               is_administrator: False
               administrator: ''
               cups_adress: '...na)'
-              titular_name: '...aúl'
+              titular_name: '...aúl (...11Z)'
               energetica: False
               generation: False
               iban: '...087'
@@ -1130,7 +1130,7 @@ class CallInfo_Test(unittest.TestCase):
               is_administrator: False
               administrator: ''
               cups_adress: '...ig)'
-              titular_name: '...iol'
+              titular_name: '...iol (...82V)'
               energetica: False
               generation: True
               iban: '...029'
@@ -1172,7 +1172,7 @@ class CallInfo_Test(unittest.TestCase):
               is_administrator: False
               administrator: ''
               cups_adress: '...na)'
-              titular_name: '...nna'
+              titular_name: '...nna (...61F)'
               energetica: False
               generation: True
               iban: '...421'
