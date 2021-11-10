@@ -2,6 +2,7 @@
 
 from yamlns import namespace as ns
 
+ENERGETICA_PARTNER_ID = 38039
 
 class CallInfo(object):
 
@@ -341,7 +342,8 @@ class CallInfo(object):
             cups_adress = self.anonymize(
                 getCUPSAdress(contract['cups'][0])
             )
-            energetica = contract['soci'] and contract['soci'][0] == 38039
+            energetica = contract['soci'] and \
+                contract['soci'][0] == ENERGETICA_PARTNER_ID
             iban = self.anonymize(contract['bank'][1]) \
                 if contract['bank'] else ''
             lot_facturacio = contract['lot_facturacio'][1] \
