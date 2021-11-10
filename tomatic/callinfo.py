@@ -59,9 +59,7 @@ class CallInfo(object):
             ])
 
     def partnerByAddressId(self, address_ids):
-        result = []
-        if len(address_ids) == 0:
-            return result
+        if not address_ids: return []
         return [
             address[0]
             for address
@@ -106,31 +104,29 @@ class CallInfo(object):
         return result
 
     def getPartnerRelatedContracts(self, partner_id):
-        contract_tp_ids = self.O.GiscedataPolissa.search([
-            ('titular.id', '=', partner_id),
-            ('pagador.id', '=', partner_id),
+        contract_ids = self.O.GiscedataPolissa.search([
+            '|','|',
+            ('titular', '=', partner_id),
+            ('pagador', '=', partner_id),
+            ('soci', '=', partner_id),
         ])
-        contract_titular_ids = self.O.GiscedataPolissa.search([
-            ('titular.id', '=', partner_id),
+        if not contract_ids: return []
+        contracts = self.O.GiscedataPolissa.read(contract_ids, [
+            'titular',
+            'pagador',
+            'soci',
         ])
-        contract_pagador_ids = self.O.GiscedataPolissa.search([
-            ('pagador.id', '=', partner_id),
-        ])
-        contract_soci_ids = self.O.GiscedataPolissa.search([
-            ('soci.id', '=', partner_id),
-        ])
-
-        contracts = contract_tp_ids
-        for contract_titular_id in contract_titular_ids:
-            if contract_titular_id not in contracts:
-                contracts.append(contract_titular_id)
-        for contract_pagador_id in contract_pagador_ids:
-            if contract_pagador_id not in contracts:
-                contracts.append(contract_pagador_id)
-        for contract_soci_id in contract_soci_ids:
-            if contract_soci_id not in contracts:
-                contracts.append(contract_soci_id)
-        return contracts
+        return [
+            contract['id']
+            for contract in sorted(contracts,
+                reverse=True,
+                key=lambda x: (0
+                    + (4 if x['titular'][0] == partner_id else 0)
+                    + (2 if x['pagador'][0] == partner_id else 0)
+                    + (1 if x['soci'][0] == partner_id else 0)
+                )
+            )
+        ]
 
     def partnersInfo(self, partners_ids, shallow=False):
         no_partners = []
