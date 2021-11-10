@@ -16,6 +16,8 @@ var Card = require('polythene-mithril-card').Card;
 var ListTile = require('polythene-mithril-list-tile').ListTile;
 var List = require ('polythene-mithril-list').List;
 var Checkbox = require('polythene-mithril-checkbox').Checkbox;
+var RadioGroup = require('polythene-mithril-radio-group').RadioGroup;
+var RadioButton = require('polythene-mithril-radio-button').RadioButton;
 var CallInfo = require('./callinfo');
 var Login = require('./login');
 
@@ -280,67 +282,40 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
     ]);
   }
 
-  var tipusATR = function(reclamacio) {
-    return m("", [
-      m("p", "Tipus: "),
-      m(Checkbox, {
-        className: "checkbox",
-        name: 'proc',
-        checked: reclamacio.proc,
-        label: "Procedente",
-        onChange: function() {
-          reclamacio.proc = !CallInfo.call.proc;
-          reclamacio.improc = false
-        },
-      }),
-      m("br"),
-      m(Checkbox, {
-        className: "checkbox",
-        name: 'improc',
-        checked: reclamacio.improc,
-        label: "Improcedente",
-        onChange: function() {
-          reclamacio.improc = !CallInfo.call.improc;
-          reclamacio.proc = false
-        },
-      }),
-      m("br"),
-      m(Checkbox, {
-        className: "checkbox",
-        name: 'noproc',
-        checked: (!reclamacio.improc && !reclamacio.proc),
-        label: "No gestionable",
-        onChange: function() {
-          reclamacio.improc = false;
-          reclamacio.proc = false;
-        },
-      }),
-    ]);
-  }
-
   var preguntarResolt = function(reclamacio) {
-    return m("", [
-      m("p", "S'ha resolt?"),
-      m(Checkbox, {
-        className: "checkbox",
-        name: 'solved-yes',
-        checked: reclamacio.solved,
-        label: "Sí",
-        onChange: function() {
-            reclamacio.solved = !reclamacio.solved;
+    return m(".case-resolution", [
+      m("p", "Resolució:"),
+      m(RadioGroup, {
+        name: 'resolution',
+        onChange: function(state) {
+          console.log('newstate', state.value);
+          reclamacio.solved = state.value != 'unsolved';
+          reclamacio.proc = state.value == 'procedent';
+          reclamacio.improc = state.value == 'improcedent';
+          console.log('reclamacio', reclamacio);
         },
+        checkedValue: (
+          !reclamacio.solved ? 'unsolved' :
+          reclamacio.proc ? 'procedent' :
+          reclamacio.improc ? 'improcedent' :
+          'nogestionable'
+        ),
+        buttons: [{
+            defaultChecked: true,
+            label: "No resolta",
+            value: 'unsolved',
+        },{
+            label: "Procedent",
+            value: 'procedent',
+        },{
+            label: "Improcedent",
+            value: 'improcedent',
+        },{
+            label: "No Gestionable",
+            value: 'nogestionable',
+        }],
       }),
-      m("br"),
-      m(Checkbox, {
-        className: "checkbox",
-        name: 'solved-no',
-        checked: !reclamacio.solved,
-        label: "No",
-        onChange: function() {
-            reclamacio.solved = !reclamacio.solved;
-        },
-      }),
-    ]);
+    ])
   }
 
   var buttons = function(reclamacio) {
@@ -374,7 +349,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
     var reclamacio = {
       "proc": false,
       "improc": false,
-      "solved": true,
+      "solved": false,
       "tag": tag
     }
     Dialog.show(function() {
@@ -386,9 +361,6 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
           seleccionaUsuari(reclamacio, tag),
           m("br"),
           preguntarResolt(reclamacio),
-          m("br"),
-          (!reclamacio.solved && m("") || tipusATR(reclamacio)),
-          m("br"),
         ],
         footerButtons: buttons(reclamacio),
       };},{id:'fillReclama'});

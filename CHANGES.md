@@ -9,6 +9,7 @@
 - Callinfo: Display multiple powers for each period
 - Callinfo: Button to update crm categories from the ERP
 - Callinfo: Do not crash when no contracts available
+- Callinfo: Unified questionary checkboxes in single question
 
 ## 4.1.1 2021-11-09
 
