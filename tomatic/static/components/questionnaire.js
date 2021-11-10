@@ -288,11 +288,9 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
       m(RadioGroup, {
         name: 'resolution',
         onChange: function(state) {
-          console.log('newstate', state.value);
           reclamacio.solved = state.value != 'unsolved';
           reclamacio.proc = state.value == 'procedent';
           reclamacio.improc = state.value == 'improcedent';
-          console.log('reclamacio', reclamacio);
         },
         checkedValue: (
           !reclamacio.solved ? 'unsolved' :
