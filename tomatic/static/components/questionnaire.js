@@ -265,40 +265,17 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
             reclamacio.tag = document.getElementById("select-user").value;
           },
         },
-        [
-          m("option", {
-            "value": options[0],
-            "selected": section === options[0]
-          }, options[0]),
-          m("option", {
-            "value": options[1],
-            "selected": section === options[1]
-          }, options[1]),
-          m("option", {
-            "value": options[2],
-            "selected": section === options[2]
-          }, options[2]),
-          m("option", {
-            "value": options[3],
-            "selected": section === options[3]
-          }, options[3]),
-          m("option", {
-            "value": options[4],
-            "selected": section === options[4]
-          }, options[4]),
-          m("option", {
-            "value": options[5],
-            "selected": section === options[5]
-          }, options[5]),
-          m("option", {
-            "value": options[6],
-            "selected": section === options[6]
-          }, options[6]),
-          m("option", {
-            "value": section,
-            "selected": !options.includes(section)
-          }, section)
-        ]
+        options.map(function(option) {
+          return
+            m("option", {
+              "value": option,
+              "selected": section === option
+            }, option);
+        }),
+        m("option", {
+          "value": section,
+          "selected": !options.includes(section)
+        }, section)
       )
     ]);
   }

@@ -87,7 +87,6 @@ class CallInfo(object):
             result.add(contract.pagador[0])
             result.add(contract.soci[0])
             result.add(self.getPartnerId(contract.direccio_notificacio[0]))
-        print(result)
         return list(result)
 
     def partnerInfo(self, partner_data):
