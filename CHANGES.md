@@ -2,14 +2,15 @@
 
 ## Unreleased
 
+- Callinfo: Contract details include full informed ATR cases
 - Callinfo: Support administrator role
 - Callinfo: Show contract owner NIF
 - Callinfo: Show state of contracts (previously just showed city, not informative for small towns)
-- Callinfo: Contract details include full informed ATR cases
 - Callinfo: Display multiple powers for each period
 - Callinfo: Button to update crm categories from the ERP
 - Callinfo: Do not crash when no contracts available
 - Callinfo: Unified questionary checkboxes in single question
+- Callinfo: Rethought texts in case resolution dialog
 
 ## 4.1.1 2021-11-09
 
