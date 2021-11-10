@@ -37,7 +37,20 @@ This software is used within SomEnergia cooperative to manage phone support to m
 
 ## Setup
 
-### Dependencies and assets building
+### Development setup
+
+```bash
+sudo apt-get install git gcc libffi-dev libssl-dev nodejs npm
+git clone https://github.com/Som-Energia/somenergia-tomatic.git
+cd somenergia-tomatic
+npm install
+npm run build # for development assets
+npm run deploy # for production assets
+virtualenv .venv
+python setup develop
+```
+
+### Production Setup
 
 - Install pyenv in the running user. Follow ["Basic githup install"](https://github.com/pyenv/pyenv#basic-github-checkout)
 
@@ -66,19 +79,6 @@ npm run build # for development assets
 #npm run deploy # for production assets # TODO failing
 ```
 
-Development setup
-
-```bash
-sudo apt-get install git gcc libffi-dev libssl-dev nodejs npm
-git clone https://github.com/Som-Energia/somenergia-tomatic.git
-cd somenergia-tomatic
-npm install
-npm run build # for development assets
-npm run deploy # for production assets
-virtualenv .venv
-python setup develop
-```
-
 ### Configuration
 
 - Copy `config-example.yaml` as `config.yaml` and edit it
@@ -87,8 +87,12 @@ python setup develop
 
 ### Setting up cron tasks
 
-This is needed in order to enable automatic asterisk shift switching
-and hangouts notifications.
+This is needed in order to enable automations including:
+
+- programming queues in the PBX according the turns in the timetable
+- hangouts notifications just before each turn
+- hangouts reporting of the daily stats
+- updating the extension names in the PBX
 
 ```bash
 sudo chown root:root crontab
@@ -118,7 +122,7 @@ since it is not compatible with Python 2.
 ## Google Drive data sources
 
 Computing timetables requires access to a Google Drive Spreadsheet
-where you store the source configuration: vacations, leaves, ideal work load...
+where you store the source configuration: leaves, ideal work load...
 In order to access it, you must provide a certificate.
 Google change the interface so often is hard to provide a set of steps.
 In overall it would be:
@@ -149,34 +153,21 @@ which are tables a column for each semester day and a row per person.
 
 ### Callerid API for PBX callback
 
-In order for Callinfo page to update whenever you receive a call,
-the PBX should send a POST to the `/api/info/ringring` API entrypoint.
-The postdata should contain two variables `phone` and `ext`
-containing the caller id and the receiving extension.
+Tomatic can auto update the search of the current incomming call.
+You must program your PBX AGI scripts to send a requrest to the API.
 
-For example, with curl:
+For example, with curl, if the person with the extension 101 is going to
+receive a call from 555441234:
 
 ```bash
-$ curl -X POST  $BASEURL/api/info/ringring --data ext=101 --data phone=555441234
+$ curl --max-time 1 -X POST  $BASEURL/api/info/ringring --data ext=101 --data phone=555441234 || true
 ```
+
+Notice the `--max-time 1` used to avoid stalling the call if the api is down.
+Notice also the trailing `|| true` to ensure the call success.
+Both, may be needed depending on how you call this from you PBX.
 
 ## Usage
-
-### Scheduler
-
-To compute the timetable for the next week:
-
-```bash
-$ ./schedulehours.py
-```
-
-To skip the downloading of the data from google drive:
-
-```bash
-$ ./schedulehours.py --keep
-```
-
-See bellow how to grant access to the script.
 
 ### Web and API
 
@@ -193,6 +184,24 @@ $ ./tomatic_api.py
 ```
 
 Use `--help` to see other options.
+
+### Scheduler
+
+Notice: Now, this can be launched from the web user interface.
+
+To compute the timetable for the next week:
+
+```bash
+$ ./schedulehours.py
+```
+
+To skip the downloading of the data from google drive:
+
+```bash
+$ ./schedulehours.py --keep
+```
+
+See bellow how to grant access to the script.
 
 ### Direct asterisk extension configuration
 
@@ -226,7 +235,6 @@ To see the current queue (besides Tomatic web interface)
 ```bash
 $ ./tomatic_rtqueue.py show
 ```
-
 
 
 # Developers notes
@@ -311,43 +319,27 @@ sudo supervisorctl restart tomatic
 
 This is a review of the callinfo files.
 
-- `info_call_log`:
-	- "registre de motius no reclamació"
-	- `info_cases/YYYYMMDD.yaml`
-	- person dict to a list of info cases
-	- voki: removed
-- `claim_log`:
-	- "registre de motius reclamació"
-	 `atc_cases/YYYYMMDD.yaml`
-	- person dict to a list of atc cases (in ordre to create claims in the ERP)
-	- voki: removed
 - `call_log`:
 	- "registre de trucades (reclamació i no reclamacio)"
-	- `atc_cases/today_calls.yaml`
+	- `callinfo/dailycalls.yaml`
 	- `config.my_calls_log`
 	- person dict to a list of incomming calls of the day
-	- voki: renamed in config as `callinfo/dailycalls.yaml`
 - `info_call_types`:
 	- "tipus de motius no reclamacio"
-	- `callinfo/info_cases.yaml`
+	- `callinfo/info_types.txt`
 	- `config.info_cases`
-	- NOT A YAML!
 	- a line for each type description
 	- Venen d'un drive de la comi de telefon
-	- voki: renamed in config as `callinfo/info_types.txt`
-- `claim_types_keywords`:
-	- "paraules clau dels tipus de motius reclamacio"
-	- `claims_dict.yaml`
-	- `config.claims_dict_file`
-	- dictionary classificacio dels motius
-	- voki: renamed in config as `callinfo/claims_dict.yaml`
 - `claim_types`:
 	- "tipus de reclamacions"
-	- `claims.yaml`
+	- `callinfo/claim_types.txt`
 	- `config.claims_file`
-	- NOT A YAML!
 	- A line for each type of claim
-	- voki: renamed in config as `callinfo/claim_types.txt`
+- `claim_types_keywords`:
+	- "paraules clau dels tipus de motius reclamacio"
+	- `callinfo/claims_dict.yaml`
+	- `config.claims_dict_file`
+	- dictionary classificacio dels motius
 
 
 Atc Cases: Formal claims
