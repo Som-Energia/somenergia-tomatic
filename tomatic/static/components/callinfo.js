@@ -197,7 +197,6 @@ CallInfo.getClaims = function() {
       console.debug('Info GET apicall failed: ', error);
   });
 };
-CallInfo.getClaims();
 
 
 CallInfo.getInfos = function() {
@@ -217,7 +216,6 @@ CallInfo.getInfos = function() {
       console.debug('Info GET apicall failed: ', error);
   });
 };
-CallInfo.getInfos();
 
 
 CallInfo.updateClaims = function() {
@@ -285,8 +283,6 @@ CallInfo.getLogPerson = function () {
     console.debug('Info GET apicall failed: ', error)
   });
 };
-
-CallInfo.getLogPerson()
 
 CallInfo.isLogSelected = function(date) {
   return CallInfo.call.date === date;
@@ -357,6 +353,10 @@ CallInfo.onMessageReceived = function(event) {
     }
     console.debug("Message received from WebSockets and type not recognized.");
 }
+
+CallInfo.getClaims();
+CallInfo.getInfos();
+CallInfo.getLogPerson()
 
 Login.onLogin.push(CallInfo.sendIdentification);
 Login.onLogin.push(CallInfo.getLogPerson);
