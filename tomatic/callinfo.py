@@ -328,30 +328,30 @@ class CallInfo(object):
             if contract_id not in all_contracts_dict:
                 continue
             contract = all_contracts_dict[contract_id]
-            end_date = contract['data_baixa'] \
-                if contract['data_baixa'] else ''
-            is_titular = contract['titular'] and \
-                contract['titular'][0] == partner_id
-            is_partner = contract['soci'] and \
-                contract['soci'][0] == partner_id
-            is_notifier = self.getPartnerId(
-                contract['direccio_notificacio'][0]
-            ) == partner_id
-            is_payer = contract['pagador'] and \
-                contract['pagador'][0] == partner_id
+            def foreignName(c, atribute):
+                if not c[atribute]: return ''
+                return c[atribute][1]
+
+            def foreignId(c, atribute):
+                if not c[atribute]: return None
+                return c[atribute][0]
+
+            end_date = contract['data_baixa'] or ''
+            is_titular = foreignId(contract,'titular') == partner_id
+            is_partner = foreignId(contract,'soci') == partner_id
+            notifier_address_id = foreignId(contract,'direccio_notificacio')
+            is_notifier = self.getPartnerId(notifier_address_id) == partner_id
+            is_payer = foreignId(contract,'pagador') == partner_id
             cups_adress = self.anonymize(
-                getCUPSAdress(contract['cups'][0])
+                getCUPSAdress(foreignId(contract,'cups'))
             )
-            energetica = contract['soci'] and \
-                contract['soci'][0] == ENERGETICA_PARTNER_ID
-            iban = self.anonymize(contract['bank'][1]) \
-                if contract['bank'] else ''
-            lot_facturacio = contract['lot_facturacio'][1] \
-                if contract['lot_facturacio'] else ''
+            energetica = foreignId(contract, 'soci') == ENERGETICA_PARTNER_ID
+            iban = self.anonymize(foreignName(contract,'bank'))
+            lot_facturacio = foreignName(contract, 'lot_facturacio')
             lectures_comptadors = None if shallow else self.meterReadings(contract['comptadors'])
             last_invoices = None if shallow else self.lastInvoices(contract['id'])
             partner_vat = self.O.ResPartner.read(
-                contract['titular'][0], ['vat']
+                foreignId(contract,'titular'), ['vat']
             ).get('vat')[2:]
             debt = contract['debt_amount']
             atr_cases = None if shallow else self.atrCases(contract['id'])
@@ -360,8 +360,8 @@ class CallInfo(object):
                     start_date=contract['data_alta'],
                     end_date=end_date,
                     power=powers(contract['potencies_periode']),
-                    cups=self.anonymize(contract['cups'][1]),
-                    fare=contract['tarifa'][1],
+                    cups=self.anonymize(foreignName(contract,'cups')),
+                    fare=foreignName(contract,'tarifa'),
                     state=contract['state'],
                     number=contract['name'],
                     last_invoiced=contract['data_ultima_lectura'],
@@ -373,7 +373,7 @@ class CallInfo(object):
                     is_payer=is_payer,
                     cups_adress=cups_adress,
                     titular_name= \
-                        f"{self.anonymize(contract['titular'][1])} ({partner_vat})",
+                        f"{self.anonymize(foreignName(contract,'titular'))} ({partner_vat})",
                     energetica=energetica,
                     generation=hasGeneration(contract['id']),
                     iban=iban,
