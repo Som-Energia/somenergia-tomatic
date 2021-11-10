@@ -256,7 +256,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
       "ATR M - COMER"
     ]
     return m("", [
-      m("p", "Secció: " ),
+      m("p", "Equip: " ),
       m("select",
         {
           id: "select-user",
