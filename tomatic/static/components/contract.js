@@ -125,29 +125,24 @@ var atrCases = function(cases) {
       "No hi ha casos ATR disponibles.",
     ]));
   }
-  atr_cases = [];
-  atr_cases.push(
+  return m(".atr-cases", m("table", [
     m("tr", [
       m("th", "Data"),
       m("th", "Procés"),
       m("th", "Pas"),
       m("th", "Estat"),
       m("th", "Descripció")
-    ])
-  );
-  for (case_index in cases) {
-    atr_case = cases[case_index];
-    atr_cases.push(
-      m("tr", [
+    ]),
+    cases.map(function(atr_case) {
+      return m("tr", [
         m("td", atr_case.date),
         m("td", atr_case.proces),
         m("td", atr_case.step),
         m("td", m(atr_case.state != 'done' ? ".alert-case" : "", atr_case.state)),
         m("td", m('span', {title: atr_case.additional_info}, atr_case.additional_info) )
-      ])
-    )
-  }
-  return m(".atr-cases", m("table", atr_cases));
+      ]);
+    })
+  ]));
 }
 
 
