@@ -120,7 +120,7 @@ var QueueWidget = {
 						+ (line.incall?"En Trucada. ":"")
 					) || "Disponible.",
 					},
-					Tomatic.extension(line.key),
+					Tomatic.extension(line.key)
 				);
 			}),
 			m('.queueitem.add', {
@@ -181,44 +181,44 @@ var WeekList = {
 };
 
 const scriptLauncherBase = 'http://tomatic.somenergia.lan:5000';
-const menuOptions = () => { return [{
+const menuOptions = function() { return [{
 	title: "Genera càrregues setmanals",
-	action: () => {
+	action: function() {
 		location.href = scriptLauncherBase + "/runner/carregues";
 	},
 },{
 	title: "Planificador de Graelles",
-	action: () => {
+	action: function() {
 		location.href = "/api/planner/";
 	},
 },{
 	title: "Estadístiques de trucades",
-	action: () => {
+	action: function() {
 		location.href = scriptLauncherBase + "/runner/statshistory";
 	},
 },{
 	title: "En Tomàtic diu...",
-	action: () => {
+	action: function() {
 		location.href = scriptLauncherBase + "/runner/says";
 	},
 },{
 	title: "Reomple el torn que toca a la cua",
-	action: () => {
+	action: function() {
 		location.href = scriptLauncherBase + "/runner/reloadqueue";
 	},
 },{
 	title: "Anotacions: Actualitza categories",
-	action: () => {
+	action: function() {
 		CallInfoPage.settingsDialog()
 	},
 },{
 	title: "Altres scripts de Centraleta",
-	action: () => {
+	action: function() {
 		location.href = scriptLauncherBase;
 	},
 },{
 	title: "Kumato mode",
-	action: () => {
+	action: function() {
 		kumato = ! kumato;
 	},
 }]};
@@ -242,10 +242,10 @@ const toolbarRow = function(title) {
 
 
 
-const MenuContent = (options) => {
+const MenuContent = function(options) {
 	return m(List, {
 		compact: true,
-		tiles: options.map((item) => {
+		tiles: options.map(function(item) {
 			return m(ListTile, {
 				title: item.title,
 				ink: true,
@@ -261,11 +261,11 @@ const MenuContent = (options) => {
 };
 
 const MenuButton = {
-	oninit: (vnode) => {
+	oninit: function(vnode) {
 		vnode.state.shown = false;
 		vnode.attrs.id = vnode.attrs.id || 'the_menu'
 	},
-	view: (vnode) => {
+	view: function(vnode) {
 		var attrs = vnode.attrs;
 		return m("", {
 			style: {
@@ -274,12 +274,14 @@ const MenuButton = {
 		},[
 			m(Shadow),
 			m(Menu, {
-				target: `#${attrs.id}`,
+				target: "#" + attrs.id,
 				origin: attrs.origin || false,
 				size: 5,
 				offset: 30,
 				show: vnode.state.shown,
-				didHide: () => ( vnode.state.shown = false ),
+				didHide: function() {
+					vnode.state.shown = false;
+				},
 				content: MenuContent(attrs.options || []),
 			}),
 			m(IconButton, {
@@ -289,7 +291,7 @@ const MenuButton = {
 				className: 'colored',
 				id: attrs.id,
 				events: {
-					onclick: (ev) => {
+					onclick: function(ev) {
 						vnode.state.shown = true;
 					},
 				},
@@ -703,8 +705,8 @@ var PbxPage = {
         return m('', [
 			Doc(m('',
 				"Visualitza les línies que estan actualment rebent trucades. "+
-				"Feu click al damunt per pausar-les o al signe '+' per afegir-ne"),
-				),
+				"Feu click al damunt per pausar-les o al signe '+' per afegir-ne")
+			),
 			m('h2[style=text-align:center]', "Linies en cua"),
 			m(QueueWidget),
         ]);

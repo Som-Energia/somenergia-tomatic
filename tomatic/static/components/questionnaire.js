@@ -1,5 +1,7 @@
 'use strict';
 
+/// Cal Registry Form
+
 module.exports = function() {
 
 var m = require('mithril');
@@ -123,16 +125,15 @@ var saveLogCalls = function(phone, user, claim, contract, partner) {
 }
 
 
-var llistaMotius = function( all = true ) {
-
+var llistaMotius = function() {
+  const all=true;
   function contains(value) {
     var contains = value.toLowerCase().includes(reason_filter.toLowerCase());
     return contains;
   }
-
-  var list_reasons = (all ?
-    [...call_reasons.infos, ...call_reasons.general] :
-    call_reasons.infos
+  var list_reasons = [].concat(
+    call_reasons.infos,
+    all ? call_reasons.general : []
   );
 
   if (reason_filter !== "") {
@@ -207,7 +208,7 @@ Questionnaire.annotationButton = function() {
         CallInfo.savingAnnotation ||
         Login.myName() === ""
       ),
-    }),
+    })
   );
 }
 
@@ -217,7 +218,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
     CallInfo.call.date = new Date().toISOString();
   }
 
-  var enviar = function(reclamacio = "") {
+  var enviar = function(reclamacio) {
     saveLogCalls(
       CallInfo.call.phone,
       Login.myName(),
@@ -502,7 +503,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
                 emplenaReclamacio(tag);
               }
               else {
-                enviar();
+                enviar("");
                 Dialog.hide({id:'settingsDialog'});
               }
             },

@@ -36,13 +36,6 @@ var contractFields = function(contract, partner) {
   var s_num = formatContractNumber(contract.number);
   var from_til = formatInterval(contract);
 
-  var powers = [];
-  Object.keys(contract.power).map(function(key, index) {
-    powers.push(
-      m("", m("b", key), `: ${contract.power[key]} kW`)
-    );
-  });
-
   return m(".contract-info-box", [
     m(".contract-info-item", [
       m("", m(".label-right", from_til)),
@@ -61,10 +54,12 @@ var contractFields = function(contract, partner) {
       contract.cups_adress
       ),
     m(".contract-info-item",
-      m("", m('.label', "Tarifa: "), contract.fare),
+      m("", m('.label', "Tarifa: "), contract.fare)
     ),
     m(".contract-info-item",
-      m("", powers),
+      Object.keys(contract.power).map(function(key, index) {
+        return m("", m(".label", key+": "), contract.power[key]+ ' kW');
+      })
     ),
     m(".contract-info-item", [
       m('.label', "IBAN: "),
@@ -111,7 +106,7 @@ ContractInfo.detailsPanel = function() {
               ])
             ])
           }},
-        ]
+        ],
       }),
     ])
   ]);
@@ -258,10 +253,10 @@ var extraInfo = function(
         energetica ? m(".label-energetica","És d'EnergEtica.") : ""
       ),
       m("",
-        (suspended_invoicing ? m(".label-alert","Facturació suspesa.") : "")
+        suspended_invoicing ? m(".label-alert","Facturació suspesa.") : ""
       ),
       m("",
-        has_debt ? m(".label-alert", `Té deute: ${has_debt}`) : "",
+        has_debt ? m(".label-alert", "Té deute: " +has_debt) : ""
       )
     ])
   }
@@ -330,7 +325,7 @@ ContractInfo.mainPanel = function(info) {
   }
   return m(
     ".contracts",
-    contractCard(partner),
+    contractCard(partner)
   );
 }
 

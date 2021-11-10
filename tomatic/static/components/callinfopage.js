@@ -58,7 +58,9 @@ var typeOfSearch = function() {
       ["email", "Email"],
       ["contract", "Contracte"],
       ["all", "Tot"],
-    ].map( ([name,text])=>{
+    ].map( function(item) {
+      const name = item[0];
+      const text = item[1];
       return m("option", {
         value: name,
         selected: CallInfo.search_by === name,
@@ -297,15 +299,11 @@ CallInfoPage.view = function() {
               m('.plane-info', [
                 m(".layout.vertical.flex", [
                   PartnerInfo.allInfo(CallInfo.file_info),
-                  ContractInfo.mainPanel(
-                    CallInfo.file_info,
-                  ),
+                  ContractInfo.mainPanel(CallInfo.file_info),
                 ]),
-                ContractInfo.detailsPanel(
-                  CallInfo.file_info,
-                ),
+                ContractInfo.detailsPanel(CallInfo.file_info),
               ])
-            ))),
+            )))
           ),
         ])
       ])
