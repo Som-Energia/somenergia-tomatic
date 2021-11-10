@@ -1,8 +1,8 @@
 # Changelog
 
-## Unreleased
+## 4.1.1 2021-11-09
 
-- Using port param when uploading to tomatic-static
+- Fix: port param to upload static timetables was ignored
 
 ## 4.1.0 2021-09-27
 
