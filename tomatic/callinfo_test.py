@@ -352,6 +352,8 @@ class CallInfo_Test(unittest.TestCase):
                 is_partner: True
                 is_notifier: True
                 is_payer: True
+                is_administrator: False
+                administrator: ''
                 cups_adress: '...ig)'
                 titular_name: '...iol'
                 energetica: False
@@ -392,6 +394,8 @@ class CallInfo_Test(unittest.TestCase):
                 is_partner: True
                 is_notifier: True
                 is_payer: True
+                is_administrator: False
+                administrator: ''
                 cups_adress: '...ig)'
                 titular_name: '...xes'
                 energetica: False
@@ -432,6 +436,8 @@ class CallInfo_Test(unittest.TestCase):
                 is_partner: true
                 is_notifier: false
                 is_payer: false
+                is_administrator: False
+                administrator: ''
                 cups_adress: '...ig)'
                 titular_name: '...ero'
                 energetica: False
@@ -472,6 +478,8 @@ class CallInfo_Test(unittest.TestCase):
                 is_partner: true
                 is_notifier: false
                 is_payer: false
+                is_administrator: False
+                administrator: ''
                 cups_adress: '...ig)'
                 titular_name: '...nia'
                 energetica: False
@@ -528,6 +536,8 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: True
               is_notifier: True
               is_payer: True
+              is_administrator: False
+              administrator: ''
               cups_adress: '...ig)'
               titular_name: '...iol'
               energetica: False
@@ -577,6 +587,8 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: False
               is_notifier: False
               is_payer: False
+              is_administrator: False
+              administrator: ''
               cups_adress: '...rú)'
               titular_name: '...ger'
               energetica: False
@@ -626,6 +638,8 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: False
               is_notifier: True
               is_payer: True
+              is_administrator: False
+              administrator: ''
               cups_adress: '...ón)'
               titular_name: '...tín'
               energetica: True
@@ -676,6 +690,8 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: True
               is_notifier: True
               is_payer: True
+              is_administrator: False
+              administrator: ''
               cups_adress: '...La)'
               titular_name: '...cís'
               energetica: False
@@ -725,6 +741,8 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: False
               is_notifier: True
               is_payer: True
+              is_administrator: False
+              administrator: ''
               cups_adress: '...es)'
               titular_name: '...Mar'
               energetica: False
@@ -775,6 +793,8 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: True
               is_notifier: True
               is_payer: True
+              is_administrator: False
+              administrator: ''
               cups_adress: '...da)'
               titular_name: '...lex'
               energetica: False
@@ -809,6 +829,8 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: false
               is_notifier: true
               is_payer: true
+              is_administrator: False
+              administrator: ''
               cups_adress: '...ès)'
               titular_name: '...tse'
               energetica: False
@@ -843,6 +865,8 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: false
               is_notifier: true
               is_payer: true
+              is_administrator: False
+              administrator: ''
               cups_adress: '...na)'
               titular_name: '... Cb'
               energetica: False
@@ -877,6 +901,8 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: false
               is_notifier: true
               is_payer: true
+              is_administrator: False
+              administrator: ''
               cups_adress: '...la)'
               titular_name: '...tín'
               energetica: False
@@ -911,6 +937,8 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: false
               is_notifier: true
               is_payer: true
+              is_administrator: False
+              administrator: ''
               cups_adress: '...da)'
               titular_name: '... Mª'
               energetica: False
@@ -960,6 +988,8 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: False
               is_notifier: True
               is_payer: True
+              is_administrator: False
+              administrator: ''
               cups_adress: '...na)'
               titular_name: '...rat'
               energetica: False
@@ -1009,6 +1039,8 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: True
               is_notifier: True
               is_payer: True
+              is_administrator: False
+              administrator: ''
               cups_adress: '...eu)'
               titular_name: '...deu'
               energetica: False
@@ -1059,6 +1091,8 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: True
               is_notifier: True
               is_payer: True
+              is_administrator: False
+              administrator: ''
               cups_adress: '...na)'
               titular_name: '...aúl'
               energetica: False
@@ -1093,6 +1127,8 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: True
               is_notifier: True
               is_payer: True
+              is_administrator: False
+              administrator: ''
               cups_adress: '...ig)'
               titular_name: '...iol'
               energetica: False
@@ -1133,6 +1169,8 @@ class CallInfo_Test(unittest.TestCase):
               is_partner: False
               is_notifier: False
               is_payer: False
+              is_administrator: False
+              administrator: ''
               cups_adress: '...na)'
               titular_name: '...nna'
               energetica: False
@@ -1225,6 +1263,8 @@ class CallInfo_Test(unittest.TestCase):
         self.assertNsEqual(data, """\
             partners : Masses resultats
             """)
+
+# TODO: Contracte amb administradora
 
 
 unittest.TestCase.__str__ = unittest.TestCase.id

@@ -45,6 +45,11 @@ var contractFields = function(contract, partner) {
       m('.label', "Nom del titular: "),
       contract.titular_name
     ),
+    contract.administrator?
+    m(".contract-info-item", [
+      m('.label', "Administradora: "),
+      contract.administrator
+    ]):null,
     m(".contract-info-item",
       m('.label', "CUPS: "),
       contract.cups
@@ -67,10 +72,11 @@ var contractFields = function(contract, partner) {
     ]),
     m(".contract-info-item", [
       m(".label-right", [
-        (contract.is_titular ? m('span', {title: "Titular"}, "T ") : ""),
-        (contract.is_partner ? m('span', {title: "Socia"}, "S ") : ""),
-        (contract.is_payer ? m('span', {title: "Pagadora"}, "P ") : ""),
-        (contract.is_notifier ? m('span', {title: "Rep les notificacions"}, "N ") : ""),
+        (contract.is_titular ? m('span', {title: "Titular: Té el contracte al seu nom"}, "T ") : ""),
+        (contract.is_administrator ? m('span', {title: "Administradora: Permís de la titular per veure o gestionar-ho"}, "A ") : ""),
+        (contract.is_partner ? m('span', {title: "Socia: És la socia vinculada al contracte"}, "S ") : ""),
+        (contract.is_payer ? m('span', {title: "Pagadora: Les factures s'emeten i cobren al seu nom"}, "P ") : ""),
+        (contract.is_notifier ? m('span', {title: "Notificada: Rep les notificacions"}, "N ") : ""),
       ]),
     ]),
     m(

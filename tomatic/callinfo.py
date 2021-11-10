@@ -106,14 +106,16 @@ class CallInfo(object):
 
     def getPartnerRelatedContracts(self, partner_id):
         contract_ids = self.O.GiscedataPolissa.search([
-            '|','|',
+            '|','|','|',
             ('titular', '=', partner_id),
+            ('administradora', '=', partner_id),
             ('pagador', '=', partner_id),
             ('soci', '=', partner_id),
         ])
         if not contract_ids: return []
         contracts = self.O.GiscedataPolissa.read(contract_ids, [
             'titular',
+            'administradora',
             'pagador',
             'soci',
         ])
@@ -122,7 +124,8 @@ class CallInfo(object):
             for contract in sorted(contracts,
                 reverse=True,
                 key=lambda x: (0
-                    + (4 if x['titular'][0] == partner_id else 0)
+                    + (8 if x['titular'][0] == partner_id else 0)
+                    + (4 if x['administradora'] and x['administradora'][0]== partner_id else 0)
                     + (2 if x['pagador'][0] == partner_id else 0)
                     + (1 if x['soci'][0] == partner_id else 0)
                 )
@@ -316,6 +319,9 @@ class CallInfo(object):
             'titular',
             'soci',
             'pagador',
+            'administradora',
+            'administradora_permissions',
+            'administradora_nif',
             'direccio_notificacio',
             'bank',
             'lot_facturacio',
@@ -339,6 +345,7 @@ class CallInfo(object):
             end_date = contract['data_baixa'] or ''
             is_titular = foreignId(contract,'titular') == partner_id
             is_partner = foreignId(contract,'soci') == partner_id
+            is_administrator = foreignId(contract,'administradora') == partner_id
             notifier_address_id = foreignId(contract,'direccio_notificacio')
             is_notifier = self.getPartnerId(notifier_address_id) == partner_id
             is_payer = foreignId(contract,'pagador') == partner_id
@@ -353,6 +360,18 @@ class CallInfo(object):
             partner_vat = self.O.ResPartner.read(
                 foreignId(contract,'titular'), ['vat']
             ).get('vat')[2:]
+            titular_name= self.anonymize(foreignName(contract,'titular'))
+            if titular_name:
+                titular_name += f" ({self.anonymize(partner_vat)})"
+            administrator = foreignName(contract, 'administradora')
+            if administrator:
+                administrator += f" ({self.anonymize(contract.administradora_nif)})"
+                permissions = dict(
+                    manage = "Gestionar",
+                    readonly = "Només consultar",
+                ).get(contract['administradora_permissions'], "Error")
+                administrator += f" [{permissions}]"
+
             debt = contract['debt_amount']
             atr_cases = None if shallow else self.atrCases(contract['id'])
             ret.contracts.append(
@@ -371,9 +390,10 @@ class CallInfo(object):
                     is_partner=is_partner,
                     is_notifier=is_notifier,
                     is_payer=is_payer,
+                    is_administrator=is_administrator,
                     cups_adress=cups_adress,
-                    titular_name= \
-                        f"{self.anonymize(foreignName(contract,'titular'))} ({partner_vat})",
+                    titular_name= titular_name,
+                    administrator = administrator,
                     energetica=energetica,
                     generation=hasGeneration(contract['id']),
                     iban=iban,
