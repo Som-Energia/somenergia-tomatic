@@ -300,16 +300,16 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
         ),
         buttons: [{
             defaultChecked: true,
-            label: "No resolta",
+            label: "No resolt",
             value: 'unsolved',
         },{
-            label: "Procedent",
+            label: "Resolt; tenia raó",
             value: 'procedent',
         },{
-            label: "Improcedent",
+            label: "Resolt; no tenia raó",
             value: 'improcedent',
         },{
-            label: "No Gestionable",
+            label: "Resolt; no es podia fer res",
             value: 'nogestionable',
         }],
       }),
