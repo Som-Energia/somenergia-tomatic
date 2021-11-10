@@ -28,6 +28,7 @@ class CallInfo(object):
     def anonymize(self, string):
         if not self._anonymize:
             return string
+        if not string: return string
         return "..."+string[-3:]
 
     def addressByPhone(self, phone):
