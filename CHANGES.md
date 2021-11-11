@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 4.2.0 2021-11-11
 
 - Tomatic frontend reload when a new version in the server is detected
 - Callinfo: Contract details include full informed ATR cases
