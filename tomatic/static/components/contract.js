@@ -111,20 +111,55 @@ var contractFields = function(contract, partner) {
 ContractInfo.detailsPanel = function() {
   var contract = CallInfo.selectedContract();
   if (contract === null) { return null; }
+  var detailedViews = [
+    'atr',
+    'invoices',
+    'readings',
+  ];
+  if (CallInfo.activeDetailedView === undefined) {
+    CallInfo.activeDetailedView = 'atr';
+  }
+  var currentTab = CallInfo.activeDetailedView;
   return m(".contract-details.flex", [
     m(".partner-card", [
+      m(".partner-tabs", [
+        m(Tabs, {
+          selected: "true",
+          scrollable: "true",
+          all: {
+            activeSelected: "true",
+            ink: "true",
+          },
+          tabs: [{
+            label: 'ATR',
+            selected: currentTab == "atr",
+          },{
+            label: 'Factures',
+            selected: currentTab == "invoices",
+          },{
+            label: 'Lectures',
+            selected: currentTab == "readings",
+          }],
+          onChange: function(ev) {
+            CallInfo.activeDetailedView = detailedViews[ev.index];
+          }
+        }),
+      ]),
       m(Card, {
         className: 'card-info',
         content: [
           { text: {
             content: m("", [
               m(".contract-info-box", [
-                m('.card-part-header', "Darrers casos ATR"),
-                atrCases(contract.atr_cases),
-                m('.card-part-header', "Darreres factures del contracte"),
-                lastInvoices(contract.invoices),
-                m('.card-part-header', "Darreres lectures del contracte"),
-                meterReadings(contract.lectures_comptadors),
+                currentTab == "atr" && [
+                  atrCases(contract.atr_cases),
+                ],
+                currentTab == "invoices" && [
+                  lastInvoices(contract.invoices),
+                ],
+                currentTab == "readings" && [
+                  meterReadings(contract.lectures_comptadors),
+                ],
               ])
             ])
           }},
@@ -208,24 +243,20 @@ var meterReadings = function(readings) {
 var lastInvoices = function(invoices) {
   if (invoices === null) {
     return m(".factures",
-      m(".factures-info",
-        m(".loading.layout.vertical.center", [
-          "Carregant Factures...",
-          m(Spinner, {show: true}),
-        ])
-      )
+      m(".loading.layout.vertical.center", [
+        "Carregant Factures...",
+        m(Spinner, {show: true}),
+      ])
     );
   }
   if (invoices.length === 0) {
     return m(".factures",
-      m(".factures-info",
-        m(".loading.layout.vertical.center", [
-          "No hi ha factures disponibles"
-        ])
-      )
+      m(".loading.layout.vertical.center", [
+        "No hi ha factures disponibles"
+      ])
     );
   }
-  return m(".factures", m(".factures-info", invoices.map(function(invoice) {
+  return m(".factures", invoices.map(function(invoice) {
     return m(".factura-info-item", [
         m("div", [
           m(".label-right", invoice.initial_date, " ⇨ ", invoice.final_date),
@@ -252,7 +283,7 @@ var lastInvoices = function(invoices) {
         ])
       ]);
     })
-  ));
+  );
 }
 
 var extraInfo = function(
