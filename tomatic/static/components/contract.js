@@ -35,6 +35,18 @@ function formatInterval(contract) {
 var contractFields = function(contract, partner) {
   var s_num = formatContractNumber(contract.number);
   var from_til = formatInterval(contract);
+  var roles = [
+      ['T', contract.is_titular,
+        "Titular: Si té el contracte al seu nom"],
+      ['A', contract.is_administrator,
+        "Administradora: Si té permís de la titular per veure o gestionar-ho"],
+      ['S', contract.is_partner,
+        "Socia: Si és la socia vinculada al contracte"],
+      ['P', contract.is_payer,
+        "Pagadora: Si les factures s'emeten i cobren al seu nom (Rol a extingir)"],
+      ['N', contract.is_notifier,
+        "Notificada: Si en rep notificacions"],
+  ];
 
   return m(".contract-info-box", [
     m(".contract-info-item", [
@@ -71,13 +83,17 @@ var contractFields = function(contract, partner) {
       contract.iban
     ]),
     m(".contract-info-item", [
-      m(".label-right", "Rols:", [
-        m(".contract-role"+(contract.is_titular ? ".active":""), {title: "Titular: Si té el contracte al seu nom"}, "T"),
-        m(".contract-role"+(contract.is_administrator ? ".active":""), {title: "Administradora: Si té permís de la titular per veure o gestionar-ho"}, "A"),
-        m(".contract-role"+(contract.is_partner ? ".active":""), {title: "Socia: Si és la socia vinculada al contracte"}, "S"),
-        m(".contract-role"+(contract.is_payer ? ".active":""), {title: "Pagadora: Si les factures s'emeten i cobren al seu nom (Rol a estingir)"}, "P"),
-        m(".contract-role"+(contract.is_notifier ? ".active":""), {title: "Notificada: Si en rep notificacions"}, "N"),
-      ]),
+      m(".label-right", "Rols:",
+        roles.map(function(rol) {
+          var letter = rol[0];
+          var active = rol[1];
+          var title = rol[2];
+          return m(".contract-role" + (active?".active":""),
+            {title: title},
+            letter
+          );
+        })
+      ),
     ]),
     m(
       ".contract-info-item",
