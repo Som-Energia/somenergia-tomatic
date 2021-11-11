@@ -6,21 +6,55 @@ var Snackbar = require('polythene-mithril-snackbar').Snackbar;
 var jsyaml = require('js-yaml');
 var m = require('mithril');
 m.prop = require('mithril/stream');
+var Package = require('../../../package.json');
 
 function deyamlize(xhr) {
 	return jsyaml.safeLoad(xhr.responseText);
 }
 
 var Tomatic = {
+	packageinfo: Package,
 };
 
 Tomatic.queue = m.prop([]);
 Tomatic.persons = m.prop({});
 Tomatic.init = function() {
+	this.checkVersionPeriodically();
 	this.requestWeeks();
 	this.updateQueuePeriodically();
 	this.requestPersons();
 };
+
+Tomatic.versionTimer = 0;
+Tomatic.checkVersionPeriodically = function() {
+	console.log("Checking version")
+	clearTimeout(Tomatic.versionTimer);
+	Tomatic.versionTimer = setTimeout(Tomatic.checkVersionPeriodically, 30*60*1000);
+	Tomatic.checkVersion();
+}
+
+Tomatic.checkVersion = function() {
+	m.request({
+		method: 'GET',
+		url: '/api/version',
+		extract: deyamlize,
+	}).then(function(response){
+		if (response.version == Tomatic.packageinfo.version) return;
+		console.log(
+			"New server version", response.version, "detected.",
+			"Frontend version is ", Tomatic.version, ".",
+			"Reloading in 10s..."
+		);
+		Tomatic.error(
+			"Detectada nova versió en el servidor. Recarregant pàgina en 10 segons."
+		),
+		setTimeout(function() {
+			location.reload(true); // True to force full reload
+		}, 10000);
+	});
+};
+
+
 Tomatic.requestPersons = function() {
 	return m.request({
 		method: 'GET',

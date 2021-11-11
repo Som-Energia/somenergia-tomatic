@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Tomatic frontend reload when a new version in the server is detected
 - Callinfo: Contract details include full informed ATR cases
 - Callinfo: Support administrator role
 - Callinfo: Show contract owner NIF

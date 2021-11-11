@@ -13,6 +13,7 @@ from fastapi.responses import (
     FileResponse,
     Response,
 )
+from . import __version__ as version
 import asyncio
 import re
 from datetime import datetime, timedelta, timezone
@@ -167,6 +168,13 @@ def favicon():
 @app.get('/{file}')
 def tomatic(file=None):
     return FileResponse(distpath / (file or 'index.html'))
+
+@app.get('/api/version')
+@yamlerrors
+def apiVersion():
+    return yamlfy(
+        version = version,
+    )
 
 @app.get('/api/graella/list')
 @yamlerrors
