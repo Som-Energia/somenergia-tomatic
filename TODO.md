@@ -20,23 +20,40 @@
 - [x] Menu for planner and scripts
 - [x] As an agent i want to annotate about a partner having no contracts
 - [x] "No estimable" flag is obsolete. No contract is estimable now.
-- [ ] Create Claim case
+- [x] Contract info: Contract aministrator role (besides TPNS)
+- [x] Contract info: Add owner NIF
+- [x] Contract info: Add provincia field
+- [x] Contract info: Add Contract modification list
+- [x] Call Registry: layout shorter and wider on small screens
+- [x] Create Claim case
 - [ ] Create Phone Call Case
 - [ ] One endpoint for call registry in API
 - [ ] One method for call registry in CallRegistry
-- [ ] Claim.get_claims -> Claim.get/update/retrieveClaimTypes
+- [ ] `Claim.get_claims` -> Claim.get/update/retrieveClaimTypes
 - [ ] As an agent i want to be able to see ended contracts in callinfo (pe. for claims of unauthorized switching)
 - [ ] Call Info: Report diferently, search cleared from no search found
-- [ ] Intercept backend connection errors and behave
-- [ ] Contract info: Contract aministrator role (besides TPNS)
-- [ ] Contract info: Add owner NIF
-- [ ] Contract info: Add provincia field
-- [ ] Contract info: Add Contract modification list
+- [ ] Call Info: Intercept backend connection errors and behave
 - [ ] Call info: List previous calls from same person/contract
-- [ ] Call Registry: layout shorter and wider on small screens
 - [ ] Google login
 - [ ] API tests in fastapi
 - [ ] Accept fragile erp tests
 - [ ] Fix: Person color picker does not pick initial color
 - [ ] Strip spaces in the search
 - [ ] Edit previous annotations
+- [ ] Use contrast text color for person boxes
+- [ ] Sandwich pbx ext from ringring, and use users all along
+- [ ] Translate log field names from catalan
+- [ ] api/info/ringring -> api/call/ringring (ext)
+- [ ] api/personlog/{ext} -> api/call/log/{user}
+- [ ] api/updatelog/{user} -> api/call/log/update/{user}
+- [ ] api/infoCase -> api/call/annotation
+- [ ] api/atrCase -> api/call/annotation (joined)
+- [ ] consider joining updatelog, infoCase and atrCase
+- [ ] api/updateClaims -> cron or init
+- [ ] api/updateClaimTypes -> cron or init
+- [ ] api/updateCrmCategories -> cron or init
+- [ ] api/getClaimTypes -> api/call/claim/types?
+- [ ] api/getInfos -> api/call/info/types?
+- [ ] conisider joining getClaimTypes and getInfos
+
+
