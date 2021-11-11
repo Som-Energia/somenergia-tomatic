@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Callinfo: Fix: atr cases were not visible in kumato mode
+- Callinfo: Displaying person's roles on the contract roles got some care
+
 ## 4.2.0 2021-11-11
 
 - Tomatic frontend reload when a new version in the server is detected

@@ -71,12 +71,12 @@ var contractFields = function(contract, partner) {
       contract.iban
     ]),
     m(".contract-info-item", [
-      m(".label-right", [
-        (contract.is_titular ? m('span', {title: "Titular: Té el contracte al seu nom"}, "T ") : ""),
-        (contract.is_administrator ? m('span', {title: "Administradora: Permís de la titular per veure o gestionar-ho"}, "A ") : ""),
-        (contract.is_partner ? m('span', {title: "Socia: És la socia vinculada al contracte"}, "S ") : ""),
-        (contract.is_payer ? m('span', {title: "Pagadora: Les factures s'emeten i cobren al seu nom"}, "P ") : ""),
-        (contract.is_notifier ? m('span', {title: "Notificada: Rep les notificacions"}, "N ") : ""),
+      m(".label-right", "Rols:", [
+        m(".contract-role"+(contract.is_titular ? ".active":""), {title: "Titular: Si té el contracte al seu nom"}, "T"),
+        m(".contract-role"+(contract.is_administrator ? ".active":""), {title: "Administradora: Si té permís de la titular per veure o gestionar-ho"}, "A"),
+        m(".contract-role"+(contract.is_partner ? ".active":""), {title: "Socia: Si és la socia vinculada al contracte"}, "S"),
+        m(".contract-role"+(contract.is_payer ? ".active":""), {title: "Pagadora: Si les factures s'emeten i cobren al seu nom (Rol a estingir)"}, "P"),
+        m(".contract-role"+(contract.is_notifier ? ".active":""), {title: "Notificada: Si en rep notificacions"}, "N"),
       ]),
     ]),
     m(
