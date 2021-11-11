@@ -169,6 +169,9 @@ class CallInfo(object):
         return result
 
     def lastInvoices(self, contract_id):
+        return self.lastInvoicesManyContracts([contract_id]).get(contract_id,[])
+
+    def lastInvoicesManyContracts(self, contract_ids):
         def getInvoice(invoice_id):
             return self.O.GiscedataFacturacioFactura.read(
                 invoice_id, [
@@ -182,18 +185,22 @@ class CallInfo(object):
                     'date_invoice',
                     'date_due',
                     'state',
+                    'polissa_id',
                 ]
             )
+        last_invoices_ids = []
+        for contract_id in contract_ids:
+            last_invoices_ids.extend(
+                self.O.GiscedataFacturacioFactura.search([
+                    ('polissa_id', '=', contract_id),
+                    ('state', '!=', 'draft'),
+                    ('type', 'in', ['out_invoice', 'out_refund'])
+                ])[:self.invoices_limit]
+            )
 
-        invoices = []
-        last_invoices_ids = self.O.GiscedataFacturacioFactura.search([
-            ('polissa_id', '=', contract_id),
-            ('state', '!=', 'draft'),
-            ('type', 'in', ['out_invoice', 'out_refund'])
-        ])[:self.invoices_limit]
-        for invoice_id in last_invoices_ids:
-            invoice = getInvoice(invoice_id)
-            invoices.append({
+        invoices = {}
+        for invoice in getInvoice(last_invoices_ids):
+            invoices.setdefault(invoice['polissa_id'][0],[]).append({
                 'number': self.anonymize(invoice['number']),
                 'initial_date': invoice['data_inici'],
                 'final_date': invoice['data_final'],
@@ -486,10 +493,12 @@ class CallInfo(object):
         if not contracts:
             return ns()
 
+        invoicesByContract = self.lastInvoicesManyContracts(contracts_ids)
+
         return ns(
             (contract['name'], ns(
                 lectures_comptadors = self.meterReadings(contract['comptadors']),
-                invoices = self.lastInvoices(contract['id']),
+                invoices = invoicesByContract.get(contract['id'],[]),
                 atr_cases=self.atrCases(contract['id'])
             ))
             for contract in contracts
