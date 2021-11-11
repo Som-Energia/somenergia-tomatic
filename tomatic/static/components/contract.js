@@ -268,7 +268,7 @@ var lastInvoices = function(invoices) {
             m("th", "Total"),
             m("th", "Energia"),
             m("th", "Dies"),
-            m("th", "Data"),
+            m("th", "Emissió"),
             m("th", "Venciment"),
             m("th", "Estat")
           ]),
