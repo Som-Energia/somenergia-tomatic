@@ -254,6 +254,7 @@ $ ./tomatic_rtqueue.py show
 ## How to deploy upgrades (specific for Som Energia's deployment)
 
 ```bash
+cd /opt/www/somenergia-tomatic # Or wherever you installed it
 git fetch
 git rebase
 # Rebase changes the properties of crontab file
@@ -263,7 +264,8 @@ sudo chmod 755 crontab
 npm install
 npm run build # for development assets
 npm run deploy # for production assets
-sudo pip install -e .
+source .venv/bin/activate
+pip install -e .
 sudo supervisorctl restart tomatic
 ```
 
@@ -271,14 +273,14 @@ sudo supervisorctl restart tomatic
 
 ## API
 
-- `api.py`: Main Flask application, includes
+- `api.py`: Main FastAPI application, includes
 	- Person management API
 	- Busy management API
 	- Timetable editing API
 	- PBX state control API
 	- Callinfo (CRM) API
-- `planner_api.py`: Flask blueprint to launch timetable schedulers in background
-- `execution_api.py`: Flask blueprint using execution.py to launch arbitrary commands (not mounted just to test execution infrastructure)
+- `planner_api.py`: Sub API to launch timetable schedulers in background
+- `execution_api.py`: Sub API using execution.py to launch arbitrary commands (not mounted just to test execution infrastructure)
 
 ## PBX control
 
@@ -312,6 +314,8 @@ sudo supervisorctl restart tomatic
 ## CRM
 
 - `callinfo.py`: Retrieves incomming call information from the ERP
+- `claims.py`: Access the ERP's Claim objects
+- `kalinfo/crmcase.py`: Acces to the ERP's CRP cases
 
 
 
