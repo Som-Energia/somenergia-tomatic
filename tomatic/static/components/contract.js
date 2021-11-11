@@ -192,7 +192,7 @@ var atrCases = function(cases) {
     ]),
     cases.map(function(atr_case) {
       return m("tr", [
-        m("td", atr_case.date),
+        m("td", atr_case.date.slice(0,10)), // Not the time
         m("td", atr_case.proces),
         m("td", atr_case.step),
         m("td", m(atr_case.state != 'done' ? ".alert-case" : "", atr_case.state)),
