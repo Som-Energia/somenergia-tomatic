@@ -150,6 +150,32 @@ class Claims_Test(unittest.TestCase):
             user_id: false
         """.format(case_id))
 
+    def test_createCrmCase_noPartner(self):
+        case = ns.loads("""\
+            date: '2021-11-11T15:13:39.998Z'
+            phone: ''
+            person: gabriel
+            reason: '[RECLAMACIONS] 003. INCIDENCIA EN EQUIPOS DE MEDIDA'
+            partner: ''
+            contract: ''
+            user: RECLAMACIONS
+            observations: adfasd
+        """)
+        claims = Claims(self.erp)
+        case_id = claims.create_crm_case(case)
+        self.assertTrue(case_id)
+        self.assertCrmCase(case_id, """\
+            canal_id: Teléfono
+            id: {}
+            name: INCIDENCIA EN EQUIPOS DE MEDIDA
+            partner_address_id: False
+            partner_id: False
+            polissa_id: False
+            section_id: Atenció al Client / RECLAMACIONS
+            state: open
+            user_id: false
+        """.format(case_id))
+
 
 
 # vim: et ts=4 sw=4

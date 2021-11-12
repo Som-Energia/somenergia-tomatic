@@ -6,12 +6,14 @@ COMERCIALIZADORA = 1
 RECLAMANTE = '01'
 
 
-def partnerId(erp, partner):
+def partnerId(erp, partner_id):
+    if not partner_id: return None
     partner_model = erp.ResPartner
-    return partner_model.browse([('ref', '=', partner)])[0].id
+    return partner_model.browse([('ref', '=', partner_id)])[0].id
 
 
 def partnerAddress(erp, partner_id):
+    if not partner_id: return None
     partner_address_model = erp.ResPartnerAddress
     return partner_address_model.read(
         [('partner_id', '=', partner_id)],
@@ -117,7 +119,7 @@ class Claims(object):
             'canal_id': PHONE,
             'polissa_id': contractId(self.erp, case.contract),
             'partner_id': partner_id,
-            'partner_address_id': partner_address.get('id'),
+            'partner_address_id': partner_address.get('id') if partner_address else False,
             'state': 'open', # TODO: 'done' if case.solved else 'open',
             'user_id': '',
         }
@@ -179,7 +181,7 @@ class Claims(object):
         crm_history_id = self.erp.CrmCaseHistory.create(data_history).id
 
         data_atc = {
-            'provincia': partner_address.get('state_id')[0],
+            'provincia': partner_address.get('state_id')[0] if partner_address else False,
             'total_cups': 1,
             'cups_id': cupsId(self.erp, case.cups),
             'subtipus_id': claim_section_id,
@@ -190,7 +192,7 @@ class Claims(object):
                 case.improcedente
             ) if case.solved else "",
             'date': case.date,
-            'email_from': partner_address.get('email'),
+            'email_from': partner_address.get('email') if partner_address else False,
             'time_tracking_id': COMERCIALIZADORA
         }
         # user_id = userId(self.erp, self.emails, case.person)
