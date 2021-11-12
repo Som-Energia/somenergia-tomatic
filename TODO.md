@@ -63,10 +63,11 @@
 - [ ] Anotacions: Unificar els fitxers d'anotacio i log de trucada
 - [ ] Importar categories que falten de atc com a categorias de crmcases
 - [ ] create crm: Inserir usuari correcte al CRM
+- [ ] anotate_case: sensitive to the case fields creates atc or not
 - [x] create crm: cas amb tot
 - [x] create crm: cas sense contracte
 - [x] create crm: cas sense partner
-- [ ] create atc uses create crm
+- [x] create atc uses create crm
 - [ ] create crm: renombrar user -> seccion/team (preguntar a AiS per terminologia de domini)
 - [ ] create crm: extract seccio del reason and remove the field
 - [ ] create crm: cas contracte no existeix

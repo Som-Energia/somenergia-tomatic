@@ -40,7 +40,11 @@ class Claims_Test(unittest.TestCase):
     from yamlns.testutils import assertNsEqual
 
     def assertCrmCase(self, case_id, expected):
-        crmcase = ns(self.erp.CrmCase.read(case_id, [
+        if not expected:
+            self.assertFalse(case_id)
+            return
+        self.assertTrue(case_id)
+        result = ns(self.erp.CrmCase.read(case_id, [
             'section_id',
             'name',
             'canal_id',
@@ -50,25 +54,53 @@ class Claims_Test(unittest.TestCase):
             'state',
             'user_id',
         ]))
-        def anonymize(text):
-            if not text: return text
-            return "..."+text[-3:]
 
-        for attrib in [
-            "section_id",
-            "canal_id",
-            "partner_id",
-            "partner_address_id",
-            "polissa_id",
-            "user_id",
-        ]:
-            if crmcase[attrib]:
-                crmcase[attrib] = crmcase[attrib][1]
+        def anonymize(attrib):
+            if not result[attrib]: return
+            result[attrib] = '...'+result[attrib][-3:]
 
-        crmcase.partner_id = anonymize(crmcase.partner_id)
-        crmcase.partner_address_id = anonymize(crmcase.partner_address_id)
-        #crmcase.user_id = crmcase.user_id[1]
-        self.assertNsEqual(ns(crmcase), expected)
+        def fkname(attrib):
+            if not result[attrib]: return
+            result[attrib] = result[attrib][1]
+
+        fkname("section_id")
+        fkname("canal_id")
+        fkname("partner_id")
+        anonymize('partner_id')
+        fkname("partner_address_id")
+        anonymize('partner_address_id')
+        fkname("polissa_id")
+        fkname("user_id")
+
+        self.assertNsEqual(ns(result), expected)
+
+
+    def assertAtcCase(self, case_id, expected):
+        if not expected:
+            self.assertFalse(case_id)
+            return
+        self.assertTrue(case_id)
+        result = ns(self.erp.GiscedataAtc.read(case_id, [
+            'provincia',
+            'total_cups',
+            'cups_id',
+            'subtipus_id',
+            'reclamante',
+            'resultat',
+            'date',
+            'email_from',
+            'time_tracking_id',
+        ]))
+
+        def fkname(attrib):
+            if not result[attrib]: return
+            result[attrib] = result[attrib][1]
+
+        fkname("cups_id")
+        fkname("subtipus_id")
+        fkname("time_tracking_id")
+
+        self.assertNsEqual(ns(result), expected)
 
 
     def test_getAllClaims(self):
@@ -111,7 +143,6 @@ class Claims_Test(unittest.TestCase):
         """)
         claims = Claims(self.erp)
         case_id = claims.create_crm_case(case)
-        self.assertTrue(case_id)
         self.assertCrmCase(case_id, """\
             canal_id: Teléfono
             id: {}
@@ -137,7 +168,6 @@ class Claims_Test(unittest.TestCase):
         """)
         claims = Claims(self.erp)
         case_id = claims.create_crm_case(case)
-        self.assertTrue(case_id)
         self.assertCrmCase(case_id, """\
             canal_id: Teléfono
             id: {}
@@ -163,7 +193,6 @@ class Claims_Test(unittest.TestCase):
         """)
         claims = Claims(self.erp)
         case_id = claims.create_crm_case(case)
-        self.assertTrue(case_id)
         self.assertCrmCase(case_id, """\
             canal_id: Teléfono
             id: {}
