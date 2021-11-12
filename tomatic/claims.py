@@ -20,6 +20,7 @@ def partnerAddress(erp, partner_id):
 
 
 def contractId(erp, contract):
+    if not contract: return None
     contract_model = erp.GiscedataPolissa
     return contract_model.browse([("name", "=", contract)])[0].id
 

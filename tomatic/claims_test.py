@@ -39,6 +39,38 @@ class Claims_Test(unittest.TestCase):
 
     from yamlns.testutils import assertNsEqual
 
+    def assertCrmCase(self, case_id, expected):
+        crmcase = ns(self.erp.CrmCase.read(case_id, [
+            'section_id',
+            'name',
+            'canal_id',
+            'polissa_id',
+            'partner_id',
+            'partner_address_id',
+            'state',
+            'user_id',
+        ]))
+        def anonymize(text):
+            if not text: return text
+            return "..."+text[-3:]
+
+        for attrib in [
+            "section_id",
+            "canal_id",
+            "partner_id",
+            "partner_address_id",
+            "polissa_id",
+            "user_id",
+        ]:
+            if crmcase[attrib]:
+                crmcase[attrib] = crmcase[attrib][1]
+
+        crmcase.partner_id = anonymize(crmcase.partner_id)
+        crmcase.partner_address_id = anonymize(crmcase.partner_address_id)
+        #crmcase.user_id = crmcase.user_id[1]
+        self.assertNsEqual(ns(crmcase), expected)
+
+
     def test_getAllClaims(self):
         claims = Claims(self.erp)
         reclamacions = claims.get_claims()
@@ -92,27 +124,31 @@ class Claims_Test(unittest.TestCase):
             user_id: false
         """.format(case_id))
 
-    def assertCrmCase(self, case_id, expected):
-        crmcase = ns(self.erp.CrmCase.read(case_id, [
-            'section_id',
-            'name',
-            'canal_id',
-            'polissa_id',
-            'partner_id',
-            'partner_address_id',
-            'state',
-            'user_id',
-        ]))
-        def anonymize(text): return "..."+text[-3:]
-
-        crmcase.section_id = crmcase.section_id[1]
-        crmcase.canal_id = crmcase.canal_id[1]
-        crmcase.partner_id = anonymize(crmcase.partner_id[1])
-        crmcase.partner_address_id = anonymize(crmcase.partner_address_id[1])
-        crmcase.polissa_id = crmcase.polissa_id[1]
-        #crmcase.user_id = crmcase.user_id[1]
-        self.assertNsEqual(ns(crmcase), expected)
-
+    def test_createCrmCase_noContract(self):
+        case = ns.loads("""\
+            date: '2021-11-11T15:13:39.998Z'
+            phone: ''
+            person: gabriel
+            reason: '[RECLAMACIONS] 003. INCIDENCIA EN EQUIPOS DE MEDIDA'
+            partner: S001975
+            contract: ''
+            user: RECLAMACIONS
+            observations: adfasd
+        """)
+        claims = Claims(self.erp)
+        case_id = claims.create_crm_case(case)
+        self.assertTrue(case_id)
+        self.assertCrmCase(case_id, """\
+            canal_id: Teléfono
+            id: {}
+            name: INCIDENCIA EN EQUIPOS DE MEDIDA
+            partner_address_id: ...spí
+            partner_id: ...osé
+            polissa_id: False
+            section_id: Atenció al Client / RECLAMACIONS
+            state: open
+            user_id: false
+        """.format(case_id))
 
 
 
