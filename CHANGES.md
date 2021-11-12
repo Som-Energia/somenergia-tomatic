@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.2.2 2021-11-12
+
+- Callinfo: 1:20 speedup on getting contract details of a partner with 16 contracts
+
 ## 4.2.1 2021-11-11
 
 - Callinfo: Fix: atr cases were not visible in kumato mode
