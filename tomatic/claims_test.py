@@ -96,6 +96,7 @@ class Claims_Test(unittest.TestCase):
         fkname(result, "subtipus_id")
         fkname(result, "time_tracking_id")
         fkname(result, "provincia")
+        anonymize(result, "cups_id")
         anonymize(result, "email_from")
 
         self.assertNsEqual(ns(result), expected)
@@ -107,39 +108,88 @@ class Claims_Test(unittest.TestCase):
         nombre_reclamacions = Reclamacio.count()
         self.assertEqual(len(reclamacions), nombre_reclamacions)
 
-    def test_createAtcCase(self):
-        case = ns.loads("""\
+    def atc_base(self, **kwds):
+        return ns.loads("""
             date: '2021-11-11T15:13:39.998Z'
             person: gabriel
             reason: '[RECLAMACIONS] 003. INCIDENCIA EN EQUIPOS DE MEDIDA'
             partner: S001975
             contract: '0013117'
-            procedente: ''
-            improcedente: x
+            procedente: x
+            improcedente: ''
             solved: x
             user: RECLAMACIONS
             cups: ES0031405524910014WM0F
             observations: adfasd
-        """)
+        """).update(**kwds)
+
+    def test_createAtcCase(self):
+        case = self.atc_base()
 
         claims = Claims(self.erp)
         case_id = claims.create_atc_case(case)
         last_case_id = self.erp.GiscedataAtc.search()[0]
         self.assertAtcCase(case_id, """
-            cups_id: ES0031405524910014WM0F
+            cups_id: ...M0F
             date: '2021-11-11 15:13:39.998'
             email_from: ...oop
             id: {}
             provincia: Barcelona
             reclamante: '01'
-            resultat: '02'
+            resultat: '01'
             subtipus_id: '003'
             time_tracking_id: Comercialitzadora
             total_cups: 1
         """.format(case_id))
 
-    def test_createCrmCase(self):
-        case = ns.loads("""\
+    def test_createAtcCase_improcedente(self):
+        case = self.atc_base(
+            procedente='',
+            improcedente='x',
+            solved='x',
+        )
+
+        claims = Claims(self.erp)
+        case_id = claims.create_atc_case(case)
+        last_case_id = self.erp.GiscedataAtc.search()[0]
+        self.assertAtcCase(case_id, """
+            cups_id: ...M0F
+            date: '2021-11-11 15:13:39.998'
+            email_from: ...oop
+            id: {}
+            provincia: Barcelona
+            reclamante: '01'
+            resultat: '02' # THIS CHANGES
+            subtipus_id: '003'
+            time_tracking_id: Comercialitzadora
+            total_cups: 1
+        """.format(case_id))
+
+    def test_createAtcCase_unsolved(self):
+        case = self.atc_base(
+            procedente='',
+            improcedente='',
+            solved='',
+        )
+
+        claims = Claims(self.erp)
+        case_id = claims.create_atc_case(case)
+        last_case_id = self.erp.GiscedataAtc.search()[0]
+        self.assertAtcCase(case_id, """
+            cups_id: ...M0F
+            date: '2021-11-11 15:13:39.998'
+            email_from: ...oop
+            id: {}
+            provincia: Barcelona
+            reclamante: '01'
+            resultat: '03' # THIS CHANGES
+            subtipus_id: '003'
+            time_tracking_id: Comercialitzadora
+            total_cups: 1
+        """.format(case_id))
+
+    def crm_base(self, **kwds):
+        return ns.loads("""\
             date: '2021-11-11T15:13:39.998Z'
             phone: ''
             person: gabriel
@@ -148,7 +198,10 @@ class Claims_Test(unittest.TestCase):
             contract: '0013117'
             user: RECLAMACIONS
             observations: adfasd
-        """)
+        """).update(**kwds)
+
+    def test_createCrmCase(self):
+        case = self.crm_base()
         claims = Claims(self.erp)
         case_id = claims.create_crm_case(case)
         self.assertCrmCase(case_id, """\
@@ -164,16 +217,9 @@ class Claims_Test(unittest.TestCase):
         """.format(case_id))
 
     def test_createCrmCase_noContract(self):
-        case = ns.loads("""\
-            date: '2021-11-11T15:13:39.998Z'
-            phone: ''
-            person: gabriel
-            reason: '[RECLAMACIONS] 003. INCIDENCIA EN EQUIPOS DE MEDIDA'
-            partner: S001975
-            contract: ''
-            user: RECLAMACIONS
-            observations: adfasd
-        """)
+        case = self.crm_base(
+            contract = '',
+        )
         claims = Claims(self.erp)
         case_id = claims.create_crm_case(case)
         self.assertCrmCase(case_id, """\
@@ -182,23 +228,17 @@ class Claims_Test(unittest.TestCase):
             name: INCIDENCIA EN EQUIPOS DE MEDIDA
             partner_address_id: ...spí
             partner_id: ...osé
-            polissa_id: False
+            polissa_id: False # THIS CHANGES
             section_id: Atenció al Client / RECLAMACIONS
             state: open
             user_id: false
         """.format(case_id))
 
     def test_createCrmCase_noPartner(self):
-        case = ns.loads("""\
-            date: '2021-11-11T15:13:39.998Z'
-            phone: ''
-            person: gabriel
-            reason: '[RECLAMACIONS] 003. INCIDENCIA EN EQUIPOS DE MEDIDA'
-            partner: ''
-            contract: ''
-            user: RECLAMACIONS
-            observations: adfasd
-        """)
+        case = self.crm_base(
+            contract = '',
+            partner = '',
+        )
         claims = Claims(self.erp)
         case_id = claims.create_crm_case(case)
         self.assertCrmCase(case_id, """\
@@ -206,8 +246,8 @@ class Claims_Test(unittest.TestCase):
             id: {}
             name: INCIDENCIA EN EQUIPOS DE MEDIDA
             partner_address_id: False
-            partner_id: False
-            polissa_id: False
+            partner_id: False # THIS CHANGES
+            polissa_id: False # THIS CHANGES
             section_id: Atenció al Client / RECLAMACIONS
             state: open
             user_id: false
