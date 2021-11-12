@@ -57,3 +57,23 @@
 - [ ] conisider joining getClaimTypes and getInfos
 
 
+- [ ] moure scripts a una carpeta
+- [ ] Antotacions UI: Radio button no resolt + tenia rao > no tenia rao
+- [ ] Anotacions: Unificar Api anotacio en un punt d'entrada
+- [ ] Anotacions: Unificar els fitxers d'anotacio i log de trucada
+- [ ] Importar categories que falten de atc com a categorias de crmcases
+- [ ] create crm: Inserir usuari correcte al CRM
+- [ ] create crm: cas sense contracte
+- [ ] create crm: cas sense partner
+- [ ] create crm: renombrar user -> seccion/team (preguntar a AiS per terminologia de domini)
+- [ ] create crm: extract seccio del reason and remove the field
+
+
+
+
+
+
+
+
+
+

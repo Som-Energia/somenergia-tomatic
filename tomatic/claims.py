@@ -101,6 +101,36 @@ class Claims(object):
 
         return claims
 
+    def create_crm_case(self, case):
+        ''
+        partner_id = partnerId(self.erp, case.partner)
+        partner_address = partnerAddress(self.erp, partner_id)
+        crm_section_id = crmSectionID(self.erp, case.user)
+        claim_section_id = claimSectionID(
+            self.erp, case.reason.split('.')[-1].strip()
+        )
+
+        data_crm = {
+            'section_id': crm_section_id,
+            'name': sectionName(self.erp, claim_section_id),
+            'canal_id': PHONE,
+            'polissa_id': contractId(self.erp, case.contract),
+            'partner_id': partner_id,
+            'partner_address_id': partner_address.get('id'),
+            'state': 'open', # TODO: 'done' if case.solved else 'open',
+            'user_id': '',
+        }
+        crm_id = self.erp.CrmCase.create(data_crm).id
+
+        data_history = {
+            'case_id': crm_id,
+            'description': case.observations,
+        }
+        crm_history_id = self.erp.CrmCaseHistory.create(data_history).id
+
+        return crm_id
+
+
     def create_atc_case(self, case):
         '''
         Expected case:

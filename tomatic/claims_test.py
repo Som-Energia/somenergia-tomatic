@@ -27,7 +27,7 @@ class Claims_Test(unittest.TestCase):
             return
         self.erp = ClientWST(**dbconfig.erppeek)
         self.erp.begin()
-        self.data_atc = dbconfig.data_atc
+        self.maxDiff = None
 
     def tearDown(self):
         try:
@@ -37,6 +37,8 @@ class Claims_Test(unittest.TestCase):
             if 'transaction block' not in e.faultCode:
                 raise
 
+    from yamlns.testutils import assertNsEqual
+
     def test_getAllClaims(self):
         claims = Claims(self.erp)
         reclamacions = claims.get_claims()
@@ -44,44 +46,70 @@ class Claims_Test(unittest.TestCase):
         nombre_reclamacions = Reclamacio.count()
         self.assertEqual(len(reclamacions), nombre_reclamacions)
 
-    def test_createAtcCase_basicCase(self):
-        file_name = "testdata/atc_basicCase.yaml"
-        if not os.path.isfile(file_name):
-            error("The file {} does not exists", file_name)
-        else:
-            atc_cases = ns.load(file_name)
-            for person in atc_cases:
-                for case in atc_cases[person]:
-                    claims = Claims(self.erp)
-                    case_id = claims.create_atc_case(case)
-                    last_atc_case_id = self.erp.GiscedataAtc.search()[0]
-                    self.assertEqual(case_id, last_atc_case_id)
+    def test_createAtcCase(self):
+        case = ns.loads("""\
+            date: '2021-11-11T15:13:39.998Z'
+            person: gabriel
+            reason: '[RECLAMACIONS] 003. INCIDENCIA EN EQUIPOS DE MEDIDA'
+            partner: S001975
+            contract: '0013117'
+            procedente: ''
+            improcedente: x
+            solved: x
+            user: RECLAMACIONS
+            cups: ES0031405524910014WM0F
+            observations: adfasd
+        """)
 
-    def test_createAtcCase_multipleCases(self):
-        file_name = "testdata/atc_multipleCases.yaml"
-        if not os.path.isfile(file_name):
-            error("The file {} does not exists", file_name)
-        else:
-            atc_cases = ns.load(file_name)
-            for person in atc_cases:
-                for case in atc_cases[person]:
-                    claims = Claims(self.erp)
-                    case_id = claims.create_atc_case(case)
-                    last_atc_case_id = self.erp.GiscedataAtc.search()[0]
-                    self.assertEqual(case_id, last_atc_case_id)
+        claims = Claims(self.erp)
+        case_id = claims.create_atc_case(case)
+        last_case_id = self.erp.GiscedataAtc.search()[0]
+        self.assertEqual(case_id, last_case_id)
 
-    def test_createAtcCase_multiplePersons(self):
-        file_name = "testdata/atc_multiplePersons.yaml"
-        if not os.path.isfile(file_name):
-            error("The file {} does not exists", file_name)
-        else:
-            atc_cases = ns.load(file_name)
-            for person in atc_cases:
-                for case in atc_cases[person]:
-                    claims = Claims(self.erp)
-                    case_id = claims.create_atc_case(case)
-                    last_atc_case_id = self.erp.GiscedataAtc.search()[0]
-                    self.assertEqual(case_id, last_atc_case_id)
+    def test_createCrmCase(self):
+        case = ns.loads("""\
+            date: '2021-11-11T15:13:39.998Z'
+            phone: ''
+            person: gabriel
+            reason: '[RECLAMACIONS] 003. INCIDENCIA EN EQUIPOS DE MEDIDA'
+            partner: S001975
+            contract: '0013117'
+            user: RECLAMACIONS
+            observations: adfasd
+        """)
+        claims = Claims(self.erp)
+        case_id = claims.create_crm_case(case)
+        self.assertTrue(case_id)
+        crmcase = ns(self.erp.CrmCase.read(case_id, [
+            'section_id',
+            'name',
+            'canal_id',
+            'polissa_id',
+            'partner_id',
+            'partner_address_id',
+            'state',
+            'user_id',
+        ]))
+        def anonymize(text): return "..."+text[-3:]
+
+        crmcase.section_id = crmcase.section_id[1]
+        crmcase.canal_id = crmcase.canal_id[1]
+        crmcase.partner_id = anonymize(crmcase.partner_id[1])
+        crmcase.partner_address_id = anonymize(crmcase.partner_address_id[1])
+        crmcase.polissa_id = crmcase.polissa_id[1]
+        #crmcase.user_id = crmcase.user_id[1]
+        self.assertNsEqual(ns(crmcase), """\
+            canal_id: Teléfono
+            id: {}
+            name: INCIDENCIA EN EQUIPOS DE MEDIDA
+            partner_address_id: ...spí
+            partner_id: ...osé
+            polissa_id: '0013117'
+            section_id: Atenció al Client / RECLAMACIONS
+            state: open
+            user_id: false
+        """.format(case_id))
+
 
 
 # vim: et ts=4 sw=4
