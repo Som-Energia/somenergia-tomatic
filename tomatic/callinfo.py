@@ -198,29 +198,31 @@ class CallInfo(object):
                 ])[:self.invoices_limit]
             )
 
-        invoices = {}
+        result = { contract_id: [] for contract_id in contract_ids }
         for invoice in getInvoice(last_invoices_ids):
-            invoices.setdefault(invoice['polissa_id'][0],[]).append({
-                'number': self.anonymize(invoice['number']),
-                'initial_date': invoice['data_inici'],
-                'final_date': invoice['data_final'],
-                'payer': self.anonymize(invoice['partner_id'][1]),
-                'amount': invoice['amount_total'],
-                'energy_invoiced': invoice['energia_kwh'] or 0,
-                'days_invoiced': invoice['dies'],
-                'invoice_date': invoice['date_invoice'],
-                'due_date': invoice['date_due'],
-                'state': invoice['state'],
-            })
-        return invoices
+            contract_id = invoice['polissa_id'][0]
+            data = dict(
+                number=self.anonymize(invoice['number']),
+                initial_date=invoice['data_inici'],
+                final_date=invoice['data_final'],
+                payer=self.anonymize(invoice['partner_id'][1]),
+                amount=invoice['amount_total'],
+                energy_invoiced=invoice['energia_kwh'] or 0,
+                days_invoiced=invoice['dies'],
+                invoice_date=invoice['date_invoice'],
+                due_date=invoice['date_due'],
+                state=invoice['state'],
+            )
+            result[contract_id].append(data)
+        return result
 
 
     def meterReadings(self, contract_id):
-        return self.meterReadingsManyContracts([contract_id]).get(contract_id,[])
+        return self.meterReadingsManyContracts([contract_id])[contract_id]
 
-    def meterReadingsManyContracts(self, contracts_ids):
+    def meterReadingsManyContracts(self, contract_ids):
         meter_ids = self.O.GiscedataLecturesComptador.search([
-            ('polissa', 'in', contracts_ids),
+            ('polissa', 'in', contract_ids),
             ('active', '=', True),
         ])
         meters = self.O.GiscedataLecturesComptador.read(
@@ -242,45 +244,43 @@ class CallInfo(object):
             ['name', 'lectura', 'origen_id', 'periode', 'comptador']
         )
 
-        result = {}
+        result = { contract_id: [] for contract_id in contract_ids }
         for reading in readings:
-            data = {
-                'comptador': self.anonymize(reading['comptador'][1]),
-                'data': reading['name'],
-                'periode': reading['periode'][1],
-                'lectura': self.anonymize(str(reading['lectura'])),
-                'origen': reading['origen_id'][1],
-            }
             contract_id = meter2contract[reading['comptador'][0]]
-            result.setdefault(contract_id,[]).append(data)
+            data = dict(
+                comptador=self.anonymize(reading['comptador'][1]),
+                data=reading['name'],
+                periode=reading['periode'][1],
+                lectura=self.anonymize(str(reading['lectura'])),
+                origen=reading['origen_id'][1],
+            )
+            result[contract_id].append(data)
         return result
 
     def atrCases(self, contract_id):
-        return self.atrCasesManyContracts([contract_id]).get(contract_id,[])
+        return self.atrCasesManyContracts([contract_id])[contract_id]
 
     def atrCasesManyContracts(self, contract_ids):
         cases_ids = self.O.GiscedataSwitching.search([
             ('cups_polissa_id', 'in', contract_ids)
         ])
-        if not cases_ids: # TODO
-            return {}
 
-        result = {}
+        result = { contract_id: [] for contract_id in contract_ids }
 
         cases = self.O.GiscedataSwitching.read(
             cases_ids,
             ['date', 'proces_id', 'step_id', 'state', 'additional_info', 'cups_polissa_id']
         )
         for case in cases:
-            result.setdefault(case['cups_polissa_id'][0], []).append(
-                dict(
-                    date=case.get('date'),
-                    proces=case.get('proces_id')[1],
-                    step=case.get('step_id')[1],
-                    state=case.get('state'),
-                    additional_info=case.get('additional_info')
-                )
+            contract_id = case['cups_polissa_id'][0]
+            data = dict(
+                date=case.get('date'),
+                proces=case.get('proces_id')[1],
+                step=case.get('step_id')[1],
+                state=case.get('state'),
+                additional_info=case.get('additional_info')
             )
+            result[contract_id].append(data)
         return result
 
     def getPartnerId(self, address_id):
