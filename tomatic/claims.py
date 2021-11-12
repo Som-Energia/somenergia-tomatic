@@ -23,8 +23,8 @@ def partnerAddress(erp, partner_id):
 
 def contractId(erp, contract):
     if not contract: return None
-    contract_model = erp.GiscedataPolissa
-    return contract_model.browse([("name", "=", contract)])[0].id
+    contract_id = erp.GiscedataPolissa.search([("name", "=", contract)])
+    if contract_id: return contract_id[0]
 
 
 def cupsId(erp, cups):
@@ -173,7 +173,6 @@ class Claims(object):
         claim_section_id = claimSectionID(
             self.erp, case.reason.split('.')[-1].strip()
         )
-
         crm_id = self.create_crm_case(case)
 
         data_atc = {
