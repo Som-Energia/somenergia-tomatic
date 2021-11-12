@@ -214,62 +214,74 @@ class CallInfo(object):
             })
         return invoices
 
-    def meterReadings(self, meter_ids):
-        def getMeterReadings(meter_id):
-            return self.O.GiscedataLecturesComptador.read(
-                meter_id,
-                ['lectures', 'active', 'name']
-            )
 
-        def getReading(reading_id):
-            return self.O.GiscedataLecturesLectura.read(
-                reading_id,
-                ['name', 'lectura', 'origen_id', 'periode']
-            )
+    def meterReadings(self, contract_id):
+        return self.meterReadingsManyContracts([contract_id]).get(contract_id,[])
 
-        readings = []
-        for meter_id in meter_ids:
-            meter = getMeterReadings(meter_id)
-            if not meter['active']:
-                break
-            if not meter['lectures']:
-                break
-            meter_readings_ids = meter['lectures']
-            limited_meter_readings_ids = meter_readings_ids[
-                :self.meter_readings_limit
-            ]
-            for reading_id in limited_meter_readings_ids:
-                reading = getReading(reading_id)
-                data = {
-                    'comptador': self.anonymize(meter['name']),
-                    'data': reading['name'],
-                    'periode': reading['periode'][1],
-                    'lectura': self.anonymize(str(reading['lectura'])),
-                    'origen': reading['origen_id'][1],
-                }
-                readings.append(data)
-        return readings
+    def meterReadingsManyContracts(self, contracts_ids):
+        meter_ids = self.O.GiscedataLecturesComptador.search([
+            ('polissa', 'in', contracts_ids),
+            ('active', '=', True),
+        ])
+        meters = self.O.GiscedataLecturesComptador.read(
+            meter_ids,
+            ['lectures', 'name', 'polissa']
+        )
+
+        meter2contract = {
+            meter['id']: meter['polissa'][0]
+            for meter in meters
+        }
+        reading_ids = []
+        for meter in meters:
+            meter_readings = meter['lectures'] or []
+            reading_ids.extend(meter_readings[:self.meter_readings_limit])
+   
+        readings = self.O.GiscedataLecturesLectura.read(
+            reading_ids,
+            ['name', 'lectura', 'origen_id', 'periode', 'comptador']
+        )
+
+        result = {}
+        for reading in readings:
+            data = {
+                'comptador': self.anonymize(reading['comptador'][1]),
+                'data': reading['name'],
+                'periode': reading['periode'][1],
+                'lectura': self.anonymize(str(reading['lectura'])),
+                'origen': reading['origen_id'][1],
+            }
+            contract_id = meter2contract[reading['comptador'][0]]
+            result.setdefault(contract_id,[]).append(data)
+        return result
 
     def atrCases(self, contract_id):
+        return self.atrCasesManyContracts([contract_id]).get(contract_id,[])
+
+    def atrCasesManyContracts(self, contract_ids):
         cases_ids = self.O.GiscedataSwitching.search([
-            ('cups_polissa_id', '=', contract_id)
+            ('cups_polissa_id', 'in', contract_ids)
         ])
-        if not cases_ids:
-            return []
+        if not cases_ids: # TODO
+            return {}
+
+        result = {}
 
         cases = self.O.GiscedataSwitching.read(
             cases_ids,
-            ['date', 'proces_id', 'step_id', 'state', 'additional_info']
+            ['date', 'proces_id', 'step_id', 'state', 'additional_info', 'cups_polissa_id']
         )
-        return [
-            dict(
-                date=case.get('date'),
-                proces=case.get('proces_id')[1],
-                step=case.get('step_id')[1],
-                state=case.get('state'),
-                additional_info=case.get('additional_info')
-            ) for case in cases
-        ]
+        for case in cases:
+            result.setdefault(case['cups_polissa_id'][0], []).append(
+                dict(
+                    date=case.get('date'),
+                    proces=case.get('proces_id')[1],
+                    step=case.get('step_id')[1],
+                    state=case.get('state'),
+                    additional_info=case.get('additional_info')
+                )
+            )
+        return result
 
     def getPartnerId(self, address_id):
         partner_ids = self.O.ResPartnerAddress.read(
@@ -361,7 +373,7 @@ class CallInfo(object):
             energetica = foreignId(contract, 'soci') == ENERGETICA_PARTNER_ID
             iban = self.anonymize(foreignName(contract,'bank'))
             lot_facturacio = foreignName(contract, 'lot_facturacio')
-            lectures_comptadors = None if shallow else self.meterReadings(contract['comptadors'])
+            lectures_comptadors = None if shallow else self.meterReadings(contract['id'])
             last_invoices = None if shallow else self.lastInvoices(contract['id'])
             partner_vat = self.O.ResPartner.read(
                 foreignId(contract,'titular'), ['vat']
@@ -494,12 +506,14 @@ class CallInfo(object):
             return ns()
 
         invoicesByContract = self.lastInvoicesManyContracts(contracts_ids)
+        atrCasesByContract = self.atrCasesManyContracts(contracts_ids)
+        readingsByContract = self.meterReadingsManyContracts(contracts_ids)
 
         return ns(
             (contract['name'], ns(
-                lectures_comptadors = self.meterReadings(contract['comptadors']),
+                lectures_comptadors = readingsByContract.get(contract['id'],[]),
                 invoices = invoicesByContract.get(contract['id'],[]),
-                atr_cases=self.atrCases(contract['id'])
+                atr_cases = atrCasesByContract.get(contract['id'],[]),
             ))
             for contract in contracts
         )
