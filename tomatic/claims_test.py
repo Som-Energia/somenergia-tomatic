@@ -80,6 +80,19 @@ class Claims_Test(unittest.TestCase):
         claims = Claims(self.erp)
         case_id = claims.create_crm_case(case)
         self.assertTrue(case_id)
+        self.assertCrmCase(case_id, """\
+            canal_id: Teléfono
+            id: {}
+            name: INCIDENCIA EN EQUIPOS DE MEDIDA
+            partner_address_id: ...spí
+            partner_id: ...osé
+            polissa_id: '0013117'
+            section_id: Atenció al Client / RECLAMACIONS
+            state: open
+            user_id: false
+        """.format(case_id))
+
+    def assertCrmCase(self, case_id, expected):
         crmcase = ns(self.erp.CrmCase.read(case_id, [
             'section_id',
             'name',
@@ -98,17 +111,8 @@ class Claims_Test(unittest.TestCase):
         crmcase.partner_address_id = anonymize(crmcase.partner_address_id[1])
         crmcase.polissa_id = crmcase.polissa_id[1]
         #crmcase.user_id = crmcase.user_id[1]
-        self.assertNsEqual(ns(crmcase), """\
-            canal_id: Teléfono
-            id: {}
-            name: INCIDENCIA EN EQUIPOS DE MEDIDA
-            partner_address_id: ...spí
-            partner_id: ...osé
-            polissa_id: '0013117'
-            section_id: Atenció al Client / RECLAMACIONS
-            state: open
-            user_id: false
-        """.format(case_id))
+        self.assertNsEqual(ns(crmcase), expected)
+
 
 
 
