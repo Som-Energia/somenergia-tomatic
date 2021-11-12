@@ -79,7 +79,7 @@
 - [ ] Claims.get_claims -> claimCategories()
 - [ ] repurpose claims
 
-- [ ] callinfo log: remove cups
+- [ ] callinfo log: do not dump cups
 - [ ] callinfo log: unite resolution
 - [ ] callinfo log: join infos and claims
 - [ ] Check: sections id's unlikely to refer the same id (table) in atc and crm
