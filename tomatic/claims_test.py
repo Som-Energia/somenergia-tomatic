@@ -31,18 +31,19 @@ def anonymize(result, attrib):
 class Claims_Test(unittest.TestCase):
 
     def setUp(self):
+        self.maxDiff = None
+        self.erp = None
         if not dbconfig:
             return
         if not dbconfig.erppeek:
             return
         self.erp = ClientWST(**dbconfig.erppeek)
         self.erp.begin()
-        self.maxDiff = None
 
     def tearDown(self):
         try:
-            self.erp.rollback()
-            self.erp.close()
+            self.erp and self.erp.rollback()
+            self.erp and self.erp.close()
         except xmlrpclib.Fault as e:
             if 'transaction block' not in e.faultCode:
                 raise
