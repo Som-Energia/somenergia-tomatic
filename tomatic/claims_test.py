@@ -12,6 +12,14 @@ try:
 except ImportError:
     dbconfig = None
 
+def fkname(result, attrib):
+    if not result[attrib]: return
+    result[attrib] = result[attrib][1]
+
+def anonymize(result, attrib):
+    if not result[attrib]: return
+    result[attrib] = '...'+result[attrib][-3:]
+
 @unittest.skipIf(os.environ.get("TRAVIS"),
     "Database not available in Travis")
 @unittest.skipIf(
@@ -55,22 +63,14 @@ class Claims_Test(unittest.TestCase):
             'user_id',
         ]))
 
-        def anonymize(attrib):
-            if not result[attrib]: return
-            result[attrib] = '...'+result[attrib][-3:]
-
-        def fkname(attrib):
-            if not result[attrib]: return
-            result[attrib] = result[attrib][1]
-
-        fkname("section_id")
-        fkname("canal_id")
-        fkname("partner_id")
-        anonymize('partner_id')
-        fkname("partner_address_id")
-        anonymize('partner_address_id')
-        fkname("polissa_id")
-        fkname("user_id")
+        fkname(result, "section_id")
+        fkname(result, "canal_id")
+        fkname(result, "partner_id")
+        fkname(result, "partner_address_id")
+        fkname(result, "polissa_id")
+        fkname(result, "user_id")
+        anonymize(result, 'partner_id')
+        anonymize(result, 'partner_address_id')
 
         self.assertNsEqual(ns(result), expected)
 
@@ -92,13 +92,12 @@ class Claims_Test(unittest.TestCase):
             'time_tracking_id',
         ]))
 
-        def fkname(attrib):
-            if not result[attrib]: return
-            result[attrib] = result[attrib][1]
 
-        fkname("cups_id")
-        fkname("subtipus_id")
-        fkname("time_tracking_id")
+        fkname(result, "cups_id")
+        fkname(result, "subtipus_id")
+        fkname(result, "time_tracking_id")
+        fkname(result, "provincia")
+        anonymize(result, "email_from")
 
         self.assertNsEqual(ns(result), expected)
 
@@ -128,7 +127,18 @@ class Claims_Test(unittest.TestCase):
         claims = Claims(self.erp)
         case_id = claims.create_atc_case(case)
         last_case_id = self.erp.GiscedataAtc.search()[0]
-        self.assertEqual(case_id, last_case_id)
+        self.assertAtcCase(case_id, """
+            cups_id: ES0031405524910014WM0F
+            date: '2021-11-11 15:13:39.998'
+            email_from: ...oop
+            id: {}
+            provincia: Barcelona
+            reclamante: '01'
+            resultat: '02'
+            subtipus_id: '003'
+            time_tracking_id: Comercialitzadora
+            total_cups: 1
+        """.format(case_id))
 
     def test_createCrmCase(self):
         case = ns.loads("""\
