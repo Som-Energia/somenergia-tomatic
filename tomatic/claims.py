@@ -6,16 +6,17 @@ COMERCIALIZADORA = 1
 RECLAMANTE = '01'
 
 
-def partnerId(erp, partner_id):
-    if not partner_id: return None
-    partner_model = erp.ResPartner
-    return partner_model.browse([('ref', '=', partner_id)])[0].id
+def partnerId(erp, partner_nif):
+    if not partner_nif: return None
+    partner = erp.ResPartner.search([
+        ('ref', '=', partner_nif)
+    ])
+    return partner[0] if partner else None
 
 
 def partnerAddress(erp, partner_id):
     if not partner_id: return None
-    partner_address_model = erp.ResPartnerAddress
-    return partner_address_model.read(
+    return erp.ResPartnerAddress.read(
         [('partner_id', '=', partner_id)],
         ['id', 'state_id', 'email']
     )[0]
@@ -161,12 +162,11 @@ class Claims(object):
         crm_id = self.create_crm_case(case)
         contract_id = contractId(self.erp, case.contract)
         contract = self.erp.GiscedataPolissa.read(contract_id, ['cups'])
-        cups_id = contract['cups'][0] if contract else None
 
         data_atc = {
             'provincia': partner_address.get('state_id')[0] if partner_address else False,
             'total_cups': 1,
-            'cups_id': cups_id,
+            'cups_id': contract['cups'][0] if contract else None,
             'subtipus_id': claim_section_id,
             'reclamante': RECLAMANTE,
             'resultat': resultat(case),
