@@ -68,8 +68,8 @@
 - [x] create crm: cas sense contracte
 - [x] create crm: cas sense partner
 - [x] create atc uses create crm
-- [ ] create crm: solved = True
-- [ ] create atc: cover test cases
+- [ ] create crm: solved = True (lo comentamos cuando lo movimos a una funcion a parte)
+- [x] create atc: cover test cases
 - [ ] create crm: renombrar user -> seccion/team (preguntar a AiS per terminologia de domini)
 - [ ] create crm: extract seccio del reason and remove the field
 - [ ] create crm: cas contracte no existeix
