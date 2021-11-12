@@ -43,8 +43,6 @@ var postAnnotation = function(annotation) {
       CallInfo.savingAnnotation = false;
       CallInfo.call.extra = "";
       reason_filter = "";
-      CallInfo.call.proc = false;
-      CallInfo.call.improc = false;
       CallInfo.call.date = "";
     }
   }, function(error) {
@@ -287,9 +285,6 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
   var emplenaReclamacio = function(tag) {
     var reclamacio = {
       "resolution": "unsolved",
-      "proc": false,
-      "improc": false,
-      "solved": false,
       "tag": tag
     }
     Dialog.show(function() {
