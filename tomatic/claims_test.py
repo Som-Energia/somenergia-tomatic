@@ -127,7 +127,6 @@ class Claims_Test(unittest.TestCase):
             improcedente: ''
             solved: x
             user: RECLAMACIONS
-            cups: ES0031405524910014WM0F
             observations: adfasd
         """)
         base.update(**kwds)

@@ -26,12 +26,6 @@ def contractId(erp, contract):
     contract_id = erp.GiscedataPolissa.search([("name", "=", contract)])
     if contract_id: return contract_id[0]
 
-
-def cupsId(erp, cups):
-    cups_model = erp.GiscedataCupsPs
-    return cups_model.browse([('name', '=', cups)])[0].id
-
-
 def userId(erp, emails, person):
     email = emails[person]
     partner_address_model = erp.ResPartnerAddress
@@ -162,7 +156,6 @@ class Claims(object):
                 improcedente: ''
                 solved: ''
                 user: section.name
-                cups: cups number
                 observations: comments
                 - ...
             ...
@@ -174,11 +167,14 @@ class Claims(object):
             self.erp, case.reason.split('.')[-1].strip()
         )
         crm_id = self.create_crm_case(case)
+        contract_id = contractId(self.erp, case.contract)
+        contract = self.erp.GiscedataPolissa.read(contract_id, ['cups'])
+        cups_id = contract['cups'][0] if contract else None
 
         data_atc = {
             'provincia': partner_address.get('state_id')[0] if partner_address else False,
             'total_cups': 1,
-            'cups_id': cupsId(self.erp, case.cups),
+            'cups_id': cups_id,
             'subtipus_id': claim_section_id,
             'reclamante': RECLAMANTE,
             'resultat': resultat(case),
