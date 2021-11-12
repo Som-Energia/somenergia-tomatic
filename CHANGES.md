@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.2.3 2021-11-12
+
+- Callinfo: Fix: crash when no readings or no invoicings or no meters
+
 ## 4.2.2 2021-11-12
 
 - Callinfo: 1:20 speedup on getting contract details of a partner with 16 contracts
