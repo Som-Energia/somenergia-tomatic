@@ -69,17 +69,20 @@
 - [x] create crm: cas sense contracte
 - [x] create crm: cas sense partner
 - [x] create atc uses create crm
-- [ ] create crm: solved = True (lo comentamos cuando lo movimos a una funcion a parte)
+- [ ] !!! create crm: solved = True (lo comentamos cuando lo movimos a una funcion a parte)
 - [x] create atc: cover test cases
 - [x] empty kalinfo.crmcase and remove
 - [ ] create crm: renombrar user -> seccion/team (preguntar a AiS per terminologia de domini)
 - [ ] create crm: extract seccio del reason and remove the field
 - [ ] create crm: cas contracte no existeix
-- [ ] **create crm: te sentit loggejar el cups si tenim el contract id?**
+- [x] create crm: te sentit loggejar el cups si tenim el contract id?
 - [ ] Claims.get_claims -> claimCategories()
 - [ ] repurpose claims
 
-
+- [ ] callinfo log: remove cups
+- [ ] callinfo log: unite resolution
+- [ ] callinfo log: join infos and claims
+- [ ] Check: sections id's unlikely to refer the same id (table) in atc and crm
 
 
 

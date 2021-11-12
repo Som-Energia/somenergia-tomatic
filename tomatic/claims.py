@@ -76,11 +76,10 @@ class Claims(object):
         claims = []
         all_claim_ids = claims_model.search()
 
-        for claim_id in all_claim_ids:
-            claim = claims_model.read(
-                claim_id,
-                ['default_section', 'name', 'desc']
-            )
+        for claim in claims_model.read(
+            all_claim_ids,
+            ['default_section', 'name', 'desc']
+        ):
             claim_section = claim.get("default_section")
 
             section = defaultSection
