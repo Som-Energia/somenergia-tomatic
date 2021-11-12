@@ -172,9 +172,9 @@ class CallInfo(object):
         return self.lastInvoicesManyContracts([contract_id]).get(contract_id,[])
 
     def lastInvoicesManyContracts(self, contract_ids):
-        def getInvoice(invoice_id):
+        def getInvoice(invoice_ids):
             return self.O.GiscedataFacturacioFactura.read(
-                invoice_id, [
+                invoice_ids, [
                     'number',
                     'data_inici',
                     'data_final',
@@ -187,18 +187,21 @@ class CallInfo(object):
                     'state',
                     'polissa_id',
                 ]
-            )
+            ) or []
+
+        result = { contract_id: [] for contract_id in contract_ids }
+
         last_invoices_ids = []
         for contract_id in contract_ids:
-            last_invoices_ids.extend(
-                self.O.GiscedataFacturacioFactura.search([
+            invoice_ids = self.O.GiscedataFacturacioFactura.search([
                     ('polissa_id', '=', contract_id),
                     ('state', '!=', 'draft'),
                     ('type', 'in', ['out_invoice', 'out_refund'])
-                ])[:self.invoices_limit]
-            )
+                ])
+            last_invoices_ids.extend(invoice_ids)
 
-        result = { contract_id: [] for contract_id in contract_ids }
+        if not last_invoices_ids: return result
+
         for invoice in getInvoice(last_invoices_ids):
             contract_id = invoice['polissa_id'][0]
             data = dict(
@@ -221,10 +224,14 @@ class CallInfo(object):
         return self.meterReadingsManyContracts([contract_id])[contract_id]
 
     def meterReadingsManyContracts(self, contract_ids):
+        result = { contract_id: [] for contract_id in contract_ids }
+
         meter_ids = self.O.GiscedataLecturesComptador.search([
             ('polissa', 'in', contract_ids),
             ('active', '=', True),
         ])
+        if not meter_ids: return result
+
         meters = self.O.GiscedataLecturesComptador.read(
             meter_ids,
             ['lectures', 'name', 'polissa']
@@ -234,17 +241,18 @@ class CallInfo(object):
             meter['id']: meter['polissa'][0]
             for meter in meters
         }
+
         reading_ids = []
         for meter in meters:
             meter_readings = meter['lectures'] or []
             reading_ids.extend(meter_readings[:self.meter_readings_limit])
-   
+        if not reading_ids: return result
+
         readings = self.O.GiscedataLecturesLectura.read(
             reading_ids,
             ['name', 'lectura', 'origen_id', 'periode', 'comptador']
         )
 
-        result = { contract_id: [] for contract_id in contract_ids }
         for reading in readings:
             contract_id = meter2contract[reading['comptador'][0]]
             data = dict(
@@ -261,11 +269,13 @@ class CallInfo(object):
         return self.atrCasesManyContracts([contract_id])[contract_id]
 
     def atrCasesManyContracts(self, contract_ids):
+        result = { contract_id: [] for contract_id in contract_ids }
+
         cases_ids = self.O.GiscedataSwitching.search([
             ('cups_polissa_id', 'in', contract_ids)
         ])
 
-        result = { contract_id: [] for contract_id in contract_ids }
+        if not cases_ids: return result
 
         cases = self.O.GiscedataSwitching.read(
             cases_ids,
