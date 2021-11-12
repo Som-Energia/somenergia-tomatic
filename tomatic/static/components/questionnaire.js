@@ -70,13 +70,7 @@ var saveLogCalls = function(phone, user, claim, contract, partner) {
       claim.tag ? claim.tag : (
       "INFO"
     ))),
-    "resolution": (
-      !claim ? "" : (
-      !claim.solved ? "unsolved" : (
-      !claim.proc ? "fair" : (
-      !claim.improc ? "unfair" : (
-      "unsolvable"
-    ))))),
+    "resolution": claim ? claim.resolution:'',
   });
 }
 
@@ -242,16 +236,9 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
       m(RadioGroup, {
         name: 'resolution',
         onChange: function(state) {
-          reclamacio.solved = state.value != 'unsolved';
-          reclamacio.proc = state.value == 'fair';
-          reclamacio.improc = state.value == 'unfair';
+          reclamacio.resolution = state.value;
         },
-        checkedValue: (
-          !reclamacio.solved ? 'unsolved' : (
-          reclamacio.proc ? 'fair' : (
-          reclamacio.improc ? 'unfair' : (
-          'unsolvable'
-        )))),
+        checkedValue: reclamacio.resolution,
         buttons: [{
             defaultChecked: true,
             label: "No resolt",
@@ -299,6 +286,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
 
   var emplenaReclamacio = function(tag) {
     var reclamacio = {
+      "resolution": "unsolved",
       "proc": false,
       "improc": false,
       "solved": false,
