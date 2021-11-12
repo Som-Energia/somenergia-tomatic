@@ -58,6 +58,7 @@
 
 
 - [ ] moure scripts a una carpeta
+
 - [ ] Antotacions UI: Radio button no resolt + tenia rao > no tenia rao
 - [ ] Anotacions: Unificar Api anotacio en un punt d'entrada
 - [ ] Anotacions: Unificar els fitxers d'anotacio i log de trucada
@@ -70,9 +71,13 @@
 - [x] create atc uses create crm
 - [ ] create crm: solved = True (lo comentamos cuando lo movimos a una funcion a parte)
 - [x] create atc: cover test cases
+- [ ] empty kalinfo.crmcase and remove
 - [ ] create crm: renombrar user -> seccion/team (preguntar a AiS per terminologia de domini)
 - [ ] create crm: extract seccio del reason and remove the field
 - [ ] create crm: cas contracte no existeix
+- [ ] create crm: te sentit loggejar el cups si tenim el contract id?
+- [ ] Claims.get_claims -> claimCategories()
+- [ ] repurpose claims
 
 
 

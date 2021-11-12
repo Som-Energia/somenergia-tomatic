@@ -7,6 +7,8 @@ from erppeek_wst import ClientWST
 from yamlns import namespace as ns
 from xmlrpc import client as xmlrpclib
 from .claims import Claims
+from .kalinfo.crmcase import CrmCase
+
 try:
     import dbconfig
 except ImportError:
@@ -107,6 +109,12 @@ class Claims_Test(unittest.TestCase):
         Reclamacio = self.erp.GiscedataSubtipusReclamacio
         nombre_reclamacions = Reclamacio.count()
         self.assertEqual(len(reclamacions), nombre_reclamacions)
+
+    def test_getCrmCategories(self):
+        crm_case = CrmCase(self.erp)
+        crm_categories = crm_case.get_crm_categories()
+        categories = ns.load('b2bdata/categories_b2b.yaml')
+        self.assertEqual(crm_categories, categories)
 
     def atc_base(self, **kwds):
         base = ns.loads("""
