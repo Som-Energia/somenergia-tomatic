@@ -65,7 +65,8 @@
 - [ ] create crm: Inserir usuari correcte al CRM
 - [x] create crm: cas amb tot
 - [x] create crm: cas sense contracte
-- [ ] create crm: cas sense partner
+- [x] create crm: cas sense partner
+- [ ] create atc uses create crm
 - [ ] create crm: renombrar user -> seccion/team (preguntar a AiS per terminologia de domini)
 - [ ] create crm: extract seccio del reason and remove the field
 - [ ] create crm: cas contracte no existeix

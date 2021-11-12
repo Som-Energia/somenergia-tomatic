@@ -157,28 +157,11 @@ class Claims(object):
         '''
         partner_id = partnerId(self.erp, case.partner)
         partner_address = partnerAddress(self.erp, partner_id)
-        crm_section_id = crmSectionID(self.erp, case.user)
         claim_section_id = claimSectionID(
             self.erp, case.reason.split('.')[-1].strip()
         )
 
-        data_crm = {
-            'section_id': crm_section_id,
-            'name': sectionName(self.erp, claim_section_id),
-            'canal_id': PHONE,
-            'polissa_id': contractId(self.erp, case.contract),
-            'partner_id': partner_id,
-            'partner_address_id': partner_address.get('id'),
-            'state': 'done' if case.solved else 'open',
-            'user_id': ''
-        }
-        crm_id = self.erp.CrmCase.create(data_crm).id
-
-        data_history = {
-            'case_id': crm_id,
-            'description': case.observations
-        }
-        crm_history_id = self.erp.CrmCaseHistory.create(data_history).id
+        crm_id = self.create_crm_case(case)
 
         data_atc = {
             'provincia': partner_address.get('state_id')[0] if partner_address else False,
