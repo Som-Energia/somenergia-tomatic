@@ -453,6 +453,22 @@ async def updateCallLog(user, request: Request):
     )
     return yamlfy(info=ns(message='ok'))
 
+@app.post('/api/infoCase')
+async def postInfoCase(request: Request):
+    info = ns.loads(await request.body())
+    CallRegistry().annotateInfoRequest(info)
+    return yamlfy(info=ns(
+        message="ok"
+    ))
+
+@app.post('/api/atrCase')
+async def postAtrCase(request: Request):
+    atc_info = ns.loads(await request.body())
+    CallRegistry().annotateClaim(atc_info)
+    return yamlfy(info=ns(
+        message="ok"
+    ))
+
 
 @app.get('/api/updateClaims')
 def updateClaimTypes():
@@ -489,16 +505,6 @@ def getClaimTypes():
     return yamlfy(info=result)
 
 
-@app.post('/api/atrCase')
-async def postAtrCase(request: Request):
-
-    atc_info = ns.loads(await request.body())
-    CallRegistry().annotateClaim(atc_info)
-    return yamlfy(info=ns(
-        message="ok"
-    ))
-
-
 @app.get('/api/updateCrmCategories')
 def updateCrmCategories():
     with erp() as O:
@@ -517,14 +523,6 @@ def getInfos():
         infos=infos,
     ))
 
-
-@app.post('/api/infoCase')
-async def postInfoCase(request: Request):
-    info = ns.loads(await request.body())
-    CallRegistry().annotateInfoRequest(info)
-    return yamlfy(info=ns(
-        message="ok"
-    ))
 
 
 
