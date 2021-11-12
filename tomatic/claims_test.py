@@ -92,7 +92,6 @@ class Claims_Test(unittest.TestCase):
             'time_tracking_id',
         ]))
 
-
         fkname(result, "cups_id")
         fkname(result, "subtipus_id")
         fkname(result, "time_tracking_id")
@@ -100,7 +99,6 @@ class Claims_Test(unittest.TestCase):
         anonymize(result, "email_from")
 
         self.assertNsEqual(ns(result), expected)
-
 
     def test_getAllClaims(self):
         claims = Claims(self.erp)
@@ -214,7 +212,6 @@ class Claims_Test(unittest.TestCase):
             state: open
             user_id: false
         """.format(case_id))
-
 
 
 # vim: et ts=4 sw=4

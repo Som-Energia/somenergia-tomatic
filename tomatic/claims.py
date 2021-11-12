@@ -49,13 +49,11 @@ def userId(erp, emails, person):
     except IndexError:
         return None
 
-
-def resultat(erp, procedente, improcedente):
-    if procedente:
-        return '01'
-    if improcedente:
-        return '02'
-    return '03'
+def resultat(case):
+    if not case.solved: return ''
+    if case.procedente: return '01'
+    if case.improcedente: return '02'
+    return '03' # cannot be solved
 
 
 def sectionName(erp, section_id):
@@ -169,11 +167,7 @@ class Claims(object):
             'cups_id': cupsId(self.erp, case.cups),
             'subtipus_id': claim_section_id,
             'reclamante': RECLAMANTE,
-            'resultat': resultat(
-                self.erp,
-                case.procedente,
-                case.improcedente
-            ) if case.solved else "",
+            'resultat': resultat(case),
             'date': case.date,
             'email_from': partner_address.get('email') if partner_address else False,
             'time_tracking_id': COMERCIALIZADORA
