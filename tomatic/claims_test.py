@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 import unittest
+import b2btest
 import os
 from consolemsg import error
 from erppeek_wst import ClientWST
@@ -31,6 +32,7 @@ class Claims_Test(unittest.TestCase):
 
     def setUp(self):
         self.maxDiff = None
+        self.b2bdatapath = 'b2bdata'
         self.erp = None
         if not dbconfig:
             return
@@ -103,18 +105,15 @@ class Claims_Test(unittest.TestCase):
 
         self.assertNsEqual(ns(result), expected)
 
-    def test_getAllClaims(self):
+    def test_atcCategories(self):
         claims = Claims(self.erp)
-        reclamacions = claims.get_claims()
-        Reclamacio = self.erp.GiscedataSubtipusReclamacio
-        nombre_reclamacions = Reclamacio.count()
-        self.assertEqual(len(reclamacions), nombre_reclamacions)
+        categories = claims.get_claims()
+        self.assertB2BEqual(ns(categories=categories).dump())
 
     def test_crmCategories(self):
         claims = Claims(self.erp)
-        crm_categories = claims.crm_categories()
-        categories = ns.load('b2bdata/categories_b2b.yaml')
-        self.assertEqual(crm_categories, categories)
+        categories = claims.crm_categories()
+        self.assertB2BEqual(ns(categories=categories).dump())
 
     def atc_base(self, **kwds):
         base = ns.loads("""
