@@ -27,31 +27,10 @@ var call_reasons = CallInfo.call_reasons;
 var reason_filter = "";
 
 
-var postClaim = function(claim) {
-  m.request({
-    method: 'POST',
-    url: '/api/atrCase',
-    extract: deyamlize,
-    body: claim
-  }).then(function(response){
-    console.debug("Info GET Response: ",response);
-    if (response.info.message !== "ok" ) {
-      console.debug("Error al fer el post del cas atr: ", response.info.message)
-    }
-    else{
-      console.debug("ATC case saved")
-      CallInfo.savingAnnotation = false;
-    }
-  }, function(error) {
-    console.debug('Info GET apicall failed: ', error);
-  });
-};
-
-
 var postAnnotation = function(annotation) {
   m.request({
     method: 'POST',
-    url: '/api/infoCase',
+    url: '/api/call/annotate',
     extract: deyamlize,
     body: annotation
   }).then(function(response){
@@ -66,63 +45,38 @@ var postAnnotation = function(annotation) {
       reason_filter = "";
       CallInfo.call.proc = false;
       CallInfo.call.improc = false;
+      CallInfo.call.date = "";
     }
   }, function(error) {
     console.debug('Info POST apicall failed: ', error);
   });
 }
 
-var updateCall = function(data) {
-    m.request({
-        method: 'POST',
-        url: '/api/updatelog/'+ Login.myName(),
-        body: data,
-        extract: deyamlize,
-    }).then(function(response){
-        console.debug("Info POST Response: ",response);
-        if (response.info.message !== "ok") {
-            console.debug("Error al fer log dels motius: ", response.info.message)
-        }
-        CallInfo.call.date = "";
-    }, function(error) {
-        console.debug('Info POST apicall failed: ', error);
-    });
-}
-
 var saveLogCalls = function(phone, user, claim, contract, partner) {
   CallInfo.savingAnnotation = true;
   var partner_code = partner!==null ? partner.id_soci : "";
   var contract_number = contract!==null ? contract.number : "";
-  var contract_cups = contract!==null ? contract.cups : "";
   var isodate = CallInfo.call.date || new Date().toISOString()
-  updateCall({
-    "data": isodate,
-    "telefon": CallInfo.call.phone,
-    "partner": partner_code,
-    "contracte": contract_number,
-    "motius": CallInfo.call.reason,
-  })
-  if (claim) {
-    postClaim({
-      "date": isodate,
-      "person": user,
-      "reason": CallInfo.call.reason,
-      "partner": partner_code,
-      "contract": contract_number,
-      "procedente": (claim.proc ? "x" : ""),
-      "improcedente": (claim.improc ? "x" : ""),
-      "solved": (claim.solved ? "x" : ""),
-      "user": (claim.tag ? claim.tag : "INFO"),
-      "cups": contract_cups,
-      "observations": CallInfo.call.extra,
-    });
-  }
   postAnnotation({
+    "user": user,
     "date": isodate,
     "phone": CallInfo.call.phone,
-    "person": user,
+    "partner": partner_code,
+    "contract": contract_number,
     "reason": CallInfo.call.reason,
-    "extra": CallInfo.call.extra,
+    "notes": CallInfo.call.extra,
+    "claimsection": (
+      !claim ? "" : (
+      claim.tag ? claim.tag : (
+      "INFO"
+    ))),
+    "resolution": (
+      !claim ? "" : (
+      !claim.solved ? "unsolved" : (
+      !claim.proc ? "fair" : (
+      !claim.improc ? "unfair" : (
+      "unsolvable"
+    ))))),
   });
 }
 
@@ -289,28 +243,28 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
         name: 'resolution',
         onChange: function(state) {
           reclamacio.solved = state.value != 'unsolved';
-          reclamacio.proc = state.value == 'procedent';
-          reclamacio.improc = state.value == 'improcedent';
+          reclamacio.proc = state.value == 'fair';
+          reclamacio.improc = state.value == 'unfair';
         },
         checkedValue: (
-          !reclamacio.solved ? 'unsolved' :
-          reclamacio.proc ? 'procedent' :
-          reclamacio.improc ? 'improcedent' :
-          'nogestionable'
-        ),
+          !reclamacio.solved ? 'unsolved' : (
+          reclamacio.proc ? 'fair' : (
+          reclamacio.improc ? 'unfair' : (
+          'unsolvable'
+        )))),
         buttons: [{
             defaultChecked: true,
             label: "No resolt",
             value: 'unsolved',
         },{
             label: "Resolt; tenia raó",
-            value: 'procedent',
+            value: 'fair',
         },{
             label: "Resolt; no tenia raó",
-            value: 'improcedent',
+            value: 'unfair',
         },{
             label: "Resolt; no es podia fer res",
-            value: 'nogestionable',
+            value: 'unsolvable',
         }],
       }),
     ])

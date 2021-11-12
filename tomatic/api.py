@@ -442,32 +442,20 @@ def getCallLog(extension):
         )
     )
 
-@app.post('/api/updatelog/{user}')
-async def updateCallLog(user, request: Request):
-    body = await request.body()
-    fields = ns.loads(body)
-    extension = persons.extension(user)
-    CallRegistry().updateCall(extension, fields=fields)
-    await asyncio.gather(
-        *backchannel.notifyCallLogChanged(user)
-    )
-    return yamlfy(info=ns(message='ok'))
-
-@app.post('/api/infoCase')
-async def postInfoCase(request: Request):
-    info = ns.loads(await request.body())
-    CallRegistry().annotateInfoRequest(info)
+@app.post('/api/call/annotate')
+async def callAnnotate(request: Request):
+    annotation = ns.loads(await request.body())
+    CallRegistry().annotateCall(annotation)
+    user = annotation.get('user', None)
+    if user:
+        await asyncio.gather(
+            *backchannel.notifyCallLogChanged(user)
+        )
     return yamlfy(info=ns(
         message="ok"
     ))
 
-@app.post('/api/atrCase')
-async def postAtrCase(request: Request):
-    atc_info = ns.loads(await request.body())
-    CallRegistry().annotateClaim(atc_info)
-    return yamlfy(info=ns(
-        message="ok"
-    ))
+
 
 
 @app.get('/api/updateClaims')

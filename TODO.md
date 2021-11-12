@@ -83,6 +83,7 @@
 - [ ] callinfo log: unite resolution
 - [ ] callinfo log: join infos and claims
 - [ ] Check: sections id's unlikely to refer the same id (table) in atc and crm
+- [ ] On failing annotation, notify the user
 
 
 

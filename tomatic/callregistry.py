@@ -40,6 +40,37 @@ class CallRegistry(object):
 
         calls.dump(self.path)
 
+    def annotateCall(self, fields):
+        from . import persons
+        extension = persons.extension(fields.user)
+        self.updateCall(extension, ns(
+            data = fields.date,
+            telefon = fields.phone,
+            partner = fields.partner,
+            contracte = fields.contract,
+            motius = fields.reason,
+        ))
+        self.annotateInfoRequest(ns(
+            date = fields.date,
+            phone = fields.phone,
+            person = fields.user,
+            reason = fields.reason,
+            extra = fields.notes,
+        ))
+        if not fields.claimsection: return
+        self.annotateClaim(ns(
+            date = fields.date,
+            person = fields.user,
+            reason = fields.reason,
+            partner = fields.partner,
+            contract = fields.contract,
+            procedente = "x" if fields.resolution == 'fair' else '',
+            improcedente = "x" if fields.resolution == 'unfair' else '',
+            solved = "x" if fields.resolution != 'unsolved' else '',
+            user = fields.claimsection,
+            observations = fields.notes,
+        ))
+
     def annotateInfoRequest(self, data):
         self._appendToExtensionDailyInfo('info_cases', data)
 
