@@ -1,4 +1,5 @@
 #!/bin/bash
+# Run a command from this dir with the venv activated
 
 cd $(dirname $0)
 source .venv/bin/activate

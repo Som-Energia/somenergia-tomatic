@@ -5,6 +5,8 @@
 
 Somenergia Phone Support Helper
 
+![En Tomàtic](tomatic.jpg)
+
 - [Introduction](#introduction)
 - [Setup](#setup)
   - [Development Setup](#development-setup)
@@ -18,15 +20,20 @@ Somenergia Phone Support Helper
   - [Starting the web and API server](#starting-the-web-and-api-server)
   - [Updating Asterisk extensions](#updating-asterisk-extensions)
   - [Controlling Asterisk real-time queue](#controlling-asterisk-real-time-queue)
+  - [Full list of CLI tools](#full-list-of-cli-tools)
 - [Developers notes](#developer-notes)
+  - [Developing with autoreload](#developing-with-autoreload)
   - [How to release](#how-to-release)
   - [How to upgrade your server](#how-to-upgrade-your-server)
+  - [Code map](#code-map)
 
 Other documentation
 
 - [CHANGES.md](CHANGES.md): Version history and change log
 - [CODEMAP.md](CODEMAP.md): Explains the structure of the code (first read if you start developing)
 - [TODO.md](TODO.md): Task list
+- [doc](docs) Further documentation
+
 
 ## Introduction
 
@@ -269,6 +276,48 @@ Feel free to read the help:
 ```bash
 $ ./tomatic_rtqueue.py --help
 ```
+
+## Full list of CLI tools
+
+Thats the full list of CLI tools.
+Most of them have their own `--help` to know how to use them:
+
+Callinfo related:
+
+- `tomatic_callinfo.py`: Retrieves client info by several criteria
+- `create_atc_case.py`: Uploads daily CRM cases to the ERP
+
+Pbx related:
+
+- `tomatic_rtqueue.py`: Controls the agents currently receiving calls
+- `tomatic_extensions.py`: Controls agent's extensions
+- `tomatic_calls.py`: Retrieves call stats from the PBX (not supported by current areavoip pbx)
+- `areavoip_dailyreport.py`: Generates the daily call report (from areavoip PBX)
+- `areavoip_callapi.py`: Calls from CLI arbitrary operation of the areavoip PBX API
+
+Timetable computation related:
+
+- `tomatic_busy.py`: Ops with people's availability (to spot critical days and so on)
+- `tomatic_retrieve.py`: Call different data retrievals by CLI (holidays, leaves, persons, idealshifts...)
+- `tomatic_mergeshifts.py`: Merge operations with shift load files (dicts person to number)
+- `tomatic_resetshiftcredit.sh`: Clears the debts and credits of shifts
+- `tomatic_shiftload.py`: Computes person's shift load for the week. Prior step to compute a timetable.
+- `tomatic_scheduler.py`: Computes timetables.
+- `tomatic_uploadtimetable.py`: Uploads timetables to the API.
+
+Utilities:
+
+- `tomatic_api.py`: Launches the web and API.
+- `tomatic_says.py`: Impersonates Tomatic on hangouts.
+- `runhere`: Tool to change the cwd and set the virtual env, to simplify crontab and scriptlauncher usage.
+- `scriptlauncher.yaml`: [Scriptluncher](http://github.com/som-energia/somenergia-scriptlauncher) configuration to add Tomatic related scripts.
+
+Crontab tasks:
+
+- `crontab`: crontab file to be linked to /etc/cron.d/, see [Setting up cron tasks](#setting-up-cron-tasks)
+- `crontab-dailyreport.sh`: Sends the dailyreport at the end of the day
+- `crontab-warnturn.sh`: Warns operators for the next turn
+
 
 # Developers notes
 
