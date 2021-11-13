@@ -82,6 +82,11 @@ This software is used within SomEnergia cooperative to improve the quality of th
 	Such annotations can be used to start an official claim procedure
 	or just to keeps some stats that will help to improve the quality of service.
 
+- **Tomàtic impersonation**
+
+	Turn team coordination messages into a smile by impersonating Tomàtic
+	in the chat group.
+
 
 ## Setup
 
