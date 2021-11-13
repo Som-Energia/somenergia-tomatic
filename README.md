@@ -1,4 +1,9 @@
-<a href="https://ca.wikipedia.org/wiki/Super3"><img src="doc/tomatic.jpg" align='right'/></a>
+<a href="https://www.ccma.cat/tv3/alacarta/la-meva-infantils/tomatic-club-super-3/video/4586233/">
+<img
+title="Tomàtic, a chatting tomato-answering machine. Until 2006, it featured on 'Club Super3', a show for kids aired by the catalan public TV. Alledgedly started to work at Som Energia in 2015."
+src="doc/tomatic.jpg" align='right'
+/>
+</a>
 
 [![Build Status](https://app.travis-ci.com/Som-Energia/somenergia-tomatic.svg?branch=master)](https://app.travis-ci.com/Som-Energia/somenergia-tomatic)
 [![Coverage Status](https://coveralls.io/repos/github/Som-Energia/somenergia-tomatic/badge.svg?branch=master)](https://coveralls.io/github/Som-Energia/somenergia-tomatic?branch=master)
@@ -71,10 +76,11 @@ This software is used within SomEnergia cooperative to improve the quality of th
 	contracts, invoices, alerts, previous notes...
 	this way agents can resolve calls faster and better.
 
-- **Integrated call logging**
+- **Integrated call annotation**
 
-	With few clicks you can annotate current or past calls,
-	to start claim procedures or just to keep stats of the quality of the service.
+	With a few clicks you can annotate current and past calls.
+	Such annotations can be used to start an official claim procedure
+	or just to keeps some stats that will help to improve the quality of service.
 
 
 ## Setup
