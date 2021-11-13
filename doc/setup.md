@@ -11,7 +11,7 @@
 ### Development setup
 
 ```bash
-sudo apt-get install git gcc libffi-dev libssl-dev nodejs npm
+sudo apt-get install git gcc libffi-dev libssl-dev nodejs npm libyaml-dev
 git clone https://github.com/Som-Energia/somenergia-tomatic.git
 cd somenergia-tomatic
 npm install

@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install system dependencies
         run: |
-          sudo apt install gcc libffi-dev libssl-dev nodejs npm libyaml-dev
+          sudo apt install gcc libffi-dev libssl-dev nodejs npm libyaml-dev libxsl-dev
       - uses: actions/setup-python@v1
       - name: Install dependencies
         run: |
