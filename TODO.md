@@ -26,6 +26,70 @@
 - [ ] consider joining getClaimTypes and getInfos
 - [ ] moure scripts a una carpeta
 
+## Copied from README to be reviewed for dups
+
+- GSpread docs say that moving the credential to `~/.config/gspread/service_account.json` avoids having to pass it around as parameter
+- CallInfo
+	- [ ] /api/getInfos -> /api/call/infotypes
+	- [ ] Pujar infos a l'ERP
+	- [ ] Commit `info_cases/info_cases.yaml`
+	- [ ] Commit `claims_dict.yaml`
+	- [ ] /api/updateClaims -> /api/call/claimtypes/update
+	- [ ] /api/getClaims -> /api/call/claimtypes
+	- [ ] /api/updatelog/<ext> -> /api/call/log/<ext>
+	- [ ] /api/personlog without <ext> has no sense, remove it
+	- [ ] /api/personlog/<ext> en els casos de fallada returnar una llista buida sense errors (no son de fallada, encara no hi ha logs i prou)
+	- [ ] /api/personlog/<ext> /api/call/log/<ext>
+	- [ ] components/call.js:getLog Deprecrated
+	- [ ] /api/claimReasons Deprecated (no ui code aparently)
+	- [ ] /api/infoReasons Deprecated (no ui code aparently)
+	- [ ] /api/callReasons Deprecated (no ui code aparently)
+	- [ ] Revisar handshaking dels websockets
+	- [ ] /api/info/ringring -> /api/call/ringring
+	- [ ] Fer la data ISO al call_log
+	- [ ] /api/info/all/<field> -> /api/info/by/any/<value>
+	- [ ] /api/info/xxxx/<field> -> /api/info/by/xxxx/<value>
+	- [ ] Refactoritzar codi comu dels getInfoPersonByXXXX
+        - [ ] Optimizar búsquedas callinfo
+
+
+- Refactoring
+	- [x] use persons interface everywhere
+		- [x] api uses persons
+			- [x] persons() set attributes with ns() if not found
+			- [x] persons.update(person, **kwds)
+		- [x] tomatic_says use persons
+		- [ ] scheduler use persons
+		- [ ] shiftload uses persons
+		- [ ] tomatic_calls uses persons
+	- [x] use pbx backends instead of current pbx interface
+		- [x] remove use setScheduledQueue (mostly in tests)
+		- [x] unify backend interfaces
+		- [x] dbasterisk works with names not extensions
+
+- Hangout
+	- [x] Configurable token file path
+	- [x] Choose output channel by CLI
+	- [x] Choose token file by CLI
+	- [x] List channels when no channel has been configured yet
+- Planner:
+	- [ ] Refactor as Single Page App
+	- [ ] Style it
+	- [ ] Show cutting reasons of best solutions
+	- [ ] Ask before deleting, killing, uploading...
+- Scheduler:
+	- [ ] Join load computation into the script
+- Person editor:
+	- [ ] Disable ok until all fields are valid
+	- [ ] Check extension not taken already
+	- [ ] Focus on first item
+	- [ ] Take person info from holidays manager
+- Callinfo
+	- [ ] Simplify yaml structure
+	- [ ] Refactor tests
+	- Alerts:
+		- [ ] Unpaid invoices
+
 ## Trello https://trello.com/c/ljKRzvz5/4221-0-3-p7-centraleta-kalinfo-desar-els-casos-de-consultes-del-kalinfo-al-erp
 
 - [ ] Dubte AiS: cal pujar les anotacios que heu fet de proves
