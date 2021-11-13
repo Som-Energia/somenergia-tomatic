@@ -66,9 +66,10 @@ This software is used within SomEnergia cooperative to improve the quality of th
 
 - **Instant information about the incomming call**
 
-	For each incomming call agents get a refreshed view of the ERP
-	information related to that phone number: contracts, invoices, alerts,
-	previous notes... this way agents can resolve calls faster and better.
+	For each incomming call, the aplication presents the agent with a lot
+	of information from the ERP related to that phone number:
+	contracts, invoices, alerts, previous notes...
+	this way agents can resolve calls faster and better.
 
 - **Integrated call logging**
 
