@@ -47,34 +47,38 @@ This software is used within SomEnergia cooperative to improve the quality of th
 
 - **It distributes helpline turns among the staff**
 
-	Each week it decides the turns each person will be attending the phone.
-	Takes into account a provided ideal load for every one, their availability,
+	Each week it decides the turns each person will be attending to the phone.
+	Takes into account a provided ideal load for every one, their holidays, meetings,
 	and some nice restrictions to ensure **staff wellbeing** and **service quality**.
 
 - **Manual edition of the resulting time table**
 
-	Often unscheduled meetings and other issues makes the computed timetable unpractical.
-	The web interface can be used to swap turns and keep track of the changes.
+	Unscheduled meetings and other events, often makes the computed timetable outdated.
+	The web interface can be used to swap turns on the timetable and keep track of the changes.
 
 - **Programming Asterisk queues according the timetable**
 
-	Every turn, it automatically setups the PBX queue according to the timetable.
+	Every turn, Tomàtic automatically setups the PBX queue according to the timetable.
 	It sends friendly reminders to the people on duty and
-	warns the controllers when any agent is not connected to the PBX
+	warns the coordinators whenever an agent is not connected to the PBX
 	because of technical or human memory issues.
 
 - **Realtime control of the current queue***
 
-	You can pause controllers to adapt to temporary unavailabilities,
-	or adding more in case of burst of incomming calls.
-	You can also visually see the state of each extension.
+	You can pause agents to adapt to temporary absences,
+	or adding more agents in case of bursts of incomming calls.
+	Tomatic visually shows the state of each extension in the queue:
+	Available, attending a call, disconnected, paused...
 
 - **Instant information about the incomming call**
 
-	For each incomming call, the aplication presents the agent with a lot
-	of information from the ERP related to that phone number:
+	For each incomming call, Tomàtic retrieves all the information
+	in our ERP related to that number and displays it
+	to the agents in an accessible format:
 	contracts, invoices, alerts, previous notes...
 	this way agents can resolve calls faster and better.
+	If the phone is not in the database,
+	still the agent can perform searches using many criteria.
 
 - **Integrated call annotation**
 
@@ -85,8 +89,8 @@ This software is used within SomEnergia cooperative to improve the quality of th
 - **Tomàtic impersonation**
 
 	Turn team coordination messages into a smile by impersonating Tomàtic
-	in the chat group.
-
+	in the chat group. It seems an amusement feature but, keeping a smile
+	in our faces makes our service also nicer.
 
 ## Setup
 
