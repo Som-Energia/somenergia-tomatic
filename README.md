@@ -5,6 +5,30 @@
 
 Somenergia Phone Support Helper
 
+- [Introduction](#introduction)
+- [Setup](#setup)
+  - [Development Setup](#development-setup)
+  - [Production Setup](#production-setup)
+  - [Configuration](#configuration)
+  - [Setting up cron tasks](#setting-up-cron-tasks)
+  - [Setting up Hangouts notification](#setting-up-hangouts-notification)
+  - [Google Drive data sources](#google-drive-data-sources)
+  - [Callerid API for PBX callback](#callerid-api-for-pbx-integration)
+- [Command Line Usage](#command-line-usage)
+  - [Starting the web and API server](#starting-the-web-and-api-server)
+  - [Updating Asterisk extensions](#updating-asterisk-extensions)
+  - [Controlling Asterisk real-time queue](#controlling-asterisk-real-time-queue)
+- [Developers notes](#developer-notes)
+  - [How to release](#how-to-release)
+
+Other documentation
+
+- [CHANGES.md](CHANGES.md): Version history and change log
+- [CODEMAP.md](CODEMAP.md): Explains the structure of the code (first read if you start developing)
+- [TODO.md](TODO.md): Task list
+
+## Introdution
+
 This software is used within SomEnergia cooperative to manage phone support to members and clients.
 
 - Distributes helpline shifts among the staff.
@@ -119,7 +143,7 @@ since it is not compatible with Python 2.
 - Write down channel ID in `config.yaml` as `hangoutChannel`
 - You can test it by running `tomatic_says.py hello world`
 
-## Google Drive data sources
+### Google Drive data sources
 
 Computing timetables requires access to a Google Drive Spreadsheet
 where you store the source configuration: leaves, ideal work load...
@@ -154,7 +178,7 @@ which are tables a column for each semester day and a row per person.
 ### Callerid API for PBX callback
 
 Tomatic can auto update the search of the current incomming call.
-You must program your PBX AGI scripts to send a requrest to the API.
+You must program your PBX AGI scripts to send a request to the API.
 
 For example, with curl, if the person with the extension 101 is going to
 receive a call from 555441234:
@@ -167,14 +191,16 @@ Notice the `--max-time 1` used to avoid stalling the call if the api is down.
 Notice also the trailing `|| true` to ensure the call success.
 Both, may be needed depending on how you call this from you PBX.
 
-## Usage
+## Command Line Usage
 
-### Web and API
+### Starting the web and API server
 
 To run the fake version to develop:
 
 ```bash
 $ ./tomatic_api.py --debug --fake
+# In a different terminal, for the ui
+npm run start
 ```
 
 To run the version acting on asterisk:
@@ -185,7 +211,7 @@ $ ./tomatic_api.py
 
 Use `--help` to see other options.
 
-### Scheduler
+### Planning time tables
 
 Notice: Now, this can be launched from the web user interface.
 
@@ -203,7 +229,7 @@ $ ./schedulehours.py --keep
 
 See bellow how to grant access to the script.
 
-### Direct asterisk extension configuration
+### Updating Asterisk extensions
 
 Tomatic can load all persons extension numbers from its configuration to Asterisk.
 Be careful, those changes might cut ongoing communications.
@@ -219,13 +245,16 @@ To see which extensions are configured
 $ ./tomatic_extension.py show
 ```
 
-### Direct asterisk rtqueue control
+### Controlling Asterisk real-time queue
+
+Normally this is operated from the crontab and from the Tomatic's user interface.
+But you can also use this script from the server to perform several non-anticipated operations.
 
 To load the current answering queue acording to the schedule
-
 ```bash
 $ ./tomatic_rtqueue.py set
 ```
+
 To load the queue of a different time (for testing purposes):
 ```bash
 $ ./tomatic_rtqueue.py set -d 2018-12-26 -t 10:23
@@ -235,7 +264,12 @@ To see the current queue (besides Tomatic web interface)
 ```bash
 $ ./tomatic_rtqueue.py show
 ```
+The script offer other commands to add users, pause and resume them and clear the queue.
+Feel free to read the help:
 
+```bash
+$ ./tomatic_rtqueue.py --help
+```
 
 # Developers notes
 
@@ -251,7 +285,10 @@ $ ./tomatic_rtqueue.py show
 - `git push --tags`
 
 
-## How to deploy upgrades (specific for Som Energia's deployment)
+## How to upgrade your server
+
+Warning: This might be kind of specific for Som Energia's setup
+because of the paths and the usage of supervisorctl.
 
 ```bash
 cd /opt/www/somenergia-tomatic # Or wherever you installed it
@@ -264,14 +301,16 @@ sudo chmod 755 crontab
 npm install
 npm run build # for development assets
 npm run deploy # for production assets
+# Then upgrading the python part
 source .venv/bin/activate
 pip install -e .
+# Restart the application
 sudo supervisorctl restart tomatic
 ```
 
-# Code map
+## Code map
 
-## API
+### API
 
 - `api.py`: Main FastAPI application, includes
 	- Person management API
@@ -282,7 +321,7 @@ sudo supervisorctl restart tomatic
 - `planner_api.py`: Sub API to launch timetable schedulers in background
 - `execution_api.py`: Sub API using execution.py to launch arbitrary commands (not mounted just to test execution infrastructure)
 
-## PBX control
+### PBX control
 
 - `asteriskfake.py`: A fake implementation of a pbx to be controlled
 - `asteriskcli.py`: Partial pbx controller implementation using asterisk CLI thru ssh (complements dbasterisk)
@@ -290,14 +329,14 @@ sudo supervisorctl restart tomatic
 - `pbxareavoip.py`: A pbx controller using areavoip API
 - `pbxqueue.py`: Pbx controller wrapper to assume the same queue on construction
 
-## Tools
+### Tools
 
 - `execution.py`: Encapsulates an asynchronous execution of a sandboxed process (used by `planner_api.py`)
 - `remote.py`: Simplifies remote process execution and access to files via SSH
 - `directmessage`: modules that abstract actual direct message (hangouts or equivalents)
 - `directmessage/hangouts`: Google hangouts implementation of directmessage
 
-## Information Access
+### Information Access
 
 - `retriever.py`: Encapsulates access to data sources (API's, drive documents...)
 - `busy.py`: Encapsulates person availability information
@@ -306,20 +345,19 @@ sudo supervisorctl restart tomatic
 - `scheduling.py`: Encapsulates access to timetable structure (yaml)
 - `htmlgen.py`: Generates a timetable html, old code, a template would do
 
-## Timetable generation
+### Timetable generation
 
 - `shiftload.py`: Compute how many shifts each person has to do weekly
 - `backtracker.py`: The main timetable solver
 
-## CRM
+### CRM
 
 - `callinfo.py`: Retrieves incomming call information from the ERP
-- `claims.py`: Access the ERP's Claim objects
-- `kalinfo/crmcase.py`: Acces to the ERP's CRP cases
+- `callregistry.py`: Call logging and annotation
+- `claims.py`: Access the ERP's Claim objects (Backend of callregistry)
 
 
-
-# Files
+## Files
 
 This is a review of the callinfo files.
 
@@ -348,73 +386,6 @@ This is a review of the callinfo files.
 
 Atc Cases: Formal claims
 Info Cases: The rest of calls not a claim
-
-
-
-# TODO's
-
-- GSpread docs say that moving the credential to `~/.config/gspread/service_account.json` avoids having to pass it around as parameter
-- CallInfo
-	- [ ] /api/getInfos -> /api/call/infotypes
-	- [ ] Pujar infos a l'ERP
-	- [ ] Commit `info_cases/info_cases.yaml`
-	- [ ] Commit `claims_dict.yaml`
-	- [ ] /api/updateClaims -> /api/call/claimtypes/update
-	- [ ] /api/getClaims -> /api/call/claimtypes
-	- [ ] /api/updatelog/<ext> -> /api/call/log/<ext>
-	- [ ] /api/personlog without <ext> has no sense, remove it
-	- [ ] /api/personlog/<ext> en els casos de fallada returnar una llista buida sense errors (no son de fallada, encara no hi ha logs i prou)
-	- [ ] /api/personlog/<ext> /api/call/log/<ext>
-	- [ ] /api/api/log Deprecated
-	- [ ] components/call.js:getLog Deprecrated
-	- [ ] /api/claimReasons Deprecated (no ui code aparently)
-	- [ ] /api/infoReasons Deprecated (no ui code aparently)
-	- [ ] /api/callReasons Deprecated (no ui code aparently)
-	- [ ] Revisar handshaking dels websockets
-	- [ ] /api/info/ringring -> /api/call/ringring
-	- [ ] Fer la data ISO al call_log
-	- [ ] /api/info/all/<field> -> /api/info/by/any/<value>
-	- [ ] /api/info/xxxx/<field> -> /api/info/by/xxxx/<value>
-	- [ ] Refactoritzar codi comu dels getInfoPersonByXXXX
-        - [ ] Optimizar búsquedas callinfo
-
-
-- Refactoring
-	- [x] use persons interface everywhere
-		- [x] api uses persons
-			- [x] persons() set attributes with ns() if not found
-			- [x] persons.update(person, **kwds)
-		- [x] tomatic_says use persons
-		- [ ] scheduler use persons
-		- [ ] shiftload uses persons
-		- [ ] tomatic_calls uses persons
-	- [x] use pbx backends instead of current pbx interface
-		- [x] remove use setScheduledQueue (mostly in tests)
-		- [x] unify backend interfaces
-		- [x] dbasterisk works with names not extensions
-
-- Hangout
-	- [x] Configurable token file path
-	- [x] Choose output channel by CLI
-	- [x] Choose token file by CLI
-	- [x] List channels when no channel has been configured yet
-- Planner:
-	- [ ] Refactor as Single Page App
-	- [ ] Style it
-	- [ ] Show cutting reasons of best solutions
-	- [ ] Ask before deleting, killing, uploading...
-- Scheduler:
-	- [ ] Join load computation into the script
-- Person editor:
-	- [ ] Disable ok until all fields are valid
-	- [ ] Check extension not taken already
-	- [ ] Focus on first item
-	- [ ] Take person info from holidays manager
-- Callinfo
-	- [ ] Simplify yaml structure
-	- [ ] Refactor tests
-	- Alerts:
-		- [ ] Unpaid invoices
 
 
 
