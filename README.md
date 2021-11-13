@@ -17,7 +17,6 @@ src="doc/tomatic.jpg" align='right'
 - [Setup](doc/setup.md): How to setup
 - [Command Line Tools](doc/cli-tools.md): Operator guide
 - [Developing](doc/development.md): Developing Tomàtic
-- [CODEMAP.md](CODEMAP.md): Code structure
 - [TODO.md](TODO.md): Pending task list
 - [CHANGES.md](CHANGES.md): Version history and change log
 - [doc](docs) Further documentation (Including project requirements, glossary and designs)

@@ -1,4 +1,4 @@
-# Setup documentation
+# Tomàtic Setup Documentation
 
 - [Development Setup](#development-setup)
 - [Production Setup](#production-setup)

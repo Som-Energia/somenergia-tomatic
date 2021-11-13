@@ -1,4 +1,4 @@
-# Command Line Tools
+# Tomàtic Command Line Tools
 
 Tomàtic comes with many command line tools.
 Most of them come with a proper command line help (`--help`),
@@ -49,7 +49,7 @@ Most of them have their own `--help` to know how to use them:
 
 - `runhere`: Wrapper to simplify script usage from crontab and scriptlauncher. Sets the cwd and the virtual env.
 - `scriptlauncher.yaml`: [Scriptlauncher](http://github.com/som-energia/scriptlauncher) configuration to add Tomatic related scripts.
-- `crontab`: crontab file to be linked to /etc/cron.d/, see [Setting up cron tasks](#setting-up-cron-tasks)
+- `crontab`: crontab file to be linked to /etc/cron.d/, see [Setting up cron tasks](setup.md#setting-up-cron-tasks)
 - `crontab-dailyreport.sh`: Sends the dailyreport at the end of the day
 - `crontab-warnturn.sh`: Warns operators for the next turn
 
