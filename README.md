@@ -13,13 +13,14 @@ Somenergia Phone Support Helper
   - [Setting up cron tasks](#setting-up-cron-tasks)
   - [Setting up Hangouts notification](#setting-up-hangouts-notification)
   - [Google Drive data sources](#google-drive-data-sources)
-  - [Callerid API for PBX callback](#callerid-api-for-pbx-integration)
+  - [PBX callerid callback](#pbx-callerid-callback)
 - [Command Line Usage](#command-line-usage)
   - [Starting the web and API server](#starting-the-web-and-api-server)
   - [Updating Asterisk extensions](#updating-asterisk-extensions)
   - [Controlling Asterisk real-time queue](#controlling-asterisk-real-time-queue)
 - [Developers notes](#developer-notes)
   - [How to release](#how-to-release)
+  - [How to upgrade your server](#how-to-upgrade-your-server)
 
 Other documentation
 
@@ -27,7 +28,7 @@ Other documentation
 - [CODEMAP.md](CODEMAP.md): Explains the structure of the code (first read if you start developing)
 - [TODO.md](TODO.md): Task list
 
-## Introdution
+## Introduction
 
 This software is used within SomEnergia cooperative to manage phone support to members and clients.
 
@@ -69,14 +70,13 @@ git clone https://github.com/Som-Energia/somenergia-tomatic.git
 cd somenergia-tomatic
 npm install
 npm run build # for development assets
-npm run deploy # for production assets
 virtualenv .venv
 python setup develop
 ```
 
 ### Production Setup
 
-- Install pyenv in the running user. Follow ["Basic githup install"](https://github.com/pyenv/pyenv#basic-github-checkout)
+- Install pyenv in the running user. Follow ["Basic github install"](https://github.com/pyenv/pyenv#basic-github-checkout)
 
 ```bash
 sudo apt-get update; sudo apt-get install --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev git nodejs npm
@@ -99,7 +99,6 @@ virtualenv .venv
 source .venv/bin/activate
 python setup develop
 npm install
-npm run build # for development assets
 npm run deploy # for production assets
 ```
 
@@ -175,10 +174,10 @@ Holidays are taken from a sheet named as the year, pe. `2020`
 containing named ranges like `Vacances202Semester1`
 which are tables a column for each semester day and a row per person.
 
-### Callerid API for PBX callback
+### PBX callerid callback
 
-Tomatic can auto update the search of the current incomming call.
-You must program your PBX AGI scripts to send a request to the API.
+Tomatic can auto-search of the current incomming call.
+To achieve that, you must program your PBX AGI scripts to send a request to the Tomatic API.
 
 For example, with curl, if the person with the extension 101 is going to
 receive a call from 555441234:
@@ -188,8 +187,8 @@ $ curl --max-time 1 -X POST  $BASEURL/api/info/ringring --data ext=101 --data ph
 ```
 
 Notice the `--max-time 1` used to avoid stalling the call if the api is down.
-Notice also the trailing `|| true` to ensure the call success.
-Both, may be needed depending on how you call this from you PBX.
+And notice, also, the trailing `|| true` to ensure the call success.
+Both may be needed, depending on how you call this from you PBX.
 
 ## Command Line Usage
 
@@ -272,6 +271,18 @@ $ ./tomatic_rtqueue.py --help
 ```
 
 # Developers notes
+
+## Developing with autoreload 
+
+```bash
+# in different terminals
+npm run start
+./tomatic_api.py --debug --fake
+```
+
+The `--fake` option enables a fake pbx to avoid messing with the actual one.
+You might setup a testing queue and use the `--queue` option instead.
+
 
 ## How to release
 
