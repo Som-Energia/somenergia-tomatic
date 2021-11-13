@@ -36,9 +36,9 @@ jobs:
           packages: |
             coveralls
       - name: Run tests
-        run:
-          - coverage run --source tomatic ./setup.py test
-          - back2back back2back.yaml
+        run: |
+          coverage run --source tomatic ./setup.py test
+          back2back back2back.yaml
 #      - uses: actions/upload-artifact@master
 #        with:
 #          name: resultat
