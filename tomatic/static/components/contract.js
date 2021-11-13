@@ -83,7 +83,7 @@ var contractFields = function(contract, partner) {
       contract.iban
     ]),
     m(".contract-info-item", [
-      m(".label-right", "Rols:",
+      m(".label-right", "Rols: ",
         roles.map(function(rol) {
           var letter = rol[0];
           var active = rol[1];
