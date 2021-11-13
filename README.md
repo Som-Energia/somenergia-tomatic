@@ -1,9 +1,7 @@
-![En Tomàtic](doc/tomatic.jpg){:style="float:right"}
+# En Tomàtic ![](doc/tomatic.jpg)
 
 [![Build Status](https://app.travis-ci.com/Som-Energia/somenergia-tomatic.svg?branch=master)](https://app.travis-ci.com/Som-Energia/somenergia-tomatic)
 [![Coverage Status](https://coveralls.io/repos/github/Som-Energia/somenergia-tomatic/badge.svg?branch=master)](https://coveralls.io/github/Som-Energia/somenergia-tomatic?branch=master)
-
-# En Tomàtic
 
 Som Energia's Phone Support Helper
 
