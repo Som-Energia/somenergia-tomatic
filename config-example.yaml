@@ -1,4 +1,8 @@
 baseUrl: http://example.com:4555 # CLI tools will use that base url to retrieve info from the API
+appSecret: "VerySecret" # YOU SHOULD CHANGE THIS, used to sign authentification and other critical stuff
+googleAuth: # Generate them from https://console.cloud.google.com/apis/credentials
+  GOOGLE_CLIENT_ID='alongstring.apps.googleusercontent.com'
+  GOOGLE_CLIENT_SECRET='anotherlongstring'
 hangoutChannel: 'EwCesKUaJZ1yCpn3R4J4AaABAQ' # the channel id used to warn operators
 # Drive spreadsheet with input information to compute scheduling
 documentDrive: Tomatic Control # Drive document name with the input information

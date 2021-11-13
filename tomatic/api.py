@@ -12,8 +12,9 @@ from fastapi import (
 from fastapi.responses import (
     FileResponse,
     Response,
+    RedirectResponse,
 )
-from . import __version__ as version
+from starlette.middleware.sessions import SessionMiddleware
 import asyncio
 import re
 import os
@@ -25,6 +26,7 @@ from pathlib import Path
 from yamlns import namespace as ns
 from consolemsg import error, step, warn, u
 
+from . import __version__ as version
 from .callinfo import CallInfo
 from .callregistry import CallRegistry
 from . import schedulestorage
@@ -72,10 +74,13 @@ def thisweek():
     return format(now().date() - timedelta(days=now().weekday()))
 
 from .planner_api import api as Planner
+from .auth import router as Auth
 from fastapi.websockets import WebSocket
 
 app = FastAPI()
+app.add_middleware(SessionMiddleware, secret_key="Hola, Supers!")
 app.include_router(Planner, prefix='/api/planner')
+app.include_router(Auth, prefix='/api/auth')
 
 
 def occurrencesInTurn(graella, day, houri, name):
@@ -151,7 +156,12 @@ async def websocketSession(websocket: WebSocket):
 
 @app.get('/')
 @app.get('/{file}')
-def tomatic(file=None):
+def tomatic(request: Request, file=None):
+    user = request.session.get('user')
+    if not user:
+        print("No hay usuario!", file)
+        return RedirectResponse(url='/api/auth/login')
+
     return FileResponse(distpath / (file or 'index.html'))
 
 @app.get('/api/version')

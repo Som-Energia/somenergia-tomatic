@@ -60,12 +60,21 @@ def persons(path=None):
 
 def byExtension(extension):
     """
-    Returns the person key having the extension
+    Returns the person key having the extension or the extension
     """
     keytoext = dict(
         (e,n) for n,e in persons().extensions.items()
     )
-    return keytoext.get(extension,extension)
+    return keytoext.get(extension, extension)
+
+def byEmail(email):
+    """
+    Returns the person key having the email or none
+    """
+    keytoext = dict(
+        (e,n) for n,e in persons().emails.items()
+    )
+    return keytoext.get(email, None)
 
 def name(key):
     """
