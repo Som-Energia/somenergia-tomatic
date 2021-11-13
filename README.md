@@ -1,11 +1,14 @@
-# Som Energia's Tomàtic ![](doc/tomatic.jpg) 
+<img src="doc/tomatic.jpg" align='right'/>
+
 [![Build Status](https://app.travis-ci.com/Som-Energia/somenergia-tomatic.svg?branch=master)](https://app.travis-ci.com/Som-Energia/somenergia-tomatic)
 [![Coverage Status](https://coveralls.io/repos/github/Som-Energia/somenergia-tomatic/badge.svg?branch=master)](https://coveralls.io/github/Som-Energia/somenergia-tomatic?branch=master)
 
-Som Energia's Phone Support Helper
+# Som Energia's Tomàtic
+**The coolest companion of phone attention crew  at Som Energia**
 
 
-- [Introduction](#introduction)
+
+- [Features](#features)
 - [Setup](#setup)
   - [Development Setup](#development-setup)
   - [Production Setup](#production-setup)
@@ -33,36 +36,44 @@ Other documentation
 - [doc](docs) Further documentation
 
 
-## Introduction
+## Features
 
-This software is used within SomEnergia cooperative to manage phone support to members and clients.
+This software is used within SomEnergia cooperative to improve the quality of the phone support we give to our members and clients.
 
-- Distributes helpline shifts among the staff.
+- **It distributes helpline turns among the staff**
 
-	Given the ideal load and availability for everyone, and some restrictions
-	to ensure staff wellbeing and service quality,
-	it decides each week a timetable each person must be attending the phone.
+	Each week it decides the turns each person will be attending the phone.
+	Takes into account a provided ideal load for every one, their availability,
+	and some nice restrictions to ensure **staff wellbeing** and **service quality**.
 
-- Manual edition of the resulting time table
+- **Manual edition of the resulting time table**
 
 	Often unscheduled meetings and other issues makes the computed timetable unpractical.
 	The web interface can be used to swap turns and keep track of the changes.
 
-- Programming Asterisk queues according the timetable.
+- **Programming Asterisk queues according the timetable**
 
-	Asterisk queue is reload for each turn automatically.
+	Every turn, it automatically setups the PBX queue according to the timetable.
+	It sends friendly reminders to the people on duty and
+	warns the controllers when any agent is not connected to the PBX
+	because of technical or human memory issues.
 
-- Pause/Resume extensions or adding more lines during service
+- **Realtime control of the current queue***
 
-	In order to adapt to incoming call and temporary unavailabilities,
-	you can pause or resume lines in the running queue or adding
-	new lines.
+	You can pause controllers to adapt to temporary unavailabilities,
+	or adding more in case of burst of incomming calls.
+	You can also visually see the state of each extension.
 
-- Incomming call info
+- **Instant information about the incomming call**
 
 	For each incomming call agents get a refreshed view of the ERP
-	information related to that number: contracts, invoices, alerts,
+	information related to that phone number: contracts, invoices, alerts,
 	previous notes... this way agents can resolve calls faster and better.
+
+- **Integrated call logging**
+
+	With few clicks you can annotate current or past calls,
+	to start claim procedures or just to keep stats of the quality of the service.
 
 
 ## Setup
