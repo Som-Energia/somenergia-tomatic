@@ -50,9 +50,10 @@ jobs:
         run: |
           coverage run --source tomatic ./setup.py test
           back2back back2back.yaml
-#      - uses: actions/upload-artifact@master
-#        with:
-#          name: resultat
-#          path: |
-#            *.pdf
-#
+      - uses: actions/upload-artifact@master
+        if: failure() && hashFiles('b2bdata/*result')
+        with:
+          name: b2b-results
+          path: |
+            b2bdata/*result
+
