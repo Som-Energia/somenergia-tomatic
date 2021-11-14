@@ -39,7 +39,7 @@ Per canviar el perfil d'usuaria cal
 
 	![](persons-tab.png)
 
-- posar el cursor al damunt de la caixeta,
+- posar el cursor al damunt de la caixeta amb el teu nom,
 - clicar a l'icona del _llapis_
 
 	![](pencil-icon.png)
@@ -50,20 +50,28 @@ Per canviar el perfil d'usuaria cal
 
 Els camps que hi ha són
 
-- Identificador intern. No es pot canviar perquè ha de coincidir amb el que hi ha a l'excel d'atenció i suport.
-- Nom a mostrar: És el nom que es veu.
-- Correu: Ha de ser el correu coorporatiu que teniu a l'Odoo (si no coincideu no se us reservaran les vacances)
-- Extensió: És la que us assigna l'equip de suport a la centraleta
-- Taula: Amb qui esteu asseguts per evitar tenir torns a l'hora. ([Més info](#definir-la-meva-taula))
-- Color: El color de la vostra caixeta per trobar-vos més fàcilment
+- **Identificador:** No es pot canviar perquè ha de coincidir amb el que hi ha a l'excel d'atenció i suport.
+- **Nom a mostrar:** És el nom que es veu arreu.
+- **Correu:** Ha de ser el correu coorporatiu que teniu a l'Odoo (per reservar-vos les vacances)
+- **Extensió:** És la extensió telefònica que us assigna l'equip de suport a la centraleta
+- **Taula:** Amb qui esteu asseguts per evitar tenir torns a l'hora. ([Més info](#definir-la-meva-taula))
+- **Color:** El color de la vostra caixeta per trobar-vos més fàcilment
 
 ## Donar d'alta una persona
 
-Per donar d'alta un nou perfil heu de clicar en la darrera caixeta ![](new-person-box.png)
+La darrera caixa de la pestanya "Persones" és per crear nous perfils.
 
-Aquí si que podreu editar l'identificador.
-Ha de coincidir amb el nom que poseu en l'excel de la càrrega ideal.
-Enre
+![](new-person-box.png)
+
+Us sortirà el mateix diàleg que per ![Editar el perfil d'usuaria](#editar-el-perfil-dusuaria).
+Però ara heu de posar un identificador.
+Aquest identificador, ha de coincidir amb el nom que poseu al full de càlcul del Drive on es posen les càrregues ideals.
+
+Quan afegiu la nova persona al Drive enrecordeu-vos de ajustar
+els _intervals amb nom_:
+
+- `carregaideal_noms` ha de cobrir tots els identificadors
+- `carregaideal_valors` ha de cobrir les càrregues ideals en el mateix ordre que els noms
 
 
 ## Marcar les meves indisponibilitats
