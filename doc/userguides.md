@@ -57,7 +57,7 @@ A part de veure com està, puc modificar la cua
 
 Aquest tutorial explica com fer servir la pestanya de trucada entrant.
 
-[![]()Video
+[![](https://lh3.googleusercontent.com/gkLGlcN1rfcGDapJ7eTnv9s_cjUVPowGuXVlZhS3xVaiCa9q6C81XL-9QRVu5XeVtuqxwLLP6Ny98PMnUKX7=w640-h360-k-pd)
 ](https://drive.google.com/file/d/1BzMOrNKWNw-_QvJ6jrs4yC2vn1Gewt7A/preview)
 
 
