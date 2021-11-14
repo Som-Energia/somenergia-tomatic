@@ -15,7 +15,10 @@ from yamlns import namespace as ns
 import time
 from . import persons
 from .asteriskcli import queueFromSsh
-import dbconfig
+try:
+    import dbconfig
+except ImportError:
+    dbconfig = None
 
 class DbAsterisk(object):
 
@@ -63,7 +66,7 @@ class DbAsterisk(object):
 
     @db_session
     def queue(self, queue):
-        if 'ssh' in dbconfig.tomatic:
+        if dbconfig and 'ssh' in dbconfig.tomatic:
             return queueFromSsh(queue)
 
         return [
