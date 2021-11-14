@@ -46,10 +46,12 @@ jobs:
         with:
           packages: |
             coveralls
-      - name: Run tests
+      - name: Unit tests
+        run: |
+          coverage run --source tomatic ./setup.py test
+      - name: B2B tests
         run: |
           touch holidays.conf
-          coverage run --source tomatic ./setup.py test
           back2back back2back.yaml
       - uses: actions/upload-artifact@master
         if: failure() && hashFiles('b2bdata/*result*')
@@ -58,3 +60,17 @@ jobs:
           path: |
             b2bdata/*result*
 
+      - name: Coveralls
+        uses: AndreMiras/coveralls-python-action@develop
+        with:
+          parallel: true
+          flag-name: Unit tests
+
+  coveralls_finish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: AndreMiras/coveralls-python-action@develop
+      with:
+        parallel-finished: true
