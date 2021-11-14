@@ -87,18 +87,18 @@ són les degudes a l'horari laboral que teniu, reunions, tasques d'equip, concil
 Les indisponibilitats es demanen a la **pestanya "Persones"**,
 clicant la **icona calendari** que surt quan ens posem al damunt de la teva caixa.
 
-	![](calendar-icon.png)
+![](calendar-icon.png)
 
 Ens surt aquest diàleg:
 
-	![](busyeditor.png)
+![](busyeditor.png)
 
 Hi ha dos grups: les **puntuals** (només un dia) i les que es repeteixen **setmanalment**.
 Indicareu per unes el dia concret i per les altres el dia de la setmana.
 
 Si clickeu en un `+` o en una indisponibilitat existent us sortirà aquest diàleg:
 
-	![](busyinstanceeditor.png)
+![](busyinstanceeditor.png)
 
 És important que indiqueu el **motiu**.
 El motiu ens ajuda a identificar indisponibilitats que ja no tenen sentit,
