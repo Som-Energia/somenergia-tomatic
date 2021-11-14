@@ -22,18 +22,22 @@ I pròximament
 
 ## Marcar les meves indisponibilitats
 
-<iframe src="https://drive.google.com/file/d/1OaWtgNryEs_444R7pK7Ln2Q0iMIMdJ8C/preview" width="640" height="480" allow="autoplay"></iframe>
+[![](https://lh5.googleusercontent.com/-u_lPnGLPRcUojCukEhPX02HrGk9bD4_hO-3k2gfHppo6xidzEqWVw0zGcBSpVYRvCEJ9quvXTBzXePY5X17=w640-h360-k-pd)
+](https://drive.google.com/file/d/1OaWtgNryEs_444R7pK7Ln2Q0iMIMdJ8C/preview)
+
 
 ## Definir la meva taula
 
 Per evitar que en Tomàtic ens posi torns al mateix temps, 
 
-<iframe src="https://drive.google.com/file/d/1_px-e0w_MR9_k0lH-F7XAAwuxYCszh_K/preview" width="640" height="480" allow="autoplay"></iframe>
+[![](https://lh4.googleusercontent.com/9ojnBi1W3apHwVWy77TIbu_yH_l2p40c7AJot5eG2SgWrIqa412FPVrQPUBE9pubkWcS6G83cMFhy5Cbyd3x=w640-h360-k-pd)
+](https://drive.google.com/file/d/1_px-e0w_MR9_k0lH-F7XAAwuxYCszh_K/preview)
 
 
 ## Interpretar l'estat de la cua
 
-<iframe src="https://drive.google.com/file/d/1AiiyjbF9mQsynNAcsPH7sx4Xxkbh1x-2/preview" width="640" height="480" allow="autoplay"></iframe>
+[![](https://lh6.googleusercontent.com/1O76ebwdcIiQdNj21cm8ySbu4rtVrWWjvJ4xSecAGNuT2Sa9XVpKeSkgaS-_EQ6EnKBHkNhkRjoVjDy9CIbi=w640-h360-k-pd)
+](https://drive.google.com/file/d/1AiiyjbF9mQsynNAcsPH7sx4Xxkbh1x-2/preview)
 
 El vídeo anterior es pot interpretar de la forma següent:
 
@@ -53,9 +57,8 @@ A part de veure com està, puc modificar la cua
 
 Aquest tutorial explica com fer servir la pestanya de trucada entrant.
 
-<iframe src="https://drive.google.com/file/d/1BzMOrNKWNw-_QvJ6jrs4yC2vn1Gewt7A/preview" width="640" height="480" allow="autoplay"></iframe>
-
-
+[![]()Video
+](https://drive.google.com/file/d/1BzMOrNKWNw-_QvJ6jrs4yC2vn1Gewt7A/preview)
 
 
 
