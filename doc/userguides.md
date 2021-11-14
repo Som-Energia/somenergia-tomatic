@@ -1,14 +1,19 @@
 _Note:
-Those guides were made for the inner consumption of our staff.
-That's why they are located in our Google Drive and they are not accessible outside the company.
-Also, because of that, texts and voice-over are in either Catalan or Spanish.
-We plan to make them available on request,
-so, do a request._
+The target of those guides were our staff.
+That's why those tutorials are either in Catalan or Spanish.
+Also because of that the videos are stored in our coorporate Google Drive
+and are not accessible to every one.
+We have no reason to keep them private, just few time to publish them.
+If you need them, just do a request._
 
-# Video-tutorials d'usuari
 
-- [Marcar les meves indisponibilitats](marcar-les-meves-indisponibilitats)
-- [Definir la meva taula](definir-la-meva-taula)
+# Guies i vídeos d'usuaria
+
+- [Accedir al Tomàtic](#accedir-al-tomatic)
+- [Editar el perfil d'usuaria](#editar-el-perfil-d-usuaria)
+- [Donar d'alta una persona](#donar-d-alta-una-persona)
+- [Marcar les meves indisponibilitats](#marcar-les-meves-indisponibilitats)
+- [Definir la meva taula](#definir-la-meva-taula)
 - [Pestanya "centraleta"](#pestanya-centraleta)
 - [Informació de trucada entrant](informacio-de-trucada-entrant)
 
@@ -16,9 +21,44 @@ I pròximament
 
 - Canviar torns de la graella
 - Anotació de trucades
-- Editar el perfil d'usuaria
 - Generar càrregues setmanals de telèfon
 - Generar les graelles
+
+## Accedir al Tomàtic
+
+Important: Heu de tenir activada la VPN coorporativa.
+
+http://tomatic.somenergia.lan
+
+
+## Editar el perfil d'usuaria
+
+Per canviar el perfil d'usuaria cal
+
+- anar a la pestanya "Persones", ![](persons-tab.png)
+- posar el cursor al damunt de la caixeta,
+- clicar a l'icona del _llapis_ ![](pencil-icon.png)
+- ens surt aquest dialeg:
+
+![](person-editor.png)
+
+Els camps que hi ha són
+
+- Identificador intern. No es pot canviar perquè ha de coincidir amb el que hi ha a l'excel d'atenció i suport.
+- Nom a mostrar: És el nom que es veu.
+- Correu: Ha de ser el correu coorporatiu que teniu a l'Odoo (si no coincideu no se us reservaran les vacances)
+- Extensió: És la que us assigna l'equip de suport a la centraleta
+- Taula: Amb qui esteu asseguts per evitar tenir torns a l'hora
+- Color: El color de la vostra caixeta per trobar-vos més fàcilment
+
+## Donar d'alta una persona
+
+Per donar d'alta un nou perfil heu de clicar en la darrera caixeta ![](new-person-box.png)
+
+Aquí si que podreu editar l'identificador.
+Ha de coincidir amb el nom que poseu en l'excel de la càrrega ideal.
+Enre
+
 
 ## Marcar les meves indisponibilitats
 
@@ -37,14 +77,15 @@ Hi ha dos grups: les **puntuals** (només un dia) i les que es repeteixen **setm
 Indicareu per unes el dia concret i per les altres el dia de la setmana.
 
 És important que indiqueu el **motiu**.
-El motiu ens ajuda a identificar indisponibilitats que ja no tenen sentit.
+El motiu ens ajuda a identificar indisponibilitats que ja no tenen sentit,
+i que potser no ens deixen trobar una solució a la graella.
 
 També és important marcar si la indisponibilitat és **opcional**, que vol dir _negociable_.
 En Tomàtic evitarà trencar el mínim d'indisponibilitats opcionals.
 Pero si no hi ha cap més remei trencarà algunes.
 En canvi, les no opcionals fan que una graella no sigui viable.
-És important posar que es negociable quan ho es;
-sovint moltes restricions fan que no hagi cap graella possible.
+Per viabilitzar graelles en situacions complicades,
+és important posar que es negociable quan ho és.
 
 Les indisponibilitats son efectives en el moment de generar graelles.
 **Si la graella ja està generada**, podeu negociar amb les companyes
@@ -64,10 +105,19 @@ només els fets a la graella.
 [![Video](https://lh4.googleusercontent.com/9ojnBi1W3apHwVWy77TIbu_yH_l2p40c7AJot5eG2SgWrIqa412FPVrQPUBE9pubkWcS6G83cMFhy5Cbyd3x=w640-h360-k-pd)
 ](https://drive.google.com/file/d/1_px-e0w_MR9_k0lH-F7XAAwuxYCszh_K/preview)
 
-Dos companyes fent a l'hora telèfon a prop pot provocar cacofonies.
+Dos companyes fent a l'hora telèfon a prop pot provocar l'_efecte coctel_
+i que ens costi entendre i atendre a qui truca.
 En Tomàtic pot fer les graelles evitant que les persones a la mateixa taula
 tinguin telèfon al mateix temps.
-Per això, cal que les dues persones configurin que estan a la mateixa taula a la teva fitxa d'usuaria.
+Per això, cal que les dues persones configurin que estan a la mateixa taula a les seves fitxes d'usuaria.
+
+Es configura al perfil d'usuaria.
+S'accedeix a la pestanya "Persones", posant-nos al damunt de l'usuaria
+i clicant a l'icona del _llapis_ que apareix.
+
+Al camp 'Taula', normalment tindrem seleccionat "Sense taula".
+Podem escollir una de les que estan definides, o definir-ne una de nova.
+
 
 ## Pestanya "Centraleta"
 
@@ -76,7 +126,7 @@ Per això, cal que les dues persones configurin que estan a la mateixa taula a l
 
 La pestanya "Centraleta" mostra les agents que estan rebrent trucades en cada moment, li diem "la cua".
 Cada caixeta es pinta d'una forma diferent depenent de l'estat de l'agent.
-Al video anterior pots veure tots els estats possibles:
+Al video anterior pots veure una cua amb agents en tots els estats possibles:
 
 - L'Alberto està en una trucada (caixa aixecada, amb ombra)
 - En Pol està disponible (caixa normal)
@@ -85,7 +135,7 @@ Al video anterior pots veure tots els estats possibles:
 - I la Judith està pausada (caixa tatxada)
 
 Si no t'enrecordes, quin estat es quin, pots posar el ratolí al damunt i et dirà quin estat és.
-A part de veure com està, puc modificar la cua:
+A part de veure com està, podem modificar la cua:
 
 - Si clico al damunt d'una companya la pausaré
 - Si clico a algú pausat li trec la pausa
@@ -101,6 +151,30 @@ Aquest tutorial explica com fer servir la pestanya de trucada entrant.
 
 [![Video](https://lh3.googleusercontent.com/gkLGlcN1rfcGDapJ7eTnv9s_cjUVPowGuXVlZhS3xVaiCa9q6C81XL-9QRVu5XeVtuqxwLLP6Ny98PMnUKX7=w640-h360-k-pd)
 ](https://drive.google.com/file/d/1BzMOrNKWNw-_QvJ6jrs4yC2vn1Gewt7A/preview)
+
+La pestanya 'Trucada' te informació sobre les trucades que anem rebent.
+Fa cerques automàtiques per telèfon quan rebem una trucada nova
+o quan cliquem una trucada al llistat de trucades anterios de l'esquerra.
+Si pel telèfon no troba ningú podem fer una cerca manual per qualsevol altre criteri.
+
+De cada cerca, podem trobar varies persones.
+De la persona seleccionada, veiem els contractes relacionats.
+I del contracte seleccionat les seves factures, lectures, casos atr...
+
+**El correu de la persona és un enllaç als correus que hem rebut pel HelpScout.**
+
+Cada contracte, indica el rols que hi te la persona seleccionada.
+
+El botó amb un portapapers a la llista de persones serveix per anotar la trucada
+seleccionada a l'esquerra amb la persona i el contracte seleccionats.
+
+Si volem afegir una anotació extra podem deseleccionar la trucada
+i anotar igualment.
+
+Quan no hem acabat de treballar amb una trucada i ens pot arribar una altra
+podem fer servir el botó del _cadenat_, per que no salti la cerca de la següent trucada,
+i el boto amb la _fletxeta sortint de la caixa_ per obrir una nova pestanya
+de Tomàtic sense bloquejar per rebre les noves.
 
 
 
