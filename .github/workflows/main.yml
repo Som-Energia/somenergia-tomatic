@@ -48,6 +48,7 @@ jobs:
             coveralls
       - name: Run tests
         run: |
+          touch holidays.conf
           coverage run --source tomatic ./setup.py test
           back2back back2back.yaml
       - uses: actions/upload-artifact@master
