@@ -15,7 +15,7 @@ src="doc/tomatic.jpg" align='right'
 
 
 - [Features](#features): What it does
-- [User Guides](doc/user-guides.md): User Guides
+- [User Guides](doc/userguides.md): User Guides
 - [Setup](doc/setup.md): How to setup
 - [Command Line Tools](doc/cli-tools.md): Operator guide
 - [Developing](doc/development.md): Developing Tomàtic
