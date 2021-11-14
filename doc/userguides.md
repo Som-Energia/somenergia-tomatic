@@ -9,9 +9,9 @@ If you need them, just do a request._
 
 # Guies i vídeos d'usuaria
 
-- [Accedir al Tomàtic](#accedir-al-tomatic)
-- [Editar el perfil d'usuaria](#editar-el-perfil-d-usuaria)
-- [Donar d'alta una persona](#donar-d-alta-una-persona)
+- [Accedir al Tomàtic](#accedir-al-tomàtic)
+- [Editar el perfil d'usuaria](#editar-el-perfil-d-suaria)
+- [Donar d'alta una persona](#donar-dalta-una-persona)
 - [Marcar les meves indisponibilitats](#marcar-les-meves-indisponibilitats)
 - [Definir la meva taula](#definir-la-meva-taula)
 - [Pestanya "centraleta"](#pestanya-centraleta)
@@ -48,7 +48,7 @@ Els camps que hi ha són
 - Nom a mostrar: És el nom que es veu.
 - Correu: Ha de ser el correu coorporatiu que teniu a l'Odoo (si no coincideu no se us reservaran les vacances)
 - Extensió: És la que us assigna l'equip de suport a la centraleta
-- Taula: Amb qui esteu asseguts per evitar tenir torns a l'hora
+- Taula: Amb qui esteu asseguts per evitar tenir torns a l'hora. ([Més info](#definir-la-meva-taula))
 - Color: El color de la vostra caixeta per trobar-vos més fàcilment
 
 ## Donar d'alta una persona
