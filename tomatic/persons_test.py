@@ -35,11 +35,21 @@ class Persons_Test(unittest.TestCase):
         """)
         self.assertEqual(persons.persons.path, Path('p.yaml'))
 
+    def test_persons_missingPath(self):
+        badpath = Path('badpath.yaml')
+        try:
+            ps = persons.persons(badpath)
+            self.assertEqual(ns(), ps)
+        except:
+            raise
+        finally:
+            if badpath.exists():
+                badpath.unlink()
+
     def test_persons_defaultPath(self):
+        expectedDefaultPath = (Path(__file__) / '../../persons.yaml').resolve()
         ps = persons.persons()
-        self.assertEqual(persons.persons.path, 
-            (Path(__file__) / '../../persons.yaml').resolve()
-        )
+        self.assertEqual(persons.persons.path, expectedDefaultPath)
 
     def test_persons_cached(self):
         Path('p.yaml').write_text(u"hola: tu")

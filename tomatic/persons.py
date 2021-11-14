@@ -30,21 +30,26 @@ def persons(path=None):
             del persons.cache
         return
 
-    if not hasattr(persons,'cache'):
-        persons.path = Path(path) if path else (srcpath / '../persons.yaml').resolve()
+    def reload():
+        if not persons.path.exists():
+            persons.mtime = 0
+            persons.cache = ns()
+            return persons.cache
         persons.mtime = persons.path.stat().st_mtime
         persons.cache = _load(persons.path)
         return persons.cache
+
+
+    if not hasattr(persons,'cache'):
+        persons.path = Path(path) if path else (srcpath / '../persons.yaml').resolve()
+        return reload()
 
     if path:
         persons.path = Path(path)
-        persons.mtime = persons.path.stat().st_mtime
-        persons.cache = _load(persons.path)
-        return persons.cache
+        return reload()
 
     if persons.mtime != persons.path.stat().st_mtime:
-        persons.mtime = persons.path.stat().st_mtime
-        persons.cache = _load(persons.path)
+        return reload()
 
     return persons.cache
 
