@@ -35,12 +35,18 @@ http://tomatic.somenergia.lan
 
 Per canviar el perfil d'usuaria cal
 
-- anar a la pestanya "Persones", ![](persons-tab.png)
+- anar a la pestanya "Persones",
+
+	![](persons-tab.png)
+
 - posar el cursor al damunt de la caixeta,
-- clicar a l'icona del _llapis_ ![](pencil-icon.png)
+- clicar a l'icona del _llapis_
+
+	![](pencil-icon.png)
+
 - ens surt aquest dialeg:
 
-![](person-editor.png)
+	![](personeditor.png)
 
 Els camps que hi ha són
 
