@@ -885,6 +885,15 @@ class BusyTest(unittest.TestCase):
 		table.setBusy('ds',0,'alice', False)
 		self.assertEqual(table.isBusy('ds',0,'alice'), True)
 
+	def test_BusyTable_setBusy_outlierHourAlwaysUnBusy(self):
+		table = busy.BusyTable(
+			persons=['alice'],
+			days=['dl'],
+			nhours=1,
+		)
+		table.setBusy('dl',1,'alice', False)
+		self.assertEqual(table.isBusy('dl',1,'alice'), True)
+
 	def test_BusyTable_showDay(self):
 		table = busy.BusyTable(
 			persons=['alice'],
