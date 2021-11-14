@@ -7,10 +7,10 @@ so, do a request._
 
 # Video-tutorials d'usuari
 
-- [Definir la meva taula](definir-la-meva-taula)
-- [Informació de trucada entrant](informacio-de-trucada-entrant)
-- [Interpretant l'estat de la cua](interpretar-l-estat-de-la-cua)
 - [Marcar les meves indisponibilitats](marcar-les-meves-indisponibilitats)
+- [Definir la meva taula](definir-la-meva-taula)
+- [Interpretant l'estat de la cua](interpretar-l-estat-de-la-cua)
+- [Informació de trucada entrant](informacio-de-trucada-entrant)
 
 I pròximament
 
@@ -22,7 +22,7 @@ I pròximament
 
 ## Marcar les meves indisponibilitats
 
-[![](https://lh5.googleusercontent.com/-u_lPnGLPRcUojCukEhPX02HrGk9bD4_hO-3k2gfHppo6xidzEqWVw0zGcBSpVYRvCEJ9quvXTBzXePY5X17=w640-h360-k-pd)
+[![Video](https://lh5.googleusercontent.com/-u_lPnGLPRcUojCukEhPX02HrGk9bD4_hO-3k2gfHppo6xidzEqWVw0zGcBSpVYRvCEJ9quvXTBzXePY5X17=w640-h360-k-pd)
 ](https://drive.google.com/file/d/1OaWtgNryEs_444R7pK7Ln2Q0iMIMdJ8C/preview)
 
 
@@ -30,13 +30,13 @@ I pròximament
 
 Per evitar que en Tomàtic ens posi torns al mateix temps, 
 
-[![](https://lh4.googleusercontent.com/9ojnBi1W3apHwVWy77TIbu_yH_l2p40c7AJot5eG2SgWrIqa412FPVrQPUBE9pubkWcS6G83cMFhy5Cbyd3x=w640-h360-k-pd)
+[![Video](https://lh4.googleusercontent.com/9ojnBi1W3apHwVWy77TIbu_yH_l2p40c7AJot5eG2SgWrIqa412FPVrQPUBE9pubkWcS6G83cMFhy5Cbyd3x=w640-h360-k-pd)
 ](https://drive.google.com/file/d/1_px-e0w_MR9_k0lH-F7XAAwuxYCszh_K/preview)
 
 
 ## Interpretar l'estat de la cua
 
-[![](https://lh6.googleusercontent.com/1O76ebwdcIiQdNj21cm8ySbu4rtVrWWjvJ4xSecAGNuT2Sa9XVpKeSkgaS-_EQ6EnKBHkNhkRjoVjDy9CIbi=w640-h360-k-pd)
+[![Video](https://lh6.googleusercontent.com/1O76ebwdcIiQdNj21cm8ySbu4rtVrWWjvJ4xSecAGNuT2Sa9XVpKeSkgaS-_EQ6EnKBHkNhkRjoVjDy9CIbi=w640-h360-k-pd)
 ](https://drive.google.com/file/d/1AiiyjbF9mQsynNAcsPH7sx4Xxkbh1x-2/preview)
 
 El vídeo anterior es pot interpretar de la forma següent:
@@ -57,7 +57,7 @@ A part de veure com està, puc modificar la cua
 
 Aquest tutorial explica com fer servir la pestanya de trucada entrant.
 
-[![](https://lh3.googleusercontent.com/gkLGlcN1rfcGDapJ7eTnv9s_cjUVPowGuXVlZhS3xVaiCa9q6C81XL-9QRVu5XeVtuqxwLLP6Ny98PMnUKX7=w640-h360-k-pd)
+[![Video](https://lh3.googleusercontent.com/gkLGlcN1rfcGDapJ7eTnv9s_cjUVPowGuXVlZhS3xVaiCa9q6C81XL-9QRVu5XeVtuqxwLLP6Ny98PMnUKX7=w640-h360-k-pd)
 ](https://drive.google.com/file/d/1BzMOrNKWNw-_QvJ6jrs4yC2vn1Gewt7A/preview)
 
 
