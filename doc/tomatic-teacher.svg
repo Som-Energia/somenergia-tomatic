@@ -100,7 +100,7 @@
      id="layer1"
      transform="translate(-109.9732,-103.77885)">
     <rect
-       style="opacity:1;fill:#225500;stroke:#a05a2c;stroke-width:1.86336"
+       style="opacity:1;fill:#225500;stroke:#a05a2c;stroke-width:1.86336005;stroke-linejoin:round;stroke-linecap:round;stroke-miterlimit:12.2;stroke-dasharray:none"
        id="rect140"
        width="69.580048"
        height="44.181637"

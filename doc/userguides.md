@@ -45,16 +45,16 @@ Per canviar el perfil d'usuaria cal
 
 - anar a la pestanya "Persones",
 
-	![](persons-tab.png)
+<img align="right" src="persons-tab.png" />
 
 - posar el cursor al damunt de la caixeta amb el teu nom,
 - clicar a l'icona del _llapis_
 
-	![](pencil-icon.png)
+	<img align="right" src="pencil-icon.png"/>
 
 - ens surt aquest dialeg:
 
-	![](personeditor.png)
+<img align="right" src="personeditor.png"/>
 
 Els camps que hi ha són
 
@@ -69,7 +69,7 @@ Els camps que hi ha són
 
 La darrera caixa de la pestanya "Persones" és per crear nous perfils.
 
-![](new-person-box.png)
+<img align="right" url="new-person-box.png" />
 
 Us sortirà el mateix diàleg que per ![Editar el perfil d'usuaria](#editar-el-perfil-dusuaria).
 Però ara heu de posar un identificador.
@@ -95,18 +95,18 @@ són les degudes a l'horari laboral que teniu, reunions, tasques d'equip, concil
 Les indisponibilitats es demanen a la **pestanya "Persones"**,
 clicant la **icona calendari** que surt quan ens posem al damunt de la teva caixa.
 
-![](calendar-icon.png)
+<img align="right" src="calendar-icon.png"/>
 
 Ens surt aquest diàleg:
 
-![](busyeditor.png)
+<img align="right" src="busyeditor.png"/>
 
 Hi ha dos grups: les **puntuals** (només un dia) i les que es repeteixen **setmanalment**.
 Indicareu per unes el dia concret i per les altres el dia de la setmana.
 
 Si clickeu en un `+` o en una indisponibilitat existent us sortirà aquest diàleg:
 
-![](busyinstanceeditor.png)
+<img align="right" src="busyinstanceeditor.png"/>
 
 És important que indiqueu el **motiu**.
 El motiu ens ajuda a identificar indisponibilitats que ja no tenen sentit,
@@ -188,6 +188,8 @@ La pestanya 'Trucada' te informació sobre les trucades que anem rebent.
 Fa cerques automàtiques per telèfon quan rebem una trucada nova
 o quan cliquem una trucada al llistat de trucades rebudes de l'esquerra.
 
+![](callinfo.png"/>
+
 Si pel telèfon no troba ningú podem fer una cerca manual per qualsevol altre criteri.
 
 De cada cerca, podem trobar varies persones.
@@ -198,7 +200,7 @@ I del contracte seleccionat les seves factures, lectures, casos atr...
 
 Cada contracte, indica el rols que hi te la persona seleccionada.
 
-![](contractinfo-roles.png)
+<img align="right" src="contractinfo-roles.png"/>
 
 
 El botó amb un portapapers a la llista de persones serveix per anotar la trucada
