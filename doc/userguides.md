@@ -43,8 +43,10 @@ http://tomatic.somenergia.lan
 
 Per canviar el perfil d'usuaria cal
 
-<img align="right" clear="right" src="persons-tab.png" />
-<img align="right" clear="right" src="pencil-icon.png"/>
+<p align="right">
+<img src="pencil-icon.png"/>
+<img src="persons-tab.png" />
+</p>
 
 - anar a la pestanya "Persones",
 - posar el cursor al damunt de la caixeta amb el teu nom,
@@ -53,7 +55,7 @@ Per canviar el perfil d'usuaria cal
 
 - ens surt aquest dialeg:
 
-<img src="personeditor.png"/>
+<img clear="right" src="personeditor.png"/>
 
 Els camps que hi ha són
 
@@ -66,8 +68,9 @@ Els camps que hi ha són
 
 ## Donar d'alta una persona
 
-<img align="right" clear="right" src="persons-tab.png" />
 <img align="right" clear="right" src="new-person-box.png" />
+
+<img align="right" clear="right" src="persons-tab.png" />
 
 La darrera caixa de la pestanya "Persones" és per crear nous perfils.
 
@@ -146,6 +149,7 @@ tinguin telèfon al mateix temps.
 Per això, cal que les dues persones configurin que estan a la mateixa taula a les seves fitxes d'usuaria.
 
 <img align="right" clear="right" src="persons-tab.png" />
+
 <img align="right" clear="right" src="pencil-icon.png"/>
 
 Es configura al perfil d'usuaria.
