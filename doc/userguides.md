@@ -43,28 +43,26 @@ http://tomatic.somenergia.lan
 
 Per canviar el perfil d'usuaria cal
 
-<p align="right">
-<img src="pencil-icon.png"/>
-<img src="persons-tab.png" />
-</p>
+<img align="right" clear="right" src="pencil-icon.png"/>
+<img align="right" clear="right" src="persons-tab.png" />
 
 - anar a la pestanya "Persones",
-- posar el cursor al damunt de la caixeta amb el teu nom,
+- posar el ratolí a sobre del teu nom,
+- sortirà un globus amb dues iconetes
 - clicar a l'icona del _llapis_
-
-
 - ens surt aquest dialeg:
 
-<img clear="right" src="personeditor.png"/>
+![](personeditor.png)
 
 Els camps que hi ha són
 
-- **Identificador:** No es pot canviar perquè ha de coincidir amb el que hi ha a l'excel d'atenció i suport.
+- **Identificador:** No es pot canviar.
 - **Nom a mostrar:** És el nom que es veu arreu.
 - **Correu:** Ha de ser el correu coorporatiu que teniu a l'Odoo (per reservar-vos les vacances)
 - **Extensió:** És la extensió telefònica que us assigna l'equip de suport a la centraleta
 - **Taula:** Amb qui esteu asseguts per evitar tenir torns a l'hora. ([Més info](#definir-la-meva-taula))
 - **Color:** El color de la vostra caixeta per trobar-vos més fàcilment
+
 
 ## Donar d'alta una persona
 
@@ -78,8 +76,8 @@ Us sortirà el mateix diàleg que per ![Editar el perfil d'usuaria](#editar-el-p
 Però ara heu de posar un identificador.
 Aquest identificador, ha de coincidir amb el nom que poseu al full de càlcul del Drive on es posen les càrregues ideals.
 
-Quan afegiu la nova persona al Drive enrecordeu-vos de ajustar
-els _intervals amb nom_:
+Quan afegiu la nova persona al Drive, enrecordeu-vos de ajustar, al menú `Dades/Intervals amb Nom` del Drive,
+aquests _intervals amb nom_, :
 
 - `carregaideal_noms` ha de cobrir tots els identificadors
 - `carregaideal_valors` ha de cobrir les càrregues ideals en el mateix ordre que els noms
@@ -90,28 +88,28 @@ els _intervals amb nom_:
 [![Video](https://lh5.googleusercontent.com/-u_lPnGLPRcUojCukEhPX02HrGk9bD4_hO-3k2gfHppo6xidzEqWVw0zGcBSpVYRvCEJ9quvXTBzXePY5X17=w640-h360-k-pd)
 ](https://drive.google.com/file/d/1OaWtgNryEs_444R7pK7Ln2Q0iMIMdJ8C/preview)
 
-Podem demanar al Tomàtic que no ens posi telèfon a certs torns (indisponibilitats).
-**Les vacances que heu demanat a l'Odoo ja es tenen en compte i no cal posar-les.**
-Les indisponibilitats que caldria indicar al Tomàtic
-són les degudes a l'horari laboral que teniu, reunions, tasques d'equip, conciliacio familiar, viatges de treball...
-
-<img align="right" clear="right" src="persons-tab.png" />
-<img align="right" clear="right" src="calendar-icon.png"/>
+<img align="right" src="calendar-icon.png"/>
+<img align="right" src="persons-tab.png" />
 
 Les indisponibilitats es demanen a la **pestanya "Persones"**,
 clicant la **icona calendari** que surt quan ens posem al damunt de la teva caixa.
 
-<img align="right" clear="right" src="busyeditor.png"/>
+Amb les indisponibilitats, podem demanar al Tomàtic que no ens posi telèfon a certs torns.
+**Les vacances que heu demanat a l'Odoo ja es tenen en compte i no cal posar-les.**
+Les indisponibilitats que caldria indicar al Tomàtic
+són les degudes a l'horari laboral que teniu, reunions, tasques d'equip, conciliacio familiar, viatges de treball...
+
 
 Ens surt aquest diàleg:
+
+<img src="busyeditor.png"/>
 
 Hi ha dos grups: les **puntuals** (només un dia) i les que es repeteixen **setmanalment**.
 Indicareu per unes el dia concret i per les altres el dia de la setmana.
 
-<img align="right" clear="right" src="busyinstanceeditor.png"/>
+Si clickeu en un `+` o en una indisponibilitat existent us sortirà un segon diàleg:
 
-Si clickeu en un `+` o en una indisponibilitat existent us sortirà aquest diàleg:
-
+<img src="busyinstanceeditor.png"/>
 
 És important que indiqueu el **motiu**.
 El motiu ens ajuda a identificar indisponibilitats que ja no tenen sentit,
