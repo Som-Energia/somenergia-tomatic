@@ -10,7 +10,7 @@ If you need them, just do a request._
 <a href="https://www.ccma.cat/tv3/alacarta/la-meva-infantils/tomatic-club-super-3/video/4586233/">
 <img
 title="Tomàtic, a chatting tomato-answering machine. Until 2006, it featured on 'Club Super3', a show for kids aired by the catalan public TV. Tomàtic, alledgedly, has been working at Som Energia since 2015."
-src="tomatic.jpg" align='right'
+src="tomatic-teacher.png" align='right'
 />
 </a>
 
