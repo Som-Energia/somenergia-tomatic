@@ -221,10 +221,13 @@ que hem intercanviat amb ella.
 **Rols:** Cada contracte, indica en verd el rols que hi té la persona seleccionada.
 **T**itular, **A**dministradora, **S**ocia, **P**agadora, **N**otificada...
 Si no t'enrecordes de la lletra posat al damunt i t'ho diu.
+Gairebé és més important saber quins són els rols que no té.
+Aquests surten en vermell.
 
+**Informació extra:**
 A sota del quadre del contracte, on posa "No hi ha informació extra",
 poden aparèixer diferents avisos que l'equip d'AiS va considerant importants de saber ràpid.
-En el moment d'escriure això, els avisos són:
+En el moment d'escriure això, els avisos actius són:
 
 - si és un contracte d'EnergÉtica,
 - si té assignació de Generation kWh,
