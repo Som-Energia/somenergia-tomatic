@@ -14,24 +14,48 @@
    version="1.1"
    id="svg8"
    inkscape:version="1.0.2 (e86c870879, 2021-01-15)"
-   sodipodi:docname="tomatic-teacher.svg">
+   sodipodi:docname="tomatic-teacher.svg"
+   inkscape:export-filename="/home/vokimon/somenergia/somenergia-tomatic/doc/tomatic-teacher.png"
+   inkscape:export-xdpi="95.745758"
+   inkscape:export-ydpi="95.745758">
   <defs
      id="defs2">
     <filter
-       inkscape:label="Channel Transparency"
+       inkscape:label="Light Eraser"
        style="color-interpolation-filters:sRGB"
-       id="filter1859">
+       id="filter2091">
       <feColorMatrix
-         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 7.78775 5.5849 -2.06042 -10 0 "
-         in="SourceGraphic"
+         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 -7.42232 -24.9879 -2.51835 33.3664 0 "
          result="colormatrix"
-         id="feColorMatrix1855" />
+         id="feColorMatrix2087" />
       <feComposite
-         in="colormatrix"
-         in2="SourceGraphic"
-         operator="xor"
-         result="composite1"
-         id="feComposite1857" />
+         in2="colormatrix"
+         operator="arithmetic"
+         k2="1"
+         result="fbSourceGraphic"
+         id="feComposite2089"
+         k1="0"
+         k3="0"
+         k4="0" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix2093" />
+      <feColorMatrix
+         id="feColorMatrix2095"
+         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 -7.42232 -24.9879 -2.51835 33.4 0 "
+         result="colormatrix"
+         in="fbSourceGraphic" />
+      <feComposite
+         in2="colormatrix"
+         id="feComposite2097"
+         operator="arithmetic"
+         k2="1"
+         result="composite"
+         k1="0"
+         k3="0"
+         k4="0" />
     </filter>
   </defs>
   <sodipodi:namedview
@@ -42,8 +66,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="111.86947"
-     inkscape:cy="120.15449"
+     inkscape:cx="111.86946"
+     inkscape:cy="5.8687703"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -302,7 +326,7 @@ pMUUUANMYIIPI7g1EbaAjHlRflmiigBv2KD/AJ4w/wDfrFAs4M/6mL8BRRQA8WsIIIiAI6HFSeX7
          id="image136"
          x="134.86203"
          y="109.89541"
-         style="fill:#ffffff;fill-opacity:1;filter:url(#filter1859)" />
+         style="fill:#ffffff;fill-opacity:1;filter:url(#filter2091)" />
     </g>
     <text
        xml:space="preserve"
@@ -315,6 +339,16 @@ pMUUUANMYIIPI7g1EbaAjHlRflmiigBv2KD/AJ4w/wDfrFAs4M/6mL8BRRQA8WsIIIiAI6HFSeX7
          id="tspan1867"
          x="124.22025"
          y="124.9573"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Purisa;-inkscape-font-specification:Purisa;fill:#f4eed7;stroke:#f4eed7;stroke-width:0.127527">Ets una Super!!</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Purisa;-inkscape-font-specification:Purisa;fill:#f4eed7;stroke:#f4eed7;stroke-width:0.127527">Ei, Super!</tspan><tspan
+         sodipodi:role="line"
+         x="124.22025"
+         y="131.82796"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Purisa;-inkscape-font-specification:Purisa;fill:#f4eed7;stroke:#f4eed7;stroke-width:0.127527"
+         id="tspan2101">Aprèn amb en</tspan><tspan
+         sodipodi:role="line"
+         x="124.22025"
+         y="138.69861"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Purisa;-inkscape-font-specification:Purisa;fill:#f4eed7;stroke:#f4eed7;stroke-width:0.127527"
+         id="tspan2105">Tomàtic!</tspan></text>
   </g>
 </svg>
