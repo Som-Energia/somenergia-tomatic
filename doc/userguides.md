@@ -21,7 +21,7 @@ src="tomatic-teacher.png" align='right'
 - [Donar d'alta una persona](#donar-dalta-una-persona)
 - [Marcar les meves indisponibilitats](#marcar-les-meves-indisponibilitats)
 - [Definir la meva taula](#definir-la-meva-taula)
-- [Pestanya "centraleta"](#pestanya-centraleta)
+- [Estat de la centraleta](#estat-de-la-centraleta)
 - [Informació de trucada entrant](informacio-de-trucada-entrant)
 
 I pròximament
@@ -43,18 +43,17 @@ http://tomatic.somenergia.lan
 
 Per canviar el perfil d'usuaria cal
 
+<img align="right" clear="right" src="persons-tab.png" />
+<img align="right" clear="right" src="pencil-icon.png"/>
+
 - anar a la pestanya "Persones",
-
-<img align="right" src="persons-tab.png" />
-
 - posar el cursor al damunt de la caixeta amb el teu nom,
 - clicar a l'icona del _llapis_
 
-	<img align="right" src="pencil-icon.png"/>
 
 - ens surt aquest dialeg:
 
-<img align="right" src="personeditor.png"/>
+<img src="personeditor.png"/>
 
 Els camps que hi ha són
 
@@ -67,9 +66,10 @@ Els camps que hi ha són
 
 ## Donar d'alta una persona
 
-La darrera caixa de la pestanya "Persones" és per crear nous perfils.
+<img align="right" clear="right" src="persons-tab.png" />
+<img align="right" clear="right" src="new-person-box.png" />
 
-<img align="right" url="new-person-box.png" />
+La darrera caixa de la pestanya "Persones" és per crear nous perfils.
 
 Us sortirà el mateix diàleg que per ![Editar el perfil d'usuaria](#editar-el-perfil-dusuaria).
 Però ara heu de posar un identificador.
@@ -92,21 +92,23 @@ Podem demanar al Tomàtic que no ens posi telèfon a certs torns (indisponibilit
 Les indisponibilitats que caldria indicar al Tomàtic
 són les degudes a l'horari laboral que teniu, reunions, tasques d'equip, conciliacio familiar, viatges de treball...
 
+<img align="right" clear="right" src="persons-tab.png" />
+<img align="right" clear="right" src="calendar-icon.png"/>
+
 Les indisponibilitats es demanen a la **pestanya "Persones"**,
 clicant la **icona calendari** que surt quan ens posem al damunt de la teva caixa.
 
-<img align="right" src="calendar-icon.png"/>
+<img align="right" clear="right" src="busyeditor.png"/>
 
 Ens surt aquest diàleg:
-
-<img align="right" src="busyeditor.png"/>
 
 Hi ha dos grups: les **puntuals** (només un dia) i les que es repeteixen **setmanalment**.
 Indicareu per unes el dia concret i per les altres el dia de la setmana.
 
+<img align="right" clear="right" src="busyinstanceeditor.png"/>
+
 Si clickeu en un `+` o en una indisponibilitat existent us sortirà aquest diàleg:
 
-<img align="right" src="busyinstanceeditor.png"/>
 
 És important que indiqueu el **motiu**.
 El motiu ens ajuda a identificar indisponibilitats que ja no tenen sentit,
@@ -143,24 +145,29 @@ En Tomàtic pot fer les graelles evitant que les persones a la mateixa taula
 tinguin telèfon al mateix temps.
 Per això, cal que les dues persones configurin que estan a la mateixa taula a les seves fitxes d'usuaria.
 
+<img align="right" clear="right" src="persons-tab.png" />
+<img align="right" clear="right" src="pencil-icon.png"/>
+
 Es configura al perfil d'usuaria.
 S'accedeix a la pestanya "Persones", posant-nos al damunt de l'usuaria
 i clicant a l'icona del _llapis_ que apareix.
 
 Al camp 'Taula', normalment tindrem seleccionat "Sense taula".
-Podem escollir una de les que estan definides, o definir-ne una de nova.
+Podem escollir una de les que estan definides (surten les companyes que ja hi son),
+o definir-ne una de nova.
 
 
-## Pestanya "Centraleta"
+## Estat de la centraleta
 
-[![Video](https://lh6.googleusercontent.com/1O76ebwdcIiQdNj21cm8ySbu4rtVrWWjvJ4xSecAGNuT2Sa9XVpKeSkgaS-_EQ6EnKBHkNhkRjoVjDy9CIbi=w640-h360-k-pd)
-](https://drive.google.com/file/d/1AiiyjbF9mQsynNAcsPH7sx4Xxkbh1x-2/preview)
+![](indicadors-estat-cua.gif)
+
+<img align="right" clear="right" src="pbx-tab.png"/>
 
 La pestanya "Centraleta" mostra les agents que estan rebrent trucades en cada moment, li diem "la cua".
 Cada caixeta es pinta d'una forma diferent depenent de l'estat de l'agent.
 Al video anterior pots veure una cua amb agents en tots els estats possibles:
-
-- L'Alberto està en una trucada (caixa aixecada, amb ombra)
+https://lh6.googleusercontent.com/1O76ebwdcIiQdNj21cm8ySbu4rtVrWWjvJ4xSecAGNuT2Sa9XVpKeSkgaS-_EQ6EnKBHkNhkRjoVjDy9CIbi=w640-h360-k-pd
+- L'Alberto està atenent una trucada (caixa aixecada, amb ombra)
 - En Pol està disponible (caixa normal)
 - La Joana esta desconnectada (caixa voltada)
 - A en David li esta entrant una trucada ara (caixa vibrant)
@@ -184,11 +191,13 @@ Aquest tutorial explica com fer servir la pestanya de trucada entrant.
 [![Video](https://lh3.googleusercontent.com/gkLGlcN1rfcGDapJ7eTnv9s_cjUVPowGuXVlZhS3xVaiCa9q6C81XL-9QRVu5XeVtuqxwLLP6Ny98PMnUKX7=w640-h360-k-pd)
 ](https://drive.google.com/file/d/1BzMOrNKWNw-_QvJ6jrs4yC2vn1Gewt7A/preview)
 
+<img align="right" clear="right" src="call-tab.png"/>
+
 La pestanya 'Trucada' te informació sobre les trucades que anem rebent.
 Fa cerques automàtiques per telèfon quan rebem una trucada nova
 o quan cliquem una trucada al llistat de trucades rebudes de l'esquerra.
 
-![](callinfo.png"/>
+![](callinfo.png)
 
 Si pel telèfon no troba ningú podem fer una cerca manual per qualsevol altre criteri.
 
@@ -198,10 +207,9 @@ I del contracte seleccionat les seves factures, lectures, casos atr...
 
 **El correu de la persona és un enllaç als correus que hem rebut pel HelpScout.**
 
-Cada contracte, indica el rols que hi te la persona seleccionada.
+<img align="right" clear="right" src="contractinfo-roles.png"/>
 
-<img align="right" src="contractinfo-roles.png"/>
-
+Cada contracte, indica el rols que hi té la persona seleccionada en verd.
 
 El botó amb un portapapers a la llista de persones serveix per anotar la trucada
 seleccionada a l'esquerra amb la persona i el contracte seleccionats.
