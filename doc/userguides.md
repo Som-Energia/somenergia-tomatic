@@ -7,10 +7,17 @@ We have no reason to keep them private, just few time to publish them.
 If you need them, just do a request._
 
 
+<a href="https://www.ccma.cat/tv3/alacarta/la-meva-infantils/tomatic-club-super-3/video/4586233/">
+<img
+title="Tomàtic, a chatting tomato-answering machine. Until 2006, it featured on 'Club Super3', a show for kids aired by the catalan public TV. Tomàtic, alledgedly, has been working at Som Energia since 2015."
+src="tomatic.jpg" align='right'
+/>
+</a>
+
 # Guies i vídeos d'usuaria
 
 - [Accedir al Tomàtic](#accedir-al-tomàtic)
-- [Editar el perfil d'usuaria](#editar-el-perfil-d-suaria)
+- [Editar el perfil d'usuaria](#editar-el-perfil-dusuaria)
 - [Donar d'alta una persona](#donar-dalta-una-persona)
 - [Marcar les meves indisponibilitats](#marcar-les-meves-indisponibilitats)
 - [Definir la meva taula](#definir-la-meva-taula)
@@ -19,6 +26,7 @@ If you need them, just do a request._
 
 I pròximament
 
+- Navegar per les graelles
 - Canviar torns de la graella
 - Anotació de trucades
 - Generar càrregues setmanals de telèfon
@@ -178,16 +186,20 @@ Aquest tutorial explica com fer servir la pestanya de trucada entrant.
 
 La pestanya 'Trucada' te informació sobre les trucades que anem rebent.
 Fa cerques automàtiques per telèfon quan rebem una trucada nova
-o quan cliquem una trucada al llistat de trucades anterios de l'esquerra.
+o quan cliquem una trucada al llistat de trucades rebudes de l'esquerra.
+
 Si pel telèfon no troba ningú podem fer una cerca manual per qualsevol altre criteri.
 
 De cada cerca, podem trobar varies persones.
-De la persona seleccionada, veiem els contractes relacionats.
+De la persona que tenim seleccionada, veiem els contractes relacionats.
 I del contracte seleccionat les seves factures, lectures, casos atr...
 
 **El correu de la persona és un enllaç als correus que hem rebut pel HelpScout.**
 
 Cada contracte, indica el rols que hi te la persona seleccionada.
+
+![](contractinfo-roles.png)
+
 
 El botó amb un portapapers a la llista de persones serveix per anotar la trucada
 seleccionada a l'esquerra amb la persona i el contracte seleccionats.
