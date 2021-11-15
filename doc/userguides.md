@@ -1,7 +1,7 @@
 _Note:
 The target of those guides were our staff.
 That's why those tutorials are either in Catalan or Spanish.
-Also because of that the videos are stored in our coorporate Google Drive
+Also because of that, the videos are stored in our coorporate Google Drive
 and are not accessible to every one.
 We have no reason to keep them private, just few time to publish them.
 If you need them, just do a request._
@@ -167,10 +167,10 @@ o definir-ne una de nova.
 
 La pestanya "Centraleta" mostra les agents que estan rebrent trucades en cada moment, li diem "la cua".
 Cada caixeta es pinta d'una forma diferent depenent de l'estat de l'agent.
-Al video anterior pots veure una cua amb agents en tots els estats possibles:
-https://lh6.googleusercontent.com/1O76ebwdcIiQdNj21cm8ySbu4rtVrWWjvJ4xSecAGNuT2Sa9XVpKeSkgaS-_EQ6EnKBHkNhkRjoVjDy9CIbi=w640-h360-k-pd
+A la imatge anterior, pots veure una cua amb agents en tots els estats possibles:
+
 - L'Alberto està atenent una trucada (caixa aixecada, amb ombra)
-- En Pol està disponible (caixa normal)
+- En Pol està disponible (caixa normal, sense ombra)
 - La Joana esta desconnectada (caixa voltada)
 - A en David li esta entrant una trucada ara (caixa vibrant)
 - I la Judith està pausada (caixa tatxada)
@@ -186,9 +186,8 @@ La cua es recarrega a cada canvi de torn (un quart i 1 hora).
 Tota la gent afegida extra es treu però es mantenen les pauses
 si l'agent repeteix torn.
 
-## Informació de trucada entrant
 
-Aquest tutorial explica com fer servir la pestanya de trucada entrant.
+## Informació de trucada entrant
 
 [![Video](https://lh3.googleusercontent.com/gkLGlcN1rfcGDapJ7eTnv9s_cjUVPowGuXVlZhS3xVaiCa9q6C81XL-9QRVu5XeVtuqxwLLP6Ny98PMnUKX7=w640-h360-k-pd)
 ](https://drive.google.com/file/d/1BzMOrNKWNw-_QvJ6jrs4yC2vn1Gewt7A/preview)
@@ -207,17 +206,39 @@ De cada cerca, podem trobar varies persones.
 De la persona que tenim seleccionada, veiem els contractes relacionats.
 I del contracte seleccionat les seves factures, lectures, casos atr...
 
-**El correu de la persona és un enllaç als correus que hem rebut pel HelpScout.**
+De tota la informació que hi surt, cal explicar una mica les següents:
+
+**Accés directe als correus del HelpScout:***
+Si cliques a l'adreça de correu de la persona
+s'obre al HelpScout amb tots els missatges
+que hem intercanviat amb ella.
 
 <img align="right" clear="right" src="contractinfo-roles.png"/>
 
-Cada contracte, indica el rols que hi té la persona seleccionada en verd.
+**Rols:** Cada contracte, indica en verd el rols que hi té la persona seleccionada.
+**T**itular, **A**dministradora, **S**ocia, **P**agadora, **N**otificada...
+Si no t'enrecordes de la lletra posat al damunt i t'ho diu.
+
+A sota del quadre del contracte, on posa "No hi ha informació extra",
+poden aparèixer diferents avisos que l'equip d'AiS va considerant importants de saber ràpid.
+En el moment d'escriure això, els avisos són:
+
+- si és un contracte d'EnergÉtica,
+- si té assignació de Generation kWh,
+- si té activat l'autoconsum,
+- si té factures impagadas, o,
+- si té la facturació suspesa.
+
+<img align="right" clear="right" src="calllist-buttons.png"/>
 
 El botó amb un portapapers a la llista de persones serveix per anotar la trucada
-seleccionada a l'esquerra amb la persona i el contracte seleccionats.
+seleccionada a l'esquerra amb la persona i el contracte seleccionats a la dreta.
 
-Si volem afegir una anotació extra podem deseleccionar la trucada
-i anotar igualment.
+Si volem afegir una anotació extra podem deseleccionar la trucada,
+fer una cerca manual i anotar igualment com a "trucada manual".
+
+Igualment si la cerca no té resultats podem fer una anotació sense contracte
+o sense persona associada.
 
 Quan no hem acabat de treballar amb una trucada i ens pot arribar una altra
 podem fer servir el botó del _cadenat_, per que no salti la cerca de la següent trucada,
