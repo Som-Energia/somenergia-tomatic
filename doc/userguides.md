@@ -163,7 +163,8 @@ o definir-ne una de nova.
 
 <img align="right" clear="right" src="pbx-tab.png"/>
 
-La pestanya "Centraleta" mostra les agents que estan rebrent trucades en cada moment, li diem "la cua".
+La pestanya "Centraleta" mostra les agents que estan rebrent trucades en cada moment.
+És el que anomenem "la cua".
 
 Cada caixeta es pinta d'una forma diferent depenent de l'estat de l'agent.
 A la següent imatge, pots veure un exemple de cua amb agents en cadascun dels estats possibles:
