@@ -161,13 +161,15 @@ o definir-ne una de nova.
 
 ## Estat de la centraleta
 
-![](indicadors-estat-cua.gif)
-
 <img align="right" clear="right" src="pbx-tab.png"/>
 
 La pestanya "Centraleta" mostra les agents que estan rebrent trucades en cada moment, li diem "la cua".
+
 Cada caixeta es pinta d'una forma diferent depenent de l'estat de l'agent.
-A la imatge anterior, pots veure una cua amb agents en tots els estats possibles:
+A la següent imatge, pots veure un exemple de cua amb agents en cadascun dels estats possibles:
+
+![](indicadors-estat-cua.gif)
+
 
 - L'Alberto està atenent una trucada (caixa aixecada, amb ombra)
 - En Pol està disponible (caixa normal, sense ombra)
