@@ -3,7 +3,7 @@ The target of those guides were our staff.
 That's why those tutorials are either in Catalan or Spanish.
 Also because of that, the videos are stored in our coorporate Google Drive
 and are not accessible to every one.
-We have no reason to keep them private, just few time to publish them.
+We have no reason to keep them private, but lack of time to publish them.
 If you need them, just do a request._
 
 
@@ -127,7 +127,7 @@ Les indisponibilitats son efectives en el moment de generar graelles.
 i fer el canvi directament a la graella.
 Els canvis que feu queden visibles al registre de sota de la graella.
 
-**[La funcionalitat de bossa d'hores esta actualment desactivada]**
+**[Aquest paràgraf descriu la funcionalitat de bossa d'hores està actualment desactivada]**
 Totes les agents tenim una proporció de torns assignada depenent del nostre equip i antiguitat.
 Si per disponibilitats o per canvis a graella, acabem fent més o menys,
 en Tomàtic s'ho guarda per compensar-ho a les següents graelles que es generin.
@@ -146,9 +146,8 @@ En Tomàtic pot fer les graelles evitant que les persones a la mateixa taula
 tinguin telèfon al mateix temps.
 Per això, cal que les dues persones configurin que estan a la mateixa taula a les seves fitxes d'usuaria.
 
-<img align="right" clear="right" src="persons-tab.png" />
-
 <img align="right" clear="right" src="pencil-icon.png"/>
+<img align="right" clear="right" src="persons-tab.png" />
 
 Es configura al perfil d'usuaria.
 S'accedeix a la pestanya "Persones", posant-nos al damunt de l'usuaria
