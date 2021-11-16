@@ -50,32 +50,7 @@ class CallRegistry(object):
             contracte = fields.contract,
             motius = fields.reason,
         ))
-        self.annotateInfoRequest(ns(
-            date = fields.date,
-            phone = fields.phone,
-            person = fields.user,
-            reason = fields.reason,
-            extra = fields.notes,
-        ))
-        if not fields.claimsection: return
-        self.annotateClaim(ns(
-            date = fields.date,
-            person = fields.user,
-            reason = fields.reason,
-            partner = fields.partner,
-            contract = fields.contract,
-            procedente = "x" if fields.resolution == 'fair' else '',
-            improcedente = "x" if fields.resolution == 'unfair' else '',
-            solved = "x" if fields.resolution != 'unsolved' else '',
-            user = fields.claimsection,
-            observations = fields.notes,
-        ))
-
-    def annotateInfoRequest(self, data):
-        self._appendToExtensionDailyInfo('info_cases', data)
-
-    def annotateClaim(self, data):
-        self._appendToExtensionDailyInfo('atc_cases', data)
+        self._appendToExtensionDailyInfo('cases', fields)
 
     def _appendToExtensionDailyInfo(self, prefix, info, date=datetime.today()):
         path = self.path.parent / prefix / '{:%Y%m%d}.yaml'.format(date)
