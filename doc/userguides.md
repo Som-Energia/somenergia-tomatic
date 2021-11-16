@@ -41,6 +41,9 @@ http://tomatic.somenergia.lan
 
 ## Editar el perfil d'usuaria
 
+[![Video](video.png)
+](https://drive.google.com/file/d/1OaWtgNryEs_444R7pK7Ln2Q0iMIMdJ8C/preview)
+
 Per canviar el perfil d'usuaria cal
 
 <img align="right" clear="right" src="pencil-icon.png"/>
@@ -85,7 +88,7 @@ aquests _intervals amb nom_, :
 
 ## Marcar les meves indisponibilitats
 
-[![Video](https://lh5.googleusercontent.com/-u_lPnGLPRcUojCukEhPX02HrGk9bD4_hO-3k2gfHppo6xidzEqWVw0zGcBSpVYRvCEJ9quvXTBzXePY5X17=w640-h360-k-pd)
+[![Video](video.png)
 ](https://drive.google.com/file/d/1OaWtgNryEs_444R7pK7Ln2Q0iMIMdJ8C/preview)
 
 <img align="right" src="calendar-icon.png"/>
@@ -137,7 +140,7 @@ només els fets a la graella.
 
 ## Definir la meva taula
 
-[![Video](https://lh4.googleusercontent.com/9ojnBi1W3apHwVWy77TIbu_yH_l2p40c7AJot5eG2SgWrIqa412FPVrQPUBE9pubkWcS6G83cMFhy5Cbyd3x=w640-h360-k-pd)
+[![Video](video.png)
 ](https://drive.google.com/file/d/1_px-e0w_MR9_k0lH-F7XAAwuxYCszh_K/preview)
 
 Dos companyes fent a l'hora telèfon a prop pot provocar l'_efecte coctel_
@@ -191,7 +194,7 @@ si l'agent repeteix torn.
 
 ## Informació de trucada entrant
 
-[![Video](https://lh3.googleusercontent.com/gkLGlcN1rfcGDapJ7eTnv9s_cjUVPowGuXVlZhS3xVaiCa9q6C81XL-9QRVu5XeVtuqxwLLP6Ny98PMnUKX7=w640-h360-k-pd)
+[![Video](video.png)
 ](https://drive.google.com/file/d/1BzMOrNKWNw-_QvJ6jrs4yC2vn1Gewt7A/preview)
 
 <img align="right" clear="right" src="call-tab.png"/>
