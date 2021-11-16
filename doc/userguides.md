@@ -17,12 +17,12 @@ src="tomatic-teacher.png" align='right'
 # Guies i vídeos d'usuaria
 
 - [Accedir al Tomàtic](#accedir-al-tomàtic)
-- [Editar el perfil d'usuaria](#editar-el-perfil-dusuaria)
+- [Editar el perfil d'usuaria](#editar-el-perfil-dusuaria) (Vídeo)
 - [Donar d'alta una persona](#donar-dalta-una-persona)
-- [Marcar les meves indisponibilitats](#marcar-les-meves-indisponibilitats)
-- [Definir la meva taula](#definir-la-meva-taula)
-- [Estat de la centraleta](#estat-de-la-centraleta)
-- [Informació de trucada entrant](informacio-de-trucada-entrant)
+- [Marcar les meves indisponibilitats](#marcar-les-meves-indisponibilitats) (Vídeo)
+- [Definir la meva taula](#definir-la-meva-taula) (Vídeo)
+- [Estat de la centraleta](#estat-de-la-centraleta) (Vídeo)
+- [Informació de trucada entrant](informacio-de-trucada-entrant)  (Vídeo)
 
 I pròximament
 
