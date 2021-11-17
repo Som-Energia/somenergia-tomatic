@@ -118,7 +118,7 @@ class Claims_Test(unittest.TestCase):
     def atc_base(self, **kwds):
         base = ns.loads("""
             date: '2021-11-11T15:13:39.998Z'
-            person: gabriel
+            user: gabriel
             reason: '[RECLAMACIONS] 003. INCIDENCIA EN EQUIPOS DE MEDIDA'
             partner: S001975
             contract: '0013117'
@@ -135,7 +135,7 @@ class Claims_Test(unittest.TestCase):
         base = ns.loads("""\
             date: '2021-11-11T15:13:39.998Z'
             phone: ''
-            person: gabriel
+            user: gabriel
             reason: '[RECLAMACIONS] 003. INCIDENCIA EN EQUIPOS DE MEDIDA'
             partner: S001975
             contract: '0013117'

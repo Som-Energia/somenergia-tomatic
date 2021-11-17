@@ -104,6 +104,7 @@ class Claims(object):
             if category['name'].startswith('[')
         ]
 
+
     def create_crm_case(self, case):
         ''
         partner_id = partnerId(self.erp, case.partner)
@@ -140,8 +141,8 @@ class Claims(object):
 
         namespace(
             person:
-                - date: D-M-YYYY H:M:S
-                person: person
+              - date: D-M-YYYY H:M:S
+                user: person
                 reason: '[´section.name´] ´claim.name´. ´claim.desc´'
                 partner: partner number
                 contract: contract number
@@ -174,7 +175,7 @@ class Claims(object):
             'email_from': partner_address.get('email') if partner_address else False,
             'time_tracking_id': COMERCIALIZADORA
         }
-        # user_id = userId(self.erp, self.emails, case.person)
+        # user_id = userId(self.erp, self.emails, case.user)
         # if user_id:
         #     data_crm['create_uid'] = user_id
         data_atc['crm_id'] = crm_id
