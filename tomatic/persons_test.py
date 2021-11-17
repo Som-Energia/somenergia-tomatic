@@ -339,7 +339,10 @@ class Persons_Test(unittest.TestCase):
             groups: {}
         """)
 
-
+    def test_persons_explicit(self):
+        persons.persons('p.yaml')
+        p = persons.persons()
+        self.assertNsEqual(p, ns())
 
 
 

@@ -49,6 +49,9 @@ def persons(path=None):
         persons.path = Path(path)
         return reload()
 
+    if not persons.path.exists():
+        return reload()
+
     if persons.mtime != persons.path.stat().st_mtime:
         return reload()
 
