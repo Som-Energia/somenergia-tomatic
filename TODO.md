@@ -3,20 +3,21 @@
 ## Backlog
 
 - [ ] `Claim.get_claims` -> Claim.get/update/retrieveClaimTypes
-- [ ] As an agent i want to be able to see ended contracts in callinfo (pe. for claims of unauthorized switching)
+- [ ] As an agent i want to be able to see cancelled contracts in callinfo (pe. for claims of unauthorized switching)
 - [ ] Call Info: Report diferently, search cleared from no search found
 - [ ] Call Info: Intercept backend connection errors and behave
 - [ ] Call info: List previous calls from same person/contract
 - [ ] Google login
 - [ ] API tests in fastapi
 - [ ] Accept fragile erp tests
-- [ ] Fix: Person color picker does not pick initial color
+- [ ] Fix: Person color picker sliders are not valued with the initial color
 - [ ] Strip spaces in the search
 - [ ] Edit previous annotations
 - [ ] Use contrast text color for person boxes
 - [ ] Sandwich pbx ext from ringring, and use users all along
 - [ ] Translate log field names from catalan
 - [ ] api/info/ringring -> api/call/ringring (ext)
+- [ ] /api/personlog/<ext> en els casos de fallada returnar una llista buida sense errors (no son de fallada, encara no hi ha logs i prou)
 - [ ] api/personlog/{ext} -> api/call/log/{user}
 - [ ] api/updateClaims -> cron or init
 - [ ] api/updateClaimTypes -> cron or init
@@ -24,33 +25,18 @@
 - [ ] api/getClaimTypes -> api/call/claim/types?
 - [ ] api/getInfos -> api/call/info/types?
 - [ ] consider joining getClaimTypes and getInfos
-- [ ] moure scripts a una carpeta
+- [ ] move scripts to a folder
 
 ## Copied from README to be reviewed for dups
 
 - GSpread docs say that moving the credential to `~/.config/gspread/service_account.json` avoids having to pass it around as parameter
 - CallInfo
-	- [ ] /api/getInfos -> /api/call/infotypes
 	- [ ] Pujar infos a l'ERP
-	- [ ] Commit `info_cases/info_cases.yaml`
-	- [ ] Commit `claims_dict.yaml`
-	- [ ] /api/updateClaims -> /api/call/claimtypes/update
-	- [ ] /api/getClaims -> /api/call/claimtypes
-	- [ ] /api/updatelog/<ext> -> /api/call/log/<ext>
-	- [ ] /api/personlog without <ext> has no sense, remove it
-	- [ ] /api/personlog/<ext> en els casos de fallada returnar una llista buida sense errors (no son de fallada, encara no hi ha logs i prou)
-	- [ ] /api/personlog/<ext> /api/call/log/<ext>
 	- [ ] components/call.js:getLog Deprecrated
-	- [ ] /api/claimReasons Deprecated (no ui code aparently)
-	- [ ] /api/infoReasons Deprecated (no ui code aparently)
-	- [ ] /api/callReasons Deprecated (no ui code aparently)
 	- [ ] Revisar handshaking dels websockets
-	- [ ] /api/info/ringring -> /api/call/ringring
 	- [ ] Fer la data ISO al call_log
 	- [ ] /api/info/all/<field> -> /api/info/by/any/<value>
 	- [ ] /api/info/xxxx/<field> -> /api/info/by/xxxx/<value>
-	- [ ] Refactoritzar codi comu dels getInfoPersonByXXXX
-        - [ ] Optimizar búsquedas callinfo
 
 
 - Refactoring
@@ -114,6 +100,14 @@
 ## Dones
 
 
+- [x] Refactoritzar codi comu dels getInfoPersonByXXXX
+- [x] Optimizar búsquedas callinfo
+- [x] Commit `info_cases/info_cases.yaml`
+- [x] Commit `claims_dict.yaml`
+- [x] /api/claimReasons Deprecated (no ui code aparently)
+- [x] /api/infoReasons Deprecated (no ui code aparently)
+- [x] /api/callReasons Deprecated (no ui code aparently)
+- [x] Translate case field names from catalan
 - [x] Call Info: download invoices and metering in a separate query to provide response earlier
 - [x] Call Info: Relayout persons and contracts in one side, alarms invoices and meters on the other
 - [x] Anotar trucada d'una persona encara no vinculada a som

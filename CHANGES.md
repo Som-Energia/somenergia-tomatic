@@ -23,14 +23,18 @@
 
 ## 4.2.5 2021-11-23
 
-- Callinfo: New autoconsumption alert
+- Call annotations are uploaded by a cron to the ERP as CRM and ATC Cases 
+- Call logging and annotation simplified in a single log (Breaks backward compatibility)
+- persons.yaml is created the first time Tomatic is run
+
+- Callinfo: New autoconsumption contract alert
 - Fix: person color sliders set to initial values
 - Persons have a new field: ERP User
 - Accessibility: White for text in person boxes with dark colors
 
 ## 4.2.4 2021-11-22
 
-- Documentation: Added a user guide
+- Documentation: Added user guide with screenshots and videos
 - Documentation: README splitted and reorganized
 - CI/CD Migrated from Travis to Github Actions
 - Scripts moved to a folder and used thought PATH
