@@ -1,7 +1,9 @@
 import unittest
 from pathlib import Path
-from .callregistry import CallRegistry
 from yamlns import namespace as ns
+from datetime import date
+from .callregistry import CallRegistry
+from .persons import persons
 
 def removeTree(path):
     path = Path(path)
@@ -28,7 +30,7 @@ class CallRegistry_Test(unittest.TestCase):
     def test_updateCall_behavesAtStartUp(self):
         reg = CallRegistry(self.dailycalls)
         assert not (self.dir/'dailycalls.yaml').exists()
-        self.assertEquals(reg.callsByExtension('alice'), [])
+        self.assertEqual(reg.callsByExtension('alice'), [])
 
     def test_updateCall_updatesAfterWrite(self):
         reg = CallRegistry(self.dailycalls)
@@ -145,7 +147,76 @@ class CallRegistry_Test(unittest.TestCase):
               tag: second content
         """)
 
-        
+    def assertDirContent(self, expected):
+        self.assertEqual(
+            [str(x) for x in sorted(self.dir.glob('**/*'))],
+            sorted(expected)
+        )
 
+    def test_appendDaily(self):
+        reg = CallRegistry(self.dailycalls)
+
+        reg._appendToExtensionDailyInfo('prefix', ns(
+            user="alice",
+            date="2021-02-01T20:21:22.555Z",
+            phone="555444333",
+            partner="S00000",
+            contract="100000",
+            reason="CODE",
+        ), date=date(2021,2,1))
+        self.assertDirContent([
+            'test_callregistry/prefix',
+            'test_callregistry/prefix/20210201.yaml',
+        ])
+        self.assertNsEqual(ns.load('test_callregistry/prefix/20210201.yaml'),
+            """
+            alice:
+            - date: "2021-02-01T20:21:22.555Z"
+              phone: '555444333'
+              partner: 'S00000'
+              contract: '100000'
+              reason: CODE
+              user: alice
+        """)
+
+
+    def test_annotateCall_writesCallLog(self):
+        reg = CallRegistry(self.dailycalls)
+        reg.annotateCall(ns(
+            user="alice",
+            date="2021-02-01T20:21:22.555Z",
+            phone="555444333",
+            partner="S00000",
+            contract="100000",
+            reason="CODE",
+        ))
+        content = ns.load(self.dailycalls)
+        self.assertNsEqual(content, """\
+            alice:
+            - data: "2021-02-01T20:21:22.555Z"
+              telefon: '555444333'
+              partner: 'S00000'
+              contracte: '100000'
+              motius: CODE
+        
+        """)
+
+    def test_annotateCall_writesFiles(self):
+        reg = CallRegistry(self.dailycalls)
+        persons(self.dir/'persons.yaml')
+        reg.annotateCall(ns(
+            user="alice",
+            date="2021-02-01T20:21:22.555Z",
+            phone="555444333",
+            partner="S00000",
+            contract="100000",
+            reason="CODE",
+        ))
+        self.assertDirContent([
+            'test_callregistry/cases',
+            'test_callregistry/cases/{:%Y%m%d}.yaml'.format(
+                date.today()),
+            str(self.dailycalls),
+        ])
 
 

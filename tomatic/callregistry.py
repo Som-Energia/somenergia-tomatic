@@ -42,7 +42,7 @@ class CallRegistry(object):
 
     def annotateCall(self, fields):
         from . import persons
-        extension = persons.extension(fields.user)
+        extension = persons.extension(fields.user) or fields.user
         self.updateCall(extension, ns(
             data = fields.date,
             telefon = fields.phone,
@@ -58,7 +58,7 @@ class CallRegistry(object):
         dailyInfo = ns()
         if path.exists():
             dailyInfo = ns.load(str(path))
-        dailyInfo.setdefault(info.person, []).append(info)
+        dailyInfo.setdefault(info.user, []).append(info)
         path.parent.mkdir(parents=True, exist_ok=True)
         dailyInfo.dump(str(path))
 
