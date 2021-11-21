@@ -1,11 +1,7 @@
 _Note:
-The target of those guides were our staff.
-That's why those tutorials are either in Catalan or Spanish.
-Also because of that, the videos are stored in our coorporate Google Drive
-and are not accessible to every one.
-We have no reason to keep them private, but lack of time to publish them.
-If you need them, just do a request._
-
+The target of those guides were our staff,
+so those tutorials are either in Catalan.
+Translations on request._
 
 <a href="https://www.ccma.cat/tv3/alacarta/la-meva-infantils/tomatic-club-super-3/video/4586233/">
 <img
