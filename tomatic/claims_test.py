@@ -39,10 +39,11 @@ class Claims_Test(unittest.TestCase):
         self.old_persons = None
         if hasattr(persons, 'path'):
             self.old_persons = getattr(persons, 'path')
-            persons.path.write_text("""\
-                erpusers:
-                  marc: Marc
-            """, encoding='utf8')
+        persons('testpersons.yaml')
+        persons.path.write_text("""\
+            erpusers:
+              marc: Marc
+        """, encoding='utf8')
 
         if not dbconfig:
             return
@@ -52,9 +53,8 @@ class Claims_Test(unittest.TestCase):
         self.erp.begin()
 
     def tearDown(self):
-        if self.old_persons:
-            persons.path.unlink()
-            persons(self.old_persons)
+        persons.path.unlink()
+        persons(self.old_persons or False)
         try:
             self.erp and self.erp.rollback()
             self.erp and self.erp.close()
