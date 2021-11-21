@@ -101,10 +101,7 @@ var contractFields = function(contract, partner) {
       (contract.pending_state != "" ? contract.pending_state : "Esborrany")
     ),
     m("br"),
-    extraInfo(
-      contract.generation, contract.energetica,
-      contract.suspended_invoicing, contract.has_debt
-    ),
+    extraInfo(contract),
   ]);
 }
 
@@ -286,14 +283,21 @@ var lastInvoices = function(invoices) {
   );
 }
 
-var extraInfo = function(
-  generation, energetica, suspended_invoicing, has_debt
-) {
-  if (!generation && !energetica && !suspended_invoicing && !has_debt) {
+var extraInfo = function(contract) {
+  var autoconsum = contract.autoconsum;
+  var generation = contract.generation;
+  var energetica = contract.energetica;
+  var suspended_invoicing = contract.suspended_invoicing;
+  var has_debt = contract.has_debt;
+
+  if (!autoconsum && !generation && !energetica && !suspended_invoicing && !has_debt) {
     info = m("no-info", "No hi ha informació extra.")
   }
   else {
     info = m(".extra-info", [
+      m("",
+        autoconsum ? m(".label-autoconsum","Autoconsum.") : ""
+      ),
       m("",
         generation ? m(".label-generation","Rep Generation.") : ""
       ),
