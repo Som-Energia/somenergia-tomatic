@@ -108,6 +108,7 @@ class Claims_Test(unittest.TestCase):
             'date',
             'email_from',
             'time_tracking_id',
+            'state',
         ]))
 
         fkname(result, "cups_id")
@@ -174,6 +175,7 @@ class Claims_Test(unittest.TestCase):
             resultat: '01'
             subtipus_id: '003'
             time_tracking_id: Comercialitzadora
+            state: open
             total_cups: 1
         """.format(case_id))
 
@@ -195,6 +197,7 @@ class Claims_Test(unittest.TestCase):
             resultat: '02' # <---------  THIS CHANGES
             subtipus_id: '003'
             time_tracking_id: Comercialitzadora
+            state: open
             total_cups: 1
         """.format(case_id))
 
@@ -216,6 +219,7 @@ class Claims_Test(unittest.TestCase):
             resultat: '03' # <---------  THIS CHANGES
             subtipus_id: '003'
             time_tracking_id: Comercialitzadora
+            state: open
             total_cups: 1
         """.format(case_id))
 
@@ -237,6 +241,7 @@ class Claims_Test(unittest.TestCase):
             resultat: '' # <---------  THIS CHANGES
             subtipus_id: '003'
             time_tracking_id: Comercialitzadora
+            state: open
             total_cups: 1
         """.format(case_id))
 
