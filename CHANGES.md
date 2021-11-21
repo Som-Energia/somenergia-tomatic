@@ -27,7 +27,7 @@
 - Call logging and annotation simplified in a single log (Breaks backward compatibility)
 - persons.yaml is created the first time Tomatic is run
 
-- Callinfo: New autoconsumption contract alert
+- Call Info: New alert for self-comsumption contracts
 - Fix: person color sliders set to initial values
 - Persons have a new field: ERP User
 - Accessibility: White for text in person boxes with dark colors
