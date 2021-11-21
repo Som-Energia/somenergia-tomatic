@@ -1,5 +1,26 @@
 # -*- encoding: utf-8 -*-
 from yamlns import namespace as ns
+from pydantic import BaseModel
+from typing import Optional
+from enum import Enum
+from .persons import persons
+
+class Resolution(str, Enum):
+    unsolved = 'unsolved'
+    fair = 'fair'
+    unfair = 'unfair'
+    irresolvable = 'irresolvable'
+
+class CallAnnotation(BaseModel):
+    user: str
+    date: str
+    phone: str
+    partner: str
+    contract: str
+    reason: str
+    notes: str
+    claimsection: Optional[str]
+    resolution: Optional[Resolution]
 
 PHONE = 2
 COMERCIALIZADORA = 1
@@ -114,7 +135,7 @@ class Claims(object):
         ''
         partner_id = partnerId(self.erp, case.partner)
         partner_address = partnerAddress(self.erp, partner_id)
-        crm_section_id = crmSectionID(self.erp, case.user)
+        crm_section_id = crmSectionID(self.erp, case.claimsection)
         claim_section_id = claimSectionID(
             self.erp, case.reason.split('.')[-1].strip()
         )
@@ -127,18 +148,17 @@ class Claims(object):
             'partner_id': partner_id,
             'partner_address_id': partner_address.get('id') if partner_address else False,
             'state': 'open', # TODO: 'done' if case.solved else 'open',
-            'user_id': '',
+            'user_id': erpUser(self.erp, case.user),
         }
         crm_id = self.erp.CrmCase.create(data_crm).id
 
         data_history = {
             'case_id': crm_id,
-            'description': case.observations,
+            'description': case.notes,
         }
         crm_history_id = self.erp.CrmCaseHistory.create(data_history).id
 
         return crm_id
-
 
     def create_atc_case(self, case):
         '''
@@ -151,14 +171,16 @@ class Claims(object):
                 reason: '[´section.name´] ´claim.name´. ´claim.desc´'
                 partner: partner number
                 contract: contract number
-                user: section.name
-                observations: comments
                 # maybe unsolved, fair, unfair, irresolvable or empty
                 resolution: fair
+                claimsection: section.name
+                notes: comments
                 - ...
             ...
         )
         '''
+        CallAnnotation(**case)
+
         partner_id = partnerId(self.erp, case.partner)
         partner_address = partnerAddress(self.erp, partner_id)
         claim_section_id = claimSectionID(

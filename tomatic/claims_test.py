@@ -118,13 +118,14 @@ class Claims_Test(unittest.TestCase):
     def atc_base(self, **kwds):
         base = ns.loads("""
             date: '2021-11-11T15:13:39.998Z'
-            user: gabriel
+            phone: '555444333'
+            user: albert
             reason: '[RECLAMACIONS] 003. INCIDENCIA EN EQUIPOS DE MEDIDA'
             partner: S001975
             contract: '0013117'
-            user: RECLAMACIONS
-            observations: adfasd
             resolution: fair
+            claimsection: RECLAMACIONS
+            notes: adfasd
         """)
         base.update(**kwds)
         return base
@@ -132,13 +133,13 @@ class Claims_Test(unittest.TestCase):
     def crm_base(self, **kwds):
         base = ns.loads("""\
             date: '2021-11-11T15:13:39.998Z'
-            phone: ''
-            user: gabriel
+            phone: '555444333'
+            user: albert
             reason: '[RECLAMACIONS] 003. INCIDENCIA EN EQUIPOS DE MEDIDA'
             partner: S001975
             contract: '0013117'
-            user: RECLAMACIONS
-            observations: adfasd
+            claimsection: RECLAMACIONS
+            notes: adfasd
         """)
         base.update(**kwds)
         return base
