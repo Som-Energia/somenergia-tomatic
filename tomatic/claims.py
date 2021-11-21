@@ -177,7 +177,8 @@ class Claims(object):
             'resultat': resultat(case),
             'date': case.date,
             'email_from': partner_address.get('email') if partner_address else False,
-            'time_tracking_id': COMERCIALIZADORA
+            'time_tracking_id': COMERCIALIZADORA,
+            'crm_id': crm_id,
         }
         #user_id = erpUser(self.erp, case.user)
         #if user_id:
