@@ -27,22 +27,26 @@ def contractId(erp, contract):
     contract_id = erp.GiscedataPolissa.search([("name", "=", contract)])
     if contract_id: return contract_id[0]
 
-def userId(erp, emails, person):
-    email = emails[person]
-    partner_address_model = erp.ResPartnerAddress
-    address_id = partner_address_model.read(
-        [('email', '=', email)],
-        ['id']
-    )
-    users_model = erp.ResUsers
-    try:
-        user_id = users_model.read(
-            [('address_id', '=', address_id)],
-            ['login']
-        )[0].get("id")
-        return user_id
-    except IndexError:
-        return None
+def erpUser(erp, person):
+    # Try with explicit erpuser in persons.yaml
+    erplogin = persons().get('erpusers',{}).get(person,None)
+    if erplogin:
+        user_ids = erp.ResUsers.search([
+            ('login', '=', erplogin)
+        ])
+        if user_ids: return user_ids[0]
+    # if not found try with email
+    email = persons().get('emails',{}).get(person,None)
+    if email:
+        address_ids = erp.ResPartnerAddress.search([
+            ('email', '=', email),
+        ])
+        user_ids = erp.ResUsers.search([
+            ('address_id', 'in', address_ids),
+        ])
+        if user_ids: return user_ids[0]
+    # No match found
+    return None
 
 def resultat(case):
     if not case.solved: return ''
@@ -175,10 +179,9 @@ class Claims(object):
             'email_from': partner_address.get('email') if partner_address else False,
             'time_tracking_id': COMERCIALIZADORA
         }
-        # user_id = userId(self.erp, self.emails, case.user)
-        # if user_id:
-        #     data_crm['create_uid'] = user_id
-        data_atc['crm_id'] = crm_id
+        #user_id = erpUser(self.erp, case.user)
+        #if user_id:
+        #    data_crm['create_uid'] = user_id
         case = self.erp.GiscedataAtc.create(data_atc)
 
         return case.id
