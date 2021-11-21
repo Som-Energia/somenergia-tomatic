@@ -41,7 +41,7 @@ http://tomatic.somenergia.lan
 
 ## Editar el perfil d'usuaria
 
-[![Video](video.png)
+[![Video](images/video.png)
 ](https://drive.google.com/file/d/1OaWtgNryEs_444R7pK7Ln2Q0iMIMdJ8C/preview)
 
 Per canviar el perfil d'usuaria cal
@@ -55,7 +55,7 @@ Per canviar el perfil d'usuaria cal
 - clicar a l'icona del _llapis_
 - ens surt aquest dialeg:
 
-![](personeditor.png)
+![](images/personeditor.png)
 
 Els camps que hi ha són
 
@@ -88,7 +88,7 @@ aquests _intervals amb nom_, :
 
 ## Marcar les meves indisponibilitats
 
-[![Video](video.png)
+[![Video](images/video.png)
 ](https://drive.google.com/file/d/1OaWtgNryEs_444R7pK7Ln2Q0iMIMdJ8C/preview)
 
 <img align="right" src="calendar-icon.png"/>
@@ -140,7 +140,7 @@ només els fets a la graella.
 
 ## Definir la meva taula
 
-[![Video](video.png)
+[![Video](images/video.png)
 ](https://drive.google.com/file/d/1_px-e0w_MR9_k0lH-F7XAAwuxYCszh_K/preview)
 
 Dos companyes fent a l'hora telèfon a prop pot provocar l'_efecte coctel_
@@ -171,7 +171,7 @@ La pestanya "Centraleta" mostra les agents que estan rebrent trucades en cada mo
 Cada caixeta es pinta d'una forma diferent depenent de l'estat de l'agent.
 A la següent imatge, pots veure un exemple de cua amb agents en cadascun dels estats possibles:
 
-![](indicadors-estat-cua.gif)
+![](images/indicadors-estat-cua.gif)
 
 
 - L'Alberto està atenent una trucada (caixa aixecada, amb ombra)
@@ -194,7 +194,7 @@ si l'agent repeteix torn.
 
 ## Informació de trucada entrant
 
-[![Video](video.png)
+[![Video](images/video.png)
 ](https://drive.google.com/file/d/1BzMOrNKWNw-_QvJ6jrs4yC2vn1Gewt7A/preview)
 
 <img align="right" clear="right" src="call-tab.png"/>
@@ -203,7 +203,7 @@ La pestanya 'Trucada' te informació sobre les trucades que anem rebent.
 Fa cerques automàtiques per telèfon quan rebem una trucada nova
 o quan cliquem una trucada al llistat de trucades rebudes de l'esquerra.
 
-![](callinfo.png)
+![](images/callinfo.png)
 
 Si pel telèfon no troba ningú podem fer una cerca manual per qualsevol altre criteri.
 
