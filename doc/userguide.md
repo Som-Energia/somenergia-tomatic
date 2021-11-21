@@ -18,7 +18,7 @@ src="images/tomatic-teacher.png" align='right'
 - [Marcar les meves indisponibilitats](#marcar-les-meves-indisponibilitats) (Vídeo)
 - [Definir la meva taula](#definir-la-meva-taula) (Vídeo)
 - [Estat de la centraleta](#estat-de-la-centraleta) (Vídeo)
-- [Informació de trucada entrant](informació-de-trucada-entrant)  (Vídeo)
+- [Informació de trucada entrant](#informació-de-trucada-entrant)  (Vídeo)
 
 I pròximament
 
