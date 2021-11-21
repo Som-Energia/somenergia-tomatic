@@ -249,7 +249,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
             value: 'unfair',
         },{
             label: "Resolt; no es podia fer res",
-            value: 'unsolvable',
+            value: 'irresolvable',
         }],
       }),
     ])

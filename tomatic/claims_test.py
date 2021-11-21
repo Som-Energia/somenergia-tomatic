@@ -122,11 +122,9 @@ class Claims_Test(unittest.TestCase):
             reason: '[RECLAMACIONS] 003. INCIDENCIA EN EQUIPOS DE MEDIDA'
             partner: S001975
             contract: '0013117'
-            procedente: x
-            improcedente: ''
-            solved: x
             user: RECLAMACIONS
             observations: adfasd
+            resolution: fair
         """)
         base.update(**kwds)
         return base
@@ -166,9 +164,7 @@ class Claims_Test(unittest.TestCase):
 
     def test_createAtcCase_improcedente(self):
         case = self.atc_base(
-            procedente='',
-            improcedente='x',
-            solved='x',
+            resolution='unfair',
         )
 
         claims = Claims(self.erp)
@@ -189,9 +185,7 @@ class Claims_Test(unittest.TestCase):
 
     def test_createAtcCase_noSolution(self):
         case = self.atc_base(
-            procedente='',
-            improcedente='',
-            solved='x',
+            resolution='irresolvable',
         )
 
         claims = Claims(self.erp)
@@ -212,9 +206,7 @@ class Claims_Test(unittest.TestCase):
 
     def test_createAtcCase_unsolved(self):
         case = self.atc_base(
-            procedente='',
-            improcedente='',
-            solved='',
+            resolution='unsolved',
         )
 
         claims = Claims(self.erp)

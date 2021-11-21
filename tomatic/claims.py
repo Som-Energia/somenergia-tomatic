@@ -49,11 +49,12 @@ def erpUser(erp, person):
     return None
 
 def resultat(case):
-    if not case.solved: return ''
-    if case.procedente: return '01'
-    if case.improcedente: return '02'
-    return '03' # cannot be solved
-
+    return dict(
+        unsolved = '',
+        fair = '01',
+        unfair = '02',
+        irresolvable = '03',
+    ).get(case.resolution, 'bad')
 
 def sectionName(erp, section_id):
     claims_model = erp.GiscedataSubtipusReclamacio
@@ -150,11 +151,10 @@ class Claims(object):
                 reason: '[´section.name´] ´claim.name´. ´claim.desc´'
                 partner: partner number
                 contract: contract number
-                procedente: ''
-                improcedente: ''
-                solved: ''
                 user: section.name
                 observations: comments
+                # maybe unsolved, fair, unfair, irresolvable or empty
+                resolution: fair
                 - ...
             ...
         )
