@@ -10,7 +10,7 @@ If you need them, just do a request._
 <a href="https://www.ccma.cat/tv3/alacarta/la-meva-infantils/tomatic-club-super-3/video/4586233/">
 <img
 title="Tomàtic, a chatting tomato-answering machine. Until 2006, it featured on 'Club Super3', a show for kids aired by the catalan public TV. Tomàtic, alledgedly, has been working at Som Energia since 2015."
-src="tomatic-teacher.png" align='right'
+src="images/tomatic-teacher.png" align='right'
 />
 </a>
 
@@ -46,8 +46,8 @@ http://tomatic.somenergia.lan
 
 Per canviar el perfil d'usuaria cal
 
-<img align="right" clear="right" src="pencil-icon.png"/>
-<img align="right" clear="right" src="persons-tab.png" />
+<img align="right" clear="right" src="images/pencil-icon.png"/>
+<img align="right" clear="right" src="images/persons-tab.png" />
 
 - anar a la pestanya "Persones",
 - posar el ratolí a sobre del teu nom,
@@ -69,9 +69,9 @@ Els camps que hi ha són
 
 ## Donar d'alta una persona
 
-<img align="right" clear="right" src="new-person-box.png" />
+<img align="right" clear="right" src="images/new-person-box.png" />
 
-<img align="right" clear="right" src="persons-tab.png" />
+<img align="right" clear="right" src="images/persons-tab.png" />
 
 La darrera caixa de la pestanya "Persones" és per crear nous perfils.
 
@@ -91,8 +91,8 @@ aquests _intervals amb nom_, :
 [![Video](images/video.png)
 ](https://drive.google.com/file/d/1OaWtgNryEs_444R7pK7Ln2Q0iMIMdJ8C/preview)
 
-<img align="right" src="calendar-icon.png"/>
-<img align="right" src="persons-tab.png" />
+<img align="right" src="images/calendar-icon.png"/>
+<img align="right" src="images/persons-tab.png" />
 
 Les indisponibilitats es demanen a la **pestanya "Persones"**,
 clicant la **icona calendari** que surt quan ens posem al damunt de la teva caixa.
@@ -105,14 +105,14 @@ són les degudes a l'horari laboral que teniu, reunions, tasques d'equip, concil
 
 Ens surt aquest diàleg:
 
-<img src="busyeditor.png"/>
+<img src="images/busyeditor.png"/>
 
 Hi ha dos grups: les **puntuals** (només un dia) i les que es repeteixen **setmanalment**.
 Indicareu per unes el dia concret i per les altres el dia de la setmana.
 
 Si clickeu en un `+` o en una indisponibilitat existent us sortirà un segon diàleg:
 
-<img src="busyinstanceeditor.png"/>
+<img src="images/busyinstanceeditor.png"/>
 
 És important que indiqueu el **motiu**.
 El motiu ens ajuda a identificar indisponibilitats que ja no tenen sentit,
@@ -149,8 +149,8 @@ En Tomàtic pot fer les graelles evitant que les persones a la mateixa taula
 tinguin telèfon al mateix temps.
 Per això, cal que les dues persones configurin que estan a la mateixa taula a les seves fitxes d'usuaria.
 
-<img align="right" clear="right" src="pencil-icon.png"/>
-<img align="right" clear="right" src="persons-tab.png" />
+<img align="right" clear="right" src="images/pencil-icon.png"/>
+<img align="right" clear="right" src="images/persons-tab.png" />
 
 Es configura al perfil d'usuaria.
 S'accedeix a la pestanya "Persones", posant-nos al damunt de l'usuaria
@@ -163,7 +163,7 @@ o definir-ne una de nova.
 
 ## Estat de la centraleta
 
-<img align="right" clear="right" src="pbx-tab.png"/>
+<img align="right" clear="right" src="images/pbx-tab.png"/>
 
 La pestanya "Centraleta" mostra les agents que estan rebrent trucades en cada moment.
 És el que anomenem "la cua".
@@ -197,7 +197,7 @@ si l'agent repeteix torn.
 [![Video](images/video.png)
 ](https://drive.google.com/file/d/1BzMOrNKWNw-_QvJ6jrs4yC2vn1Gewt7A/preview)
 
-<img align="right" clear="right" src="call-tab.png"/>
+<img align="right" clear="right" src="images/call-tab.png"/>
 
 La pestanya 'Trucada' te informació sobre les trucades que anem rebent.
 Fa cerques automàtiques per telèfon quan rebem una trucada nova
@@ -218,7 +218,7 @@ Si cliques a l'adreça de correu de la persona
 s'obre al HelpScout amb tots els missatges
 que hem intercanviat amb ella.
 
-<img align="right" clear="right" src="contractinfo-roles.png"/>
+<img align="right" clear="right" src="images/contractinfo-roles.png"/>
 
 **Rols:** Cada contracte, indica en verd el rols que hi té la persona seleccionada.
 **T**itular, **A**dministradora, **S**ocia, **P**agadora, **N**otificada...
@@ -237,7 +237,7 @@ En el moment d'escriure això, els avisos actius són:
 - si té factures impagadas, o,
 - si té la facturació suspesa.
 
-<img align="right" clear="right" src="calllist-buttons.png"/>
+<img align="right" clear="right" src="images/calllist-buttons.png"/>
 
 El botó amb un portapapers a la llista de persones serveix per anotar la trucada
 seleccionada a l'esquerra amb la persona i el contracte seleccionats a la dreta.
