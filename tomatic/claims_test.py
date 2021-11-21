@@ -8,6 +8,7 @@ from erppeek_wst import ClientWST
 from yamlns import namespace as ns
 from xmlrpc import client as xmlrpclib
 from .claims import Claims
+from .persons import persons
 
 try:
     import dbconfig
@@ -34,6 +35,15 @@ class Claims_Test(unittest.TestCase):
         self.maxDiff = None
         self.b2bdatapath = 'b2bdata'
         self.erp = None
+
+        self.old_persons = None
+        if hasattr(persons, 'path'):
+            self.old_persons = getattr(persons, 'path')
+            persons.path.write_text("""\
+                erpusers:
+                  marc: Marc
+            """, encoding='utf8')
+
         if not dbconfig:
             return
         if not dbconfig.erppeek:
@@ -42,6 +52,9 @@ class Claims_Test(unittest.TestCase):
         self.erp.begin()
 
     def tearDown(self):
+        if self.old_persons:
+            persons.path.unlink()
+            persons(self.old_persons)
         try:
             self.erp and self.erp.rollback()
             self.erp and self.erp.close()
@@ -75,6 +88,7 @@ class Claims_Test(unittest.TestCase):
         fkname(result, "user_id")
         anonymize(result, 'partner_id')
         anonymize(result, 'partner_address_id')
+        anonymize(result, 'user_id')
 
         self.assertNsEqual(ns(result), expected)
 
@@ -240,6 +254,24 @@ class Claims_Test(unittest.TestCase):
             section_id: Atenció al Client / RECLAMACIONS
             state: open
             user_id: false
+        """.format(case_id))
+
+    def test_createCrmCase_erpuserInPersons(self):
+        case = self.crm_base(
+            user='marc',
+        )
+        claims = Claims(self.erp)
+        case_id = claims.create_crm_case(case)
+        self.assertCrmCase(case_id, """\
+            canal_id: Teléfono
+            id: {}
+            name: INCIDENCIA EN EQUIPOS DE MEDIDA
+            partner_address_id: ...spí
+            partner_id: ...osé
+            polissa_id: '0013117'
+            section_id: Atenció al Client / RECLAMACIONS
+            state: open
+            user_id: ...lló
         """.format(case_id))
 
     def test_createCrmCase_noContract(self):

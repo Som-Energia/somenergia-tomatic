@@ -202,9 +202,6 @@ class Claims(object):
             'time_tracking_id': COMERCIALIZADORA,
             'crm_id': crm_id,
         }
-        #user_id = erpUser(self.erp, case.user)
-        #if user_id:
-        #    data_crm['create_uid'] = user_id
         case = self.erp.GiscedataAtc.create(data_atc)
 
         return case.id
