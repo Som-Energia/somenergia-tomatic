@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.2.4 2021-11-22
+
+- Documentation: Added a user guide
+- Documentation: README splitted and reorganized
+- CI/CD Migrated from Travis to Github Actions
+- Scripts moved to a folder and used thought PATH
+
 ## 4.2.3 2021-11-12
 
 - Callinfo: Fix: crash when no readings or no invoicings or no meters

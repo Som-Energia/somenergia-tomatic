@@ -29,7 +29,7 @@ You might setup a testing queue and use the `--queue` option instead.
 	- `package.json`
 	- `tomatic/__init__.py`
 - Add versions changes to `CHANGES.md`
-- Commit
+- Commit "bump to M.m.r"
 - `git tag tomatic-M.m.r` (Major minor release)
 - `git push`
 - `git push --tags`
