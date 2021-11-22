@@ -5,8 +5,8 @@ export PYTHONIOENCODING=utf8
 missatge="$(
     echo "Ei Supers! Ja hem tancat telèfons!"
     echo "Gràcies per la feina feta!"
-#  ./tomatic_calls.py summary
+#  tomatic_calls.py summary
 )"
-./tomatic_says.py "$missatge"
-./areavoip_dailyreport.py
+tomatic_says.py "$missatge"
+areavoip_dailyreport.py
 

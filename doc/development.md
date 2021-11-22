@@ -16,7 +16,7 @@ For development autoreload setup is recommended, for both frontend and backend.
 ```bash
 # in different terminals
 npm run start
-./tomatic_api.py --debug --fake
+scripts/tomatic_api.py --debug --fake
 ```
 
 The `--fake` option enables a fake pbx to avoid messing with the actual one.

@@ -67,7 +67,7 @@ def default(request: Request):
 @api.get('/run')
 def run(request: Request):
     execution = Execution.start([
-        Path("./execution_example.sh").absolute(),
+        Path("execution_example.sh").absolute(),
         "param1",
         "param2",
     ])

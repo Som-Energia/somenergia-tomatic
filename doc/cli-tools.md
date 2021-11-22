@@ -60,7 +60,7 @@ Most of them have their own `--help` to know how to use them:
 To run the fake version to develop:
 
 ```bash
-$ ./tomatic_api.py --debug --fake
+$ tomatic_api.py --debug --fake
 # In a different terminal, for the ui
 npm run start
 ```
@@ -68,7 +68,7 @@ npm run start
 To run the version acting on asterisk:
 
 ```bash
-$ ./tomatic_api.py
+$ tomatic_api.py
 ```
 
 Use `--help` to see other options.
@@ -77,19 +77,28 @@ Use `--help` to see other options.
 
 Notice: Now, this can be launched from the web user interface.
 
+Previously to generate the timetable you must generate the shiftload
+
+```bash
+tomatic_shiftload.py 7
+```
+
 To compute the timetable for the next week:
 
 ```bash
-$ ./schedulehours.py
+$ tomatic_scheduler.py
 ```
 
 To skip the downloading of the data from google drive:
 
 ```bash
-$ ./schedulehours.py --keep
+$ tomatic_scheduler.py --keep
 ```
 
 See bellow how to grant access to the script.
+
+
+
 ## Updating Asterisk extensions
 
 Tomatic can load all persons extension numbers from its configuration to Asterisk.

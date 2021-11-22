@@ -223,7 +223,7 @@ class PlannerExecution(Execution):
         execution.createSandbox()
         step("Running {}...", execution.name)
         process = execution.run([
-            str(Path('./tomatic_scheduler.py').resolve()),
+            str(Path('./scripts/tomatic_scheduler.py').resolve()),
             monday or nextMonday(),
         ])
         step("Process {}...", execution.pid)

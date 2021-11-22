@@ -2,7 +2,7 @@ datapath: "b2bdata" # Point it to the directory containing your reference data
 testcases:
     2days2lines:
         command: |
-            python tomatic_scheduler.py 2019-11-11 \
+            tomatic_scheduler.py 2019-11-11 \
                 --keep \
                 --config-file b2bdata/inputs/config-2days2lines.yaml \
                 --weekshifts b2bdata/inputs/carrega-2days2lines.csv \
@@ -17,7 +17,7 @@ testcases:
         - graella-telefons-2019-11-11.log
     3days6lines:
         command: |
-            python tomatic_scheduler.py 2019-11-18 \
+            tomatic_scheduler.py 2019-11-18 \
                 --keep \
                 --config-file b2bdata/inputs/config-3days6lines.yaml \
                 --weekshifts b2bdata/inputs/carrega-3days6lines.csv \
@@ -32,7 +32,7 @@ testcases:
         - graella-telefons-2019-11-18.log
     4days6lines:
         command: |
-            python tomatic_scheduler.py 2019-10-28 \
+            tomatic_scheduler.py 2019-10-28 \
                 --keep \
                 --config-file b2bdata/inputs/config-4days6lines.yaml \
                 --weekshifts b2bdata/inputs/carrega-4days6lines.csv \
@@ -50,7 +50,7 @@ testcases:
 
     load-2020-03-02:
         command: |
-            cd b2bdata/inputs/load-2020-03-02; python ../../../tomatic_shiftload.py 2020-03-02 \
+            cd b2bdata/inputs/load-2020-03-02; tomatic_shiftload.py 2020-03-02 \
                 --keep \
                 --clusterize \
                 2>&1 | tee console.log
