@@ -34,6 +34,7 @@ setup(
         'scripts/tomatic_says.py',
         'scripts/tomatic_scheduler.py',
         'scripts/tomatic_shiftload.py',
+        'scripts/tomatic_uploadcases.py',
         'scripts/tomatic_uploadtimetable.py',
         ],
     install_requires=[
