@@ -11,6 +11,8 @@
 - [ ] Call Info: Report diferently, search cleared from no search found
 - [ ] Call Info: Intercept backend connection errors and behave
 - [ ] Call info: List previous calls from same person/contract
+- [ ] Unify call log into the case log
+- [ ] Editable erpuser in PersonEditor
 - [ ] Google login
 - [ ] API tests in fastapi
 - [ ] Accept fragile erp tests
