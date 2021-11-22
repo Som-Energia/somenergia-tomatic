@@ -2,6 +2,10 @@
 
 ## Backlog
 
+- [ ] Remove config.yaml from git (backup the file to use it in production)
+- [ ] Configurable timetable directory ('graelles')
+- [ ] Configurable execution directory ('executions')
+- [ ] Move shiftload generated files to a configurable dir (maybe same as timetables dir?)
 - [ ] `Claim.get_claims` -> Claim.get/update/retrieveClaimTypes
 - [ ] As an agent i want to be able to see cancelled contracts in callinfo (pe. for claims of unauthorized switching)
 - [ ] Call Info: Report diferently, search cleared from no search found
@@ -14,50 +18,21 @@
 - [ ] Strip spaces in the search
 - [ ] Edit previous annotations
 - [ ] Use contrast text color for person boxes
-- [ ] Sandwich pbx ext from ringring, and use users all along
+- [ ] Sandwich pbx ext from ringring, and use tomatic users inside
 - [ ] Translate log field names from catalan
 - [ ] api/info/ringring -> api/call/ringring (ext)
 - [ ] /api/personlog/<ext> en els casos de fallada returnar una llista buida sense errors (no son de fallada, encara no hi ha logs i prou)
 - [ ] api/personlog/{ext} -> api/call/log/{user}
-- [ ] api/updateClaims -> cron or init
-- [ ] api/updateClaimTypes -> cron or init
-- [ ] api/updateCrmCategories -> cron or init
+- [ ] api/updateClaims -> called by cron or init
+- [ ] api/updateClaimTypes -> called by cron or init
+- [ ] api/updateCrmCategories -> called by cron or init
 - [ ] api/getClaimTypes -> api/call/claim/types?
 - [ ] api/getInfos -> api/call/info/types?
 - [ ] consider joining getClaimTypes and getInfos
 - [ ] move scripts to a folder
+- [ ] GSpread docs say that moving the credential to `~/.config/gspread/service_account.json` avoids having to pass it around as parameter
+- [ ] `tomatic_calls` should use persons module instead referring persons.yaml directly
 
-## Copied from README to be reviewed for dups
-
-- GSpread docs say that moving the credential to `~/.config/gspread/service_account.json` avoids having to pass it around as parameter
-- CallInfo
-	- [ ] Pujar infos a l'ERP
-	- [ ] components/call.js:getLog Deprecrated
-	- [ ] Revisar handshaking dels websockets
-	- [ ] Fer la data ISO al call_log
-	- [ ] /api/info/all/<field> -> /api/info/by/any/<value>
-	- [ ] /api/info/xxxx/<field> -> /api/info/by/xxxx/<value>
-
-
-- Refactoring
-	- [x] use persons interface everywhere
-		- [x] api uses persons
-			- [x] persons() set attributes with ns() if not found
-			- [x] persons.update(person, **kwds)
-		- [x] tomatic_says use persons
-		- [ ] scheduler use persons
-		- [ ] shiftload uses persons
-		- [ ] tomatic_calls uses persons
-	- [x] use pbx backends instead of current pbx interface
-		- [x] remove use setScheduledQueue (mostly in tests)
-		- [x] unify backend interfaces
-		- [x] dbasterisk works with names not extensions
-
-- Hangout
-	- [x] Configurable token file path
-	- [x] Choose output channel by CLI
-	- [x] Choose token file by CLI
-	- [x] List channels when no channel has been configured yet
 - Planner:
 	- [ ] Refactor as Single Page App
 	- [ ] Style it
@@ -70,6 +45,7 @@
 	- [ ] Check extension not taken already
 	- [ ] Focus on first item
 	- [ ] Take person info from holidays manager
+	- [ ] List/admin mode
 - Callinfo
 	- [ ] Simplify yaml structure
 	- [ ] Refactor tests
@@ -93,13 +69,26 @@
 - [ ] create crm: cas contracte no existeix
 - [ ] Rename Claims to reflect its repurposing
 - [ ] create crm: Inserir usuari correcte al CRM (es fa servir l'usuari loggejat a l'erp: Scriptlauncher i no veiem com canviar-ho)
-
 - [ ] On failing annotation, ui notifies the user
 
 
 ## Dones
 
 
+- [x] persons interface: api uses persons
+- [x] persons interface: persons() set attributes with ns() if not found
+- [x] persons interface: persons.update(person, **kwds)
+- [x] persons interface: tomatic_says use persons
+- [x] persons interface: scheduler use persons
+- [x] persons interface: shiftload uses persons
+- [x] pbx interface: use pbx backends instead of current pbx interface
+- [x] pbx interface: remove use setScheduledQueue (mostly in tests)
+- [x] pbx interface: unify backend interfaces
+- [x] pbx interface: dbasterisk works with names not extensions
+- [x] Hangouts: Configurable token file path
+- [x] Hangouts: Choose output channel by CLI
+- [x] Hangouts: Choose token file by CLI
+- [x] Hangouts: List channels when no channel has been configured yet
 - [x] Refactoritzar codi comu dels getInfoPersonByXXXX
 - [x] Optimizar búsquedas callinfo
 - [x] Commit `info_cases/info_cases.yaml`
