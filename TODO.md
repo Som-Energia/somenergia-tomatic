@@ -11,17 +11,14 @@
 - [ ] Call Info: Report diferently, search cleared from no search found
 - [ ] Call Info: Intercept backend connection errors and behave
 - [ ] Call info: List previous calls from same person/contract
-- [ ] Unify call log into the case log
-- [ ] Editable erpuser in PersonEditor
+- [ ] Unify call log also into the case log
 - [ ] Google login
 - [ ] API tests in fastapi
 - [ ] Accept fragile erp tests
-- [ ] Fix: Person color picker sliders are not valued with the initial color
 - [ ] Strip spaces in the search
 - [ ] Edit previous annotations
-- [ ] Use contrast text color for person boxes
-- [ ] Sandwich pbx ext from ringring, and use tomatic users inside
-- [ ] Translate log field names from catalan
+- [ ] On ringing sandwich pbx ext, and use tomatic users inside (do not log by ext but by user)
+- [ ] Translate call log field names from catalan
 - [ ] api/info/ringring -> api/call/ringring (ext)
 - [ ] /api/personlog/<ext> en els casos de fallada returnar una llista buida sense errors (no son de fallada, encara no hi ha logs i prou)
 - [ ] api/personlog/{ext} -> api/call/log/{user}
@@ -31,7 +28,6 @@
 - [ ] api/getClaimTypes -> api/call/claim/types?
 - [ ] api/getInfos -> api/call/info/types?
 - [ ] consider joining getClaimTypes and getInfos
-- [ ] move scripts to a folder
 - [ ] GSpread docs say that moving the credential to `~/.config/gspread/service_account.json` avoids having to pass it around as parameter
 - [ ] `tomatic_calls` should use persons module instead referring persons.yaml directly
 
@@ -41,11 +37,12 @@
 	- [ ] Show cutting reasons of best solutions
 	- [ ] Ask before deleting, killing, uploading...
 - Scheduler:
-	- [ ] Join load computation into the script
+	- [ ] Join load computation into the scheduler script
 - Person editor:
 	- [ ] Disable ok until all fields are valid
 	- [ ] Check extension not taken already
-	- [ ] Focus on first item
+	- [ ] Check erp user exists
+	- [ ] Focus on first dialog field on open
 	- [ ] Take person info from holidays manager
 	- [ ] List/admin mode
 - Callinfo
@@ -66,17 +63,20 @@
 - [ ] Importar categories que falten de atc com a categorias de crmcases
 - [ ] anotate_case: sensitive to the case fields creates atc or not
 - [ ] !!! create crm: solved = True (lo comentamos cuando lo movimos a una funcion a parte)
-- [ ] !! create crm/atc: Check: we are using same ids for atc and crm sections and it is unlikely to be like that since they belong to different tables
 - [ ] create crm: extract seccio del reason and remove the field
 - [ ] create crm: cas contracte no existeix
-- [ ] Rename Claims to reflect its repurposing
-- [ ] create crm: Inserir usuari correcte al CRM (es fa servir l'usuari loggejat a l'erp: Scriptlauncher i no veiem com canviar-ho)
-- [ ] On failing annotation, ui notifies the user
+- [ ] callreg: Rename Claims to reflect its repurposing
+- [ ] callreg: create crm: Inserir usuari correcte al CRM (es fa servir l'usuari loggejat a l'erp: Scriptlauncher i no veiem com canviar-ho)
+- [ ] callreg: On failing annotation, ui notifies the user
 
 
 ## Dones
 
 
+- [x] Use contrast text color for person boxes
+- [x] Editable erpuser in PersonEditor
+- [x] move scripts to a folder
+- [x] Fix: Person color picker sliders are not valued with the initial color
 - [x] persons interface: api uses persons
 - [x] persons interface: persons() set attributes with ns() if not found
 - [x] persons interface: persons.update(person, **kwds)
