@@ -12,6 +12,7 @@ def _load(path):
         'colors',
         'emails',
         'groups',
+        'erpusers',
     ):
         loaded.setdefault(key, ns())
     return loaded
@@ -86,6 +87,8 @@ def update(key, data):
         result.colors[key] = data.color
     if 'email' in data:
         result.emails[key] = data.email
+    if 'erpuser' in data:
+        result.erpusers[key] = data.erpuser
     if 'groups' in data:
         for group in data.groups:
             result.groups.setdefault(group, []).append(key)

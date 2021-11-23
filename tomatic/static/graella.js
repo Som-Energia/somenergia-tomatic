@@ -323,6 +323,7 @@ var editPerson = function(name) {
 			color: Tomatic.persons().colors[name],
 			extension: Tomatic.persons().extensions[name],
 			email: Tomatic.persons().emails[name],
+			erpuser: Tomatic.persons().erpusers[name],
 			table: Tomatic.table(name),
 		};
 	};
@@ -438,11 +439,21 @@ PersonEditor.view = function(vnode) {
 			},
 		}),
 		m(Textfield, {
+			label: 'Usuari ERP',
+			floatingLabel: true,
+			help: 'Usuari amb el que entres a l\'erp.',
+			required: true,
+			value: vnode.attrs.erpuser || '',
+			onChange: function(state) {
+				vnode.attrs.erpuser=state.value;
+			},
+		}),
+		m(Textfield, {
 			label: 'Extensio',
 			type: 'number',
 			pattern: '[0-9]{4}$',
 			floatingLabel: true,
-			help: 'Extensió del telèfon',
+			help: 'Extensió de telèfon',
 			required: true,
 			value: vnode.attrs.extension,
 			onChange: function(state) {
