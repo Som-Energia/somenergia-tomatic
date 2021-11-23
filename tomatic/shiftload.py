@@ -580,36 +580,86 @@ def main():
     else:
         fail("Només s'han pogut aconseguir {} torns dels {} necessaris", -1, finalLoad, fullLoad)
 
-    summaryColumns=ns()
-    summaryColumns['Ideal'] = idealLoad
-    summaryColumns['Proporcional'] = ponderated
-    summaryColumns['Augmentada'] = augmented
-    summaryColumns['CapacitatReal'] = loadCapacity
-    summaryColumns['Topall'] = upperBound
-    summaryColumns['AplicatTopall'] = limited
-    summaryColumns['CobrintTorns'] = complete
-    summaryColumns['CompensantDeutes'] = compensated
-    summaryColumns['Final'] = final
-    summaryColumns['Sobrecarrega'] = overload
-    summaryColumns['CreditCarregat'] = loadedCredit
-    summaryColumns['CreditInicial'] = originalCredit
-    summaryColumns['CreditFinal'] = credits
-
-    summary=ns()
-    for column, data in summaryColumns.items():
-        for person, value in data.items():
-            summary.setdefault(person,ns())[column]=value
-
-    summarycontent = '\n'.join([
-        '\t'.join(['Nom'] + list(summaryColumns))
-    ] + [
-        '\t'.join([person] + [str(data.get(column,'-')) for column in summaryColumns])
-        for person, data in summary.items()
-    ])
-
-    print(summarycontent)
+    computer = ShiftLoadComputer(
+        idealLoad = idealLoad,
+        ponderated = ponderated,
+        augmented = augmented,
+        loadCapacity = loadCapacity,
+        upperBound = upperBound,
+        limited = limited,
+        complete = complete,
+        compensated = compensated,
+        final = final,
+        overload = overload,
+        loadedCredit = loadedCredit,
+        originalCredit = originalCredit,
+        credits = credits,
+    )
+    summary = computer.summary()
+    print(summary)
     if args.summary:
-        Path(args.summary).write_text(u(summarycontent), encoding='utf8')
+        Path(args.summary).write_text(summary, encoding='utf8')
+
+
+class ShiftLoadComputer():
+
+    def __init__(self,
+        idealLoad,
+        ponderated,
+        augmented,
+        loadCapacity,
+        upperBound,
+        limited,
+        complete,
+        compensated,
+        final,
+        overload,
+        loadedCredit,
+        originalCredit,
+        credits,
+    ):
+        self.idealLoad = idealLoad
+        self.ponderated = ponderated
+        self.augmented = augmented
+        self.loadCapacity = loadCapacity
+        self.upperBound = upperBound
+        self.limited = limited
+        self.complete = complete
+        self.compensated = compensated
+        self.final = final
+        self.overload = overload
+        self.loadedCredit = loadedCredit
+        self.originalCredit = originalCredit
+        self.credits = credits
+
+    def summary(self):
+        summaryColumns=ns()
+        summaryColumns['Ideal'] = self.idealLoad
+        summaryColumns['Proporcional'] = self.ponderated
+        summaryColumns['Augmentada'] = self.augmented
+        summaryColumns['CapacitatReal'] = self.loadCapacity
+        summaryColumns['Topall'] = self.upperBound
+        summaryColumns['AplicatTopall'] = self.limited
+        summaryColumns['CobrintTorns'] = self.complete
+        summaryColumns['CompensantDeutes'] = self.compensated
+        summaryColumns['Final'] = self.final
+        summaryColumns['Sobrecarrega'] = self.overload
+        summaryColumns['CreditCarregat'] = self.loadedCredit
+        summaryColumns['CreditInicial'] = self.originalCredit
+        summaryColumns['CreditFinal'] = self.credits
+
+        summary=ns()
+        for column, data in summaryColumns.items():
+            for person, value in data.items():
+                summary.setdefault(person,ns())[column]=value
+
+        summarycontent = '\n'.join([
+            '\t'.join(['Nom'] + list(summaryColumns))
+        ] + [
+            '\t'.join([person] + [str(data.get(column,'-')) for column in summaryColumns])
+            for person, data in summary.items()
+        ])
+        return summarycontent
 
 
 if __name__ == '__main__':
