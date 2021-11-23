@@ -284,19 +284,19 @@ var lastInvoices = function(invoices) {
 }
 
 var extraInfo = function(contract) {
-  var autoconsum = contract.autoconsum;
+  var selfconsumption = contract.selfconsumption;
   var generation = contract.generation;
   var energetica = contract.energetica;
   var suspended_invoicing = contract.suspended_invoicing;
   var has_debt = contract.has_debt;
 
-  if (!autoconsum && !generation && !energetica && !suspended_invoicing && !has_debt) {
+  if (!selfconsumption && !generation && !energetica && !suspended_invoicing && !has_debt) {
     info = m("no-info", "No hi ha informació extra.")
   }
   else {
     info = m(".extra-info", [
       m("",
-        autoconsum ? m(".label-autoconsum","Autoconsum.") : ""
+        selfconsumption ? m(".label-selfconsumption","Autoconsum.") : ""
       ),
       m("",
         generation ? m(".label-generation","Rep Generation.") : ""

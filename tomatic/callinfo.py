@@ -356,6 +356,7 @@ class CallInfo(object):
             'no_estimable',
             'comptadors',
             'debt_amount',
+            'autoconsumo',
         ])
         all_contracts_dict = {c['id']: c for c in all_contracts if c}
         for contract_id in contracts_ids:
@@ -431,6 +432,9 @@ class CallInfo(object):
                     invoices=last_invoices,
                     has_debt=debt if debt > 0.0 else False,
                     atr_cases=atr_cases,
+                    selfconsumption=contract['autoconsumo'] not in [
+                        '00',
+                    ],
                 )
             )
         return ret
