@@ -22,9 +22,11 @@ function triplet2hex(triplet) {
 }
 function contrast(hexrgb) {
 	var cs = hex2triplet(hexrgb);
-	return cs.reduce(function(c,a) {
-		return c+a;
-	}, 0)/3 > 127? 'black':'white';
+	return (
+		+ cs[0] * .429 // R
+		+ cs[1] * .557 // G
+		+ cs[2] * .014 // B
+	) > 86 ? 'black':'white';
 }
 function luminance(hex, lum) {
 	var triplet = hex2triplet(hex);

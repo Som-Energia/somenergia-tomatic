@@ -28,6 +28,7 @@ var Select = require('./components/select');
 var RgbEditor = require('./components/rgbeditor');
 var Uploader = require('./components/uploader');
 var luminance = require('./components/colorutils').luminance;
+var contrast = require('./components/colorutils').contrast;
 var editAvailabilities = require('./components/busyeditor');
 var Login = require('./components/login');
 
@@ -344,7 +345,6 @@ var editPerson = function(name) {
 	}
 	function range(n) {
 		if (n==0) return Array();
-		console.log(n);
 		return Array.apply(null, Array(n)).map(function (_, i) {return i;});
 	}
 
@@ -725,22 +725,26 @@ var PersonsPage = {
 
 
 var PersonStyles = function() {
-	var persons = Tomatic.persons();
+    var persons = Tomatic.persons();
     return m('style',
         Object.keys(persons.colors||{}).map(function(name) {
             var color = '#'+persons.colors[name];
             var darker = '#'+luminance(color, -0.3);
+            var linecolor = contrast(persons.colors[name])
             return (
                 '.'+name+', .graella .'+name+' {\n' +
                 '  background-color: '+color+';\n' +
                 '  border-color: '+darker+';\n' +
-                '  border-width: 2pt;\n'+
+                '  border-width: 20pt;\n'+
+                '  color: '+linecolor+';\n'+
                 '}\n'+
                 '.pe-dark-theme .'+name+', .pe-dark-theme .graella .'+name+' {\n' +
                 '  background-color: '+darker+';\n' +
                 '  border-color: '+color+';\n' +
                 '  border-width: 2pt;\n'+
-                '}\n');
+                '  color: '+linecolor+';\n'+
+                '}\n'
+            );
         })
     );
 };
