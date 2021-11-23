@@ -573,13 +573,6 @@ def main():
         step("Desant càrrega distribuida en linies com a {}", clusterfile)
         clusterfile.write_text(loadContent, encoding='utf8')
         
-
-    finalLoad = sum(v for k,v in final.items())
-    if finalLoad == fullLoad:
-        success("S'ha aconseguit amb èxit una càrrega de {} torns", finalLoad)
-    else:
-        fail("Només s'han pogut aconseguir {} torns dels {} necessaris", -1, finalLoad, fullLoad)
-
     computer = ShiftLoadComputer(
         idealLoad = idealLoad,
         ponderated = ponderated,
@@ -595,6 +588,13 @@ def main():
         originalCredit = originalCredit,
         credits = credits,
     )
+
+    finalLoad = computer.finalLoad()
+    if finalLoad == fullLoad:
+        success("S'ha aconseguit amb èxit una càrrega de {} torns", finalLoad)
+    else:
+        fail("Només s'han pogut aconseguir {} torns dels {} necessaris", -1, finalLoad, fullLoad)
+
     summary = computer.summary()
     print(summary)
     if args.summary:
@@ -631,6 +631,9 @@ class ShiftLoadComputer():
         self.loadedCredit = loadedCredit
         self.originalCredit = originalCredit
         self.credits = credits
+
+    def finalLoad(self):
+        return sum(v for k,v in self.final.items())
 
     def summary(self):
         summaryColumns=ns()
