@@ -549,14 +549,28 @@ def main():
     step("Desant sobrecàrrega com a {}", overloadfile)
     overload.dump(overloadfile)
 
-    final = ns((p, int(v)) for p,v in sorted(compensated.items()))
+    computer = ShiftLoadComputer(
+        idealLoad = idealLoad,
+        ponderated = ponderated,
+        augmented = augmented,
+        loadCapacity = loadCapacity,
+        upperBound = upperBound,
+        limited = limited,
+        complete = complete,
+        compensated = compensated,
+        overload = overload,
+        loadedCredit = loadedCredit,
+        originalCredit = originalCredit,
+        credits = credits,
+    )
 
-    finalfile = "carrega-{}.yaml".format(config.monday)
-    step("Desant càrrega final com a {}", finalfile)
-    final.dump(finalfile)
+    final = computer.final
 
-    if args.weekshifts:
-        finalfile = args.weekshifts
+    for finalfile in [
+        "carrega-{}.yaml".format(config.monday),
+        args.weekshifts,
+    ]:
+        if not finalfile: continue
         step("Desant càrrega final com a {}", finalfile)
         final.dump(finalfile)
 
@@ -573,22 +587,6 @@ def main():
         step("Desant càrrega distribuida en linies com a {}", clusterfile)
         clusterfile.write_text(loadContent, encoding='utf8')
         
-    computer = ShiftLoadComputer(
-        idealLoad = idealLoad,
-        ponderated = ponderated,
-        augmented = augmented,
-        loadCapacity = loadCapacity,
-        upperBound = upperBound,
-        limited = limited,
-        complete = complete,
-        compensated = compensated,
-        final = final,
-        overload = overload,
-        loadedCredit = loadedCredit,
-        originalCredit = originalCredit,
-        credits = credits,
-    )
-
     finalLoad = computer.finalLoad()
     if finalLoad == fullLoad:
         success("S'ha aconseguit amb èxit una càrrega de {} torns", finalLoad)
@@ -612,7 +610,6 @@ class ShiftLoadComputer():
         limited,
         complete,
         compensated,
-        final,
         overload,
         loadedCredit,
         originalCredit,
@@ -626,11 +623,12 @@ class ShiftLoadComputer():
         self.limited = limited
         self.complete = complete
         self.compensated = compensated
-        self.final = final
         self.overload = overload
         self.loadedCredit = loadedCredit
         self.originalCredit = originalCredit
         self.credits = credits
+
+        self.final = ns((p, int(v)) for p,v in sorted(self.compensated.items()))
 
     def finalLoad(self):
         return sum(v for k,v in self.final.items())
