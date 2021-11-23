@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Callinfo: New autoconsumption alert
+- Fix: person color sliders set to initial values
+- Persons have a new field: ERP User
+- Accessibility: White for text in person boxes with dark colors
+
 ## 4.2.4 2021-11-22
 
 - Documentation: Added a user guide
