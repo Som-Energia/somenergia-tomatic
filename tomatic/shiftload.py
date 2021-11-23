@@ -538,17 +538,6 @@ def main():
     if compensations:
         success("    Compensacions fetes:\n{}",compensations)
 
-    overload = loadSubstract(compensated, ponderated)
-    overload = ns((p,round(v,1)) for p,v in sorted(overload.items()))
-    out("La sobrecarrega d'aquesta setmana seria:")
-    for person, value in sorted(overload.items(), key=lambda x: x[::-1]):
-        if abs(value)<.001: continue
-        out("{}: {:.1f}".format(person,value))
-
-    overloadfile = args.overload or "overload-{}.yaml".format(config.monday)
-    step("Desant sobrecàrrega com a {}", overloadfile)
-    overload.dump(overloadfile)
-
     computer = ShiftLoadComputer(
         idealLoad = idealLoad,
         ponderated = ponderated,
@@ -558,11 +547,13 @@ def main():
         limited = limited,
         complete = complete,
         compensated = compensated,
-        overload = overload,
         loadedCredit = loadedCredit,
         originalCredit = originalCredit,
         credits = credits,
     )
+    computer.displayOverload()
+    computer.dump(computer.overload, "sobrecàrrega",
+        args.overload or "overload-{}.yaml".format(config.monday))
 
     final = computer.final
 
@@ -571,8 +562,7 @@ def main():
         args.weekshifts,
     ]:
         if not finalfile: continue
-        step("Desant càrrega final com a {}", finalfile)
-        final.dump(finalfile)
+        computer.dump(final, "càrrega final", finalfile)
 
     if args.clusterize:
         clusterized = clusterize(config.nTelefons, final)
@@ -610,7 +600,6 @@ class ShiftLoadComputer():
         limited,
         complete,
         compensated,
-        overload,
         loadedCredit,
         originalCredit,
         credits,
@@ -623,15 +612,31 @@ class ShiftLoadComputer():
         self.limited = limited
         self.complete = complete
         self.compensated = compensated
-        self.overload = overload
         self.loadedCredit = loadedCredit
         self.originalCredit = originalCredit
         self.credits = credits
+
+        self.overload = self.computeOverload()
 
         self.final = ns((p, int(v)) for p,v in sorted(self.compensated.items()))
 
     def finalLoad(self):
         return sum(v for k,v in self.final.items())
+
+    def displayOverload(self):
+        out("La sobrecarrega d'aquesta setmana seria:")
+        for person, value in sorted(self.overload.items(), key=lambda x: x[::-1]):
+            if abs(value)<.001: continue
+            out("{}: {:.1f}".format(person,value))
+
+    def computeOverload(self):
+        result = loadSubstract(self.compensated, self.ponderated)
+        result = ns((p,round(v,1)) for p,v in sorted(result.items()))
+        return result
+
+    def dump(self, data, description, filename):
+        step("Desant {} com a {}", description, filename)
+        data.dump(filename)
 
     def summary(self):
         summaryColumns=ns()
