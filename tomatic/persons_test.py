@@ -27,6 +27,7 @@ class Persons_Test(unittest.TestCase):
         self.assertNsEqual(ps, """\
             hola: tu
             names: {}
+            erpusers: {}
             extensions: {}
             tables: {}
             colors: {}
@@ -70,6 +71,7 @@ class Persons_Test(unittest.TestCase):
         self.assertNsEqual(ps, """\
             hola: tu
             names: {}
+            erpusers: {}
             extensions: {}
             tables: {}
             colors: {}
@@ -87,6 +89,7 @@ class Persons_Test(unittest.TestCase):
         self.assertNsEqual(ps, """\
             hola: you
             names: {}
+            erpusers: {}
             extensions: {}
             tables: {}
             colors: {}
@@ -102,6 +105,7 @@ class Persons_Test(unittest.TestCase):
         self.assertNsEqual(ps, """\
             hola: yo
             names: {}
+            erpusers: {}
             extensions: {}
             tables: {}
             colors: {}
@@ -209,10 +213,13 @@ class Persons_Test(unittest.TestCase):
             table = 4,
             color = '00ff00',
             email = 'name@home.com',
+            erpuser = 'ErpUser',
         ))
         self.assertNsEqual(persons.persons(), """\
             names:
               someone: namevalue
+            erpusers:
+              someone: ErpUser
             extensions:
               someone: '666' # overwritten
               someother: '222' # kept
@@ -236,6 +243,7 @@ class Persons_Test(unittest.TestCase):
         self.assertNsEqual(persons.persons(), """\
             names: {}
             extensions: {}
+            erpusers: {}
             tables: {}
             colors: {}
             emails: {}
@@ -257,6 +265,7 @@ class Persons_Test(unittest.TestCase):
         self.assertNsEqual(persons.persons(), """\
             names: {}
             extensions: {}
+            erpusers: {}
             tables: {}
             colors: {}
             emails: {}
@@ -279,6 +288,7 @@ class Persons_Test(unittest.TestCase):
         ))
         self.assertNsEqual(persons.persons(), """\
             names: {}
+            erpusers: {}
             extensions: {}
             tables: {}
             colors: {}
@@ -301,6 +311,7 @@ class Persons_Test(unittest.TestCase):
         ))
         self.assertNsEqual(persons.persons(), """\
             names: {}
+            erpusers: {}
             extensions: {}
             tables: {}
             colors: {}
@@ -319,6 +330,7 @@ class Persons_Test(unittest.TestCase):
 
         self.assertNsEqual(ns.load('p.yaml'), """\
             names: {}
+            erpusers: {}
             extensions:
               someone: '666' # overwritten
             tables: {}
