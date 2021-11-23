@@ -42,7 +42,7 @@ module.exports = function() {
 						min: 0,
 						max: 255,
 						class: color,
-						value: vnode.state[color],
+						value: vnode.state[color](),
 						onChange: function(state) {
 							vnode.state[color](state.value);
 							vnode.state.edited();
