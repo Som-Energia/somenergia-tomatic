@@ -525,19 +525,6 @@ def main():
     )
     success("    Carrega assolida {}",sum(complete.values()))
 
-    step("  Compensant deute amb credit...")
-    compensated = compensateDebtsAndCredits(
-        shifts = complete,
-        credits = credits,
-        limits = upperBound,
-    )
-    compensations = '\n'.join(
-        "{}: {:.1f}".format(person, value)
-        for person, value in loadSubstract(compensated, complete).items()
-        if value)
-    if compensations:
-        success("    Compensacions fetes:\n{}",compensations)
-
     computer = ShiftLoadComputer(
         idealLoad = idealLoad,
         ponderated = ponderated,
@@ -546,11 +533,15 @@ def main():
         upperBound = upperBound,
         limited = limited,
         complete = complete,
-        compensated = compensated,
         loadedCredit = loadedCredit,
         originalCredit = originalCredit,
         credits = credits,
     )
+
+    compensations = computer.compensationsSummary()
+    if compensations:
+        success("    Compensacions fetes:\n{}",compensations)
+
     computer.displayOverload()
     computer.dump(computer.overload, "sobrecàrrega",
         args.overload or "overload-{}.yaml".format(config.monday))
@@ -599,7 +590,6 @@ class ShiftLoadComputer():
         upperBound,
         limited,
         complete,
-        compensated,
         loadedCredit,
         originalCredit,
         credits,
@@ -611,10 +601,16 @@ class ShiftLoadComputer():
         self.upperBound = upperBound
         self.limited = limited
         self.complete = complete
-        self.compensated = compensated
         self.loadedCredit = loadedCredit
         self.originalCredit = originalCredit
         self.credits = credits
+
+        step("  Compensant deute amb credit...")
+        self.compensated = compensateDebtsAndCredits(
+            shifts = self.complete,
+            credits = self.credits,
+            limits = self.upperBound,
+        )
 
         self.overload = self.computeOverload()
 
@@ -628,6 +624,12 @@ class ShiftLoadComputer():
         for person, value in sorted(self.overload.items(), key=lambda x: x[::-1]):
             if abs(value)<.001: continue
             out("{}: {:.1f}".format(person,value))
+
+    def compensationsSummary(self):
+        return '\n'.join(
+            "{}: {:.1f}".format(person, value)
+            for person, value in loadSubstract(self.compensated, self.complete).items()
+            if value)
 
     def computeOverload(self):
         result = loadSubstract(self.compensated, self.ponderated)
