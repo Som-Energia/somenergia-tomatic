@@ -481,33 +481,22 @@ def main():
     originalCredit = ns(credits)
 
 
-    step("  Ponderant la ideal...")
-    ponderated = ponderatedLoad(
-        idealLoad=idealLoad,
-        businessDays = businessDays,
-        daysoff = daysoff,
-        leaves = leaves,
-    )
-    ns(ponderated).dump("ponderatedideal-{}.yaml".format(config.monday))
-
-    rounded = ns((p, int(round(v))) for p,v in ponderated.items())
-    nrounded = sum(rounded.values())
-    success("    Surten {} torns", nrounded)
-
     computer = ShiftLoadComputer(
         nlines = config.nTelefons,
         generalMaxPerDay = config.maximHoresDiariesGeneral,
         maxPerDay = config.maximHoresDiaries,
         leaves = leaves,
+        daysoff = daysoff,
         busyTable = busyTable,
         businessDays = businessDays,
         idealLoad = idealLoad,
-        ponderated = ponderated,
-        rounded = rounded,
         loadedCredit = loadedCredit,
         originalCredit = originalCredit,
         credits = credits,
     )
+
+    computer.dump(computer.ponderated, None, #"càrrega ponderada",
+        "ponderatedideal-{}.yaml".format(config.monday))
 
     compensations = computer.compensationsSummary()
     if compensations:
@@ -558,11 +547,10 @@ class ShiftLoadComputer():
         generalMaxPerDay,
         maxPerDay,
         leaves,
+        daysoff,
         busyTable,
         businessDays,
         idealLoad,
-        ponderated,
-        rounded,
         loadedCredit,
         originalCredit,
         credits,
@@ -570,11 +558,23 @@ class ShiftLoadComputer():
         self.nlines = nlines
         self.businessDays = businessDays
         self.idealLoad = idealLoad
-        self.ponderated = ponderated
-        self.rounded = rounded
         self.loadedCredit = loadedCredit
         self.originalCredit = originalCredit
         self.credits = credits
+
+
+        step("  Ponderant la ideal...")
+        self.ponderated = ponderatedLoad(
+            idealLoad = self.idealLoad,
+            businessDays = businessDays,
+            daysoff = daysoff,
+            leaves = leaves,
+        )
+
+        self.rounded = ns((p, int(round(v))) for p,v in self.ponderated.items())
+        nrounded = sum(self.rounded.values())
+        success("    Surten {} torns", nrounded)
+
 
         step("  Limitant a la capacitat real...")
         self.loadCapacity = capacity(
@@ -636,7 +636,7 @@ class ShiftLoadComputer():
         return result
 
     def dump(self, data, description, filename):
-        step("Desant {} com a {}", description, filename)
+        if description: step("Desant {} com a {}", description, filename)
         data.dump(filename)
 
     def reportCapacity(self):
