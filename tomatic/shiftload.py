@@ -487,14 +487,7 @@ def main():
         )
 
     step("    Llegint credits i deutes (bossa d'hores)...")
-    loadedCredit = ns.load('shiftcredit.yaml')
-    loadedCredit = ns((person, loadedCredit.get(person, 0)) for person in persons)
-    if args.forgive:
-        credits = ns(((person, 0) for person in loadedCredit))
-    else:
-        credits = ns(loadedCredit)
-    originalCredit = ns(credits)
-
+    formerCredit = ns.load('shiftcredit.yaml')
 
     computer = ShiftLoadComputer(
         nlines = config.nTelefons,
@@ -505,9 +498,8 @@ def main():
         busyTable = busyTable,
         businessDays = businessDays,
         idealLoad = idealLoad,
-        loadedCredit = loadedCredit,
-        originalCredit = originalCredit,
-        credits = credits,
+        credits = formerCredit,
+        forgive = args.forgive,
     )
 
     computer.dump(computer.ponderated, None, #"càrrega ponderada",
@@ -566,17 +558,23 @@ class ShiftLoadComputer():
         busyTable,
         businessDays,
         idealLoad,
-        loadedCredit,
-        originalCredit,
         credits,
+        forgive=False,
     ):
         self.nlines = nlines
         self.businessDays = businessDays
         self.idealLoad = idealLoad
-        self.loadedCredit = loadedCredit
-        self.originalCredit = originalCredit
-        self.credits = credits
 
+        persons=list(idealLoad.keys())
+
+        self.loadedCredit = loadDefault(credits, persons)
+
+        self.initialCredit = self.loadedCredit
+        if forgive:
+            step("    Ignorant credits i deutes (bossa d'hores)...")
+            self.initialCredit = loadDefault(ns(), persons)
+
+        self.credits = ns(self.initialCredit) # copy
 
         step("  Ponderant la ideal...")
         self.ponderated = ponderatedLoad(
@@ -675,7 +673,7 @@ class ShiftLoadComputer():
         summaryColumns['Final'] = self.final
         summaryColumns['Sobrecarrega'] = self.overload
         summaryColumns['CreditCarregat'] = self.loadedCredit
-        summaryColumns['CreditInicial'] = self.originalCredit
+        summaryColumns['CreditInicial'] = self.initialCredit
         summaryColumns['CreditFinal'] = self.credits
 
         summary=ns()
