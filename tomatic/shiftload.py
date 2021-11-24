@@ -514,14 +514,12 @@ def main():
     computer.dump(computer.overload, "sobrecàrrega",
         args.overload or "overload-{}.yaml".format(config.monday))
 
-    final = computer.final
-
     for finalfile in [
         "carrega-{}.yaml".format(config.monday),
         args.weekshifts,
     ]:
         if not finalfile: continue
-        computer.dump(final, "càrrega final", finalfile)
+        computer.dump(computer.final, "càrrega final", finalfile)
 
     if args.clusterize:
         computer.dumpCsv(computer.clusterized, "càrrega distribuida en linies",
