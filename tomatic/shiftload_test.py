@@ -811,6 +811,12 @@ class ShiftLoadTest(unittest.TestCase):
                 ns(alice=1.5, bob=1.49)
             ),  ns(alice=2, bob=1))
 
+    def test_loadDefault(self):
+        self.assertNsEqual(
+            shiftload.loadDefault(
+                ns(alice=1, bob=2), ['alice', 'carol'], 3
+            ),  ns(alice=1, carol=3))
+
     def test_augmentLoad_byDefault(self):
         self.assertNsEqual(
             shiftload.augmentLoad(

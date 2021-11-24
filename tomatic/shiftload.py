@@ -142,6 +142,12 @@ def loadRound(load):
         for p,v in load.items()
     )
 
+def loadDefault(load, persons, value=0):
+    return ns(
+        (p, load.get(p, value))
+        for p in persons
+    )
+
 def augmentLoad(load, addend=1):
     """
     Returns a load resulting of adding addend to every person.
