@@ -133,6 +133,15 @@ def loadMin(*args):
         for person in persons
     )
 
+def loadRound(load):
+    """
+    Returns a load with the input values rounded
+    """
+    return ns(
+        (p, int(round(v)))
+        for p,v in load.items()
+    )
+
 def augmentLoad(load, addend=1):
     """
     Returns a load resulting of adding addend to every person.
@@ -570,8 +579,7 @@ class ShiftLoadComputer():
             daysoff = daysoff,
             leaves = leaves,
         )
-
-        self.rounded = ns((p, int(round(v))) for p,v in self.ponderated.items())
+        self.rounded = loadRound(self.ponderated)
         nrounded = sum(self.rounded.values())
         success("    Surten {} torns", nrounded)
 
