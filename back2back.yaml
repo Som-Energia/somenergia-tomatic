@@ -1,5 +1,32 @@
 datapath: "b2bdata" # Point it to the directory containing your reference data
 testcases:
+    load-2020-03-02:
+        command: |
+            cd b2bdata/inputs/load-2020-03-02; tomatic_shiftload.py 2020-03-02 \
+                --keep \
+                --clusterize \
+                2>&1 | tee console.log
+        outputs:
+        - b2bdata/inputs/load-2020-03-02/console.log
+        - b2bdata/inputs/load-2020-03-02/overload-2020-03-02.yaml
+        - b2bdata/inputs/load-2020-03-02/ponderatedideal-2020-03-02.yaml
+        - b2bdata/inputs/load-2020-03-02/carrega-2020-03-02.yaml
+        - b2bdata/inputs/load-2020-03-02/carrega-2020-03-02.csv
+
+    load-forgiving-2020-03-02:
+        command: |
+            cd b2bdata/inputs/load-2020-03-02; tomatic_shiftload.py 2020-03-02 \
+                --keep \
+                --clusterize \
+                --forgive \
+                2>&1 | tee console.log
+        outputs:
+        - b2bdata/inputs/load-2020-03-02/console.log
+        - b2bdata/inputs/load-2020-03-02/overload-2020-03-02.yaml
+        - b2bdata/inputs/load-2020-03-02/ponderatedideal-2020-03-02.yaml
+        - b2bdata/inputs/load-2020-03-02/carrega-2020-03-02.yaml
+        - b2bdata/inputs/load-2020-03-02/carrega-2020-03-02.csv
+
     2days2lines:
         command: |
             tomatic_scheduler.py 2019-11-11 \
