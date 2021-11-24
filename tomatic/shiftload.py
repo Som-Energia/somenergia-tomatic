@@ -503,20 +503,13 @@ def main():
     )
 
 
-    augmented = augmentLoad(ponderated)
-    upperBound = loadMin(augmented, loadCapacity)
-    limited = loadMin(rounded, upperBound)
-
     computer = ShiftLoadComputer(
         nlines = config.nTelefons,
         businessDays = businessDays,
         idealLoad = idealLoad,
         ponderated = ponderated,
         rounded = rounded,
-        augmented = augmented,
         loadCapacity = loadCapacity,
-        upperBound = upperBound,
-        limited = limited,
         loadedCredit = loadedCredit,
         originalCredit = originalCredit,
         credits = credits,
@@ -572,10 +565,7 @@ class ShiftLoadComputer():
         idealLoad,
         ponderated,
         rounded,
-        augmented,
         loadCapacity,
-        upperBound,
-        limited,
         loadedCredit,
         originalCredit,
         credits,
@@ -585,18 +575,19 @@ class ShiftLoadComputer():
         self.idealLoad = idealLoad
         self.ponderated = ponderated
         self.rounded = rounded
-        self.augmented = augmented
         self.loadCapacity = loadCapacity
-        self.upperBound = upperBound
-        self.limited = limited
         self.loadedCredit = loadedCredit
         self.originalCredit = originalCredit
         self.credits = credits
 
+        self.augmented = augmentLoad(self.ponderated)
+        self.upperBound = loadMin(self.augmented, self.loadCapacity)
+        self.limited = loadMin(rounded, self.upperBound)
+
         self.reportCapacity()
 
         self.fullLoad = len(businessDays) * busy.nturns * self.nlines
-        currentLoad = sum(limited.values())
+        currentLoad = sum(self.limited.values())
         step("  Completant la carrega de {} a {}...", currentLoad, self.fullLoad)
 
         self.complete = achieveFullLoad(
