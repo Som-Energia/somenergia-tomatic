@@ -500,6 +500,7 @@ def main():
         idealLoad = idealLoad,
         credits = formerCredit,
         forgive = args.forgive,
+        inclusters = args.clusterize,
     )
 
     computer.dump(computer.ponderated, None, #"càrrega ponderada",
@@ -523,17 +524,8 @@ def main():
         computer.dump(final, "càrrega final", finalfile)
 
     if args.clusterize:
-        clusterized = clusterize(config.nTelefons, final)
-        if 'ningu' not in clusterized:
-            clusterized.ningu = [0]*config.nTelefons
-
-        loadContent = '\n'.join(sorted(
-            u'\t'.join([person]+[str(lineload) for lineload in lineloads])
-            for person, lineloads in clusterized.items()
-        ))
-        clusterfile = Path("carrega-{}.csv".format(config.monday))
-        step("Desant càrrega distribuida en linies com a {}", clusterfile)
-        clusterfile.write_text(loadContent, encoding='utf8')
+        computer.dumpCsv(computer.clusterized, "càrrega distribuida en linies",
+            "carrega-{}.csv".format(config.monday))
         
     finalLoad = computer.finalLoad()
     if finalLoad == computer.fullLoad:
@@ -560,6 +552,7 @@ class ShiftLoadComputer():
         idealLoad,
         credits,
         forgive=False,
+        inclusters=False,
     ):
         self.nlines = nlines
         self.businessDays = businessDays
@@ -627,6 +620,11 @@ class ShiftLoadComputer():
 
         self.final = ns((p, int(v)) for p,v in sorted(self.compensated.items()))
 
+        if inclusters:
+            self.clusterized = clusterize(self.nlines, self.final)
+            self.clusterized.setdefault('ningu', [0]*self.nlines)
+
+
     def finalLoad(self):
         return sum(v for k,v in self.final.items())
 
@@ -659,6 +657,14 @@ class ShiftLoadComputer():
                 continue
             warn("Per indisponibilitats, {} no te capacitat per fer {} torns sino {}...",
                 person, due, able)
+
+    def dumpCsv(self, data, description, filename):
+        if description: step("Desant {} com a {}", description, filename)
+        content = '\n'.join(sorted(
+            u'\t'.join([person]+[str(lineload) for lineload in lineloads])
+            for person, lineloads in data.items()
+        ))
+        Path(filename).write_text(content, encoding='utf8')
 
     def summary(self):
         summaryColumns=ns()
