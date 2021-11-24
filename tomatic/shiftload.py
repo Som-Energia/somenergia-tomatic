@@ -494,22 +494,16 @@ def main():
     nrounded = sum(rounded.values())
     success("    Surten {} torns", nrounded)
 
-    step("  Limitant a la capacitat real...")
-    loadCapacity = capacity(
-        busyTable,
-        config.maximHoresDiariesGeneral,
-        maxPerDay = config.maximHoresDiaries,
-        leaves = leaves,
-    )
-
-
     computer = ShiftLoadComputer(
         nlines = config.nTelefons,
+        generalMaxPerDay = config.maximHoresDiariesGeneral,
+        maxPerDay = config.maximHoresDiaries,
+        leaves = leaves,
+        busyTable = busyTable,
         businessDays = businessDays,
         idealLoad = idealLoad,
         ponderated = ponderated,
         rounded = rounded,
-        loadCapacity = loadCapacity,
         loadedCredit = loadedCredit,
         originalCredit = originalCredit,
         credits = credits,
@@ -561,11 +555,14 @@ class ShiftLoadComputer():
 
     def __init__(self,
         nlines,
+        generalMaxPerDay,
+        maxPerDay,
+        leaves,
+        busyTable,
         businessDays,
         idealLoad,
         ponderated,
         rounded,
-        loadCapacity,
         loadedCredit,
         originalCredit,
         credits,
@@ -575,18 +572,26 @@ class ShiftLoadComputer():
         self.idealLoad = idealLoad
         self.ponderated = ponderated
         self.rounded = rounded
-        self.loadCapacity = loadCapacity
         self.loadedCredit = loadedCredit
         self.originalCredit = originalCredit
         self.credits = credits
 
+        step("  Limitant a la capacitat real...")
+        self.loadCapacity = capacity(
+            busyTable,
+            generalMaxPerDay = generalMaxPerDay,
+            maxPerDay = maxPerDay,
+            leaves = leaves,
+        )
+
         self.augmented = augmentLoad(self.ponderated)
         self.upperBound = loadMin(self.augmented, self.loadCapacity)
-        self.limited = loadMin(rounded, self.upperBound)
+        self.limited = loadMin(self.rounded, self.upperBound)
 
         self.reportCapacity()
 
-        self.fullLoad = len(businessDays) * busy.nturns * self.nlines
+
+        self.fullLoad = len(self.businessDays) * busy.nturns * self.nlines
         currentLoad = sum(self.limited.values())
         step("  Completant la carrega de {} a {}...", currentLoad, self.fullLoad)
 
@@ -597,6 +602,7 @@ class ShiftLoadComputer():
             credits = self.credits,
         )
         success("    Carrega assolida {}",sum(self.complete.values()))
+
 
         step("  Compensant deute amb credit...")
         self.compensated = compensateDebtsAndCredits(
