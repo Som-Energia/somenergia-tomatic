@@ -507,32 +507,16 @@ def main():
     upperBound = loadMin(augmented, loadCapacity)
     limited = loadMin(rounded, upperBound)
 
-    for person in limited:
-        if limited.get(person,0) == rounded.get(person,0):
-            continue
-        warn("Per indisponibilitats, {} no te capacitat per fer {} torns sino {}...",
-            person, rounded.get(person,0), limited.get(person,0))
-
-    fullLoad = len(businessDays) * busy.nturns * config.nTelefons
-    currentLoad = sum(limited.values())
-    step("  Completant la carrega de {} a {}...", currentLoad, fullLoad)
-
-    complete = achieveFullLoad(
-        fullLoad = fullLoad,
-        shifts = limited,
-        limits = upperBound,
-        credits = credits,
-    )
-    success("    Carrega assolida {}",sum(complete.values()))
-
     computer = ShiftLoadComputer(
+        nlines = config.nTelefons,
+        businessDays = businessDays,
         idealLoad = idealLoad,
         ponderated = ponderated,
+        rounded = rounded,
         augmented = augmented,
         loadCapacity = loadCapacity,
         upperBound = upperBound,
         limited = limited,
-        complete = complete,
         loadedCredit = loadedCredit,
         originalCredit = originalCredit,
         credits = credits,
@@ -569,7 +553,7 @@ def main():
         clusterfile.write_text(loadContent, encoding='utf8')
         
     finalLoad = computer.finalLoad()
-    if finalLoad == fullLoad:
+    if finalLoad == computer.fullLoad:
         success("S'ha aconseguit amb èxit una càrrega de {} torns", finalLoad)
     else:
         fail("Només s'han pogut aconseguir {} torns dels {} necessaris", -1, finalLoad, fullLoad)
@@ -583,27 +567,45 @@ def main():
 class ShiftLoadComputer():
 
     def __init__(self,
+        nlines,
+        businessDays,
         idealLoad,
         ponderated,
+        rounded,
         augmented,
         loadCapacity,
         upperBound,
         limited,
-        complete,
         loadedCredit,
         originalCredit,
         credits,
     ):
+        self.nlines = nlines
+        self.businessDays = businessDays
         self.idealLoad = idealLoad
         self.ponderated = ponderated
+        self.rounded = rounded
         self.augmented = augmented
         self.loadCapacity = loadCapacity
         self.upperBound = upperBound
         self.limited = limited
-        self.complete = complete
         self.loadedCredit = loadedCredit
         self.originalCredit = originalCredit
         self.credits = credits
+
+        self.reportCapacity()
+
+        self.fullLoad = len(businessDays) * busy.nturns * self.nlines
+        currentLoad = sum(limited.values())
+        step("  Completant la carrega de {} a {}...", currentLoad, self.fullLoad)
+
+        self.complete = achieveFullLoad(
+            fullLoad = self.fullLoad,
+            shifts = self.limited,
+            limits = self.upperBound,
+            credits = self.credits,
+        )
+        success("    Carrega assolida {}",sum(self.complete.values()))
 
         step("  Compensant deute amb credit...")
         self.compensated = compensateDebtsAndCredits(
@@ -639,6 +641,15 @@ class ShiftLoadComputer():
     def dump(self, data, description, filename):
         step("Desant {} com a {}", description, filename)
         data.dump(filename)
+
+    def reportCapacity(self):
+        for person in self.limited:
+            due = self.rounded.get(person,0)
+            able = self.limited.get(person,0)
+            if able == due:
+                continue
+            warn("Per indisponibilitats, {} no te capacitat per fer {} torns sino {}...",
+                person, due, able)
 
     def summary(self):
         summaryColumns=ns()
