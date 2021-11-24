@@ -16,16 +16,16 @@ def ponderatedLoad(idealLoad, businessDays, daysoff, leaves):
     the proportionality of the actual days each person has to
     work removing non business days, days off, and leaves.
     """
-    return {
-        person: singlePonderatedLoad(
+    return ns((
+        (person, singlePonderatedLoad(
             person=person,
             load=load,
             businessDays = businessDays,
             daysoff = daysoff,
             leaves = leaves,
-            )
+        ))
         for person, load in idealLoad.items()
-    }
+    ))
 
 def singlePonderatedLoad(person, load, businessDays, daysoff, leaves):
     """Returns for a given person the ponderated load, that is
