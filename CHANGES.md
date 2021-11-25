@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 4.2.5 2021-11-23
 
 - Callinfo: New autoconsumption alert
 - Fix: person color sliders set to initial values
