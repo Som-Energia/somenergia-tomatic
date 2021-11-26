@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import csv
-from consolemsg import error, warn, step, success, fail, out, u
-from yamlns import namespace as ns
-import os.path
 import random
 from pathlib import Path
 import datetime
+
+from consolemsg import step, error, warn, success, fail, out, u
+from yamlns import namespace as ns
+
 from . import busy
 
 
@@ -336,7 +336,7 @@ def parseArgs():
         '--lines',
         default=None,
         type=int,
-        help="Number of concurrent phone lines",
+        help="Nombre de linies rebent trucades a la vegada",
     )
 
     parser.add_argument(
@@ -398,6 +398,7 @@ def main():
         downloadFestivities,
         downloadBusy,
         downloadShiftCredit,
+        addDays,
     )
 
     global args
@@ -421,11 +422,11 @@ def main():
     if args.date is not None:
         # take the monday of the week including that date
         givenDate = datetime.datetime.strptime(args.date,"%Y-%m-%d").date()
-        config.monday = givenDate - datetime.timedelta(days=givenDate.weekday())
+        config.monday = addDays(givenDate, -givenDate.weekday())
     else:
         # If no date provided, take the next monday
         today = datetime.date.today()
-        config.monday = today + datetime.timedelta(days=7-today.weekday())
+        config.monday = addDays(today, 7-today.weekday())
 
     if args.lines:
         config.nTelefons = args.lines
@@ -433,7 +434,7 @@ def main():
     if args.drive_file:
         config.documentDrive = args.drive_file
 
-    mustDownloadShifts = not args.idealshifts and not config.get('idealshifts')
+    mustDownloadIdealShifts = not args.idealshifts and not config.get('idealshifts')
     config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.csv'
 
     if not args.keep:
@@ -441,7 +442,7 @@ def main():
         config.driveCertificate = args.certificate
         downloadLeaves(config, args.certificate)
 
-        if mustDownloadShifts:
+        if mustDownloadIdealShifts:
             downloadIdealLoad(config, args.certificate)
         if not config.get('busyFiles'):
             downloadBusy(config)

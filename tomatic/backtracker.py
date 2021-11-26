@@ -1,27 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-from __future__ import unicode_literals
 from itertools import product as xproduct
-from datetime import date
 import random
-import datetime
-import io
-import requests
-from builtins import range
 from pathlib import Path
+import datetime
 
 from consolemsg import step, error, warn, out, u
 from yamlns import namespace as ns
-from sheetfetcher import SheetFetcher
+
 from .htmlgen import HtmlGen
 from . import busy
+from .shiftload import ShiftLoadComputer
 
 
 # Dirty Hack: Behave like python3 open regarding unicode
-def open(*args, **kwd):
-    return io.open(encoding='utf8', *args, **kwd)
+def open(filename, *args, **kwd):
+    return Path(filename).open(encoding='utf8', *args, **kwd)
 
 def createTable(defaultValue, *iterables) :
     """Creates a table with as many cells as the cross product of the iterables"""
@@ -728,11 +723,16 @@ def parseArgs():
     )
 
     parser.add_argument(
+        '--clusterize',
+        action='store_true',
+        help="output a line clusterized load",
+        )
+    parser.add_argument(
         '-l',
         '--lines',
         default=None,
         type=int,
-        help="Origen d'on agafa les vacances",
+        help="Nombre de linies rebent trucades a la vegada",
     )
 
     parser.add_argument(
@@ -770,6 +770,12 @@ def parseArgs():
     )
 
     parser.add_argument(
+        '--idealshifts',
+        default=None,
+        help="fitxer yaml amb la càrrega ideal de cada persona, si s'especifica aqui no es baixarà",
+    )
+
+    parser.add_argument(
         '--weekshifts',
         default=None,
         help="fitxer tsv amb la carrega a cada torn (columna) de cada persona (fila)",
@@ -781,6 +787,18 @@ def parseArgs():
         help="fitxer yaml de sortida amb la sobrecàrrega final sobre l'ideal ponderat de cada persona",
     )
 
+    parser.add_argument(
+        '--summary',
+        default=None,
+        help="fitxer tsv amb els detalls de com s'ha anat calculant la càrrega",
+    )
+
+    parser.add_argument(
+        '--forgive',
+        action='store_true',
+        help="Deactivate any past debts and credits",
+    )
+
     return parser.parse_args()
 
 args=None
@@ -788,10 +806,13 @@ args=None
 def main():
     from .retriever import (
         downloadPersons,
+        downloadLeaves,
+        downloadIdealLoad,
         downloadVacations,
         downloadFestivities,
         downloadBusy,
         downloadShiftload,
+        downloadShiftCredit,
         downloadOverload,
         addDays,
     )
@@ -800,7 +821,6 @@ def main():
     args = parseArgs()
 
     step('Carregant configuració {}...', args.config_file)
-    from yamlns import namespace as ns
     try:
         config = ns.load(args.config_file)
     except:
@@ -810,11 +830,10 @@ def main():
     if args.personsfile:
         config.personsfile = args.personsfile
 
-    if not args.keep:
+    if not args.keep and not args.personsfile:
         downloadPersons(config)
 
-    if args.personsfile and Path(args.personsfile).exists():
-        config.update(ns.load(args.personsfile))
+    config.update(persons(config.get('personsfile',None)))
 
     if args.date is not None:
         # take the monday of the week including that date
@@ -822,7 +841,7 @@ def main():
         config.monday = addDays(givenDate, -givenDate.weekday())
     else:
         # If no date provided, take the next monday
-        today = date.today()
+        today = datetime.date.today()
         config.monday = addDays(today, 7-today.weekday())
 
     if args.lines:
@@ -831,6 +850,9 @@ def main():
     if args.drive_file:
         config.documentDrive = args.drive_file
 
+    mustDownloadIdealShifts = not args.idealshifts and not config.get('idealshifts')
+    config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.csv'
+
     mustDownloadShifts = not args.weekshifts and not config.get('weekShifts')
     config.weekShifts = config.get('weekShifts') or args.weekshifts or 'carrega.csv'
 
@@ -838,7 +860,12 @@ def main():
     config.overloadfile = args.overload or "overload-{}.yaml".format(config.monday)
 
     if not args.keep:
+        step("Baixant persones de baixa del drive...")
         config.driveCertificate = args.certificate
+        downloadLeaves(config, args.certificate)
+
+        if mustDownloadIdealShifts:
+            downloadIdealLoad(config, args.certificate)
         if mustDownloadShifts:
             downloadShiftload(config)
         if mustDownloadOverload:
@@ -847,6 +874,9 @@ def main():
             downloadBusy(config)
             downloadFestivities(config)
             downloadVacations(config, source=args.holidays)
+
+        step("Baixant bossa d'hores del tomatic...")
+        downloadShiftCredit(config)
 
     if args.search_days:
         config.diesCerca = args.search_days.split(',')
