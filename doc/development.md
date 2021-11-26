@@ -58,6 +58,21 @@ pip install -e .
 sudo supervisorctl restart tomatic
 ```
 
+## Smoke tests
+
+(Som Energia specific, you could adapt them)
+
+What smoke tests you should be doing after an upgrade to check most components should be up and running:
+
+- Go to http://tomatic.somenergia.lan and check it shows the production pbx queue, modify the queue (ie, add yourself and pause)
+- Go to http://ketchup.somenergia.lan and check it works the testing pbx queue, should be different than production, modify it
+- Go to http://tomatic.somenergia.lan:500 and check scriptlauncher, use an script, ie, reset the queue, to reset former changes to the queues
+- Check tomatic says from scriptlauncher with you email as a target (certificates and api versions problems might trigger)
+- Login as one of the operators and check callinfo shows the former calls, click one that triggers a search
+- Go to the scriptlauncher and launch a shift load (will trigger any problems on downloading required data: odoo, drive connections...)
+- Go to the planner and launch a timetable (will trigger any problems on downloading required data: odoo, drive connections...). Delete the task to avoid messing AiS team.
+- As root (to keep userid and perms), uncomment the testing crontab line to check crontab is fine and working 
+
 ## Code map
 
 ### API
