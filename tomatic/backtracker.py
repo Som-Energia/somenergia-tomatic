@@ -84,7 +84,7 @@ class Backtracker(object):
 
         self.tables = config.tables                                     # (person) table
         self.telefonsALaTaula = createTable(0,                          # (day,turn,table) phones actives?
-            self.dies, range(len(self.hours)), set(self.tables.values()))
+            self.dies, range(len(self.hours)), set(self.tables.values() or [-1]))
 
         # Number of hours available each day
         self.disponibilitatDiaria = dict(                               # (person,day) max possible turns
