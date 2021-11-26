@@ -34,7 +34,7 @@ testcases:
                 --config-file b2bdata/inputs/config-2days2lines.yaml \
                 --weekshifts b2bdata/inputs/carrega-2days2lines.csv \
                 --overload b2bdata/inputs/emptyoverload.yaml \
-                --personsfile '' \
+                --personsfile b2bdata/inputs/persons.yaml \
                 --lines 2 \
                 --search-days dm,dj \
                 2>&1 | tee graella-telefons-2019-11-11.log
@@ -49,7 +49,7 @@ testcases:
                 --config-file b2bdata/inputs/config-3days6lines.yaml \
                 --weekshifts b2bdata/inputs/carrega-3days6lines.csv \
                 --overload b2bdata/inputs/emptyoverload.yaml \
-                --personsfile '' \
+                --personsfile b2bdata/inputs/persons.yaml \
                 --lines 6 \
                 --search-days dl,dx,dv \
                 2>&1 | tee graella-telefons-2019-11-18.log
@@ -64,7 +64,7 @@ testcases:
                 --config-file b2bdata/inputs/config-4days6lines.yaml \
                 --weekshifts b2bdata/inputs/carrega-4days6lines.csv \
                 --overload b2bdata/inputs/emptyoverload.yaml \
-                --personsfile '' \
+                --personsfile b2bdata/inputs/persons-withgroups.yaml \
                 --lines 6 \
                 --stop-penalty 86 \
                 --deterministic \
@@ -74,16 +74,4 @@ testcases:
         - graella-telefons-2019-10-28.html
         - graella-telefons-2019-10-28.yaml
         - graella-telefons.log
-
-    load-2020-03-02:
-        command: |
-            cd b2bdata/inputs/load-2020-03-02; tomatic_shiftload.py 2020-03-02 \
-                --keep \
-                --clusterize \
-                2>&1 | tee console.log
-        outputs:
-        - b2bdata/inputs/load-2020-03-02/console.log
-        - b2bdata/inputs/load-2020-03-02/overload-2020-03-02.yaml
-        - b2bdata/inputs/load-2020-03-02/carrega-2020-03-02.yaml
-        - b2bdata/inputs/load-2020-03-02/carrega-2020-03-02.csv
 
