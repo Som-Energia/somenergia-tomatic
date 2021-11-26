@@ -12,6 +12,7 @@ from yamlns import namespace as ns
 from .htmlgen import HtmlGen
 from . import busy
 from .shiftload import ShiftLoadComputer
+from .persons import persons
 
 
 # Dirty Hack: Behave like python3 open regarding unicode
@@ -765,8 +766,7 @@ def parseArgs():
 
     parser.add_argument(
         '--personsfile',
-        default='persons.yaml',
-        help="fitxer de configuració de les persones",
+        help="fitxer de configuració de les persones, si s'especifica aqui, no es baixarà",
     )
 
     parser.add_argument(
@@ -816,6 +816,7 @@ def main():
         downloadOverload,
         addDays,
     )
+
     global args
 
     args = parseArgs()
@@ -833,6 +834,7 @@ def main():
     if not args.keep and not args.personsfile:
         downloadPersons(config)
 
+    from .persons import persons
     config.update(persons(config.get('personsfile',None)))
 
     if args.date is not None:
@@ -908,6 +910,5 @@ def main():
 
 if __name__ == '__main__':
     main()
-
 
 # vim: et ts=4 sw=4

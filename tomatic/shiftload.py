@@ -416,8 +416,8 @@ def main():
     if not args.keep and not args.personsfile:
         downloadPersons(config)
 
-    if config.personsfile and Path(config.personsfile).exists():
-        config.update(ns.load(config.personsfile))
+    from .persons import persons
+    config.update(persons(config.get('personsfile',None)))
 
     if args.date is not None:
         # take the monday of the week including that date
