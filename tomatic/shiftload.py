@@ -294,54 +294,55 @@ def increaseUntilFullLoad(fullLoad, shifts, limits, credits):
     return result
 
 
-def loadData(config):
-    step('Generant càrrega...')
-    step("  Carregant dades...")
-
-    step("    Llegint festius...")
-    businessDays = busy.laborableWeekDays(config.monday)
-
-    step("    Llegint carrega ideal...")
-    idealLoad = ns.load(config.idealshifts)
-    persons=list(idealLoad.keys())
-
-    step("    Llegint vacances...")
-    daysoffcontent = Path('indisponibilitats-vacances.conf').read_text(encoding='utf8').split("\n")
-    daysoff = list(busy.parseBusy(daysoffcontent, error))
-
-    step("    Llegint baixes...")
-    leaves = Path('leaves.conf').read_text(encoding='utf8').split()
-
-    step("    Llegint altres indisponibilitats...")
-    busyTable = busy.BusyTable(
-        days=businessDays,
-        nhours=busy.nturns,
-        persons=persons,
-    )
-    busyFiles = config.get('busyFiles', [
-        'oneshot.conf',
-        'indisponibilitats.conf',
-        'indisponibilitats-vacances.conf',
-    ])
-    for busyfile in busyFiles:
-        busyTable.load(busyfile,
-            monday = config.monday,
-            errorHandler = error,
-            justRequired = config.ignoreOptionalAbsences,
-        )
-    step("    Llegint credits i deutes (bossa d'hores)...")
-    formerCredit = ns.load('shiftcredit.yaml')
-    return ns(
-        leaves = leaves,
-        daysoff = daysoff,
-        busyTable = busyTable,
-        businessDays = businessDays,
-        idealLoad = idealLoad,
-        formerCredit = formerCredit,
-    )
-
 
 class ShiftLoadComputer():
+
+    @staticmethod
+    def loadData(config):
+        step('Generant càrrega...')
+        step("  Carregant dades...")
+
+        step("    Llegint festius...")
+        businessDays = busy.laborableWeekDays(config.monday)
+
+        step("    Llegint carrega ideal...")
+        idealLoad = ns.load(config.idealshifts)
+        persons=list(idealLoad.keys())
+
+        step("    Llegint vacances...")
+        daysoffcontent = Path('indisponibilitats-vacances.conf').read_text(encoding='utf8').split("\n")
+        daysoff = list(busy.parseBusy(daysoffcontent, error))
+
+        step("    Llegint baixes...")
+        leaves = Path('leaves.conf').read_text(encoding='utf8').split()
+
+        step("    Llegint altres indisponibilitats...")
+        busyTable = busy.BusyTable(
+            days=businessDays,
+            nhours=busy.nturns,
+            persons=persons,
+        )
+        busyFiles = config.get('busyFiles', [
+            'oneshot.conf',
+            'indisponibilitats.conf',
+            'indisponibilitats-vacances.conf',
+        ])
+        for busyfile in busyFiles:
+            busyTable.load(busyfile,
+                monday = config.monday,
+                errorHandler = error,
+                justRequired = config.ignoreOptionalAbsences,
+            )
+        step("    Llegint credits i deutes (bossa d'hores)...")
+        formerCredit = ns.load('shiftcredit.yaml')
+        return ns(
+            leaves = leaves,
+            daysoff = daysoff,
+            busyTable = busyTable,
+            businessDays = businessDays,
+            idealLoad = idealLoad,
+            formerCredit = formerCredit,
+        )
 
     def __init__(self,
         nlines,
@@ -655,7 +656,7 @@ def main():
         step("Baixant bossa d'hores del tomatic...")
         downloadShiftCredit(config)
 
-    setup = loadData(config)
+    setup = ShiftLoadComputer.loadData(config)
 
     computer = ShiftLoadComputer(
         nlines = config.nTelefons,
