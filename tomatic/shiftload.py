@@ -340,6 +340,164 @@ def loadData(config):
         formerCredit = formerCredit,
     )
 
+
+class ShiftLoadComputer():
+
+    def __init__(self,
+        nlines,
+        generalMaxPerDay,
+        maxPerDay,
+        leaves,
+        daysoff,
+        busyTable,
+        businessDays,
+        idealLoad,
+        credits,
+        forgive=False,
+        inclusters=False,
+    ):
+        self.nlines = nlines
+        self.businessDays = businessDays
+        self.idealLoad = idealLoad
+
+        persons=list(idealLoad.keys())
+
+        self.loadedCredit = loadDefault(credits, persons)
+
+        self.initialCredit = self.loadedCredit
+        if forgive:
+            step("    Ignorant credits i deutes (bossa d'hores)...")
+            self.initialCredit = loadDefault(ns(), persons)
+
+        self.credits = ns(self.initialCredit) # copy
+
+        step("  Ponderant la ideal...")
+        self.ponderated = ponderatedLoad(
+            idealLoad = self.idealLoad,
+            businessDays = businessDays,
+            daysoff = daysoff,
+            leaves = leaves,
+        )
+        self.rounded = loadRound(self.ponderated)
+        nrounded = sum(self.rounded.values())
+        success("    Surten {} torns", nrounded)
+
+
+        step("  Limitant a la capacitat real...")
+        self.loadCapacity = capacity(
+            busyTable,
+            generalMaxPerDay = generalMaxPerDay,
+            maxPerDay = maxPerDay,
+            leaves = leaves,
+        )
+
+        self.augmented = augmentLoad(self.ponderated)
+        self.upperBound = loadMin(self.augmented, self.loadCapacity)
+        self.limited = loadMin(self.rounded, self.upperBound)
+
+        self.reportCapacity()
+
+
+        self.fullLoad = len(self.businessDays) * busy.nturns * self.nlines
+        currentLoad = sum(self.limited.values())
+        step("  Completant la carrega de {} a {}...", currentLoad, self.fullLoad)
+
+        self.complete = achieveFullLoad(
+            fullLoad = self.fullLoad,
+            shifts = self.limited,
+            limits = self.upperBound,
+            credits = self.credits,
+        )
+        success("    Carrega assolida {}",sum(self.complete.values()))
+
+
+        step("  Compensant deute amb credit...")
+        self.compensated = compensateDebtsAndCredits(
+            shifts = self.complete,
+            credits = self.credits,
+            limits = self.upperBound,
+        )
+
+        self.overload = self.computeOverload()
+
+        self.final = ns((p, int(v)) for p,v in sorted(self.compensated.items()))
+
+        if inclusters:
+            self.clusterized = clusterize(self.nlines, self.final)
+            self.clusterized.setdefault('ningu', [0]*self.nlines)
+
+
+    def finalLoad(self):
+        return sum(v for k,v in self.final.items())
+
+    def displayOverload(self):
+        out("La sobrecarrega d'aquesta setmana seria:")
+        for person, value in sorted(self.overload.items(), key=lambda x: x[::-1]):
+            if abs(value)<.001: continue
+            out("{}: {:.1f}".format(person,value))
+
+    def compensationsSummary(self):
+        return '\n'.join(
+            "{}: {:.1f}".format(person, value)
+            for person, value in loadSubstract(self.compensated, self.complete).items()
+            if value)
+
+    def computeOverload(self):
+        result = loadSubstract(self.compensated, self.ponderated)
+        result = ns((p,round(v,1)) for p,v in sorted(result.items()))
+        return result
+
+    def dump(self, data, description, filename):
+        if description: step("Desant {} com a {}", description, filename)
+        data.dump(filename)
+
+    def reportCapacity(self):
+        for person in self.limited:
+            due = self.rounded.get(person,0)
+            able = self.limited.get(person,0)
+            if able == due:
+                continue
+            warn("Per indisponibilitats, {} no te capacitat per fer {} torns sino {}...",
+                person, due, able)
+
+    def dumpCsv(self, data, description, filename):
+        if description: step("Desant {} com a {}", description, filename)
+        content = '\n'.join(sorted(
+            u'\t'.join([person]+[str(lineload) for lineload in lineloads])
+            for person, lineloads in data.items()
+        ))
+        Path(filename).write_text(content, encoding='utf8')
+
+    def summary(self):
+        summaryColumns=ns()
+        summaryColumns['Ideal'] = self.idealLoad
+        summaryColumns['Proporcional'] = self.ponderated
+        summaryColumns['Augmentada'] = self.augmented
+        summaryColumns['CapacitatReal'] = self.loadCapacity
+        summaryColumns['Topall'] = self.upperBound
+        summaryColumns['AplicatTopall'] = self.limited
+        summaryColumns['CobrintTorns'] = self.complete
+        summaryColumns['CompensantDeutes'] = self.compensated
+        summaryColumns['Final'] = self.final
+        summaryColumns['Sobrecarrega'] = self.overload
+        summaryColumns['CreditCarregat'] = self.loadedCredit
+        summaryColumns['CreditInicial'] = self.initialCredit
+        summaryColumns['CreditFinal'] = self.credits
+
+        summary=ns()
+        for column, data in summaryColumns.items():
+            for person, value in data.items():
+                summary.setdefault(person,ns())[column]=value
+
+        summarycontent = '\n'.join([
+            '\t'.join(['Nom'] + list(summaryColumns))
+        ] + [
+            '\t'.join([person] + [str(data.get(column,'-')) for column in summaryColumns])
+            for person, data in summary.items()
+        ])
+        return summarycontent
+
+
 def parseArgs():
     import argparse
     parser = argparse.ArgumentParser()
@@ -545,164 +703,6 @@ def main():
     print(summary)
     if args.summary:
         Path(args.summary).write_text(summary, encoding='utf8')
-
-
-
-class ShiftLoadComputer():
-
-    def __init__(self,
-        nlines,
-        generalMaxPerDay,
-        maxPerDay,
-        leaves,
-        daysoff,
-        busyTable,
-        businessDays,
-        idealLoad,
-        credits,
-        forgive=False,
-        inclusters=False,
-    ):
-        self.nlines = nlines
-        self.businessDays = businessDays
-        self.idealLoad = idealLoad
-
-        persons=list(idealLoad.keys())
-
-        self.loadedCredit = loadDefault(credits, persons)
-
-        self.initialCredit = self.loadedCredit
-        if forgive:
-            step("    Ignorant credits i deutes (bossa d'hores)...")
-            self.initialCredit = loadDefault(ns(), persons)
-
-        self.credits = ns(self.initialCredit) # copy
-
-        step("  Ponderant la ideal...")
-        self.ponderated = ponderatedLoad(
-            idealLoad = self.idealLoad,
-            businessDays = businessDays,
-            daysoff = daysoff,
-            leaves = leaves,
-        )
-        self.rounded = loadRound(self.ponderated)
-        nrounded = sum(self.rounded.values())
-        success("    Surten {} torns", nrounded)
-
-
-        step("  Limitant a la capacitat real...")
-        self.loadCapacity = capacity(
-            busyTable,
-            generalMaxPerDay = generalMaxPerDay,
-            maxPerDay = maxPerDay,
-            leaves = leaves,
-        )
-
-        self.augmented = augmentLoad(self.ponderated)
-        self.upperBound = loadMin(self.augmented, self.loadCapacity)
-        self.limited = loadMin(self.rounded, self.upperBound)
-
-        self.reportCapacity()
-
-
-        self.fullLoad = len(self.businessDays) * busy.nturns * self.nlines
-        currentLoad = sum(self.limited.values())
-        step("  Completant la carrega de {} a {}...", currentLoad, self.fullLoad)
-
-        self.complete = achieveFullLoad(
-            fullLoad = self.fullLoad,
-            shifts = self.limited,
-            limits = self.upperBound,
-            credits = self.credits,
-        )
-        success("    Carrega assolida {}",sum(self.complete.values()))
-
-
-        step("  Compensant deute amb credit...")
-        self.compensated = compensateDebtsAndCredits(
-            shifts = self.complete,
-            credits = self.credits,
-            limits = self.upperBound,
-        )
-
-        self.overload = self.computeOverload()
-
-        self.final = ns((p, int(v)) for p,v in sorted(self.compensated.items()))
-
-        if inclusters:
-            self.clusterized = clusterize(self.nlines, self.final)
-            self.clusterized.setdefault('ningu', [0]*self.nlines)
-
-
-    def finalLoad(self):
-        return sum(v for k,v in self.final.items())
-
-    def displayOverload(self):
-        out("La sobrecarrega d'aquesta setmana seria:")
-        for person, value in sorted(self.overload.items(), key=lambda x: x[::-1]):
-            if abs(value)<.001: continue
-            out("{}: {:.1f}".format(person,value))
-
-    def compensationsSummary(self):
-        return '\n'.join(
-            "{}: {:.1f}".format(person, value)
-            for person, value in loadSubstract(self.compensated, self.complete).items()
-            if value)
-
-    def computeOverload(self):
-        result = loadSubstract(self.compensated, self.ponderated)
-        result = ns((p,round(v,1)) for p,v in sorted(result.items()))
-        return result
-
-    def dump(self, data, description, filename):
-        if description: step("Desant {} com a {}", description, filename)
-        data.dump(filename)
-
-    def reportCapacity(self):
-        for person in self.limited:
-            due = self.rounded.get(person,0)
-            able = self.limited.get(person,0)
-            if able == due:
-                continue
-            warn("Per indisponibilitats, {} no te capacitat per fer {} torns sino {}...",
-                person, due, able)
-
-    def dumpCsv(self, data, description, filename):
-        if description: step("Desant {} com a {}", description, filename)
-        content = '\n'.join(sorted(
-            u'\t'.join([person]+[str(lineload) for lineload in lineloads])
-            for person, lineloads in data.items()
-        ))
-        Path(filename).write_text(content, encoding='utf8')
-
-    def summary(self):
-        summaryColumns=ns()
-        summaryColumns['Ideal'] = self.idealLoad
-        summaryColumns['Proporcional'] = self.ponderated
-        summaryColumns['Augmentada'] = self.augmented
-        summaryColumns['CapacitatReal'] = self.loadCapacity
-        summaryColumns['Topall'] = self.upperBound
-        summaryColumns['AplicatTopall'] = self.limited
-        summaryColumns['CobrintTorns'] = self.complete
-        summaryColumns['CompensantDeutes'] = self.compensated
-        summaryColumns['Final'] = self.final
-        summaryColumns['Sobrecarrega'] = self.overload
-        summaryColumns['CreditCarregat'] = self.loadedCredit
-        summaryColumns['CreditInicial'] = self.initialCredit
-        summaryColumns['CreditFinal'] = self.credits
-
-        summary=ns()
-        for column, data in summaryColumns.items():
-            for person, value in data.items():
-                summary.setdefault(person,ns())[column]=value
-
-        summarycontent = '\n'.join([
-            '\t'.join(['Nom'] + list(summaryColumns))
-        ] + [
-            '\t'.join([person] + [str(data.get(column,'-')) for column in summaryColumns])
-            for person, data in summary.items()
-        ])
-        return summarycontent
 
 
 if __name__ == '__main__':
