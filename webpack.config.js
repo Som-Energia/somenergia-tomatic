@@ -33,7 +33,11 @@ var config = {
 	},
 	plugins:[
 		// Rewrites html to insert generated css and js
-		new HtmlWebpackPlugin({template: './tomatic.html',inject:'header'}),
+		new HtmlWebpackPlugin({
+			template: './tomatic.html',
+			favicon: './favicon.ico',
+			inject:'header',
+		}),
 		// Uglifies JS
 //		new webpack.optimize.UglifyJsPlugin(),
 		// Analyzes generated sizes

@@ -40,7 +40,6 @@ except ImportError:
 
 packagedir = Path(__file__).parent
 distpath = packagedir/'dist'
-staticpath = packagedir/'static'
 schedules = schedulestorage.Storage.default()
 
 def fillConfigurationInfo():
@@ -158,11 +157,6 @@ async def websocketSession(websocket: WebSocket):
     except WebSocketDisconnect:
         backchannel.onDisconnect(session_id)
 
-
-
-@app.get('/favicon.ico')
-def favicon():
-    return FileResponse(staticpath / 'favicon.ico')
 
 @app.get('/')
 @app.get('/{file}')
