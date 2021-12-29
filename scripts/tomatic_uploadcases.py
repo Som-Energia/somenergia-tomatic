@@ -29,8 +29,11 @@ def main(yaml_directory, current_date):
     for person in atc_yaml:
         for case in atc_yaml[person]:
             try:
-                case_id = claims.create_atc_case(case)
-                logging.info(" Case {} created.".format(case_id))
+                crm_case_id = claims.create_crm_case(case)
+                logging.info(" CRM case {} created.".format(crm_case_id))
+                if claims.is_atc_case(case):
+                    atc_case_id = claims.create_atc_case(case, crm_case_id)
+                    logging.info(" ATC case {} created.".format(atc_case_id))
             except Exception as e:
                 logging.error(" Something went wrong in {}: {}".format(
                     atc_yaml_file,

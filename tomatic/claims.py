@@ -10,6 +10,7 @@ class Resolution(str, Enum):
     fair = 'fair'
     unfair = 'unfair'
     irresolvable = 'irresolvable'
+    not_resolution = ''
 
 class CallAnnotation(BaseModel):
     user: str
@@ -25,6 +26,16 @@ class CallAnnotation(BaseModel):
 PHONE = 2
 COMERCIALIZADORA = 1
 RECLAMANTE = '01'
+CRM_CASE_SECTION_NAME = 'CONSULTA'
+UNKNOWN_STATE = None
+defaultSection = 'ASSIGNAR USUARI'
+
+
+def descStateId(erp):
+    global UNKNOWN_STATE
+    if UNKNOWN_STATE is None:
+        UNKNOWN_STATE = erp.model('res.country.state').search([('code', '=', '00')])[0]
+    return UNKNOWN_STATE
 
 
 def partnerId(erp, partner_nif):
@@ -91,7 +102,6 @@ def crmSectionID(erp, section):
     sections_model = erp.CrmCaseSection
     return sections_model.search([('name', 'ilike', section)])[0]
 
-defaultSection = 'ASSIGNAR USUARI'
 
 class Claims(object):
 
@@ -125,42 +135,41 @@ class Claims(object):
     def crm_categories(self):
         ids = self.erp.CrmCaseCateg.search([])
         return [
-            category['name']
+            f"[{CRM_CASE_SECTION_NAME}] {category['name']}"
             for category in self.erp.CrmCaseCateg.read(ids,['name'])
             if category['name'].startswith('[')
         ]
 
 
-    def create_crm_case(self, case):
-        ''
-        partner_id = partnerId(self.erp, case.partner)
+    def create_crm_case(self, crm_case):
+        CallAnnotation(**crm_case)
+        partner_id = partnerId(self.erp, crm_case.partner)
         partner_address = partnerAddress(self.erp, partner_id)
-        crm_section_id = crmSectionID(self.erp, case.claimsection)
-        claim_section_id = claimSectionID(
-            self.erp, case.reason.split('.')[-1].strip()
-        )
+
+        crm_section_id = crmSectionID(self.erp, crm_case.claimsection)
 
         data_crm = {
             'section_id': crm_section_id,
-            'name': sectionName(self.erp, claim_section_id),
+            'name': crm_case.reason.split('.')[-1].strip(),
             'canal_id': PHONE,
-            'polissa_id': contractId(self.erp, case.contract),
+            'polissa_id': contractId(self.erp, crm_case.contract),
             'partner_id': partner_id,
             'partner_address_id': partner_address.get('id') if partner_address else False,
             'state': 'open', # TODO: 'done' if case.solved else 'open',
-            'user_id': erpUser(self.erp, case.user),
+            'user_id': erpUser(self.erp, crm_case.user),
         }
         crm_id = self.erp.CrmCase.create(data_crm).id
 
         data_history = {
             'case_id': crm_id,
-            'description': case.notes,
+            'description': crm_case.notes,
         }
         crm_history_id = self.erp.CrmCaseHistory.create(data_history).id
 
         return crm_id
 
-    def create_atc_case(self, case):
+
+    def create_atc_case(self, atr_case_data, crm_case_id):
         '''
         Expected case:
 
@@ -179,31 +188,34 @@ class Claims(object):
             ...
         )
         '''
-        CallAnnotation(**case)
+        CallAnnotation(**atr_case_data)
 
-        partner_id = partnerId(self.erp, case.partner)
+        partner_id = partnerId(self.erp, atr_case_data.partner)
         partner_address = partnerAddress(self.erp, partner_id)
         claim_section_id = claimSectionID(
-            self.erp, case.reason.split('.')[-1].strip()
+            self.erp, atr_case_data.reason.split('.')[-1].strip()
         )
-        crm_id = self.create_crm_case(case)
-        contract_id = contractId(self.erp, case.contract)
+        contract_id = contractId(self.erp, atr_case_data.contract)
         contract = self.erp.GiscedataPolissa.read(contract_id, ['cups'])
-
+        state_id = partner_address.get('state_id')[0] if partner_address else descStateId(self.erp)
         data_atc = {
-            'provincia': partner_address.get('state_id')[0] if partner_address else False,
+            'provincia': state_id,
             'total_cups': 1,
             'cups_id': contract['cups'][0] if contract else None,
             'subtipus_id': claim_section_id,
             'reclamante': RECLAMANTE,
-            'resultat': resultat(case),
-            'date': case.date,
+            'resultat': resultat(atr_case_data),
+            'date': atr_case_data.date,
             'email_from': partner_address.get('email') if partner_address else False,
             'time_tracking_id': COMERCIALIZADORA,
-            'crm_id': crm_id,
+            'crm_id': crm_case_id,
         }
         case = self.erp.GiscedataAtc.create(data_atc)
 
         return case.id
+
+    def is_atc_case(self, case_data):
+        return case_data.get('claimsection', '') != ''
+
 
 # vim: et ts=4 sw=4

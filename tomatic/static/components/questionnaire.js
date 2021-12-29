@@ -186,7 +186,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
   }
 
   var esReclamacio = function(type) {
-    const info = "INFO";
+    const info = "CONSULTA";
     return (type != info);
   }
 
