@@ -9,6 +9,8 @@ import dbconfig
 
 class AreaVoip(object):
 
+    defaultQueue = dbconfig.tomatic.get('areavoip',{}).get('queue', None)
+
     def __init__(self):
         self.config = dbconfig.tomatic.areavoip
 

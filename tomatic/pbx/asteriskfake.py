@@ -5,6 +5,9 @@ from .. import persons
 
 class AsteriskFake(object):
     ''
+
+    defaultQueue = 'somenergia'
+
     def __init__(self):
         self._queuepaused = dict()
         self._queueagents = dict()

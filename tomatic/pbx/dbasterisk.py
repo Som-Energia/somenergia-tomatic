@@ -22,6 +22,8 @@ except ImportError:
 
 class DbAsterisk(object):
 
+    defaultQueue = 'somenergia'
+
     def __init__(self, *args, **kwds):
         db = Database()
         #sql_debug(True)

@@ -38,11 +38,11 @@ def pbxcreate(pbxtype):
 
 def defaultQueue(pbxtype):
     return dict(
-        fake = 'somenergia',
-        dbasterisk = 'somenergia',
-        areavoip = dbconfig.tomatic.areavoip.queue,
-        irontec = dbconfig.tomatic.irontec.queue,
-    ).get(pbxtype, 'somenergia')
+        fake = AsteriskFake.defaultQueue,
+        dbasterisk = DbAsterisk.defaultQueue,
+        areavoip = AreaVoip.defaultQueue,
+        irontec = Irontec.defaultQueue,
+    ).get(pbxtype, None)
 
 def pbxqueue(pbxtype=None, queue=None):
     if pbxtype:
