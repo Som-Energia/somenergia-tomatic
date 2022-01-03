@@ -4,7 +4,7 @@ import datetime
 from yamlns import namespace as ns
 import requests
 import dbconfig
-from . import persons
+from .. import persons
 
 def TODO(*args, **kwds):
     raise NotImplemented()
