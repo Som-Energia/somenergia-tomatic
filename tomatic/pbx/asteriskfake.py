@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from yamlns import namespace as ns
-from . import persons
+from .. import persons
 
 class AsteriskFake(object):
     ''

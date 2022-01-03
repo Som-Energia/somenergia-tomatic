@@ -89,7 +89,7 @@ fields = [
 ]
 
 def cli():
-    from tomatic.pbxareavoip import AreaVoip;
+    from tomatic.pbx.pbxareavoip import AreaVoip;
     pbx = AreaVoip()
     stats = ns(
         pbx._api('INFO',

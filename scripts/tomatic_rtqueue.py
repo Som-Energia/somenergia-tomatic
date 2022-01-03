@@ -2,8 +2,8 @@
 # -*- encoding: utf8 -*-
 
 
-from tomatic.dbasterisk import DbAsterisk
-from tomatic.pbxareavoip import AreaVoip
+from tomatic.pbx.dbasterisk import DbAsterisk
+from tomatic.pbx.pbxareavoip import AreaVoip
 from tomatic.schedulestorage import Storage
 from tomatic.scheduling import choosers, Scheduling
 from tomatic.remote import Remote

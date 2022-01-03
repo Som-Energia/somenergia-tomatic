@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from yamlns import namespace as ns
-from . import persons
-from .remote import Remote
+from .. import persons
+from ..remote import Remote
 
 """
 This is a patch until we find a way to obtain this info

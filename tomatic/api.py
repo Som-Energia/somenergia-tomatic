@@ -27,7 +27,7 @@ from consolemsg import error, step, warn, u
 from .callinfo import CallInfo
 from .callregistry import CallRegistry
 from . import schedulestorage
-from .asteriskfake import AsteriskFake
+from .pbx.asteriskfake import AsteriskFake
 from .pbxqueue import PbxQueue
 from . import persons
 from .backchannel import BackChannel

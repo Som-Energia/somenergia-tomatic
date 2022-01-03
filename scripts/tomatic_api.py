@@ -59,17 +59,17 @@ def main(fake, debug, host, port, printrules, date, time, queue):
     print(fake, debug, host, port, printrules, date, time)
     if fake:
         warn("Using fake pbx")
-        from tomatic.asteriskfake import AsteriskFake
+        from tomatic.pbx.asteriskfake import AsteriskFake
         p = pbx(AsteriskFake(), 'somenergia')
         initialQueue = schedules.queueScheduledFor(now(date,time))
         p.setQueue(initialQueue)
     else:
         warn("Using real pbx")
         import dbconfig
-        from tomatic.pbxareavoip import AreaVoip
+        from tomatic.pbx.pbxareavoip import AreaVoip
         pbx(AreaVoip(), queue or dbconfig.tomatic.areavoip.queue)
 
-        #from tomatic.dbasterisk import DbAsterisk
+        #from tomatic.pbx.dbasterisk import DbAsterisk
         #pbx(
         #    DbAsterisk(
         #        dbconfig.tomatic.storagepath,

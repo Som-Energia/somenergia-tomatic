@@ -13,7 +13,7 @@ from pony.orm import (
 )
 from yamlns import namespace as ns
 import time
-from . import persons
+from .. import persons
 from .asteriskcli import queueFromSsh
 try:
     import dbconfig

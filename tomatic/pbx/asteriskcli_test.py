@@ -5,7 +5,7 @@ from yamlns import namespace as ns
 from pathlib import Path
 
 from . import asteriskcli
-from . import persons
+from .. import persons
 
 class AsteriskCli_Test(unittest.TestCase):
 

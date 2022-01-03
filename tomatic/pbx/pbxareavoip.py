@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
-import datetime
-from yamlns import namespace as ns
 import requests
-import dbconfig
 import json
-from .schedulestorage import Storage
+from yamlns import namespace as ns
 from .dbasterisk import DbAsterisk
-from .scheduling import choosers, Scheduling
-from . import persons
+from .. import persons
+
+import dbconfig
 
 class AreaVoip(object):
 

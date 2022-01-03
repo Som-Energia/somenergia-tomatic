@@ -6,8 +6,8 @@ from yamlns import namespace as ns
 
 from tomatic import __version__
 from tomatic import persons
-from tomatic.dbasterisk import DbAsterisk
-from tomatic.pbxareavoip import AreaVoip
+from tomatic.pbx.dbasterisk import DbAsterisk
+from tomatic.pbx.pbxareavoip import AreaVoip
 
 def table(data):
 	return u'\n'.join(u'\t'.join(type(u'')(c) for c in row) for row in data)

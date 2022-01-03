@@ -20,7 +20,8 @@ def table(data):
 def cli(request, args):
 
 
-    from tomatic.pbxareavoip import AreaVoip; pbx = AreaVoip()
+    from tomatic.pbx.pbxareavoip import AreaVoip
+    pbx = AreaVoip()
     key=None
     kwds={}
     for arg in args:

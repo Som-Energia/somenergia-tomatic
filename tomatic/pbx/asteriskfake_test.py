@@ -2,7 +2,7 @@
 
 import unittest
 from pathlib import Path
-from . import persons
+from .. import persons
 from .asteriskfake import AsteriskFake
 
 
