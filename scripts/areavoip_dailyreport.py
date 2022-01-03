@@ -1,13 +1,10 @@
 #!/usr/bin/env python
 # -*- encoding: utf8 -*-
 import datetime
-from consolemsg import u, step, out
 import dbconfig
-import sys
-import os
 import click
 from tomatic import __version__
-from yamlns import namespace as ns
+from tomatic.pbx import pbxqueue, pbxtypes
 from pathlib import Path
 from emili import sendMail
 
@@ -73,7 +70,6 @@ Temps d'espera:
 </tr>
 </table>
 """
-import dbconfig
 
 fields = [
     'date',
@@ -88,11 +84,29 @@ fields = [
     'maxholdtime',
 ]
 
-def cli():
-    from tomatic.pbx.pbxareavoip import AreaVoip;
-    pbx = AreaVoip()
+backend_option = click.option('--backend', '-b',
+    type=click.Choice(pbxtypes),
+    default=dbconfig.tomatic.get('pbx',None) or 'areavoip',
+    help="PBX backend to use",
+)
+queue_option = click.option('--queue', '-q',
+    help="nom de la cua"
+)
+date_option = click.option('--date', '-d',
+    help="Data a simular en comptes d'avui"
+)
+
+@click.command()
+@click.help_option()
+@click.version_option(__version__)
+@backend_option
+@queue_option
+@date_option
+def cli(backend, queue, date):
+    """Sends daily stats of the queue"""
+
+    pbx = pbxqueue(backend, queue)
     stats = pbx.stats(
-        dbconfig.tomatic.areavoip.queue,
         date='{:%Y-%m-%d}'.format(datetime.date.today()),
     )
 
@@ -124,3 +138,4 @@ if __name__=='__main__':
     cli()
 
 
+# vim: ts=4 sw=4 et
