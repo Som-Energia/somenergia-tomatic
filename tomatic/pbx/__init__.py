@@ -36,22 +36,14 @@ def pbxcreate(pbxtype):
 
     raise Exception(f"No such pbx backend {pbxtype}")
 
-def defaultQueue(pbxtype):
-    return dict(
-        fake = AsteriskFake.defaultQueue,
-        dbasterisk = DbAsterisk.defaultQueue,
-        areavoip = AreaVoip.defaultQueue,
-        irontec = Irontec.defaultQueue,
-    ).get(pbxtype, None)
-
 def pbxqueue(pbxtype=None, queue=None):
     if pbxtype:
         pbxqueue.cache = PbxQueue(
             pbxcreate(pbxtype),
-            queue or defaultQueue(pbxtype),
+            queue,
         )
     if not hasattr(pbxqueue, 'cache'):
-        pbxqueue.cache = pbxtype('fake', queue)
+        pbxqueue.cache = pbxqueue('fake', queue)
 
     return pbxqueue.cache
     
