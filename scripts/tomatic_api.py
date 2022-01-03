@@ -6,6 +6,7 @@ import click
 from consolemsg import warn, step
 from tomatic.api import app, pbx, schedules
 from tomatic import __version__
+from tomatic.pbx import pbxqueue, pbxtypes
 
 def now(date, time):
     from yamlns.dateutils import Date
@@ -39,6 +40,7 @@ def now(date, time):
     )
 @click.option('--backend', '-b',
     default=None,
+    type=click.Choice(pbxtypes),
     help="Override pbx backend configured in configuration",
     )
 @click.option('--queue', '-q',
@@ -73,7 +75,6 @@ def main(fake, debug, host, port, printrules, date, time, backend, queue):
         dbconfig.tomatic.get('pbx',None) or (
         'areavoip'
     ))))
-    from tomatic.pbx import pbxqueue
     p = pbxqueue(pbxtype, queue)
 
     if pbxtype != 'fake':
