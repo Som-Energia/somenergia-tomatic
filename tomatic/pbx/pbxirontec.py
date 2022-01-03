@@ -7,7 +7,7 @@ import dbconfig
 from .. import persons
 
 def TODO(*args, **kwds):
-    raise NotImplemented()
+    raise NotImplementedError()
 
 class Irontec(object):
 
