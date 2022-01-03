@@ -27,8 +27,7 @@ from consolemsg import error, step, warn, u
 from .callinfo import CallInfo
 from .callregistry import CallRegistry
 from . import schedulestorage
-from .pbx.asteriskfake import AsteriskFake
-from .pbxqueue import PbxQueue
+from .pbx import pbxqueue as pbx
 from . import persons
 from .backchannel import BackChannel
 
@@ -61,19 +60,6 @@ def erp():
         yield client
     finally:
         erp.available.append(client)
-
-
-
-
-def pbx(alternative = None, queue=None):
-    if alternative:
-        pbx.cache = PbxQueue(alternative, queue)
-    if not hasattr(pbx,'cache'):
-        # A fake PBX loaded with the queue scheduled for now
-        p = pbx(AsteriskFake(), 'somenergia')
-        initialQueue = schedules.queueScheduledFor(now())
-        p.setQueue(initialQueue)
-    return pbx.cache
 
 def now():
     return datetime.now()

@@ -37,6 +37,10 @@ def now(date, time):
     default=4555,
     help="The port to listen to",
     )
+@click.option('--backend', '-b',
+    default=None,
+    help="Override pbx backend configured in configuration",
+    )
 @click.option('--queue', '-q',
     type=int,
     default=None,
@@ -54,32 +58,30 @@ def now(date, time):
     help="Hora del dia a simular en comptes d'ara"
     )
 
-def main(fake, debug, host, port, printrules, date, time, queue):
+def main(fake, debug, host, port, printrules, date, time, backend, queue):
     "Runs the Tomatic web and API"
     print(fake, debug, host, port, printrules, date, time)
-    if fake:
-        warn("Using fake pbx")
-        from tomatic.pbx.asteriskfake import AsteriskFake
-        p = pbx(AsteriskFake(), 'somenergia')
-        initialQueue = schedules.queueScheduledFor(now(date,time))
-        p.setQueue(initialQueue)
-    else:
-        warn("Using real pbx")
-        import dbconfig
-        from tomatic.pbx.pbxareavoip import AreaVoip
-        pbx(AreaVoip(), queue or dbconfig.tomatic.areavoip.queue)
-
-        #from tomatic.pbx.dbasterisk import DbAsterisk
-        #pbx(
-        #    DbAsterisk(
-        #        dbconfig.tomatic.storagepath,
-        #        *dbconfig.tomatic.dbasterisk.args,
-        #        **dbconfig.tomatic.dbasterisk.kwds),
-        #   "somenergia")
 
     if printrules:
         for rule in app.routes:
             print(rule.path)
+
+    import dbconfig
+    pbxtype = (
+        'fake' if fake else (
+        backend or (
+        dbconfig.tomatic.get('pbx',None) or (
+        'areavoip'
+    ))))
+    from tomatic.pbx import pbxqueue
+    p = pbxqueue(pbxtype, queue)
+
+    if pbxtype != 'fake':
+        warn(f"Using real pbx: {pbxtype}")
+    else:
+        warn("Using fake pbx")
+        initialQueue = schedules.queueScheduledFor(now(date,time))
+        p.setQueue(initialQueue)
 
     step("Starting API")
     for rule in app.routes:

@@ -7,7 +7,14 @@ from yamlns import namespace as ns
 tomatic=ns(
     # local timetable storage directory
     storagepath='/home/vokimon/somenergia/somenergia-tomatic/graelles',
-
+    # Choose the PBX backend:
+    # - fake: emulates a real PBX
+    # - asteriskcli: connects asterisk by ssh
+    # - asteriskdb: connects asterist by mysql connection
+    # - irontec: connects to the Irontec API
+    # - areavoip: connnects to the AreaVoip API
+    # You can add your own backend as submodule to tomatix.pbx
+    pbx='irontec',
     # Define this if realtime database is used to control asterisk
     # this holds ponyorm parameters, positional as args and keyword as kwds
     no_dbasterisk=ns(
