@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import print_function
 from consolemsg import step, u
 from datetime import datetime
 from pony.orm import (
