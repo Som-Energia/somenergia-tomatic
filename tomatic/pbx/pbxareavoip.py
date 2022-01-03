@@ -100,7 +100,7 @@ class AreaVoip(object):
         stats = ns(
             self._api('INFO',
                 info='queue',
-                id=dbconfig.tomatic.areavoip.queue,
+                id=queue,
                 format='json',
             ),
             DATE=date,
