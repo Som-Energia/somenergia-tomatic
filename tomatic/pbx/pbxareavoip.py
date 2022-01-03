@@ -93,6 +93,34 @@ class AreaVoip(object):
             id = queue,
         )
 
+    def stats(self, queue, date=None):
+        date = date or '{:%Y-%m-%d}'.format(datetime.date.today())
+        stats = ns(
+            self._api('INFO',
+                info='queue',
+                id=dbconfig.tomatic.areavoip.queue,
+                format='json',
+            ),
+            DATE=date,
+        )
+        fields = [
+            'date',
+            'callsreceived',
+            'answeredcalls',
+            'abandonedcalls',
+            'timedoutcalls',
+            'talktime',
+            'averagetalktime',
+            'holdtime',
+            'averageholdtime',
+            'maxholdtime',
+        ]
+
+        return ns([
+            (attr.lower(), stats[attr.upper()])
+            for attr in fields
+        ])
+
     def _allExtensions(self):
         return self._api('MANAGEDB',
             object='extension',
