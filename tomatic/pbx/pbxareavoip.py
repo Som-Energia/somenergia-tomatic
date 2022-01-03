@@ -119,7 +119,7 @@ class AreaVoip(object):
         ]
 
         return ns([
-            (attr.lower(), stats[attr.upper()])
+            (attr, stats[attr.upper()])
             for attr in fields
         ])
 

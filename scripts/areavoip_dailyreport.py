@@ -106,13 +106,15 @@ def cli(backend, queue, date):
     """Sends daily stats of the queue"""
 
     pbx = pbxqueue(backend, queue)
-    stats = pbx.stats(
-        date='{:%Y-%m-%d}'.format(datetime.date.today()),
-    )
+    date = date or '{:%Y-%m-%d}'.format(datetime.date.today())
+    stats = pbx.stats(date=date)
 
     statsfile = Path('stats.csv')
     if not statsfile.exists():
-        statsfile.write_text('\t'.join(x.upper() for x in fields) + '\n', encoding='utf8')
+        statsfile.write_text(
+            '\t'.join(fields).upper() + '\n',
+            encoding='utf8',
+        )
     with statsfile.open(mode='a', encoding='utf8') as csv:
         csv.write('\t'.join(
             str(stats[field])
