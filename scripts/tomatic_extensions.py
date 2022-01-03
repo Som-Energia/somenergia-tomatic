@@ -6,18 +6,16 @@ from yamlns import namespace as ns
 
 from tomatic import __version__
 from tomatic import persons
-from tomatic.pbx.dbasterisk import DbAsterisk
-from tomatic.pbx.pbxareavoip import AreaVoip
+from tomatic.pbx import pbxcreate, pbxtypes
 
 def table(data):
 	return u'\n'.join(u'\t'.join(type(u'')(c) for c in row) for row in data)
 
-def initBackend():
-    return AreaVoip()
-    return DbAsterisk(
-            *dbconfig.tomatic.dbasterisk.args,
-            **dbconfig.tomatic.dbasterisk.kwds
-    )
+backend_option = click.option('--backend', '-b',
+    type=click.Choice(pbxtypes),
+    help="PBX backend to use",
+    callback=(lambda ctx, param, value: pbxcreate(value)),
+)
 
 @click.group()
 @click.help_option()
@@ -26,36 +24,36 @@ def cli():
 	'Manages Asterisk extensions based on Tomatic configuration'
 
 @cli.command()
-def show():
+@backend_option
+def show(backend):
 	"Shows current queue status"
-	backend = initBackend()
 	click.echo(table(backend.extensions()))
 
 @cli.command()
-def clear():
+@backend_option
+def clear(backend):
 	"Clears the queue"
-	backend = initBackend()
 	backend.clearExtensions()
 
 @cli.command()
+@backend_option
 @click.argument('extension')
 @click.argument('fullname')
-def add(extension, fullname):
+def add(backend, extension, fullname):
 	"Adds a new extension"
-	backend = initBackend()
 	backend.addExtension(extension,fullname)
 
 @cli.command()
+@backend_option
 @click.argument('extension')
-def remove(extension):
+def remove(backend, extension):
 	"Removes the extension"
-	backend = initBackend()
 	backend.removeExtension(extension)
 
 
 @cli.command()
-def load():
-	backend = initBackend()
+@backend_option
+def load(backend):
 	backend.clearExtensions()
 	for extension in persons.persons().extensions.values():
 		backend.addExtension(

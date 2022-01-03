@@ -1,7 +1,19 @@
 from ..pbxqueue import PbxQueue
 import dbconfig
 
+pbxtypes = [
+    'fake',
+    'dbasterisk',
+    'areavoip',
+    'irontec',
+]
+
 def pbxcreate(pbxtype):
+    pbxtype = (
+        pbxtype or (
+        dbconfig.tomatic.get('pbx', None) or (
+        'areavoip'
+    )))
 
     if pbxtype == 'fake':
         from .asteriskfake import AsteriskFake
