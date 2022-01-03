@@ -5,7 +5,7 @@
 from tomatic.schedulestorage import Storage
 from tomatic.persons import extension
 from tomatic.directmessage import send
-from tomatic.pbx import pbxcreate, pbxtypes
+from tomatic.pbx import pbxqueue, pbxtypes
 from consolemsg import u
 import dbconfig
 import click
@@ -17,9 +17,9 @@ def table(data):
 
 
 backend_option = click.option('--backend', '-b',
+    default=dbconfig.tomatic.get('pbx',None) or 'areavoip',
     type=click.Choice(pbxtypes),
     help="PBX backend to use",
-    callback=(lambda ctx, param, value: pbxcreate(value)),
 )
 queue_option = click.option('--queue', '-q',
     default=dbconfig.tomatic.areavoip.queue,
@@ -57,7 +57,8 @@ def cli():
 @queue_option
 def show(backend, queue):
     "Shows current queue status"
-    rows = backend.queue(queue)
+    pbx = pbxqueue(backend, queue)
+    rows = pbx.queue()
     if rows:
         keys = list(rows[0].keys())
         click.echo(table([keys] + [[row[key] for key in keys] for row in rows]))
@@ -68,7 +69,8 @@ def show(backend, queue):
 @queue_option
 def clear(backend, queue):
     "Clears the queue"
-    backend.setQueue(queue, [])
+    pbx = pbxqueue(backend, queue)
+    pbx.setQueue([])
 
 @cli.command()
 @backend_option
@@ -76,8 +78,9 @@ def clear(backend, queue):
 @members_option
 def pause(backend, queue, member):
     "Pauses a set of members"
+    pbx = pbxqueue(backend, queue)
     for amember in member:
-        backend.pause(queue, amember)
+        pbx.pause(amember)
 
 @cli.command()
 @backend_option
@@ -85,8 +88,9 @@ def pause(backend, queue, member):
 @members_option
 def resume(backend, queue, member):
     "Resumes a set of members"
+    pbx = pbxqueue(backend, queue)
     for amember in member:
-        backend.resume(queue, amember)
+        pbx.resume(amember)
 
 @cli.command()
 @backend_option
@@ -94,8 +98,9 @@ def resume(backend, queue, member):
 @members_option
 def add(backend, queue, member):
     "Resumes a set of members"
+    pbx = pbxqueue(backend, queue)
     for amember in member:
-        backend.add(queue, amember)
+        pbx.add(amember)
 
 @cli.command()
 @backend_option
@@ -104,9 +109,10 @@ def add(backend, queue, member):
 @time_option
 def set(backend, queue, date, time):
     "Sets the queue according Tomatic's schedule"
+    pbx = pbxqueue(backend, queue)
     storage = Storage(dbconfig.tomatic.storagepath)
     members = storage.queueScheduledFor(now(date, time))
-    backend.setQueue(queue, members)
+    pbx.setQueue(members)
 
 @cli.command()
 @date_option
@@ -131,7 +137,8 @@ def preview(date, time):
     )
 def status(backend, queue, yaml=False):
     "Provisional: returns the queue status command line"
-    queuepeers = backend.queue(queue)
+    pbx = pbxqueue(backend, queue)
+    queuepeers = pbx.queue()
 
     if yaml:
         click.echo(ns(queue=queuepeers).dump())
@@ -179,7 +186,8 @@ def monitor(backend, queue):
     except:
         previous = []
 
-    current = backend.queue(queue)
+    pbx = pbxqueue(backend, queue)
+    current = pbx.queue()
 
     newDisconnected = disconnected(current) - disconnected(previous)
 
