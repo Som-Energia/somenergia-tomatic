@@ -3,7 +3,6 @@
 import requests
 import json
 from yamlns import namespace as ns
-from .dbasterisk import DbAsterisk
 from .. import persons
 
 import dbconfig
