@@ -3,15 +3,11 @@
 
 
 from tomatic.schedulestorage import Storage
-from tomatic.scheduling import choosers, Scheduling
-from tomatic.remote import Remote
 from tomatic.persons import extension
 from tomatic.directmessage import send
 from tomatic.pbx import pbxcreate, pbxtypes
-from consolemsg import u, step, out
+from consolemsg import u
 import dbconfig
-import sys
-import os
 import click
 from tomatic import __version__
 from yamlns import namespace as ns
