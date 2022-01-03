@@ -13,7 +13,7 @@ from tomatic import __version__
 from yamlns import namespace as ns
 
 def table(data):
-	return '\n'.join('\t'.join(u(c) for c in row) for row in data)
+    return '\n'.join('\t'.join(u(c) for c in row) for row in data)
 
 
 backend_option = click.option('--backend', '-b',
@@ -22,80 +22,80 @@ backend_option = click.option('--backend', '-b',
     callback=(lambda ctx, param, value: pbxcreate(value)),
 )
 queue_option = click.option('--queue', '-q',
-	default=dbconfig.tomatic.areavoip.queue,
-	help="nom de la cua"
+    default=dbconfig.tomatic.areavoip.queue,
+    help="nom de la cua"
 )
 members_option = click.option('--member', '-m',
-	multiple=True,
-	help="selects members"
+    multiple=True,
+    help="selects members"
 )
 date_option = click.option('--date', '-d',
-	help="Data a simular en comptes d'avui"
+    help="Data a simular en comptes d'avui"
 )
 time_option = click.option('--time','-t',
-	default=None,
-	help="Hora del dia a simular en comptes d'ara"
+    default=None,
+    help="Hora del dia a simular en comptes d'ara"
 )
 
 def now(date, time):
-	from yamlns.dateutils import Date
-	import datetime
-	now = datetime.datetime.now()
-	return datetime.datetime.combine(
-		now.date() if date is None else Date(date),
-		now.time() if time is None else datetime.time(*[int(x) for x in(time.split(":"))])
-		)
+    from yamlns.dateutils import Date
+    import datetime
+    now = datetime.datetime.now()
+    return datetime.datetime.combine(
+        now.date() if date is None else Date(date),
+        now.time() if time is None else datetime.time(*[int(x) for x in(time.split(":"))])
+        )
 
 @click.group()
 @click.help_option()
 @click.version_option(__version__)
 def cli():
-	'Manages Asterisk realtime queues based on Tomatic schedules'
+    'Manages Asterisk realtime queues based on Tomatic schedules'
 
 @cli.command()
 @backend_option
 @queue_option
 def show(backend, queue):
-	"Shows current queue status"
-	rows = backend.queue(queue)
-	if rows:
-		keys = list(rows[0].keys())
-		click.echo(table([keys] + [[row[key] for key in keys] for row in rows]))
+    "Shows current queue status"
+    rows = backend.queue(queue)
+    if rows:
+        keys = list(rows[0].keys())
+        click.echo(table([keys] + [[row[key] for key in keys] for row in rows]))
 
 
 @cli.command()
 @backend_option
 @queue_option
 def clear(backend, queue):
-	"Clears the queue"
-	backend.setQueue(queue, [])
+    "Clears the queue"
+    backend.setQueue(queue, [])
 
 @cli.command()
 @backend_option
 @queue_option
 @members_option
-def pause(backend, queue,member):
-	"Pauses a set of members"
-	for amember in member:
-		backend.pause(queue,amember)
+def pause(backend, queue, member):
+    "Pauses a set of members"
+    for amember in member:
+        backend.pause(queue, amember)
 
 @cli.command()
 @backend_option
 @queue_option
 @members_option
-def resume(backend, queue,member):
-	"Resumes a set of members"
-	for amember in member:
-		backend.resume(queue,amember)
+def resume(backend, queue, member):
+    "Resumes a set of members"
+    for amember in member:
+        backend.resume(queue, amember)
 
 @cli.command()
 @backend_option
 @queue_option
 @members_option
-def add(backend, queue,member):
-	"Resumes a set of members"
-	for amember in member:
-		backend.add(queue,amember)
+def add(backend, queue, member):
+    "Resumes a set of members"
+    for amember in member:
+        backend.add(queue, amember)
 
 @cli.command()
 @backend_option
@@ -103,64 +103,64 @@ def add(backend, queue,member):
 @date_option
 @time_option
 def set(backend, queue, date, time):
-	"Sets the queue according Tomatic's schedule"
-	storage = Storage(dbconfig.tomatic.storagepath)
-	members = storage.queueScheduledFor(now(date,time))
-	backend.setQueue(queue, members)
+    "Sets the queue according Tomatic's schedule"
+    storage = Storage(dbconfig.tomatic.storagepath)
+    members = storage.queueScheduledFor(now(date, time))
+    backend.setQueue(queue, members)
 
 @cli.command()
 @date_option
 @time_option
 def preview(date, time):
-	"Tells the queue according Tomatic's schedule, does no set"
-	storage = Storage(dbconfig.tomatic.storagepath)
-	members = storage.queueScheduledFor(now(date,time))
-	click.echo(', '.join((
-		name
-		for name in members
-		if extension(name)
-	)))
+    "Tells the queue according Tomatic's schedule, does no set"
+    storage = Storage(dbconfig.tomatic.storagepath)
+    members = storage.queueScheduledFor(now(date, time))
+    click.echo(', '.join((
+        name
+        for name in members
+        if extension(name)
+    )))
 
 
 @cli.command()
 @backend_option
 @queue_option
 @click.option('--yaml',
-	is_flag=True,
-	help="Use YAML output"
-	)
+    is_flag=True,
+    help="Use YAML output"
+    )
 def status(backend, queue, yaml=False):
-	"Provisional: returns the queue status command line"
-	queuepeers = backend.queue(queue)
+    "Provisional: returns the queue status command line"
+    queuepeers = backend.queue(queue)
 
-	if yaml:
-		click.echo(ns(queue=queuepeers).dump())
-		return
+    if yaml:
+        click.echo(ns(queue=queuepeers).dump())
+        return
 
-	click.echo(80*"=")
-	if not queuepeers:
-		click.echo(u"No hi ha ningú a la cua")
+    click.echo(80*"=")
+    if not queuepeers:
+        click.echo(u"No hi ha ningú a la cua")
 
-	for peer in queuepeers:
-            click.echo(
-                u'{name} ({extension}) Porta {ncalls} trucades finalitzades. '
-                u'Les ha atés en {callminutes}:{callseconds} minuts. '
-                u'La darrera fa {minutes}:{seconds:02} minuts. '
-                '{disconnected}{paused}{incall}{available}{ringing}{flags} '.format(
-			**dict(peer,
-				callminutes = peer.secondsInCalls//60,
-				callseconds = peer.secondsInCalls%60,
-				minutes = peer.secondsSinceLastCall//60,
-				seconds = peer.secondsSinceLastCall%60,
-				disconnected = " [DESCONECTAT!!]" if peer.disconnected else "",
-				paused = " [PAUSAT]" if peer.paused else "",
-				incall = " [Trucada en curs]" if peer.incall else "",
-				ringing = " [Ring]" if peer.ringing else "",
-				available = " [Comunica]" if not peer.available and not peer.incall and not peer.ringing else "",
-				flags = u''.join(u" {{{}}}".format(u(flag)) for flag in peer.flags),
-			)
-		))
-	click.echo(80*"=")
+    for peer in queuepeers:
+        click.echo(
+            u'{name} ({extension}) Porta {ncalls} trucades finalitzades. '
+            u'Les ha atés en {callminutes}:{callseconds} minuts. '
+            u'La darrera fa {minutes}:{seconds:02} minuts. '
+            '{disconnected}{paused}{incall}{available}{ringing}{flags} '.format(
+            **dict(peer,
+                callminutes = peer.secondsInCalls//60,
+                callseconds = peer.secondsInCalls%60,
+                minutes = peer.secondsSinceLastCall//60,
+                seconds = peer.secondsSinceLastCall%60,
+                disconnected = " [DESCONECTAT!!]" if peer.disconnected else "",
+                paused = " [PAUSAT]" if peer.paused else "",
+                incall = " [Trucada en curs]" if peer.incall else "",
+                ringing = " [Ring]" if peer.ringing else "",
+                available = " [Comunica]" if not peer.available and not peer.incall and not peer.ringing else "",
+                flags = u''.join(u" {{{}}}".format(u(flag)) for flag in peer.flags),
+            )
+        ))
+    click.echo(80*"=")
 
 
 @cli.command()
@@ -197,6 +197,7 @@ def monitor(backend, queue):
 
 
 if __name__=='__main__':
-	cli()
+    cli()
 
 
+# vim: ts=4 sw=4 et
