@@ -2,13 +2,12 @@
 # -*- encoding: utf8 -*-
 
 
-from tomatic.pbx.dbasterisk import DbAsterisk
-from tomatic.pbx.pbxareavoip import AreaVoip
 from tomatic.schedulestorage import Storage
 from tomatic.scheduling import choosers, Scheduling
 from tomatic.remote import Remote
 from tomatic.persons import extension
 from tomatic.directmessage import send
+from tomatic.pbx import pbxcreate, pbxtypes
 from consolemsg import u, step, out
 import dbconfig
 import sys
@@ -21,21 +20,26 @@ def table(data):
 	return '\n'.join('\t'.join(u(c) for c in row) for row in data)
 
 
+backend_option = click.option('--backend', '-b',
+    type=click.Choice(pbxtypes),
+    help="PBX backend to use",
+    callback=(lambda ctx, param, value: pbxcreate(value)),
+)
 queue_option = click.option('--queue', '-q',
 	default=dbconfig.tomatic.areavoip.queue,
 	help="nom de la cua"
-	)
+)
 members_option = click.option('--member', '-m',
 	multiple=True,
 	help="selects members"
-	)
+)
 date_option = click.option('--date', '-d',
 	help="Data a simular en comptes d'avui"
-	)
+)
 time_option = click.option('--time','-t',
 	default=None,
 	help="Hora del dia a simular en comptes d'ara"
-	)
+)
 
 def now(date, time):
 	from yamlns.dateutils import Date
@@ -46,11 +50,6 @@ def now(date, time):
 		now.time() if time is None else datetime.time(*[int(x) for x in(time.split(":"))])
 		)
 
-def pbx():
-    return AreaVoip()
-    return DbAsterisk(*dbconfig.tomatic.dbasterisk.args,**dbconfig.tomatic.dbasterisk.kwds)
-
-
 @click.group()
 @click.help_option()
 @click.version_option(__version__)
@@ -58,66 +57,65 @@ def cli():
 	'Manages Asterisk realtime queues based on Tomatic schedules'
 
 @cli.command()
+@backend_option
 @queue_option
-def show(queue):
+def show(backend, queue):
 	"Shows current queue status"
-	db = pbx()
-	rows = db.queue(queue)
+	rows = backend.queue(queue)
 	if rows:
 		keys = list(rows[0].keys())
 		click.echo(table([keys] + [[row[key] for key in keys] for row in rows]))
 
 
 @cli.command()
+@backend_option
 @queue_option
-def clear(queue):
+def clear(backend, queue):
 	"Clears the queue"
-	db = pbx()
-	db.setQueue(queue, [])
+	backend.setQueue(queue, [])
 
 @cli.command()
+@backend_option
 @queue_option
 @members_option
-def pause(queue,member):
+def pause(backend, queue,member):
 	"Pauses a set of members"
-	db = pbx()
 	for amember in member:
-		db.pause(queue,amember)
+		backend.pause(queue,amember)
 
 @cli.command()
+@backend_option
 @queue_option
 @members_option
-def resume(queue,member):
+def resume(backend, queue,member):
 	"Resumes a set of members"
-	db = pbx()
 	for amember in member:
-		db.resume(queue,amember)
+		backend.resume(queue,amember)
 
 @cli.command()
+@backend_option
 @queue_option
 @members_option
-def add(queue,member):
+def add(backend, queue,member):
 	"Resumes a set of members"
-	db = pbx()
 	for amember in member:
-		db.add(queue,amember)
+		backend.add(queue,amember)
 
 @cli.command()
+@backend_option
 @queue_option
 @date_option
 @time_option
-def set(queue, date, time):
+def set(backend, queue, date, time):
 	"Sets the queue according Tomatic's schedule"
 	storage = Storage(dbconfig.tomatic.storagepath)
 	members = storage.queueScheduledFor(now(date,time))
-	db = pbx()
-	db.setQueue(queue, members)
+	backend.setQueue(queue, members)
 
 @cli.command()
-@queue_option
 @date_option
 @time_option
-def preview(queue, date, time):
+def preview(date, time):
 	"Tells the queue according Tomatic's schedule, does no set"
 	storage = Storage(dbconfig.tomatic.storagepath)
 	members = storage.queueScheduledFor(now(date,time))
@@ -129,15 +127,15 @@ def preview(queue, date, time):
 
 
 @cli.command()
+@backend_option
 @queue_option
 @click.option('--yaml',
 	is_flag=True,
 	help="Use YAML output"
 	)
-def status(queue, yaml=False):
+def status(backend, queue, yaml=False):
 	"Provisional: returns the queue status command line"
-	db = pbx()
-	queuepeers = db.queue(queue)
+	queuepeers = backend.queue(queue)
 
 	if yaml:
 		click.echo(ns(queue=queuepeers).dump())
@@ -170,8 +168,9 @@ def status(queue, yaml=False):
 
 
 @cli.command()
+@backend_option
 @queue_option
-def monitor(queue):
+def monitor(backend, queue):
     def disconnected(agents):
         return {
             agent.key
@@ -179,13 +178,12 @@ def monitor(queue):
             if agent.disconnected and not agent.paused
         }
 
-    db = pbx()
     try:
         previous = ns.load('monitor.yaml').queue
     except:
         previous = []
 
-    current = db.queue(queue)
+    current = backend.queue(queue)
 
     newDisconnected = disconnected(current) - disconnected(previous)
 
