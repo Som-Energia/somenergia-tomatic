@@ -174,6 +174,8 @@ def status(backend, queue, yaml=False):
 @backend_option
 @queue_option
 def monitor(backend, queue):
+    """Warns if an agent gets disconnected"""
+
     def disconnected(agents):
         return {
             agent.key
