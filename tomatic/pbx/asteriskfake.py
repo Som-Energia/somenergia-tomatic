@@ -6,7 +6,9 @@ from .. import persons
 class AsteriskFake(object):
     ''
 
-    defaultQueue = 'somenergia'
+    @staticmethod
+    def defaultQueue():
+        return 'somenergia'
 
     def __init__(self):
         self._queuepaused = dict()

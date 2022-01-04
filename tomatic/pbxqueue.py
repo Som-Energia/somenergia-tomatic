@@ -5,7 +5,7 @@ class PbxQueue(object):
     always the same queue"""
 
     def __init__(self, pbx, queue=None):
-        self._queue = queue or pbx.defaultQueue
+        self._queue = queue or pbx.defaultQueue()
         self.backend = pbx
 
     def setQueue(self, names):

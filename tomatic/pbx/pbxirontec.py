@@ -12,7 +12,9 @@ def TODO(*args, **kwds):
 
 class Irontec(object):
 
-    defaultQueue = dbconfig.tomatic.get('irontec',{}).get('queue',None)
+    @staticmethod
+    def defaultQueue():
+        return dbconfig.tomatic.get('irontec',{}).get('queue',None)
 
     def __init__(self):
         self.config = dbconfig.tomatic.get('irontec', ns())

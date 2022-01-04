@@ -22,7 +22,9 @@ except ImportError:
 
 class DbAsterisk(object):
 
-    defaultQueue = 'somenergia'
+    @staticmethod
+    def defaultQueue():
+        return 'somenergia'
 
     def __init__(self, *args, **kwds):
         db = Database()
