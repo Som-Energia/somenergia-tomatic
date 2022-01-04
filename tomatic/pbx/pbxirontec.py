@@ -2,6 +2,7 @@
 
 import datetime
 from yamlns import namespace as ns
+from consolemsg import error
 import requests
 import dbconfig
 from .. import persons
@@ -15,10 +16,27 @@ class Irontec(object):
 
     def __init__(self):
         self.config = dbconfig.tomatic.get('irontec', ns())
+        self.token = None
+
+    def _login(self):
+        response = requests.post(
+            self.config.baseurl + '/login',
+            json = dict(
+                username = self.config.user,
+                password = self.config.password,
+        ))
+        if response.status_code != 200:
+            raise Exception()
+        self.token = response.json()['token']
+        self.bearer = dict(
+                authorization=f"Bearer {self.token}",
+            )
 
     def _api(self, *args, **kwds):
         '''Calls the Irontec API and process the response'''
-        TODO()
+
+        print(response.json())
+        return []
 
     # Queue management
 
@@ -97,26 +115,72 @@ class Irontec(object):
             )
 
     def addExtension(self, extension, fullname, email=''):
-        self._api(...)
+
+        def transliterate(x):
+            for a,b in zip(
+                'àèìòùáéíóúâêîôûäëïöü.',
+                'aeiouaeiouaeiouaeiou ',
+            ):
+                x = x.replace(a,b)
+            return x
+
+        self._login()
+        if not fullname.startswith('Libre'):
+            id = persons.byExtension(extension)
+            email = persons.persons().emails.get(id,None)
+        response = requests.put(
+            self.config.baseurl + '/agent/modify',
+            headers=self.bearer,
+            json=dict(
+                agent = extension,
+                name = transliterate(fullname),
+                email = email or 'none@nowhere.com',
+            ),
+        )
+        if response.status_code == 200:
+            return # Ok
+
+        error(f"Error loading {extension}, {fullname}, {email}")
+        if response.status_code == 420:
+            print(response.json())
+            return # TODO: Validation error
+
+        if response.status_code == 550:
+            print(response.json())
+            return # TODO: Agent does not exists
+
+        raise Exception(response.json())
+
 
     def removeExtension(self, extension):
         # nameless agents are considered 'deleted'
-        self.addExtension(extension, '', '')
+        self.addExtension(extension, 'Libre')
 
     def clearExtensions(self):
         for item in self.extensions():
-            self.removeExtension(item.extension)
+            self.removeExtension(item[0])
 
     def extensions(self):
+        self._login()
+        response = requests.get(
+            self.config.baseurl + '/agent/list',
+            headers=self.bearer,
+        )
+        if response.status_code != 200:
+            raise Exception(response.json())
+        json = response.json()
+        print(json)
         return [
-            ns(
-                extension = extension(agent),
-                name = name(agent),
-                email = email(agent),
+            (
+                agent.agent,
+                agent.name,
+                agent.email,
             )
-            for agent in self._api(...)
+            for agent in (
+                ns(item) for item in json
+            )
             # nameless agents are considered 'deleted'
-            if name(agent)
+            if not agent.name.startswith('Libre')
         ]
 
 # vim: ts=4 sw=4 et

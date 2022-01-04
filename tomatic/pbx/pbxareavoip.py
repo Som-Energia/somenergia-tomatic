@@ -130,7 +130,7 @@ class AreaVoip(object):
             format='json',
         ).items()
 
-    def addExtension(self, extension, fullname):
+    def addExtension(self, extension, fullname, email=''):
         for id, extensionInfo in self._allExtensions():
             if extensionInfo['ex_number'] == extension:
                 break

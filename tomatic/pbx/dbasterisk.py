@@ -123,7 +123,7 @@ class DbAsterisk(object):
     # Extensions
 
     @db_session
-    def addExtension(self, extension, fullname):
+    def addExtension(self, extension, fullname, email=''):
         self._sipPeers(
             name = extension,
             defaultuser = extension,

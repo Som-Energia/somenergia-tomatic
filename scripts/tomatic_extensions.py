@@ -39,7 +39,8 @@ def clear(backend):
 @backend_option
 @click.argument('extension')
 @click.argument('fullname')
-def add(backend, extension, fullname):
+@click.argument('email', default='')
+def add(backend, extension, fullname, email=''):
 	"Adds a new extension"
 	backend.addExtension(extension,fullname)
 
@@ -55,13 +56,14 @@ def remove(backend, extension):
 @backend_option
 def load(backend):
 	backend.clearExtensions()
-	for extension in persons.persons().extensions.values():
+	for id, extension in persons.persons().extensions.items():
 		backend.addExtension(
 			type(u'')(extension),
 			persons.nameByExtension(extension),
+			persons.persons().emails.get(id, ''),
 		)
 
 if __name__=='__main__':
 	cli()
 
-
+# vim: ts=4 sw=4 et
