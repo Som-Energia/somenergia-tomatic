@@ -17,7 +17,6 @@ setup(
     license = 'GNU Affero General Public License v3 or later (GPLv3+)',
     scripts=[
         'scripts/areavoip_callapi.py',
-        'scripts/areavoip_dailyreport.py',
         'scripts/execution_example.sh',
         'scripts/crontab-dailyreport.sh',
         'scripts/crontab-warnturn.sh',
@@ -26,6 +25,7 @@ setup(
         'scripts/tomatic_busy.py',
         'scripts/tomatic_callinfo.py',
         'scripts/tomatic_calls.py',
+        'scripts/tomatic_dailyreport.py',
         'scripts/tomatic_extensions.py',
         'scripts/tomatic_mergeshifts.py',
         'scripts/tomatic_resetshiftcredit.sh',
