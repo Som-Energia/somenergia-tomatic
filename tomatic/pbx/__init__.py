@@ -1,5 +1,4 @@
 from ..pbxqueue import PbxQueue
-import dbconfig
 
 pbxtypes = [
     'fake',
@@ -9,6 +8,7 @@ pbxtypes = [
 ]
 
 def pbxcreate(pbxtype):
+    import dbconfig
     pbxtype = (
         pbxtype or (
         dbconfig.tomatic.get('pbx', None) or (
