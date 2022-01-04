@@ -68,14 +68,7 @@ def main(fake, debug, host, port, printrules, date, time, backend, queue):
         for rule in app.routes:
             print(rule.path)
 
-    import dbconfig
-    pbxtype = (
-        'fake' if fake else (
-        backend or (
-        dbconfig.tomatic.get('pbx',None) or (
-        'areavoip'
-    ))))
-    p = pbxqueue(pbxtype, queue)
+    p = pbxqueue(pbxtype, 'fake' if fake else backend)
 
     if pbxtype != 'fake':
         warn(f"Using real pbx: {pbxtype}")
