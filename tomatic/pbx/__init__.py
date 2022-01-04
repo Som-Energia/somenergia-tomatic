@@ -1,4 +1,4 @@
-from ..pbxqueue import PbxQueue
+from .pbxqueue import PbxQueue
 
 pbxtypes = [
     'fake',
