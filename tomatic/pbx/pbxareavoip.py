@@ -5,15 +5,15 @@ import json
 from yamlns import namespace as ns
 from .. import persons
 
-import dbconfig
-
 class AreaVoip(object):
 
     @staticmethod
     def defaultQueue():
+        import dbconfig
         return dbconfig.tomatic.get('areavoip',{}).get('queue', None)
 
     def __init__(self):
+        import dbconfig
         self.config = dbconfig.tomatic.areavoip
 
     def _api(self, request, **kwds):

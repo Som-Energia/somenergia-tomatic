@@ -4,7 +4,6 @@ import datetime
 from yamlns import namespace as ns
 from consolemsg import error
 import requests
-import dbconfig
 from .. import persons
 
 def TODO(*args, **kwds):
@@ -14,9 +13,11 @@ class Irontec(object):
 
     @staticmethod
     def defaultQueue():
+        import dbconfig
         return dbconfig.tomatic.get('irontec',{}).get('queue',None)
 
     def __init__(self):
+        import dbconfig
         self.config = dbconfig.tomatic.get('irontec', ns())
         self.token = None
 
