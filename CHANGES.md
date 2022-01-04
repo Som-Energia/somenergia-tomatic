@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- Irontec PBX Backend
+- PBX backend generalization
+  - PBX backend factory
+  - Add dbconfig.tomatic.pbx option to choose the default PBX
+  - `--backend` option for all PBX related CLI tools
+- Daily stats now include a csv file with the historical data
+
 ## 4.2.5 2021-11-23
 
 - Callinfo: New autoconsumption alert
