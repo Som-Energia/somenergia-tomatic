@@ -51,8 +51,13 @@ class DbAsterisk(object):
             callerid = Optional(str, 40)
             type = Optional(str) #, enum('friend','user','peer')
 
+        if not args and not kwds:
+            args = dbconfig.tomatic.get('dbasterisk',{}).get('args',[])
+            kwds = dbconfig.tomatic.get('dbasterisk',{}).get('kwds',{})
+
         #sql_debug(True)
         db.bind(*args, **kwds)
+
         db.generate_mapping(create_tables=True)
         self._queueMembers = QueueMemberTable
         self._sipPeers = SipPeerTable

@@ -1,5 +1,7 @@
 from .pbxqueue import PbxQueue
 
+# TODO: Make this dynamic by inspecting the pbx module
+
 pbxtypes = [
     'fake',
     'dbasterisk',
@@ -21,10 +23,7 @@ def pbxcreate(pbxtype):
 
     if pbxtype == 'dbasterisk':
         from .dbasterisk import DbAsterisk
-        return DbAsterisk(
-            *dbconfig.tomatic.dbasterisk.args,
-            **dbconfig.tomatic.dbasterisk.kwds,
-        )
+        return DbAsterisk()
 
     if pbxtype == 'areavoip':
         from .pbxareavoip import AreaVoip
