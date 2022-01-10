@@ -22,7 +22,7 @@ backend_option = click.option('--backend', '-b',
     help="PBX backend to use",
 )
 queue_option = click.option('--queue', '-q',
-    default=dbconfig.tomatic.areavoip.queue,
+    default=None,
     help="nom de la cua"
 )
 members_option = click.option('--member', '-m',
