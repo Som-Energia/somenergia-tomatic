@@ -4,10 +4,22 @@ import datetime
 from yamlns import namespace as ns
 from consolemsg import error
 import requests
+from enum import Enum
 from .. import persons
 
 def TODO(*args, **kwds):
     raise NotImplementedError()
+
+class DeviceStatus(int, Enum):
+    Unknown = 0 # Valid but channel didn’t know state
+    NotInUse = 1 # Device is not used
+    InUse = 2 # Device is in use
+    Busy = 3 # Device is busy
+    Invalid = 4 # Device is invalid
+    Unavailable = 5 # Device is unavailable
+    Ringing = 6 # Device is ringing
+    InUseRinging = 7 # Device is ringing and in use
+    OnHold = 8 # Device is on hold
 
 class Irontec(object):
 
@@ -66,18 +78,6 @@ class Irontec(object):
             self.config.baseurl + '/queue/status/prueba',
             headers=self.bearer,
         )
-        def p(x): print(x.dump()); return x
-        from enum import Enum
-        class DeviceStatus(int, Enum):
-            Unknown = 0 # Device is valid but channel didn’t know state
-            NotInUse = 1 # Device is not used
-            InUse = 2 # Device is in use
-            Busy = 3 # Device is busy
-            Invalid = 4 # Device is invalid
-            Unavailable = 5 # Device is unavailable
-            Ringing = 6 # Device is ringing
-            InUseRinging = 7 # Device is ringing and in use
-            OnHold = 8 # Device is on hold
         return [
             ns(
                 extension = agent, # str \d+
@@ -98,7 +98,9 @@ class Irontec(object):
                 ] # list (any other status not represented by the bools) (not required)
             )
             for agent, status in (
-                (x['agent'], p(ns(x['status']))) for x in response.json())
+                (x['agent'], ns(x['status']))
+                for x in response.json()
+            )
         ]
     
     def pause(self, queue, name, paused=True, reason=None):
