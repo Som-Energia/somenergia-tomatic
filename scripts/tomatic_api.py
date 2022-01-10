@@ -78,8 +78,9 @@ def main(fake, debug, host, port, printrules, date, time, backend, queue):
         p.setQueue(initialQueue)
 
     step("Starting API")
-    for rule in app.routes:
-        step("- {}", rule.path)
+    if printrules:
+        for rule in app.routes:
+            step("- {}", rule.path)
     import uvicorn
     uvicorn.run("tomatic.api:app", debug=debug, host=host, port=port, reload=debug)
     step("API stopped")
