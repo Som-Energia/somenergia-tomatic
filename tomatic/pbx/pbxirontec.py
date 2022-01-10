@@ -61,23 +61,44 @@ class Irontec(object):
 
     def queue(self, queue):
         '''Return the state and stats of the persons attending the queue'''
-        response = self._api(...)
+        self._login()
+        response = requests.get(
+            self.config.baseurl + '/queue/status/prueba',
+            headers=self.bearer,
+        )
+        def p(x): print(x.dump()); return x
+        from enum import Enum
+        class DeviceStatus(int, Enum):
+            Unknown = 0 # Device is valid but channel didn’t know state
+            NotInUse = 1 # Device is not used
+            InUse = 2 # Device is in use
+            Busy = 3 # Device is busy
+            Invalid = 4 # Device is invalid
+            Unavailable = 5 # Device is unavailable
+            Ringing = 6 # Device is ringing
+            InUseRinging = 7 # Device is ringing and in use
+            OnHold = 8 # Device is on hold
         return [
             ns(
-                extension = item.extension, # str \d+
-                key = persons.byExtension(item.extension), # str (not from api)
-                name = persons.name(persons.byExtension(item.extension)), # str (not from api)
-                paused = TODO(item), # bool
-                disconnected = TODO(item), # bool
-                available = TODO(item), # bool
-                ringing = TODO(item), # bool
-                incall = TODO(item), # bool
-                ncalls = TODO(item), # int (not required)
-                secondsInCalls = TODO(item), # int (not required)
-                secondsSinceLastCall = TODO(item), # int (not required)
-                flags = TODO(item) or [], # list (any other status not represented by the bools) (not required)
+                extension = agent, # str \d+
+                key = persons.byExtension(agent), # str (not from api)
+                name = persons.name(persons.byExtension(agent)), # str (not from api)
+                paused = status.paused, # bool
+                disconnected = status in (DeviceStatus.Unavailable, DeviceStatus.Invalid, DeviceStatus.Unknown), # bool
+                available = status.status == DeviceStatus.NotInUse, # bool
+                ringing = status.status in (DeviceStatus.Ringing, DeviceStatus.InUseRinging), # bool
+                incall = status.status in (DeviceStatus.InUse, DeviceStatus.Busy, DeviceStatus.InUseRinging), # bool
+                ncalls = status.callstaken, # int (not required)
+                secondsInCalls = status.incall, # int (not required)
+                secondsSinceLastCall = status.lastcall, # int (not required)
+                flags = [
+                    ] + ( ['busy'] if status.status == DeviceStatus.Busy else []) + [
+                    ] + ( ['inuseringing'] if status.status == DeviceStatus.InUseRinging else []) + [
+                    ] + ( ['onhold'] if status.status == DeviceStatus.OnHold else []) + [
+                ] # list (any other status not represented by the bools) (not required)
             )
-            for items in TODO(response)
+            for agent, status in (
+                (x['agent'], p(ns(x['status']))) for x in response.json())
         ]
     
     def pause(self, queue, name, paused=True, reason=None):
