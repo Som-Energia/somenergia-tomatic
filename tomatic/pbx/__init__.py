@@ -36,13 +36,11 @@ def pbxcreate(pbxtype):
     raise Exception(f"No such pbx backend {pbxtype}")
 
 def pbxqueue(pbxtype=None, queue=None):
-    if pbxtype:
+    if pbxtype or not hasattr(pbxqueue, 'cache'):
         pbxqueue.cache = PbxQueue(
             pbxcreate(pbxtype),
             queue,
         )
-    if not hasattr(pbxqueue, 'cache'):
-        pbxqueue.cache = pbxqueue('fake', queue)
 
     return pbxqueue.cache
     

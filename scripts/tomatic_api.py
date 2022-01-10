@@ -62,16 +62,16 @@ def now(date, time):
 
 def main(fake, debug, host, port, printrules, date, time, backend, queue):
     "Runs the Tomatic web and API"
-    print(fake, debug, host, port, printrules, date, time)
+    print(fake, debug, host, port, printrules, date, time, backend, queue)
 
     if printrules:
         for rule in app.routes:
             print(rule.path)
 
-    p = pbxqueue(pbxtype, 'fake' if fake else backend)
+    p = pbxqueue('fake' if fake else backend, queue)
 
-    if pbxtype != 'fake':
-        warn(f"Using real pbx: {pbxtype}")
+    if not fake and backend!='fake':
+        warn(f"Using real pbx: {backend}")
     else:
         warn("Using fake pbx")
         initialQueue = schedules.queueScheduledFor(now(date,time))
