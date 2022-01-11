@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.3.1 2021-01-11
+
+- Irontec: implement queue management
+- Irontec: Fix: default queues not hardcoded cli tools
+- Irontec: Fix: cli forced int queue
+
 ## 4.3.0 2021-01-10
 
 - First version Irontec PBX Backend
