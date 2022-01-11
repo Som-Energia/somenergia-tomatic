@@ -44,7 +44,6 @@ def now(date, time):
     help="Override pbx backend configured in configuration",
     )
 @click.option('--queue', '-q',
-    type=int,
     default=None,
     help="Override pbx queue configured in configuration",
     )
