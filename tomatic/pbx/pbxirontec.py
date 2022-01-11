@@ -46,37 +46,20 @@ class Irontec(object):
             raise BackendError()
         self.token = response.json()['token']
         self.bearer = dict(
-                authorization=f"Bearer {self.token}",
-            )
+            authorization=f"Bearer {self.token}",
+        )
 
-    def _api(self, url, *args, **kwds):
+    def _api(self, method, url, json=None, *args, **kwds):
         '''Calls the Irontec API and process the response'''
         self._login()
         fullurl = self.config.baseurl + url
-        step(f"Calling {fullurl}")
-        if 'put' in kwds:
-            response = requests.put(
-                fullurl,
-                headers=self.bearer,
-                json=kwds['put'],
-            )
-        elif 'post' in kwds:
-            response = requests.post(
-                fullurl,
-                headers=self.bearer,
-                json=kwds['post'],
-            )
-        elif 'delete' in kwds:
-            response = requests.delete(
-                fullurl,
-                headers=self.bearer,
-                json=kwds['delete'],
-            )
-        else:
-            response = requests.get(
-                fullurl,
-                headers=self.bearer,
-            )
+        step(f"Calling {method} {fullurl} {json or ''}")
+        response = requests.request(
+            method=method.upper(),
+            url=fullurl,
+            headers=self.bearer,
+            json=json,
+        )
 
         import json
         try:
@@ -89,12 +72,6 @@ class Irontec(object):
 
         if response.status_code == 403: # Method not allowed
             raise BackendError(f"Method not allowed for '{url}'")
-
-        import json
-        try:
-            data = response.json()
-        except json.decoder.JSONDecodeError as e:
-            raise BackendError(response.text)
 
         if response.status_code == 420:
             print(data)
@@ -121,7 +98,7 @@ class Irontec(object):
         '''Add a person to the queue'''
         extension = persons.extension(name)
         if not extension: return
-        self._api('/queue/addagent', post=dict(
+        self._api('post', '/queue/addagent', json=dict(
             agent = extension,
             queue = queue,
             priority = 1,
@@ -131,12 +108,12 @@ class Irontec(object):
     def clear(self, queue):
         '''Clear all persons in the queue'''
         for agent in self.queue(queue):
-            self._api('/queue/removeagent/'+agent.extension+'/'+queue, delete={})
+            self._api('delete', '/queue/removeagent/'+agent.extension+'/'+queue)
 
     def queue(self, queue):
         '''Return the state and stats of the persons attending the queue'''
         self._login()
-        result = self._api('/queue/status/'+queue)
+        result = self._api('get', '/queue/status/'+queue)
         print(ns(data=result).dump())
         return [
             ns(
@@ -169,13 +146,13 @@ class Irontec(object):
             self.resume(queue, name)
         extension = persons.extension(name)
         if not extension: return
-        result = self._api('/agent/pause/'+extension+'/'+queue, put={})
+        result = self._api('put', '/agent/pause/'+extension+'/'+queue)
 
     def resume(self, queue, name):
         """Resumes the person in the queue"""
         extension = persons.extension(name)
         if not extension: return
-        result = self._api('/agent/unpause/'+extension+'/'+queue, put={})
+        result = self._api('put', '/agent/unpause/'+extension+'/'+queue)
 
     def stats(self, queue, date=None):
         response = self._api(...)
@@ -221,7 +198,8 @@ class Irontec(object):
 
         try:
             response = self._api(
-                '/agent/modify', put=dict(
+                'put',
+                '/agent/modify', json=dict(
                     agent = extension,
                     name = transliterate(fullname),
                     email = email or 'none@nowhere.com',
@@ -246,7 +224,7 @@ class Irontec(object):
 
     def extensions(self):
         self._login()
-        json = self._api('/agent/list')
+        json = self._api('get', '/agent/list')
         print(json)
         return [
             (
