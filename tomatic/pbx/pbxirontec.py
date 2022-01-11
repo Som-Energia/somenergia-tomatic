@@ -121,7 +121,7 @@ class Irontec(object):
                 key = persons.byExtension(agent), # str (not from api)
                 name = persons.name(persons.byExtension(agent)), # str (not from api)
                 paused = status.paused, # bool
-                disconnected = status in (DeviceStatus.Unavailable, DeviceStatus.Invalid, DeviceStatus.Unknown), # bool
+                disconnected = status.status in (DeviceStatus.Unavailable, DeviceStatus.Invalid, DeviceStatus.Unknown), # bool
                 available = status.status == DeviceStatus.NotInUse, # bool
                 ringing = status.status in (DeviceStatus.Ringing, DeviceStatus.InUseRinging), # bool
                 incall = status.status in (DeviceStatus.InUse, DeviceStatus.Busy, DeviceStatus.InUseRinging), # bool
