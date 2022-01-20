@@ -41,7 +41,7 @@ var getCookie = require('./components/utils').getCookie;
 css.addLayoutStyles();
 css.addTypography();
 
-var kumato=false; // Dark interface
+var kumato=JSON.parse(localStorage.getItem('kumato', false)); // Dark interface
 
 var Todo = function(message) {
 	return m(Card, {
@@ -220,7 +220,10 @@ const menuOptions = function() { return [{
 },{
 	title: "Kumato mode",
 	action: function() {
-		kumato = ! kumato;
+		console.log(kumato)
+		kumato = JSON.parse(localStorage.getItem('kumato', 'false')) !== true
+		localStorage.kumato = kumato;
+		console.log(kumato)
 	},
 }]};
 
