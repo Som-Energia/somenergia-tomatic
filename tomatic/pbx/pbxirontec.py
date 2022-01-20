@@ -114,7 +114,6 @@ class Irontec(object):
         '''Return the state and stats of the persons attending the queue'''
         self._login()
         result = self._api('get', '/queue/status/'+queue)
-        print(ns(data=result).dump())
         return [
             ns(
                 extension = agent, # str \d+
@@ -225,7 +224,6 @@ class Irontec(object):
     def extensions(self):
         self._login()
         json = self._api('get', '/agent/list')
-        print(json)
         return [
             (
                 agent.agent,
