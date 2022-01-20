@@ -635,17 +635,6 @@ var Extensions = function(extensions) {
 		),
 	];
 };
-var Forwardings = function() {
-	return m('.graella', [
-		m('h5', 'Codis desviaments'),
-		m('ul.codes', [
-			m('li','*60 Immediat'),
-			m('li','*63 Ocupat o no responem'),
-			m('li','*64 Treure desviaments'),
-			m('li','*90 Marcar número'),
-		]),
-	]);
-};
 var Changelog = function(grid) {
 	return m('.graella', [
 		m('h5', 'Darrers canvis'),
@@ -706,7 +695,6 @@ var GridsPage = {
 			m('.layout.center-center.wrap', Grid(grid)),
 			Extensions(grid.otherextensions),
 			m('.layout.around-justified.wrap', [
-				Forwardings(),
 				Changelog(grid),
 				Penalties(grid),
 				Overloads(grid),
