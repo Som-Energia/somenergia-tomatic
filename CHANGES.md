@@ -1,5 +1,9 @@
 # Changelog
 
+## unreleased
+
+- Persistent kumato mode using local browser storage
+
 ## 4.3.1 2021-01-11
 
 - Irontec: implement queue management

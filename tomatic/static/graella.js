@@ -220,10 +220,8 @@ const menuOptions = function() { return [{
 },{
 	title: "Kumato mode",
 	action: function() {
-		console.log(kumato)
-		kumato = JSON.parse(localStorage.getItem('kumato', 'false')) !== true
+		kumato = !kumato
 		localStorage.kumato = kumato;
-		console.log(kumato)
 	},
 }]};
 
