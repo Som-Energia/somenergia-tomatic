@@ -547,6 +547,9 @@ var Grid = function(grid) {
 			m(Ripple),
 		]);
 	};
+	if (!grid.turns) {
+		return [];
+	}
  	return [
 		(grid.days||[]).map(function(day, dayi) {
 			return m('.graella', m('table', [
