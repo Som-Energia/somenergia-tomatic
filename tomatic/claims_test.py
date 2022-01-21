@@ -65,6 +65,7 @@ class Claims_Test(unittest.TestCase):
     from yamlns.testutils import assertNsEqual
 
     def crmCase(self, case_id):
+        """Retrieves the data of a CrmCase to check its fields"""
         result = ns(self.erp.CrmCase.read(case_id, [
             'section_id',
             'name',
@@ -88,16 +89,8 @@ class Claims_Test(unittest.TestCase):
 
         return result
 
-    def assertCrmCase(self, case_id, expected):
-        if not expected:
-            self.assertFalse(case_id)
-            return
-        self.assertTrue(case_id)
-        result = self.crmCase(case_id)
-        self.assertNsEqual(result, expected)
-
-
     def atcCase(self, case_id):
+        """Retrieves the data of a AtcCase to check its fields"""
         result = ns(self.erp.GiscedataAtc.read(case_id, [
             'provincia',
             'total_cups',
@@ -120,7 +113,19 @@ class Claims_Test(unittest.TestCase):
 
         return result
 
+    def assertCrmCase(self, case_id, expected):
+        """Asserts that the CrmCase fields to be checked have
+        the proper values"""
+        if not expected:
+            self.assertFalse(case_id)
+            return
+        self.assertTrue(case_id)
+        result = self.crmCase(case_id)
+        self.assertNsEqual(result, expected)
+
     def assertAtcCase(self, case_id, expected):
+        """Asserts that the AtcCase fields to be checked have
+        the proper values"""
         if not expected:
             self.assertFalse(case_id)
             return
@@ -128,17 +133,8 @@ class Claims_Test(unittest.TestCase):
         result = self.atcCase(case_id)
         self.assertNsEqual(result, expected)
 
-    def test_atcCategories(self):
-        claims = Claims(self.erp)
-        categories = claims.get_claims()
-        self.assertB2BEqual(ns(categories=categories).dump())
-
-    def test_crmCategories(self):
-        claims = Claims(self.erp)
-        categories = claims.crm_categories()
-        self.assertB2BEqual(ns(categories=categories).dump())
-
     def atc_base(self, **kwds):
+        """Provides a base for input atc cases to be feed"""
         base = ns.loads("""
             date: '2021-11-11T15:13:39.998Z'
             phone: '555444333'
@@ -166,6 +162,17 @@ class Claims_Test(unittest.TestCase):
         """)
         base.update(**kwds)
         return base
+
+
+    def test_atcCategories(self):
+        claims = Claims(self.erp)
+        categories = claims.get_claims()
+        self.assertB2BEqual(ns(categories=categories).dump())
+
+    def test_crmCategories(self):
+        claims = Claims(self.erp)
+        categories = claims.crm_categories()
+        self.assertB2BEqual(ns(categories=categories).dump())
 
     def test_createAtcCase_procedente(self):
         case = self.atc_base()
