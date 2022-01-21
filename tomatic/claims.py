@@ -141,28 +141,28 @@ class Claims(object):
         ]
 
 
-    def create_crm_case(self, crm_case):
-        CallAnnotation(**crm_case)
-        partner_id = partnerId(self.erp, crm_case.partner)
+    def create_crm_case(self, case):
+        CallAnnotation(**case)
+        partner_id = partnerId(self.erp, case.partner)
         partner_address = partnerAddress(self.erp, partner_id)
 
-        crm_section_id = crmSectionID(self.erp, crm_case.claimsection)
+        crm_section_id = crmSectionID(self.erp, case.claimsection)
 
         data_crm = {
             'section_id': crm_section_id,
-            'name': crm_case.reason.split('.')[-1].strip(),
+            'name': case.reason.split('.')[-1].strip(),
             'canal_id': PHONE_CHANNEL,
-            'polissa_id': contractId(self.erp, crm_case.contract),
+            'polissa_id': contractId(self.erp, case.contract),
             'partner_id': partner_id,
             'partner_address_id': partner_address.get('id') if partner_address else False,
             'state': 'open', # TODO: 'done' if case.solved else 'open',
-            'user_id': erpUser(self.erp, crm_case.user),
+            'user_id': erpUser(self.erp, case.user),
         }
         crm_id = self.erp.CrmCase.create(data_crm).id
 
         data_history = {
             'case_id': crm_id,
-            'description': crm_case.notes,
+            'description': case.notes,
         }
         crm_history_id = self.erp.CrmCaseHistory.create(data_history).id
 
