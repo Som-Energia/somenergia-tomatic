@@ -215,8 +215,8 @@ class Claims(object):
 
         return case.id
 
-    def is_atc_case(self, case_data):
-        return case_data.get('claimsection', '') != ''
+    def is_atc_case(self, case):
+        return case.get('claimsection', '') != ''
 
 
 # vim: et ts=4 sw=4
