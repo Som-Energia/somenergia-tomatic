@@ -169,7 +169,7 @@ class Claims(object):
         return crm_id
 
 
-    def create_atc_case(self, atr_case_data, crm_case_id):
+    def create_atc_case(self, atr_case_data):
         '''
         Expected case:
 
@@ -189,6 +189,8 @@ class Claims(object):
         )
         '''
         CallAnnotation(**atr_case_data)
+
+        crm_case_id = self.create_crm_case(atr_case_data)
 
         partner_id = partnerId(self.erp, atr_case_data.partner)
         partner_address = partnerAddress(self.erp, partner_id)
