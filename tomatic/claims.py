@@ -168,8 +168,7 @@ class Claims(object):
 
         return crm_id
 
-
-    def create_atc_case(self, atr_case_data):
+    def create_atc_case(self, case):
         '''
         Expected case:
 
@@ -188,16 +187,16 @@ class Claims(object):
             ...
         )
         '''
-        CallAnnotation(**atr_case_data)
+        CallAnnotation(**case)
 
-        crm_case_id = self.create_crm_case(atr_case_data)
+        crm_case_id = self.create_crm_case(case)
 
-        partner_id = partnerId(self.erp, atr_case_data.partner)
+        partner_id = partnerId(self.erp, case.partner)
         partner_address = partnerAddress(self.erp, partner_id)
         claim_section_id = claimSectionID(
-            self.erp, atr_case_data.reason.split('.')[-1].strip()
+            self.erp, case.reason.split('.')[-1].strip()
         )
-        contract_id = contractId(self.erp, atr_case_data.contract)
+        contract_id = contractId(self.erp, case.contract)
         contract = self.erp.GiscedataPolissa.read(contract_id, ['cups'])
         state_id = partner_address.get('state_id')[0] if partner_address else unknownState(self.erp)
         data_atc = {
@@ -206,8 +205,8 @@ class Claims(object):
             'cups_id': contract['cups'][0] if contract else None,
             'subtipus_id': claim_section_id,
             'reclamante': CLAIMANT,
-            'resultat': resolutionCode(atr_case_data),
-            'date': atr_case_data.date,
+            'resultat': resolutionCode(case),
+            'date': case.date,
             'email_from': partner_address.get('email') if partner_address else False,
             'time_tracking_id': TIME_TRACKER_COMERCIALIZADORA,
             'crm_id': crm_case_id,
