@@ -150,7 +150,7 @@ class Claims(object):
 
         data_crm = {
             'section_id': crm_section_id,
-            'name': case.reason.split('.')[-1].strip(),
+            'name': case.reason.split('.',1)[-1].strip(),
             'canal_id': PHONE_CHANNEL,
             'polissa_id': contractId(self.erp, case.contract),
             'partner_id': partner_id,
@@ -194,7 +194,7 @@ class Claims(object):
         partner_id = partnerId(self.erp, case.partner)
         partner_address = partnerAddress(self.erp, partner_id)
         claim_section_id = claimSectionID(
-            self.erp, case.reason.split('.')[-1].strip()
+            self.erp, case.reason.split('.',1)[-1].strip()
         )
         contract_id = contractId(self.erp, case.contract)
         contract = self.erp.GiscedataPolissa.read(contract_id, ['cups'])
