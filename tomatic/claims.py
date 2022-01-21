@@ -80,7 +80,7 @@ def erpUser(erp, person):
     # No match found
     return None
 
-def resultat(case):
+def resolutionCode(case):
     return dict(
         unsolved = '',
         fair = '01',
@@ -206,7 +206,7 @@ class Claims(object):
             'cups_id': contract['cups'][0] if contract else None,
             'subtipus_id': claim_section_id,
             'reclamante': CLAIMANT,
-            'resultat': resultat(atr_case_data),
+            'resultat': resolutionCode(atr_case_data),
             'date': atr_case_data.date,
             'email_from': partner_address.get('email') if partner_address else False,
             'time_tracking_id': TIME_TRACKER_COMERCIALIZADORA,
