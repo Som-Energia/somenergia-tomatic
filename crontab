@@ -8,11 +8,11 @@ PATH=/opt/www/somenergia-tomatic/.venv/bin:/usr/local/sbin:/usr/local/bin:/sbin:
 TOMATIC_CRONLOG=/var/log/somenergia/crontab-tomatic.log
 
 # m h dom mon dow user  command
-00  9   * * 1-5  somenergia    (echo "$(date -Iseconds) Updating queue"; cd $TOMATIC_PATH; tomatic_rtqueue.py set ; tomatic_rtqueue.py show) >> $TOMATIC_CRONLOG 2>&1
-15 10   * * 1-5  somenergia    (echo "$(date -Iseconds) Updating queue"; cd $TOMATIC_PATH; tomatic_rtqueue.py set ; tomatic_rtqueue.py show) >> $TOMATIC_CRONLOG 2>&1
-30 11   * * 1-5  somenergia    (echo "$(date -Iseconds) Updating queue"; cd $TOMATIC_PATH; tomatic_rtqueue.py set ; tomatic_rtqueue.py show) >> $TOMATIC_CRONLOG 2>&1
-45 12   * * 1-5  somenergia    (echo "$(date -Iseconds) Updating queue"; cd $TOMATIC_PATH; tomatic_rtqueue.py set ; tomatic_rtqueue.py show) >> $TOMATIC_CRONLOG 2>&1
-00 14   * * 1-5  somenergia    (echo "$(date -Iseconds) Updating queue"; cd $TOMATIC_PATH; tomatic_rtqueue.py set ; tomatic_rtqueue.py show) >> $TOMATIC_CRONLOG 2>&1
+00  9   * * 1-5  somenergia    (echo "$(date -Iseconds) Updating queue"; cd $TOMATIC_PATH; tomatic_rtqueue.py set ; tomatic_rtqueue.py show ; tomatic_rtqueue.py monitor) >> $TOMATIC_CRONLOG 2>&1
+15 10   * * 1-5  somenergia    (echo "$(date -Iseconds) Updating queue"; cd $TOMATIC_PATH; tomatic_rtqueue.py set ; tomatic_rtqueue.py show ; tomatic_rtqueue.py monitor) >> $TOMATIC_CRONLOG 2>&1
+30 11   * * 1-5  somenergia    (echo "$(date -Iseconds) Updating queue"; cd $TOMATIC_PATH; tomatic_rtqueue.py set ; tomatic_rtqueue.py show ; tomatic_rtqueue.py monitor) >> $TOMATIC_CRONLOG 2>&1
+45 12   * * 1-5  somenergia    (echo "$(date -Iseconds) Updating queue"; cd $TOMATIC_PATH; tomatic_rtqueue.py set ; tomatic_rtqueue.py show ; tomatic_rtqueue.py monitor) >> $TOMATIC_CRONLOG 2>&1
+00 14   * * 1-5  somenergia    (echo "$(date -Iseconds) Updating queue"; cd $TOMATIC_PATH; tomatic_rtqueue.py set ; tomatic_rtqueue.py show ; tomatic_rtqueue.py monitor) >> $TOMATIC_CRONLOG 2>&1
 00 15   * * 5    somenergia    (echo "$(date -Iseconds) Updating extensions"; cd $TOMATIC_PATH; tomatic_extensions.py load; tomatic_extensions.py show) >> $TOMATIC_CRONLOG 2>&1
 */5 9-13 * * 1-5 somenergia    (echo "$(date -Iseconds) Monitoring queue"; cd $TOMATIC_PATH; tomatic_rtqueue.py monitor ) >> $TOMATIC_CRONLOG 2>&1
 
