@@ -64,11 +64,7 @@ class Claims_Test(unittest.TestCase):
 
     from yamlns.testutils import assertNsEqual
 
-    def assertCrmCase(self, case_id, expected):
-        if not expected:
-            self.assertFalse(case_id)
-            return
-        self.assertTrue(case_id)
+    def crmCase(self, case_id):
         result = ns(self.erp.CrmCase.read(case_id, [
             'section_id',
             'name',
@@ -90,14 +86,18 @@ class Claims_Test(unittest.TestCase):
         anonymize(result, 'partner_address_id')
         anonymize(result, 'user_id')
 
-        self.assertNsEqual(ns(result), expected)
+        return result
 
-
-    def assertAtcCase(self, case_id, expected):
+    def assertCrmCase(self, case_id, expected):
         if not expected:
             self.assertFalse(case_id)
             return
         self.assertTrue(case_id)
+        result = self.crmCase(case_id)
+        self.assertNsEqual(result, expected)
+
+
+    def atcCase(self, case_id):
         result = ns(self.erp.GiscedataAtc.read(case_id, [
             'provincia',
             'total_cups',
@@ -118,7 +118,15 @@ class Claims_Test(unittest.TestCase):
         anonymize(result, "cups_id")
         anonymize(result, "email_from")
 
-        self.assertNsEqual(ns(result), expected)
+        return result
+
+    def assertAtcCase(self, case_id, expected):
+        if not expected:
+            self.assertFalse(case_id)
+            return
+        self.assertTrue(case_id)
+        result = self.atcCase(case_id)
+        self.assertNsEqual(result, expected)
 
     def test_atcCategories(self):
         claims = Claims(self.erp)
