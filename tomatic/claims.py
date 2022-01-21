@@ -27,16 +27,16 @@ PHONE = 2
 COMERCIALIZADORA = 1
 RECLAMANTE = '01'
 CRM_CASE_SECTION_NAME = 'CONSULTA'
-UNKNOWN_STATE = None
 defaultSection = 'ASSIGNAR USUARI'
 
 
-def descStateId(erp):
-    global UNKNOWN_STATE
-    if UNKNOWN_STATE is None:
-        UNKNOWN_STATE = erp.model('res.country.state').search([('code', '=', '00')])[0]
-    return UNKNOWN_STATE
-
+def unknownState(erp):
+    if hasattr(unknownState,'cached'):
+        return unknownState.cached
+    unknownState.cached = erp.ResCountryState.search([
+        ('code', '=', '00')
+    ])[0]
+    return unknownState.cached
 
 def partnerId(erp, partner_nif):
     if not partner_nif: return None
@@ -199,7 +199,7 @@ class Claims(object):
         )
         contract_id = contractId(self.erp, atr_case_data.contract)
         contract = self.erp.GiscedataPolissa.read(contract_id, ['cups'])
-        state_id = partner_address.get('state_id')[0] if partner_address else descStateId(self.erp)
+        state_id = partner_address.get('state_id')[0] if partner_address else unknownState(self.erp)
         data_atc = {
             'provincia': state_id,
             'total_cups': 1,
