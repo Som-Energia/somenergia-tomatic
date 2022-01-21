@@ -1,16 +1,18 @@
 # Changelog
 
-## unreleased
+## 4.3.2 2022-01-21
 
 - Persistent kumato mode using local browser storage
+- Monitor disconnected just after changing the shift
+- Increase disconnected agents monitoring frequency
 
-## 4.3.1 2021-01-11
+## 4.3.1 2022-01-11
 
 - Irontec: implement queue management
 - Irontec: Fix: default queues not hardcoded cli tools
 - Irontec: Fix: cli forced int queue
 
-## 4.3.0 2021-01-10
+## 4.3.0 2022-01-10
 
 - First version Irontec PBX Backend
 - PBX backend generalization and plugability
