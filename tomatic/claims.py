@@ -23,11 +23,11 @@ class CallAnnotation(BaseModel):
     claimsection: Optional[str]
     resolution: Optional[Resolution]
 
-PHONE = 2
-COMERCIALIZADORA = 1
-RECLAMANTE = '01'
+PHONE_CHANNEL = 2
+TIME_TRACKER_COMERCIALIZADORA = 1
+CLAIMANT = '01' # Titular de PS/ Usuario efectivo (Tabla 83)
 CRM_CASE_SECTION_NAME = 'CONSULTA'
-defaultSection = 'ASSIGNAR USUARI'
+DEFAULT_SECTION = 'ASSIGNAR USUARI'
 
 
 def unknownState(erp):
@@ -119,7 +119,7 @@ class Claims(object):
         ):
             claim_section = claim.get("default_section")
 
-            section = defaultSection
+            section = DEFAULT_SECTION
             if claim_section:
                 section = claim_section[1].split("/")[-1].strip()
 
@@ -151,7 +151,7 @@ class Claims(object):
         data_crm = {
             'section_id': crm_section_id,
             'name': crm_case.reason.split('.')[-1].strip(),
-            'canal_id': PHONE,
+            'canal_id': PHONE_CHANNEL,
             'polissa_id': contractId(self.erp, crm_case.contract),
             'partner_id': partner_id,
             'partner_address_id': partner_address.get('id') if partner_address else False,
@@ -205,11 +205,11 @@ class Claims(object):
             'total_cups': 1,
             'cups_id': contract['cups'][0] if contract else None,
             'subtipus_id': claim_section_id,
-            'reclamante': RECLAMANTE,
+            'reclamante': CLAIMANT,
             'resultat': resultat(atr_case_data),
             'date': atr_case_data.date,
             'email_from': partner_address.get('email') if partner_address else False,
-            'time_tracking_id': COMERCIALIZADORA,
+            'time_tracking_id': TIME_TRACKER_COMERCIALIZADORA,
             'crm_id': crm_case_id,
         }
         case = self.erp.GiscedataAtc.create(data_atc)
