@@ -26,7 +26,7 @@ PHONE_CHANNEL = 2
 TIME_TRACKER_COMERCIALIZADORA = 1
 CLAIMANT = '01' # Titular de PS/ Usuario efectivo (Tabla 83)
 CRM_CASE_SECTION_NAME = 'CONSULTA'
-DEFAULT_SECTION = 'ASSIGNAR USUARI'
+SECTION_TO_BE_SPECIFIED = 'ASSIGNAR USUARI'
 
 
 def unknownState(erp):
@@ -118,9 +118,10 @@ class Claims(object):
         ):
             claim_section = claim.get("default_section")
 
-            section = DEFAULT_SECTION
-            if claim_section:
-                section = claim_section[1].split("/")[-1].strip()
+            section = (
+                claim_section[1].split("/")[-1].strip()
+                if claim_section else SECTION_TO_BE_SPECIFIED
+            )
 
             message = u"[{}] {}. {}".format(
                 section,
