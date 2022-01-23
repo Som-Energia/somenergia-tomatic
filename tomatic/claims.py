@@ -10,7 +10,6 @@ class Resolution(str, Enum):
     fair = 'fair'
     unfair = 'unfair'
     irresolvable = 'irresolvable'
-    not_resolution = ''
 
 class CallAnnotation(BaseModel):
     user: str
