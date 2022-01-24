@@ -38,48 +38,6 @@ def unknownState(erp):
     ])[0]
     return unknownState.cached
 
-def partnerId(erp, partner_nif):
-    if not partner_nif: return None
-    partner = erp.ResPartner.search([
-        ('ref', '=', partner_nif)
-    ])
-    return partner[0] if partner else None
-
-
-def partnerAddress(erp, partner_id):
-    if not partner_id: return None
-    return erp.ResPartnerAddress.read(
-        [('partner_id', '=', partner_id)],
-        ['id', 'state_id', 'email']
-    )[0]
-
-
-def contractId(erp, contract):
-    if not contract: return None
-    contract_id = erp.GiscedataPolissa.search([("name", "=", contract)])
-    if contract_id: return contract_id[0]
-
-def erpUser(erp, person):
-    # Try with explicit erpuser in persons.yaml
-    erplogin = persons().get('erpusers',{}).get(person,None)
-    if erplogin:
-        user_ids = erp.ResUsers.search([
-            ('login', '=', erplogin)
-        ])
-        if user_ids: return user_ids[0]
-    # if not found try with email
-    email = persons().get('emails',{}).get(person,None)
-    if email:
-        address_ids = erp.ResPartnerAddress.search([
-            ('email', '=', email),
-        ])
-        user_ids = erp.ResUsers.search([
-            ('address_id', 'in', address_ids),
-        ])
-        if user_ids: return user_ids[0]
-    # No match found
-    return None
-
 def resolutionCode(case):
     return dict(
         unsolved = '',
@@ -117,6 +75,47 @@ class Claims(object):
     def __init__(self, erp):
         self.erp = erp
 
+    def partnerId(self, partner_nif):
+        if not partner_nif: return None
+        partner = self.erp.ResPartner.search([
+            ('ref', '=', partner_nif)
+        ])
+        return partner[0] if partner else None
+
+
+    def partnerAddress(self, partner_id):
+        if not partner_id: return None
+        return self.erp.ResPartnerAddress.read(
+            [('partner_id', '=', partner_id)],
+            ['id', 'state_id', 'email']
+        )[0]
+
+    def contractId(self, contract):
+        if not contract: return None
+        contract_id = self.erp.GiscedataPolissa.search([("name", "=", contract)])
+        if contract_id: return contract_id[0]
+
+    def erpUser(self, person):
+        # Try with explicit erpuser in persons.yaml
+        erplogin = persons().get('erpusers',{}).get(person,None)
+        if erplogin:
+            user_ids = self.erp.ResUsers.search([
+                ('login', '=', erplogin)
+            ])
+            if user_ids: return user_ids[0]
+        # if not found try with email
+        email = persons().get('emails',{}).get(person,None)
+        if email:
+            address_ids = self.erp.ResPartnerAddress.search([
+                ('email', '=', email),
+            ])
+            user_ids = self.erp.ResUsers.search([
+                ('address_id', 'in', address_ids),
+            ])
+            if user_ids: return user_ids[0]
+        # No match found
+        return None
+
     def get_claims(self):
         claims_model = self.erp.GiscedataSubtipusReclamacio
         claims = []
@@ -153,8 +152,8 @@ class Claims(object):
 
     def create_crm_case(self, case):
         CallAnnotation(**case)
-        partner_id = partnerId(self.erp, case.partner)
-        partner_address = partnerAddress(self.erp, partner_id)
+        partner_id = self.partnerId(case.partner)
+        partner_address = self.partnerAddress(partner_id)
 
         category_description = case.reason.split('.',1)[-1].strip()
         categ_ids = self.erp.CrmCaseCateg.search([
@@ -177,11 +176,11 @@ class Claims(object):
             'name': category_description,
             'canal_id': PHONE_CHANNEL,
             'categ_id': categ_id,
-            'polissa_id': contractId(self.erp, case.contract),
+            'polissa_id': self.contractId(case.contract),
             'partner_id': partner_id,
             'partner_address_id': partner_address.get('id') if partner_address else False,
             'state': 'open', # TODO: 'done' if case.solved else 'open',
-            'user_id': erpUser(self.erp, case.user),
+            'user_id': self.erpUser(case.user),
         }
         crm_id = self.erp.CrmCase.create(data_crm).id
 
@@ -210,12 +209,12 @@ class Claims(object):
 
         crm_case_id = self.create_crm_case(case)
 
-        partner_id = partnerId(self.erp, case.partner)
-        partner_address = partnerAddress(self.erp, partner_id)
+        partner_id = self.partnerId(case.partner)
+        partner_address = self.partnerAddress(partner_id)
         claim_section_id = claimSectionID(
             self.erp, case.reason.split('.',1)[-1].strip()
         )
-        contract_id = contractId(self.erp, case.contract)
+        contract_id = self.contractId(case.contract)
         contract = self.erp.GiscedataPolissa.read(contract_id, ['cups'])
         state_id = partner_address.get('state_id')[0] if partner_address else unknownState(self.erp)
         data_atc = {
