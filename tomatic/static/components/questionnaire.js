@@ -72,32 +72,28 @@ var saveLogCalls = function(phone, user, claim, contract, partner) {
   });
 }
 
-
-var llistaMotius = function() {
-  const all=true;
+var filteredCaseCategories = function(categoriesFilter) {
+  var call_reasons = CallInfo.call_reasons;
   function contains(value) {
-    var contains = value.toLowerCase().includes(reason_filter.toLowerCase());
+    var contains = value.toLowerCase().includes(categoriesFilter.toLowerCase());
     return contains;
   }
   var list_reasons = [].concat(
     call_reasons.infos,
-    all ? call_reasons.general : []
+    call_reasons.general,
   );
 
-  if (reason_filter !== "") {
-    var filtered_regular = list_reasons.filter(contains);
-    if (all) {
-      var filtered_extras = call_reasons.extras.filter(contains);
-      var extras = CallInfo.getExtras(filtered_extras);
-      var filtered = filtered_regular.concat(extras);
-    }
-    else {
-      var filtered = filtered_regular
-    }
+  if (reason_filter === "") {
+    return list_reasons
   }
-  else {
-    var filtered = list_reasons;
-  }
+  var filtered_regular = list_reasons.filter(contains);
+  var filtered_extras = call_reasons.extras.filter(contains);
+  var extras = CallInfo.getExtras(filtered_extras);
+  return filtered_regular.concat(extras);
+}
+
+var llistaMotius = function() {
+  var filtered = filteredCaseCategories(reason_filter)
 
   var disabled = (CallInfo.savingAnnotation || CallInfo.call.date === "" );
 
