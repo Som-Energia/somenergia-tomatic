@@ -48,10 +48,6 @@ def unknownState(erp):
     return unknownState.cached
 
 
-def crmSectionID(erp, section):
-    sections_model = erp.CrmCaseSection
-    return sections_model.search([('name', 'ilike', section)])[0]
-
 def crmSectionHelpdesk(erp):
     if hasattr(crmSectionHelpdesk, 'cached'):
         return crmSectionHelpdesk.cached
@@ -112,6 +108,10 @@ class Claims(object):
         claims_model = self.erp.GiscedataSubtipusReclamacio
         return claims_model.search([('desc', '=', section_description)])[0]
 
+    def _crmSectionID(self, section):
+        sections_model = self.erp.CrmCaseSection
+        return sections_model.search([('name', 'ilike', section)])[0]
+
     def get_claims(self):
         claims_model = self.erp.GiscedataSubtipusReclamacio
         claims = []
@@ -162,7 +162,7 @@ class Claims(object):
             categ_id = categ_ids[0]
 
         crm_section_id = (
-            crmSectionID(self.erp, case.claimsection)
+            self._crmSectionID(case.claimsection)
             if 'claimsection' in case and case.claimsection else
             crmSectionHelpdesk(self.erp)
         )
