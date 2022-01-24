@@ -23,6 +23,15 @@ class CallAnnotation(BaseModel):
     claimsection: Optional[str]
     resolution: Optional[Resolution]
 
+    def resolutionCode(self):
+        return dict(
+            unsolved = '',
+            fair = '01',
+            unfair = '02',
+            irresolvable = '03',
+        ).get(self.resolution, 'bad')
+
+
 PHONE_CHANNEL = 2
 TIME_TRACKER_COMERCIALIZADORA = 1
 CLAIMANT = '01' # Titular de PS/ Usuario efectivo (Tabla 83)
@@ -37,14 +46,6 @@ def unknownState(erp):
         ('code', '=', '00')
     ])[0]
     return unknownState.cached
-
-def resolutionCode(case):
-    return dict(
-        unsolved = '',
-        fair = '01',
-        unfair = '02',
-        irresolvable = '03',
-    ).get(case.resolution, 'bad')
 
 
 def crmSectionID(erp, section):
@@ -218,7 +219,7 @@ class Claims(object):
             'cups_id': contract['cups'][0] if contract else None,
             'subtipus_id': claim_section_id,
             'reclamante': CLAIMANT,
-            'resultat': resolutionCode(case),
+            'resultat': case.resolutionCode(),
             'date': case.date,
             'email_from': partner_address.get('email') if partner_address else False,
             'time_tracking_id': TIME_TRACKER_COMERCIALIZADORA,
