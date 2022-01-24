@@ -101,7 +101,27 @@ CallInfo.getExtras = function (extras) {
   return extras.map(function(extra) {
     return CallInfo.extras_dict[extra];
   });
-}
+};
+
+CallInfo.filteredReasons = function(filter) {
+  var call_reasons = CallInfo.call_reasons;
+  function contains(value) {
+    var contains = value.toLowerCase().includes(filter.toLowerCase());
+    return contains;
+  }
+  var list_reasons = [].concat(
+    call_reasons.infos,
+    call_reasons.general,
+  );
+
+  if (reason_filter === "") {
+    return list_reasons
+  }
+  var filtered_regular = list_reasons.filter(contains);
+  var filtered_extras = call_reasons.extras.filter(contains);
+  var extras = CallInfo.getExtras(filtered_extras);
+  return filtered_regular.concat(extras);
+};
 
 
 CallInfo.selectedPartner = function() {

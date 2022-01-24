@@ -23,7 +23,6 @@ var Login = require('./login');
 
 var Questionnaire = {};
 
-var call_reasons = CallInfo.call_reasons;
 var reason_filter = "";
 
 
@@ -72,35 +71,16 @@ var saveLogCalls = function(phone, user, claim, contract, partner) {
   });
 }
 
-var filteredCaseCategories = function(categoriesFilter) {
-  var call_reasons = CallInfo.call_reasons;
-  function contains(value) {
-    var contains = value.toLowerCase().includes(categoriesFilter.toLowerCase());
-    return contains;
-  }
-  var list_reasons = [].concat(
-    call_reasons.infos,
-    call_reasons.general,
-  );
-
-  if (reason_filter === "") {
-    return list_reasons
-  }
-  var filtered_regular = list_reasons.filter(contains);
-  var filtered_extras = call_reasons.extras.filter(contains);
-  var extras = CallInfo.getExtras(filtered_extras);
-  return filtered_regular.concat(extras);
-}
 
 var llistaMotius = function() {
-  var filtered = filteredCaseCategories(reason_filter)
+  var reasons = CallInfo.filteredReasons(reason_filter)
 
   var disabled = (CallInfo.savingAnnotation || CallInfo.call.date === "" );
 
   return m(".motius", m(List, {
     compact: true,
     indentedBorder: true,
-    tiles: filtered.map(function(reason) {
+    tiles: reasons.map(function(reason) {
       return m(ListTile, {
         className: (
           CallInfo.call.reason === reason
