@@ -364,7 +364,7 @@ class Claims_Test(unittest.TestCase):
             user_id: false
         """.format(case_id))
 
-    def test_createCase_createsCrmAsWell(self):
+    def test_createCase_withClaim_createsAtcAsWell(self):
         case = self.claim_base()
         claims = Claims(self.erp)
         case_id = claims.create_case(case)
@@ -392,7 +392,7 @@ class Claims_Test(unittest.TestCase):
                 total_cups: 1
         """.format(case_id), deep=True)
 
-    def test_createCase_doesNotCreateCrmWhenItIsNot(self):
+    def test_createCase_withInfo_doesNotCreateAtc(self):
         case = self.info_base()
         claims = Claims(self.erp)
         case_id = claims.create_case(case)
