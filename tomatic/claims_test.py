@@ -364,6 +364,25 @@ class Claims_Test(unittest.TestCase):
             user_id: false
         """.format(case_id))
 
+    def test_createCrmCase_witBadReason(self):
+        case = self.info_base(
+            reason="Bad reason",
+        )
+        claims = Claims(self.erp)
+        case_id = claims.create_crm_case(case)
+        self.assertCrmCase(case_id, """\
+            canal_id: Teléfono
+            categ_id: False
+            id: {}
+            name: Bad reason
+            partner_address_id: ...spí
+            partner_id: ...osé
+            polissa_id: '0013117'
+            section_id: HelpDesk
+            state: open
+            user_id: false
+        """.format(case_id))
+
     def test_createCase_withClaim_createsAtcAsWell(self):
         case = self.claim_base()
         claims = Claims(self.erp)
