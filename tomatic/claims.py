@@ -48,16 +48,6 @@ def unknownState(erp):
     return unknownState.cached
 
 
-def crmSectionHelpdesk(erp):
-    if hasattr(crmSectionHelpdesk, 'cached'):
-        return crmSectionHelpdesk.cached
-    section_ids = erp.CrmCaseSection.search([
-        ('code','=','CI'),
-    ])
-    assert section_ids, "A CRM Section with code CI should exist"
-    crmSectionHelpdesk.cached = section_ids[0]
-    return crmSectionHelpdesk(erp)
-
 class Claims(object):
 
     def __init__(self, erp):
@@ -161,11 +151,7 @@ class Claims(object):
         else:
             categ_id = categ_ids[0]
 
-        crm_section_id = (
-            self._crmSectionID(case.claimsection)
-            if 'claimsection' in case and case.claimsection else
-            crmSectionHelpdesk(self.erp)
-        )
+        crm_section_id = self._crmSectionID(case.get('claimsection', 'HelpDesk'))
 
         data_crm = {
             'section_id': crm_section_id,
