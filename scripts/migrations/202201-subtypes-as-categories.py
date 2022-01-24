@@ -3,7 +3,10 @@
 from erppeek import Client
 import dbconfig
 from yamlns import namespace as ns
+from consolemsg import step, warn, success
 from erppeek_wst import ClientWST
+import sys
+
 erp = ClientWST(**dbconfig.erppeek)
 
 def loadData(erp, context):
@@ -24,12 +27,12 @@ def loadData(erp, context):
     ]
 
 def apply():
-    # Fix double '][' in INFOENERGIA name
+    step("Fix double '][' in INFOENERGIA name")
     erp.CrmCaseCateg.write(91, dict(
         name='[INFOENERGIA] Consulta sobre els seus informes',
     ))
 
-    # Add category codes to existing categories
+    step("Add category codes to existing categories")
     for id, code in ns.loads("""\
         83:  'IN01' # [INFO]  Dubtes informació general (com fer-me soci, com omplir)
         85:  'IN02' # [INFO]  Sóc Soci i vull Convidar. No sóc Soci i vull contractar
@@ -64,7 +67,7 @@ def apply():
             categ_code=code,
         ))
 
-    # Create a new category for each claim subtypes
+    step("Create a new category for each claim subtype")
     for sub in context.subtypes:
         erp.CrmCaseCateg.create(dict(
             name = sub.desc,
@@ -76,17 +79,27 @@ def apply():
 try:
     erp.begin()
     context = ns()
+
+    step("Loading state before (dumped as content-before.yaml)")
     loadData(erp, context)
     context.dump('content-before.yaml')
+
     apply()
+
+    step("Loading state after (dumped as content-after.yaml)")
     loadData(erp, context)
     context.dump('content-after.yaml')
 except:
+    warn("Error detected rolling back")
     erp.rollback()
     raise
-finally:
-    erp.rollback()
-    #erp.commit()
+else:
+    if '--apply' in sys.argv:
+        success("Applying changes")
+        erp.commit()
+    else:
+        warn("Use --apply to really apply. Rolling back changes.")
+        erp.rollback()
 
 
 
