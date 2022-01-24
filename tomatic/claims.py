@@ -94,7 +94,7 @@ class Claims(object):
         # No match found
         return None
 
-    def _claimSectionID(self, section_description):
+    def _claimSubtypeByDescription(self, section_description):
         claims_model = self.erp.GiscedataSubtipusReclamacio
         return claims_model.search([('desc', '=', section_description)])[0]
 
@@ -193,7 +193,7 @@ class Claims(object):
 
         partner_id = self._partnerId(case.partner)
         partner_address = self._partnerAddress(partner_id)
-        claim_section_id = self._claimSectionID(
+        claim_subtype_id = self._claimSubtypeByDescription(
             case.reason.split('.',1)[-1].strip()
         )
         contract_id = self._contractId(case.contract)
@@ -203,7 +203,7 @@ class Claims(object):
             'provincia': state_id,
             'total_cups': 1,
             'cups_id': contract['cups'][0] if contract else None,
-            'subtipus_id': claim_section_id,
+            'subtipus_id': claim_subtype_id,
             'reclamante': CLAIMANT,
             'resultat': resolutionCode(case),
             'date': case.date,
