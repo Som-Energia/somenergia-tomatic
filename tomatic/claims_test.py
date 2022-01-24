@@ -179,7 +179,6 @@ class Claims_Test(unittest.TestCase):
 
         claims = Claims(self.erp)
         case_id = claims.create_atc_case(case)
-        last_case_id = self.erp.GiscedataAtc.search()[0]
         self.assertAtcCase(case_id, """
             cups_id: ...M0F
             date: '2021-11-11 15:13:39.998'
@@ -201,7 +200,6 @@ class Claims_Test(unittest.TestCase):
 
         claims = Claims(self.erp)
         case_id = claims.create_atc_case(case)
-        last_case_id = self.erp.GiscedataAtc.search()[0]
         self.assertAtcCase(case_id, """
             cups_id: ...M0F
             date: '2021-11-11 15:13:39.998'
@@ -223,7 +221,6 @@ class Claims_Test(unittest.TestCase):
 
         claims = Claims(self.erp)
         case_id = claims.create_atc_case(case)
-        last_case_id = self.erp.GiscedataAtc.search()[0]
         self.assertAtcCase(case_id, """
             cups_id: ...M0F
             date: '2021-11-11 15:13:39.998'
@@ -245,7 +242,6 @@ class Claims_Test(unittest.TestCase):
 
         claims = Claims(self.erp)
         case_id = claims.create_atc_case(case)
-        last_case_id = self.erp.GiscedataAtc.search()[0]
         self.assertAtcCase(case_id, """
             cups_id: ...M0F
             date: '2021-11-11 15:13:39.998'
