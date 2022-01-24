@@ -46,15 +46,6 @@ def resolutionCode(case):
         irresolvable = '03',
     ).get(case.resolution, 'bad')
 
-def sectionName(erp, section_id):
-    claims_model = erp.GiscedataSubtipusReclamacio
-    return claims_model.read(section_id, ['desc']).get('desc')
-
-
-def claimSectionID(erp, section_description):
-    claims_model = erp.GiscedataSubtipusReclamacio
-    return claims_model.search([('desc', '=', section_description)])[0]
-
 
 def crmSectionID(erp, section):
     sections_model = erp.CrmCaseSection
@@ -115,6 +106,10 @@ class Claims(object):
             if user_ids: return user_ids[0]
         # No match found
         return None
+
+    def _claimSectionID(self, section_description):
+        claims_model = self.erp.GiscedataSubtipusReclamacio
+        return claims_model.search([('desc', '=', section_description)])[0]
 
     def get_claims(self):
         claims_model = self.erp.GiscedataSubtipusReclamacio
@@ -211,8 +206,8 @@ class Claims(object):
 
         partner_id = self._partnerId(case.partner)
         partner_address = self._partnerAddress(partner_id)
-        claim_section_id = claimSectionID(
-            self.erp, case.reason.split('.',1)[-1].strip()
+        claim_section_id = self._claimSectionID(
+            case.reason.split('.',1)[-1].strip()
         )
         contract_id = self._contractId(case.contract)
         contract = self.erp.GiscedataPolissa.read(contract_id, ['cups'])
