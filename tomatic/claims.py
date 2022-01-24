@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from typing import Optional
 from enum import Enum
 from .persons import persons
+from consolemsg import warn
 
 class Resolution(str, Enum):
     unsolved = 'unsolved'
@@ -101,6 +102,15 @@ def crmSectionID(erp, section):
     sections_model = erp.CrmCaseSection
     return sections_model.search([('name', 'ilike', section)])[0]
 
+def crmSectionHelpdesk(erp):
+    if hasattr(crmSectionHelpdesk, 'cached'):
+        return crmSectionHelpdesk.cached
+    section_ids = erp.CrmCaseSection.search([
+        ('code','=','CI'),
+    ])
+    assert section_ids, "A CRM Section with code CI should exist"
+    crmSectionHelpdesk.cached = section_ids[0]
+    return crmSectionHelpdesk(erp)
 
 class Claims(object):
 
@@ -146,12 +156,27 @@ class Claims(object):
         partner_id = partnerId(self.erp, case.partner)
         partner_address = partnerAddress(self.erp, partner_id)
 
-        crm_section_id = crmSectionID(self.erp, case.claimsection)
+        category_description = case.reason.split('.',1)[-1].strip()
+        categ_ids = self.erp.CrmCaseCateg.search([
+            ('name', 'ilike', category_description),
+        ])
+        if not categ_ids:
+            warn(f"Category not found {category_description}")
+            categ_id = False
+        else:
+            categ_id = categ_ids[0]
+
+        crm_section_id = (
+            crmSectionID(self.erp, case.claimsection)
+            if 'claimsection' in case and case.claimsection else
+            crmSectionHelpdesk(self.erp)
+        )
 
         data_crm = {
             'section_id': crm_section_id,
-            'name': case.reason.split('.',1)[-1].strip(),
+            'name': category_description,
             'canal_id': PHONE_CHANNEL,
+            'categ_id': categ_id,
             'polissa_id': contractId(self.erp, case.contract),
             'partner_id': partner_id,
             'partner_address_id': partner_address.get('id') if partner_address else False,
@@ -171,21 +196,15 @@ class Claims(object):
     def create_atc_case(self, case):
         '''
         Expected case:
-
-        namespace(
-            person:
-              - date: D-M-YYYY H:M:S
-                user: person
-                reason: '[´section.name´] ´claim.name´. ´claim.desc´'
-                partner: partner number
-                contract: contract number
-                # maybe unsolved, fair, unfair, irresolvable or empty
-                resolution: fair
-                claimsection: section.name
-                notes: comments
-                - ...
-            ...
-        )
+            date: D-M-YYYY H:M:S
+            user: person
+            reason: '[´section.name´] ´claim.name´. ´claim.desc´'
+            partner: partner number
+            contract: contract number
+            # maybe unsolved, fair, unfair, irresolvable or empty
+            resolution: fair
+            claimsection: section.name
+            notes: comments
         '''
         CallAnnotation(**case)
 

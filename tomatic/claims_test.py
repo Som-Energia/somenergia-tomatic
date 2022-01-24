@@ -64,11 +64,12 @@ class Claims_Test(unittest.TestCase):
 
     from yamlns.testutils import assertNsEqual
 
-    def crmCase(self, case_id):
-        """Retrieves the data of a CrmCase to check its fields"""
+    def crmCase(self, case_id, deep=False):
+        """Retrieves checkeable erp fields for a CrmCase"""
         result = ns(self.erp.CrmCase.read(case_id, [
             'section_id',
             'name',
+            'categ_id',
             'canal_id',
             'polissa_id',
             'partner_id',
@@ -78,6 +79,7 @@ class Claims_Test(unittest.TestCase):
         ]))
 
         fkname(result, "section_id")
+        fkname(result, "categ_id")
         fkname(result, "canal_id")
         fkname(result, "partner_id")
         fkname(result, "partner_address_id")
@@ -133,7 +135,7 @@ class Claims_Test(unittest.TestCase):
         result = self.atcCase(case_id)
         self.assertNsEqual(result, expected)
 
-    def atc_base(self, **kwds):
+    def claim_base(self, **kwds):
         """Provides a base for input atc cases to be feed"""
         base = ns.loads("""
             date: '2021-11-11T15:13:39.998Z'
@@ -144,21 +146,20 @@ class Claims_Test(unittest.TestCase):
             contract: '0013117'
             resolution: fair
             claimsection: RECLAMACIONS
-            notes: adfasd
+            notes: User annotated text
         """)
         base.update(**kwds)
         return base
 
-    def crm_base(self, **kwds):
+    def info_base(self, **kwds):
         base = ns.loads("""\
             date: '2021-11-11T15:13:39.998Z'
             phone: '555444333'
             user: albert
-            reason: '[RECLAMACIONS] 003. INCIDENCIA EN EQUIPOS DE MEDIDA'
+            reason: "[COBRAMENTS] Informació sobre el tall de subministrament"
             partner: S001975
             contract: '0013117'
-            claimsection: RECLAMACIONS
-            notes: adfasd
+            notes: User annotated text
         """)
         base.update(**kwds)
         return base
@@ -175,7 +176,7 @@ class Claims_Test(unittest.TestCase):
         self.assertB2BEqual(ns(categories=categories).dump())
 
     def test_createAtcCase_procedente(self):
-        case = self.atc_base()
+        case = self.claim_base()
 
         claims = Claims(self.erp)
         case_id = claims.create_atc_case(case)
@@ -194,7 +195,7 @@ class Claims_Test(unittest.TestCase):
         """.format(case_id))
 
     def test_createAtcCase_improcedente(self):
-        case = self.atc_base(
+        case = self.claim_base(
             resolution='unfair',
         )
 
@@ -215,7 +216,7 @@ class Claims_Test(unittest.TestCase):
         """.format(case_id))
 
     def test_createAtcCase_noSolution(self):
-        case = self.atc_base(
+        case = self.claim_base(
             resolution='irresolvable',
         )
 
@@ -236,7 +237,7 @@ class Claims_Test(unittest.TestCase):
         """.format(case_id))
 
     def test_createAtcCase_unsolved(self):
-        case = self.atc_base(
+        case = self.claim_base(
             resolution='unsolved',
         )
 
@@ -257,29 +258,31 @@ class Claims_Test(unittest.TestCase):
         """.format(case_id))
 
     def test_createCrmCase(self):
-        case = self.crm_base()
+        case = self.info_base()
         claims = Claims(self.erp)
         case_id = claims.create_crm_case(case)
         self.assertCrmCase(case_id, """\
             canal_id: Teléfono
+            categ_id: '[COBRAMENTS] Informació sobre el tall de subministrament (com to'
             id: {}
-            name: INCIDENCIA EN EQUIPOS DE MEDIDA
+            name: '[COBRAMENTS] Informació sobre el tall de subministrament'
             partner_address_id: ...spí
             partner_id: ...osé
             polissa_id: '0013117'
-            section_id: Atenció al Client / RECLAMACIONS
+            section_id: HelpDesk
             state: open
             user_id: false
         """.format(case_id))
 
     def test_createCrmCase_erpuserInPersons(self):
-        case = self.crm_base(
+        case = self.claim_base(
             user='marc',
         )
         claims = Claims(self.erp)
         case_id = claims.create_crm_case(case)
         self.assertCrmCase(case_id, """\
             canal_id: Teléfono
+            categ_id: INCIDENCIA EN EQUIPOS DE MEDIDA
             id: {}
             name: INCIDENCIA EN EQUIPOS DE MEDIDA
             partner_address_id: ...spí
@@ -287,42 +290,44 @@ class Claims_Test(unittest.TestCase):
             polissa_id: '0013117'
             section_id: Atenció al Client / RECLAMACIONS
             state: open
-            user_id: ...lló
+            user_id: ...lló      # <--THIS CHANGES
         """.format(case_id))
 
     def test_createCrmCase_noContract(self):
-        case = self.crm_base(
+        case = self.info_base(
             contract = '',
         )
         claims = Claims(self.erp)
         case_id = claims.create_crm_case(case)
         self.assertCrmCase(case_id, """\
             canal_id: Teléfono
+            categ_id: '[COBRAMENTS] Informació sobre el tall de subministrament (com to'
             id: {}
-            name: INCIDENCIA EN EQUIPOS DE MEDIDA
+            name: '[COBRAMENTS] Informació sobre el tall de subministrament'
             partner_address_id: ...spí
             partner_id: ...osé
             polissa_id: False # <---------  THIS CHANGES
-            section_id: Atenció al Client / RECLAMACIONS
+            section_id: HelpDesk
             state: open
             user_id: false
         """.format(case_id))
 
     def test_createCrmCase_noPartner(self):
-        case = self.crm_base(
+        case = self.info_base(
             contract = '',
             partner = '',
         )
         claims = Claims(self.erp)
         case_id = claims.create_crm_case(case)
         self.assertCrmCase(case_id, """\
-            canal_id: Teléfono
             id: {}
-            name: INCIDENCIA EN EQUIPOS DE MEDIDA
+            canal_id: Teléfono
+            categ_id: '[COBRAMENTS] Informació sobre el tall de subministrament (com to'
+            name: '[COBRAMENTS] Informació sobre el tall de subministrament'
             partner_address_id: False
             partner_id: False # <---------  THIS CHANGES
             polissa_id: False # <---------  THIS CHANGES
-            section_id: Atenció al Client / RECLAMACIONS
+            section_id: HelpDesk
             state: open
             user_id: false
         """.format(case_id))
