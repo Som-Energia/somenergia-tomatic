@@ -237,5 +237,13 @@ class Claims(object):
     def is_atc_case(self, case):
         return case.get('claimsection', '') != ''
 
+    def create_case(self, case):
+        if not self.is_atc_case(case):
+            return self.create_crm_case(case)
+        # TODO: we had this, why asking again?
+        atc_case_id = self.create_atc_case(case)
+        atc_case = self.erp.GiscedataAtc.read(atc_case_id, ['crm_id'])
+        return atc_case['crm_id'][0]
+
 
 # vim: et ts=4 sw=4

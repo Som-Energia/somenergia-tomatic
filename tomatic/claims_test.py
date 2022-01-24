@@ -89,10 +89,18 @@ class Claims_Test(unittest.TestCase):
         anonymize(result, 'partner_address_id')
         anonymize(result, 'user_id')
 
+        if deep:
+            atcCase_id = self.erp.GiscedataAtc.search([
+                ('crm_id', '=', case_id),
+            ])
+            result.atc_id = self.atcCase(atcCase_id[0]) if atcCase_id else False
+            if atcCase_id:
+                del result.atc_id.id
+
         return result
 
-    def atcCase(self, case_id):
-        """Retrieves the data of a AtcCase to check its fields"""
+    def atcCase(self, case_id, deep=False):
+        """Retrieves checkeable erp fields for an AtcCase"""
         result = ns(self.erp.GiscedataAtc.read(case_id, [
             'provincia',
             'total_cups',
@@ -104,6 +112,7 @@ class Claims_Test(unittest.TestCase):
             'email_from',
             'time_tracking_id',
             'state',
+            'crm_id',
         ]))
 
         fkname(result, "cups_id")
@@ -113,20 +122,26 @@ class Claims_Test(unittest.TestCase):
         anonymize(result, "cups_id")
         anonymize(result, "email_from")
 
+        crm_id = result.pop('crm_id')
+        if deep:
+            result.crm_id = crm_id and self.crmCase(crm_id[0])
+            if crm_id:
+                del result.crm_id.id
+
         return result
 
-    def assertCrmCase(self, case_id, expected):
-        """Asserts that the CrmCase fields to be checked have
+    def assertCrmCase(self, case_id, expected, deep=False):
+        """Asserts that the CrmCase checkable erp fields do have
         the proper values"""
         if not expected:
             self.assertFalse(case_id)
             return
         self.assertTrue(case_id)
-        result = self.crmCase(case_id)
+        result = self.crmCase(case_id, deep=deep)
         self.assertNsEqual(result, expected)
 
     def assertAtcCase(self, case_id, expected):
-        """Asserts that the AtcCase fields to be checked have
+        """Asserts that the AtcCase checkable erp fields do have
         the proper values"""
         if not expected:
             self.assertFalse(case_id)
@@ -331,6 +346,69 @@ class Claims_Test(unittest.TestCase):
             state: open
             user_id: false
         """.format(case_id))
+
+    def test_createCrmCase_withClaim(self):
+        case = self.claim_base() # <- This changes
+        claims = Claims(self.erp)
+        case_id = claims.create_crm_case(case)
+        self.assertCrmCase(case_id, """\
+            canal_id: Teléfono
+            categ_id: INCIDENCIA EN EQUIPOS DE MEDIDA  # <--- THIS CHANGES
+            id: {}
+            name: INCIDENCIA EN EQUIPOS DE MEDIDA  # <--- THIS CHANGES
+            partner_address_id: ...spí
+            partner_id: ...osé
+            polissa_id: '0013117'
+            section_id: Atenció al Client / RECLAMACIONS  # <--- THIS CHANGES
+            state: open
+            user_id: false
+        """.format(case_id))
+
+    def test_createCase_createsCrmAsWell(self):
+        case = self.claim_base()
+        claims = Claims(self.erp)
+        case_id = claims.create_case(case)
+        self.assertCrmCase(case_id, """\
+            id: {}
+            canal_id: Teléfono
+            categ_id: INCIDENCIA EN EQUIPOS DE MEDIDA
+            name: INCIDENCIA EN EQUIPOS DE MEDIDA
+            partner_address_id: '...spí'
+            partner_id: '...osé'
+            polissa_id: '0013117'
+            section_id: Atenció al Client / RECLAMACIONS
+            state: open
+            user_id: false
+            atc_id:   # <----- THIS CHANGES
+                cups_id: ...M0F
+                date: '2021-11-11 15:13:39.998'
+                email_from: ...oop
+                provincia: Barcelona
+                reclamante: '01'
+                resultat: '01'
+                subtipus_id: '003'
+                time_tracking_id: Comercialitzadora
+                state: open
+                total_cups: 1
+        """.format(case_id), deep=True)
+
+    def test_createCase_doesNotCreateCrmWhenItIsNot(self):
+        case = self.info_base()
+        claims = Claims(self.erp)
+        case_id = claims.create_case(case)
+        self.assertCrmCase(case_id, """\
+            id: {}
+            canal_id: Teléfono
+            categ_id: '[COBRAMENTS] Informació sobre el tall de subministrament (com to'
+            name: '[COBRAMENTS] Informació sobre el tall de subministrament'
+            partner_address_id: '...spí'
+            partner_id: '...osé'
+            polissa_id: '0013117'
+            section_id: HelpDesk
+            state: open
+            user_id: false
+            atc_id: false   # <----- THIS CHANGES
+        """.format(case_id), deep=True)
 
 
 # vim: et ts=4 sw=4
