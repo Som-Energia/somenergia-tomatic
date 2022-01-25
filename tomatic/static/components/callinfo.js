@@ -114,7 +114,7 @@ CallInfo.filteredReasons = function(filter) {
     call_reasons.general,
   );
 
-  if (reason_filter === "") {
+  if (filter === "") {
     return list_reasons
   }
   var filtered_regular = list_reasons.filter(contains);
