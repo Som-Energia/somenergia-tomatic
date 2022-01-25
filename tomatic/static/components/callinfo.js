@@ -34,7 +34,28 @@ CallInfo.call_reasons = {
     'extras': []
 }
 CallInfo.extras_dict = {};
+
 CallInfo.savingAnnotation = false;
+CallInfo.annotation = {};
+
+CallInfo.resetAnnotation = function(tag) {
+  CallInfo.annotation = {
+    resolution: 'unsolved',
+    tag: tag,
+  }
+};
+
+CallInfo.annotationRequiresSection = function() {
+  return CallInfo.annotation === "ASSIGNAR USUARI";
+};
+CallInfo.annotationReasonTag = function() {
+  var reason = CallInfo.call.reason;
+  var matches = reason.match(/\[(.*?)\]/);
+  if (matches) {
+    return matches[1].trim();
+  }
+  return "";
+};
 
 
 CallInfo.clear = function() {

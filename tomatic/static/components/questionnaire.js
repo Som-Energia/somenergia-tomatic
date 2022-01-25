@@ -166,25 +166,30 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
     return (type != info);
   }
 
-  var seleccionaUsuari = function(reclamacio, tag) {
-    var section = tag;
+  var sectionSelector = function(reasonTag) {
+    var reclamacio = CallInfo.annotation;
     var options = CallInfo.selectableSections()
+    var selectable = reasonTag === "ASSIGNAR USUARI";
     return m("", [
       m("p", "Equip: " ),
       m("select",
         {
           id: "select-user",
           class: ".select-user",
-          disabled: section !== "ASSIGNAR USUARI",
-          default: section,
-          onchange: function() {
-            reclamacio.tag = document.getElementById("select-user").value;
+          disabled: !selectable,
+          default: reasonTag,
+          oninput: function(ev) {
+            reclamacio.tag = ev.target.value;
           },
         },
-        options.map(function(option) {
+        m("option", {
+          value: reasonTag,
+          selected: !options.includes(reasonTag)
+        }, reasonTag),
+        selectable && options.map(function(option) {
           return m("option", {
               "value": option,
-              "selected": section === option
+              "selected": reclamacio.tag === option
             }, option);
         })
       )
@@ -197,9 +202,9 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
       m(RadioGroup, {
         name: 'resolution',
         onChange: function(state) {
-          reclamacio.resolution = state.value;
+          CallInfo.annotation.resolution = state.value;
         },
-        checkedValue: reclamacio.resolution,
+        checkedValue: CallInfo.annotation.resolution,
         buttons: [{
             defaultChecked: true,
             label: "No resolt",
@@ -218,7 +223,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
     ])
   }
 
-  var buttons = function(reclamacio) {
+  var buttons = function() {
     return [
       m(Button, {
         label: "Cancel·lar",
@@ -233,12 +238,12 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
         label: "Desa",
         events: {
           onclick: function() {
-            enviar(reclamacio);
+            enviar(Callinfo.annotation);
             Dialog.hide({ id: 'fillReclama' });
             Dialog.hide({ id: 'settingsDialog' });
           },
         },
-        disabled: (reclamacio.tag === "ASSIGNAR USUARI"),
+        disabled: !CallInfo.annotationRequiresSection(),
         contained: true,
         raised: true,
       })
@@ -246,21 +251,18 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
   }
 
   var emplenaReclamacio = function(tag) {
-    var reclamacio = {
-      "resolution": "unsolved",
-      "tag": tag
-    }
+    CallInfo.resetAnnotation(tag)
     Dialog.show(function() {
       return {
         className: 'dialog-reclama',
         title: 'Reclamació:',
         backdrop: true,
         body: [
-          seleccionaUsuari(reclamacio, tag),
+          sectionSelector(tag),
           m("br"),
-          resolutionOptions(reclamacio),
+          resolutionOptions(CallInfo.annotation),
         ],
-        footerButtons: buttons(reclamacio),
+        footerButtons: buttons(),
       };},{id:'fillReclama'});
   }
 
@@ -344,7 +346,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
           label: CallInfo.savingAnnotation?"Desant":"Desa",
           events: {
             onclick: function() {
-              var tag = getTag(CallInfo.call.reason);
+              var tag = CallInfo.annotationReasonTag()
               if (esReclamacio(tag)) {
                 emplenaReclamacio(tag);
               }
