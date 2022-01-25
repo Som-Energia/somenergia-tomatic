@@ -24,7 +24,7 @@ CallInfo.autoRefresh = true; // whether we are auto searching on incomming calls
 CallInfo.call = {
     'phone': "", // phone of the currently selected call registry
     'date': "", // isodate of the last unbinded search or the currently selected call registry
-    'reason': "", // annotated reason for the call
+    'topic': "", // annotated topic for the call
     'extra': "", // annotated comments for the call
     'log_call_reasons': [],
 };
@@ -52,8 +52,8 @@ CallInfo.hasNoSection = function() {
   return CallInfo.annotation.tag === CallInfo.noSection;
 };
 CallInfo.reasonTag = function() {
-  var reason = CallInfo.call.reason;
-  var matches = reason.match(/\[(.*?)\]/);
+  var topic = CallInfo.call.topic;
+  var matches = topic.match(/\[(.*?)\]/);
   if (matches) {
     return matches[1].trim();
   }
@@ -80,7 +80,7 @@ var postAnnotation = function(annotation) {
   }, function(error) {
     console.debug('Info POST apicall failed: ', error);
   });
-  CallInfo.call.reason = "";
+  CallInfo.call.topic = "";
 }
 
 CallInfo.annotationIsClaim = function() {
@@ -103,7 +103,7 @@ CallInfo.saveCallLog = function(claim) {
     "phone": CallInfo.call.phone,
     "partner": partner_code,
     "contract": contract_number,
-    "reason": CallInfo.call.reason,
+    "reason": CallInfo.call.topic,
     "notes": CallInfo.call.extra,
     "claimsection": (
       !isClaim ? "" : (
@@ -117,7 +117,7 @@ CallInfo.saveCallLog = function(claim) {
 CallInfo.clear = function() {
   CallInfo.call.phone = "";
   CallInfo.call.log_call_reasons = [];
-  CallInfo.call.reason = "";
+  CallInfo.call.topic = "";
   CallInfo.call.extra = "";
   CallInfo.currentPerson = 0;
   CallInfo.currentContract = 0;

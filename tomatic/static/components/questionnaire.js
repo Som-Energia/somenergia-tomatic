@@ -27,17 +27,16 @@ var topicFilter = "";
 
 
 var topicList = function() {
-  var reasons = CallInfo.filteredTopics(topicFilter)
-  var disabled = (CallInfo.savingAnnotation || CallInfo.call.date === "" );
+  var topics = CallInfo.filteredTopics(topicFilter)
 
   return m(".motius", m(List, {
     compact: true,
     indentedBorder: true,
     compact: true,
-    tiles: reasons.map(function(reason) {
+    tiles: topics.map(function(topic) {
       return m(ListTile, {
         className: (
-          CallInfo.call.reason === reason
+          CallInfo.call.topic === topic
           ? "llista-motius-selected"
           : "llista-motius-unselected"
         ),
@@ -45,14 +44,14 @@ var topicList = function() {
         selectable: true,
         ink: true,
         hover: true,
-        title: reason,
-        selected: CallInfo.call.reason == reason,
+        title: topic,
+        selected: CallInfo.call.topic == topic,
         events: {
           onclick: function(ev) {
-            CallInfo.call.reason = reason
+            CallInfo.call.topic = topic
           }
         },
-        disabled: disabled,
+        disabled: CallInfo.savingAnnotation,
         bordered: true,
        });
     }),
@@ -288,7 +287,7 @@ Questionnaire.openCaseAnnotationDialog = function() {
           border: 'true',
           disabled: (
             CallInfo.savingAnnotation ||
-            CallInfo.call.reason === "" ||
+            CallInfo.call.topic === "" ||
             CallInfo.call.extra === "" ||
             CallInfo.call.date === "" ||
             Login.myName() === ""
