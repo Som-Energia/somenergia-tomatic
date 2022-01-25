@@ -271,7 +271,9 @@ Questionnaire.openCaseAnnotationDialog = function() {
         }),
         m(Button, {
           className: "save",
-          label: CallInfo.savingAnnotation?"Desant":"Desa",
+          label: CallInfo.savingAnnotation?"Desant":(
+            CallInfo.annotationIsClaim()?"Continua":
+              "Desa"),
           events: {
             onclick: function() {
               if (CallInfo.annotationIsClaim()) {
