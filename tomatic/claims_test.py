@@ -191,6 +191,11 @@ class Claims_Test(unittest.TestCase):
         categories = claims.crm_categories()
         self.assertB2BEqual(ns(categories=categories).dump())
 
+    def test_categories(self):
+        claims = Claims(self.erp)
+        categories = claims.categories()
+        self.assertB2BEqual(ns(categories=categories).dump())
+
     def test_createAtcCase_procedente(self):
         case = self.claim_base()
 

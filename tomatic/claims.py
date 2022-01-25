@@ -131,6 +131,71 @@ class Claims(object):
 
         return claims
 
+    def _last_path(self, fullpath):
+        return fullpath.split('/')[-1].strip()
+
+    def categories(self):
+        # TODO: Use a config file or a db backend
+        keywords = ns.loads("""
+            R002: protecció de dades
+            R003: comptador
+            R005: creuament comptadors
+            R006: endarrerida
+            R009: estimada
+            R010: expedient
+            R031: altres
+            R057: expedient
+            R101: compte bancari
+            R102: duplicat
+            R110: no entenen factures
+            R111: no entenen contracte
+            R114: encallada endarrerida
+        """)
+
+        ids = self.erp.search('crm.case.section', [])
+        sections = [ ns(s) for s in self.erp.read('crm.case.section',  [
+                ('code', 'ilike', 'ATC'),
+                ('name', '!=', 'INFO'),
+            ], [
+                'name',
+                'code',
+                'parent_id',
+            ]
+        )]
+        parentSections = { s.parent_id[0] for s in sections if s.parent_id }
+        sections = [s for s in sections if s.id not in parentSections]
+
+        ids = self.erp.search('crm.case.categ', [])
+        categories = [
+            ns(x) for x in self.erp.read('crm.case.categ', ids, [
+                'name',
+                'desc',
+                'categ_code',
+                'section_id',
+            ]) or []
+        ]
+        return ns(
+            categories=[
+                ns(
+                    name = cat.name,
+                    code = cat.categ_code,
+                    section = self._last_path(cat.section_id[1]) if cat.section_id else None,
+                    isclaim = cat.categ_code and cat.categ_code[0] == 'R',
+                    keywords = keywords.get(cat.categ_code,''),
+                )
+                for cat in sorted(categories, key=lambda x:x.categ_code or '')
+                if cat.name[:1] == '['
+                or (cat.categ_code and cat.categ_code[0] == 'R')
+            ],
+            sections=[
+                dict(
+                    code = s.code,
+                    name = s.name,
+                )
+                for s in (ns(x) for x in sections)
+            ],
+        )
+
     def crm_categories(self):
         ids = self.erp.CrmCaseCateg.search([])
         return [

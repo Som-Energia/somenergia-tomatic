@@ -1,0 +1,587 @@
+categories:
+  categories:
+  - name: '[APORTACIONS - GKWH] Informació sobre les seves aportacions al G'
+    code: AP01
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[AUTOPRODUCCIÓ] Informació sobre les compres col·lectives, com i'
+    code: AU01
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[COBRAMENTS] Dubtes informació amb factures impagades i com fer '
+    code: CB01
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[COBRAMENTS] Informació sobre el tall de subministrament (com to'
+    code: CB02
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[COMUNICACIÓ] Comentar noticies blog, campanyes, newsletter, mai'
+    code: CO01
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[CONTRACTES] Tot tipus de consultes referents a altes d''un nou p'
+    code: CT01
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[CONTRACTES] Tot tipus de consultes referents a baixes d’un punt'
+    code: CT02
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[CONTRACTES] Informació procés contractació, endarreriments, reb'
+    code: CT03
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[CONTRACTES] Informació sobre possible canvi de comer fraudulent'
+    code: CT04
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[CONTRACTES] Quina potència necessito? Info sobre nova tarifa'
+    code: CT05
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[CONTRACTES]Canvi de Titular - Canvi de Pagador. Com es fa, on, '
+    code: CT06
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[CONTRACTES] Tràmits sobre l’autoconsum (com es fa, documentació'
+    code: CT07
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[ENTITATS I EMPRESES] Informació com contractar administradors d'
+    code: EE01
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[ENTITATS I EMPRESES] Informació sobre tarifa 3.X TD i 6.X TD'
+    code: EE02
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[FACTURA] Dubtes informació sobre les seves factures '
+    code: FA01
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[FACTURA]Dubtes informació sobre les lectures - vol donar lectur'
+    code: FA02
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[FACTURA] Info comptadors, lloguer, canvi a telegestió, trifàsic'
+    code: FA03
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[INFOENERGIA] Consulta sobre els seus informes'
+    code: IE01
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[INFO]  Dubtes informació general (com fer-me soci, com omplir)'
+    code: IN01
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[INFO]  Sóc Soci i vull Convidar. No sóc Soci i vull contractar'
+    code: IN02
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[INFO]  Bo social (com es demana, qui hi pot tenir accés, etc)'
+    code: IN03
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[INFO]  No tinc llum, què faig?'
+    code: IN04
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[OV]  Demanen canvis que els hem de dirigir a l''OV '
+    code: OV01
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[OV] Problemes amb l''accés a OV (contrassenya, usuari, activació'
+    code: OV02
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[OV] Consultes sobre les seccions (infoenergia i corbes, GkWh, i'
+    code: OV03
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[GL - PARTICIPA - AULA POPULAR] Info sobre assemblea, sobre el P'
+    code: PA01
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: '[PROJECTES - GENERACIÓ] Informació sobre les nostres plantes'
+    code: PR01
+    section: HelpDesk
+    isclaim: false
+    keywords: ''
+  - name: ATENCION INCORRECTA
+    code: R001
+    section: null
+    isclaim: true
+    keywords: ''
+  - name: PRIVACIDAD DE LOS DATOS
+    code: R002
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: protecció de dades
+  - name: INCIDENCIA EN EQUIPOS DE MEDIDA
+    code: R003
+    section: FACTURA
+    isclaim: true
+    keywords: comptador
+  - name: DAÑOS ORIGINADOS POR EQUIPO DE MEDIDA
+    code: R004
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: CONTADOR EN FACTURA NO CORRESPONDE CON INSTALADO
+    code: R005
+    section: FACTURA
+    isclaim: true
+    keywords: creuament comptadors
+  - name: CONTRATOS ATR QUE NO SE FACTURAN
+    code: R006
+    section: FACTURA
+    isclaim: true
+    keywords: endarrerida
+  - name: 'CUPS NO PERTENECE A COMERCIALIZADORA O NO VIGENTE EN PERIODO DE '
+    code: R007
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: DISCONFORMIDAD CON CONCEPTOS FACTURADOS
+    code: R008
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: DISCONFORMIDAD CON LECTURA FACTURADA
+    code: R009
+    section: FACTURA
+    isclaim: true
+    keywords: estimada
+  - name: DISCONFORMIDAD EN FACTURA ANOMALÍA / FRAUDE
+    code: R010
+    section: FACTURA
+    isclaim: true
+    keywords: expedient
+  - name: RECLAMACIÓN FACTURA PAGO DUPLICADO
+    code: R011
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: REFACTURACION NO RECIBIDA
+    code: R012
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: DISCONFORMIDAD CON CAMBIO DE SUMINISTRADOR
+    code: R013
+    section: CONTRACTES - C
+    isclaim: true
+    keywords: ''
+  - name: REQUERIMIENTO DE FIANZA / DEPÓSITO DE GARANTÍA
+    code: R014
+    section: CONTRACTES - C
+    isclaim: true
+    keywords: ''
+  - name: RETRASO CORTE DE SUMINISTRO
+    code: R015
+    section: COBRAMENTS
+    isclaim: true
+    keywords: ''
+  - name: DISCONFORMIDAD CON CRITERIOS ECONÓMICOS / COBROS
+    code: R018
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: DISCONFORMIDAD CON CRITERIOS TÉCNICOS / OBRA EJECUTADA
+    code: R019
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: CALIDAD DE ONDA
+    code: R020
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: CON PETICIÓN DE INDEMNIZACIÓN
+    code: R021
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: SIN PETICIÓN DE INDEMNIZACIÓN
+    code: R022
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: RETRASO EN PAGO INDEMNIZACION
+    code: R023
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: DAÑOS A TERCEROS POR INSTALACIONES
+    code: R024
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: IMPACTO AMBIENTAL INSTALACIONES
+    code: R025
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: RECLAMACIONES SOBRE INSTALACIONES
+    code: R026
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: DISCONFORMIDAD DESCUENTO SERVICIO INDIVIDUAL
+    code: R027
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: EJECUCIÓN INDEBIDA DE CORTE
+    code: R028
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: RETRASO EN LA ATENCIÓN A RECLAMACIONES
+    code: R029
+    section: null
+    isclaim: true
+    keywords: ''
+  - name: RETRASO PLAZO DE CONTESTACIÓN NUEVOS SUMINISTROS
+    code: R030
+    section: CONTRACTES - A
+    isclaim: true
+    keywords: ''
+  - name: RETRASO PLAZO DE EJECUCIÓN NUEVO SUMINISTRO
+    code: R031
+    section: CONTRACTES - A
+    isclaim: true
+    keywords: altres
+  - name: RETRASO REENGANCHE TRAS CORTE
+    code: R032
+    section: COBRAMENTS
+    isclaim: true
+    keywords: ''
+  - name: POR URGENCIAS
+    code: R033
+    section: Atenció al Client
+    isclaim: true
+    keywords: ''
+  - name: DISCONFORMIDAD CON CONCEPTOS DE CONTRATACIÓN ATR-PEAJE
+    code: R034
+    section: CONTRACTES - C
+    isclaim: true
+    keywords: ''
+  - name: DISCONFORMIDAD RECHAZO SOLICITUD ATR-PEAJE
+    code: R035
+    section: null
+    isclaim: true
+    keywords: ''
+  - name: PETICIÓN DE REFACTURACIÓN APORTANDO LECTURA
+    code: R036
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: FICHERO XML INCORRECTO
+    code: R037
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: PRIVACIDAD DE LOS DATOS
+    code: R038
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: SOLICITUD DE CERTIFICADO / INFORME DE CALIDAD
+    code: R039
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: SOLICITUD DE DUPLICADO DE FACTURA
+    code: R040
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: SOLICITUD DE ACTUACIÓN SOBRE INSTALACIONES
+    code: R041
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: SOLICITUD DE DESCARGO
+    code: R042
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: PETICIÓN DE PRECINTADO / DESPRECINTADO DE EQUIPOS
+    code: R043
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: PETICIONES CON ORIGEN EN CAMPAÑAS DE TELEGESTIÓN
+    code: R044
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: ACTUALIZACION DIRECCIÓN PUNTO DE SUMINISTRO
+    code: R045
+    section: CONTRACTES - C
+    isclaim: true
+    keywords: ''
+  - name: CERTIFICADO DE LECTURA
+    code: R046
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: SOLICITUD RECALCULO CCH SIN MODIFICACION CIERRE ATR
+    code: R047
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: PETICIÓN INFORMACIÓN ADICIONAL RECHAZO
+    code: R048
+    section: null
+    isclaim: true
+    keywords: ''
+  - name: FALTA FICHERO MEDIDA
+    code: R049
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: DESACUERDO FACTURACIÓN
+    code: R050
+    section: Atenció al Client
+    isclaim: true
+    keywords: ''
+  - name: CONDUCTA INADECUADA
+    code: R051
+    section: Atenció al Client
+    isclaim: true
+    keywords: ''
+  - name: DISCONFORMIDAD TRABAJOS REALIZADOS
+    code: R052
+    section: Atenció al Client
+    isclaim: true
+    keywords: ''
+  - name: INCUMPLIMIENTO HORA
+    code: R053
+    section: Atenció al Client
+    isclaim: true
+    keywords: ''
+  - name: DAÑOS INSPECCIÓN
+    code: R054
+    section: Atenció al Client
+    isclaim: true
+    keywords: ''
+  - name: DISCONFORMIDAD SOBRE IMPORTE FACTURADO AUTOCONSUMO
+    code: R055
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: PETICIÓN DESGLOSE IMPORTE A FACTURAR AUTOCONSUMO
+    code: R056
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: 'DISCONFORMIDAD CON EXPEDIENTE DE ANOMALIA Y FRAUDE (sin factura '
+    code: R057
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: expedient
+  - name: RETRASO EN PLAZO ACEPTACIÓN CAMBIO DE COMERCIALIZADOR
+    code: R058
+    section: CONTRACTES - C
+    isclaim: true
+    keywords: ''
+  - name: 'RETRASO EN PLAZO ACTIVACIÓN CAMBIO DE COMERCIALIZADOR '
+    code: R059
+    section: CONTRACTES - C
+    isclaim: true
+    keywords: ''
+  - name: RETRASO EN PLAZO ACEPTACIÓN MODIFICACIÓN CONTRACTUAL
+    code: R060
+    section: CONTRACTES - M
+    isclaim: true
+    keywords: ''
+  - name: RETRASO EN PLAZO ACTIVACIÓN MODIFICACIÓN CONTRACTUAL
+    code: R061
+    section: CONTRACTES - M
+    isclaim: true
+    keywords: ''
+  - name: RETRASO EN PLAZO ACEPTACIÓN ALTA DE UN NUEVO SUMINISTRO
+    code: R062
+    section: CONTRACTES - A
+    isclaim: true
+    keywords: ''
+  - name: RETRASO EN PLAZO ACTIVACIÓN ALTA DE UN NUEVO SUMINISTRO
+    code: R063
+    section: CONTRACTES - A
+    isclaim: true
+    keywords: ''
+  - name: RETRASO EN PLAZO ACEPTACIÓN DE UNA BAJA DE UN SUMINISTRO
+    code: R064
+    section: CONTRACTES - B
+    isclaim: true
+    keywords: ''
+  - name: RETRASO EN PLAZO ACTIVACIÓN BAJA DE UN SUMINISTRO
+    code: R065
+    section: CONTRACTES - B
+    isclaim: true
+    keywords: ''
+  - name: INFORMACIÓN/VALIDACIÓN SOBRE DATOS DEL CONTRATO ATR/PEAJE
+    code: R066
+    section: CONTRACTES - M
+    isclaim: true
+    keywords: ''
+  - name: VERIFICACIÓN DE CONTADOR
+    code: R067
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: RECLAMACIÓN POR APLICACIÓN DEL FACTOR DE CONVERSIÓN O EL PCS
+    code: R068
+    section: Atenció al Client
+    isclaim: true
+    keywords: ''
+  - name: COPIA F1 EN PDF
+    code: R069
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: RETRASO EN LA ATENCIÓN A RECLAMACIONES NO SUJETAS A ATENCIÓN REG
+    code: R070
+    section: null
+    isclaim: true
+    keywords: ''
+  - name: RETRASO EN PLAZO DE ACEPTACIÓN DESISTIMIENTO
+    code: R071
+    section: null
+    isclaim: true
+    keywords: ''
+  - name: RETRASO EN PLAZO DE ACTIVACIÓN DESISTIMIENTO
+    code: R072
+    section: null
+    isclaim: true
+    keywords: ''
+  - name: PARÁMETROS DE COMUNICACIÓN
+    code: R073
+    section: null
+    isclaim: true
+    keywords: ''
+  - name: RETRASO EN PLAZO DE ACEPTACIÓN ANULACIÓN
+    code: R074
+    section: null
+    isclaim: true
+    keywords: ''
+  - name: INCIDENCIAS CONTRATACIÓN BONO SOCIAL
+    code: R100
+    section: CONTRACTES - C
+    isclaim: true
+    keywords: ''
+  - name: DATOS BANCARIOS/FORMA DE PAGO ERRÓNEA
+    code: R101
+    section: COBRAMENTS
+    isclaim: true
+    keywords: compte bancari
+  - name: ERRORES EN COBROS/ ABONOS
+    code: R102
+    section: COBRAMENTS
+    isclaim: true
+    keywords: duplicat
+  - name: DISCONFORMIDAD PRECIOS FACTURADOS O REPERCUTIDOS POR LA COMERCIA
+    code: R103
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: DISCONFORMIDAD FRACCIONAMIENTO O GASTOS ESPECIALES COBRADOS
+    code: R104
+    section: COBRAMENTS
+    isclaim: true
+    keywords: ''
+  - name: DISCONFORMIDAD CON EL RECOBRO
+    code: R105
+    section: COBRAMENTS
+    isclaim: true
+    keywords: ''
+  - name: DISCONFORMIDAD CON PENALIZACIÓN POR PRONTA RESOLUCIÓN
+    code: R106
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: INSUFICIENTE INFORMACIÓN EN EL MOMENTO DE LA CONTRATACIÓN (Condi
+    code: R107
+    section: CONTRACTES - C
+    isclaim: true
+    keywords: ''
+  - name: RECLAMACION  RESPECTO AL DERECHO DE DESISTIMIENTO
+    code: R108
+    section: CONTRACTES - C
+    isclaim: true
+    keywords: ''
+  - name: FACTURACION DE OTROS SERVICIOS TRAS LA CANCELACIÓN DEL SUMINISTR
+    code: R109
+    section: FACTURA
+    isclaim: true
+    keywords: ''
+  - name: 'FALTA DE CLARIDAD EN LAS FACTURAS '
+    code: R110
+    section: FACTURA
+    isclaim: true
+    keywords: no entenen factures
+  - name: FALTA DE CLARIDAD CONDICIONES CONTRACTUALES
+    code: R111
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: no entenen contracte
+  - name: DIFICULTAD EN LA CONTRATACIÓN DE LA TUR/PVPC CON EL CUR/COR
+    code: R112
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: RECLAMACIONES POR PRACTICAS COMERCIALES INCORRECTAS
+    code: R113
+    section: RECLAMACIONS
+    isclaim: true
+    keywords: ''
+  - name: RETRASO EN FACTURACIÓN COMERCIALIZADOR
+    code: R114
+    section: FACTURA
+    isclaim: true
+    keywords: encallada endarrerida
+  sections:
+  - code: ATCF
+    name: FACTURA
+  - code: ATCR
+    name: RECLAMACIONS
+  - code: ATCCB
+    name: COBRAMENTS
+  - code: ATCC-A
+    name: CONTRACTES - A
+  - code: ATCC-B
+    name: CONTRACTES - B
+  - code: ATCC-C
+    name: CONTRACTES - C
+  - code: ATCC-M
+    name: CONTRACTES - M
