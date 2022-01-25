@@ -65,13 +65,12 @@ var getMyExt = function() {
 }
 Login.getMyExt = getMyExt;
 
-var currentExtension = function() {
+Login.currentExtension = function() {
     var cookie_value = getCookie(tomaticCookie);
     if (cookie_value === ":") return -1;
     var extension = cookie_value.split(":")[1].toString();
     return extension === "" ? -1 : extension;
 }
-Login.currentExtension = currentExtension;
 
 
 var setCookieInfo = function(vnode){
