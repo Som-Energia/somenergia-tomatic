@@ -253,7 +253,7 @@ CallInfo.selectContract = function(idx) {
 var retrieveInfo = function () {
   m.request({
     method: 'GET',
-    url: '/api/info/'+CallInfo.search_by+"/"+CallInfo.search,
+    url: '/api/info/'+CallInfo.search_by+"/"+encodeURIComponent(CallInfo.search.trim()),
     extract: deyamlize,
   }).then(function(response){
     console.debug("Info GET Response: ", response);
