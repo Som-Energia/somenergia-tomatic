@@ -63,31 +63,33 @@ class Claims(object):
 
     def _partnerAddress(self, partner_id):
         if not partner_id: return None
-        return self.erp.ResPartnerAddress.read(
+        return self.erp.read('res.partner.address',
             [('partner_id', '=', partner_id)],
             ['id', 'state_id', 'email']
         )[0]
 
     def _contractId(self, contract):
         if not contract: return None
-        contract_id = self.erp.GiscedataPolissa.search([("name", "=", contract)])
+        contract_id = self.erp.search('giscedata.polissa',[
+            ("name", "=", contract)
+        ])
         if contract_id: return contract_id[0]
 
     def _erpUser(self, person):
         # Try with explicit erpuser in persons.yaml
         erplogin = persons().get('erpusers',{}).get(person,None)
         if erplogin:
-            user_ids = self.erp.ResUsers.search([
+            user_ids = self.erp.search('res.users', [
                 ('login', '=', erplogin)
             ])
             if user_ids: return user_ids[0]
         # if not found try with email
         email = persons().get('emails',{}).get(person,None)
         if email:
-            address_ids = self.erp.ResPartnerAddress.search([
+            address_ids = self.erp.search('res.partner.address', [
                 ('email', '=', email),
             ])
-            user_ids = self.erp.ResUsers.search([
+            user_ids = self.erp.search('res.users', [
                 ('address_id', 'in', address_ids),
             ])
             if user_ids: return user_ids[0]
@@ -95,12 +97,14 @@ class Claims(object):
         return None
 
     def _claimSubtypeByDescription(self, section_description):
-        claims_model = self.erp.GiscedataSubtipusReclamacio
-        return claims_model.search([('desc', '=', section_description)])[0]
+        return self.erp.search('giscedata.subtipus.reclamacio', [
+            ('desc', '=', section_description)
+        ])[0]
 
     def _crmSectionID(self, section):
-        sections_model = self.erp.CrmCaseSection
-        return sections_model.search([('name', 'ilike', section)])[0]
+        return self.erp.search('crm.case.section', [
+            ('name', 'ilike', section)
+        ])[0]
 
     def get_claims(self):
         claims_model = self.erp.GiscedataSubtipusReclamacio
@@ -142,7 +146,7 @@ class Claims(object):
         partner_address = self._partnerAddress(partner_id)
 
         category_description = case.reason.split('.',1)[-1].strip()
-        categ_ids = self.erp.CrmCaseCateg.search([
+        categ_ids = self.erp.search('crm.case.categ', [
             ('name', 'ilike', category_description),
         ])
         if not categ_ids:
@@ -164,13 +168,13 @@ class Claims(object):
             'state': 'open', # TODO: 'done' if case.solved else 'open',
             'user_id': self._erpUser(case.user),
         }
-        crm_id = self.erp.CrmCase.create(data_crm).id
+        crm_id = self.erp.create('crm.case', data_crm)
 
         data_history = {
             'case_id': crm_id,
             'description': case.notes,
         }
-        crm_history_id = self.erp.CrmCaseHistory.create(data_history).id
+        crm_history_id = self.erp.create('crm.case.history', data_history)
 
         return crm_id
 

@@ -90,18 +90,17 @@ class Claims_Test(unittest.TestCase):
         anonymize(result, 'user_id')
 
         if deep:
-            atcCase_id = self.erp.GiscedataAtc.search([
+            result.atc_id = self.atcCase([
                 ('crm_id', '=', case_id),
             ])
-            result.atc_id = self.atcCase(atcCase_id[0]) if atcCase_id else False
-            if atcCase_id:
+            if result.atc_id:
                 del result.atc_id.id
 
         return result
 
-    def atcCase(self, case_id, deep=False):
+    def atcCase(self, atc_case_id, deep=False):
         """Retrieves checkeable erp fields for an AtcCase"""
-        result = ns(self.erp.GiscedataAtc.read(case_id, [
+        result = self.erp.GiscedataAtc.read(atc_case_id, [
             'provincia',
             'total_cups',
             'cups_id',
@@ -113,7 +112,9 @@ class Claims_Test(unittest.TestCase):
             'time_tracking_id',
             'state',
             'crm_id',
-        ]))
+        ])
+        if not result: return False
+        result = ns(result[0])
 
         fkname(result, "cups_id")
         fkname(result, "subtipus_id")
@@ -147,7 +148,7 @@ class Claims_Test(unittest.TestCase):
             self.assertFalse(case_id)
             return
         self.assertTrue(case_id)
-        result = self.atcCase(case_id)
+        result = self.atcCase([case_id])
         self.assertNsEqual(result, expected)
 
     def claim_base(self, **kwds):
