@@ -290,18 +290,21 @@ CallInfoPage.view = function() {
         m(".layout.vertical.flex", [
           customerSearch(),
           m('.plane-info',
-            isEmpty(CallInfo.file_info)?
-              m(".searching", 'No s\'ha trobat cap resultat.'):(
-            CallInfo.file_info[1] === "empty"?
-              m(".searching", m(Spinner, { show: "true" } )):(
-            CallInfo.file_info[1] === "toomuch"?
-              m(".searching", 'Cerca poc específica, retorna masses resultats.'):(
+            CallInfo.searchStatus()==='ZERORESULTS'?
+              m(".searching", 'No s\'ha trobat cap resultat.')
+            :(
+            CallInfo.searchStatus()==='SEARCHING'?
+              m(".searching", m(Spinner, { show: "true" } ))
+            :(
+            CallInfo.searchStatus()==='TOOMANYRESULTS'?
+              m(".searching", 'Cerca poc específica, retorna masses resultats.')
+            :(
               m('.plane-info', [
                 m(".layout.vertical.flex", [
-                  PartnerInfo.allInfo(CallInfo.file_info),
-                  ContractInfo.mainPanel(CallInfo.file_info),
+                  PartnerInfo.allInfo(CallInfo.searchResults),
+                  ContractInfo.mainPanel(CallInfo.searchResults),
                 ]),
-                ContractInfo.detailsPanel(CallInfo.file_info),
+                ContractInfo.detailsPanel(CallInfo.searchResults),
               ])
             )))
           ),

@@ -14,7 +14,7 @@ var CallInfo = {};
 var websock = null;
 CallInfo.search = ""; // Search value
 CallInfo.search_by = "phone"; // Search file
-CallInfo.file_info = {}; // Retrieved search data
+CallInfo.searchResults = {}; // Retrieved search data
 CallInfo.currentPerson = 0; // Selected person from search data
 CallInfo.currentContract = 0; // Selected contract selected person
 CallInfo.callLog = []; // User call registry
@@ -120,7 +120,7 @@ CallInfo.clear = function() {
   CallInfo.currentPerson = 0;
   CallInfo.currentContract = 0;
   CallInfo.savingAnnotation = false;
-  CallInfo.file_info = {};
+  CallInfo.searchResults = {};
 }
 
 
@@ -128,7 +128,7 @@ CallInfo.changeUser = function(newUser) {
   CallInfo.search = "";
   CallInfo.clear();
   CallInfo.call.date = "";
-  CallInfo.file_info = {};
+  CallInfo.searchResults = {};
   CallInfo.callLog = [];
   CallInfo.call.iden = newUser;
   CallInfo.autoRefresh = true;
@@ -147,7 +147,7 @@ CallInfo.callSelected = function(date, phone) {
   CallInfo.call.phone = phone;
   CallInfo.search = phone;
   CallInfo.search_by = "phone";
-  CallInfo.file_info = { 1: "empty" };
+  CallInfo.searchResults = { 1: "empty" };
   retrieveInfo();
 }
 
@@ -210,12 +210,28 @@ CallInfo.filteredTopics = function(filter) {
   return filtered_regular.concat(extras);
 };
 
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
+
+CallInfo.searchStatus = function() {
+  if (isEmpty(CallInfo.searchResults)) {
+    return "ZERORESULTS";
+  }
+  if (CallInfo.searchResults[1] === "empty") {
+    return "SEARCHING";
+  }
+  if (CallInfo.searchResults[1] === "toomuch")
+    return "TOOMANYRESULTS";
+
+  return "SUCCESS"
+}
 
 CallInfo.selectedPartner = function() {
-  if (!CallInfo.file_info) { return null; }
-  if (!CallInfo.file_info.partners) { return null; }
-  if (CallInfo.file_info.partners.length===0) { return null; }
-  var partner = CallInfo.file_info.partners[CallInfo.currentPerson];
+  if (!CallInfo.searchResults) { return null; }
+  if (!CallInfo.searchResults.partners) { return null; }
+  if (CallInfo.searchResults.partners.length===0) { return null; }
+  var partner = CallInfo.searchResults.partners[CallInfo.currentPerson];
   if (partner === undefined) { return null; }
   return partner;
 };
@@ -243,22 +259,22 @@ var retrieveInfo = function () {
   }).then(function(response){
     console.debug("Info GET Response: ", response);
     if(response.info.message === "response_too_long") {
-      CallInfo.file_info = { 1: "toomuch" };
+      CallInfo.searchResults = { 1: "toomuch" };
       return;
     }
     if (response.info.message !== "ok" ) {
       console.debug("Error al obtenir les dades: ", response.info.message)
-      CallInfo.file_info = {}
+      CallInfo.searchResults = {}
       return;
     }
 
-    CallInfo.file_info=response.info.info;
+    CallInfo.searchResults=response.info.info;
     if (CallInfo.call.date === "") { // TODO: If selection is none
       CallInfo.call.date = new Date().toISOString();
     }
     // Keep the context, just in case a second query is started
-    // and CallInfo.file_info is overwritten
-    var context = CallInfo.file_info;
+    // and CallInfo.searchResults is overwritten
+    var context = CallInfo.searchResults;
     m.request({
       method: 'POST',
       url: '/api/info/contractdetails',
@@ -416,13 +432,13 @@ CallInfo.searchCustomer = function() {
   CallInfo.clear();
   if (CallInfo.search !== 0 && CallInfo.search !== ""){
     CallInfo.call.phone = "";
-    CallInfo.file_info = { 1: "empty" };
+    CallInfo.searchResults = { 1: "empty" };
     CallInfo.currentPerson = 0;
     retrieveInfo();
   }
   else {
     CallInfo.call.date = "";
-    CallInfo.file_info = {}
+    CallInfo.searchResults = {}
   }
 }
 
