@@ -153,14 +153,6 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
     CallInfo.call.reason = "";
   }
 
-  var getTag = function(reason) {
-    var matches = reason.match(/\[(.*?)\]/);
-    if (matches) {
-      return matches[1].trim();
-    }
-    return "";
-  }
-
   var esReclamacio = function(type) {
     const info = "CONSULTA";
     return (type != info);
