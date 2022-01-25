@@ -36,16 +36,11 @@ Login.watchLoginChanges = function() {
 		Login.watchLoginChanges, 500);
 }
 
-Login.myName = function() {
-    var cookie = whoAreYou();
-    var user = cookie.split(":")[0];
-    return user;
-}
 Login.onLogout = [];
 Login.onLogin = [];
 Login.onUserChanged = [];
 
-Login.logout = function(){
+Login.logout = function() {
     document.cookie = tomaticCookie + "=; expires = Thu, 01 Jan 1970 00:00:00 GMT;SameSite=Strict;path=/"
     Login.onLogout.map(function(callback) {
         callback();
@@ -57,6 +52,11 @@ Date.prototype.addHours = function(h) {
    return this;
 }
 
+Login.myName = function() {
+    var cookie = whoAreYou();
+    var user = cookie.split(":")[0];
+    return user;
+}
 
 Login.currentExtension = function() {
     var cookie_value = getCookie(tomaticCookie);
