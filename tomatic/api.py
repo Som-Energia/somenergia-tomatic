@@ -366,12 +366,12 @@ def yamlinfoerror(code, message, *args, **kwds):
 
 @app.get('/api/info/{field}/{value}')
 def getInfoPersonBy(field, value):
-    decoded_field = urllib.parse.unquote(value)
+    decoded_value = urllib.parse.unquote(value)
     data = None
     with erp() as O:
         callinfo = CallInfo(O)
         try:
-            data = callinfo.getByField(field, decoded_field, shallow=True)
+            data = callinfo.getByField(field, decoded_value, shallow=True)
         except ValueError:
             return yamlinfoerror('error_getBy'+field.title(),
                 "Getting information searching {}='{}'.", field, value)

@@ -178,7 +178,7 @@ var responsesMessage = function(info) {
   );
 }
 
-var atencionsLog = function() {
+var attendedCallList = function() {
   var aux = [];
   if (CallInfo.callLog.length === 0) {
     return m(".attended-calls-list", m(List, {
@@ -276,7 +276,7 @@ var attendedCalls = function() {
       }},{
       text: {
         content: (CallInfo.callLog[0] === "lookingfor" ?
-          m('center', m(Spinner, { show: "true" } )) : atencionsLog())
+          m('center', m(Spinner, { show: "true" } )) : attendedCallList())
       }},
     ]
   });

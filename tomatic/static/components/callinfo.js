@@ -190,23 +190,24 @@ CallInfo.getExtras = function (extras) {
 };
 
 CallInfo.filteredTopics = function(filter) {
-  var call_reasons = CallInfo.call_reasons;
-  function contains(value) {
-    var contains = value.toLowerCase().includes(filter.toLowerCase());
-    return contains;
+  function matches_search(value) {
+    return value.toLowerCase().includes(filter.toLowerCase());
   }
-  var list_reasons = [].concat(
+  var call_reasons = CallInfo.call_reasons;
+  var topics = [].concat(
     call_reasons.infos,
     call_reasons.general,
   );
 
   if (filter === "") {
-    return list_reasons
+    return topics
   }
-  var filtered_regular = list_reasons.filter(contains);
-  var filtered_extras = call_reasons.extras.filter(contains);
-  var extras = CallInfo.getExtras(filtered_extras);
-  return filtered_regular.concat(extras);
+  var topics_by_name = topics.filter(matches_search);
+  var filtered_keywords = call_reasons.extras.filter(matches_search);
+  var topics_by_keyword = filtered_keywords.map(function(keyword) {
+    return CallInfo.extras_dict[keyword];
+  })
+  return topics_by_name.concat(topics_by_keyword);
 };
 
 function isEmpty(obj) {
