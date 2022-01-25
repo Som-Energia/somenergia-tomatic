@@ -25,7 +25,7 @@ CallInfo.call = {
     'phone': "", // phone of the currently selected call registry
     'date': "", // isodate of the last unbinded search or the currently selected call registry
     'topic': "", // annotated topic for the call
-    'extra': "", // annotated comments for the call
+    'notes': "", // annotated comments for the call
     'log_call_reasons': [],
 };
 CallInfo.call_reasons = {
@@ -74,7 +74,7 @@ var postAnnotation = function(annotation) {
     else {
       console.debug("INFO case saved")
       CallInfo.savingAnnotation = false;
-      CallInfo.call.extra = "";
+      CallInfo.call.notes = "";
       CallInfo.call.date = "";
     }
   }, function(error) {
@@ -104,7 +104,7 @@ CallInfo.saveCallLog = function(claim) {
     "partner": partner_code,
     "contract": contract_number,
     "reason": CallInfo.call.topic,
-    "notes": CallInfo.call.extra,
+    "notes": CallInfo.call.notes,
     "claimsection": (
       !isClaim ? "" : (
       claim.tag ? claim.tag : (
@@ -118,7 +118,7 @@ CallInfo.clear = function() {
   CallInfo.call.phone = "";
   CallInfo.call.log_call_reasons = [];
   CallInfo.call.topic = "";
-  CallInfo.call.extra = "";
+  CallInfo.call.notes = "";
   CallInfo.currentPerson = 0;
   CallInfo.currentContract = 0;
   CallInfo.savingAnnotation = false;

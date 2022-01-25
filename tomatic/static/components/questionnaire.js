@@ -249,9 +249,9 @@ Questionnaire.openCaseAnnotationDialog = function() {
               floatingLabel: true,
               rows: 5,
               dense: true,
-              value: CallInfo.call.extra,
+              value: CallInfo.call.notes,
               onChange: function(params) {
-                CallInfo.call.extra = params.value
+                CallInfo.call.notes = params.value
               },
               disabled: CallInfo.savingAnnotation || CallInfo.call.date === "",
             }),
@@ -288,7 +288,7 @@ Questionnaire.openCaseAnnotationDialog = function() {
           disabled: (
             CallInfo.savingAnnotation ||
             CallInfo.call.topic === "" ||
-            CallInfo.call.extra === "" ||
+            CallInfo.call.notes === "" ||
             CallInfo.call.date === "" ||
             Login.myName() === ""
           ),
