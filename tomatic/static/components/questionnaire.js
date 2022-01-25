@@ -26,52 +26,6 @@ var Questionnaire = {};
 var reason_filter = "";
 
 
-var postAnnotation = function(annotation) {
-  m.request({
-    method: 'POST',
-    url: '/api/call/annotate',
-    extract: deyamlize,
-    body: annotation
-  }).then(function(response){
-    console.debug("Info POST Response: ",response);
-    if (response.info.message !== "ok" ) {
-      console.debug("Error al desar motius telefon: ", response.info.message)
-    }
-    else {
-      console.debug("INFO case saved")
-      CallInfo.savingAnnotation = false;
-      CallInfo.call.extra = "";
-      reason_filter = "";
-      CallInfo.call.date = "";
-    }
-  }, function(error) {
-    console.debug('Info POST apicall failed: ', error);
-  });
-}
-
-var saveLogCalls = function(phone, user, claim, contract, partner) {
-  CallInfo.savingAnnotation = true;
-  var partner_code = partner!==null ? partner.id_soci : "";
-  var contract_number = contract!==null ? contract.number : "";
-  var isodate = CallInfo.call.date || new Date().toISOString()
-  postAnnotation({
-    "user": user,
-    "date": isodate,
-    "phone": CallInfo.call.phone,
-    "partner": partner_code,
-    "contract": contract_number,
-    "reason": CallInfo.call.reason,
-    "notes": CallInfo.call.extra,
-    "claimsection": (
-      !claim ? "" : (
-      claim.tag ? claim.tag : (
-      "INFO"
-    ))),
-    "resolution": claim ? claim.resolution:'',
-  });
-}
-
-
 var llistaMotius = function() {
   var reasons = CallInfo.filteredReasons(reason_filter)
 
@@ -114,8 +68,6 @@ var clipboardIcon = function(){
 }
 
 Questionnaire.annotationButton = function() {
-  var partner = CallInfo.selectedPartner();
-  var contract = CallInfo.selectedContract();
   return m("",
     m(IconButton, {
       icon: clipboardIcon(),
@@ -124,8 +76,7 @@ Questionnaire.annotationButton = function() {
       title: "Anota la trucada fent servir aquest contracte",
       events: {
         onclick: function() {
-          console.log("VEURE QÜESTIONARI INFOS")
-          Questionnaire.openCaseAnnotationDialog(contract, partner);
+          Questionnaire.openCaseAnnotationDialog();
         },
       },
       disabled: (
@@ -137,30 +88,17 @@ Questionnaire.annotationButton = function() {
 }
 
 
-Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
+Questionnaire.openCaseAnnotationDialog = function() {
+  var partner = CallInfo.selectedPartner();
+  var contract = CallInfo.selectedContract();
   if (CallInfo.call.date === "") {
     CallInfo.call.date = new Date().toISOString();
   }
 
-  var enviar = function(reclamacio) {
-    saveLogCalls(
-      CallInfo.call.phone,
-      Login.myName(),
-      reclamacio,
-      contract,
-      partner
-    );
-    CallInfo.call.reason = "";
-  }
-
-  var esReclamacio = function(type) {
-    const info = "CONSULTA";
-    return (type != info);
-  }
-
-  var sectionSelector = function(reasonTag) {
-    var options = CallInfo.selectableSections()
-    var selectable = reasonTag === CallInfo.noSection;
+  var sectionSelector = function() {
+    var defaultSection = CallInfo.reasonTag(); // From the chosen category
+    var sections = CallInfo.selectableSections();
+    var selectable = defaultSection === CallInfo.noSection;
     return m("", [
       m("p", "Equip: " ),
       m("select",
@@ -168,16 +106,16 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
           id: "select-user",
           class: ".select-user",
           disabled: !selectable,
-          default: reasonTag,
+          default: defaultSection,
           oninput: function(ev) {
             CallInfo.annotation.tag = ev.target.value;
           },
         },
         m("option", {
-          value: reasonTag,
-          selected: !options.includes(reasonTag)
-        }, reasonTag),
-        selectable && options.map(function(option) {
+          value: defaultSection,
+          selected: !sections.includes(defaultSection)
+        }, defaultSection),
+        selectable && sections.map(function(option) {
           return m("option", {
               "value": option,
               "selected": CallInfo.annotation.tag === option
@@ -187,7 +125,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
     ]);
   }
 
-  var resolutionOptions = function() {
+  var resolutionChoser = function() {
     return m(".case-resolution", [
       m("p", "Resolució:"),
       m(RadioGroup, {
@@ -229,7 +167,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
         label: "Desa",
         events: {
           onclick: function() {
-            enviar(Callinfo.annotation);
+            CallInfo.saveCallLog();
             Dialog.hide({ id: 'fillReclama' });
             Dialog.hide({ id: 'settingsDialog' });
           },
@@ -241,17 +179,17 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
     ];
   }
 
-  var emplenaReclamacio = function(tag) {
-    CallInfo.resetAnnotation(tag)
+  var emplenaReclamacio = function() {
+    CallInfo.resetAnnotation();
     Dialog.show(function() {
       return {
         className: 'dialog-reclama',
         title: 'Reclamació:',
         backdrop: true,
         body: [
-          sectionSelector(tag),
+          sectionSelector(),
           m("br"),
-          resolutionOptions(),
+          resolutionChoser(),
         ],
         footerButtons: buttons(),
       };},{id:'fillReclama'});
@@ -337,12 +275,11 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
           label: CallInfo.savingAnnotation?"Desant":"Desa",
           events: {
             onclick: function() {
-              var tag = CallInfo.annotationReasonTag()
-              if (esReclamacio(tag)) {
-                emplenaReclamacio(tag);
+              if (CallInfo.annotationIsClaim()) {
+                emplenaReclamacio();
               }
               else {
-                enviar("");
+                CallInfo.saveCallLog();
                 Dialog.hide({id:'settingsDialog'});
               }
             },

@@ -38,7 +38,8 @@ CallInfo.extras_dict = {};
 CallInfo.savingAnnotation = false;
 CallInfo.annotation = {};
 
-CallInfo.resetAnnotation = function(tag) {
+CallInfo.resetAnnotation = function() {
+  var tag = CallInfo.reasonTag()
   CallInfo.annotation = {
     resolution: 'unsolved',
     tag: tag,
@@ -50,7 +51,7 @@ CallInfo.noSection = "ASSIGNAR USUARI"
 CallInfo.hasNoSection = function() {
   return CallInfo.annotation.tag === CallInfo.noSection;
 };
-CallInfo.annotationReasonTag = function() {
+CallInfo.reasonTag = function() {
   var reason = CallInfo.call.reason;
   var matches = reason.match(/\[(.*?)\]/);
   if (matches) {
@@ -59,6 +60,59 @@ CallInfo.annotationReasonTag = function() {
   return "";
 };
 
+var postAnnotation = function(annotation) {
+  m.request({
+    method: 'POST',
+    url: '/api/call/annotate',
+    extract: deyamlize,
+    body: annotation
+  }).then(function(response){
+    console.debug("Info POST Response: ",response);
+    if (response.info.message !== "ok" ) {
+      console.debug("Error al desar motius telefon: ", response.info.message)
+    }
+    else {
+      console.debug("INFO case saved")
+      CallInfo.savingAnnotation = false;
+      CallInfo.call.extra = "";
+      CallInfo.call.date = "";
+    }
+  }, function(error) {
+    console.debug('Info POST apicall failed: ', error);
+  });
+  CallInfo.call.reason = "";
+}
+
+CallInfo.annotationIsClaim = function() {
+  return CallInfo.reasonTag() === "CONSULTA";
+}
+
+CallInfo.saveCallLog = function(claim) {
+  CallInfo.savingAnnotation = true;
+  var partner = CallInfo.selectedPartner();
+  var contract = CallInfo.selectedContract();
+  var user = Login.myName();
+  var partner_code = partner!==null ? partner.id_soci : "";
+  var contract_number = contract!==null ? contract.number : "";
+  var isodate = CallInfo.call.date || new Date().toISOString();
+  var isClaim = CallInfo.annotationIsClaim();
+  var claim = CallInfo.annotation;
+  postAnnotation({
+    "user": user,
+    "date": isodate,
+    "phone": CallInfo.call.phone,
+    "partner": partner_code,
+    "contract": contract_number,
+    "reason": CallInfo.call.reason,
+    "notes": CallInfo.call.extra,
+    "claimsection": (
+      !isClaim ? "" : (
+      claim.tag ? claim.tag : (
+      "INFO"
+    ))),
+    "resolution": isClaim ? claim.resolution:'',
+  });
+}
 
 CallInfo.clear = function() {
   CallInfo.call.phone = "";
