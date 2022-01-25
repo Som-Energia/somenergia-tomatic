@@ -1,12 +1,27 @@
-[INFO] Explicació de la cooperativa (Primer contacte amb la cooperativa)
-[INFO] Problemes Formulari (informàtics, CNAE, adjunts..) 
-[INFO] Demanen canvis que els hem de dirigir a l'OV (mail, telefon, compte bancari, tarifa, potència) 
-[INFO] Problemes amb l'accés a l'OV (contrassenya, usuari, activació, etc.)
-[INFO] Generation kWh, Generació i Inversions 
-[INFO] Autoproducció
-[INFO] Avaries
-[INFO] Altres
-[INFO] FACTURA
-[INFO] COBRAMENTS
-[INFO] RECLAMA
-[INFO] CONTRACTES
+[CONSULTA] [INFO]  Dubtes informació general (com fer-me soci, com omplir)
+[CONSULTA] [INFO]  Sóc Soci i vull Convidar. No sóc Soci i vull contractar
+[CONSULTA] [INFO]  Bo social (com es demana, qui hi pot tenir accés, etc)
+[CONSULTA] [INFO]  No tinc llum, què faig?
+[CONSULTA] [OV]  Demanen canvis que els hem de dirigir a l'OV 
+[CONSULTA] [OV] Problemes amb l'accés a OV (contrassenya, usuari, activació
+[CONSULTA] [OV] Consultes sobre les seccions (infoenergia i corbes, GkWh, i
+[CONSULTA] [INFOENERGIA] Consulta sobre els seus informes
+[CONSULTA] [FACTURA] Dubtes informació sobre les seves factures 
+[CONSULTA] [FACTURA]Dubtes informació sobre les lectures - vol donar lectur
+[CONSULTA] [FACTURA] Info comptadors, lloguer, canvi a telegestió, trifàsic
+[CONSULTA] [COBRAMENTS] Dubtes informació amb factures impagades i com fer 
+[CONSULTA] [COBRAMENTS] Informació sobre el tall de subministrament (com to
+[CONSULTA] [CONTRACTES] Tot tipus de consultes referents a altes d'un nou p
+[CONSULTA] [CONTRACTES] Tot tipus de consultes referents a baixes d’un punt
+[CONSULTA] [CONTRACTES] Informació procés contractació, endarreriments, reb
+[CONSULTA] [CONTRACTES] Informació sobre possible canvi de comer fraudulent
+[CONSULTA] [CONTRACTES] Quina potència necessito? Info sobre nova tarifa
+[CONSULTA] [CONTRACTES]Canvi de Titular - Canvi de Pagador. Com es fa, on, 
+[CONSULTA] [CONTRACTES] Tràmits sobre l’autoconsum (com es fa, documentació
+[CONSULTA] [ENTITATS I EMPRESES] Informació com contractar administradors d
+[CONSULTA] [ENTITATS I EMPRESES] Informació sobre tarifa 3.X TD i 6.X TD
+[CONSULTA] [PROJECTES - GENERACIÓ] Informació sobre les nostres plantes
+[CONSULTA] [AUTOPRODUCCIÓ] Informació sobre les compres col·lectives, com i
+[CONSULTA] [APORTACIONS - GKWH] Informació sobre les seves aportacions al G
+[CONSULTA] [COMUNICACIÓ] Comentar noticies blog, campanyes, newsletter, mai
+[CONSULTA] [GL - PARTICIPA - AULA POPULAR] Info sobre assemblea, sobre el P
