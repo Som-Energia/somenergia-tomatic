@@ -159,7 +159,6 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
   }
 
   var sectionSelector = function(reasonTag) {
-    var reclamacio = CallInfo.annotation;
     var options = CallInfo.selectableSections()
     var selectable = reasonTag === "ASSIGNAR USUARI";
     return m("", [
@@ -171,7 +170,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
           disabled: !selectable,
           default: reasonTag,
           oninput: function(ev) {
-            reclamacio.tag = ev.target.value;
+            CallInfo.annotation.tag = ev.target.value;
           },
         },
         m("option", {
@@ -181,7 +180,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
         selectable && options.map(function(option) {
           return m("option", {
               "value": option,
-              "selected": reclamacio.tag === option
+              "selected": CallInfo.annotation.tag === option
             }, option);
         })
       )

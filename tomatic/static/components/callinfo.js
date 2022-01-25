@@ -45,8 +45,8 @@ CallInfo.resetAnnotation = function(tag) {
   }
 };
 
-CallInfo.annotationRequiresSection = function() {
-  return CallInfo.annotation === "ASSIGNAR USUARI";
+CallInfo.hasNoSection = function() {
+  return CallInfo.annotation.tag === "ASSIGNAR USUARI";
 };
 CallInfo.annotationReasonTag = function() {
   var reason = CallInfo.call.reason;
