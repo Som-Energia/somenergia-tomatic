@@ -107,7 +107,7 @@ CallInfo.saveCallLog = function(claim) {
     "claimsection": (
       !isClaim ? "" : (
       claim.tag ? claim.tag : (
-      "INFO"
+      "CONSULTA"
     ))),
     "resolution": isClaim ? claim.resolution:'',
   });
