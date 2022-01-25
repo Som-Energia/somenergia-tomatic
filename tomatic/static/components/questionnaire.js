@@ -23,12 +23,11 @@ var Login = require('./login');
 
 var Questionnaire = {};
 
-var reason_filter = "";
+var topicFilter = "";
 
 
-var llistaMotius = function() {
-  var reasons = CallInfo.filteredReasons(reason_filter)
-
+var topicList = function() {
+  var reasons = CallInfo.filteredTopics(topicFilter)
   var disabled = (CallInfo.savingAnnotation || CallInfo.call.date === "" );
 
   return m(".motius", m(List, {
@@ -234,14 +233,14 @@ Questionnaire.openCaseAnnotationDialog = function() {
               m(Textfield, {
                 className: "textfield-filter",
                 label: "Escriu per a filtrar",
-                value: reason_filter,
+                value: topicFilter,
                 dense: true,
                 onChange: function(params) {
-                  reason_filter = params.value
+                  topicFilter = params.value
                 }
               })),
           ]),
-          llistaMotius(),
+          topicList(),
           m(".final-motius", [
             m(Textfield, {
               className: "textfield-comentaris",

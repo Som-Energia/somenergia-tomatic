@@ -192,7 +192,7 @@ CallInfo.getExtras = function (extras) {
   });
 };
 
-CallInfo.filteredReasons = function(filter) {
+CallInfo.filteredTopics = function(filter) {
   var call_reasons = CallInfo.call_reasons;
   function contains(value) {
     var contains = value.toLowerCase().includes(filter.toLowerCase());
