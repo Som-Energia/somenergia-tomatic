@@ -57,16 +57,18 @@
 - [ ] Dubte AiS: renombrar user -> seccion/team (preguntar a AiS per terminologia de domini)
 - [ ] Dubte AiS: tenim les llistes a produccio que fem amb elles (mostrarles perque hi ha brossa i textos que poden canviar)
 
-- [ ] callinfo log: unite resolution fields
-- [ ] callinfo log: join infos and claims
+- [ ] entry point to obtain categories
+- [ ] encapsulate access to the categories info in frontend
+- [x] callinfo log: unite resolution fields
+- [x] callinfo log: join infos and claims
 - [ ] callinfo log: join infos/claims with log? (consider performance and usage)
-- [ ] Importar categories que falten de atc com a categorias de crmcases
-- [ ] anotate_case: sensitive to the case fields creates atc or not
+- [x] Importar categories que falten de atc com a categorias de crmcases
+- [x] anotate_case: sensitive to the case fields creates atc or not
 - [ ] !!! create crm: solved = True (lo comentamos cuando lo movimos a una funcion a parte)
 - [ ] create crm: extract seccio del reason and remove the field
 - [ ] create crm: cas contracte no existeix
 - [ ] callreg: Rename Claims to reflect its repurposing
-- [ ] callreg: create crm: Inserir usuari correcte al CRM (es fa servir l'usuari loggejat a l'erp: Scriptlauncher i no veiem com canviar-ho)
+- [x] callreg: create crm: Inserir usuari correcte al CRM (es fa servir l'usuari loggejat a l'erp: Scriptlauncher i no veiem com canviar-ho)
 - [ ] callreg: On failing annotation, ui notifies the user
 
 
