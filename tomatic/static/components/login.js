@@ -58,13 +58,6 @@ Date.prototype.addHours = function(h) {
 }
 
 
-var getMyExt = function() {
-    var cookie_value = getCookie(tomaticCookie);
-    if (cookie_value === ":") return "";
-    return cookie_value.split(":")[1].toString();
-}
-Login.getMyExt = getMyExt;
-
 Login.currentExtension = function() {
     var cookie_value = getCookie(tomaticCookie);
     if (cookie_value === ":") return -1;
