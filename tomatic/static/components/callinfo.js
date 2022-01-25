@@ -76,6 +76,18 @@ CallInfo.callSelected = function(date, phone) {
   retrieveInfo();
 }
 
+CallInfo.selectableSections = function() {
+  return [
+      "RECLAMA",
+      "FACTURA",
+      "COBRAMENTS",
+      "ATR A - COMER",
+      "ATR B - COMER",
+      "ATR C - COMER",
+      "ATR M - COMER"
+  ];
+}
+
 
 function formatContractNumber(number) {
   // some contract numbers get converted  to int and lose their padding

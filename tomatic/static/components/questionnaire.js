@@ -169,15 +169,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
 
   var seleccionaUsuari = function(reclamacio, tag) {
     var section = tag;
-    var options = [
-      "RECLAMA",
-      "FACTURA",
-      "COBRAMENTS",
-      "ATR A - COMER",
-      "ATR B - COMER",
-      "ATR C - COMER",
-      "ATR M - COMER"
-    ]
+    var options = CallInfo.selectableSections()
     return m("", [
       m("p", "Equip: " ),
       m("select",
