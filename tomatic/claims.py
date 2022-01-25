@@ -204,7 +204,6 @@ class Claims(object):
             if category['name'].startswith('[')
         ]
 
-
     def create_crm_case(self, case):
         CallAnnotation(**case)
         partner_id = self._partnerId(case.partner)

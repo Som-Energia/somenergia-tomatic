@@ -118,7 +118,6 @@ Questionnaire.annotationButton = function() {
   var contract = CallInfo.selectedContract();
   return m("",
     m(IconButton, {
-      icon: m("i.far.fa-clipboard.icon-clipboard"),
       icon: clipboardIcon(),
       wash: true,
       compact: true,
