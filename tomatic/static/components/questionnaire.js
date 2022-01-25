@@ -187,7 +187,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
     ]);
   }
 
-  var resolutionOptions = function(reclamacio) {
+  var resolutionOptions = function() {
     return m(".case-resolution", [
       m("p", "Resolució:"),
       m(RadioGroup, {
@@ -234,7 +234,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
             Dialog.hide({ id: 'settingsDialog' });
           },
         },
-        disabled: !CallInfo.annotationRequiresSection(),
+        disabled: CallInfo.hasNoSection(),
         contained: true,
         raised: true,
       })
@@ -251,7 +251,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
         body: [
           sectionSelector(tag),
           m("br"),
-          resolutionOptions(CallInfo.annotation),
+          resolutionOptions(),
         ],
         footerButtons: buttons(),
       };},{id:'fillReclama'});
