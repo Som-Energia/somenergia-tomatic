@@ -84,7 +84,7 @@ var postAnnotation = function(annotation) {
 }
 
 CallInfo.annotationIsClaim = function() {
-  return CallInfo.reasonTag() === "CONSULTA";
+  return CallInfo.reasonTag() !== "CONSULTA";
 }
 
 CallInfo.saveCallLog = function(claim) {
