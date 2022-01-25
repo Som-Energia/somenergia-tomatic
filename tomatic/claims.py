@@ -250,7 +250,7 @@ class Claims(object):
             reason: '[´section.name´] ´claim.name´. ´claim.desc´'
             partner: partner number
             contract: contract number
-            # maybe unsolved, fair, unfair, irresolvable or empty
+            # maybe unsolved, fair, unfair, irresolvable or null
             resolution: fair
             claimsection: section.name
             notes: comments

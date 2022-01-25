@@ -182,16 +182,11 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
           },
         },
         options.map(function(option) {
-          return
-            m("option", {
+          return m("option", {
               "value": option,
               "selected": section === option
             }, option);
-        }),
-        m("option", {
-          "value": section,
-          "selected": !options.includes(section)
-        }, section)
+        })
       )
     ]);
   }
