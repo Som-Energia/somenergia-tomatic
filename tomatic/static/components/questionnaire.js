@@ -80,6 +80,7 @@ var llistaMotius = function() {
   return m(".motius", m(List, {
     compact: true,
     indentedBorder: true,
+    compact: true,
     tiles: reasons.map(function(reason) {
       return m(ListTile, {
         className: (
@@ -315,7 +316,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
             m(".filter",
               m(Textfield, {
                 className: "textfield-filter",
-                label: "Escriure per filtrar",
+                label: "Escriu per a filtrar",
                 value: reason_filter,
                 dense: true,
                 onChange: function(params) {
