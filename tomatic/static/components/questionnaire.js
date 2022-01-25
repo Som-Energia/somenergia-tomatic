@@ -160,7 +160,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
 
   var sectionSelector = function(reasonTag) {
     var options = CallInfo.selectableSections()
-    var selectable = reasonTag === "ASSIGNAR USUARI";
+    var selectable = reasonTag === CallInfo.noSection;
     return m("", [
       m("p", "Equip: " ),
       m("select",
