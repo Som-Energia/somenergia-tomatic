@@ -191,7 +191,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
     ]);
   }
 
-  var preguntarResolt = function(reclamacio) {
+  var resolutionOptions = function(reclamacio) {
     return m(".case-resolution", [
       m("p", "Resolució:"),
       m(RadioGroup, {
@@ -258,7 +258,7 @@ Questionnaire.openCaseAnnotationDialog = function(contract, partner) {
         body: [
           seleccionaUsuari(reclamacio, tag),
           m("br"),
-          preguntarResolt(reclamacio),
+          resolutionOptions(reclamacio),
         ],
         footerButtons: buttons(reclamacio),
       };},{id:'fillReclama'});
