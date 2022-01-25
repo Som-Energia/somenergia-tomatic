@@ -130,7 +130,6 @@ CallInfo.changeUser = function(newUser) {
   CallInfo.call.date = "";
   CallInfo.searchResults = {};
   CallInfo.callLog = [];
-  CallInfo.call.iden = newUser;
   CallInfo.autoRefresh = true;
 }
 

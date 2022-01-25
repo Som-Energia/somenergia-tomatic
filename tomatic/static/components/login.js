@@ -47,12 +47,8 @@ Login.onUserChanged = [];
 
 Login.logout = function(){
     document.cookie = tomaticCookie + "=; expires = Thu, 01 Jan 1970 00:00:00 GMT;SameSite=Strict;path=/"
-    var info = {
-        iden: "",
-        ext: -1
-    }
     Login.onLogout.map(function(callback) {
-        callback(info);
+        callback();
     })
 }
 
