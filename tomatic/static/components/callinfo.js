@@ -26,7 +26,6 @@ CallInfo.call = {
     'date': "", // isodate of the last unbinded search or the currently selected call registry
     'topic': "", // annotated topic for the call
     'notes': "", // annotated comments for the call
-    'log_call_reasons': [],
 };
 CallInfo.call_reasons = {
     'general': [],
@@ -116,7 +115,6 @@ CallInfo.saveCallLog = function(claim) {
 
 CallInfo.clear = function() {
   CallInfo.call.phone = "";
-  CallInfo.call.log_call_reasons = [];
   CallInfo.call.topic = "";
   CallInfo.call.notes = "";
   CallInfo.currentPerson = 0;
