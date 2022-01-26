@@ -32,7 +32,7 @@ CallInfo.call_reasons = {
     'infos': [],
     'extras': []
 }
-CallInfo.extras_dict = {};
+CallInfo.keyword2topic = {};
 
 CallInfo.savingAnnotation = false;
 CallInfo.annotation = {};
@@ -46,7 +46,6 @@ CallInfo.resetAnnotation = function() {
 };
 
 CallInfo.noSection = "ASSIGNAR USUARI"
-
 CallInfo.hasNoSection = function() {
   return CallInfo.annotation.tag === CallInfo.noSection;
 };
@@ -185,7 +184,7 @@ function contractNumbers(info) {
 
 CallInfo.getExtras = function (extras) {
   return extras.map(function(extra) {
-    return CallInfo.extras_dict[extra];
+    return CallInfo.keyword2topic[extra];
   });
 };
 
@@ -205,7 +204,7 @@ CallInfo.filteredTopics = function(filter) {
   var topics_by_name = topics.filter(matches_search);
   var filtered_keywords = call_reasons.extras.filter(matches_search);
   var topics_by_keyword = filtered_keywords.map(function(keyword) {
-    return CallInfo.extras_dict[keyword];
+    return CallInfo.keyword2topic[keyword];
   })
   return topics_by_name.concat(topics_by_keyword);
 };
@@ -311,7 +310,7 @@ CallInfo.getClaims = function() {
       }
       else {
         CallInfo.call_reasons.general = response.info.claims;
-        CallInfo.extras_dict = response.info.dict;
+        CallInfo.keyword2topic = response.info.dict;
         CallInfo.call_reasons.extras = Object.keys(response.info.dict);
       }
   }, function(error) {
