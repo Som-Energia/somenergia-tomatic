@@ -126,31 +126,15 @@ What smoke tests you should be doing after an upgrade to check most components s
 
 This is a review of the callinfo files.
 
-- `call_log`:
+- `callinfo/categories.yaml`
+	- Categories to choose when annotating calls
+	- It also contains the sections to choose when the category has no predefined one in the ERP
+	- The list is built from the ERP when /api/call/categories/update
+	- Each category has `code`, `name`, `isClaim`, `section`
+- `callinfo/dailycalls.yaml`
 	- "registre de trucades (reclamació i no reclamacio)"
-	- `callinfo/dailycalls.yaml`
 	- `config.my_calls_log`
 	- person dict to a list of incomming calls of the day
-- `info_call_types`:
-	- "tipus de motius no reclamacio"
-	- `callinfo/info_types.txt`
-	- `config.info_cases`
-	- a line for each type description
-	- Venen d'un drive de la comi de telefon
-- `claim_types`:
-	- "tipus de reclamacions"
-	- `callinfo/claim_types.txt`
-	- `config.claims_file`
-	- A line for each type of claim
-- `claim_types_keywords`:
-	- "paraules clau dels tipus de motius reclamacio"
-	- `callinfo/claims_dict.yaml`
-	- `config.claims_dict_file`
-	- dictionary classificacio dels motius
-
-
-Atc Cases: Formal claims
-Info Cases: The rest of calls not a claim
 
 
 
