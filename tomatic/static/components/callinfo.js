@@ -12,6 +12,8 @@ var styleCallinfo = require('./callinfo_style.styl');
 var CallInfo = {};
 
 var websock = null;
+CallInfo.topics = [];
+CallInfo.sections = [];
 CallInfo.search = ""; // Search value
 CallInfo.search_by = "phone"; // Search file
 CallInfo.searchResults = {}; // Retrieved search data
@@ -45,7 +47,8 @@ CallInfo.resetAnnotation = function() {
   }
 };
 
-CallInfo.noSection = "ASSIGNAR USUARI"
+CallInfo.noSection = "ASSIGNAR USUARI";
+CallInfo.helpdeskSection = "CONSULTA";
 CallInfo.hasNoSection = function() {
   return CallInfo.annotation.tag === CallInfo.noSection;
 };
@@ -82,7 +85,7 @@ var postAnnotation = function(annotation) {
 }
 
 CallInfo.annotationIsClaim = function() {
-  return CallInfo.reasonTag() !== "CONSULTA";
+  return CallInfo.reasonTag() !== CallInfo.helpdeskSection;
 }
 
 CallInfo.saveCallLog = function(claim) {
@@ -106,7 +109,7 @@ CallInfo.saveCallLog = function(claim) {
     "claimsection": (
       !isClaim ? "" : (
       claim.tag ? claim.tag : (
-      "CONSULTA"
+      CallInfo.helpdeskSection
     ))),
     "resolution": isClaim ? claim.resolution:'',
   });
@@ -150,17 +153,10 @@ CallInfo.callSelected = function(date, phone) {
 }
 
 CallInfo.selectableSections = function() {
-  return [
-      "RECLAMA",
-      "FACTURA",
-      "COBRAMENTS",
-      "ATR A - COMER",
-      "ATR B - COMER",
-      "ATR C - COMER",
-      "ATR M - COMER"
-  ];
-}
-
+  return CallInfo.sections.map(function(section) {
+    return section.name;
+  });
+};
 
 function formatContractNumber(number) {
   // some contract numbers get converted  to int and lose their padding
@@ -189,24 +185,20 @@ CallInfo.getExtras = function (extras) {
 };
 
 CallInfo.filteredTopics = function(filter) {
-  function matches_search(value) {
-    return value.toLowerCase().includes(filter.toLowerCase());
-  }
-  var call_reasons = CallInfo.call_reasons;
-  var topics = [].concat(
-    call_reasons.infos,
-    call_reasons.general,
-  );
-
-  if (filter === "") {
-    return topics
-  }
-  var topics_by_name = topics.filter(matches_search);
-  var filtered_keywords = call_reasons.extras.filter(matches_search);
-  var topics_by_keyword = filtered_keywords.map(function(keyword) {
-    return CallInfo.keyword2topic[keyword];
-  })
-  return topics_by_name.concat(topics_by_keyword);
+  var lowerFilter = filter.toLowerCase()
+  return CallInfo.topics
+    .filter(function(topic) {
+      if (topic.description.toLowerCase().includes(lowerFilter)) {
+        return true;
+      }
+      if (topic.keywords.toLowerCase().includes(lowerFilter)) {
+        return true;
+      }
+      return false;
+    })
+    .map(function(topic) {
+      return topic.description;
+    });
 };
 
 function isEmpty(obj) {
@@ -297,6 +289,30 @@ var retrieveInfo = function () {
   });
 };
 
+CallInfo.getTopics = function() {
+  m.request({
+      method: 'GET',
+      url: '/api/call/annotate/topics',
+      extract: deyamlize,
+  }).then(function(response){
+      console.debug("Topics GET Response: ",response);
+
+      CallInfo.topics = response.categories;
+      CallInfo.topics.map(function(topic) {
+          var section = topic.section;
+          if (section === null) {
+              section = CallInfo.noSection;
+          }
+          if (section === "HelpDesk") {
+              section = CallInfo.helpdeskSection;
+          }
+          topic.description = "["+section+"] "+topic.code+". "+topic.name;
+      })
+      CallInfo.sections = response.sections;
+  }, function(error) {
+      console.debug('Info GET apicall failed: ', error);
+  });
+}
 
 CallInfo.getClaims = function() {
   m.request({
@@ -473,7 +489,7 @@ CallInfo.onMessageReceived = function(event) {
     }
     console.debug("Message received from WebSockets and type not recognized.");
 }
-
+CallInfo.getTopics();
 CallInfo.getClaims();
 CallInfo.getInfos();
 CallInfo.getLogPerson()

@@ -455,7 +455,13 @@ async def callAnnotate(request: Request):
         message="ok"
     ))
 
-
+@app.get('/api/call/annotate/topics')
+def annotationCategories():
+    # TODO: Caching through CallRegistry
+    with erp() as O:
+        from .claims import Claims
+        c = Claims(O)
+        return yamlfy(**c.categories())
 
 
 @app.get('/api/updateClaims')
