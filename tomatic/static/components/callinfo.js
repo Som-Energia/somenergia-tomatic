@@ -220,9 +220,9 @@ CallInfo.searchStatus = function() {
   if (CallInfo.searchResults[1] === "empty") {
     return "SEARCHING";
   }
-  if (CallInfo.searchResults[1] === "toomuch")
+  if (CallInfo.searchResults[1] === "toomuch") {
     return "TOOMANYRESULTS";
-
+  }
   return "SUCCESS"
 }
 
