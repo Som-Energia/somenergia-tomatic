@@ -12,8 +12,8 @@ var styleCallinfo = require('./callinfo_style.styl');
 var CallInfo = {};
 
 var websock = null;
-CallInfo.topics = [];
-CallInfo.sections = [];
+CallInfo.topics = []; // Call topics
+CallInfo.sections = []; // Teams to assign a call
 CallInfo.search = ""; // Search value
 CallInfo.search_by = "phone"; // Search file
 CallInfo.searchResults = {}; // Retrieved search data
@@ -29,11 +29,6 @@ CallInfo.call = {
     'topic': "", // annotated topic for the call
     'notes': "", // annotated comments for the call
 };
-CallInfo.call_reasons = {
-    'general': [],
-    'infos': [],
-    'extras': []
-}
 
 CallInfo.savingAnnotation = false;
 CallInfo.annotation = {};
@@ -307,45 +302,7 @@ CallInfo.getTopics = function() {
   });
 }
 
-CallInfo.getClaims = function() {
-  m.request({
-      method: 'GET',
-      url: '/api/getClaims',
-      extract: deyamlize,
-  }).then(function(response){
-      console.debug("Info GET Response: ",response);
-      if (response.info.message !== "ok" ) {
-          console.debug("Error al obtenir les reclamacions: ", response.info.message)
-      }
-      else {
-        CallInfo.call_reasons.general = response.info.claims;
-        CallInfo.call_reasons.extras = Object.keys(response.info.dict);
-      }
-  }, function(error) {
-      console.debug('Info GET apicall failed: ', error);
-  });
-};
-
-
-CallInfo.getInfos = function() {
-  m.request({
-      method: 'GET',
-      url: '/api/getInfos',
-      extract: deyamlize,
-  }).then(function(response){
-      console.debug("Info GET Response: ",response);
-      if (response.info.message !== "ok" ) {
-          console.debug("Error al obtenir els infos: ", response.info.message)
-      }
-      else {
-        CallInfo.call_reasons.infos = response.info.infos;
-      }
-  }, function(error) {
-      console.debug('Info GET apicall failed: ', error);
-  });
-};
-
-
+// TODO: updateTopics instead
 CallInfo.updateClaims = function() {
   CallInfo.updatingClaims = true;
   m.request({
@@ -359,13 +316,14 @@ CallInfo.updateClaims = function() {
     }
     else{
       CallInfo.updatingClaims = false;
-      CallInfo.getClaims();
+      CallInfo.getTopics();
     }
   }, function(error) {
     console.debug('Info GET apicall failed: ', error);
   });
 };
 
+// TODO: updateTopics instead
 CallInfo.updateCrmCategories = function() {
   CallInfo.updatingCrmCategories = true;
   m.request({
@@ -379,7 +337,7 @@ CallInfo.updateCrmCategories = function() {
     }
     else{
       CallInfo.updatingCrmCategories = false;
-      CallInfo.getInfos();
+      CallInfo.getTopics();
     }
   }, function(error) {
     console.debug('Info GET apicall failed: ', error);
@@ -482,8 +440,6 @@ CallInfo.onMessageReceived = function(event) {
     console.debug("Message received from WebSockets and type not recognized.");
 }
 CallInfo.getTopics();
-CallInfo.getClaims();
-CallInfo.getInfos();
 CallInfo.getLogPerson()
 
 Login.onLogin.push(CallInfo.sendIdentification);
