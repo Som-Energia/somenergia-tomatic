@@ -87,5 +87,35 @@ class CallRegistry(object):
                 sections=[],
             )
 
+    def uploadCases(self, erp, date):
+        claims = Claims(erp)
+        path = self.path.parent / 'cases' / '{:%Y%m%d}.yaml'.format(date)
+        log = self.path.parent / 'cases' / 'logs' / '{:%Y%m%d}.log'.format(date)
+        cases = ns()
+        if path.exists():
+            cases = ns.load(path)
+
+        log.parent.mkdir(parents=True, exist_ok=True)
+        import logging
+        logging.basicConfig(
+            filename=log,
+            level=logging.INFO
+        )
+        logging.info(" Script starts: let's go!")
+
+        for personCases in cases.values():
+            for case in personCases:
+                try:
+                    id = claims.create_case(case)
+                    logging.info(f" CRM case {id} created.")
+                except Exception as e:
+                    logging.error(" Something went wrong in {}: {}".format(
+                        path,
+                        str(e))
+                    )
+                    logging.error(" CASE: {}".format(case))
+
+
+
 
 # vim: ts=4 sw=4 et
