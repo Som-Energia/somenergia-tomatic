@@ -1,6 +1,6 @@
 # Changelog
 
-## unreleased
+## 4.4.0 2022-01-27
 
 - Call annotation workflow redesign
   - Claims and infos unified, single log, api entry, topic list...
