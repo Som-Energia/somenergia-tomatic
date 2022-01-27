@@ -16,6 +16,7 @@ var Tomatic = {
 	packageinfo: Package,
 };
 
+Tomatic.variant = 'tomatic';
 Tomatic.queue = m.prop([]);
 Tomatic.persons = m.prop({});
 Tomatic.init = function() {
@@ -39,6 +40,7 @@ Tomatic.checkVersion = function() {
 		url: '/api/version',
 		extract: deyamlize,
 	}).then(function(response){
+		Tomatic.variant = response.variant;
 		if (response.version == Tomatic.packageinfo.version) return;
 		console.log(
 			"New server version", response.version, "detected.",

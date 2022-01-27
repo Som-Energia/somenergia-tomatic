@@ -7,6 +7,7 @@ from consolemsg import warn, step
 from tomatic.api import app, pbx, schedules
 from tomatic import __version__
 from tomatic.pbx import pbxqueue, pbxtypes
+import os
 
 def now(date, time):
     from yamlns.dateutils import Date
@@ -58,10 +59,15 @@ def now(date, time):
     default=None,
     help="Hora del dia a simular en comptes d'ara"
     )
+@click.option('--variant',
+    default=None,
+    type=click.Choice(['tomatic', 'pebrotic', 'ketchup']),
+    help="Identify the instance as this variant",
+    )
 
-def main(fake, debug, host, port, printrules, date, time, backend, queue):
+def main(fake, debug, host, port, printrules, date, time, backend, queue, variant):
     "Runs the Tomatic web and API"
-    print(fake, debug, host, port, printrules, date, time, backend, queue)
+    print(fake, debug, host, port, printrules, date, time, backend, queue, variant)
 
     if printrules:
         for rule in app.routes:
@@ -75,6 +81,9 @@ def main(fake, debug, host, port, printrules, date, time, backend, queue):
         warn("Using fake pbx")
         initialQueue = schedules.queueScheduledFor(now(date,time))
         p.setQueue(initialQueue)
+
+    if variant:
+        os.environ["TOMATIC_VARIANT"] = variant
 
     step("Starting API")
     if printrules:

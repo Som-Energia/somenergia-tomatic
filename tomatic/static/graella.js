@@ -813,7 +813,11 @@ TomaticApp.view = function() {
 	console.log("Page: ", m.route.get());
     var currentTabIndex = indexForRoute(m.route.get());
     var current = m(pages[tabs[currentTabIndex].label]);
-    return m(kumato?'.pe-dark-tone':'',[
+    return m(''
+			+(kumato?'.pe-dark-tone':'')
+			+('.variant-'+Tomatic.variant)
+			
+		,[
         PersonStyles(),
         m(Page, {content:current}),
     ]);

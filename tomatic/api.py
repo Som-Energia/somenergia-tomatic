@@ -16,6 +16,7 @@ from fastapi.responses import (
 from . import __version__ as version
 import asyncio
 import re
+import os
 from datetime import datetime, timedelta, timezone
 import urllib.parse
 import decorator
@@ -143,7 +144,6 @@ async def websocketSession(websocket: WebSocket):
     except WebSocketDisconnect:
         backchannel.onDisconnect(session_id)
 
-
 @app.get('/')
 @app.get('/{file}')
 def tomatic(file=None):
@@ -154,6 +154,7 @@ def tomatic(file=None):
 def apiVersion():
     return yamlfy(
         version = version,
+        variant = os.environ.get('TOMATIC_VARIANT', 'tomatic')
     )
 
 @app.get('/api/graella/list')
