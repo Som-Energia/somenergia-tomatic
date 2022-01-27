@@ -13,6 +13,7 @@
   - Translate 
   - ERP user is set on cases
 - Custom banners for pebrotic and ketchup variants by CLI
+- Fix: search values trimmed and urlencoded
 
 ## 4.3.2 2022-01-21
 

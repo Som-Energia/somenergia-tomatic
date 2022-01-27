@@ -231,9 +231,10 @@ CallInfo.selectContract = function(idx) {
 
 
 var retrieveInfo = function () {
+  var encodedValue = encodeURIComponent(CallInfo.search.trim());
   m.request({
     method: 'GET',
-    url: '/api/info/'+CallInfo.search_by+"/"+encodeURIComponent(CallInfo.search.trim()),
+    url: '/api/info/'+CallInfo.search_by+"/"+encodedValue,
     extract: deyamlize,
   }).then(function(response){
     console.debug("Info GET Response: ", response);
