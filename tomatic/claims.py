@@ -35,6 +35,8 @@ def resolutionCode(case):
 PHONE_CHANNEL = 2
 TIME_TRACKER_COMERCIALIZADORA = 1
 CLAIMANT = '01' # Titular de PS/ Usuario efectivo (Tabla 83)
+
+# TODO: These two should be in the categories file, now hardcoded in ui code
 CRM_CASE_SECTION_NAME = 'CONSULTA'
 SECTION_TO_BE_SPECIFIED = 'ASSIGNAR USUARI'
 
@@ -106,31 +108,6 @@ class Claims(object):
             ('name', 'ilike', section)
         ])[0]
 
-    def get_claims(self):
-        claims_model = self.erp.GiscedataSubtipusReclamacio
-        claims = []
-        all_claim_ids = claims_model.search()
-
-        for claim in claims_model.read(
-            all_claim_ids,
-            ['default_section', 'name', 'desc']
-        ):
-            claim_section = claim.get("default_section")
-
-            section = (
-                claim_section[1].split("/")[-1].strip()
-                if claim_section else SECTION_TO_BE_SPECIFIED
-            )
-
-            message = u"[{}] {}. {}".format(
-                section,
-                claim.get("name"),
-                claim.get("desc")
-            )
-            claims.append(message)
-
-        return claims
-
     def _last_path(self, fullpath):
         return fullpath.split('/')[-1].strip()
 
@@ -195,14 +172,6 @@ class Claims(object):
                 for s in (ns(x) for x in sections)
             ],
         )
-
-    def crm_categories(self):
-        ids = self.erp.CrmCaseCateg.search([])
-        return [
-            f"[{CRM_CASE_SECTION_NAME}] {category['name']}"
-            for category in self.erp.CrmCaseCateg.read(ids,['name'])
-            if category['name'].startswith('[')
-        ]
 
     def create_crm_case(self, case):
         CallAnnotation(**case)

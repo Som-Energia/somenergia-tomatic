@@ -180,17 +180,6 @@ class Claims_Test(unittest.TestCase):
         base.update(**kwds)
         return base
 
-
-    def test_atcCategories(self):
-        claims = Claims(self.erp)
-        categories = claims.get_claims()
-        self.assertB2BEqual(ns(categories=categories).dump())
-
-    def test_crmCategories(self):
-        claims = Claims(self.erp)
-        categories = claims.crm_categories()
-        self.assertB2BEqual(ns(categories=categories).dump())
-
     def test_categories(self):
         claims = Claims(self.erp)
         categories = claims.categories()
