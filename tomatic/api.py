@@ -456,67 +456,16 @@ async def callAnnotate(request: Request):
         message="ok"
     ))
 
-@app.get('/api/call/annotate/topics')
+@app.get('/api/call/categories')
 def annotationCategories():
-    # TODO: Caching through CallRegistry
-    with erp() as O:
-        from .claims import Claims
-        c = Claims(O)
-        return yamlfy(**c.categories())
+    categories = CallRegistry().annotationCategories()
+    return yamlfy(**categories)
 
-
-@app.get('/api/updateClaims')
+@app.get('/api/call/categories/update')
 def updateClaimTypes():
     with erp() as O:
-        CallRegistry().importClaimTypes(O)
+        CallRegistry().updateAnnotationCategories(O)
     return yamlfy(info=ns(message='ok'))
-
-
-@app.get('/api/getClaims')
-def getClaimTypes():
-    message = 'ok'
-    claims = CallRegistry().claimTypes()
-    if not claims:
-        error("File of claims does not exist")
-        return yamlfy(info=ns(
-            message="error",
-            claims=[],
-            dict={},
-        ))
-    claims_dict = CallRegistry().claimKeywords()
-    if not claims_dict:
-        error("File of claims dict does not exist")
-        return yamlfy(info=ns(
-            message="error",
-            claims=[],
-            dict={},
-        ))
-
-    result = ns(
-        message=message,
-        claims=claims,
-        dict=claims_dict,
-    )
-    return yamlfy(info=result)
-
-
-@app.get('/api/updateCrmCategories')
-def updateCrmCategories():
-    with erp() as O:
-        CallRegistry().importCrmCategories(O)
-    return yamlfy(info=ns(message='ok'))
-
-
-@app.get('/api/getInfos')
-def getInfos():
-    infos = CallRegistry().infoRequestTypes()
-    if not infos:
-        return yamlinfoerror("error",
-            "Unable to info request types")
-    return yamlfy(info = ns(
-        message='ok',
-        infos=infos,
-    ))
 
 
 

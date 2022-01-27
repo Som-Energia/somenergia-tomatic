@@ -20,8 +20,7 @@ CallInfo.searchResults = {}; // Retrieved search data
 CallInfo.currentPerson = 0; // Selected person from search data
 CallInfo.currentContract = 0; // Selected contract selected person
 CallInfo.callLog = []; // User call registry
-CallInfo.updatingClaims = false; // Whether we are still loading claim types
-CallInfo.updatingCrmCategories = false; // Whether we are still loading crm categoies
+CallInfo.updatingCategories = false; // Whether we are still loading crm categoies
 CallInfo.autoRefresh = true; // whether we are auto searching on incomming calls
 CallInfo.call = {
     'phone': "", // phone of the currently selected call registry
@@ -281,7 +280,7 @@ var retrieveInfo = function () {
 CallInfo.getTopics = function() {
   m.request({
       method: 'GET',
-      url: '/api/call/annotate/topics',
+      url: '/api/call/categories',
       extract: deyamlize,
   }).then(function(response){
       console.debug("Topics GET Response: ",response);
@@ -303,33 +302,11 @@ CallInfo.getTopics = function() {
   });
 }
 
-// TODO: updateTopics instead
-CallInfo.updateClaims = function() {
-  CallInfo.updatingClaims = true;
+CallInfo.updateCategories = function() {
+  CallInfo.updatingCategories = true;
   m.request({
     method: 'GET',
-    url: '/api/updateClaims',
-    extract: deyamlize,
-  }).then(function(response){
-    console.debug("Info GET Response: ",response);
-    if (response.info.message !== "ok" ) {
-      console.debug("Error al actualitzar les reclamacions: ", response.info.message)
-    }
-    else{
-      CallInfo.updatingClaims = false;
-      CallInfo.getTopics();
-    }
-  }, function(error) {
-    console.debug('Info GET apicall failed: ', error);
-  });
-};
-
-// TODO: updateTopics instead
-CallInfo.updateCrmCategories = function() {
-  CallInfo.updatingCrmCategories = true;
-  m.request({
-    method: 'GET',
-    url: '/api/updateCrmCategories',
+    url: '/api/call/categories/update',
     extract: deyamlize,
   }).then(function(response){
     console.debug("Info GET Response: ",response);
@@ -337,7 +314,7 @@ CallInfo.updateCrmCategories = function() {
       console.debug("Error al actualitzar les categories de trucades telefòniques: ", response.info.message)
     }
     else{
-      CallInfo.updatingCrmCategories = false;
+      CallInfo.updatingCategories = false;
       CallInfo.getTopics();
     }
   }, function(error) {

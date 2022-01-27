@@ -62,49 +62,30 @@ class CallRegistry(object):
         path.parent.mkdir(parents=True, exist_ok=True)
         dailyInfo.dump(str(path))
 
-    def infoRequestTypes(self):
-        try:
-            content = Path(CONFIG.info_cases).read_text(encoding='utf8')
-        except Exception as e:
-            error("Error carregant el tipus d'anotacions de trucades: {}", e)
-            return []
-        return [
-            line.strip()
-            for line in content.splitlines()
-            if line.strip()
-        ]
+    def _categoriesFile(self):
+        return self.path.parent/'categories.yaml'
 
-    def claimTypes(self):
-        try:
-            content = Path(CONFIG.claims_file).read_text(encoding='utf8')
-        except Exception as e:
-            error("Error carregant el tipus d'anotacions de trucades: {}", e)
-            return []
-        return [
-            line.strip()
-            for line in content.splitlines()
-            if line.strip()
-        ]
-
-    def importClaimTypes(self, erp):
+    def updateAnnotationCategories(self, erp):
+        """Takes the topics (crm categories and atc subtypes)"""
         claims = Claims(erp)
-        erp_claims = claims.get_claims()
-
-        Path(CONFIG.claims_file).write_text(
-            '\n'.join([u(x) for x in erp_claims]),
-            encoding='utf8',
+        categories = claims.categories()
+        self._categoriesFile().write_text(
+            categories.dump(),
+            encoding='utf-8',
         )
 
-    def importCrmCategories(self, erp):
-        claims = Claims(erp)
-        erp_crm_categories = claims.crm_categories()
+    def annotationCategories(self):
+        try:
+            return ns.load(self._categoriesFile())
+        except Exception as e:
+            error(
+                "Error carregant categories locals {}\n{}",
+                self._categoriesFile(), e
+            )
+            return ns(
+                categories=[],
+                sections=[],
+            )
 
-        Path(CONFIG.info_cases).write_text(
-            '\n'.join([u(x) for x in erp_crm_categories]),
-            encoding='utf8',
-        )
-
-    def claimKeywords(self):
-        return ns.load(CONFIG.claims_dict_file)
 
 # vim: ts=4 sw=4 et
