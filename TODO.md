@@ -53,28 +53,31 @@
 
 ## Trello https://trello.com/c/ljKRzvz5/4221-0-3-p7-centraleta-kalinfo-desar-els-casos-de-consultes-del-kalinfo-al-erp
 
-- [ ] Dubte AiS: cal pujar les anotacios que heu fet de proves
-- [ ] Dubte AiS: renombrar user -> seccion/team (preguntar a AiS per terminologia de domini)
-- [ ] Dubte AiS: tenim les llistes a produccio que fem amb elles (mostrarles perque hi ha brossa i textos que poden canviar)
-
-- [ ] entry point to obtain categories
-- [ ] encapsulate access to the categories info in frontend
-- [x] callinfo log: unite resolution fields
-- [x] callinfo log: join infos and claims
-- [ ] callinfo log: join infos/claims with log? (consider performance and usage)
-- [x] Importar categories que falten de atc com a categorias de crmcases
-- [x] anotate_case: sensitive to the case fields creates atc or not
+- [ ] Cache topics. Avoid retrieving from erp every time
+- [ ] Clean up del retrieveClaims/Infos: menu, dialog, frontend call, api...
 - [ ] !!! create crm: solved = True (lo comentamos cuando lo movimos a una funcion a parte)
+- [ ] Dubte AiS: renombrar user -> seccion/team (preguntar a AiS per terminologia de domini)
+- [ ] Dubte AiS/ERP: how to value solved, depending of resolution
+- [ ] callinfo log: join infos/claims with log? (consider performance and usage)
 - [ ] create crm: extract seccio del reason and remove the field
 - [ ] create crm: cas contracte no existeix
 - [ ] callreg: Rename Claims to reflect its repurposing
-- [x] callreg: create crm: Inserir usuari correcte al CRM (es fa servir l'usuari loggejat a l'erp: Scriptlauncher i no veiem com canviar-ho)
 - [ ] callreg: On failing annotation, ui notifies the user
+- [ ] Urlencoding the search does not work (search something with slash or commas
+- [ ] Manual annotations with some search renders "Registre..." in the call list
 
 
 ## Dones
 
-
+- [x] encapsulate access to the categories info in frontend
+- [x] entry point to obtain categories
+- [x] callreg: create crm: Inserir usuari correcte al CRM (es fa servir l'usuari loggejat a l'erp: Scriptlauncher i no veiem com canviar-ho)
+- [x] Dubte AiS: cal pujar les anotacios que heu fet de proves -> No, quan les posem netejem
+- [x] Dubte AiS: tenim les llistes a produccio que fem amb elles (mostrarles perque hi ha brossa i textos que poden canviar) -> Ara les bones estan a testing, Script de migracio
+- [x] callinfo log: unite resolution fields
+- [x] callinfo log: join infos and claims
+- [x] Importar categories que falten de atc com a categorias de crmcases
+- [x] anotate_case: sensitive to the case fields creates atc or not
 - [x] Use contrast text color for person boxes
 - [x] Editable erpuser in PersonEditor
 - [x] move scripts to a folder

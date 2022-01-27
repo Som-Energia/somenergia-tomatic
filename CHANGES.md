@@ -1,5 +1,19 @@
 # Changelog
 
+## unreleased
+
+- Call annotation workflow redesign
+  - Claims and infos unified, single log, api entry, topic list...
+  - Structured info on topics/categories are retrieved
+    from api avoiding fragile parsing of the description
+  - Save Annotation without call, person or contract
+  - `tomatic_uploadcases.py` upload both info and claims
+  - All categories have a code and optionally a section
+  - Translate HelpDesk section as CONSULTA
+  - Translate 
+  - ERP user is set on cases
+- Custom banners for pebrotic and ketchup variants by CLI
+
 ## 4.3.2 2022-01-21
 
 - Persistent kumato mode using local browser storage
