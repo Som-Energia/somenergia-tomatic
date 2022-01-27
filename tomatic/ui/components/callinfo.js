@@ -12,10 +12,10 @@ var styleCallinfo = require('./callinfo_style.styl');
 var CallInfo = {};
 
 var websock = null;
-CallInfo.topics = []; // Call topics
+CallInfo.categories = []; // Call categories
 CallInfo.sections = []; // Teams to assign a call
 CallInfo.search = ""; // Search value
-CallInfo.search_by = "phone"; // Search file
+CallInfo.search_by = "phone"; // Search criteria
 CallInfo.searchResults = {}; // Retrieved search data
 CallInfo.currentPerson = 0; // Selected person from search data
 CallInfo.currentContract = 0; // Selected contract selected person
@@ -25,7 +25,7 @@ CallInfo.autoRefresh = true; // whether we are auto searching on incomming calls
 CallInfo.call = {
     'phone': "", // phone of the currently selected call registry
     'date': "", // isodate of the last unbinded search or the currently selected call registry
-    'topic': "", // annotated topic for the call
+    'category': "", // annotated category for the call
     'notes': "", // annotated comments for the call
 };
 
@@ -46,8 +46,8 @@ CallInfo.hasNoSection = function() {
   return CallInfo.annotation.tag === CallInfo.noSection;
 };
 CallInfo.reasonTag = function() {
-  var topic = CallInfo.call.topic;
-  var matches = topic.match(/\[(.*?)\]/);
+  var category = CallInfo.call.category;
+  var matches = category.match(/\[(.*?)\]/);
   if (matches) {
     return matches[1].trim();
   }
@@ -74,7 +74,7 @@ var postAnnotation = function(annotation) {
   }, function(error) {
     console.debug('Info POST apicall failed: ', error);
   });
-  CallInfo.call.topic = "";
+  CallInfo.call.category = "";
 }
 
 CallInfo.annotationIsClaim = function() {
@@ -97,7 +97,7 @@ CallInfo.saveCallLog = function(claim) {
     "phone": CallInfo.call.phone,
     "partner": partner_code,
     "contract": contract_number,
-    "reason": CallInfo.call.topic,
+    "reason": CallInfo.call.category,
     "notes": CallInfo.call.notes,
     "claimsection": (
       !isClaim ? "" : (
@@ -110,7 +110,7 @@ CallInfo.saveCallLog = function(claim) {
 
 CallInfo.clear = function() {
   CallInfo.call.phone = "";
-  CallInfo.call.topic = "";
+  CallInfo.call.category = "";
   CallInfo.call.notes = "";
   CallInfo.currentPerson = 0;
   CallInfo.currentContract = 0;
@@ -171,20 +171,20 @@ function contractNumbers(info) {
 }
 
 
-CallInfo.filteredTopics = function(filter) {
+CallInfo.filteredCategories = function(filter) {
   var lowerFilter = filter.toLowerCase()
-  return CallInfo.topics
-    .filter(function(topic) {
-      if (topic.description.toLowerCase().includes(lowerFilter)) {
+  return CallInfo.categories
+    .filter(function(category) {
+      if (category.description.toLowerCase().includes(lowerFilter)) {
         return true;
       }
-      if (topic.keywords.toLowerCase().includes(lowerFilter)) {
+      if (category.keywords.toLowerCase().includes(lowerFilter)) {
         return true;
       }
       return false;
     })
-    .map(function(topic) {
-      return topic.description;
+    .map(function(category) {
+      return category.description;
     });
 };
 
@@ -277,24 +277,24 @@ var retrieveInfo = function () {
   });
 };
 
-CallInfo.getTopics = function() {
+CallInfo.getCategories = function() {
   m.request({
       method: 'GET',
       url: '/api/call/categories',
       extract: deyamlize,
   }).then(function(response){
-      console.debug("Topics GET Response: ",response);
+      console.debug("Categories GET Response: ",response);
 
-      CallInfo.topics = response.categories;
-      CallInfo.topics.map(function(topic) {
-          var section = topic.section;
+      CallInfo.categories = response.categories;
+      CallInfo.categories.map(function(category) {
+          var section = category.section;
           if (section === null) {
               section = CallInfo.noSection;
           }
           if (section === "HelpDesk") {
               section = CallInfo.helpdeskSection;
           }
-          topic.description = "["+section+"] "+topic.code+". "+topic.name;
+          category.description = "["+section+"] "+category.code+". "+category.name;
       })
       CallInfo.sections = response.sections;
   }, function(error) {
@@ -315,7 +315,7 @@ CallInfo.updateCategories = function() {
     }
     else{
       CallInfo.updatingCategories = false;
-      CallInfo.getTopics();
+      CallInfo.getCategories();
     }
   }, function(error) {
     console.debug('Info GET apicall failed: ', error);
@@ -417,7 +417,7 @@ CallInfo.onMessageReceived = function(event) {
     }
     console.debug("Message received from WebSockets and type not recognized.");
 }
-CallInfo.getTopics();
+CallInfo.getCategories();
 CallInfo.getLogPerson()
 
 Login.onLogin.push(CallInfo.sendIdentification);

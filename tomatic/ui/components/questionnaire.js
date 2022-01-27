@@ -23,20 +23,20 @@ var Login = require('./login');
 
 var Questionnaire = {};
 
-var topicFilter = "";
+var categoryFilter = "";
 
 
-var topicList = function() {
-  var topics = CallInfo.filteredTopics(topicFilter)
+var categoryList = function() {
+  var categories = CallInfo.filteredCategories(categoryFilter)
 
   return m(".motius", m(List, {
     compact: true,
     indentedBorder: true,
     compact: true,
-    tiles: topics.map(function(topic) {
+    tiles: categories.map(function(category) {
       return m(ListTile, {
         className: (
-          CallInfo.call.topic === topic
+          CallInfo.call.category === category
           ? "llista-motius-selected"
           : "llista-motius-unselected"
         ),
@@ -44,11 +44,11 @@ var topicList = function() {
         selectable: true,
         ink: true,
         hover: true,
-        title: topic,
-        selected: CallInfo.call.topic == topic,
+        title: category,
+        selected: CallInfo.call.category == category,
         events: {
           onclick: function(ev) {
-            CallInfo.call.topic = topic
+            CallInfo.call.category = category
           }
         },
         disabled: CallInfo.savingAnnotation,
@@ -232,14 +232,14 @@ Questionnaire.openCaseAnnotationDialog = function() {
               m(Textfield, {
                 className: "textfield-filter",
                 label: "Escriu per a filtrar",
-                value: topicFilter,
+                value: categoryFilter,
                 dense: true,
                 onChange: function(params) {
-                  topicFilter = params.value
+                  categoryFilter = params.value
                 }
               })),
           ]),
-          topicList(),
+          categoryList(),
           m(".final-motius", [
             m(Textfield, {
               className: "textfield-comentaris",
@@ -287,7 +287,7 @@ Questionnaire.openCaseAnnotationDialog = function() {
           border: 'true',
           disabled: (
             CallInfo.savingAnnotation ||
-            CallInfo.call.topic === "" ||
+            CallInfo.call.category === "" ||
             CallInfo.call.notes === "" ||
             CallInfo.call.date === "" ||
             Login.myName() === ""
