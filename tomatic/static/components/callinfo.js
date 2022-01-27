@@ -34,7 +34,6 @@ CallInfo.call_reasons = {
     'infos': [],
     'extras': []
 }
-CallInfo.keyword2topic = {};
 
 CallInfo.savingAnnotation = false;
 CallInfo.annotation = {};
@@ -178,12 +177,6 @@ function contractNumbers(info) {
 }
 
 
-CallInfo.getExtras = function (extras) {
-  return extras.map(function(extra) {
-    return CallInfo.keyword2topic[extra];
-  });
-};
-
 CallInfo.filteredTopics = function(filter) {
   var lowerFilter = filter.toLowerCase()
   return CallInfo.topics
@@ -326,7 +319,6 @@ CallInfo.getClaims = function() {
       }
       else {
         CallInfo.call_reasons.general = response.info.claims;
-        CallInfo.keyword2topic = response.info.dict;
         CallInfo.call_reasons.extras = Object.keys(response.info.dict);
       }
   }, function(error) {
