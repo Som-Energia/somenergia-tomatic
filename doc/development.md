@@ -88,11 +88,13 @@ What smoke tests you should be doing after an upgrade to check most components s
 
 ### PBX control
 
-- `asteriskfake.py`: A fake implementation of a pbx to be controlled
-- `asteriskcli.py`: Partial pbx controller implementation using asterisk CLI thru ssh (complements dbasterisk)
-- `dbasterisk.py`: A pbx controller using the realtime Asterisk DB
-- `pbxareavoip.py`: A pbx controller using areavoip API
-- `pbxqueue.py`: Pbx controller wrapper to assume the same queue on construction
+- `pbx/__init__.py`: Implementation neutral factory to the many pbx interface implementations
+- `pbx/asteriskfake.py`: A fake implementation of a pbx to be controlled
+- `pbx/asteriskcli.py`: Partial pbx controller implementation using asterisk CLI thru ssh (complements dbasterisk)
+- `pbx/dbasterisk.py`: A pbx controller using the realtime Asterisk DB
+- `pbx/pbxareavoip.py`: A pbx controller using areavoip API
+- `pbx/pbxirontec.py`: A pbx controller using irontec API
+- `pbx/pbxqueue.py`: Pbx controller wrapper to assume the same queue on construction
 
 ### Tools
 
@@ -100,6 +102,7 @@ What smoke tests you should be doing after an upgrade to check most components s
 - `remote.py`: Simplifies remote process execution and access to files via SSH
 - `directmessage`: modules that abstract actual direct message (hangouts or equivalents)
 - `directmessage/hangouts`: Google hangouts implementation of directmessage
+- `backchannel.py`: Abstracting server initiated comunication with the clients (Websocket or equivalent)
 
 ### Information Access
 
@@ -122,7 +125,7 @@ What smoke tests you should be doing after an upgrade to check most components s
 - `claims.py`: Access the ERP's Claim objects (Backend of callregistry)
 
 
-## Files
+## Data Files
 
 This is a review of the callinfo files.
 
@@ -135,6 +138,5 @@ This is a review of the callinfo files.
 	- "registre de trucades (reclamació i no reclamacio)"
 	- `config.my_calls_log`
 	- person dict to a list of incomming calls of the day
-
-
+- `callinfo/cases/YYYY-MM-DD.yaml` Daily call log
 

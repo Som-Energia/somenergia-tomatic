@@ -1,5 +1,11 @@
 # Changelog
 
+## unreleased
+
+- Old claim/info duality code cleanup
+- Avoid ask erp category list by caching it into a file
+- Menu option to force category list update from ERP
+
 ## 4.4.0 2022-01-27
 
 - Call annotation workflow redesign
