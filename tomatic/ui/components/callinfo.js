@@ -147,7 +147,6 @@ CallInfo.callSelected = function(date, phone) {
   CallInfo.call.phone = phone;
   CallInfo.search = phone;
   CallInfo.search_by = "phone";
-  CallInfo.searchResults = { 1: "empty" };
   retrieveInfo();
 }
 
@@ -236,6 +235,7 @@ CallInfo.selectContract = function(idx) {
 
 
 var retrieveInfo = function () {
+  CallInfo.searchResults = { 1: "empty" }; // Searching...
   var encodedValue = encodeURIComponent(CallInfo.search.trim());
   m.request({
     method: 'GET',
@@ -387,7 +387,6 @@ CallInfo.searchCustomer = function() {
   CallInfo.resetSearch();
   // end of clear
   if (CallInfo.search !== 0 && CallInfo.search !== ""){
-    CallInfo.searchResults = { 1: "empty" };
     retrieveInfo();
   }
 }
