@@ -389,11 +389,7 @@ CallInfo.searchCustomer = function() {
   // end of clear
   if (CallInfo.search !== 0 && CallInfo.search !== ""){
     CallInfo.searchResults = { 1: "empty" };
-    CallInfo.currentPerson = 0;
     retrieveInfo();
-  }
-  else {
-    CallInfo.searchResults = {}
   }
 }
 
