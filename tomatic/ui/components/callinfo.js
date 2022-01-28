@@ -109,19 +109,29 @@ CallInfo.saveCallLog = function(claim) {
 }
 
 CallInfo.clear = function() {
+  // clear
   CallInfo.call.phone = "";
   CallInfo.call.category = "";
   CallInfo.call.notes = "";
+  CallInfo.savingAnnotation = false;
   CallInfo.currentPerson = 0;
   CallInfo.currentContract = 0;
-  CallInfo.savingAnnotation = false;
   CallInfo.searchResults = {};
+  // end of clear
 }
 
 
 CallInfo.changeUser = function(newUser) {
   CallInfo.search = "";
-  CallInfo.clear();
+  // clear
+  CallInfo.call.phone = "";
+  CallInfo.call.category = "";
+  CallInfo.call.notes = "";
+  CallInfo.savingAnnotation = false;
+  CallInfo.currentPerson = 0;
+  CallInfo.currentContract = 0;
+  CallInfo.searchResults = {};
+  // end of clear
   CallInfo.call.date = "";
   CallInfo.searchResults = {};
   CallInfo.callLog = [];
@@ -136,7 +146,15 @@ CallInfo.callReceived = function(date, phone) {
 
 
 CallInfo.callSelected = function(date, phone) {
-  CallInfo.clear();
+  // clear
+  CallInfo.call.phone = "";
+  CallInfo.call.category = "";
+  CallInfo.call.notes = "";
+  CallInfo.savingAnnotation = false;
+  CallInfo.currentPerson = 0;
+  CallInfo.currentContract = 0;
+  CallInfo.searchResults = {};
+  // end of clear
   CallInfo.call.date = date;
   CallInfo.call.phone = phone;
   CallInfo.search = phone;
@@ -357,7 +375,15 @@ CallInfo.selectLog = function(date, phone) {
 }
 CallInfo.deselectLog = function() {
   //console.log("deselecting", CallInfo.call.date);
-  CallInfo.clear();
+  // clear
+  CallInfo.call.phone = "";
+  CallInfo.call.category = "";
+  CallInfo.call.notes = "";
+  CallInfo.savingAnnotation = false;
+  CallInfo.currentPerson = 0;
+  CallInfo.currentContract = 0;
+  CallInfo.searchResults = {};
+  // end of clear
   CallInfo.call.date = "";
   CallInfo.search = "";
 }
@@ -372,7 +398,15 @@ CallInfo.toggleLog = function(date, phone) {
 }
 
 CallInfo.searchCustomer = function() {
-  CallInfo.clear();
+  // clear
+  CallInfo.call.phone = "";
+  CallInfo.call.category = "";
+  CallInfo.call.notes = "";
+  CallInfo.savingAnnotation = false;
+  CallInfo.currentPerson = 0;
+  CallInfo.currentContract = 0;
+  CallInfo.searchResults = {};
+  // end of clear
   if (CallInfo.search !== 0 && CallInfo.search !== ""){
     CallInfo.call.phone = "";
     CallInfo.searchResults = { 1: "empty" };
