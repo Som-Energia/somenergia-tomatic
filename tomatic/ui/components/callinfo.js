@@ -108,19 +108,6 @@ CallInfo.saveCallLog = function(claim) {
   });
 }
 
-CallInfo.clear = function() {
-  // clear
-  CallInfo.call.phone = "";
-  CallInfo.call.category = "";
-  CallInfo.call.notes = "";
-  CallInfo.savingAnnotation = false;
-  CallInfo.currentPerson = 0;
-  CallInfo.currentContract = 0;
-  CallInfo.searchResults = {};
-  // end of clear
-}
-
-
 CallInfo.changeUser = function(newUser) {
   CallInfo.search = "";
   // clear
