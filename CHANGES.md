@@ -1,5 +1,13 @@
 # Changelog
 
+## unreleased
+
+- Fix: Callinfo: A second search on a call lost the relation with the selected call
+- Fix: Callinfo: On successful annotation, search results were kept, now are cleared
+- Fix: Callinfo: Case status was always set to open, just 'unresolved' should be.
+- Fix: Callinfo: (visual) Search criteria was styled light in kumato
+- Fix: PersonEditor: (visual) Table select not visible in kumato
+
 ## 4.4.1 2022-01-27
 
 - Avoid repeated erp queries for category list by caching it into `callinfo/categories.yaml`

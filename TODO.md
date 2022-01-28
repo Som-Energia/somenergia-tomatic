@@ -6,30 +6,11 @@
 - [ ] Configurable timetable directory ('graelles')
 - [ ] Configurable execution directory ('executions')
 - [ ] Move shiftload generated files to a configurable dir (maybe same as timetables dir?)
-- [ ] `Claim.get_claims` -> Claim.get/update/retrieveClaimTypes
 - [ ] As an agent i want to be able to see cancelled contracts in callinfo (pe. for claims of unauthorized switching)
-- [ ] Call Info: Report diferently, search cleared from no search found
-- [ ] Call Info: Intercept backend connection errors and behave
-- [ ] Call info: List previous calls from same person/contract
-- [ ] Unify call log also into the case log
 - [ ] Google login
 - [ ] API tests in fastapi
 - [ ] Accept fragile erp tests
-- [ ] Strip spaces in the search
-- [ ] Edit previous annotations
-- [ ] On ringing sandwich pbx ext, and use tomatic users inside (do not log by ext but by user)
-- [ ] Translate call log field names from catalan
-- [ ] api/info/ringring -> api/call/ringring (ext)
-- [ ] /api/personlog/<ext> en els casos de fallada returnar una llista buida sense errors (no son de fallada, encara no hi ha logs i prou)
-- [ ] api/personlog/{ext} -> api/call/log/{user}
-- [ ] api/updateClaims -> called by cron or init
-- [ ] api/updateClaimTypes -> called by cron or init
-- [ ] api/updateCrmCategories -> called by cron or init
-- [ ] api/getClaimTypes -> api/call/claim/types?
-- [ ] api/getInfos -> api/call/info/types?
-- [ ] consider joining getClaimTypes and getInfos
 - [ ] GSpread docs say that moving the credential to `~/.config/gspread/service_account.json` avoids having to pass it around as parameter
-- [ ] `tomatic_calls` should use persons module instead referring persons.yaml directly
 
 - Planner:
 	- [ ] Refactor as Single Page App
@@ -42,34 +23,45 @@
 	- [ ] Disable ok until all fields are valid
 	- [ ] Check extension not taken already
 	- [ ] Check erp user exists
-	- [ ] Focus on first dialog field on open
+	- [ ] Focus on first field on open dialog
 	- [ ] Take person info from holidays manager
 	- [ ] List/admin mode
+	- [ ] Nicer date picker for one-shot busy
 - Callinfo
-	- [ ] Simplify yaml structure
-	- [ ] Refactor tests
-	- Alerts:
-		- [ ] Unpaid invoices
-
-## Trello https://trello.com/c/ljKRzvz5/4221-0-3-p7-centraleta-kalinfo-desar-els-casos-de-consultes-del-kalinfo-al-erp
-
-- [ ] Cache topics. Avoid retrieving from erp every time
-- [ ] Clean up del retrieveClaims/Infos: menu, dialog, frontend call, api...
-- [ ] !!! create crm: solved = True (lo comentamos cuando lo movimos a una funcion a parte)
-- [ ] Interpret CONSULTA as HELPDESK when saving cases
-- [ ] Dubte AiS: renombrar user -> seccion/team (preguntar a AiS per terminologia de domini)
-- [ ] Dubte AiS/ERP: how to value solved, depending of resolution
-- [ ] join cases with call log (consider performance and usage)
-- [ ] create crm: extract seccio del reason and remove the field
-- [ ] create crm: cas contracte no existeix
-- [ ] callreg: Rename Claims to reflect its repurposing
-- [ ] callreg: On failing annotation, ui notifies the user
-- [ ] Urlencoding the search does not work (search something with slash or commas
-- [ ] Manual annotations with some search renders "Registre..." in the call list
+	- [ ] `tomatic_calls` should use persons module instead referring persons.yaml directly
+	- [ ] Edit previous annotations
+	- [ ] /api/info/ringring -> api/call/ringring (ext) (caution: used by partners)
+	- [ ] /api/personlog/<ext> en els casos de fallada returnar una llista buida sense errors (no son de fallada, encara no hi ha logs i prou)
+	- [ ] /api/personlog/{ext} -> api/call/log/{user}
+	- [ ] /api/call/categories/update -> called by cron or init
+	- [ ] Ask AiS: All cases set to state=done but the unsolved state=open, is ok?
+	- [ ] Check: are we translating CONSULTA to HELPDESK when saving cases
+	- [ ] Call Info: Report diferently, search cleared from no search found
+	- [ ] Special search results (too many, not found, error...) meaningfull (ie, "empty" means searching, while {} means not found)
+	- [ ] Call Info: Intercept backend connection errors and behave
+	- [ ] Call info: List previous calls from same person/contract
+	- [ ] New alert: Unpaid invoices
+	- [ ] join cases with call log (consider performance and usage)
+	- [ ] create crm: extract seccio del reason and remove the field
+	- [ ] create crm: test cas contracte no existeix
+	- [ ] callreg: Rename Claims to reflect its repurposing
+	- [ ] callreg: On failing annotation, ui notifies the user
+	- [ ] Urlencoding the search does not work (search something with slash, commas...)
+	- [ ] Manual annotations with some search renders "Registre..." in the call list
 
 
 ## Dones
 
+- [x] Strip spaces in the search
+- [x] On ringing sandwich pbx ext, and use tomatic users inside (do not log by ext but by user)
+- [x] Translate call log field names from catalan
+- [x] consider joining getClaimTypes and getInfos
+- [x] api/getCategories -> api/call/categories?
+- [x] `Claim.get_claims` -> Claim.get/update/retrieveClaimTypes
+- [x] ui: taula select unreadable in kumato mode (all white)
+- [x] callinfo: phone is not set in yaml cases after a second search (in testing phone cannot be the criteria, because is set all people the same)
+- [x] Cache topics. Avoid retrieving from erp every time
+- [x] Clean up del retrieveClaims/Infos: menu, dialog, frontend call, api...
 - [x] encapsulate access to the categories info in frontend
 - [x] entry point to obtain categories
 - [x] callreg: create crm: Inserir usuari correcte al CRM (es fa servir l'usuari loggejat a l'erp: Scriptlauncher i no veiem com canviar-ho)
