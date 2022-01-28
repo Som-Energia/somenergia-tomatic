@@ -7,11 +7,8 @@ var deyamlize = require('./utils').deyamlize;
 
 var Login = require('./login');
 
-var styleCallinfo = require('./callinfo_style.styl');
-
-var CallInfo = {};
-
 var websock = null;
+var CallInfo = {};
 CallInfo.categories = []; // Call categories
 CallInfo.sections = []; // Teams to assign a call
 CallInfo.search = ""; // Search value

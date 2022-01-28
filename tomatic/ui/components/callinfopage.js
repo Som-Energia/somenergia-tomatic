@@ -1,6 +1,7 @@
 module.exports = function() {
 
 var m = require('mithril');
+var styleCallinfo = require('./callinfo_style.styl');
 var Ripple = require('polythene-mithril-ripple').Ripple;
 var Dialog = require('polythene-mithril-dialog').Dialog;
 var Button = require('polythene-mithril-button').Button;
