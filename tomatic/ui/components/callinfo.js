@@ -67,8 +67,7 @@ var postAnnotation = function(annotation) {
     }
     else {
       console.debug("INFO case saved")
-      CallInfo.call.date = "";
-      CallInfo.clearAnnotation();
+      CallInfo.deselectLog()
     }
   }, function(error) {
     console.debug('Info POST apicall failed: ', error);
