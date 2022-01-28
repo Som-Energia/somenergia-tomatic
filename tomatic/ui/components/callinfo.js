@@ -122,11 +122,11 @@ CallInfo.resetSearch = function() {
 CallInfo.changeUser = function(newUser) {
   CallInfo.search = "";
   // clear
+  CallInfo.call.date = "";
   CallInfo.call.phone = "";
   CallInfo.clearAnnotation();
   CallInfo.resetSearch();
   // end of clear
-  CallInfo.call.date = "";
   CallInfo.callLog = [];
   CallInfo.autoRefresh = true;
 }
@@ -364,11 +364,11 @@ CallInfo.selectLog = function(date, phone) {
 CallInfo.deselectLog = function() {
   //console.log("deselecting", CallInfo.call.date);
   // clear
+  CallInfo.call.date = "";
   CallInfo.call.phone = "";
   CallInfo.call.clearAnnotation();
   CallInfo.resetSearch();
   // end of clear
-  CallInfo.call.date = "";
   CallInfo.search = "";
 }
 CallInfo.toggleLog = function(date, phone) {
