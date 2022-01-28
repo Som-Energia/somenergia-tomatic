@@ -134,21 +134,9 @@ CallInfo.changeUser = function(newUser) {
 
 CallInfo.callReceived = function(date, phone) {
   if (!CallInfo.autoRefresh) { return; }
-  CallInfo.callSelected(date,phone)
+  CallInfo.selectLog(date,phone)
 }
 
-
-CallInfo.callSelected = function(date, phone) {
-  // clear
-  CallInfo.clearAnnotation();
-  CallInfo.resetSearch();
-  // end of clear
-  CallInfo.call.date = date;
-  CallInfo.call.phone = phone;
-  CallInfo.search = phone;
-  CallInfo.search_by = "phone";
-  retrieveInfo();
-}
 
 CallInfo.selectableSections = function() {
   return CallInfo.sections.map(function(section) {
@@ -357,10 +345,17 @@ CallInfo.getLogPerson = function () {
 CallInfo.isLogSelected = function(date) {
   return CallInfo.call.date === date;
 }
+
 CallInfo.selectLog = function(date, phone) {
-  //console.log("Selecting", date, phone, CallInfo.call.date);
-  CallInfo.callSelected(date, phone);
+  CallInfo.clearAnnotation();
+  CallInfo.resetSearch();
+  CallInfo.call.date = date;
+  CallInfo.call.phone = phone;
+  CallInfo.search = phone;
+  CallInfo.search_by = "phone";
+  retrieveInfo();
 }
+
 CallInfo.deselectLog = function() {
   //console.log("deselecting", CallInfo.call.date);
   // clear
