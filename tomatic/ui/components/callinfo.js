@@ -386,7 +386,6 @@ CallInfo.toggleLog = function(date, phone) {
 
 CallInfo.searchCustomer = function() {
   // clear
-  CallInfo.call.phone = "";
   CallInfo.call.category = "";
   CallInfo.call.notes = "";
   CallInfo.savingAnnotation = false;
@@ -395,13 +394,11 @@ CallInfo.searchCustomer = function() {
   CallInfo.searchResults = {};
   // end of clear
   if (CallInfo.search !== 0 && CallInfo.search !== ""){
-    CallInfo.call.phone = "";
     CallInfo.searchResults = { 1: "empty" };
     CallInfo.currentPerson = 0;
     retrieveInfo();
   }
   else {
-    CallInfo.call.date = "";
     CallInfo.searchResults = {}
   }
 }
