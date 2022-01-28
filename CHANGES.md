@@ -1,6 +1,6 @@
 # Changelog
 
-## unreleased
+## 4.4.2 2022-01-28
 
 - Fix: Callinfo: A second search on a call lost the relation with the selected call
 - Fix: Callinfo: On successful annotation, search results were kept, now are cleared
