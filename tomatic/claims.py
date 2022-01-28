@@ -198,7 +198,7 @@ class Claims(object):
             'polissa_id': self._contractId(case.contract),
             'partner_id': partner_id,
             'partner_address_id': partner_address.get('id') if partner_address else False,
-            'state': 'open', # TODO: 'done' if case.solved else 'open',
+            'state': 'open' if case.get('resolution') == Resolution.unsolved else 'done', # TODO: Check this with AiS
             'user_id': self._erpUser(case.user),
         }
         crm_id = self.erp.create('crm.case', data_crm)
@@ -219,7 +219,7 @@ class Claims(object):
             reason: '[´section.name´] ´claim.name´. ´claim.desc´'
             partner: partner number
             contract: contract number
-            # maybe unsolved, fair, unfair, irresolvable or null
+            # may be unsolved, fair, unfair, irresolvable or null
             resolution: fair
             claimsection: section.name
             notes: comments

@@ -200,7 +200,7 @@ class Claims_Test(unittest.TestCase):
             resultat: '01'
             subtipus_id: '003'
             time_tracking_id: Comercialitzadora
-            state: open
+            state: done
             total_cups: 1
         """.format(case_id))
 
@@ -221,7 +221,7 @@ class Claims_Test(unittest.TestCase):
             resultat: '02' # <---------  THIS CHANGES
             subtipus_id: '003'
             time_tracking_id: Comercialitzadora
-            state: open
+            state: done
             total_cups: 1
         """.format(case_id))
 
@@ -242,7 +242,7 @@ class Claims_Test(unittest.TestCase):
             resultat: '03' # <---------  THIS CHANGES
             subtipus_id: '003'
             time_tracking_id: Comercialitzadora
-            state: open
+            state: done
             total_cups: 1
         """.format(case_id))
 
@@ -263,7 +263,7 @@ class Claims_Test(unittest.TestCase):
             resultat: '' # <---------  THIS CHANGES
             subtipus_id: '003'
             time_tracking_id: Comercialitzadora
-            state: open
+            state: open  # <------------ THIS CHANGES
             total_cups: 1
         """.format(case_id))
 
@@ -280,7 +280,7 @@ class Claims_Test(unittest.TestCase):
             partner_id: ...osé
             polissa_id: '0013117'
             section_id: HelpDesk
-            state: open
+            state: done
             user_id: false
         """.format(case_id))
 
@@ -299,7 +299,7 @@ class Claims_Test(unittest.TestCase):
             partner_id: ...osé
             polissa_id: '0013117'
             section_id: Atenció al Client / RECLAMACIONS
-            state: open
+            state: done
             user_id: ...lló      # <--THIS CHANGES
         """.format(case_id))
 
@@ -318,7 +318,7 @@ class Claims_Test(unittest.TestCase):
             partner_id: ...osé
             polissa_id: False # <---------  THIS CHANGES
             section_id: HelpDesk
-            state: open
+            state: done
             user_id: false
         """.format(case_id))
 
@@ -338,7 +338,7 @@ class Claims_Test(unittest.TestCase):
             partner_id: False # <---------  THIS CHANGES
             polissa_id: False # <---------  THIS CHANGES
             section_id: HelpDesk
-            state: open
+            state: done
             user_id: false
         """.format(case_id))
 
@@ -355,7 +355,7 @@ class Claims_Test(unittest.TestCase):
             partner_id: ...osé
             polissa_id: '0013117'
             section_id: Atenció al Client / RECLAMACIONS  # <--- THIS CHANGES
-            state: open
+            state: done
             user_id: false
         """.format(case_id))
 
@@ -374,7 +374,7 @@ class Claims_Test(unittest.TestCase):
             partner_id: ...osé
             polissa_id: '0013117'
             section_id: HelpDesk
-            state: open
+            state: done
             user_id: false
         """.format(case_id))
 
@@ -391,7 +391,7 @@ class Claims_Test(unittest.TestCase):
             partner_id: '...osé'
             polissa_id: '0013117'
             section_id: Atenció al Client / RECLAMACIONS
-            state: open
+            state: done
             user_id: false
             atc_id:   # <----- THIS CHANGES
                 cups_id: ...M0F
@@ -402,7 +402,7 @@ class Claims_Test(unittest.TestCase):
                 resultat: '01'
                 subtipus_id: '003'
                 time_tracking_id: Comercialitzadora
-                state: open
+                state: done
                 total_cups: 1
         """.format(case_id), deep=True)
 
@@ -419,7 +419,7 @@ class Claims_Test(unittest.TestCase):
             partner_id: '...osé'
             polissa_id: '0013117'
             section_id: HelpDesk
-            state: open
+            state: done
             user_id: false
             atc_id: false   # <----- THIS CHANGES
         """.format(case_id), deep=True)
