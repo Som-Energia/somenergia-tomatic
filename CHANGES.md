@@ -1,10 +1,21 @@
 # Changelog
 
-## unreleased
+## 4.4.1 2022-01-27
 
-- Old claim/info duality code cleanup
-- Avoid ask erp category list by caching it into a file
-- Menu option to force category list update from ERP
+- Avoid repeated erp queries for category list by caching it into `callinfo/categories.yaml`
+- Added menu option to force category list update
+- /api/call/topics -> /api/call/categories
+- /api/call/topics/update -> /api/call/categories/update
+- Old claim/info/extra duality code cleanup
+  - Removed entry points:
+    - /api/updateClaims
+    - /api/updateCrmCategories
+    - /api/getClaims
+    - /api/getInfos
+  - Removed data files and their config params:
+    - `claims_file` usually `callinfo/claim_types.txt`
+    - `claims_dict_file` usually `callinfo/claims_dict.yaml`
+    - `info_cases` usually `callinfo/info_types.txt`
 
 ## 4.4.0 2022-01-27
 

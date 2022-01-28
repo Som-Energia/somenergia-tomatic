@@ -56,9 +56,10 @@
 - [ ] Cache topics. Avoid retrieving from erp every time
 - [ ] Clean up del retrieveClaims/Infos: menu, dialog, frontend call, api...
 - [ ] !!! create crm: solved = True (lo comentamos cuando lo movimos a una funcion a parte)
+- [ ] Interpret CONSULTA as HELPDESK when saving cases
 - [ ] Dubte AiS: renombrar user -> seccion/team (preguntar a AiS per terminologia de domini)
 - [ ] Dubte AiS/ERP: how to value solved, depending of resolution
-- [ ] callinfo log: join infos/claims with log? (consider performance and usage)
+- [ ] join cases with call log (consider performance and usage)
 - [ ] create crm: extract seccio del reason and remove the field
 - [ ] create crm: cas contracte no existeix
 - [ ] callreg: Rename Claims to reflect its repurposing
