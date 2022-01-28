@@ -69,9 +69,11 @@ def apply():
 
     step("Create a new category for each claim subtype")
     for sub in context.subtypes:
+        section_id = sub.default_section[0] if sub.default_section else False
+        step(f"  Creating [{section_id and sub.default_section[1].split('/')[-1]}] R{sub.name}. {sub.desc}")
         erp.CrmCaseCateg.create(dict(
             name = sub.desc,
-            section_id = sub.default_section[0] if sub.default_section else False,
+            section_id = section_id,
             categ_code = "R"+sub.name,
         ))
 
