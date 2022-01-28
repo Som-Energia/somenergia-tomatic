@@ -253,7 +253,7 @@ Questionnaire.openCaseAnnotationDialog = function() {
               onChange: function(params) {
                 CallInfo.call.notes = params.value
               },
-              disabled: CallInfo.savingAnnotation || CallInfo.call.date === "",
+              disabled: CallInfo.savingAnnotation,
             }),
           ]),
         ]),
@@ -289,7 +289,6 @@ Questionnaire.openCaseAnnotationDialog = function() {
             CallInfo.savingAnnotation ||
             CallInfo.call.category === "" ||
             CallInfo.call.notes === "" ||
-            CallInfo.call.date === "" ||
             Login.myName() === ""
           ),
         }, m(Ripple)),
