@@ -112,14 +112,19 @@ CallInfo.clearAnnotation = function() {
   CallInfo.savingAnnotation = false;
 };
 
+// Nicely clears search results
+CallInfo.resetSearch = function() {
+  CallInfo.currentPerson = 0;
+  CallInfo.currentContract = 0;
+  CallInfo.searchResults = {};
+};
+
 CallInfo.changeUser = function(newUser) {
   CallInfo.search = "";
   // clear
   CallInfo.call.phone = "";
   CallInfo.clearAnnotation();
-  CallInfo.currentPerson = 0;
-  CallInfo.currentContract = 0;
-  CallInfo.searchResults = {};
+  CallInfo.resetSearch();
   // end of clear
   CallInfo.call.date = "";
   CallInfo.callLog = [];
@@ -136,9 +141,7 @@ CallInfo.callReceived = function(date, phone) {
 CallInfo.callSelected = function(date, phone) {
   // clear
   CallInfo.clearAnnotation();
-  CallInfo.currentPerson = 0;
-  CallInfo.currentContract = 0;
-  CallInfo.searchResults = {};
+  CallInfo.resetSearch();
   // end of clear
   CallInfo.call.date = date;
   CallInfo.call.phone = phone;
@@ -363,9 +366,7 @@ CallInfo.deselectLog = function() {
   // clear
   CallInfo.call.phone = "";
   CallInfo.call.clearAnnotation();
-  CallInfo.currentPerson = 0;
-  CallInfo.currentContract = 0;
-  CallInfo.searchResults = {};
+  CallInfo.resetSearch();
   // end of clear
   CallInfo.call.date = "";
   CallInfo.search = "";
@@ -382,10 +383,8 @@ CallInfo.toggleLog = function(date, phone) {
 
 CallInfo.searchCustomer = function() {
   // clear
-  CallInfo.clearAnnotation();;
-  CallInfo.currentPerson = 0;
-  CallInfo.currentContract = 0;
-  CallInfo.searchResults = {};
+  CallInfo.clearAnnotation();
+  CallInfo.resetSearch();
   // end of clear
   if (CallInfo.search !== 0 && CallInfo.search !== ""){
     CallInfo.searchResults = { 1: "empty" };
