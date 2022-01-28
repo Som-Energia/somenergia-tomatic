@@ -67,14 +67,12 @@ var postAnnotation = function(annotation) {
     }
     else {
       console.debug("INFO case saved")
-      CallInfo.savingAnnotation = false;
-      CallInfo.call.notes = "";
       CallInfo.call.date = "";
+      CallInfo.clearAnnotation();
     }
   }, function(error) {
     console.debug('Info POST apicall failed: ', error);
   });
-  CallInfo.call.category = "";
 }
 
 CallInfo.annotationIsClaim = function() {
@@ -108,13 +106,17 @@ CallInfo.saveCallLog = function(claim) {
   });
 }
 
+CallInfo.clearAnnotation = function() {
+  CallInfo.call.category = "";
+  CallInfo.call.notes = "";
+  CallInfo.savingAnnotation = false;
+};
+
 CallInfo.changeUser = function(newUser) {
   CallInfo.search = "";
   // clear
   CallInfo.call.phone = "";
-  CallInfo.call.category = "";
-  CallInfo.call.notes = "";
-  CallInfo.savingAnnotation = false;
+  CallInfo.clearAnnotation();
   CallInfo.currentPerson = 0;
   CallInfo.currentContract = 0;
   CallInfo.searchResults = {};
@@ -135,9 +137,7 @@ CallInfo.callReceived = function(date, phone) {
 CallInfo.callSelected = function(date, phone) {
   // clear
   CallInfo.call.phone = "";
-  CallInfo.call.category = "";
-  CallInfo.call.notes = "";
-  CallInfo.savingAnnotation = false;
+  CallInfo.clearAnnotation();
   CallInfo.currentPerson = 0;
   CallInfo.currentContract = 0;
   CallInfo.searchResults = {};
@@ -364,9 +364,7 @@ CallInfo.deselectLog = function() {
   //console.log("deselecting", CallInfo.call.date);
   // clear
   CallInfo.call.phone = "";
-  CallInfo.call.category = "";
-  CallInfo.call.notes = "";
-  CallInfo.savingAnnotation = false;
+  CallInfo.call.clearAnnotation();
   CallInfo.currentPerson = 0;
   CallInfo.currentContract = 0;
   CallInfo.searchResults = {};
@@ -386,9 +384,7 @@ CallInfo.toggleLog = function(date, phone) {
 
 CallInfo.searchCustomer = function() {
   // clear
-  CallInfo.call.category = "";
-  CallInfo.call.notes = "";
-  CallInfo.savingAnnotation = false;
+  CallInfo.clearAnnotation();;
   CallInfo.currentPerson = 0;
   CallInfo.currentContract = 0;
   CallInfo.searchResults = {};
