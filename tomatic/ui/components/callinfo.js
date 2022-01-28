@@ -366,7 +366,7 @@ CallInfo.deselectLog = function() {
   // clear
   CallInfo.call.date = "";
   CallInfo.call.phone = "";
-  CallInfo.call.clearAnnotation();
+  CallInfo.clearAnnotation();
   CallInfo.resetSearch();
   // end of clear
   CallInfo.search = "";
