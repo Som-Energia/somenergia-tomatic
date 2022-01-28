@@ -135,7 +135,6 @@ CallInfo.callReceived = function(date, phone) {
 
 CallInfo.callSelected = function(date, phone) {
   // clear
-  CallInfo.call.phone = "";
   CallInfo.clearAnnotation();
   CallInfo.currentPerson = 0;
   CallInfo.currentContract = 0;
