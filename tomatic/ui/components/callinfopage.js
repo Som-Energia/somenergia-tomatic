@@ -200,9 +200,8 @@ var attendedCallList = function() {
         disabled: true,
       }):'',
       m(ListTile, {
-        className:
-          CallInfo.isLogSelected(item.data)?
-          "registres selected" : "registres",
+        className: "registres" +
+          (isSelected?  " selected" : ""),
         selectable: true,
         hoverable: !solved,
         ink: !solved,
