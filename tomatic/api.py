@@ -8,6 +8,7 @@ from fastapi import (
     WebSocketDisconnect,
     File,
     UploadFile,
+    Depends,
 )
 from fastapi.responses import (
     FileResponse,
@@ -74,7 +75,7 @@ def thisweek():
     return format(now().date() - timedelta(days=now().weekday()))
 
 from .planner_api import api as Planner
-from .auth import router as Auth
+from .auth import router as Auth, validatedUser
 from fastapi.websockets import WebSocket
 
 app = FastAPI()
@@ -157,16 +158,11 @@ async def websocketSession(websocket: WebSocket):
 @app.get('/')
 @app.get('/{file}')
 def tomatic(request: Request, file=None):
-    user = request.session.get('user')
-    if not user:
-        print("No hay usuario!", file)
-        return RedirectResponse(url='/api/auth/login')
-
     return FileResponse(distpath / (file or 'index.html'))
 
 @app.get('/api/version')
 @yamlerrors
-def apiVersion():
+def apiVersion(user = Depends(validatedUser)):
     return yamlfy(
         version = version,
         variant = os.environ.get('TOMATIC_VARIANT', 'tomatic')

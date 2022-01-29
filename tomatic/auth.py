@@ -1,5 +1,6 @@
 import json
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi.security import OAuth2PasswordBearer
 from starlette.requests import Request
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.responses import HTMLResponse, RedirectResponse
@@ -25,19 +26,6 @@ oauth.register(
 )
 
 router = APIRouter()
-"""
-@router.get('/')
-async def homepage(request: Request):
-    user = request.session.get('user')
-    if user:
-        data = json.dumps(user)
-        html = (
-            f'<pre>{data}</pre>'
-            '<a href="/logout">logout</a>'
-        )
-        return HTMLResponse(html)
-    return HTMLResponse('<a href="/login">login</a>')
-"""
 
 @router.get('/login')
 async def login(request: Request):
@@ -51,19 +39,38 @@ async def auth(request: Request):
     try:
         token = await oauth.google.authorize_access_token(request)
     except OAuthError as error:
-        return HTMLResponse(f'<h1>{error.error}</h1>')
+        return HTMLResponse(f'<h1>{error.error}</h1>', 400)
     user = await oauth.google.parse_id_token(request, token)
+    if not user:
+        return HTMLResponse(f'<h1>Missing user</h1>', 400)
 
-    if user:
-        username = persons.byEmail(user['email'])
-        if username:
-            request.session['user'] = dict(user)
-    return RedirectResponse(url='/')
-
+    username = persons.byEmail(user['email'])
+    if not username:
+        return HTMLResponse(f'<h1>Not authorized</h1>', 400)
+    print(request)
+    print(ns(user).dump())
+    request.session['user'] = dict(user)
+    return HTMLResponse(
+        """"<html><script>
+        localStorage.setItem("token", "dedanone");
+        location.href="/";
+        </script></html>
+        """)
 
 @router.get('/logout')
 async def logout(request: Request):
     request.session.pop('user', None)
     return RedirectResponse(url='/')
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+def validatedUser(token: str = Depends(oauth2_scheme)):
+    print(f"Received token {token}")
+    if token!='dedanone':
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return "david"
 
 
