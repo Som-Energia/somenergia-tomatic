@@ -72,6 +72,7 @@ setup(
         'itsdangerous', # auth
         'authlib', # auth
         'httpx', # auth
+        'python-jose[cryptography]', # auth
     #],
     #tests_require=[
         'pytest-cov',

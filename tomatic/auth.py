@@ -1,4 +1,5 @@
 import json
+import datetime
 from fastapi import APIRouter, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordBearer
 from starlette.requests import Request
@@ -7,6 +8,7 @@ from starlette.responses import HTMLResponse, RedirectResponse
 from authlib.integrations.starlette_client import OAuth, OAuthError
 from starlette.config import Config
 from yamlns import namespace as ns
+from consolemsg import error
 from . import persons
 
 
@@ -49,10 +51,11 @@ async def auth(request: Request):
         return HTMLResponse(f'<h1>Not authorized</h1>', 400)
     print(request)
     print(ns(user).dump())
-    request.session['user'] = dict(user)
+    user = dict(user, username = username)
+    token = create_access_token(user, datetime.timedelta(minutes=3))
     return HTMLResponse(
-        """"<html><script>
-        localStorage.setItem("token", "dedanone");
+        f""""<html><script>
+        localStorage.setItem("token", "{token}");
         location.href="/";
         </script></html>
         """)
@@ -62,15 +65,50 @@ async def logout(request: Request):
     request.session.pop('user', None)
     return RedirectResponse(url='/')
 
+from jose import JWTError, jwt
+SECRET_KEY = "09d25e094faa6ca25666818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+def create_access_token(data: dict, expires_delta: datetime.timedelta = None):
+    passthru_fields = (
+        'username name email locale family_name given_name picture'
+    ).split()
+    payload = dict(
+        (field, data[field])
+        for field in passthru_fields
+        if field in data
+    )
+    default_delta = datetime.timedelta(minutes=15)
+    payload['exp'] = datetime.datetime.utcnow() + (expires_delta or default_delta)
+    token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+    print(f"Emited token {token}")
+    return token
+
+def auth_error(message):
+    error(message)
+    return HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Invalid authentication credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
 def validatedUser(token: str = Depends(oauth2_scheme)):
     print(f"Received token {token}")
-    if token!='dedanone':
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    return "david"
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    except JWTError as e:
+        raise auth_error("Token decoding failed {e}")
+
+    # TODO: validate all the fields
+    print(payload)
+    username: str = payload.get("username")
+    if username is None:
+        raise auth_error("Payload failed")
+
+    return ns(payload)
 
 
