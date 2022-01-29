@@ -4,6 +4,7 @@ module.exports = function() {
 
 var m = require('mithril');
 var deyamlize = require('./utils').deyamlize;
+var api = require('./api');
 
 var Login = require('./login');
 
@@ -53,10 +54,9 @@ CallInfo.reasonTag = function() {
 };
 
 var postAnnotation = function(annotation) {
-  m.request({
+  api.request({
     method: 'POST',
     url: '/api/call/annotate',
-    extract: deyamlize,
     body: annotation
   }).then(function(response){
     console.debug("Info POST Response: ",response);
@@ -222,10 +222,8 @@ CallInfo.selectPartner = function(idx) {
 var retrieveInfo = function () {
   CallInfo.searchResults = { 1: "empty" }; // Searching...
   var encodedValue = encodeURIComponent(CallInfo.search.trim());
-  m.request({
-    method: 'GET',
+  api.request({
     url: '/api/info/'+CallInfo.search_by+"/"+encodedValue,
-    extract: deyamlize,
   }).then(function(response){
     console.debug("Info GET Response: ", response);
     if(response.info.message === "response_too_long") {
@@ -245,10 +243,9 @@ var retrieveInfo = function () {
     // Keep the context, just in case a second query is started
     // and CallInfo.searchResults is overwritten
     var context = CallInfo.searchResults;
-    m.request({
+    api.request({
       method: 'POST',
       url: '/api/info/contractdetails',
-      extract: deyamlize,
       body: {
         contracts: contractNumbers(context),
       },
@@ -280,10 +277,8 @@ CallInfo.notifyUsage = function(event) {
 }
 
 CallInfo.getCategories = function() {
-  m.request({
-      method: 'GET',
+  api.request({
       url: '/api/call/categories',
-      extract: deyamlize,
   }).then(function(response){
       console.debug("Categories GET Response: ",response);
 
@@ -306,10 +301,8 @@ CallInfo.getCategories = function() {
 
 CallInfo.updateCategories = function() {
   CallInfo.updatingCategories = true;
-  m.request({
-    method: 'GET',
+  api.request({
     url: '/api/call/categories/update',
-    extract: deyamlize,
   }).then(function(response){
     console.debug("Info GET Response: ",response);
     if (response.info.message !== "ok" ) {
@@ -331,10 +324,8 @@ CallInfo.getLogPerson = function () {
     return 0
   }
   CallInfo.callLog.push("lookingfor")
-  m.request({
-    method: 'GET',
+  api.request({
     url: '/api/personlog/' + extension,
-    extract: deyamlize,
   }).then(function(response){
     console.debug("Info GET Response: ",response)
     if (response.info.message !== "ok" ) {
