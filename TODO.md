@@ -11,6 +11,7 @@
 - [ ] API tests in fastapi
 - [ ] Accept fragile erp tests
 - [ ] GSpread docs say that moving the credential to `~/.config/gspread/service_account.json` avoids having to pass it around as parameter
+- [ ] `tomatic_calls` should use persons module instead referring persons.yaml directly
 
 - Planner:
 	- [ ] Refactor as Single Page App
@@ -28,7 +29,7 @@
 	- [ ] List/admin mode
 	- [ ] Nicer date picker for one-shot busy
 - Callinfo
-	- [ ] `tomatic_calls` should use persons module instead referring persons.yaml directly
+	- [ ] config `callinfo_data` instead of `my_calls_log` parent folder
 	- [ ] Edit previous annotations
 	- [ ] /api/info/ringring -> api/call/ringring (ext) (caution: used by partners)
 	- [ ] /api/personlog/<ext> en els casos de fallada returnar una llista buida sense errors (no son de fallada, encara no hi ha logs i prou)

@@ -3,14 +3,10 @@ module.exports = function() {
 
 var Snackbar = require('polythene-mithril-snackbar').Snackbar;
 
-var jsyaml = require('js-yaml');
 var m = require('mithril');
 m.prop = require('mithril/stream');
 var Package = require('../../../package.json');
-
-function deyamlize(xhr) {
-	return jsyaml.safeLoad(xhr.responseText);
-}
+var api = require('./api');
 
 var Tomatic = {
 	packageinfo: Package,
@@ -35,10 +31,8 @@ Tomatic.checkVersionPeriodically = function() {
 }
 
 Tomatic.checkVersion = function() {
-	m.request({
-		method: 'GET',
+	api.request({
 		url: '/api/version',
-		extract: deyamlize,
 	}).then(function(response){
 		Tomatic.variant = response.variant;
 		if (response.version == Tomatic.packageinfo.version) return;
@@ -58,10 +52,8 @@ Tomatic.checkVersion = function() {
 
 
 Tomatic.requestPersons = function() {
-	return m.request({
-		method: 'GET',
+	return api.request({
 		url: '/api/persons',
-		extract: deyamlize,
 	}).then(function(response){
 		if (response.persons!==undefined) {
 			Tomatic.persons(response.persons);
@@ -73,10 +65,8 @@ Tomatic.requestPersons = function() {
 // Line management
 
 Tomatic.requestQueue = function(suffix) {
-	m.request({
-		method: 'GET',
+	api.request({
 		url: '/api/queue'+(suffix||''),
-		extract: deyamlize,
 	}).then(function(response){
 		if (response.currentQueue!==undefined) {
 			Tomatic.queue(response.currentQueue);
@@ -115,10 +105,8 @@ Tomatic.weekdays = {
 
 
 Tomatic.requestGrid = function(week) {
-	m.request({
-		method: 'GET',
+	api.request({
 		url: '/api/graella-'+week+'.yaml',
-		extract: deyamlize,
 	}).then(function(data) {
 		data.days = data.days || 'dl dm dx dj dv'.split(' ');
 		delete data.colors;
@@ -171,13 +159,12 @@ Tomatic.cell = function(day, houri, turni) {
 Tomatic.editCell = function(day,houri,turni,name,myname) {
 	// Direct edition, just for debug purposes
 	//Tomatic.grid().timetable[day][houri][turni] = name;
-	m.request({
+	api.request({
 		method: 'PATCH',
 		url: '/api/graella/'+([
 			Tomatic.grid().week,day,houri,turni,name
 			].join('/')),
 		body: myname,
-		extract: deyamlize,
 	})
 	.then( function(data) {
 		Tomatic.requestGrid(Tomatic.grid().week);
@@ -220,11 +207,10 @@ Tomatic.setPersonData = function (name, data) {
 		}
 	}
 	console.log("posting",postdata);
-	m.request({
+	api.request({
 		method: 'POST',
 		url: '/api/person/'+name,
 		body: postdata,
-		extract: deyamlize,
 	})
 	.then( function(data) {
 		Tomatic.requestPersons();
@@ -239,10 +225,8 @@ Tomatic.setPersonData = function (name, data) {
 Tomatic.weeks = m.prop([]);
 Tomatic.currentWeek = m.prop(undefined);
 Tomatic.requestWeeks = function() {
-	m.request({
-		method: 'GET',
+	api.request({
 		url: '/api/graella/list',
-		extract: deyamlize,
 	}).then(function(newWeeklist){
 		var weeks = newWeeklist.weeks.sort().reverse();
 		Tomatic.weeks(weeks);
@@ -283,11 +267,10 @@ Tomatic.error = function(message) {
 
 Tomatic.sendBusyData = function(name, data) {
 	console.log("updating", name,  '/api/busy/'+name);
-	m.request({
+	api.request({
 		method: 'POST',
 		url: '/api/busy/'+name,
 		body: data,
-		extract: deyamlize,
 	}).then(function(response){
 		console.debug("Busy POST Response: ",response);
 		if (response.result==='ok') { return; }
@@ -303,10 +286,8 @@ Tomatic.sendBusyData = function(name, data) {
 
 Tomatic.retrieveBusyData = function(name, callback) {
 	console.log("retrieving", name,  '/api/busy/'+name);
-	m.request({
-		method: 'GET',
+	api.request({
 		url: '/api/busy/'+name,
-		extract: deyamlize,
 	}).then(function(response){
 		console.debug("Busy GET Response: ",response);
 		callback(response);
