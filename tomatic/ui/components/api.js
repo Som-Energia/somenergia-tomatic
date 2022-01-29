@@ -11,11 +11,12 @@ var api = {
 		};
 		options.responseType = 'yaml'; // whatever different of json indeed
 		options.deserialize = api.deserialize;
+		console.log(options.method || 'GET', options.url, "Launched", options.params || options.body || '');
 		return m.request(options).then(function(result) {
-				console.log("then", result)
+				console.log(options.method || 'GET', options.url, "Received", result);
 				return result;
 			}).catch(function(error) {
-				console.log("Catching the error", error);
+				console.log(options.method || 'GET', options.url, "Error", error);
 				if (error.code !== 401) throw error;
 				// Unauthorized
 				location.href = '/api/auth/login'
