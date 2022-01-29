@@ -10,12 +10,11 @@ var Uploader = {
 		c.uploadFile = function(ev) {
 			var formData = new FormData;
 			formData.append(vnode.attrs.name || "file", ev.target.files[0]);
-			m.request({
+			api.request({
 				method: "POST",
 				url: vnode.attrs.url,
 				body: formData,
 				serialize: function(value) {return value},
-				extract: deyamlize,
 			}).then(vnode.attrs.onupload, vnode.attrs.onerror);
 		};
 	},
