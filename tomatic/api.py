@@ -185,12 +185,12 @@ async def logger(request: Request, event: str):
 
 @app.get('/api/graella/list')
 @yamlerrors
-def listGraelles():
+def listGraelles(user = Depends(validatedUser)):
     return yamlfy(weeks=schedules.list())
 
 @app.get('/api/graella/retireold')
 @yamlerrors
-def retireOldTimeTable():
+def retireOldTimeTable(user = Depends(validatedUser)):
     today = datetime.today()
     twoMondaysAgo = str((today - timedelta(days=today.weekday()+7*2)).date())
     step("Retiring timetables older than {}", twoMondaysAgo)
@@ -206,14 +206,14 @@ def retireOldTimeTable():
 @app.get('/api/graella-{week}.yaml')
 @app.get('/api/graella/{week}')
 @yamlerrors
-def graellaYaml(week):
+def graellaYaml(week, user = Depends(validatedUser)):
     schedule = schedules.load(week)
 
     return yamlfy(**schedule)
 
 @app.patch('/api/graella/{week}/{day}/{houri}/{turni}/{name}')
 @ayamlerrors
-async def editSlot(week, day, houri: int, turni: int, name, request: Request):
+async def editSlot(week, day, houri: int, turni: int, name, request: Request, user = Depends(validatedUser)):
     # TODO: This should be some kind of auth
     user = (await request.body()).decode('utf8').split('"')[1]
     graella = schedules.load(week)
@@ -253,7 +253,7 @@ def cachedQueueStatus(force=False):
 
 @app.post('/api/graella')
 @yamlerrors
-def uploadGraella(yaml: UploadFile = File(...), week=None):
+def uploadGraella(yaml: UploadFile = File(...), week=None, user = Depends(validatedUser)):
     step("uploading {}".format(yaml.filename))
     graella = ns.load(yaml.file)
     logmsg = (
@@ -269,14 +269,14 @@ def uploadGraella(yaml: UploadFile = File(...), week=None):
 
 @app.get('/api/queue')
 @yamlerrors
-def get_queue():
+def get_queue(user = Depends(validatedUser)):
     return yamlfy(
         currentQueue = cachedQueueStatus()
     )
 
 @app.get('/api/queue/add/{person}')
 @yamlerrors
-def add_line(person):
+def add_line(person, user = Depends(validatedUser)):
     p = pbx()
     p.add(person)
     return yamlfy(
@@ -285,7 +285,7 @@ def add_line(person):
 
 @app.get('/api/queue/pause/{person}')
 @yamlerrors
-def pause_line(person):
+def pause_line(person, user = Depends(validatedUser)):
     p = pbx()
     p.pause(person)
     return yamlfy(
@@ -294,42 +294,53 @@ def pause_line(person):
 
 @app.get('/api/queue/resume/{person}')
 @yamlerrors
-def resume_line(person):
+def resume_line(person, user = Depends(validatedUser)):
     p = pbx()
     p.resume(person)
     return yamlfy(
         currentQueue = cachedQueueStatus(force=True)
     )
 
+@app.get('/api/persons/extension/{extension}')
+@yamlerrors
+def personInfoFromExtension(extension, user = Depends(validatedUser)):
+    allpersons=persons.persons()
+    names = [name for name,ext in allpersons.extensions.items() if ext == extension]
+    if not names:
+        return 'nobody@somenergia.coop'
+    name = names[0]
+    email = allpersons.emails[name]
+    return email
+
 @app.get('/api/persons')
 @yamlerrors
-def personInfo():
+def personInfo(user = Depends(validatedUser)):
     result=persons.persons()
     return yamlfy(persons=result)
 
 @app.post('/api/person/{person}')
 @ayamlerrors
-async def setPersonInfo(person, request: Request):
+async def setPersonInfo(person, request: Request, user = Depends(validatedUser)):
     data = ns.loads(await request.body())
     persons.update(person, data)
     return yamlfy(persons=persons.persons())
 
 @app.get('/api/busy/{person}')
 @yamlerrors
-def busy(person):
+def busy(person, user = Depends(validatedUser)):
     from . import busy
     return yamlfy(**busy.busy(person))
 
 @app.post('/api/busy/{person}')
 @ayamlerrors
-async def busy_post(person, request: Request):
+async def busy_post(person, request: Request, user = Depends(validatedUser)):
     from . import busy
     data = ns.loads(await request.body())
     return yamlfy(**busy.update_busy(person, data))
 
 @app.get('/api/busy/download/weekly')
 @yamlerrors
-def downloadWeeklyBusy():
+def downloadWeeklyBusy(user = Depends(validatedUser)):
     response = FileResponse(
         path='indisponibilitats.conf',
         #as_attachment=True,
@@ -339,7 +350,7 @@ def downloadWeeklyBusy():
 
 @app.get('/api/busy/download/oneshot')
 @yamlerrors
-def downloadOneShotBusy():
+def downloadOneShotBusy(user = Depends(validatedUser)):
     return FileResponse(
         'oneshot.conf',
         #as_attachment=True,
@@ -356,7 +367,7 @@ def downloadWeekShiftCredit(week):
     return yamlfy(**credit)
 
 @app.get('/api/shifts/download/shiftload/{week}')
-def downloadShiftLoad(week):
+def downloadShiftLoad(week, user = Depends(validatedUser)):
     loadfile = Path('carrega-{}.csv'.format(week))
 
     return FileResponse(
@@ -366,7 +377,7 @@ def downloadShiftLoad(week):
     )
 
 @app.get('/api/shifts/download/overload/{week}')
-def downloadOverload(week):
+def downloadOverload(week, user = Depends(validatedUser)):
     loadfile = Path('overload-{}.yaml'.format(week))
 
     return FileResponse(
@@ -384,7 +395,7 @@ def yamlinfoerror(code, message, *args, **kwds):
 
 @app.get('/api/info/{field}/{value}')
 @yamlerrors
-def getInfoPersonBy(field, value):
+def getInfoPersonBy(field, value, user = Depends(validatedUser)):
     decoded_value = urllib.parse.unquote(value)
     data = None
     with erp() as O:
@@ -409,7 +420,7 @@ def getInfoPersonBy(field, value):
     return yamlfy(info=result)
 
 @app.post('/api/info/contractdetails')
-async def getContractDetails(request: Request):
+async def getContractDetails(request: Request, user = Depends(validatedUser)):
     params = ns.loads(await request.body())
     with erp() as O:
         info = CallInfo(O)
@@ -452,9 +463,10 @@ async def notifyIncommingCall(phone: str, extension: str):
     return yamlfy(result='ok')
 
 
+@app.get('/api/personlog')
 @app.get('/api/personlog/{user}')
-def getCallLog(user):
-    calls = CallRegistry().callsByUser(user)
+def getCallLog(user=None, validatedUser = Depends(validatedUser)):
+    calls = CallRegistry().callsByUser(user or validatedUser)
     return yamlfy(
         info=ns(
             info=calls,
@@ -462,8 +474,9 @@ def getCallLog(user):
         )
     )
 
+
 @app.post('/api/call/annotate')
-async def callAnnotate(request: Request):
+async def callAnnotate(request: Request, user = Depends(validatedUser)):
     annotation = ns.loads(await request.body())
     CallRegistry().annotateCall(annotation)
     user = annotation.get('user', None)
@@ -476,12 +489,12 @@ async def callAnnotate(request: Request):
     ))
 
 @app.get('/api/call/categories')
-def annotationCategories():
+def annotationCategories(user = Depends(validatedUser)):
     categories = CallRegistry().annotationCategories()
     return yamlfy(**categories)
 
 @app.get('/api/call/categories/update')
-def updateClaimTypes():
+def updateClaimTypes(user = Depends(validatedUser)):
     with erp() as O:
         CallRegistry().updateAnnotationCategories(O)
     return yamlfy(info=ns(message='ok'))
