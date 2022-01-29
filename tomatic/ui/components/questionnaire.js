@@ -5,7 +5,6 @@
 module.exports = function() {
 
 var m = require('mithril');
-var deyamlize = require('./utils').deyamlize;
 
 var Ripple = require('polythene-mithril-ripple').Ripple;
 var Dialog = require('polythene-mithril-dialog').Dialog;

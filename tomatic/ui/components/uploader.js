@@ -2,7 +2,7 @@ module.exports = function() {
 
 var m = require('mithril');
 var RaisedButton = require('polythene-mithril-raised-button').RaisedButton;
-var deyamlize = require('./utils').deyamlize;
+var api = require('./api');
 
 var Uploader = {
 	oninit: function(vnode) {

@@ -3,7 +3,6 @@
 module.exports = function() {
 
 var m = require('mithril');
-var deyamlize = require('./utils').deyamlize;
 var api = require('./api');
 
 var Login = require('./login');
