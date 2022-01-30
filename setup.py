@@ -71,7 +71,7 @@ setup(
         'ics', # icalendar generation
         'itsdangerous', # auth
         'authlib', # auth
-        'httpx', # auth
+        #'httpx', # auth
         'python-jose[cryptography]', # auth
     #],
     #tests_require=[
