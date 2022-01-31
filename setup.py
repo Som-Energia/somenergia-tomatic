@@ -70,8 +70,8 @@ setup(
         'elasticsearch<8', # 8 version is incompatible with irontec server
         'ics', # icalendar generation
         'itsdangerous', # auth
-        'authlib', # auth
-        #'httpx', # auth
+        'authlib<1.0', # auth
+        'httpx', # auth
         'python-jose[cryptography]', # auth
     #],
     #tests_require=[
