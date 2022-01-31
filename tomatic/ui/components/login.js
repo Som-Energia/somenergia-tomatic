@@ -4,6 +4,7 @@ module.exports = function() {
 var m = require('mithril');
 var jsyaml = require('js-yaml');
 var getCookie = require('./utils').getCookie;
+var contrast = require('./colorutils').contrast;
 
 var Dialog = require('polythene-mithril-dialog').Dialog;
 var Button = require('polythene-mithril-button').Button;
@@ -90,33 +91,34 @@ var setCookieInfo = function(vnode){
 
 
 var listOfPersons = function() {
-    var aux = [];
-    var persons = Tomatic.persons().extensions;
-
-    for (id in persons){
-        var name = Tomatic.formatName(id);
-        var color = "#" + Tomatic.persons().colors[id];
-		if (name == '-') {
-            continue;
-        }
-        else if (name == '>>>CONTESTADOR<<<'){
-            continue;
-        }
-        aux.push(m(Button, {
-            id: id,
-            className: 'btn-list',
-            label: name,
-            border: true,
-            style: { backgroundColor: color },
-            events: {
-                onclick: function(id) {
-                    setCookieInfo(id);
-                    Dialog.hide({id:'whoAreYou'});
+    var persons = Object.keys(Tomatic.persons().extensions).sort();
+    return m(List, {
+        tiles: persons.filter(function(personid) {
+            var name = Tomatic.formatName(personid);
+            if (name === '-') return false;
+            return true;
+        }).map(function(personid) {
+            var name = Tomatic.formatName(personid);
+            var color = "#" + Tomatic.persons().colors[personid];
+            return m(Button, {
+                id: personid,
+                className: 'btn-list ',
+                label: name,
+                border: true,
+                style: {
+                    backgroundColor: color,
+                    color: contrast(color),
                 },
-            },
-        }));
-    }
-    return m(List, { tiles:aux, className:'list-users' });
+                events: {
+                    onclick: function(personid) {
+                        setCookieInfo(personid);
+                        Dialog.hide({id:'whoAreYou'});
+                    },
+                },
+            });
+        }),
+        className: 'list-users',
+    });
 }
 
 
@@ -175,7 +177,10 @@ Login.identification = function() {
                     Login.askWhoAreYou();
                 },
             },
-            style: { backgroundColor: color },
+            style: {
+                backgroundColor: color,
+                color: contrast(color),
+            },
         }, m(Ripple)),
         m(Button, {
             className: 'btn-disconnect',
