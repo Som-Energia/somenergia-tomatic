@@ -100,7 +100,7 @@ var listOfPersons = function() {
                 events: {
                     onclick: function(personid) {
                         setCookieInfo(personid);
-                        Dialog.hide({id:'whoAreYou'});
+                        Dialog.hide({id:'pickIdentityDialog'});
                     },
                 },
             });
@@ -123,13 +123,13 @@ Login.askWhoAreYou = function() {
                 label: "Cancel·la",
                 events: {
                     onclick: function() {
-                        Dialog.hide({id:'whoAreYou'});
+                        Dialog.hide({id:'pickIdentityDialog'});
                     },
                 },
             }),
         ],
         didHide: function() {m.redraw();}
-    };},{id:'whoAreYou'});
+    };},{id:'pickIdentityDialog'});
 }
 
 var exitIcon = function(){
