@@ -22,19 +22,19 @@ var previousLogin = null; // To detect login changes
 
 Login.loginWatchTimer = 0;
 Login.watchLoginChanges = function() {
-	clearTimeout(Login.loginWatchTimer);
+    clearTimeout(Login.loginWatchTimer);
     var cookie = whoAreYou();
     var user = cookie.split(":")[0];
-	if (user !== previousLogin) {
-		console.log("Detected login change",previousLogin,"->",user);
-		previousLogin = user;
-		Login.onUserChanged.map(function(callback) {
-			callback();
-		})
-		m.redraw();
-	}
-	Login.loginWatchTimer = setTimeout(
-		Login.watchLoginChanges, 500);
+    if (user !== previousLogin) {
+        console.log("Detected login change",previousLogin,"->",user);
+        previousLogin = user;
+        Login.onUserChanged.map(function(callback) {
+            callback();
+        })
+        m.redraw();
+    }
+    Login.loginWatchTimer = setTimeout(
+        Login.watchLoginChanges, 500);
 }
 
 Login.onLogout = [];
@@ -65,7 +65,6 @@ Login.currentExtension = function() {
     var extension = cookie_value.split(":")[1].toString();
     return extension === "" ? -1 : extension;
 }
-
 
 var setCookieInfo = function(vnode){
     var name_button = vnode.target.innerText;
@@ -198,4 +197,4 @@ return Login;
 
 }();
 
-// vim: noet ts=4 sw=4
+// vim: et ts=4 sw=4
