@@ -10,6 +10,7 @@ var deyamlize = require('./utils').deyamlize;
 var Ripple = require('polythene-mithril-ripple').Ripple;
 var Dialog = require('polythene-mithril-dialog').Dialog;
 var Button = require('polythene-mithril-button').Button;
+var ButtonGroup = require('polythene-mithril-button-group').ButtonGroup;
 var IconButton = require('polythene-mithril-icon-button').IconButton;
 var Textfield = require('polythene-mithril-textfield').TextField;
 var Card = require('polythene-mithril-card').Card;
@@ -24,16 +25,22 @@ var Login = require('./login');
 var Questionnaire = {};
 
 var categoryFilter = "";
+var isclaim = true;
 
 
 var categoryList = function() {
-  var categories = CallInfo.filteredCategories(categoryFilter)
+  var categories = CallInfo.filteredCategories(categoryFilter, isclaim)
 
   return m(".motius", m(List, {
     compact: true,
     indentedBorder: true,
     compact: true,
     tiles: categories.map(function(category) {
+      var displayText = category.isclaim? (
+        "[" + (category.section || CallInfo.noSection) + "] " + category.name
+      ):(
+        category.name
+      );
       return m(ListTile, {
         className: (
           CallInfo.call.category === category
@@ -44,8 +51,8 @@ var categoryList = function() {
         selectable: true,
         ink: true,
         hover: true,
-        title: category,
-        selected: CallInfo.call.category == category,
+        title: displayText,
+        selected: CallInfo.call.category === category,
         events: {
           onclick: function(ev) {
             CallInfo.call.category = category
@@ -226,6 +233,32 @@ Questionnaire.openCaseAnnotationDialog = function() {
               contract.number + " - " + contract.cups_adress
             ): " Cap contracte especificat",
           ]),
+          m(ButtonGroup,
+            m(Button, {
+              label: "Reclamació",
+              extraWide: true,
+              selected: isclaim,
+              events: {
+                onclick: function (ev) {
+                  if (isclaim) return
+                  isclaim = true;
+                  CallInfo.call.category = "";
+                }
+              }
+            }),
+            m(Button, {
+              label: "Consulta",
+              extraWide: true,
+              selected: !isclaim,
+              events: {
+                onclick: function (ev) {
+                  if (!isclaim) return
+                  isclaim = false;
+                  CallInfo.call.category = "";
+                  }
+              }
+            }),
+          ),
           m(".reason-filter", [
             m(".motiu", 'Motiu: '),
             m(".filter",
@@ -234,8 +267,8 @@ Questionnaire.openCaseAnnotationDialog = function() {
                 label: "Escriu per a filtrar",
                 value: categoryFilter,
                 dense: true,
-                onChange: function(params) {
-                  categoryFilter = params.value
+                onChange: function(ev) {
+                  categoryFilter = ev.value
                 }
               })),
           ]),
@@ -271,11 +304,11 @@ Questionnaire.openCaseAnnotationDialog = function() {
         m(Button, {
           className: "save",
           label: CallInfo.savingAnnotation?"Desant":(
-            CallInfo.annotationIsClaim()?"Continua":
-              "Desa"),
+            isclaim?"Continua":"Desa"
+          ),
           events: {
             onclick: function() {
-              if (CallInfo.annotationIsClaim()) {
+              if (isclaim) {
                 emplenaReclamacio();
               }
               else {

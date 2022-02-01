@@ -43,7 +43,8 @@ CallInfo.hasNoSection = function() {
   return CallInfo.annotation.tag === CallInfo.noSection;
 };
 CallInfo.reasonTag = function() {
-  var category = CallInfo.call.category;
+  var category = CallInfo.call.category.description;
+  if (!category) return "";
   var matches = category.match(/\[(.*?)\]/);
   if (matches) {
     return matches[1].trim();
@@ -72,7 +73,7 @@ var postAnnotation = function(annotation) {
 }
 
 CallInfo.annotationIsClaim = function() {
-  return CallInfo.reasonTag() !== CallInfo.helpdeskSection;
+  return CallInfo.call.category.isclaim;
 }
 
 CallInfo.saveCallLog = function(claim) {
@@ -91,7 +92,8 @@ CallInfo.saveCallLog = function(claim) {
     "phone": CallInfo.call.phone,
     "partner": partner_code,
     "contract": contract_number,
-    "reason": CallInfo.call.category,
+    // TODO: Uses structure instead of fragile string to parse
+    "reason": CallInfo.call.category.description,
     "notes": CallInfo.call.notes,
     "claimsection": (
       !isClaim ? "" : (
@@ -154,10 +156,13 @@ function contractNumbers(info) {
 }
 
 
-CallInfo.filteredCategories = function(filter) {
+CallInfo.filteredCategories = function(filter, isclaim) {
   var lowerFilter = filter.toLowerCase()
   return CallInfo.categories
     .filter(function(category) {
+      if (isclaim != category.isclaim) {
+        return false;
+      }
       if (category.description.toLowerCase().includes(lowerFilter)) {
         return true;
       }
@@ -165,9 +170,6 @@ CallInfo.filteredCategories = function(filter) {
         return true;
       }
       return false;
-    })
-    .map(function(category) {
-      return category.description;
     });
 };
 
