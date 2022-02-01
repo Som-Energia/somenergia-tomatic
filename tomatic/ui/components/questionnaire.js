@@ -150,7 +150,7 @@ Questionnaire.openCaseAnnotationDialog = function() {
             label: "Resolt; no tenia raó",
             value: 'unfair',
         },{
-            label: "Resolt; no es podia fer res",
+            label: "Resolt; no es pot gestionar",
             value: 'irresolvable',
         }],
       }),
