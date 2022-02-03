@@ -154,18 +154,87 @@ class Irontec(object):
         result = self._api('put', '/agent/unpause/'+extension+'/'+queue)
 
     def stats(self, queue, date=None):
-        response = self._api(...)
+        from elasticsearch import Elasticsearch as Searcher
+        import dbconfig
+        searcher = Searcher(**dbconfig.tomatic.irontec_elk)
+        date = date or datetime.date.today()
+        starttime = datetime.time(9) # TODO: from config
+        stoptime = datetime.time(14) # TODO: from config
+ 
+        # https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html
+        query = f"""
+          bool:
+            filter:
+              range:
+                '@calldate':
+                  gte: "{date}T{starttime}"
+                  lte: "{date}T{stoptime}"
+                  time_zone: "Europe/Madrid"
+                  format: strict_date_optional_time
+            must:
+              match:
+                queuename: {dbconfig.tomatic.irontec.queue}
+            must_not:
+              match:
+                # Las the RINGNOANSWER son duplicadas para dejar constancia
+                # que se ha intentado llamar a una agente
+                hangupcause: RINGNOANSWER
+        """
+        results = searcher.search(
+            index = "sharedstats",
+            query = ns.loads(query),
+            filter_path=['hits.hits._*'],
+        )
+        calls = [
+            ns(call['_source'])
+            for call in results.get("hits",{}).get("hits",[])
+        ]
+
+        callsreceived = len(set(call.uniqueid for call in calls))
+        answeredcalls = len(set(
+            call.uniqueid
+            for call in calls
+            if call.hangupcause == "ATENDIDA"
+        ))
+        abandonedcalls = len(set(
+            call.uniqueid
+            for call in calls
+            if call.hangupcause == "PERDIDA"
+        ))
+        timedoutcalls = len(set(
+            call.uniqueid
+            for call in calls
+            if call.hangupcause == "COLA_TIMEOUT"
+        ))
+        talktime = sum(
+            int(call.agent_time)
+            for call in calls
+            if call.hangupcause == "ATENDIDA"
+        )
+        averagetalktime = int(round(talktime/answeredcalls)) if answeredcalls else 0
+        holdtime = sum(
+            int(call.wait_time)
+            for call in calls
+            if call.hangupcause != "RINGNOANSWER"
+        )
+        averageholdtime = int(round(holdtime/callsreceived)) if callsreceived else 0
+        maxholdtime = max((
+            int(call.get('wait_time',0))
+            for call in calls
+            if call.hangupcause != "RINGNOANSWER"
+        ), default=0)
+
         return ns(
-            date = date or '{:%Y-%m-%d}'.format(datetime.date.today()),
-            callsreceived = TODO(response),
-            answeredcalls = TODO(response),
-            abandonedcalls = TODO(response),
-            timedoutcalls = TODO(response),
-            talktime = TODO(response),
-            averagetalktime = TODO(response),
-            holdtime = TODO(response),
-            averageholdtime = TODO(response),
-            maxholdtime = TODO(response),
+            date = str(date),
+            callsreceived = callsreceived,
+            answeredcalls = answeredcalls,
+            abandonedcalls = abandonedcalls,
+            timedoutcalls = timedoutcalls,
+            talktime = talktime,
+            averagetalktime = averagetalktime,
+            holdtime = holdtime,
+            averageholdtime = averageholdtime,
+            maxholdtime = maxholdtime,
         )
 
 
