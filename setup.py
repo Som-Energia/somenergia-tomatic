@@ -63,6 +63,7 @@ setup(
         'uvicorn[standard]', # server for fastapi (standard for websockets)
         'aiofiles', # Static files for fastapi
         'hangups',
+        'elasticsearch',
     #],
     #tests_require=[
         'nose',
