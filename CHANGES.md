@@ -1,5 +1,14 @@
 # Changelog
 
+## unreleased
+
+- login: Contrast colors persons buttons
+- callinfo categories: button to filter claims or helpdesk categories
+- callinfo categories: hide category code
+- callinfo categories: hide section for helpdesk categories
+- dailyreport also reports stats by chat
+- irontec: implementation of the stats functionality
+
 ## 4.4.2 2022-01-28
 
 - Fix: Callinfo: A second search on a call lost the relation with the selected call
