@@ -7,7 +7,7 @@ from tomatic import __version__
 from tomatic.pbx import pbxqueue, pbxtypes
 from pathlib import Path
 from emili import sendMail
-
+from tomatic.directmessage import send
 
 template = """\
 <style>
@@ -132,6 +132,13 @@ def cli(backend, queue, date):
             'stats.csv',
         ],
     )
+    send(dbconfig.tomatic.monitorChatChannel,
+        "Hola Súpers! Us passem el registre de trucades d'avui! "
+        f"Rebudes: {stats['callsreceived']}. "
+        f"Contestades: {stats['answeredcalls']}. "
+        f"Perdudes: {stats['abandonedcalls'] + stats['timedoutcalls']}. "
+    )
+
 
 
 
