@@ -202,6 +202,18 @@ def monitor(backend, queue):
     # Store the current for the next monitoring
     ns(queue=current).dump('monitor.yaml')
 
+@cli.command()
+@backend_option
+@queue_option
+@date_option
+def stats(backend, queue, date):
+    """shows the daily stats"""
+
+    pbx = pbxqueue(backend, queue)
+
+    stats = pbx.stats(date)
+
+    print(stats.dump())
 
 
 

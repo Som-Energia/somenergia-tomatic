@@ -5,6 +5,7 @@ from yamlns import namespace as ns
 from consolemsg import error, step
 import requests
 from enum import Enum
+from somutils import isodates
 from .. import persons
 
 def TODO(*args, **kwds):
@@ -153,7 +154,7 @@ class Irontec(object):
         if not extension: return
         result = self._api('put', '/agent/unpause/'+extension+'/'+queue)
 
-    def stats(self, queue, date=None):
+    def calls(self, queue, date=None):
         from elasticsearch import Elasticsearch as Searcher
         import dbconfig
         searcher = Searcher(**dbconfig.tomatic.irontec_elk)
@@ -185,10 +186,20 @@ class Irontec(object):
             query = ns.loads(query),
             filter_path=['hits.hits._*'],
         )
-        calls = [
-            ns(call['_source'])
+        return [
+            ns(
+                call['_source'],
+                utctime = datetime.datetime.fromtimestamp(call['_source']['@calldate']/1000, tz=datetime.timezone.utc),
+                localtime = isodates.toLocal(datetime.datetime.fromtimestamp(call['_source']['@calldate']/1000, tz=datetime.timezone.utc)),
+            )
             for call in results.get("hits",{}).get("hits",[])
         ]
+
+    def stats(self, queue, date=None):
+        date = date or datetime.date.today()
+
+        calls = self.calls(queue, date)
+        ns(calls=calls).dump(f"calls-{date}.yaml")
 
         callsreceived = len(set(call.uniqueid for call in calls))
         answeredcalls = len(set(
