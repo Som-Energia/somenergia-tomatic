@@ -207,13 +207,20 @@ def monitor(backend, queue):
 @queue_option
 @date_option
 def stats(backend, queue, date):
-    """shows the daily stats"""
-
+    """Shows the daily call stats for the queue"""
     pbx = pbxqueue(backend, queue)
-
     stats = pbx.stats(date)
-
     print(stats.dump())
+
+@cli.command()
+@backend_option
+@queue_option
+@date_option
+def calls(backend, queue, date):
+    """Shows raw calls for the day and queue"""
+    pbx = pbxqueue(backend, queue)
+    calls = pbx.calls(date)
+    print(ns(calls=calls).dump())
 
 
 

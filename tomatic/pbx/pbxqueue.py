@@ -26,6 +26,9 @@ class PbxQueue(object):
     def stats(self, date):
         return self.backend.stats(self._queue, date)
 
+    def calls(self, date):
+        return self.backend.calls(self._queue, date)
+
 
 
 # vim: ts=4 sw=4 et
