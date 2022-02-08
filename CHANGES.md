@@ -1,6 +1,6 @@
 # Changelog
 
-## unreleased
+## 4.5.0 2022-02-08
 
 - login: Contrast colors persons buttons
 - callinfo categories: button to filter claims or helpdesk categories
@@ -8,6 +8,9 @@
 - callinfo categories: hide section for helpdesk categories
 - dailyreport also reports stats by chat
 - irontec: implementation of the stats functionality
+- new cli commands:
+  - `tomatic_rtqueue.py stats` to get the daily stats
+  - `tomatic_rtqueue.py calls` to get the raw daily call details
 
 ## 4.4.2 2022-01-28
 
