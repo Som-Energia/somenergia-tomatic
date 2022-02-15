@@ -33,33 +33,50 @@ tomatic=ns(
         password='mypassword',
         host='192.168.23.1',
     ),
-    # Define this if areavoip api is used to access asterisk
-    no_areavoip = ns(
+    # Areavoip PBX API connection params
+    areavoip = ns(
         baseurl = 'https://vpbx2.nubelfon.com/pbx/proxyapi.php',
         apikey = 'xxxxxxxxxxxx',
         tenant = 'MyCompany',
         queue = 666,
     ),
-    # configure this to have an html timetable published by scp
+    # Irontec PBX API connection params
+    irontec = ns(
+        baseurl = 'https://pbxsom.irontec.com/ApiRest/index.php/api',
+        password = 'thepassword',
+        user = 'myuser',
+        queue = 'main_queue',
+    ),
+    # Irontec Stats platform params (Elastic Search)
+    irontec_elk = ns(
+        hosts=["69.69.69.69"],
+        http_auth=('myuser', 'mypassword'),
+        #scheme="https",
+        port=6082,
+    ),
+    ),
+    # Publish by scp a static html timetables whenever they change
+    # remove the no_ prefix to activate it
     no_publishStatic = ns(
         host='web.mycompany.com',
         user='webmaster',
         path='/home/webmaster/timetables/',
     ),
     # Configure this to download vacations from Notoi API
+    # remove the no_ prefix to activate it
     no_notoi_data = ns(
         service_url = "https://....",
         user = "myuser",
         password = "mypassword",
     ),
     # Configure this to download vacations from odoo
+    # remove the no_ prefix to activate it
     no_holidaysodoo = ns(
         server='https://xxx.xxx.xxx.xxx:xxxx',
         db="odoo",
         user="tomatic",
         password="mypasword",
     ),
-
     # from and to mails for daily stats report
     dailystats = ns(
         sender = 'tomatic@mycompany.com',

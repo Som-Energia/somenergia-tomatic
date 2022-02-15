@@ -6,7 +6,7 @@
 - [ ] Configurable timetable directory ('graelles')
 - [ ] Configurable execution directory ('executions')
 - [ ] Move shiftload generated files to a configurable dir (maybe same as timetables dir?)
-- [ ] As an agent i want to be able to see cancelled contracts in callinfo (pe. for claims of unauthorized switching)
+- [ ] callinfo: As an agent i want to be able to see cancelled contracts in callinfo (pe. for claims of unauthorized switching)
 - [ ] Google login
 - [ ] API tests in fastapi
 - [ ] Accept fragile erp tests
