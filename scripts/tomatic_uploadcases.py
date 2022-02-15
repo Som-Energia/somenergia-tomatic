@@ -22,7 +22,8 @@ if __name__ == '__main__':
     today = args.date or datetime.date.today()
 
     erp = erppeek.Client(**dbconfig.erppeek)
-    CallRegistry().uploadCases(erp, today)
+    uploaded_ids = CallRegistry().uploadCases(erp, today)
+    print(f"{len(uploaded_ids)} casos pujats")
 
 
 # vim: et ts=4 sw=4

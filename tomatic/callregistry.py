@@ -102,11 +102,12 @@ class CallRegistry(object):
             level=logging.INFO
         )
         logging.info(" Script starts: let's go!")
-
+        case_ids = []
         for personCases in cases.values():
             for case in personCases:
                 try:
                     id = claims.create_case(case)
+                    case_ids.append(id)
                     logging.info(f" CRM case {id} created.")
                 except Exception as e:
                     logging.error(" Something went wrong in {}: {}".format(
@@ -114,6 +115,8 @@ class CallRegistry(object):
                         str(e))
                     )
                     logging.error(" CASE: {}".format(case))
+        # TODO: Testme!!
+        return id
 
 
 
