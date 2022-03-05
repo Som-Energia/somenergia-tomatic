@@ -31,7 +31,7 @@ def cli(request, args):
         kwds[key]=arg
         key=None
 
-    click.echo(ns(pbx._api(request.upper(), **kwds)).dump())
+    click.echo(ns(result=pbx._api(request.upper(), **kwds)).dump())
 
 if __name__=='__main__':
 	cli()
