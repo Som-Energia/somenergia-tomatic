@@ -22,9 +22,9 @@ class DeviceStatus(int, Enum):
     InUseRinging = 7 # Device is ringing and in use
     OnHold = 8 # Device is on hold
 
-class BackendError(Exception): pass
-
 class Irontec(object):
+
+    class BackendError(Exception): pass
 
     @staticmethod
     def defaultQueue():
@@ -44,7 +44,7 @@ class Irontec(object):
                 password = self.config.password,
         ))
         if response.status_code != 200:
-            raise BackendError()
+            raise Irontec.BackendError()
         self.token = response.json()['token']
         self.bearer = dict(
             authorization=f"Bearer {self.token}",
@@ -72,7 +72,7 @@ class Irontec(object):
             return data
 
         if response.status_code == 403: # Method not allowed
-            raise BackendError(f"Method not allowed for '{url}'")
+            raise Irontec.BackendError(f"Method not allowed for '{url}'")
 
         if response.status_code == 420:
             print(data)
@@ -85,7 +85,7 @@ class Irontec(object):
         print("Error code:", response.status_code)
         print(response.text)
 
-        raise BackendError(response.json())
+        raise Irontec.BackendError(response.json())
 
     # Queue management
 
@@ -284,7 +284,7 @@ class Irontec(object):
                     email = email or 'none@nowhere.com',
                 ),
             )
-        except BackendError as e:
+        except Irontec.BackendError as e:
             error(f"Error loading {extension}, {fullname}, {email}: {e}")
 
     def removeExtension(self, extension):
