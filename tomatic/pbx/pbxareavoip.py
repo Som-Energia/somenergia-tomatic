@@ -4,6 +4,7 @@ import requests
 import json
 from yamlns import namespace as ns
 from .. import persons
+import datetime
 
 class AreaVoip(object):
 
