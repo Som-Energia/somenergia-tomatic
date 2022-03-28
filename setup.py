@@ -71,7 +71,6 @@ setup(
         'coverage',
         'b2btest',
         'lxml',
-        'wavefile',
         'erppeek',
         'ERPPeek-WST',
     ],
