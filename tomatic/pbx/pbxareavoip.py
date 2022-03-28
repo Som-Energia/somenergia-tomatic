@@ -126,6 +126,76 @@ class AreaVoip(object):
             for attr in fields
         ])
 
+    def stats(self, queue, date=None):
+        date = date or datetime.date.today()
+        cdrs = self._api('INFO',
+            info='simplecdrs',
+            start=f'{date} 00:00:00',
+            end=f'{date} 23:59:59',
+            format='json',
+        )
+        stats = ns(
+            earlycalls = 0,
+            latecalls = 0,
+            testcalls = 0,
+            answeredcalls = 0,
+            talktime = 0,
+            abandonedcalls = 0,
+            timedoutcalls = 0,
+            holdtime = 0,
+        )
+        for cdr in (ns(x) for x in cdrs):
+            if cdr.sc_direction != 'IN':
+                continue
+
+            if cdr.sc_dialednum not in (
+                '872202550',
+                '872557980',
+            ):
+                stats.testcalls += 1
+                continue
+
+            if cdr.sc_start < f'{date} 09:00:00':
+                stats.earlycalls += 1
+                continue
+            if cdr.sc_start > f'{date} 14:00:00':
+                stats.latecalls += 1
+                continue
+            if cdr.sc_disposition == 'ANSWERED':
+                stats.answeredcalls +=1
+                stats.talktime += int(cdr.sc_duration)
+            elif cdr.sc_disposition in ('NO ANSWER', 'FAILED', 'BUSY','CONGESTION'):
+                stats.abandonedcalls +=1
+                stats.holdtime += int(cdr.sc_duration)
+            else:
+                print(cdr.sc_disposition)
+                stats.timedoutcalls +=1
+                stats.holdtime += int(cdr.sc_duration)
+
+        def duration(seconds):
+            seconds=int(round(seconds))
+            return f"{seconds//60//60:02}:{seconds//60%60:02}:{seconds%60%60:02}"
+
+        return ns(
+            stats,
+            date = str(date),
+            callsreceived = len(cdrs),
+            averagetalktime = duration(
+                stats.talktime/(stats.answeredcalls or 1)
+            ),
+            averageholdtime = duration(
+                stats.holdtime/((stats.abandonedcalls+stats.timedoutcalls) or 1)
+            ),
+            maxholdtime = duration(max(
+                int(cdr.sc_duration)
+                for cdr in (ns(x) for x in cdrs)
+                if cdr.sc_direction == 'IN'
+            )),
+            talktime = duration(stats.talktime),
+            holdtime = duration(stats.holdtime),
+        )
+        return stats
+
     def _allExtensions(self):
         return self._api('MANAGEDB',
             object='extension',

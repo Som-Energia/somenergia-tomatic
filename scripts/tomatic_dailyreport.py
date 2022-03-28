@@ -8,6 +8,7 @@ from tomatic.pbx import pbxqueue, pbxtypes
 from pathlib import Path
 from emili import sendMail
 from tomatic.directmessage import send
+from yamlns.dateutils import Date
 
 template = """\
 <style>
@@ -82,6 +83,9 @@ fields = [
     'holdtime',
     'averageholdtime',
     'maxholdtime',
+    'earlycalls',
+    'latecalls',
+    'testcalls',
 ]
 
 backend_option = click.option('--backend', '-b',
@@ -95,6 +99,30 @@ queue_option = click.option('--queue', '-q',
 date_option = click.option('--date', '-d',
     help="Data a simular en comptes d'avui"
 )
+startdate_option = click.option('--start', '-s',
+    help="Si s'indica es calcularan totes les dates des d'aquesta fins avui"
+)
+sendmail_option = click.option('--sendmail',
+    is_flag=True,
+    help="Si s'indica, s'enviarà un correu a tomatic.dailystats.recipients"
+)
+sendchat_option = click.option('--sendchat',
+    is_flag=True,
+    help="Si s'indica, s'enviarà un xat a tomatic.monitorChatChannel",
+)
+nodump_option = click.option('--nodump',
+    is_flag=True,
+    help="Si s'indica no afegira linia al fitxer d'estadístiques",
+)
+
+def date_range(first, last):
+    first = Date(first)
+    last = Date(last)
+    ndays = (last-first).days + 1
+    for d in (
+        first + datetime.timedelta(days=i) for i in range(ndays)
+    ):
+        yield d
 
 @click.command()
 @click.help_option()
@@ -102,12 +130,15 @@ date_option = click.option('--date', '-d',
 @backend_option
 @queue_option
 @date_option
-def cli(backend, queue, date):
+@startdate_option
+@sendmail_option
+@sendchat_option
+@nodump_option
+def cli(backend, queue, date, start, sendchat, sendmail, nodump):
     """Sends daily stats of the queue"""
 
     pbx = pbxqueue(backend, queue)
     date = date or '{:%Y-%m-%d}'.format(datetime.date.today())
-    stats = pbx.stats(date=date)
 
     statsfile = Path('stats.csv')
     if not statsfile.exists():
@@ -115,29 +146,35 @@ def cli(backend, queue, date):
             '\t'.join(fields).upper() + '\n',
             encoding='utf8',
         )
-    with statsfile.open(mode='a', encoding='utf8') as csv:
-        csv.write('\t'.join(
-            str(stats[field])
-            for field in fields
-        ) + '\n')
-
-    sendMail(
-        sender=dbconfig.tomatic.dailystats.sender,
-        to=dbconfig.tomatic.dailystats.recipients,
-        subject="Informe diari de trucades - {date}".format(**stats),
-        md=template.format(**stats),
-        config='dbconfig.py',
-        verbose=True,
-        attachments=[
-            'stats.csv',
-        ],
-    )
-    send(dbconfig.tomatic.monitorChatChannel,
-        "Hola Súpers! Us passem el registre de trucades d'avui! "
-        f"Rebudes: {stats['callsreceived']}. "
-        f"Contestades: {stats['answeredcalls']}. "
-        f"Perdudes: {stats['abandonedcalls'] + stats['timedoutcalls']}. "
-    )
+    start = start or date
+    for d in date_range(start or date, date):
+        print(f"d {d}")
+        stats = pbx.stats(date=d)
+        if not nodump_option:
+            with statsfile.open(mode='a', encoding='utf8') as csv:
+                csv.write('\t'.join(
+                    str(stats[field])
+                    for field in fields
+                ) + '\n')
+    if sendmail:
+        sendMail(
+            sender=dbconfig.tomatic.dailystats.sender,
+            to=dbconfig.tomatic.dailystats.recipients,
+            subject="Informe diari de trucades - {date}".format(**stats),
+            md=template.format(**stats),
+            config='dbconfig.py',
+            verbose=True,
+            attachments=[
+                'stats.csv',
+            ],
+        )
+    if sendchat:
+        send(dbconfig.tomatic.monitorChatChannel,
+            "Hola Súpers! Us passem el registre de trucades d'avui! "
+            f"Rebudes: {stats['callsreceived']}. "
+            f"Contestades: {stats['answeredcalls']}. "
+            f"Perdudes: {stats['abandonedcalls'] + stats['timedoutcalls']}. "
+        )
 
 
 
