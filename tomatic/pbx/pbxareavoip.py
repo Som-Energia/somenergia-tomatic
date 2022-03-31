@@ -126,14 +126,18 @@ class AreaVoip(object):
             for attr in fields
         ])
 
-    def stats(self, queue, date=None):
+    def calls(self, queue, date=None):
         date = date or datetime.date.today()
-        cdrs = self._api('INFO',
+        return self._api('INFO',
             info='simplecdrs',
             start=f'{date} 00:00:00',
             end=f'{date} 23:59:59',
             format='json',
         )
+
+    def stats(self, queue, date=None):
+        date = date or datetime.date.today()
+        cdrs = self.calls(queue, date)
         stats = ns(
             earlycalls = 0,
             latecalls = 0,
@@ -194,7 +198,6 @@ class AreaVoip(object):
             talktime = duration(stats.talktime),
             holdtime = duration(stats.holdtime),
         )
-        return stats
 
     def _allExtensions(self):
         return self._api('MANAGEDB',
