@@ -139,6 +139,9 @@ ContractInfo.detailsPanel = function() {
           }],
           onChange: function(ev) {
             CallInfo.activeDetailedView = detailedViews[ev.index];
+            if (ev.index) {
+              CallInfo.notifyUsage('changeDetails');
+            }
           }
         }),
       ]),
@@ -349,6 +352,9 @@ var contractCard = function(partner) {
         tabs: buttons(),
         onChange: function(ev) {
           CallInfo.selectContract(ev.index);
+          if (ev.index) {
+            CallInfo.notifyUsage('changeContract');
+          }
         }
       }),
     ]),

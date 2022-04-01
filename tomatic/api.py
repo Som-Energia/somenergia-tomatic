@@ -157,6 +157,21 @@ def apiVersion():
         variant = os.environ.get('TOMATIC_VARIANT', 'tomatic')
     )
 
+@app.post('/api/logger/{event}')
+@ayamlerrors
+async def logger(request: Request, event: str):
+    print("RUNNING")
+    log = ns.loads(await request.body())
+    user = log.get('user', 'anonymous')
+    timestamp = datetime.utcnow()
+    logline = f"{timestamp:%Y-%M-%dT%H:%m%S}\t{event}\t{user}\n"
+    print(logline)
+    with Path('usagelog.log').open('a') as logfile:
+        logfile.write(logline)
+    return yamlfy(
+        result = 'ok',
+    )
+
 @app.get('/api/graella/list')
 @yamlerrors
 def listGraelles():

@@ -213,6 +213,11 @@ CallInfo.selectContract = function(idx) {
   CallInfo.currentContract = idx;
 };
 
+CallInfo.selectPartner = function(idx) {
+  CallInfo.currentPerson = idx
+  CallInfo.currentContract = 0
+}
+
 
 var retrieveInfo = function () {
   CallInfo.searchResults = { 1: "empty" }; // Searching...
@@ -262,6 +267,17 @@ var retrieveInfo = function () {
     console.debug('Info GET apicall failed: ', error);
   });
 };
+
+CallInfo.notifyUsage = function(event) {
+  m.request({
+    method: 'POST',
+    url: '/api/logger/'+event,
+    extract: deyamlize,
+    body: {
+      user: Login.myName(),
+    },
+  });
+}
 
 CallInfo.getCategories = function() {
   m.request({

@@ -77,8 +77,10 @@ var partnerCard = function(partners) {
         },
         tabs: buttons(partners),
         onChange: function(ev) {
-          CallInfo.currentPerson = ev.index
-          CallInfo.currentContract = 0
+          CallInfo.selectPartner(ev.index)
+          if (ev.index) {
+            CallInfo.notifyUsage('changePartner');
+          }
         }
       }),
     ]),
