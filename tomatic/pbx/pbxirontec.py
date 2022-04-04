@@ -4,6 +4,7 @@ import datetime
 from yamlns import namespace as ns
 from consolemsg import error, step
 import requests
+import os
 from enum import Enum
 from somutils import isodates
 from .. import persons
