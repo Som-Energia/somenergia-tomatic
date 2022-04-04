@@ -87,9 +87,9 @@ class Irontec(object):
             return # TODO: Agent does not exists
 
         print("Error code:", response.status_code)
-        print(response.text)
+        print(data)
 
-        raise Irontec.BackendError(response.json())
+        raise Irontec.BackendError(data)
 
     # Queue management
 
