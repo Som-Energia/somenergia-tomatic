@@ -4,7 +4,7 @@
 from __future__ import print_function
 import click
 from consolemsg import warn, step
-from tomatic.api import app, pbx, schedules
+from tomatic.api import app, schedules
 from tomatic import __version__
 from tomatic.pbx import pbxqueue, pbxtypes
 import os

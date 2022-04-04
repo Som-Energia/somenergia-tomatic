@@ -5,6 +5,8 @@ import json
 from yamlns import namespace as ns
 from .. import persons
 import datetime
+import os
+from consolemsg import step
 
 class AreaVoip(object):
 
@@ -18,17 +20,22 @@ class AreaVoip(object):
         self.config = dbconfig.tomatic.areavoip
 
     def _api(self, request, **kwds):
-        print(request,kwds)
+        secondsTimeout = int(kwds.pop('secondsTimeout', 2))
+        if os.environ.get('TOMATIC_PBX_DEBUG', False):
+            step(f"Calling {result.request.url} {kwds}")
         result = requests.get(self.config.baseurl,
             params=dict(
                 reqtype = request,
                 tenant = self.config.tenant,
                 key = self.config.apikey,
                 **kwds),
-            timeout=2, # seconds
+            timeout=secondsTimeout,
             )
-        print((result.request.url))
-        print(result.text)
+        if os.environ.get('TOMATIC_PBX_DEBUG', False):
+            step("Response {}:\n{}\nEnd of response".format(
+                result.status_code,
+                result.text,
+            ))
         if 'action' in kwds and kwds.get('format') != 'json':
             if result.text.strip() != 'OK':
                 raise Exception(result.text.strip())

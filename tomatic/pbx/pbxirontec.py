@@ -66,7 +66,11 @@ class Irontec(object):
         try:
             data = response.json()
         except json.decoder.JSONDecodeError as e:
+            error(f"JSON Error {e}")
             data = response.text
+
+        if os.environ.get("TOMATIC_PBX_DEBUG", False):
+            step(f"status: {response.status_code}:\n{data}\n")
 
         if response.status_code == 200:
             return data
