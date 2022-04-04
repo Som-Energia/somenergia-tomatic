@@ -1,5 +1,15 @@
 # Changelog
 
+## 4.5.1 2022-03-31
+
+- Fix: areavoip stats were missing a lot of calls, using a different entry point
+- Instrumentation to know who uses callinfo
+- Removed wavefile dependency
+- `tomatic_uploadcases` shows the number of uploaded cases
+- Env `TOMATIC_DEBUG_PBX` to enable PBX traces
+- `areavoip_dumpstats`: dumps historical call registry
+
+
 ## 4.5.0 2022-02-08
 
 - login: Contrast colors persons buttons
