@@ -140,6 +140,7 @@ class AreaVoip(object):
             start=f'{date} 00:00:00',
             end=f'{date} 23:59:59',
             format='json',
+            secondsTimeout=10,
         )
 
     def stats(self, queue, date=None):
