@@ -105,7 +105,11 @@ class AreaVoip(object):
             id = queue,
         )
 
-    def stats(self, queue, date=None):
+    def old_stats(self, queue, date=None):
+        """This gives information limited to the queue,
+        which missess calls not even entering the queue,
+        so it is deprecated in favor of `stats`
+        """
         date = date or '{:%Y-%m-%d}'.format(datetime.date.today())
         stats = ns(
             self._api('INFO',
