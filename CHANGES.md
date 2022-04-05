@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.5.2 2022-04-05
+
+- `areavoip_dumpstats`:
+  - Fix: `--nodump` option was ignored
+  - Instaled with setup.py
+- pbxareavoip: better error reporting
+
+
 ## 4.5.1 2022-03-31
 
 - Fix: areavoip stats were missing a lot of calls, using a different entry point
