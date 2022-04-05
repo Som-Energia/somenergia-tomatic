@@ -6,9 +6,11 @@ from yamlns import namespace as ns
 from .. import persons
 import datetime
 import os
-from consolemsg import step
+from consolemsg import step, error
 
 class AreaVoip(object):
+
+    class BackendError(Exception): pass
 
     @staticmethod
     def defaultQueue():
@@ -38,10 +40,14 @@ class AreaVoip(object):
             ))
         if 'action' in kwds and kwds.get('format') != 'json':
             if result.text.strip() != 'OK':
-                raise Exception(result.text.strip())
+                raise AreaVoip.BackendError(result.text.strip())
             return True
         if kwds.get('format') == 'json':
-            return result.json()
+            try:
+                return result.json()
+            except json.decoder.JSONDecodeError as e:
+                error(f"JSON Error {e}\nContent: {result.text}")
+                raise AreaVoip.BackendError(result.text)
         return result.text.strip()
 
 
