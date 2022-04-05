@@ -17,6 +17,7 @@ setup(
     license = 'GNU Affero General Public License v3 or later (GPLv3+)',
     scripts=[
         'scripts/areavoip_callapi.py',
+        'scripts/areavoip_dumpstats.sh',
         'scripts/execution_example.sh',
         'scripts/crontab-dailyreport.sh',
         'scripts/crontab-warnturn.sh',
