@@ -150,12 +150,12 @@ def cli(backend, queue, date, start, sendchat, sendmail, nodump):
     for d in date_range(start or date, date):
         print(f"d {d}")
         stats = pbx.stats(date=d)
-        if not nodump_option:
-            with statsfile.open(mode='a', encoding='utf8') as csv:
-                csv.write('\t'.join(
-                    str(stats[field])
-                    for field in fields
-                ) + '\n')
+        if nodump: continue
+        with statsfile.open(mode='a', encoding='utf8') as csv:
+            csv.write('\t'.join(
+                str(stats[field])
+                for field in fields
+            ) + '\n')
     if sendmail:
         sendMail(
             sender=dbconfig.tomatic.dailystats.sender,
