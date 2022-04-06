@@ -38,6 +38,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
+          pip install "setuptools_rust" # requirements for cryptography
           pip install "cachetools<5.0" # requirement from google-auth
           pip install "async-timeout<4.0" # requirement from aiohttp
           pip install "aiohttp<3.8"
