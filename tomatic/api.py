@@ -164,7 +164,7 @@ async def logger(request: Request, event: str):
     log = ns.loads(await request.body())
     user = log.get('user', 'anonymous')
     timestamp = datetime.utcnow()
-    logline = f"{timestamp:%Y-%M-%dT%H:%m%S}\t{event}\t{user}\n"
+    logline = f"{timestamp:%Y-%m-%dT%H:%M:%S}\t{event}\t{user}\n"
     print(logline)
     with Path('usagelog.log').open('a') as logfile:
         logfile.write(logline)
