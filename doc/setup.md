@@ -72,10 +72,8 @@ sudo ln -s $pwd/crontab /etc/cron.d/tomatic
 ### Setting up Hangouts notification
 
 This can be done by using the hangups application that should have been installed as dependency.
-If your main environment is still Python2, you should setup a separate Python3 virtualenv to use `hangup`.
-since it is not compatible with Python 2.
 
-- Create an account for the boot in hangouts.google.com.
+- Create the account in hangouts.google.com for the notification bot
 - Generate an access key
   ```
   $ hangups --manual-login
