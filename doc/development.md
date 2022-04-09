@@ -9,6 +9,10 @@ hacking Tomàtic.
 - [Code map](#code-map)
 - [Files](#files)
 
+## Setup
+
+See [Setup](setup.md)
+
 ## Auto-Reload mode
 
 For development autoreload setup is recommended, for both frontend and backend.
