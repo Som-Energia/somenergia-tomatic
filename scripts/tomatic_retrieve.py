@@ -13,13 +13,28 @@ def parseArgs():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
+        'command',
+        nargs='*',
+        choices=[
+            'persons',
+            'holidays',
+            'leaves',
+            'vacations',
+            'idealload',
+            'shiftcredit',
+            'busy',
+        ],
+        help="especifica quin tipus de informació es descarrega"
+    )
+
+    parser.add_argument(
         '--keep',
         action='store_true',
         help="no baixa les dades del drive"
         )
 
     parser.add_argument(
-        dest='date',
+        '--date',
         nargs='?',
         default=None,
         help='generates the schedule for the week including such date',
@@ -113,33 +128,40 @@ def main():
         today = Date.today()
         config.monday = addDays(today, 7-today.weekday())
 
+    config.driveCertificate = args.certificate
+
     if args.drive_file:
         config.documentDrive = args.drive_file
 
     if args.personsfile:
         config.personsfile = args.personsfile
 
-    config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.csv'
+    if not args.command or 'persons' in args.command:
+        if args.personsfile and Path(args.personsfile).exists():
+            config.update(ns.load(args.personsfile))
 
-    step("Baixant persones del tomatic...")
-    downloadPersons(config)
+        step("Baixant persones del tomatic...")
+        downloadPersons(config)
 
-    if args.personsfile and Path(args.personsfile).exists():
-        config.update(ns.load(args.personsfile))
+    if not args.command or 'leaves' in args.command:
+        step("Baixant persones de baixa del drive...")
+        downloadLeaves(config, args.certificate)
 
-    step("Baixant persones de baixa del drive...")
-    config.driveCertificate = args.certificate
-    downloadLeaves(config, args.certificate)
+    if not args.command or 'idealload' in args.command:
+        config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.csv'
+        downloadIdealLoad(config, args.certificate)
+    if not args.command or 'busy' in args.command:
+        downloadBusy(config)
+    if not args.command or 'holidays' in args.command:
+        downloadFestivities(config)
+    if not args.command or 'vacations' in args.command:
+        downloadVacations(config, source='odoo')
+        #downloadVacations(config, source='drive')
+        #downloadVacations(config, source='notoi')
 
-    downloadIdealLoad(config, args.certificate)
-    downloadBusy(config)
-    downloadFestivities(config)
-    downloadVacations(config, source='odoo')
-    #downloadVacations(config, source='drive')
-    #downloadVacations(config, source='notoi')
-
-    step("Baixant bossa d'hores del tomatic...")
-    downloadShiftCredit(config)
+    if not args.command or 'shiftcredit' in args.command:
+        step("Baixant bossa d'hores del tomatic...")
+        downloadShiftCredit(config)
 
 if __name__ == '__main__':
     main()
