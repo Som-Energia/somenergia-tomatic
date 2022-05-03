@@ -64,7 +64,7 @@ setup(
         'uvicorn[standard]', # server for fastapi (standard for websockets)
         'aiofiles', # Static files for fastapi
         'hangups',
-        'elasticsearch',
+        'elasticsearch<8', # 8 version is incompatible with irontec server
     #],
     #tests_require=[
         'nose',
