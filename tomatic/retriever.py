@@ -222,13 +222,17 @@ def downloadVacations(config, source=None):
 
 def downloadFestivities(config):
     step("Baixant festivitats de l'odoo...")
+    intervals=dict(
+        workweek=4, # This is what is needed just for schedulings
+        year=366, # This is useful for many other uses, not yet slower
+    )
 
     import dbconfig
     import erppeek
     from yamlns.dateutils import Date
     erp = erppeek.Client(**dbconfig.tomatic.holidaysodoo)
     firstDay = addDays(config.monday, 0)
-    lastDay = addDays(config.monday, 4)
+    lastDay = addDays(config.monday, intervals['year'])
     Festivities = erp.model('hr.holidays.public.line')
     festivity_ids = Festivities.search([
         ('date', '>=', str(firstDay)),
