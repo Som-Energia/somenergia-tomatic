@@ -17,7 +17,7 @@ def parseArgs():
         nargs='*',
         choices=[
             'persons',
-            'holidays',
+            'festivities',
             'leaves',
             'vacations',
             'idealload',
@@ -152,12 +152,10 @@ def main():
         downloadIdealLoad(config, args.certificate)
     if not args.command or 'busy' in args.command:
         downloadBusy(config)
-    if not args.command or 'holidays' in args.command:
+    if not args.command or 'festivities' in args.command:
         downloadFestivities(config)
     if not args.command or 'vacations' in args.command:
-        downloadVacations(config, source='odoo')
-        #downloadVacations(config, source='drive')
-        #downloadVacations(config, source='notoi')
+        downloadVacations(config, source=args.holidays)
 
     if not args.command or 'shiftcredit' in args.command:
         step("Baixant bossa d'hores del tomatic...")
