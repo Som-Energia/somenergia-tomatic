@@ -144,7 +144,7 @@ class Irontec(object):
                 for x in result
             )
         ]
-    
+
     def pause(self, queue, name, paused=True, reason=None):
         '''Pauses (or resumes) the person in the queue'''
         if not paused:
@@ -163,9 +163,11 @@ class Irontec(object):
         from elasticsearch import Elasticsearch as Searcher
         import dbconfig
         searcher = Searcher(**dbconfig.tomatic.irontec_elk)
-        date = date or datetime.date.today()
-        starttime = datetime.time(9) # TODO: from config
-        stoptime = datetime.time(14) # TODO: from config
+        date = date or str(datetime.date.today())
+        daystart = datetime.time(0) # TODO: from config
+        daystop = datetime.time(23,59,59) # TODO: from config
+
+        dids = dbconfig.tomatic.irontec.get('dids', [])
  
         # https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html
         query = f"""
@@ -173,75 +175,119 @@ class Irontec(object):
             filter:
               range:
                 '@calldate':
-                  gte: "{date}T{starttime}"
-                  lte: "{date}T{stoptime}"
+                  gte: "{date}T{daystart}"
+                  lte: "{date}T{daystop}"
                   time_zone: "Europe/Madrid"
                   format: strict_date_optional_time
-            must:
-              match:
-                queuename: {dbconfig.tomatic.irontec.queue}
-            must_not:
-              match:
-                # Las the RINGNOANSWER son duplicadas para dejar constancia
-                # que se ha intentado llamar a una agente
-                hangupcause: RINGNOANSWER
+            # This alledgely filters calls not entering a full queue
+            #  - term:
+            #      queuename: {dbconfig.tomatic.irontec.queue}
         """
+        query = ns.loads(query)
+        if dids:
+            query.bool.setdefault('must', []).append(ns(terms=ns(did_in=dids)))
         results = searcher.search(
             index = "sharedstats",
-            query = ns.loads(query),
+            query = query,
             filter_path=['hits.hits._*'],
         )
         return [
             ns(
-                call['_source'],
-                utctime = datetime.datetime.fromtimestamp(call['_source']['@calldate']/1000, tz=datetime.timezone.utc),
-                localtime = isodates.toLocal(datetime.datetime.fromtimestamp(call['_source']['@calldate']/1000, tz=datetime.timezone.utc)),
+                call,
+                utctime = utctime,
+                localtime = isodates.toLocal(utctime),
             )
-            for call in results.get("hits",{}).get("hits",[])
+            for call, utctime in (
+                (
+                    c['_source'],
+                    datetime.datetime.fromtimestamp(c['_source']['@calldate']/1000, tz=datetime.timezone.utc),
+                )
+                for c in results.get("hits",{}).get("hits",[])
+            )
         ]
 
     def stats(self, queue, date=None):
         date = date or datetime.date.today()
+        date = isodates.isodate(str(date))
+
+        def combined_timestamp_ms(date, hour):
+            timestamp = datetime.datetime.combine(
+                date,
+                datetime.time(hour),
+            ).timestamp()*1000
+            return timestamp
+
+        starttime = combined_timestamp_ms(date, 9) # TODO: from config
+        stoptime = combined_timestamp_ms(date, 14) # TODO: from config
 
         calls = self.calls(queue, date)
         ns(calls=calls).dump(f"calls-{date}.yaml")
 
+        # Las the RINGNOANSWER son duplicadas para dejar constancia
+        # que se ha intentado llamar a una agente
+
         callsreceived = len(set(call.uniqueid for call in calls))
+        earlycalls = len(set(
+            call.uniqueid
+            for call in calls
+            if call.hangupcause != "RINGNOANSWER"
+            and call['@calldate'] < starttime
+        ))
+        latecalls = len(set(
+            call.uniqueid
+            for call in calls
+            if call.hangupcause != "RINGNOANSWER"
+            and call['@calldate'] > stoptime
+        ))
         answeredcalls = len(set(
             call.uniqueid
             for call in calls
             if call.hangupcause == "ATENDIDA"
+            and call['@calldate'] > starttime
+            and call['@calldate'] < stoptime
         ))
         abandonedcalls = len(set(
             call.uniqueid
             for call in calls
             if call.hangupcause == "PERDIDA"
+            and call['@calldate'] > starttime
+            and call['@calldate'] < stoptime
         ))
         timedoutcalls = len(set(
             call.uniqueid
             for call in calls
             if call.hangupcause == "COLA_TIMEOUT"
+            and call['@calldate'] > starttime
+            and call['@calldate'] < stoptime
         ))
         talktime = sum(
             int(call.agent_time)
             for call in calls
             if call.hangupcause == "ATENDIDA"
+            and call['@calldate'] > starttime
+            and call['@calldate'] < stoptime
         )
         averagetalktime = int(round(talktime/answeredcalls)) if answeredcalls else 0
         holdtime = sum(
             int(call.wait_time)
             for call in calls
-            if call.hangupcause != "RINGNOANSWER"
+            if call.hangupcause != "RINGNOANSWER" # TODO: RINGNOANSWER is wait time, isnt it?
+            and call['@calldate'] > starttime
+            and call['@calldate'] < stoptime
         )
         averageholdtime = int(round(holdtime/callsreceived)) if callsreceived else 0
         maxholdtime = max((
             int(call.get('wait_time',0))
             for call in calls
             if call.hangupcause != "RINGNOANSWER"
+            and call['@calldate'] > starttime
+            and call['@calldate'] < stoptime
         ), default=0)
 
         return ns(
             date = str(date),
+            earlycalls = earlycalls,
+            latecalls = latecalls,
             callsreceived = callsreceived,
             answeredcalls = answeredcalls,
             abandonedcalls = abandonedcalls,

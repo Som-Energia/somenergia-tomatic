@@ -46,6 +46,9 @@ tomatic=ns(
         password = 'thepassword',
         user = 'myuser',
         queue = 'main_queue',
+        dids = [
+            # A list of production DID numbers to get the stats from
+        ],
     ),
     # Irontec Stats platform params (Elastic Search)
     irontec_elk = ns(
