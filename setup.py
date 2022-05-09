@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf8 -*-
 import sys
-from setuptools import setup
+from setuptools import setup, find_packages
 from tomatic import __version__
 readme = open("README.md").read()
 
@@ -15,6 +15,7 @@ setup(
     long_description = readme,
     long_description_content_type = 'text/markdown',
     license = 'GNU Affero General Public License v3 or later (GPLv3+)',
+    packages=find_packages(exclude=['*[tT]est*']),
     scripts=[
         'scripts/areavoip_callapi.py',
         'scripts/areavoip_dumpstats.sh',
