@@ -50,7 +50,7 @@ jobs:
             coveralls
       - name: Unit tests
         run: |
-          coverage run --source tomatic ./setup.py test
+          pytest --cov tomatic tomatic
       - name: B2B tests
         run: |
           touch holidays.conf
