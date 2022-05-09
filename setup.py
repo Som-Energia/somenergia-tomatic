@@ -68,15 +68,14 @@ setup(
         'elasticsearch<8', # 8 version is incompatible with irontec server
     #],
     #tests_require=[
-        'nose',
-        'rednose',
+        'pytest-cov',
+        'pytest',
         'coverage',
         'b2btest',
         'lxml',
         'erppeek',
         'ERPPeek-WST',
     ],
-    test_suite = 'nose.collector',
     classifiers = [
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
