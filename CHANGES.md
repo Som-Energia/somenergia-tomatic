@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.5.3 2022-05-10
+
+- irontec: calls filtered by did's instead of queue
+- irontec: stats added latecalls and earlycalls
+- `tomatic_retrieve` works with commands to choose the retrieved info
+- Fix: wrong extension called in cron
+- Logger entrypoint to log user events in order to instrument usage
+- gha: Added rust dependency because of cryptography package
+- Packaging fixes for last setuptools
+- pytest as test runner instead of nose
+
 ## 4.5.2 2022-04-05
 
 - `areavoip_dumpstats`:
