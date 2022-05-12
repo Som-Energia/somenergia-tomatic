@@ -10,6 +10,7 @@
 - gha: Added rust dependency because of cryptography package
 - Packaging fixes for last setuptools
 - pytest as test runner instead of nose
+- late and early calls in the daily report mail
 
 ## 4.5.2 2022-04-05
 
