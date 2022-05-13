@@ -23,7 +23,7 @@ Us faig arribar les estadístiques dels torns d'avui.
 - Trucades contestades: {answeredcalls}
 - Trucades abandonades abans de contestar: {abandonedcalls}
 - Trucades perdudes: {timedoutcalls}
-- Trucades fora d'horari: Mati {earlycalls} / Tarda {latecalls}. "
+- Trucades fora d'horari: Mati {earlycalls} / Tarda {latecalls}.
 
 Temps de trucada:
 
