@@ -3,6 +3,7 @@
 ## 4.5.4 2022-15-13
 
 - areavoip: FIX: output calls were counted as incomming
+- dailystats: FIX: removed spourios quote in mail message
 
 ## 4.5.3 2022-05-10
 
