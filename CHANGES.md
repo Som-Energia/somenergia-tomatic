@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.5.4 2022-15-13
+
+- areavoip: FIX: output calls were counted as incomming
+
 ## 4.5.3 2022-05-10
 
 - irontec: calls filtered by did's instead of queue
