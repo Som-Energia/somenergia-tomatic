@@ -14,7 +14,7 @@ def pbxcreate(pbxtype):
     pbxtype = (
         pbxtype or (
         dbconfig.tomatic.get('pbx', None) or (
-        'areavoip'
+        'irontec'
     )))
 
     if pbxtype == 'fake':

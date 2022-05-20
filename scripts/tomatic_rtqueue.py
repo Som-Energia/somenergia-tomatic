@@ -17,7 +17,7 @@ def table(data):
 
 
 backend_option = click.option('--backend', '-b',
-    default=dbconfig.tomatic.get('pbx',None) or 'areavoip',
+    default=dbconfig.tomatic.get('pbx',None) or 'irontec',
     type=click.Choice(pbxtypes),
     help="PBX backend to use",
 )

@@ -95,7 +95,7 @@ fields = [
 
 backend_option = click.option('--backend', '-b',
     type=click.Choice(pbxtypes),
-    default=dbconfig.tomatic.get('pbx',None) or 'areavoip',
+    default=dbconfig.tomatic.get('pbx',None) or 'irontec',
     help="PBX backend to use",
 )
 queue_option = click.option('--queue', '-q',
