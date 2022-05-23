@@ -186,10 +186,13 @@ class Irontec(object):
         query = ns.loads(query)
         if dids:
             query.bool.setdefault('must', []).append(ns(terms=ns(did_in=dids)))
+
+        # TODO: Use elasticsearch.helpers.scan instead using a fixed size
         results = searcher.search(
             index = "sharedstats",
             query = query,
             filter_path=['hits.hits._*'],
+            size = 10000,
         )
         return [
             ns(
