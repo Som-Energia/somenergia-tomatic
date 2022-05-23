@@ -179,9 +179,9 @@ def cli(backend, queue, date, start, sendchat, sendmail, nodump):
     if sendchat:
         send(dbconfig.tomatic.monitorChatChannel,
             "Hola Súpers! Us passem el registre de trucades d'avui! "
-            f"Rebudes: {stats['callsreceived']}. "
+            f"Rebudes: {stats['callsreceived'] - stats['latecalls'] - stats['earlycalls'] - stats['testcalls']}. "
             f"Contestades: {stats['answeredcalls']}. "
-            f"Perdudes: {stats['abandonedcalls'] + stats['timedoutcalls']}. "
+            f"Perdudes: {stats['abandonedcalls'] + stats['timedoutcalls'] + stats['bouncedcalls']}. "
         )
 
 
