@@ -42,6 +42,7 @@ Temps d'espera:
 <th>Contestades</th>
 <th>Abandonades</th>
 <th>Perdudes</th>
+<th>Durant saturació</th>
 <th>Matineres</th>
 <th>Tardanes</th>
 </tr>
@@ -50,6 +51,7 @@ Temps d'espera:
 <td>{answeredcalls}</td>
 <td>{abandonedcalls}</td>
 <td>{timedoutcalls}</td>
+<td>{bouncedcalls}</td>
 <td>{earlycalls}</td>
 <td>{latecalls}</td>
 </tr>
@@ -91,6 +93,7 @@ fields = [
     'earlycalls',
     'latecalls',
     'testcalls',
+    'bouncedcalls',
 ]
 
 backend_option = click.option('--backend', '-b',

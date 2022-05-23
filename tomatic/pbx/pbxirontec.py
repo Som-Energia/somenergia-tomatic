@@ -268,6 +268,14 @@ class Irontec(object):
             and call['@calldate'] < stoptime
             and call.queuename == queue
         ))
+        bouncedcalls = len(set(
+            call.uniqueid
+            for call in incalls
+            if call.hangupcause == "COLA_LLENA"
+            and call['@calldate'] > starttime
+            and call['@calldate'] < stoptime
+            and call.queuename == queue
+        ))
         talktime = sum(
             int(call.agent_time)
             for call in incalls
@@ -309,6 +317,7 @@ class Irontec(object):
             averageholdtime = averageholdtime,
             maxholdtime = maxholdtime,
             testcalls = testcalls,
+            bouncedcalls = bouncedcalls,
         )
 
 
