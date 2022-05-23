@@ -230,12 +230,14 @@ class Irontec(object):
             for call in incalls
             if call.hangupcause != "RINGNOANSWER"
             and call['@calldate'] < starttime
+            and call.queuename == queue
         ))
         latecalls = len(set(
             call.uniqueid
             for call in incalls
             if call.hangupcause != "RINGNOANSWER"
             and call['@calldate'] > stoptime
+            and call.queuename == queue
         ))
         answeredcalls = len(set(
             call.uniqueid
@@ -243,6 +245,7 @@ class Irontec(object):
             if call.hangupcause == "ATENDIDA"
             and call['@calldate'] > starttime
             and call['@calldate'] < stoptime
+            and call.queuename == queue
         ))
         abandonedcalls = len(set(
             call.uniqueid
@@ -250,6 +253,7 @@ class Irontec(object):
             if call.hangupcause == "PERDIDA"
             and call['@calldate'] > starttime
             and call['@calldate'] < stoptime
+            and call.queuename == queue
         ))
         timedoutcalls = len(set(
             call.uniqueid
@@ -257,6 +261,7 @@ class Irontec(object):
             if call.hangupcause == "COLA_TIMEOUT"
             and call['@calldate'] > starttime
             and call['@calldate'] < stoptime
+            and call.queuename == queue
         ))
         talktime = sum(
             int(call.agent_time)
@@ -264,6 +269,7 @@ class Irontec(object):
             if call.hangupcause == "ATENDIDA"
             and call['@calldate'] > starttime
             and call['@calldate'] < stoptime
+            and call.queuename == queue
         )
         averagetalktime = int(round(talktime/answeredcalls)) if answeredcalls else 0
         holdtime = sum(
@@ -272,6 +278,7 @@ class Irontec(object):
             if call.hangupcause != "RINGNOANSWER" # TODO: RINGNOANSWER is wait time, isnt it?
             and call['@calldate'] > starttime
             and call['@calldate'] < stoptime
+            and call.queuename == queue
         )
         averageholdtime = int(round(holdtime/callsreceived)) if callsreceived else 0
         maxholdtime = max((
@@ -280,6 +287,7 @@ class Irontec(object):
             if call.hangupcause != "RINGNOANSWER"
             and call['@calldate'] > starttime
             and call['@calldate'] < stoptime
+            and call.queuename == queue
         ), default=0)
 
         return ns(
