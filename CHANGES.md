@@ -1,5 +1,12 @@
 # Changelog
 
+## unreleased
+
+- Call stats: Fix: properly filtering inbound calls in irontec
+- Call stats: Fix: hard limit to 10 calls moved to 10,000 
+- Call stats: added bouncedcalls: calls bounced because the queue size
+- Call stats: added testcalls: calls arriving to a different platform/queue
+
 ## 4.5.4 2022-15-13
 
 - areavoip: FIX: output calls were counted as incomming
