@@ -167,10 +167,9 @@ class Irontec(object):
         daystart = datetime.time(0) # TODO: from config
         daystop = datetime.time(23,59,59) # TODO: from config
 
-        dids = dbconfig.tomatic.irontec.get('dids', [])
- 
         # https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html
-        query = f"""
+        query = ns.loads(f"""
+        query:
           bool:
             filter:
               range:
@@ -179,13 +178,7 @@ class Irontec(object):
                   lte: "{date}T{daystop}"
                   time_zone: "Europe/Madrid"
                   format: strict_date_optional_time
-            # This alledgely filters calls not entering a full queue
-            #  - term:
-            #      queuename: {dbconfig.tomatic.irontec.queue}
-        """
-        query = ns.loads(query)
-        if dids:
-            query.bool.setdefault('must', []).append(ns(terms=ns(did_in=dids)))
+        """)
 
         # TODO: Use elasticsearch.helpers.scan instead using a fixed size
         results = searcher.search(
