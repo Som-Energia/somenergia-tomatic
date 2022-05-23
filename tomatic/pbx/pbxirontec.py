@@ -225,6 +225,11 @@ class Irontec(object):
         incalls = [call for call in calls if sc_direction=='IN']
 
         callsreceived = len(set(call.uniqueid for call in incalls))
+        testcalls = len(set(
+            call.uniqueid
+            for call in incalls
+            if call.queuename != queue
+        ))
         earlycalls = len(set(
             call.uniqueid
             for call in incalls
@@ -303,6 +308,7 @@ class Irontec(object):
             holdtime = holdtime,
             averageholdtime = averageholdtime,
             maxholdtime = maxholdtime,
+            testcalls = testcalls,
         )
 
 
