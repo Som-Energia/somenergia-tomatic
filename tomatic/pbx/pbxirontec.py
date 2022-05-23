@@ -219,10 +219,10 @@ class Irontec(object):
         calls = self.calls(queue, date)
         ns(calls=calls).dump(f"calls-{date}.yaml")
 
-        # Las the RINGNOANSWER son duplicadas para dejar constancia
-        # que se ha intentado llamar a una agente
+        incalls = [call for call in calls if call.call_type=='entrante']
 
-        incalls = [call for call in calls if sc_direction=='IN']
+        # Las de RINGNOANSWER son duplicadas para dejar constancia
+        # que se ha intentado llamar a una agente
 
         callsreceived = len(set(call.uniqueid for call in incalls))
         testcalls = len(set(
