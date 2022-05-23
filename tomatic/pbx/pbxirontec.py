@@ -169,7 +169,6 @@ class Irontec(object):
 
         # https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html
         query = ns.loads(f"""
-        query:
           bool:
             filter:
               range:
