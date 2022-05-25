@@ -1,5 +1,9 @@
 # Changelog
 
+## unreleased
+
+- timetable and load launchers use the same number of lines by default
+
 ## 4.5.5 2022-05-23
 
 Post new provider fixes
