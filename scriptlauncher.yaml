@@ -33,7 +33,7 @@ tomatic:
         numberOfLines:
           description: Nombre de linies obertes simultàneament
           type: INT
-          default: 6
+          default: 8
         #load:
         #  type: FILEDOWN
         #  extension: yaml

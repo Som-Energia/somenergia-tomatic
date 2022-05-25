@@ -107,7 +107,7 @@ def list():
             """td:hover .tooltip {{ visibility: visible}}</style>"""
         """<p><form action='run' method='post'>"""
             """Dilluns&nbsp;(YYYY-MM-DD):&nbsp;<input name=monday type=text value={nexmonday} /><br/>"""
-            """Linies:&nbsp;<input name=nlines type=text value=7 /><br/>"""
+            """Linies:&nbsp;<input name=nlines type=text value=8 /><br/>"""
             """Descripció:&nbsp;<input name=description type=text /><br/>"""
             """<input type=submit value='Llençar' />"""
         """</form></p>"""
