@@ -19,10 +19,12 @@ Hola Supers,
 
 Us faig arribar les estadístiques dels torns d'avui.
 
-- Total de trucades rebudes: {callsreceived}
+- Total de trucades rebudes: {atentioncalls}
 - Trucades contestades: {answeredcalls}
-- Trucades abandonades abans de contestar: {abandonedcalls}
-- Trucades perdudes: {timedoutcalls}
+- Trucades perdudes: {lostcalls},
+    - Trucades abandonades en espera: {abandonedcalls}
+    - Trucades tallades per limit d'espera: {timedoutcalls}
+    - Trucades amb la cua d'espera plena: {bouncedcalls}
 - Trucades fora d'horari: Mati {earlycalls} / Tarda {latecalls}.
 
 Temps de trucada:
@@ -40,11 +42,12 @@ Temps d'espera:
 <tr>
 <th>Rebudes</th>
 <th>Contestades</th>
-<th>Abandonades</th>
-<th>Perdudes</th>
-<th>Durant saturació</th>
+<th>Perdudes abandonades</th>
+<th>Perdudes timeout</th>
+<th>Perdudes cua plena</th>
 <th>Matineres</th>
 <th>Tardanes</th>
+<th>Proves/Partners</th>
 </tr>
 <tr>
 <td>{callsreceived}</td>
@@ -53,7 +56,7 @@ Temps d'espera:
 <td>{timedoutcalls}</td>
 <td>{bouncedcalls}</td>
 <td>{earlycalls}</td>
-<td>{latecalls}</td>
+<td>{testcall}</td>
 </tr>
 </table>
 
@@ -164,6 +167,8 @@ def cli(backend, queue, date, start, sendchat, sendmail, nodump):
                 str(stats[field])
                 for field in fields
             ) + '\n')
+    stats.lostcalls = stats.bouncedcalls + stats.timedoutcalls + stats.abandonedcalls
+    stats.atentioncalls = stats.callsreceived - stats.testcalls
     if sendmail:
         sendMail(
             sender=dbconfig.tomatic.dailystats.sender,
@@ -181,7 +186,7 @@ def cli(backend, queue, date, start, sendchat, sendmail, nodump):
             "Hola Súpers! Us passem el registre de trucades d'avui! "
             f"Rebudes: {stats['callsreceived'] - stats['latecalls'] - stats['earlycalls'] - stats['testcalls']}. "
             f"Contestades: {stats['answeredcalls']}. "
-            f"Perdudes: {stats['abandonedcalls'] + stats['timedoutcalls'] + stats['bouncedcalls']}. "
+            f"Perdudes: {stats['lostcalls']}. "
         )
 
 
