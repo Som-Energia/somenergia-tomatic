@@ -21,7 +21,7 @@ Us faig arribar les estadístiques dels torns d'avui.
 
 - Total de trucades rebudes: {atentioncalls}
 - Trucades contestades: {answeredcalls}
-- Trucades perdudes: {lostcalls},
+- Trucades perdudes: {lostcalls}:
     - Trucades abandonades en espera: {abandonedcalls}
     - Trucades tallades per limit d'espera: {timedoutcalls}
     - Trucades amb la cua d'espera plena: {bouncedcalls}
@@ -56,7 +56,7 @@ Temps d'espera:
 <td>{timedoutcalls}</td>
 <td>{bouncedcalls}</td>
 <td>{earlycalls}</td>
-<td>{testcall}</td>
+<td>{testcalls}</td>
 </tr>
 </table>
 
