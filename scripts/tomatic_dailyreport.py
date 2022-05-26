@@ -56,6 +56,7 @@ Temps d'espera:
 <td>{timedoutcalls}</td>
 <td>{bouncedcalls}</td>
 <td>{earlycalls}</td>
+<td>{latecalls}</td>
 <td>{testcalls}</td>
 </tr>
 </table>
