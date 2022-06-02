@@ -2,6 +2,8 @@
 
 module.exports = function() {
 
+// This module controls the state regarding the callinfo page
+
 var m = require('mithril');
 var api = require('./api');
 
@@ -265,10 +267,9 @@ var retrieveInfo = function () {
 };
 
 CallInfo.notifyUsage = function(event) {
-  m.request({
+  api.request({
     method: 'POST',
     url: '/api/logger/'+event,
-    extract: deyamlize,
     body: {
       user: Login.myName(),
     },
