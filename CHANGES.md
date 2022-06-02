@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.5.7 2022-06-02
+
+- Fix: clicking on tabs made them disappear
+
 ## 4.5.6 2022-05-14
 
 - timetable and load launchers use the same number of lines by default
