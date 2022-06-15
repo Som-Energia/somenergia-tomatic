@@ -1,5 +1,9 @@
 # Changelog
 
+## unreleased
+
+- Stats mails shows the seconds also in 00:00:00 format
+
 ## 4.5.7 2022-06-02
 
 - Fix: clicking on tabs made them disappear

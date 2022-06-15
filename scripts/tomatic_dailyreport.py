@@ -29,14 +29,14 @@ Us faig arribar les estadístiques dels torns d'avui.
 
 Temps de trucada:
 
-- Agregat: {talktime}
-- Mitjana: {averagetalktime}
+- Agregat: {talktime} s ({talktime_delta})
+- Mitjana: {averagetalktime} s ({averagetalktime_delta})
 
 Temps d'espera:
 
-- Agregat: {holdtime}
-- Mitjana: {averageholdtime}
-- Màxim: {maxholdtime}
+- Agregat: {holdtime} s ({holdtime_delta})
+- Mitjana: {averageholdtime} s ({averageholdtime_delta})
+- Màxim: {maxholdtime} s ({maxholdtime_delta})
 
 <table>
 <tr>
@@ -98,6 +98,13 @@ fields = [
     'latecalls',
     'testcalls',
     'bouncedcalls',
+]
+deltas=[
+    'talktime',
+    'averagetalktime',
+    'holdtime',
+    'averageholdtime',
+    'maxholdtime',
 ]
 
 backend_option = click.option('--backend', '-b',
@@ -175,7 +182,13 @@ def cli(backend, queue, date, start, sendchat, sendmail, nodump):
             sender=dbconfig.tomatic.dailystats.sender,
             to=dbconfig.tomatic.dailystats.recipients,
             subject="Informe diari de trucades - {date}".format(**stats),
-            md=template.format(**stats),
+            md=template.format(**dict(
+                stats,
+                **{
+                    delta+'_delta': datetime.timedelta(seconds=stats[delta])
+                    for delta in deltas
+                },
+            )),
             config='dbconfig.py',
             verbose=True,
             attachments=[

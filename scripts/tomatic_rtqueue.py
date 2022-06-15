@@ -182,6 +182,12 @@ def monitor(backend, queue):
             for agent in agents
             if agent.disconnected and not agent.paused
         }
+    def paused(agents):
+        return {
+            agent.key
+            for agent in agents
+            if agent.paused
+        }
 
     try:
         previous = ns.load('monitor.yaml').queue
