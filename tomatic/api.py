@@ -381,6 +381,7 @@ def yamlinfoerror(code, message, *args, **kwds):
     ))
 
 @app.get('/api/info/{field}/{value}')
+@yamlerrors
 def getInfoPersonBy(field, value):
     decoded_value = urllib.parse.unquote(value)
     data = None
