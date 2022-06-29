@@ -498,6 +498,39 @@ class ShiftLoadComputer():
         ])
         return summarycontent
 
+    def outputResults(self, config, args):
+        self.dump(self.ponderated, None, #"càrrega ponderada",
+            "ponderatedideal-{}.yaml".format(config.monday))
+
+        compensations = self.compensationsSummary()
+        if compensations:
+            success("    Compensacions fetes:\n{}",compensations)
+
+        self.displayOverload()
+        self.dump(self.overload, "sobrecàrrega",
+            args.overload or "overload-{}.yaml".format(config.monday))
+
+        for finalfile in [
+            "carrega-{}.yaml".format(config.monday),
+            args.weekshifts,
+        ]:
+            if not finalfile: continue
+            self.dump(self.final, "càrrega final", finalfile)
+
+        if args.clusterize:
+            self.dumpCsv(self.clusterized, "càrrega distribuida en linies",
+                "carrega-{}.csv".format(config.monday))
+
+        finalLoad = self.finalLoad()
+        if finalLoad == self.fullLoad:
+            success("S'ha aconseguit amb èxit una càrrega de {} torns", finalLoad)
+        else:
+            fail("Només s'han pogut aconseguir {} torns dels {} necessaris", -1, finalLoad, fullLoad)
+
+        summary = self.summary()
+        print(summary)
+        if args.summary:
+            Path(args.summary).write_text(summary, encoding='utf8')
 
 def parseArgs():
     import argparse
@@ -672,38 +705,8 @@ def main():
         inclusters = args.clusterize,
     )
 
-    computer.dump(computer.ponderated, None, #"càrrega ponderada",
-        "ponderatedideal-{}.yaml".format(config.monday))
 
-    compensations = computer.compensationsSummary()
-    if compensations:
-        success("    Compensacions fetes:\n{}",compensations)
-
-    computer.displayOverload()
-    computer.dump(computer.overload, "sobrecàrrega",
-        args.overload or "overload-{}.yaml".format(config.monday))
-
-    for finalfile in [
-        "carrega-{}.yaml".format(config.monday),
-        args.weekshifts,
-    ]:
-        if not finalfile: continue
-        computer.dump(computer.final, "càrrega final", finalfile)
-
-    if args.clusterize:
-        computer.dumpCsv(computer.clusterized, "càrrega distribuida en linies",
-            "carrega-{}.csv".format(config.monday))
-        
-    finalLoad = computer.finalLoad()
-    if finalLoad == computer.fullLoad:
-        success("S'ha aconseguit amb èxit una càrrega de {} torns", finalLoad)
-    else:
-        fail("Només s'han pogut aconseguir {} torns dels {} necessaris", -1, finalLoad, fullLoad)
-
-    summary = computer.summary()
-    print(summary)
-    if args.summary:
-        Path(args.summary).write_text(summary, encoding='utf8')
+    computer.outputResults(config, args)
 
 
 if __name__ == '__main__':
