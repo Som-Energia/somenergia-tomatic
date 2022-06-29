@@ -2,5 +2,7 @@
 
 from tomatic import shiftload
 
-shiftload.main()
+if __name__ == '__main__':
+    shiftload.main()
+
 
