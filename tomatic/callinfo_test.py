@@ -1255,11 +1255,11 @@ class CallInfo_Test(unittest.TestCase):
             self.O, results_limit=3, invoices_limit=2, meter_readings_limit=1
         )
         data = info.getByPartnersId([
-                    37957,
-                    38073,
-                    38043,
-                    37988,
-                ])
+            37957,
+            38073,
+            38043,
+            37988,
+        ])
         self.assertNsEqual(data, """\
             partners : Masses resultats
             """)
