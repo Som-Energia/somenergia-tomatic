@@ -336,6 +336,7 @@ class ShiftLoadComputer():
         step("    Llegint credits i deutes (bossa d'hores)...")
         formerCredit = ns.load('shiftcredit.yaml')
         return ns(
+            monday = config.monday,
             leaves = leaves,
             daysoff = daysoff,
             busyTable = busyTable,
@@ -354,9 +355,11 @@ class ShiftLoadComputer():
         businessDays,
         idealLoad,
         credits,
+        monday,
         forgive=False,
         inclusters=False,
     ):
+        self.monday = monday
         self.nlines = nlines
         self.businessDays = businessDays
         self.idealLoad = idealLoad
@@ -498,9 +501,9 @@ class ShiftLoadComputer():
         ])
         return summarycontent
 
-    def outputResults(self, config, args):
+    def outputResults(self, args):
         self.dump(self.ponderated, None, #"càrrega ponderada",
-            "ponderatedideal-{}.yaml".format(config.monday))
+            "ponderatedideal-{}.yaml".format(self.monday))
 
         compensations = self.compensationsSummary()
         if compensations:
@@ -508,18 +511,18 @@ class ShiftLoadComputer():
 
         self.displayOverload()
         self.dump(self.overload, "sobrecàrrega",
-            args.overload or "overload-{}.yaml".format(config.monday))
+            args.overload or "overload-{}.yaml".format(self.monday))
 
         for finalfile in [
-            "carrega-{}.yaml".format(config.monday),
+            "carrega-{}.yaml".format(self.monday),
             args.weekshifts,
         ]:
             if not finalfile: continue
             self.dump(self.final, "càrrega final", finalfile)
 
-        if args.clusterize:
+        if hasattr(self, 'clusterized'):
             self.dumpCsv(self.clusterized, "càrrega distribuida en linies",
-                "carrega-{}.csv".format(config.monday))
+                "carrega-{}.csv".format(self.monday))
 
         finalLoad = self.finalLoad()
         if finalLoad == self.fullLoad:
@@ -701,12 +704,13 @@ def main():
         businessDays = setup.businessDays,
         idealLoad = setup.idealLoad,
         credits = setup.formerCredit,
+        monday = config.monday,
         forgive = args.forgive,
         inclusters = args.clusterize,
     )
 
 
-    computer.outputResults(config, args)
+    computer.outputResults(args)
 
 
 if __name__ == '__main__':
