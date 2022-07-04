@@ -83,7 +83,7 @@ class Backtracker(object):
         self.tePrincipal = createTable(0,  self.companys, self.dies)    # (person,day) first turns?
         self.horesDiaries = createTable(0,  self.companys, self.dies)   # (person,day) turns?
 
-        self.tables = config.tables                                     # (person) table
+        self.tables = config.get('tables',{})                           # (person) table
         self.telefonsALaTaula = createTable(0,                          # (day,turn,table) phones actives?
             self.dies, range(len(self.hours)), set(self.tables.values() or [-1]))
 
@@ -98,16 +98,17 @@ class Backtracker(object):
             for nom, dia in xproduct(self.companys, self.dies))
 
         # Groups by person
+        groups = self.config.get('groups',{})
         self.personGroups = dict([                                      # (person) list of goups
             (company, [
                 group
-                for group, companysDelGrup in self.config.groups.items()
+                for group, companysDelGrup in groups.items()
                 if company in companysDelGrup])
             for company in self.companys
             ])
 
         # Checking group definitions
-        for group, persons in self.config.groups.items():
+        for group, persons in groups.items():
             for person in persons:
                 if person not in self.companys:
                     warn("'{}' es al grup '{}', però no es al fitxer de càrrega",
@@ -117,13 +118,13 @@ class Backtracker(object):
                 'maxPhoningInGroup',
                 ):
             for group in self.config[groupConfig]:
-                if group not in self.config.groups:
+                if group not in groups:
                     warn("Configuration '{}' uses group '{}' not defined in 'groups'",
                         groupConfig, group)
 
         # Persons on phone in each group
         self.phoningOnGroup = createTable(0,                            # (group,day,turn) phones actives
-            self.config.groups.keys(),
+            groups.keys(),
             self.dies,
             range(len(self.hours)),
             )
@@ -139,7 +140,7 @@ class Backtracker(object):
                 ))
             for (group, persons), dia, hora
             in xproduct(
-                self.config.groups.items(),
+                groups.items(),
                 self.dies,
                 range(len(self.hours)),
                 )
