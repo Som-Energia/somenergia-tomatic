@@ -675,7 +675,7 @@ def main():
         config.documentDrive = args.drive_file
 
     mustDownloadIdealShifts = not args.idealshifts and not config.get('idealshifts')
-    config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.csv'
+    config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.yaml'
 
     if not args.keep:
         step("Baixant persones de baixa del drive...")

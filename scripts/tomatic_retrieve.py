@@ -148,7 +148,7 @@ def main():
         downloadLeaves(config, args.certificate)
 
     if not args.command or 'idealload' in args.command:
-        config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.csv'
+        config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.yaml'
         downloadIdealLoad(config, args.certificate)
     if not args.command or 'busy' in args.command:
         downloadBusy(config)

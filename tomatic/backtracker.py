@@ -854,7 +854,7 @@ def main():
         config.documentDrive = args.drive_file
 
     mustDownloadIdealShifts = not args.idealshifts and not config.get('idealshifts')
-    config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.csv'
+    config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.yaml'
 
     mustDownloadShifts = not args.weekshifts and not config.get('weekShifts')
     config.weekShifts = config.get('weekShifts') or args.weekshifts or 'carrega.csv'
