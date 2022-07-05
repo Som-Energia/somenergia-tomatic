@@ -177,7 +177,15 @@ def clusterize(nlines, load):
         for person in load
     )
     linesTotal = [0]*nlines
-    for person, load in sorted(load.items(), key=lambda x:-x[1]):
+    sortedLoads = [
+        (person, load)
+        for person, load in sorted(load.items(), key=lambda x:-x[1])
+        if person is not 'ningu'
+    ]
+    if 'ningu' in load:
+        sortedLoads.append(('ningu', load.ningu))
+
+    for person, load in sortedLoads:
         while load:
             lineLoad, line = min((x,i) for i,x in enumerate(linesTotal))
             transferedLoad = min(loadPerLine-lineLoad, load)

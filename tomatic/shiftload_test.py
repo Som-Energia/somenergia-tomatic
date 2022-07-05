@@ -856,6 +856,17 @@ class ShiftLoadTest(unittest.TestCase):
         self.assertEqual(format(ctx.exception),
             "Total load 7 is not divisible by 2 lines")
 
+    def test_clusterize_ningu(self):
+        self.assertNsEqual(
+            shiftload.clusterize(
+                2, ns(alice=1,bob=2,carol=4, ningu=5)),
+            ns(
+                carol=[4,0],
+                bob=  [0,2],
+                alice=[0,1],
+                ningu=[2,3],
+            ))
+
     def test_sortedCreditors(self):
         self.assertEqual(list(
             shiftload.sortedCreditors(ns(alice=1, bob=2, carol=-1))), [
