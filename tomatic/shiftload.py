@@ -180,7 +180,7 @@ def clusterize(nlines, load):
     sortedLoads = [
         (person, load)
         for person, load in sorted(load.items(), key=lambda x:-x[1])
-        if person is not 'ningu'
+        if person != 'ningu'
     ]
     if 'ningu' in load:
         sortedLoads.append(('ningu', load.ningu))
@@ -608,7 +608,6 @@ def parseArgs():
         default='config.yaml',
         help="fitxer de configuració principal",
     )
-
     parser.add_argument(
         '--personsfile',
         help="fitxer de configuració de les persones, si s'especifica aqui, no es baixarà",
