@@ -449,7 +449,7 @@ class Backtracker(object):
                 continue
 
             # Person busy in this turn (it has another line in this turn or it is unavailable)
-            if self.isBusy(company, day, hora):
+            if self.isBusy(company, day, hora) and company != 'ningu' :
                 self.cut("Indisponible", partial,
                     "{} no esta disponible el {} a {}a hora"
                     .format( company, day, hora+1))
