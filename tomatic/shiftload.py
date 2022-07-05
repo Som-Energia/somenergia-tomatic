@@ -365,6 +365,7 @@ class ShiftLoadComputer():
         credits,
         monday,
         forgive=False,
+        maxOverload=1,
         inclusters=False,
     ):
         self.monday = monday
@@ -403,7 +404,7 @@ class ShiftLoadComputer():
             leaves = leaves,
         )
 
-        self.augmented = augmentLoad(self.ponderated)
+        self.augmented = augmentLoad(self.ponderated, addend=maxOverload)
         self.upperBound = loadMin(self.augmented, self.loadCapacity)
         self.limited = loadMin(self.rounded, self.upperBound)
 
@@ -433,6 +434,13 @@ class ShiftLoadComputer():
         self.overload = self.computeOverload()
 
         self.final = ns((p, int(v)) for p,v in sorted(self.compensated.items()))
+
+        finalLoad = self.finalLoad()
+        self.final.ningu = (
+            self.final.get('ningu', 0)
+            + self.fullLoad
+            - finalLoad
+        )
 
         if inclusters:
             self.clusterized = clusterize(self.nlines, self.final)
@@ -533,10 +541,10 @@ class ShiftLoadComputer():
                 "carrega-{}.csv".format(self.monday))
 
         finalLoad = self.finalLoad()
-        if finalLoad == self.fullLoad:
+        if not self.final.ningu:
             success("S'ha aconseguit amb èxit una càrrega de {} torns", finalLoad)
         else:
-            fail("Només s'han pogut aconseguir {} torns dels {} necessaris", -1, finalLoad, fullLoad)
+            warn("No s'ha aconseguit una carrega de {}. S'han hagut d'omplir {} forats amb ningú", self.fullLoad, self.final.ningu)
 
         summary = self.summary()
         print(summary)
@@ -706,6 +714,7 @@ def main():
         nlines = config.nTelefons,
         generalMaxPerDay = config.maximHoresDiariesGeneral,
         maxPerDay = config.maximHoresDiaries,
+        maxOverload = config.maxOverload,
         leaves = setup.leaves,
         daysoff = setup.daysoff,
         busyTable = setup.busyTable,
@@ -716,7 +725,6 @@ def main():
         forgive = args.forgive,
         inclusters = args.clusterize,
     )
-
 
     computer.outputResults(args)
 

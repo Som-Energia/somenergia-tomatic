@@ -28,6 +28,8 @@ hours:
 - '11:30'
 - '12:45'
 - '14:00'
+maxOverload: 1
+clusterize: false
 discriminateLines: true
 pruneRedundant: true
 newYearHack: false

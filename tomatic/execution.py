@@ -184,6 +184,7 @@ class PlannerExecution(Execution):
         super(PlannerExecution, self).createSandbox()
         config = ns.load(self.configPath/'config.yaml')
         config.nTelefons = self.nlines
+        config.maxOverload = 0
         config.dump(self.path/'config.yaml')
         (self.path/'holidays.conf').write_bytes(
             (self.configPath/'holidays.conf').read_bytes()
