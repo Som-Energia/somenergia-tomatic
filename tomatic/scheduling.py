@@ -127,9 +127,9 @@ def solution2schedule(config, solution, date=None):
     result.hours = config.hours
     result.turns = ["L"+str(i+1) for i in range(config.nTelefons)]
     result.timetable = tt
-    result.colors = config.colors
-    result.extensions = config.extensions
-    result.names = config.names
+    result.colors = config.get('colors', {})
+    result.extensions = config.get('extensions', {})
+    result.names = config.get('names', {})
     return result
 
 
