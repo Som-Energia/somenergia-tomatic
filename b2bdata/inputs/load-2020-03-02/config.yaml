@@ -28,6 +28,7 @@ hours:
 - '11:30'
 - '12:45'
 - '14:00'
+computeShifts: false
 maxOverload: 1
 clusterize: false
 discriminateLines: true

@@ -1,4 +1,5 @@
 baseUrl: http://tomatic.somenergia.lan
+personsfile: persons.yaml
 #hangoutChannel: 'UgwbNDnElaQHezX-qXN4AaABAQ' # it
 #hangoutChannel: 'UgzYiKUaJZ1yCpn3R4J4AaABAQ' # petit dejuner
 hangoutChannel: 'Ugz7g64jUEDxQOzCUoh4AaABAQ' # Equip atenció telefònica i bústia info
@@ -11,11 +12,11 @@ leavesSheet: Baixes
 monitoringFile: taula.html
 nTelefons: 6
 diesCerca:
+- dj
 - dv
 - dl
 - dm
 - dx
-- dj
 diesVisualitzacio:
 - dl
 - dm
@@ -28,6 +29,7 @@ hours:
 - '11:30'
 - '12:45'
 - '14:00'
+computeShifts: true
 maxOverload: 0
 clusterize: true
 discriminateLines: true
@@ -122,6 +124,5 @@ commented_forced:
   : ningu
 call_reasons_document: Trucades_3354
 credential_name: drive-certificate.json
-
 threshold_hits: 21
 my_calls_log: callinfo/dailycalls.yaml

@@ -539,6 +539,9 @@ class ShiftLoadComputer():
         if hasattr(self, 'clusterized'):
             self.dumpCsv(self.clusterized, "càrrega distribuida en linies",
                 "carrega-{}.csv".format(self.monday))
+            # TODO: Unduplicate this
+            self.dumpCsv(self.clusterized, "càrrega distribuida en linies",
+                "carrega.csv".format(self.monday))
 
         finalLoad = self.finalLoad()
         if not self.final.ningu:

@@ -226,6 +226,7 @@ class PlannerExecution(Execution):
         process = execution.run([
             str(Path('./scripts/tomatic_scheduler.py').resolve()),
             monday or nextMonday(),
+            '--clusterize',
         ])
         step("Process {}...", execution.pid)
         children[process.pid] = process

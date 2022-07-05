@@ -760,6 +760,12 @@ def parseArgs():
         )
 
     parser.add_argument(
+        '--compute-shifts',
+        action='store_true',
+        help="Compute the shifts instead of taking the ones in the files"
+        )
+
+    parser.add_argument(
         '--config-file',
         default='config.yaml',
         help="fitxer de configuració principal",
@@ -853,13 +859,15 @@ def main():
     if args.drive_file:
         config.documentDrive = args.drive_file
 
+    config.computeShifts = config.get('computeShifts') or args.compute_shifts
+
     mustDownloadIdealShifts = not args.idealshifts and not config.get('idealshifts')
     config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.yaml'
 
-    mustDownloadShifts = not args.weekshifts and not config.get('weekShifts')
+    mustDownloadShifts = not args.weekshifts and not config.get('weekShifts') and not config.computeShifts
     config.weekShifts = config.get('weekShifts') or args.weekshifts or 'carrega.csv'
 
-    mustDownloadOverload = not args.overload
+    mustDownloadOverload = not args.overload and not config.computeShifts
     config.overloadfile = args.overload or "overload-{}.yaml".format(config.monday)
 
     if not args.keep:
@@ -881,6 +889,27 @@ def main():
         step("Baixant bossa d'hores del tomatic...")
         downloadShiftCredit(config)
 
+    if config.computeShifts:
+        setup = ShiftLoadComputer.loadData(config)
+
+        computer = ShiftLoadComputer(
+            nlines = config.nTelefons,
+            generalMaxPerDay = config.maximHoresDiariesGeneral,
+            maxPerDay = config.maximHoresDiaries,
+            maxOverload = config.maxOverload,
+            leaves = setup.leaves,
+            daysoff = setup.daysoff,
+            busyTable = setup.busyTable,
+            businessDays = setup.businessDays,
+            idealLoad = setup.idealLoad,
+            credits = setup.formerCredit,
+            monday = config.monday,
+            forgive = args.forgive,
+            inclusters = args.clusterize or config.get('clusterize', False),
+        )
+
+        computer.outputResults(args)
+
     if args.search_days:
         config.diesCerca = args.search_days.split(',')
 
@@ -889,6 +918,7 @@ def main():
 
     if args.deterministic:
         config.aleatori = not args.deterministic
+
 
     import signal
 
