@@ -402,7 +402,7 @@ class Backtracker(object):
                     self.disponibilitatDiaria[company,dia]
                     for dia in self.dies[idia:]
                     )
-                if tornsPendents > tornsColocables:
+                if company != 'ningu' and tornsPendents > tornsColocables:
                     self.cut("RestantsIncolocables", partial,
                         "A {} nomes li queden {} forats per posar {} hores"
                         .format(company, tornsColocables, tornsPendents))
