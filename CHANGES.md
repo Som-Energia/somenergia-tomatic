@@ -1,8 +1,12 @@
 # Changelog
 
-## unreleased
+## 4.6.0 2022-07-12
 
 - Stats mails shows the seconds also in 00:00:00 format
+- Scheduler:
+  - Load computation inside scheduler
+  - If achieved load is not enough nobody/ningu is added
+  - Made nobody/ningu flexible to add (not a regular person)
 
 ## 4.5.7 2022-06-02
 
