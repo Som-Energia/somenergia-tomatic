@@ -280,6 +280,7 @@ class Backtracker(object):
         return self.busy.isBusy(day, hour, person)
 
     def setBusy(self, person, day, hour, busy=True):
+        if person == 'ningu': return
         self.busy.setBusy(day, hour, person, busy)
 
     def printCuts(self):
