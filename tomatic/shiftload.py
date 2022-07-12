@@ -436,11 +436,13 @@ class ShiftLoadComputer():
         self.final = ns((p, int(v)) for p,v in sorted(self.compensated.items()))
 
         finalLoad = self.finalLoad()
-        self.final.ningu = (
-            self.final.get('ningu', 0)
-            + self.fullLoad
-            - finalLoad
-        )
+        if finalLoad<self.fullLoad:
+            step(f"{finalLoad} torns no arriben als {self.fullLoad} requerits. S'assignent {self.fullLoad-finalLoad} torns, a ningu")
+            self.final.ningu = (
+                self.final.get('ningu', 0)
+                + self.fullLoad
+                - finalLoad
+            )
 
         if inclusters:
             self.clusterized = clusterize(self.nlines, self.final)
