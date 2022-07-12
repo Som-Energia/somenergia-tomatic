@@ -68,7 +68,7 @@ class Backtracker(object):
         if not config.aleatori:
             self.companys.sort()
 
-        self.topesDiaris = self.llegeixTopesDiaris(self.companys)       # Person with it's day limit
+        self.dailyLimitByPerson = self.llegeixTopesDiaris(self.companys)       # Person with it's day limit
         busyFiles = config.get('busyFiles', [
             'oneshot.conf',
             'indisponibilitats.conf',
@@ -90,7 +90,7 @@ class Backtracker(object):
         # Number of hours available each day
         self.disponibilitatDiaria = dict(                               # (person,day) max possible turns
             ((nom,dia), min(
-                self.maxTornsDiaris(nom),
+                self.personDailyLimit(nom),
                 sum(
                     0 if self.isBusy(nom,dia,hora) else 1
                     for hora in range(len(self.hours)))
@@ -228,8 +228,8 @@ class Backtracker(object):
                 .format(name))
         return dailyMaxPerPerson
 
-    def maxTornsDiaris(self, company):
-        return self.topesDiaris.get(company, self.globalMaxTurnsADay)
+    def personDailyLimit(self, company):
+        return self.dailyLimitByPerson.get(company, self.globalMaxTurnsADay)
 
 
     def initUndesiredTable(self, *filenames) :
@@ -509,7 +509,7 @@ class Backtracker(object):
                 continue
 
             # Limit the number of daily turns
-            if self.horesDiaries[company, day] >= self.maxTornsDiaris(company):
+            if company != 'ningu' and self.horesDiaries[company, day] >= self.personDailyLimit(company):
                 self.cut("DiaATope", partial,
                     "No li posem mes a {} que ja te {} hores el {}"
                     .format( company, self.horesDiaries[company, day], day))
@@ -530,7 +530,7 @@ class Backtracker(object):
                 return value
 
             if hora and self.horesDiaries[company, day] and not self.teTelefon[day, hora-1, company]:
-                if self.maxTornsDiaris(company) < 3:
+                if self.personDailyLimit(company) < 3:
                     self.cut("Discontinu", partial,
                         "{} te hores separades el {}".format(company,day))
                     continue
