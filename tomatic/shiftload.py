@@ -544,7 +544,7 @@ class ShiftLoadComputer():
                 "carrega.csv".format(self.monday))
 
         finalLoad = self.finalLoad()
-        if not self.final.ningu:
+        if not self.final.get('ningu',0):
             success("S'ha aconseguit amb èxit una càrrega de {} torns", finalLoad)
         else:
             warn("No s'ha aconseguit una carrega de {}. S'han hagut d'omplir {} forats amb ningú", self.fullLoad, self.final.ningu)
