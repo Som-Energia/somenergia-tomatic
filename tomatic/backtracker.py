@@ -673,7 +673,7 @@ class Backtracker(object):
                 day, itime, line = self.caselles[len(partial)]
                 time = self.config.hours[itime]
                 unfilled = "{} {} L{}".format(day, time, line+1)
-                busyReasons = self.busyReasons[day, itime]
+                busyReasons = self.busyReasons.get((day, itime), [])
             ns(
                 totalCells=len(self.caselles),
                 completedCells=len(partial),
