@@ -1,0 +1,84 @@
+week: '2022-07-11'
+days:
+- dl
+- dm
+- dx
+- dj
+- dv
+hours:
+- 09:00
+- '10:15'
+- '11:30'
+- '12:45'
+- '14:00'
+turns:
+- L1
+- L2
+timetable:
+  dl:
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
+  dm:
+  - - irma
+    - jolie
+  - - kate
+    - mary
+  - - liza
+    - noel
+  - - olivia
+    - petra
+  dx:
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
+  dj:
+  - - alice
+    - diana
+  - - gemma
+    - hellen
+  - - olivia
+    - petra
+  - - liza
+    - mary
+  dv:
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
+colors: {}
+extensions: {}
+names: {}
+overload:
+  alice: -0.6
+  barbara: -1.2
+  carol: -0.4
+  diana: -1.4
+  elith: 0.0
+  felicity: -0.8
+  gemma: -0.6
+  hellen: -1.0
+  irma: -1.0
+  jolie: -1.4
+  kate: -0.6
+  liza: -0.8
+  mary: 0.4
+  noel: -0.2
+  olivia: 0.4
+  petra: 0.4
+penalties: []
+cost: 0

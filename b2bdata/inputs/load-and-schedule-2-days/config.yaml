@@ -1,0 +1,70 @@
+baseUrl: http://tomatic.somenergia.lan
+personsfile: persons.yaml
+#hangoutChannel: 'UgwbNDnElaQHezX-qXN4AaABAQ' # it
+#hangoutChannel: 'UgzYiKUaJZ1yCpn3R4J4AaABAQ' # petit dejuner
+hangoutChannel: 'Ugz7g64jUEDxQOzCUoh4AaABAQ' # Equip atenció telefònica i bústia info
+documentDrive: Quadre de Vacances
+driveCertificate: drive-certificate.json
+fullCarregaIdeal: "IDEALS_6t_Càrrega telèfon"
+idealLoadNamesRange: carregaideal_noms
+idealLoadValuesRange: carregaideal_valors
+leavesSheet: Baixes
+monitoringFile: taula.html
+nTelefons: 6
+diesCerca:
+- dj
+- dv
+- dl
+- dm
+- dx
+diesVisualitzacio:
+- dl
+- dm
+- dx
+- dj
+- dv
+hours:
+- 09:00
+- '10:15'
+- '11:30'
+- '12:45'
+- '14:00'
+computeShifts: true
+maxOverload: 0
+clusterize: true
+discriminateLines: true
+pruneRedundant: false
+newYearHack: false
+ignoreOptionalAbsences: true
+mostraCami: false
+maximCamiAMostrar: 60
+aleatori: true
+stopPenalty: 0
+backtrackDepth: 100000
+maxNodesToPersevere: 10000
+costLimit: 200
+descartaNoPrometedores: true
+deixaEsmorzar: true
+noVolenEsmorzar:
+- david
+- ningu
+maximPerTaula: 7
+maximsT1PerDia: 4
+maximHoresDiariesGeneral: 2
+maximHoresDiaries:
+  ningu: 20000
+costHoresDiscontinues: 40
+costHoresConcentrades: 1
+costTaulaSorollosa: 5
+costHoraNoDesitjada: 10
+maxPhoningInGroup:
+  infern: 2
+  casademont: 4
+minIdleInGroup:
+  it: 4
+randomColors: false
+forced: {}
+call_reasons_document: Trucades_3354
+credential_name: drive-certificate.json
+threshold_hits: 21
+my_calls_log: callinfo/dailycalls.yaml

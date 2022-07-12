@@ -1,0 +1,144 @@
+week: '2022-07-11'
+days:
+- dl
+- dm
+- dx
+- dj
+- dv
+hours:
+- 09:00
+- '10:15'
+- '11:30'
+- '12:45'
+- '14:00'
+turns:
+- L1
+- L2
+- L3
+- L4
+timetable:
+  dl:
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+  dm:
+  - - kate
+    - hellen
+    - irma
+    - ningu
+  - - ningu
+    - mary
+    - ningu
+    - jolie
+  - - liza
+    - ningu
+    - ningu
+    - petra
+  - - liza
+    - noel
+    - olivia
+    - petra
+  dx:
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+  dj:
+  - - barbara
+    - alice
+    - diana
+    - gemma
+  - - felicity
+    - alice
+    - diana
+    - gemma
+  - - kate
+    - hellen
+    - irma
+    - jolie
+  - - liza
+    - mary
+    - olivia
+    - ningu
+  dv:
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+  - - festiu
+    - festiu
+    - festiu
+    - festiu
+colors: {}
+extensions: {}
+names: {}
+overload:
+  alice: 0.4
+  barbara: -0.2
+  carol: -0.4
+  diana: -0.4
+  elith: 0.0
+  felicity: 0.2
+  gemma: 0.4
+  hellen: 0.0
+  irma: 0.0
+  jolie: -0.4
+  kate: 0.4
+  liza: 0.2
+  mary: 0.4
+  noel: -0.2
+  olivia: 0.4
+  petra: 0.4
+penalties:
+- - 1
+  - alice té més de 1 hores el dj
+- - 1
+  - diana té més de 1 hores el dj
+- - 1
+  - gemma té més de 1 hores el dj
+- - 1
+  - ningu té més de 1 hores el dm
+- - 2
+  - ningu té més de 2 hores el dm
+- - 3
+  - ningu té més de 3 hores el dm
+- - 4
+  - ningu té més de 4 hores el dm
+- - 1
+  - liza té més de 1 hores el dm
+- - 1
+  - petra té més de 1 hores el dm
+cost: 15
