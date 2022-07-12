@@ -437,7 +437,7 @@ class ShiftLoadComputer():
 
         finalLoad = self.finalLoad()
         if finalLoad<self.fullLoad:
-            step(f"{finalLoad} torns no arriben als {self.fullLoad} requerits. S'assignent {self.fullLoad-finalLoad} torns, a ningu")
+            warn(f"{finalLoad} torns no arriben als {self.fullLoad} requerits. S'assignent {self.fullLoad-finalLoad} torns, a ningu")
             self.final.ningu = (
                 self.final.get('ningu', 0)
                 + self.fullLoad
