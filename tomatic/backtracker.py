@@ -52,7 +52,7 @@ class Backtracker(object):
 
         if set(self.dies) - set(workDays):
             warn(u"No s'inclouran els dies festius: {}."
-                .format(', '.join((x for x in set(self.dies)-set(workDays)))))
+                .format(', '.join((x for x in self.dies if x not in workDays))))
 
         self.dies = [day for day in self.dies if day in workDays]
 
