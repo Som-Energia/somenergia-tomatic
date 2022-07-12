@@ -405,7 +405,7 @@ class ShiftLoadComputer():
         )
 
         self.augmented = augmentLoad(self.ponderated, addend=maxOverload)
-        self.upperBound = loadMin(self.augmented, self.loadCapacity)
+        self.upperBound = loadRound(loadMin(self.augmented, self.loadCapacity))
         self.limited = loadMin(self.rounded, self.upperBound)
 
         self.reportCapacity()
