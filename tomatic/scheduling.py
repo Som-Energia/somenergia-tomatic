@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
-from __future__ import unicode_literals
 from bisect import bisect
 import datetime
 from yamlns import namespace as ns

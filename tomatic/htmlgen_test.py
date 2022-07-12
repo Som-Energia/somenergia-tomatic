@@ -1,6 +1,5 @@
 #-*- coding: utf-8 -*-
 
-from __future__ import absolute_import
 import unittest
 from yamlns import namespace as ns
 import b2btest
