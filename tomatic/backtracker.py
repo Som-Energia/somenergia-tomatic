@@ -413,8 +413,15 @@ class Backtracker(object):
             if cut: return
 
         if self.config.pruneRedundant:
+            # Last non-nigu person within the turn if any
             lastPersonInTurn = next((person for person in partial[:-1-telefon:-1] if person != 'ningu'), None)
-            companys = [person for person in self.companys if not lastPersonInTurn or person > lastPersonInTurn]
+            # Just take persons alfabetically greater than the last one if any
+            companys = [
+                person
+                for person in self.companys
+                if not lastPersonInTurn
+                or person > lastPersonInTurn
+            ]
         else:
             companys=self.companys[:]
 
