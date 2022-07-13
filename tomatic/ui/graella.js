@@ -760,9 +760,7 @@ Page.view = function(vnode) {
             toolbarRow('Tomàtic - Som Energia'),
 			m(Tabs, {
 				tabs: tabs,
-				//centered: true,
 				activeSelected: true,
-				//hideIndicator: true,
 				selectedTab: currentTabIndex,
 			}),
 		]),
@@ -770,7 +768,6 @@ Page.view = function(vnode) {
 		m('#snackbar',m(Snackbar)),
 		m(Dialog),
 	]);
-		
 };
 
 

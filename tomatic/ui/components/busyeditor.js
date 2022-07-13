@@ -305,4 +305,4 @@ var editAvailabilities = function(name) {
 
 return editAvailabilities;
 }();
-
+// vim: noet sw=4 ts=4
