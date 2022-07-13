@@ -33,6 +33,7 @@ var contrast = require('./components/colorutils').contrast;
 var editAvailabilities = require('./components/busyeditor');
 var Login = require('./components/login');
 var PersonPicker = require('./components/personpicker');
+var WeekPicker = require('./components/weekpicker');
 
 var css = require('polythene-css');
 var customStyle = require('./style.styl');
@@ -65,26 +66,6 @@ var Doc = function(message) {
 			},
 		}],
 	});
-};
-
-var WeekList = {
-	oninit: function(vnode) {
-		vnode.state.model = this;
-		vnode.state.setCurrent = function(week) {
-			Tomatic.requestGrid(week);
-		};
-	},
-	view: function(c) {
-		return m('.weeks',
-			Tomatic.weeks().map(function(week){
-				var current = Tomatic.currentWeek() === week ? '.current':'';
-				return m('.week'+current, {
-					onclick: function() {
-						c.state.setCurrent(week);
-					}
-				}, "Setmana del "+week);
-		}));
-	}
 };
 
 const scriptLauncherBase = 'http://tomatic.somenergia.lan:5000';
@@ -582,7 +563,7 @@ var GridsPage = {
         var grid = Tomatic.grid();
         return m('',[
 			m('.layout.vertical', [
-				m(WeekList),
+				m(WeekPicker),
 				m('.layout.end-justified', [
 					m(Uploader, {
 						name: 'yaml',
