@@ -1,5 +1,12 @@
 'use strict';
 
+// PersonPicker
+// Displays a list of persons as colored boxes
+// to choose one by clicking on them.
+// Attributes:
+// - onpick: callback to be called on pick
+// - nobodyPickable: bool 'nobody' is an option or not
+
 module.exports = function() {
 
 var m = require('mithril');
