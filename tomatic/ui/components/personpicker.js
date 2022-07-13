@@ -8,7 +8,6 @@ var Tomatic = require('./tomatic');
 var PersonPicker = {
 	oninit: function(vnode) {
 		vnode.state.onpick = vnode.attrs.onpick;
-		vnode.state.nobodyPickable = vnode.attrs.nobodyPickable;
 		vnode.state.person = m.prop(undefined);
 		vnode.state.picked = function(name, ev) {
 			vnode.state.person(name);
