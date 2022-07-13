@@ -6,6 +6,8 @@
 module.exports = function() {
 
 var m = require('mithril');
+var Dialog = require('polythene-mithril-dialog').Dialog;
+var Button = require('polythene-mithril-button').Button;
 var Tomatic = require('./tomatic')
 var PersonPicker = require('./personpicker')
 
