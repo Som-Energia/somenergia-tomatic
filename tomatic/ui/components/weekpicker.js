@@ -21,7 +21,8 @@ var WeekPicker = {
 						c.state.setCurrent(week);
 					}
 				}, "Setmana del "+week);
-		}));
+			})
+		);
 	}
 };
 
@@ -29,4 +30,3 @@ return WeekPicker;
 
 }();
 // vim: noet sw=4 ts=4
-
