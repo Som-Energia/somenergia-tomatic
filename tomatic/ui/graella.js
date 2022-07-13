@@ -31,6 +31,7 @@ var luminance = require('./components/colorutils').luminance;
 var contrast = require('./components/colorutils').contrast;
 var editAvailabilities = require('./components/busyeditor');
 var Login = require('./components/login');
+var PersonPicker = require('./components/personpicker');
 
 var css = require('polythene-css');
 var customStyle = require('./style.styl');
@@ -132,35 +133,6 @@ var QueueWidget = {
 		);
 	}
 };
-var PersonPicker = {
-	oninit: function(vnode) {
-		vnode.state.onpick = vnode.attrs.onpick;
-		vnode.state.nobodyPickable = vnode.attrs.nobodyPickable;
-		vnode.state.person = m.prop(undefined);
-		vnode.state.picked = function(name, ev) {
-			vnode.state.person(name);
-			if (vnode.attrs.onpick) {
-				vnode.attrs.onpick(name);
-			}
-		};
-	},
-	view: function(vnode) {
-		var pickCell = function(name) {
-			return m('.extension', {
-				className: name,
-				onclick: vnode.state.picked.bind(vnode,name),
-				},
-				Tomatic.formatName(name)
-			);
-		};
-		var extensions = Tomatic.persons().extensions || {};
-		return m('.extensions', [
-			Object.keys(extensions).sort().map(pickCell),
-			vnode.attrs.nobodyPickable ? pickCell('ningu') : [],
-		]);
-	},
-};
-
 var WeekList = {
 	oninit: function(vnode) {
 		vnode.state.model = this;
