@@ -211,23 +211,15 @@ Page.view = function(vnode) {
 
 
 var TomaticApp = {}
-TomaticApp.view = function() {
-    var pages = {
-        'Graelles': TimeTablePage,
-        'Centraleta': PbxPage,
-        'Persones': PersonsPage,
-        'Trucada': CallInfoPage,
-    };
+TomaticApp.view = function(vnode) {
 	console.log("Page: ", m.route.get());
-    var currentTabIndex = indexForRoute(m.route.get());
-    var current = m(pages[tabs[currentTabIndex].label]);
     return m(''
 			+(kumato?'.pe-dark-tone':'')
 			+('.variant-'+Tomatic.variant)
 			
 		,[
         PersonStyles(),
-        m(Page, {content:current}),
+        m(Page, {content: vnode.children}),
     ]);
 };
 
@@ -238,10 +230,10 @@ window.onload = function() {
     //m.redraw.strategy('diff');
 	var element = document.getElementById("tomatic");
 	m.route(element, '/Graelles', {
-        '/Graelles': TomaticApp,
-        '/Centraleta': TomaticApp,
-        '/Persones': TomaticApp,
-        '/Trucada': TomaticApp,
+        '/Graelles': {render: function() { return m(TomaticApp, m(TimeTablePage)) }},
+        '/Centraleta': {render: function() { return m(TomaticApp, m(PbxPage)) }},
+        '/Persones': {render: function() { return m(TomaticApp, m(PersonsPage)) }},
+        '/Trucada': {render: function() { return m(TomaticApp, m(CallInfoPage)) }},
     });
 };
 // vim: noet ts=4 sw=4
