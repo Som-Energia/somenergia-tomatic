@@ -6,13 +6,7 @@ m.prop = require('mithril/stream');
 var Snackbar = require('polythene-mithril-snackbar').Snackbar;
 var Dialog = require('polythene-mithril-dialog').Dialog;
 var Card = require('polythene-mithril-card').Card;
-var ListTile = require('polythene-mithril-list-tile').ListTile;
-var List = require('polythene-mithril-list').List;
-var Shadow = require('polythene-mithril-shadow').Shadow;
-var Menu = require('polythene-mithril-menu').Menu;
-var IconButton = require('polythene-mithril-icon-button').IconButton;
 var Tabs = require('polythene-mithril-tabs').Tabs;
-
 
 var iconMenu = require('mmsvg/google/msvg/navigation/menu');
 var iconMore = require('mmsvg/google/msvg/navigation/more-vert');
@@ -24,12 +18,12 @@ var contrast = require('./components/colorutils').contrast;
 var Login = require('./components/login');
 var Persons = require('./components/persons');
 var TimeTablePage = require('./components/timetablepage');
+var MenuButton = require('./components/menubutton');
 
 var css = require('polythene-css');
 var customStyle = require('./style.styl');
 
 var CallInfoPage = require('./components/callinfopage');
-var getCookie = require('./components/utils').getCookie;
 
 css.addLayoutStyles();
 css.addTypography();
@@ -118,66 +112,6 @@ const toolbarRow = function(title) {
 		}),
 	]);
 }
-
-
-
-const MenuContent = function(options) {
-	return m(List, {
-		compact: true,
-		tiles: options.map(function(item) {
-			return m(ListTile, {
-				title: item.title,
-				ink: true,
-				hoverable: true,
-				className: 'colored',
-				disabled: item.disabled,
-				events: {
-					onclick: item.action,
-				},
-			});
-		}),
-	});
-};
-
-const MenuButton = {
-	oninit: function(vnode) {
-		vnode.state.shown = false;
-		vnode.attrs.id = vnode.attrs.id || 'the_menu'
-	},
-	view: function(vnode) {
-		var attrs = vnode.attrs;
-		return m("", {
-			style: {
-				position: 'relative',
-			}
-		},[
-			m(Shadow),
-			m(Menu, {
-				target: "#" + attrs.id,
-				origin: attrs.origin || false,
-				size: 5,
-				offset: 30,
-				show: vnode.state.shown,
-				didHide: function() {
-					vnode.state.shown = false;
-				},
-				content: MenuContent(attrs.options || []),
-			}),
-			m(IconButton, {
-				icon: {
-					svg: attrs.icon || iconMore
-				},
-				className: 'colored',
-				id: attrs.id,
-				events: {
-					onclick: function(ev) {
-						vnode.state.shown = true;
-					},
-				},
-			}),
-		])
-	},
-};
 
 
 var PbxPage = {
