@@ -223,7 +223,7 @@ var Persons = function(extensions) {
 							wash: true,
 							className: 'colored',
 							events: {
-							onclick: function() { editAvailabilities(name); },
+								onclick: function() { editAvailabilities(name); },
 							},
 						}),
 						m(IconButton, {
@@ -232,7 +232,7 @@ var Persons = function(extensions) {
 							wash: true,
 							className: 'colored',
 							events: {
-							onclick: function() { editPerson(name); },
+								onclick: function() { editPerson(name); },
 							},
 						}),
 					]),
