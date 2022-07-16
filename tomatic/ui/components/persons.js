@@ -7,7 +7,7 @@ module.exports = function() {
 
 var m = require('mithril');
 var Dialog = require('polythene-mithril-dialog').Dialog;
-var Textfield = require('polythene-mithril-textfield').TextField;
+var TextField = require('polythene-mithril-textfield').TextField;
 var Button = require('polythene-mithril-button').Button;
 var IconButton = require('polythene-mithril-icon-button').IconButton;
 var iconDate =  require('mmsvg/google/msvg/action/date-range');
@@ -21,7 +21,7 @@ var PersonEditor = {};
 PersonEditor.view = function(vnode) {
 	vnode.state.name = vnode.attrs.name;
 	return m('.personEditor', [
-		m(Textfield, {
+		m(TextField, {
 			label: 'Identificador',
 			floatingLabel: true,
 			pattern: '[a-z]{3,10}$',
@@ -49,7 +49,7 @@ PersonEditor.view = function(vnode) {
 				vnode.attrs.name=state.value;
 			},
 		}),
-		m(Textfield, {
+		m(TextField, {
 			label: 'Nom mostrat',
 			floatingLabel: true,
 			help: 'Nom amb accents, majúscules...',
@@ -59,7 +59,7 @@ PersonEditor.view = function(vnode) {
 				vnode.attrs.formatName=state.value;
 			},
 		}),
-		m(Textfield, {
+		m(TextField, {
 			label: 'Correu electrònic',
 			floatingLabel: true,
 			type: 'email',
@@ -71,7 +71,7 @@ PersonEditor.view = function(vnode) {
 				vnode.attrs.email=state.value;
 			},
 		}),
-		m(Textfield, {
+		m(TextField, {
 			label: 'Usuari ERP',
 			floatingLabel: true,
 			help: 'Usuari amb el que entres a l\'erp.',
@@ -81,7 +81,7 @@ PersonEditor.view = function(vnode) {
 				vnode.attrs.erpuser=state.value;
 			},
 		}),
-		m(Textfield, {
+		m(TextField, {
 			label: 'Extensio',
 			type: 'number',
 			pattern: '[0-9]{4}$',

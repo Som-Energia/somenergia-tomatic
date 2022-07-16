@@ -6,7 +6,7 @@ var Ripple = require('polythene-mithril-ripple').Ripple;
 var Dialog = require('polythene-mithril-dialog').Dialog;
 var Button = require('polythene-mithril-button').Button;
 var IconButton = require('polythene-mithril-icon-button').IconButton;
-var Textfield = require('polythene-mithril-textfield').TextField;
+var TextField = require('polythene-mithril-textfield').TextField;
 var Card = require('polythene-mithril-card').Card;
 var ListTile = require('polythene-mithril-list-tile').ListTile;
 var List = require ('polythene-mithril-list').List;
@@ -116,7 +116,7 @@ var customerSearch = function() {
   return m('', {className:'busca-info'}, [
     m(".busca-info-title.layout.horizontal", [
       typeOfSearch(),
-      m(Textfield, {
+      m(TextField, {
         className: 'txtf-phone flex',
         placeholder: "Cerca",
         value: CallInfo.search,

@@ -11,7 +11,7 @@ var Dialog = require('polythene-mithril-dialog').Dialog;
 var Button = require('polythene-mithril-button').Button;
 var ButtonGroup = require('polythene-mithril-button-group').ButtonGroup;
 var IconButton = require('polythene-mithril-icon-button').IconButton;
-var Textfield = require('polythene-mithril-textfield').TextField;
+var TextField = require('polythene-mithril-textfield').TextField;
 var Card = require('polythene-mithril-card').Card;
 var ListTile = require('polythene-mithril-list-tile').ListTile;
 var List = require ('polythene-mithril-list').List;
@@ -261,7 +261,7 @@ Questionnaire.openCaseAnnotationDialog = function() {
           m(".reason-filter", [
             m(".motiu", 'Motiu: '),
             m(".filter",
-              m(Textfield, {
+              m(TextField, {
                 className: "textfield-filter",
                 label: "Escriu per a filtrar",
                 value: categoryFilter,
@@ -273,7 +273,7 @@ Questionnaire.openCaseAnnotationDialog = function() {
           ]),
           categoryList(),
           m(".final-motius", [
-            m(Textfield, {
+            m(TextField, {
               className: "textfield-comentaris",
               label: "Comentaris",
               help: "Especifica més informació",

@@ -5,7 +5,7 @@ var Dialog = require('polythene-mithril-dialog').Dialog;
 var Button = require('polythene-mithril-button').Button;
 var List = require('polythene-mithril-list').List;
 var ListTile = require('polythene-mithril-list-tile').ListTile;
-var Textfield = require('polythene-mithril-textfield').TextField;
+var TextField = require('polythene-mithril-textfield').TextField;
 var RadioGroup = require('polythene-mithril-radio-group').RadioGroup;
 var RadioButton = require('polythene-mithril-radio-button').RadioButton;
 var IconButton = require('polythene-mithril-icon-button').IconButton;
@@ -112,7 +112,7 @@ var BusyEntryEditor = {
 	view: function(vnode) {
 		var busy = vnode.attrs.busy;
 		return m('.busyentryeditor', [
-			m(Textfield, {
+			m(TextField, {
 				label: 'Motiu',
 				floatingLabel: true,
 				autofocus: 1,
@@ -172,7 +172,7 @@ var BusyEntryEditor = {
 				}):[],
 			/*
 			busy.weekday === undefined ?
-				m(Textfield, {
+				m(TextField, {
 					label: 'Data',
 					pattern: '20[0-9]{2}-[01][0-9]-[0-3][0-9]$',
 					error: 'Data en format ISO YYYY-MM-DD',
