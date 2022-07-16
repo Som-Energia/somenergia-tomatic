@@ -28,7 +28,6 @@
   "dependencies": {
     "js-yaml": "^3.14.1",
     "mithril": "^2.0.4",
-    "mithril-datepicker": "*",
     "polythene-core": "^1.7.5",
     "polythene-css": "^1.7.5",
     "polythene-mithril": "^1.7.5",

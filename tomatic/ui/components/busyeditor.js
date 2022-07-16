@@ -10,8 +10,6 @@ var RadioGroup = require('polythene-mithril-radio-group').RadioGroup;
 var RadioButton = require('polythene-mithril-radio-button').RadioButton;
 var IconButton = require('polythene-mithril-icon-button').IconButton;
 var Checkbox = require('polythene-mithril-checkbox').Checkbox;
-var DatePicker = require('mithril-datepicker/mithril-datepicker')
-var datePickerStyle = require('mithril-datepicker/src/style.css');
 var Select = require('./select');
 var Tomatic = require('./tomatic')
 var iconPlus =  require('mmsvg/templarian/msvg/plus');
@@ -195,14 +193,12 @@ var BusyEntryEditor = {
 				}):[],
 			*/
 			busy.weekday === undefined ?
-				m(DatePicker, {
-					date: Date.parse(busy.date),
-					onchange: function(newDate) {
-						busy.date=newDate.toISOString().substr(0,10)+'';
-						console.debug("date:",busy.date);
+				m(TextField, {
+					type: 'date',
+					value: busy.date,
+					onChange: function(ev) {
+						busy.date=ev.value;
 					},
-					locale: 'ca',
-					weekstart: 1,
 				}):[],
 			m('p.label', "Marca les hores que no estaràs disponible:"),
 			Array.from(busy.turns).map(function(active, i) {
