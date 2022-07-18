@@ -147,6 +147,27 @@ class CallRegistry_Test(unittest.TestCase):
               tag: second content
         """)
 
+    def test_updateCall_limitedSize_forgetsOlder(self):
+        reg = CallRegistry(self.dir, size=1)
+
+        reg.updateCall('alice', ns(
+            date="2021-02-01T20:21:22.555Z",
+            attribute="value",
+            tag="content",
+        ))
+        reg.updateCall('alice', ns(
+            date="2021-02-02T20:21:22.555Z",
+            attribute="second value",
+            tag="second content",
+        ))
+        self.assertNsEqual(
+            ns(calls = reg.callsByUser('alice')), """\
+            calls:
+            - date: "2021-02-02T20:21:22.555Z"
+              attribute: second value
+              tag: second content
+        """)
+
     def assertDirContent(self, expected):
         self.assertEqual(
             [str(x) for x in sorted(self.dir.glob('**/*'))],

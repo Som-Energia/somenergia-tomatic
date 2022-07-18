@@ -37,7 +37,7 @@ class CallRegistry(object):
             extensionCalls.append(fields)
 
         if self.size:
-            extensionCalls=extensionCalls[-self.size:]
+            del extensionCalls[:-self.size]
 
         calls.dump(self.callregistry_path)
 
