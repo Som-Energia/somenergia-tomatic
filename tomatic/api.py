@@ -433,7 +433,7 @@ async def notifyIncommingCall(phone: str, extension: str):
     user = persons.byExtension(extension)
     phone = phone.replace('+','').replace('-','').replace(' ','')
     phone = re.sub(r'^[+]?0?0?34','', phone)
-    CallRegistry().updateCall(extension, fields=ns(
+    CallRegistry().updateCall(user, fields=ns(
         data = time,
         telefon = phone,
         motius = "",
@@ -449,9 +449,9 @@ async def notifyIncommingCall(phone: str, extension: str):
     return yamlfy(result='ok')
 
 
-@app.get('/api/personlog/{extension}')
-def getCallLog(extension):
-    calls = CallRegistry().callsByExtension(extension)
+@app.get('/api/personlog/{user}')
+def getCallLog(user):
+    calls = CallRegistry().callsByExtension(user)
     return yamlfy(
         info=ns(
             info=calls,

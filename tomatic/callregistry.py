@@ -23,12 +23,12 @@ class CallRegistry(object):
             return ns()
         return ns.load(self.callregistry_path)
 
-    def callsByExtension(self, extension):
-        return self._calls().get(extension,[])
+    def callsByExtension(self, user):
+        return self._calls().get(user,[])
 
-    def updateCall(self, extension, fields):
+    def updateCall(self, user, fields):
         calls = self._calls()
-        extensionCalls = calls.setdefault(extension,[])
+        extensionCalls = calls.setdefault(user,[])
         for call in extensionCalls:
             if call.data == fields.data:
                 call.update(fields)
@@ -43,8 +43,7 @@ class CallRegistry(object):
 
     def annotateCall(self, fields):
         from . import persons
-        extension = persons.extension(fields.user) or fields.user
-        self.updateCall(extension, ns(
+        self.updateCall(fields.user, ns(
             data = fields.date,
             telefon = fields.phone,
             partner = fields.partner,
