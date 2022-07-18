@@ -156,7 +156,9 @@ Login.identification = function() {
         var aux = info.split(":");
         var id = aux[0];
         nom = Tomatic.formatName(id);
-        color = "#" + aux[2];
+        if (Tomatic.persons().colors) {
+            color = "#" + Tomatic.persons().colors[id];
+        }
     }
 
     return m('.login-buttons', [
