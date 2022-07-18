@@ -179,6 +179,40 @@ class CallRegistry_Test(unittest.TestCase):
               user: alice
         """)
 
+    def test_appendDaily_sameUserDateUpdates(self):
+        reg = CallRegistry(self.dir)
+
+        reg._appendToExtensionDailyInfo('prefix', ns(
+            user="alice",
+            date="2021-02-01T20:21:22.555Z",
+            phone="555444333",
+            partner="",
+            contract="",
+            reason="",
+        ), date=date(2021,2,1))
+        reg._appendToExtensionDailyInfo('prefix', ns(
+            user="alice",
+            date="2021-02-01T20:21:22.555Z",
+            phone="555444333",
+            partner="S00000",
+            contract="100000",
+            reason="CODE",
+        ), date=date(2021,2,1))
+        self.assertDirContent([
+            'test_callregistry/prefix',
+            'test_callregistry/prefix/20210201.yaml',
+        ])
+        self.assertNsEqual(ns.load('test_callregistry/prefix/20210201.yaml'),
+            """
+            alice:
+            - date: "2021-02-01T20:21:22.555Z"
+              phone: '555444333'
+              partner: 'S00000'
+              contract: '100000'
+              reason: CODE
+              user: alice
+        """)
+
 
     def test_annotateCall_writesCallLog(self):
         reg = CallRegistry(self.dir)

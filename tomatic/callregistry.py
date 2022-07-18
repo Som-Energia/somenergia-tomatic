@@ -58,7 +58,13 @@ class CallRegistry(object):
         dailyInfo = ns()
         if path.exists():
             dailyInfo = ns.load(str(path))
-        dailyInfo.setdefault(info.user, []).append(info)
+        userInfo = dailyInfo.setdefault(info.user, [])
+        for call in userInfo:
+            if call.date == info.date:
+                call.update(info)
+                break
+        else:
+            userInfo.append(info)
         path.parent.mkdir(parents=True, exist_ok=True)
         dailyInfo.dump(str(path))
 
