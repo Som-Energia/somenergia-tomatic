@@ -433,12 +433,13 @@ async def notifyIncommingCall(phone: str, extension: str):
     user = persons.byExtension(extension)
     phone = phone.replace('+','').replace('-','').replace(' ','')
     phone = re.sub(r'^[+]?0?0?34','', phone)
-    CallRegistry().updateCall(user, fields=ns(
-        data = time,
-        telefon = phone,
-        motius = "",
-        partner = "",
-        contracte = "",
+    CallRegistry().annotateCall(ns(
+        user = user,
+        date = time,
+        phone = phone,
+        partner = '',
+        contract = '',
+        reason = '',
     ))
     notifications = backchannel.notifyIncommingCall(user, phone, time)
     if not notifications:
