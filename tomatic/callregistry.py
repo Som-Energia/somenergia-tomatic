@@ -13,14 +13,15 @@ CONFIG = fillConfigurationInfo()
 
 class CallRegistry(object):
     def __init__(self, path=None, size=20):
-        self.path = Path(path or CONFIG.my_calls_log)
-        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.callregistry_path = Path(path or CONFIG.my_calls_log)
+        self.path = self.callregistry_path.parent
+        self.path.mkdir(parents=True, exist_ok=True)
         self.size = size
 
     def _calls(self):
-        if not self.path.exists():
+        if not self.callregistry_path.exists():
             return ns()
-        return ns.load(self.path)
+        return ns.load(self.callregistry_path)
 
     def callsByExtension(self, extension):
         return self._calls().get(extension,[])
@@ -38,7 +39,7 @@ class CallRegistry(object):
         if self.size:
             extensionCalls=extensionCalls[-self.size:]
 
-        calls.dump(self.path)
+        calls.dump(self.callregistry_path)
 
     def annotateCall(self, fields):
         from . import persons
@@ -53,7 +54,7 @@ class CallRegistry(object):
         self._appendToExtensionDailyInfo('cases', fields)
 
     def _appendToExtensionDailyInfo(self, prefix, info, date=datetime.today()):
-        path = self.path.parent / prefix / '{:%Y%m%d}.yaml'.format(date)
+        path = self.path / prefix / '{:%Y%m%d}.yaml'.format(date)
         warn("Saving {}", path)
         dailyInfo = ns()
         if path.exists():
@@ -63,7 +64,7 @@ class CallRegistry(object):
         dailyInfo.dump(str(path))
 
     def _categoriesFile(self):
-        return self.path.parent/'categories.yaml'
+        return self.path/'categories.yaml'
 
     def updateAnnotationCategories(self, erp):
         """Takes the topics (crm categories and atc subtypes)"""
@@ -89,8 +90,8 @@ class CallRegistry(object):
 
     def uploadCases(self, erp, date):
         claims = Claims(erp)
-        path = self.path.parent / 'cases' / '{:%Y%m%d}.yaml'.format(date)
-        log = self.path.parent / 'cases' / 'logs' / '{:%Y%m%d}.log'.format(date)
+        path = self.path / 'cases' / '{:%Y%m%d}.yaml'.format(date)
+        log = self.path / 'cases' / 'logs' / '{:%Y%m%d}.log'.format(date)
         cases = ns()
         if path.exists():
             cases = ns.load(path)
