@@ -59,13 +59,6 @@ Login.myName = function() {
     return user;
 }
 
-Login.currentExtension = function() {
-    var cookie_value = getCookie(tomaticCookie);
-    if (cookie_value === ":") return -1;
-    var extension = cookie_value.split(":")[1].toString();
-    return extension === "" ? -1 : extension;
-}
-
 var setCookieInfo = function(vnode){
     var name_button = vnode.target.innerText;
     var persons = Tomatic.persons().extensions;
