@@ -52,15 +52,8 @@ Date.prototype.addHours = function(h) {
    return this;
 }
 
-var userCookie = function() {
-    var cookie = getCookie(tomaticCookie);
-    return (cookie === "" ? ":" : cookie);
-}
-
 Login.myName = function() {
-    var cookie = userCookie();
-    var user = cookie.split(":")[0];
-    return user;
+    return getCookie(tomaticCookie);
 }
 
 var setCookieInfo = function(vnode){
@@ -75,10 +68,9 @@ var setCookieInfo = function(vnode){
         }
     }
     if(found){
-        var value = id + ":" + Tomatic.persons().extensions[id] + ":" + Tomatic.persons().colors[id];
         var exp = new Date().addHours(3);
         var expires = "expires="+ exp.toUTCString();
-        document.cookie = tomaticCookie + "=" + value + ";" + expires + ";SameSite=Strict;path=/";
+        document.cookie = tomaticCookie + "=" + id + ";" + expires + ";SameSite=Strict;path=/";
     }
     Login.onLogin.map(function(callback) {
         callback();
