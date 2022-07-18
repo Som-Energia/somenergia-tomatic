@@ -50,7 +50,7 @@ var Uploader = {
 					accept: vnode.attrs.mimetype || "application/x-yaml",
 				}),
 				m(RaisedButton, {
-					label: (vnode.attrs.label || 'Upload a file...')+' '+uploaderInputStyle,
+					label: (vnode.attrs.label || 'Upload a file...'),
 				}),
 			])
 		);
