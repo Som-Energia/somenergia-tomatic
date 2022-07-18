@@ -505,6 +505,7 @@ class PlannerExecution_Test(unittest.TestCase):
         self.configPath.mkdir()
         (self.configPath/'config.yaml').write_text("""
             nTelefons: 7
+            maxOverload: 0
         """)
         (self.configPath/'holidays.conf').write_text(
             "2020-12-25\tNadal"
