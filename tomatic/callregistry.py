@@ -23,7 +23,7 @@ class CallRegistry(object):
             return ns()
         return ns.load(self.callregistry_path)
 
-    def callsByExtension(self, user):
+    def callsByUser(self, user):
         return self._calls().get(user,[])
 
     def updateCall(self, user, fields):

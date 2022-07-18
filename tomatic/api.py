@@ -451,7 +451,7 @@ async def notifyIncommingCall(phone: str, extension: str):
 
 @app.get('/api/personlog/{user}')
 def getCallLog(user):
-    calls = CallRegistry().callsByExtension(user)
+    calls = CallRegistry().callsByUser(user)
     return yamlfy(
         info=ns(
             info=calls,

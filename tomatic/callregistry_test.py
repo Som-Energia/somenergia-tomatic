@@ -30,7 +30,7 @@ class CallRegistry_Test(unittest.TestCase):
     def test_updateCall_behavesAtStartUp(self):
         reg = CallRegistry(self.dir)
         assert not (self.dir/'dailycalls.yaml').exists()
-        self.assertEqual(reg.callsByExtension('alice'), [])
+        self.assertEqual(reg.callsByUser('alice'), [])
 
     def test_updateCall_updatesAfterWrite(self):
         reg = CallRegistry(self.dir)
@@ -44,7 +44,7 @@ class CallRegistry_Test(unittest.TestCase):
               tag: content
         """)
         self.assertNsEqual(
-            ns(calls = reg.callsByExtension('alice')), """\
+            ns(calls = reg.callsByUser('alice')), """\
             calls:
             - attribute: value
               tag: content
@@ -69,7 +69,7 @@ class CallRegistry_Test(unittest.TestCase):
               tag: second content
         """)
         self.assertNsEqual(
-            ns(calls = reg.callsByExtension('alice')), """\
+            ns(calls = reg.callsByUser('alice')), """\
             calls:
             - data: "2021-02-01T20:21:22.555Z"
               attribute: second value
@@ -98,7 +98,7 @@ class CallRegistry_Test(unittest.TestCase):
               data: "2021-02-02T20:21:22.555Z"
         """)
         self.assertNsEqual(
-            ns(calls = reg.callsByExtension('alice')), """\
+            ns(calls = reg.callsByUser('alice')), """\
             calls:
             - data: "2021-02-01T20:21:22.555Z"
               attribute: value
@@ -133,14 +133,14 @@ class CallRegistry_Test(unittest.TestCase):
         """)
 
         self.assertNsEqual(
-            ns(calls = reg.callsByExtension('alice')), """\
+            ns(calls = reg.callsByUser('alice')), """\
             calls:
             - data: "2021-02-02T20:21:22.555Z"
               attribute: value
               tag: content
         """)
         self.assertNsEqual(
-            ns(calls = reg.callsByExtension('barbara')), """\
+            ns(calls = reg.callsByUser('barbara')), """\
             calls:
             - data: "2021-02-02T20:21:22.555Z"
               attribute: second value
