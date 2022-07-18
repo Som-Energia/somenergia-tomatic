@@ -35,6 +35,7 @@ var config = {
 	},
 	module: {
 		rules: [
+			{ test: /\.js$/, use: [ {loader: 'babel-loader' }]},
 			{ test: /\.yaml$/,  loader: "yaml-loader" },
 			{ test: /\.css$/,   use: [MiniCssExtractPlugin.loader, "css-loader"]},
 			{ test: /\.less$/,  use: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"]},

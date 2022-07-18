@@ -1,0 +1,14 @@
+{
+  "plugins": [
+    [
+      "@emotion",
+      {
+        "sourceMap": true,
+        "autoLabel": "always",
+        "labelFormat": "[filename]",
+        "cssPropOptimization": true
+      }
+    ]
+  ]
+}
+
