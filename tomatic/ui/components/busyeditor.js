@@ -101,8 +101,12 @@ var BusyList = {
 
 var BusyEntryEditor = {
 	oncreate: function(vnode) {
-		// TODO: Focus on Motiu
-		console.debug(vnode.children);
+		// Focus on the first enabled input
+		// Note: if done without the setTimeout, styles are not applied
+		setTimeout(function() {
+			vnode.dom.querySelector('input:enabled').focus()
+			m.redraw()
+		}, 0);
 	},
 	oninit: function(vnode) {
 		vnode.state.busy = vnode.attrs.busy;
@@ -113,8 +117,8 @@ var BusyEntryEditor = {
 			m(TextField, {
 				label: 'Motiu',
 				floatingLabel: true,
-				autofocus: 1,
 				help: 'Explica el motiu, com a referència',
+				autofocus: true,
 				required: true,
 				value: busy.reason,
 				onChange: function(state) {

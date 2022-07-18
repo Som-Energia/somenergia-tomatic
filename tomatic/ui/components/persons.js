@@ -18,6 +18,14 @@ var Select = require('./select');
 var RgbEditor = require('./rgbeditor');
 
 var PersonEditor = {};
+PersonEditor.oncreate = function(vnode) {
+	// Focus on the first enabled input
+	// Note: if done without the setTimeout, styles are not applied
+	setTimeout(function() {
+		vnode.dom.querySelector('input:enabled').focus()
+		m.redraw()
+	}, 0);
+};
 PersonEditor.view = function(vnode) {
 	vnode.state.name = vnode.attrs.name;
 	return m('.personEditor', [
@@ -28,6 +36,7 @@ PersonEditor.view = function(vnode) {
 			help: 'Identificador que es fa servir internament.',
 			error: 'De 3 a 10 carácters. Només lletres en minúscules.',
 			required: true,
+			autofocus: vnode.attrs.newone,
 			disabled: !vnode.attrs.newone,
 			value: vnode.attrs.name || '',
 			events: {
@@ -52,6 +61,7 @@ PersonEditor.view = function(vnode) {
 		m(TextField, {
 			label: 'Nom mostrat',
 			floatingLabel: true,
+			autofocus: !vnode.attrs.newone,
 			help: 'Nom amb accents, majúscules...',
 			required: true,
 			value: vnode.attrs.formatName,
