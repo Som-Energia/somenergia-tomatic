@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+- Fix: some labels didn't notice that their input had focus
+- Fix: menu icon buttons were taller
+- Fix: Busy dialog allowed not introducing a date or no turn
+- Fix: Using native date picker in modern browsers
+- Most UI components turned into modules, using emotion to avoid css conflicts
+- Removed load generator menu entry since it won't be used anymore
+
+- Update notes:
+  - npm install required (emotion and babel dependencies)
+
 ## 4.6.0 2022-07-12
 
 - Stats mails shows the seconds also in 00:00:00 format

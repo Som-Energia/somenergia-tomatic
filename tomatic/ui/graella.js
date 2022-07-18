@@ -54,11 +54,6 @@ var Doc = function(message) {
 
 const scriptLauncherBase = 'http://tomatic.somenergia.lan:5000';
 const menuOptions = function() { return [{
-	title: "Genera càrregues setmanals",
-	action: function() {
-		location.href = scriptLauncherBase + "/runner/carregues";
-	},
-},{
 	title: "Planificador de Graelles",
 	action: function() {
 		location.href = "/api/planner/";
