@@ -145,20 +145,20 @@ var customerSearch = function() {
 }
 
 var responsesMessage = function(info) {
-  var time = (new Date(info.data)).toLocaleTimeString();
+  var time = (new Date(info.date)).toLocaleTimeString();
   return m('',
     m('span.time', time),
     ' ',
-    m('span.phone', info.telefon ? info.telefon : "Registre Manual"),
+    m('span.phone', info.phone ? info.phone : "Registre Manual"),
     m.trust('&nbsp;'),
     m.trust('&nbsp;'),
-    info.motius?
+    info.reason?
       m('span.partner', {title: "Persona Atesa"}, info.partner ? info.partner : "Sense informació") : '', 
-    (info.motius && info.contracte)? [
+    (info.reason && info.contract)? [
       m.trust('&nbsp;'),
-      m('span.contract', {title: "Contracte"}, info.contracte)
+      m('span.contract', {title: "Contracte"}, info.contract)
     ]:'',
-    !info.motius ? m('span.pending', " Pendent d'anotar"):'',
+    !info.reason ? m('span.pending', " Pendent d'anotar"):'',
     ''
   );
 }
@@ -179,20 +179,20 @@ var attendedCallList = function() {
   }
   var currentDate = new Date().toLocaleDateString();
   items = CallInfo.callLog.slice(0).reverse().map(function(item, index) {
-    var isSelected = CallInfo.isLogSelected(item.data);
+    var isSelected = CallInfo.isLogSelected(item.date);
     var itemClicked = function(ev) {
-        if (item.motius !== "") return;
-        CallInfo.toggleLog(item.data, item.telefon)
+        if (item.reason !== "") return;
+        CallInfo.toggleLog(item.date, item.phone)
     }
     var needsDate = false;
-    var itemDate = new Date(item.data).toLocaleDateString();
-    var itemWeekDay = new Date(item.data).toLocaleDateString(undefined, {weekday:'long'});
+    var itemDate = new Date(item.date).toLocaleDateString();
+    var itemWeekDay = new Date(item.date).toLocaleDateString(undefined, {weekday:'long'});
     if (itemDate !== currentDate) {
       currentDate = itemDate;
       needsDate = true;
     }
     var missatge = responsesMessage(item);
-    var solved = item.motius !== "";
+    var solved = item.reason !== "";
     return [
       needsDate? m(ListTile, {
         className:'registres dateseparator',
@@ -207,7 +207,7 @@ var attendedCallList = function() {
         hoverable: !solved,
         ink: !solved,
         title: missatge,
-        subtitle: item.motius,
+        subtitle: item.reason,
         selected: false,
         events: {
           onclick: itemClicked,

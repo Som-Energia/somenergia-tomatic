@@ -30,7 +30,7 @@ class CallRegistry(object):
         calls = self._calls()
         extensionCalls = calls.setdefault(user,[])
         for call in extensionCalls:
-            if call.data == fields.data:
+            if call.date == fields.date:
                 call.update(fields)
                 break
         else: # exiting when not found
@@ -44,11 +44,11 @@ class CallRegistry(object):
     def annotateCall(self, fields):
         from . import persons
         self.updateCall(fields.user, ns(
-            data = fields.date,
-            telefon = fields.phone,
+            date = fields.date,
+            phone = fields.phone,
             partner = fields.partner,
-            contracte = fields.contract,
-            motius = fields.reason,
+            contract = fields.contract,
+            reason = fields.reason,
         ))
         self._appendToExtensionDailyInfo('cases', fields)
 

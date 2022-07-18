@@ -227,12 +227,11 @@ class CallRegistry_Test(unittest.TestCase):
         content = ns.load(self.dailycalls)
         self.assertNsEqual(content, """\
             alice:
-            - data: "2021-02-01T20:21:22.555Z"
-              telefon: '555444333'
+            - date: "2021-02-01T20:21:22.555Z"
+              phone: '555444333'
               partner: 'S00000'
-              contracte: '100000'
-              motius: CODE
-        
+              contract: '100000'
+              reason: CODE
         """)
 
     def test_annotateCall_writesFiles(self):
