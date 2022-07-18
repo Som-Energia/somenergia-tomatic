@@ -10,6 +10,10 @@ module.exports = function() {
 		state.red = m.prop();
 		state.green = m.prop();
 		state.blue = m.prop();
+		state.setFocus = function(hasFocus) {
+			console.log("color has focus", hasFocus)
+			vnode.attrs.onFocusChanged && vnode.attrs.onFocusChanged(hasFocus);
+		}
 		state.setRgb = function() {
 			var components = color.hex2triplet(vnode.attrs.value);
 			this.red(components[0]);
@@ -46,6 +50,15 @@ module.exports = function() {
 						onChange: function(state) {
 							vnode.state[color](state.value);
 							vnode.state.edited();
+						},
+						events: {
+							onfocus: function(ev) {
+								vnode.state.setFocus(true);
+
+							},
+							onblur: function(ev) {
+								vnode.state.setFocus(false);
+							},
 						},
 					});
 				})

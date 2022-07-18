@@ -11,6 +11,7 @@ var RadioButton = require('polythene-mithril-radio-button').RadioButton;
 var IconButton = require('polythene-mithril-icon-button').IconButton;
 var Checkbox = require('polythene-mithril-checkbox').Checkbox;
 var Select = require('./select');
+var Labeled = require('./labeled');
 var Tomatic = require('./tomatic')
 var iconPlus =  require('mmsvg/templarian/msvg/plus');
 var iconDelete =  require('mmsvg/google/msvg/action/delete');
@@ -125,37 +126,36 @@ var BusyEntryEditor = {
 					busy.reason=state.value;
 				},
 			}),
-			m('.pe-textfield.pe-textfield--dirty.pe-textfield--floating-label', [
-				m('.pe-textfield__input-area', [
-					m('label[for=optional].pe-textfield__label',
-						"Opcional?"),
-					m(RadioGroup, {
-						name: 'optional',
-						id: 'optional',
-						onChange: function(state) {
-							busy.optional = state.value=='y';
+			m(Labeled,
+				{
+					label: "Opcional?",
+					help: "Es pot descartar si estem apurats?",
+					id: 'optional',
+				},
+				m(RadioGroup, {
+					name: 'optional',
+					id: 'optional',
+					onChange: function(state) {
+						busy.optional = state.value=='y';
+					},
+					className: 'layout.pe-textfield__input',
+					all: {
+						className: 'flex',
+					},
+					buttons: [
+						{
+							label: 'Sí',
+							value: 'y',
+							checked: busy.optional,
 						},
-						className: 'layout.pe-textfield__input',
-						all: {
-							className: 'flex',
+						{
+							label: 'No',
+							value: 'n',
+							checked: !busy.optional,
 						},
-						buttons: [
-							{
-								label: 'Sí',
-								value: 'y',
-								checked: busy.optional,
-							},
-							{
-								label: 'No',
-								value: 'n',
-								checked: !busy.optional,
-							},
-						],
-					}),
-					m('.pe-textfield__help',
-						"Es pot descartar si estem apurats?"),
-				])
-			]),
+					],
+				}),
+			),
 			busy.weekday !== undefined ?
 				m(Select, {
 					label: 'Dia de la setmana',
@@ -172,56 +172,34 @@ var BusyEntryEditor = {
 						busy.weekday = ev.target.value;
 					},
 				}):[],
-			/*
-			busy.weekday === undefined ?
-				m(TextField, {
-					label: 'Data',
-					pattern: '20[0-9]{2}-[01][0-9]-[0-3][0-9]$',
-					error: 'Data en format ISO YYYY-MM-DD',
-					floatingLabel: true,
-					help: 'Especifica la data concreta de la indisponibilitat',
-					required: true,
-					validate: function(value) {
-						console.debug("Validating: ", value);
-						if (!isNaN(Date.parse(value))) {return {valid: true};}
-						return {
-							valid: false,
-							error: 'Data en format ISO YYYY-MM-DD',
-						};
-					},
-					value: busy.date,
-					onChange: function(state) {
-						console.debug("Changing date:",busy.date, "->", state.value);
-						busy.date=state.value;
-					},
-				}):[],
-			*/
-			busy.weekday === undefined ?
-				m(TextField, {
-					type: 'date',
-					value: busy.date,
-					onChange: function(ev) {
-						busy.date=ev.value;
-					},
-				}):[],
-			m('p.label', "Marca les hores que no estaràs disponible:"),
-			Array.from(busy.turns).map(function(active, i) {
-				var hours = Tomatic.grid().hours;
-				return m('', m(Checkbox, {
-					label: hours[i]+' - '+hours[i+1],
-					checked: active==='1',
-					onChange: function(state) {
-						console.debug("onchange:",state);
-						console.debug('Before:',busy.turns);
-						busy.turns = (
-							busy.turns.substr(0,i)+
-							((busy.turns[i]==='1')?'0':'1')+
-							busy.turns.substr(i+1)
-						);
-						console.debug('After:',busy.turns);
-					},
-				}));
-			}),
+			busy.weekday === undefined ? [
+				m(Labeled, {label: "Data"},
+					m(TextField, {
+						type: 'date',
+						required: true,
+						value: busy.date,
+						onChange: function(ev) {
+							busy.date=ev.value;
+						},
+					})
+				)
+				]:[],
+			m(Labeled, {label: "Marca les hores que no estaràs disponible:"},
+				Array.from(busy.turns).map(function(active, i) {
+					var hours = Tomatic.grid().hours;
+					return m('', m(Checkbox, {
+						label: hours[i]+' - '+hours[i+1],
+						checked: active==='1',
+						onChange: function(state) {
+							busy.turns = (
+								busy.turns.substr(0,i)+
+								((busy.turns[i]==='1')?'0':'1')+
+								busy.turns.substr(i+1)
+							);
+						},
+					}));
+				}),
+			),
 		]);
 	},
 };

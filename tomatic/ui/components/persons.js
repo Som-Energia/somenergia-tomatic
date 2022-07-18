@@ -118,7 +118,9 @@ PersonEditor.view = function(vnode) {
 			'.pe-textfield'+
 			'.pe-textfield--floating-label'+
 			'.pe-textfield--hide-clear'+
-			'.pe-textfield--dirty', [
+			'.pe-textfield--dirty'+
+			(vnode.attrs.colorHasFocus?'.pe-textfield--focused':'')+
+			'', [
 			m('.pe-textfield__input-area', [
 				m('label.pe-textfield__label', 'Color'),
 				m(RgbEditor, {
@@ -126,6 +128,9 @@ PersonEditor.view = function(vnode) {
 					onChange: function(state) {
 						vnode.attrs.color = state.value;
 					},
+					onFocusChanged: function(hasFocus) {
+						vnode.attrs.colorHasFocus = hasFocus;
+					}
 				}),
 			]),
 		]),
