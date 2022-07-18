@@ -52,8 +52,13 @@ Date.prototype.addHours = function(h) {
    return this;
 }
 
+var userCookie = function() {
+    var cookie = getCookie(tomaticCookie);
+    return (cookie === "" ? ":" : cookie);
+}
+
 Login.myName = function() {
-    var cookie = whoAreYou();
+    var cookie = userCookie();
     var user = cookie.split(":")[0];
     return user;
 }
@@ -135,11 +140,6 @@ Login.askWhoAreYou = function() {
     };},{id:'whoAreYou'});
 }
 
-var whoAreYou = function() {
-    var cookie = getCookie(tomaticCookie);
-    return (cookie === "" ? ":" : cookie);
-}
-
 var exitIcon = function(){
     return m(".icon-exit", [
         m("i.fas.fa-times-circle"),
@@ -147,7 +147,7 @@ var exitIcon = function(){
 }
 
 Login.identification = function() {
-    var info = whoAreYou();
+    var info = userCookie();
     var nom = "IDENTIFICAR";
     var color = 'rgba(255, 255, 255, 0.7)';
 
