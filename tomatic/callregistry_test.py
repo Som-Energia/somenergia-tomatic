@@ -28,12 +28,12 @@ class CallRegistry_Test(unittest.TestCase):
     from yamlns.testutils import assertNsEqual
 
     def test_updateCall_behavesAtStartUp(self):
-        reg = CallRegistry(self.dailycalls)
+        reg = CallRegistry(self.dir)
         assert not (self.dir/'dailycalls.yaml').exists()
         self.assertEqual(reg.callsByExtension('alice'), [])
 
     def test_updateCall_updatesAfterWrite(self):
-        reg = CallRegistry(self.dailycalls)
+        reg = CallRegistry(self.dir)
         reg.updateCall('alice', ns(
             attribute="value",
             tag="content",
@@ -51,7 +51,7 @@ class CallRegistry_Test(unittest.TestCase):
         """)
 
     def test_updateCall_sameTimeExtension_updates(self):
-        reg = CallRegistry(self.dailycalls)
+        reg = CallRegistry(self.dir)
         reg.updateCall('alice', ns(
             data="2021-02-01T20:21:22.555Z",
             attribute="value",
@@ -77,7 +77,7 @@ class CallRegistry_Test(unittest.TestCase):
         """)
 
     def test_updateCall_differentTime_appends(self):
-        reg = CallRegistry(self.dailycalls)
+        reg = CallRegistry(self.dir)
         reg.updateCall('alice', ns(
             data="2021-02-01T20:21:22.555Z",
             attribute="value",
@@ -109,7 +109,7 @@ class CallRegistry_Test(unittest.TestCase):
         """)
 
     def test_updateCall_differentExtension_splits(self):
-        reg = CallRegistry(self.dailycalls)
+        reg = CallRegistry(self.dir)
 
         reg.updateCall('alice', ns(
             data="2021-02-02T20:21:22.555Z",
@@ -154,7 +154,7 @@ class CallRegistry_Test(unittest.TestCase):
         )
 
     def test_appendDaily(self):
-        reg = CallRegistry(self.dailycalls)
+        reg = CallRegistry(self.dir)
 
         reg._appendToExtensionDailyInfo('prefix', ns(
             user="alice",
@@ -181,7 +181,7 @@ class CallRegistry_Test(unittest.TestCase):
 
 
     def test_annotateCall_writesCallLog(self):
-        reg = CallRegistry(self.dailycalls)
+        reg = CallRegistry(self.dir)
         reg.annotateCall(ns(
             user="alice",
             date="2021-02-01T20:21:22.555Z",
@@ -202,7 +202,7 @@ class CallRegistry_Test(unittest.TestCase):
         """)
 
     def test_annotateCall_writesFiles(self):
-        reg = CallRegistry(self.dailycalls)
+        reg = CallRegistry(self.dir)
         persons(self.dir/'persons.yaml')
         reg.annotateCall(ns(
             user="alice",

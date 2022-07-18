@@ -126,4 +126,3 @@ websocket_port: 4445
 call_reasons_document: Trucades_3354
 credential_name: drive-certificate.json
 threshold_hits: 21
-my_calls_log: my_calls_log.yaml

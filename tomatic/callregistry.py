@@ -13,9 +13,9 @@ CONFIG = fillConfigurationInfo()
 
 class CallRegistry(object):
     def __init__(self, path=None, size=20):
-        self.callregistry_path = Path(path or CONFIG.my_calls_log)
-        self.path = self.callregistry_path.parent
+        self.path = Path(path or CONFIG.callinfoPath)
         self.path.mkdir(parents=True, exist_ok=True)
+        self.callregistry_path = self.path / 'dailycalls.yaml'
         self.size = size
 
     def _calls(self):
