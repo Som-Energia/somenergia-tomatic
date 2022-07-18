@@ -23,8 +23,7 @@ var previousLogin = null; // To detect login changes
 Login.loginWatchTimer = 0;
 Login.watchLoginChanges = function() {
     clearTimeout(Login.loginWatchTimer);
-    var cookie = whoAreYou();
-    var user = cookie.split(":")[0];
+    var user = Login.myName();
     if (user !== previousLogin) {
         console.log("Detected login change",previousLogin,"->",user);
         previousLogin = user;
