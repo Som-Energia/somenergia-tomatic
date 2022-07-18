@@ -222,7 +222,11 @@ var editAvailability = function(receivedData, updateCallback) {
 						Dialog.hide({id:'BusyEditor'});
 					},
 				},
-				disabled: !busy.reason,
+				disabled: (
+					!busy.reason ||
+					(busy.weekday===undefined && !busy.date) || 
+					busy.turns==='0000'
+				),
 			}),
 			m(Button, {
 				label: "Cancel·la",
