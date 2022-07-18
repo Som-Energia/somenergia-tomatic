@@ -319,13 +319,13 @@ CallInfo.updateCategories = function() {
 
 CallInfo.getLogPerson = function () {
   CallInfo.callLog = []
-  var extension = Login.currentExtension();
-  if (extension === -1) {
+  var username = Login.myName();
+  if (username === -1) {
     return 0
   }
   CallInfo.callLog.push("lookingfor")
   api.request({
-    url: '/api/personlog/' + extension,
+    url: '/api/personlog/' + username,
   }).then(function(response){
     console.debug("Info GET Response: ",response)
     if (response.info.message !== "ok" ) {
