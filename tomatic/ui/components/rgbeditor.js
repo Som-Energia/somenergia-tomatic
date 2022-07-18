@@ -67,4 +67,4 @@ module.exports = function() {
 	};
 	return RgbEditor;
 }();
-
+// vim: noet sw=4 ts=4

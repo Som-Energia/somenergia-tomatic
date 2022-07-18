@@ -77,7 +77,6 @@ var BusyList = {
 								events: {
 									onclick: function() {
 										vnode.attrs.entries.splice(index, 1);
-										console.log(vnode.attrs.entries);
 										vnode.attrs.onChange && vnode.attrs.onChange();
 									},
 								},
@@ -254,7 +253,6 @@ var editAvailabilities = function(name) {
 						entries: data.weekly,
 						isOneShot: false,
 						onChange: function() {
-							console.log("Updating data:\n",data);
 							Tomatic.sendBusyData(name, data);
 						},
 					}),
@@ -263,7 +261,6 @@ var editAvailabilities = function(name) {
 						entries: data.oneshot,
 						isOneShot: true,
 						onChange: function() {
-							console.log("Updating data:\n",data);
 							Tomatic.sendBusyData(name, data);
 						},
 					}),

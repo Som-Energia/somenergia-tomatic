@@ -45,7 +45,7 @@ module.exports = function() {
         },
     };
 
-	return Select;
+    return Select;
 }();
 
-// vim: noet ts=4 sw=4
+// vim: et ts=4 sw=4
