@@ -105,7 +105,7 @@ What smoke tests you should be doing after an upgrade to check most components s
 - `execution.py`: Encapsulates an asynchronous execution of a sandboxed process (used by `planner_api.py`)
 - `remote.py`: Simplifies remote process execution and access to files via SSH
 - `directmessage`: modules that abstract actual direct message (hangouts or equivalents)
-- `directmessage/hangouts`: Google hangouts implementation of directmessage
+- `directmessage/hangouts.py`: Google hangouts implementation of directmessage
 - `backchannel.py`: Abstracting server initiated comunication with the clients (Websocket or equivalent)
 
 ### Information Access
@@ -129,9 +129,10 @@ What smoke tests you should be doing after an upgrade to check most components s
 - `claims.py`: Access the ERP's Claim objects (Backend of callregistry)
 
 
-## Data Files
+## Callinfo Data Files
 
-This is a review of the callinfo files.
+Callinfo data directory is `callinfo/` by default
+but can be configured using `callinfoPath` in `config.yaml`.
 
 - `callinfo/categories.yaml`
 	- Categories to choose when annotating calls
@@ -140,7 +141,11 @@ This is a review of the callinfo files.
 	- Each category has `code`, `name`, `isClaim`, `section`
 - `callinfo/dailycalls.yaml`
 	- "registre de trucades (reclamació i no reclamacio)"
-	- `config.my_calls_log`
 	- person dict to a list of incomming calls of the day
 - `callinfo/cases/YYYY-MM-DD.yaml` Daily call log
+
+## Scheduler Data Files
+
+TODO: Document which files are readed, which ones are generated and how configuration and commandline affects them
+
 

@@ -11,6 +11,9 @@
 
 - Update notes:
   - npm install required (emotion and babel dependencies)
+  - config.yaml `callinfoPath` should point to the parent of current `my_calls_log`.
+    If not specified it will be `callinfo` by default (relative to the working path).
+  - config.yaml: `my_calls_log` should be removed
 
 ## 4.6.0 2022-07-12
 

@@ -20,6 +20,7 @@
 	- [ ] Ask before deleting, killing, uploading...
 - Scheduler:
 	- [ ] Join load computation into the scheduler script
+	- [ ] Like we did with callinfo, review files loaded and dumped to rationalize it
 - Person editor:
 	- [ ] Disable ok until all fields are valid
 	- [ ] Check extension not taken already
@@ -29,7 +30,7 @@
 	- [ ] List/admin mode
 	- [ ] Nicer date picker for one-shot busy
 - Callinfo
-	- [ ] config `callinfo_data` instead of `my_calls_log` parent folder
+	- [x] config `callinfoPath` instead of `my_calls_log` parent folder
 	- [ ] Edit previous annotations
 	- [ ] /api/info/ringring -> api/call/ringring (ext) (caution: used by partners)
 	- [ ] /api/personlog/<ext> en els casos de fallada returnar una llista buida sense errors (no son de fallada, encara no hi ha logs i prou)
