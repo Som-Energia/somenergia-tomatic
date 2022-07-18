@@ -312,6 +312,22 @@ dialog .extension:hover {
     }
 }
 
+/* TODO: use polythene classes */
+.label-wrapper {
+    padding-top: 6px;
+}
+.label-wrapper .pe-textfield .pe-textfield__input-area {
+  padding-top: 0px; /* overwrites default 6px */
+}
+.label-wrapper .label-wrapper--label {
+    transition: .12s;
+    color: rgba(0, 0, 0, .53);
+    font-size: 10pt;
+}
+.label-wrapper:focus-within .label-wrapper--label {
+    color: rgba(33, 150, 243, .83);
+}
+
 .button_logout_callinfo {
     color: #9a0000;
     position: absolute;
