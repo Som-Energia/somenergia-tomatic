@@ -53,25 +53,25 @@ class CallRegistry_Test(unittest.TestCase):
     def test_updateCall_sameTimeExtension_updates(self):
         reg = CallRegistry(self.dir)
         reg.updateCall('alice', ns(
-            data="2021-02-01T20:21:22.555Z",
+            date="2021-02-01T20:21:22.555Z",
             attribute="value",
             tag="content",
         ))
         reg.updateCall('alice', ns(
-            data="2021-02-01T20:21:22.555Z",
+            date="2021-02-01T20:21:22.555Z",
             attribute="second value",
             tag="second content",
         ))
         self.assertNsEqual(ns.load(self.dailycalls), """\
             alice:
-            - data: "2021-02-01T20:21:22.555Z"
+            - date: "2021-02-01T20:21:22.555Z"
               attribute: second value
               tag: second content
         """)
         self.assertNsEqual(
             ns(calls = reg.callsByUser('alice')), """\
             calls:
-            - data: "2021-02-01T20:21:22.555Z"
+            - date: "2021-02-01T20:21:22.555Z"
               attribute: second value
               tag: second content
         """)
@@ -79,12 +79,12 @@ class CallRegistry_Test(unittest.TestCase):
     def test_updateCall_differentTime_appends(self):
         reg = CallRegistry(self.dir)
         reg.updateCall('alice', ns(
-            data="2021-02-01T20:21:22.555Z",
+            date="2021-02-01T20:21:22.555Z",
             attribute="value",
             tag="content",
         ))
         reg.updateCall('alice', ns(
-            data="2021-02-02T20:21:22.555Z",
+            date="2021-02-02T20:21:22.555Z",
             attribute="second value",
             tag="second content",
         ))
@@ -92,42 +92,42 @@ class CallRegistry_Test(unittest.TestCase):
             alice:
             - attribute: value
               tag: content
-              data: "2021-02-01T20:21:22.555Z"
+              date: "2021-02-01T20:21:22.555Z"
             - attribute: second value
               tag: second content
-              data: "2021-02-02T20:21:22.555Z"
+              date: "2021-02-02T20:21:22.555Z"
         """)
         self.assertNsEqual(
             ns(calls = reg.callsByUser('alice')), """\
             calls:
-            - data: "2021-02-01T20:21:22.555Z"
+            - date: "2021-02-01T20:21:22.555Z"
               attribute: value
               tag: content
-            - data: "2021-02-02T20:21:22.555Z"
+            - date: "2021-02-02T20:21:22.555Z"
               attribute: second value
               tag: second content
         """)
 
-    def test_updateCall_differentExtension_splits(self):
+    def test_updateCall_differentUser_splits(self):
         reg = CallRegistry(self.dir)
 
         reg.updateCall('alice', ns(
-            data="2021-02-02T20:21:22.555Z",
+            date="2021-02-02T20:21:22.555Z",
             attribute="value",
             tag="content",
         ))
         reg.updateCall('barbara', ns(
-            data="2021-02-02T20:21:22.555Z",
+            date="2021-02-02T20:21:22.555Z",
             attribute="second value",
             tag="second content",
         ))
         self.assertNsEqual(ns.load(self.dailycalls), """\
             alice:
-            - data: "2021-02-02T20:21:22.555Z"
+            - date: "2021-02-02T20:21:22.555Z"
               attribute: value
               tag: content
             barbara:
-            - data: "2021-02-02T20:21:22.555Z"
+            - date: "2021-02-02T20:21:22.555Z"
               attribute: second value
               tag: second content
         """)
@@ -135,14 +135,14 @@ class CallRegistry_Test(unittest.TestCase):
         self.assertNsEqual(
             ns(calls = reg.callsByUser('alice')), """\
             calls:
-            - data: "2021-02-02T20:21:22.555Z"
+            - date: "2021-02-02T20:21:22.555Z"
               attribute: value
               tag: content
         """)
         self.assertNsEqual(
             ns(calls = reg.callsByUser('barbara')), """\
             calls:
-            - data: "2021-02-02T20:21:22.555Z"
+            - date: "2021-02-02T20:21:22.555Z"
               attribute: second value
               tag: second content
         """)
