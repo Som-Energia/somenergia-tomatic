@@ -147,13 +147,11 @@ var exitIcon = function(){
 }
 
 Login.identification = function() {
-    var info = userCookie();
     var nom = "IDENTIFICAR";
     var color = 'rgba(255, 255, 255, 0.7)';
+    var id = Login.myName();
 
-    if (info !== ":") {
-        var aux = info.split(":");
-        var id = aux[0];
+    if (id !== "") {
         nom = Tomatic.formatName(id);
         if (Tomatic.persons().colors) {
             color = "#" + Tomatic.persons().colors[id];
