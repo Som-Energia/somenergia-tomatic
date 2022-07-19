@@ -8,12 +8,17 @@
 - Fix: Using native date picker in modern browsers
 - Most UI components turned into modules, using emotion to avoid css conflicts
 - Removed load generator menu entry since it won't be used anymore
+- Fix: dailycalls were not limited to 20 per user
+- Now dailycalls are split by user, to speed up api calls
 
 - Update notes:
   - npm install required (emotion and babel dependencies)
   - config.yaml `callinfoPath` should point to the parent of current `my_calls_log`.
     If not specified it will be `callinfo` by default (relative to the working path).
   - config.yaml: `my_calls_log` should be removed
+  - day
+  - `callinfo/dailycalls.yaml` not used anymore,
+     now `callinfo/dailycalls/calls-[user].yaml is used
 
 ## 4.6.0 2022-07-12
 

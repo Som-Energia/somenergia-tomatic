@@ -22,7 +22,7 @@ class CallRegistry_Test(unittest.TestCase):
         self.dir.mkdir()
 
     def dailycalls(self, user):
-        return self.dir / f'dailycalls-{user}.yaml'
+        return self.dir / f'dailycalls/calls-{user}.yaml'
 
     def tearDown(self):
         removeTree(self.dir)
@@ -283,6 +283,7 @@ class CallRegistry_Test(unittest.TestCase):
             'test_callregistry/cases',
             'test_callregistry/cases/{:%Y%m%d}.yaml'.format(
                 date.today()),
+            'test_callregistry/dailycalls',
             str(self.dailycalls('alice')),
         ])
 

@@ -15,11 +15,10 @@ class CallRegistry(object):
     def __init__(self, path=None, size=20):
         self.path = Path(path or CONFIG.callinfoPath)
         self.path.mkdir(parents=True, exist_ok=True)
-        self.callregistry_path = self.path / 'dailycalls.yaml'
         self.size = size
 
     def _calls(self, user):
-        callregistry = self.path / f'dailycalls-{user}.yaml'
+        callregistry = self.path / f'dailycalls/calls-{user}.yaml'
         if not callregistry.exists():
             return ns(calls=[])
         return ns.load(callregistry)
@@ -30,7 +29,7 @@ class CallRegistry(object):
 
     def updateCall(self, user, fields):
         calls = self.callsByUser(user)
-        callregistry = self.path / f'dailycalls-{user}.yaml'
+        callregistry = self.path / f'dailycalls/calls-{user}.yaml'
 
         for call in calls:
             if call.date == fields.date:
@@ -42,6 +41,7 @@ class CallRegistry(object):
         if self.size:
             del calls[:-self.size]
 
+        callregistry.parent.mkdir(parents=True, exist_ok=True)
         ns(calls=calls).dump(callregistry)
 
     def annotateCall(self, fields):
