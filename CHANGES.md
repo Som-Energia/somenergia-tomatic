@@ -1,15 +1,17 @@
 # Changelog
 
-## Unreleased
+## 4.6.1 2022-07-19
 
+- Fix: dailycalls were not limited to 20 per user
+- Now dailycalls are split by user, to speed up api calls
 - Fix: some labels didn't notice that their input had focus
 - Fix: menu icon buttons were taller
 - Fix: Busy dialog allowed not introducing a date or no turn
 - Fix: Using native date picker in modern browsers
 - Most UI components turned into modules, using emotion to avoid css conflicts
 - Removed load generator menu entry since it won't be used anymore
-- Fix: dailycalls were not limited to 20 per user
-- Now dailycalls are split by user, to speed up api calls
+- Internal: Uses babel and emotion
+- Internal: Components extracted as modules
 
 - Update notes:
   - npm install required (emotion and babel dependencies)
