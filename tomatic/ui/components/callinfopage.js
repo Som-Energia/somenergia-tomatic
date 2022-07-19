@@ -18,10 +18,6 @@ var Questionnaire = require('./questionnaire');
 
 var CallInfoPage = {};
 
-function isEmpty(obj) {
-  return Object.keys(obj).length === 0;
-}
-
 var searchIcon = function(){
   return m(".icon-search", [ m("i.fas.fa-search") ]);
 }
