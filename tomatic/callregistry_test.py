@@ -20,26 +20,29 @@ class CallRegistry_Test(unittest.TestCase):
         self.dir = Path('test_callregistry')
         removeTree(self.dir)
         self.dir.mkdir()
-        self.dailycalls = self.dir / 'dailycalls.yaml'
+
+    def dailycalls(self, user):
+        return self.dir / f'dailycalls-{user}.yaml'
 
     def tearDown(self):
         removeTree(self.dir)
 
     from yamlns.testutils import assertNsEqual
 
-    def test_updateCall_behavesAtStartUp(self):
+    def test_callsByUser_behavesAtStartUp(self):
         reg = CallRegistry(self.dir)
-        assert not (self.dir/'dailycalls.yaml').exists()
+        assert not (self.dailycalls('alice')).exists()
         self.assertEqual(reg.callsByUser('alice'), [])
 
-    def test_updateCall_updatesAfterWrite(self):
+    def test_callsByUser_updatesAfterWrite(self):
         reg = CallRegistry(self.dir)
-        reg.updateCall('alice', ns(
+        reg.annotateCall(ns(
+            user='alice',
             attribute="value",
             tag="content",
         ))
-        self.assertNsEqual(ns.load(self.dailycalls), """\
-            alice:
+        self.assertNsEqual(ns.load(self.dailycalls('alice')), """\
+            calls:
             - attribute: value
               tag: content
         """)
@@ -50,20 +53,22 @@ class CallRegistry_Test(unittest.TestCase):
               tag: content
         """)
 
-    def test_updateCall_sameTimeExtension_updates(self):
+    def test_callsByUser_sameTimeExtension_updates(self):
         reg = CallRegistry(self.dir)
-        reg.updateCall('alice', ns(
+        reg.annotateCall(ns(
+            user='alice',
             date="2021-02-01T20:21:22.555Z",
             attribute="value",
             tag="content",
         ))
-        reg.updateCall('alice', ns(
+        reg.annotateCall(ns(
+            user='alice',
             date="2021-02-01T20:21:22.555Z",
             attribute="second value",
             tag="second content",
         ))
-        self.assertNsEqual(ns.load(self.dailycalls), """\
-            alice:
+        self.assertNsEqual(ns.load(self.dailycalls('alice')), """\
+            calls:
             - date: "2021-02-01T20:21:22.555Z"
               attribute: second value
               tag: second content
@@ -76,20 +81,22 @@ class CallRegistry_Test(unittest.TestCase):
               tag: second content
         """)
 
-    def test_updateCall_differentTime_appends(self):
+    def test_callsByUser_differentTime_appends(self):
         reg = CallRegistry(self.dir)
-        reg.updateCall('alice', ns(
+        reg.annotateCall(ns(
+            user='alice',
             date="2021-02-01T20:21:22.555Z",
             attribute="value",
             tag="content",
         ))
-        reg.updateCall('alice', ns(
+        reg.annotateCall(ns(
+            user='alice',
             date="2021-02-02T20:21:22.555Z",
             attribute="second value",
             tag="second content",
         ))
-        self.assertNsEqual(ns.load(self.dailycalls), """\
-            alice:
+        self.assertNsEqual(ns.load(self.dailycalls('alice')), """\
+            calls:
             - attribute: value
               tag: content
               date: "2021-02-01T20:21:22.555Z"
@@ -108,25 +115,29 @@ class CallRegistry_Test(unittest.TestCase):
               tag: second content
         """)
 
-    def test_updateCall_differentUser_splits(self):
+    def test_callsByUser_differentUser_splits(self):
         reg = CallRegistry(self.dir)
 
-        reg.updateCall('alice', ns(
+        reg.annotateCall(ns(
+            user='alice',
             date="2021-02-02T20:21:22.555Z",
             attribute="value",
             tag="content",
         ))
-        reg.updateCall('barbara', ns(
+        reg.annotateCall(ns(
+            user='barbara',
             date="2021-02-02T20:21:22.555Z",
             attribute="second value",
             tag="second content",
         ))
-        self.assertNsEqual(ns.load(self.dailycalls), """\
-            alice:
+        self.assertNsEqual(ns.load(self.dailycalls('alice')), """\
+            calls:
             - date: "2021-02-02T20:21:22.555Z"
               attribute: value
               tag: content
-            barbara:
+        """)
+        self.assertNsEqual(ns.load(self.dailycalls('barbara')), """\
+            calls:
             - date: "2021-02-02T20:21:22.555Z"
               attribute: second value
               tag: second content
@@ -147,15 +158,17 @@ class CallRegistry_Test(unittest.TestCase):
               tag: second content
         """)
 
-    def test_updateCall_limitedSize_forgetsOlder(self):
+    def test_callsByUser_limitedSize_forgetsOlder(self):
         reg = CallRegistry(self.dir, size=1)
 
-        reg.updateCall('alice', ns(
+        reg.annotateCall(ns(
+            user='alice',
             date="2021-02-01T20:21:22.555Z",
             attribute="value",
             tag="content",
         ))
-        reg.updateCall('alice', ns(
+        reg.annotateCall(ns(
+            user='alice',
             date="2021-02-02T20:21:22.555Z",
             attribute="second value",
             tag="second content",
@@ -245,9 +258,9 @@ class CallRegistry_Test(unittest.TestCase):
             contract="100000",
             reason="CODE",
         ))
-        content = ns.load(self.dailycalls)
+        content = ns.load(self.dailycalls('alice'))
         self.assertNsEqual(content, """\
-            alice:
+            calls:
             - date: "2021-02-01T20:21:22.555Z"
               phone: '555444333'
               partner: 'S00000'
@@ -270,7 +283,7 @@ class CallRegistry_Test(unittest.TestCase):
             'test_callregistry/cases',
             'test_callregistry/cases/{:%Y%m%d}.yaml'.format(
                 date.today()),
-            str(self.dailycalls),
+            str(self.dailycalls('alice')),
         ])
 
 

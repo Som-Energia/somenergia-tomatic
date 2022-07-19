@@ -18,37 +18,38 @@ class CallRegistry(object):
         self.callregistry_path = self.path / 'dailycalls.yaml'
         self.size = size
 
-    def _calls(self):
-        if not self.callregistry_path.exists():
-            return ns()
-        return ns.load(self.callregistry_path)
+    def _calls(self, user):
+        callregistry = self.path / f'dailycalls-{user}.yaml'
+        if not callregistry.exists():
+            return ns(calls=[])
+        return ns.load(callregistry)
+
 
     def callsByUser(self, user):
-        return self._calls().get(user,[])
+        return self._calls(user).calls
 
     def updateCall(self, user, fields):
-        calls = self._calls()
-        extensionCalls = calls.setdefault(user,[])
-        for call in extensionCalls:
+        calls = self.callsByUser(user)
+        callregistry = self.path / f'dailycalls-{user}.yaml'
+
+        for call in calls:
             if call.date == fields.date:
                 call.update(fields)
                 break
-        else: # exiting when not found
-            extensionCalls.append(fields)
+        else: # for else, not typo, when not break
+            calls.append(fields)
 
         if self.size:
-            del extensionCalls[:-self.size]
+            del calls[:-self.size]
 
-        calls.dump(self.callregistry_path)
+        ns(calls=calls).dump(callregistry)
 
     def annotateCall(self, fields):
         from . import persons
         self.updateCall(fields.user, ns(
-            date = fields.date,
-            phone = fields.phone,
-            partner = fields.partner,
-            contract = fields.contract,
-            reason = fields.reason,
+            (key, value)
+            for key, value in fields.items()
+            if key != 'user' # TODO: To keep the same behavior. Is this needed?
         ))
         self._appendToExtensionDailyInfo('cases', fields)
 
