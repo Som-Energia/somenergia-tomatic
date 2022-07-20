@@ -37,13 +37,19 @@ class AsteriskFake(object):
 
     def queue(self, queue):
         """Returns information of the current agents in the queue"""
+        import datetime
+        minute = datetime.datetime.now().minute
         return [
             ns(
                 key = who,
                 paused = who in self._paused(queue),
                 extension = persons.extension(who),
+                incall = i%4 == 0,
+                disconnected = i%4 == 1,
+                ringing = i%4 == 2,
+                available = i%4 == 3,
             )
-            for who in self._agents(queue)
+            for i, who in enumerate(self._agents(queue), minute)
         ]
 
     def pause(self, queue, who):
