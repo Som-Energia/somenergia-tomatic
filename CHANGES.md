@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.6.2 2022-07-21
+
+- Queue Monitor: fix: not forcing black text on items
+- Queue Monitor: fix: split name and extension in two lines
+
 ## 4.6.1 2022-07-19
 
 - Fix: dailycalls were not limited to 20 per user
