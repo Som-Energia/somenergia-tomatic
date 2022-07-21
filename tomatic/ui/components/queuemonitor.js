@@ -66,14 +66,18 @@ var QueueMonitor = {
 						+ (line.ringing?"Ring!! ":"")
 						+ (line.incall?"En Trucada. ":"")
 					) || "Disponible.",
-					},
-					Tomatic.extension(line.key)
-				);
+					}, [
+					Tomatic.formatName(line.key),
+					m('br'),
+					Tomatic.formatExtension(line.key),
+				]);
 			}),
 			m('.queueitem.add', {
 				onclick: vnode.state.addtoqueue.bind(vnode.state),
 				},
-				"+"
+				"+",
+				m('br'),
+				"Afegeix"
 			)
 		);
 	}

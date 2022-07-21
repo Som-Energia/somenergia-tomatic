@@ -131,9 +131,8 @@ Tomatic.formatName = function(name) {
 	if (!name) { return "-";}
 	return (Tomatic.persons().names||{})[name] || titleCase(name);
 };
-Tomatic.extension = function(name) {
-	return Tomatic.formatName(name) + ": "
-		+ ((Tomatic.persons().extensions||{})[name] || "???");
+Tomatic.formatExtension = function(name) {
+	return (Tomatic.persons().extensions||{})[name] || "???";
 };
 Tomatic.table = function(name) {
 	var tables = Tomatic.persons().tables;
