@@ -44,10 +44,10 @@ class AsteriskFake(object):
                 key = who,
                 paused = who in self._paused(queue),
                 extension = persons.extension(who),
-                incall = i%4 == 0,
-                disconnected = i%4 == 1,
-                ringing = i%4 == 2,
-                available = i%4 == 3,
+                available = i%4 == 0,
+                ringing = i%4 == 1,
+                incall = i%4 == 2,
+                disconnected = i%4 == 3,
             )
             for i, who in enumerate(self._agents(queue), minute)
         ]
