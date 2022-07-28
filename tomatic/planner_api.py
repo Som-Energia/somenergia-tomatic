@@ -18,7 +18,7 @@ from fastapi.responses import (
     FileResponse,
 )
 
-from .execution import PlannerExecution, nextMonday
+from .plannerexecution import PlannerExecution, nextMonday
 
 # TODO: Dupped from tomatic/api.py
 def yamlfy(status=200, data=[], **kwd):
