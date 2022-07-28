@@ -9,7 +9,6 @@ from .plannerexecution import PlannerExecution
 from .execution import (
     executionRoot,
     removeRecursive,
-    children,
 )
 
 from .execution_test import (
