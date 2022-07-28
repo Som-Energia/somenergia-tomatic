@@ -28,8 +28,6 @@ var CallInfoPage = require('./components/callinfopage');
 css.addLayoutStyles();
 css.addTypography();
 
-var kumato=JSON.parse(localStorage.getItem('kumato', false)); // Dark interface
-
 var Todo = function(message) {
 	return m(Card, {
 		content: [{
@@ -86,8 +84,7 @@ const menuOptions = function() { return [{
 },{
 	title: "Kumato mode",
 	action: function() {
-		kumato = !kumato
-		localStorage.kumato = kumato;
+		Tomatic.toggleKumato()
 	},
 }]};
 
@@ -190,7 +187,7 @@ TomaticApp.view = function(vnode) {
 	console.log("Page: ", m.route.get());
 	var currentTabIndex = indexForRoute(m.route.get());
 	return m(''
-			+(kumato?'.pe-dark-tone':'')
+			+(Tomatic.isKumatoMode()?'.pe-dark-tone':'')
 			+('.variant-'+Tomatic.variant)
 			
 		,[

@@ -13,6 +13,7 @@ var Tomatic = {
 };
 
 Tomatic.variant = 'tomatic';
+
 Tomatic.queue = m.prop([]);
 Tomatic.persons = m.prop({});
 Tomatic.init = function() {
@@ -20,6 +21,7 @@ Tomatic.init = function() {
 	this.requestWeeks();
 	this.updateQueuePeriodically();
 	this.requestPersons();
+	this.initKumato();
 };
 
 Tomatic.versionTimer = 0;
@@ -50,6 +52,18 @@ Tomatic.checkVersion = function() {
 	});
 };
 
+
+Tomatic.initKumato = function() {
+	// Dark interface
+	Tomatic._kumato = JSON.parse(localStorage.getItem('kumato', false));
+}
+Tomatic.toggleKumato = function() {
+		Tomatic._kumato = !Tomatic._kumato;
+		localStorage.kumato = Tomatic._kumato;
+}
+Tomatic.isKumatoMode = function() {
+	return Tomatic._kumato;
+}
 
 Tomatic.requestPersons = function() {
 	return api.request({
