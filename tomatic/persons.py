@@ -3,8 +3,8 @@ from pathlib import Path
 
 srcpath = Path(__file__).absolute().parent
 
-def _load(path):
-    loaded = ns.load(path)
+def _load(path=None):
+    loaded = ns.load(path) if path else ns()
     for key in (
         'names',
         'extensions',
@@ -27,6 +27,7 @@ def persons(path=None):
     False as path resets the cache.
     """
     if path is False:
+        # False means clear cache
         if hasattr(persons,'cache'):
             del persons.cache
         return
@@ -34,7 +35,7 @@ def persons(path=None):
     def reload():
         if not persons.path.exists():
             persons.mtime = 0
-            persons.cache = ns()
+            persons.cache = _load()
             return persons.cache
         persons.mtime = persons.path.stat().st_mtime
         persons.cache = _load(persons.path)

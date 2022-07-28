@@ -36,17 +36,6 @@ class Persons_Test(unittest.TestCase):
         """)
         self.assertEqual(persons.persons.path, Path('p.yaml'))
 
-    def test_persons_missingPath(self):
-        badpath = Path('badpath.yaml')
-        try:
-            ps = persons.persons(badpath)
-            self.assertEqual(ns(), ps)
-        except:
-            raise
-        finally:
-            if badpath.exists():
-                badpath.unlink()
-
     def test_persons_defaultPath(self):
         expectedDefaultPath = (Path(__file__) / '../../persons.yaml').resolve()
         ps = persons.persons()
@@ -342,15 +331,14 @@ class Persons_Test(unittest.TestCase):
     def test_persons_explicit(self):
         persons.persons('p.yaml')
         p = persons.persons()
-        self.assertNsEqual(p, ns())
-
-
-
-
-
-
-
-        
-
+        self.assertNsEqual(p, """
+            names: {}
+            erpusers: {}
+            extensions: {}
+            tables: {}
+            colors: {}
+            emails: {}
+            groups: {}
+        """)
 
 # vim: et ts=4 sw=4
