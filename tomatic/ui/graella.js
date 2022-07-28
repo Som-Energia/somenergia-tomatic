@@ -52,39 +52,54 @@ var Doc = function(message) {
 
 const scriptLauncherBase = 'http://tomatic.somenergia.lan:5000';
 const menuOptions = function() { return [{
+	icon: "🕜",
 	title: "Planificador de Graelles",
 	action: function() {
 		location.href = "/api/planner/";
 	},
 },{
+	icon: "📊",
 	title: "Estadístiques de trucades",
 	action: function() {
 		location.href = scriptLauncherBase + "/runner/statshistory";
 	},
 },{
+	icon: "📢",
 	title: "En Tomàtic diu...",
 	action: function() {
 		location.href = scriptLauncherBase + "/runner/says";
 	},
 },{
-	title: "Reomple el torn que toca a la cua",
+	icon: "🔄",
+	title: "Restableix el torn a la cua",
 	action: function() {
 		location.href = scriptLauncherBase + "/runner/reloadqueue";
 	},
 },{
+	icon: "🏷️",
 	title: "Anotacions: Actualitza categories",
 	action: function() {
 		CallInfoPage.settingsDialog()
 	},
 },{
+	icon: "🚀",
 	title: "Altres scripts de Centraleta",
 	action: function() {
 		location.href = scriptLauncherBase;
 	},
 },{
+	icon: "😎",
 	title: "Kumato mode",
 	action: function() {
 		Tomatic.toggleKumato()
+	},
+},{
+	icon: "🛟",
+	navigation: true,
+	title: "Guies d'usuaria i videos",
+	action: function() {
+		const url = 'https://github.com/Som-Energia/somenergia-tomatic/blob/master/doc/userguide.md';
+		window.open(url, '_blank');
 	},
 }]};
 

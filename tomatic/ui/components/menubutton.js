@@ -22,6 +22,7 @@ const MenuContent = function(options) {
 				hoverable: true,
 				className: 'colored',
 				disabled: item.disabled,
+				front: item.icon,
 				events: {
 					onclick: item.action,
 				},
