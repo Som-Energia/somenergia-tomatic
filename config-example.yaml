@@ -17,6 +17,7 @@ hours:  # Time slot limits. Last hour is the closing one
 - '11:30'
 - '12:45'
 - '14:00'
+computeShifts: true
 discriminateLines: true # True to consider a different line ordering a different solution
 pruneRedundant: false # Activate to prune line ordering other than the sorted names one
 newYearHack: false # To activate at the end of the semester or year when holidays table continues beyond the year
@@ -60,4 +61,4 @@ forced: # Forced timetable slots, mapping "[day, time, line]: person". pe. "[dx,
   [dv, 2, 4]: ningu
 
 threshold_hits: 21
-my_calls_log: callinfo/dailycalls.yaml
+callinfoPath: callinfo

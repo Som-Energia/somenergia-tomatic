@@ -57,7 +57,6 @@ tomatic=ns(
         #scheme="https",
         port=6082,
     ),
-    ),
     # Publish by scp a static html timetables whenever they change
     # remove the no_ prefix to activate it
     no_publishStatic = ns(
