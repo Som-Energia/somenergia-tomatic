@@ -17,7 +17,8 @@ cd somenergia-tomatic
 npm install
 npm run build # instead of 'deploy' for development mode assets
 virtualenv .venv
-python setup.py develop
+source .venv/bin/activate
+pip install -e .
 ```
 
 ### Production Setup
