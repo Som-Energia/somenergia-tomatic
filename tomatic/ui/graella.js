@@ -174,37 +174,31 @@ const indexForRoute = function(route) {
 };
 
 
-var Page = {};
-Page.view = function(vnode) {
-    var currentTabIndex = indexForRoute(m.route.get());
-	return m('', [
-		m('.tmt-header', [
-			m('.tmt-header__dimmer'),
-            toolbarRow('Tomàtic - Som Energia'),
-			m(Tabs, {
-				tabs: tabs,
-				activeSelected: true,
-				selectedTab: currentTabIndex,
-			}),
-		]),
-		vnode.attrs.content,
-		m('#snackbar',m(Snackbar)),
-		m(Dialog),
-	]);
-};
-
-
 var TomaticApp = {}
 TomaticApp.view = function(vnode) {
 	console.log("Page: ", m.route.get());
+	var currentTabIndex = indexForRoute(m.route.get());
     return m(''
 			+(kumato?'.pe-dark-tone':'')
 			+('.variant-'+Tomatic.variant)
 			
 		,[
         PersonStyles(),
-        m(Page, {content: vnode.children}),
-    ]);
+		m('', [
+			m('.tmt-header', [
+				m('.tmt-header__dimmer'),
+				toolbarRow('Tomàtic - Som Energia'),
+				m(Tabs, {
+					tabs: tabs,
+					activeSelected: true,
+					selectedTab: currentTabIndex,
+				}),
+			]),
+			vnode.children,
+			m('#snackbar',m(Snackbar)),
+			m(Dialog),
+		]),
+	]);
 };
 
 
