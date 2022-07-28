@@ -148,23 +148,24 @@ What smoke tests you should be doing after an upgrade to check most components s
 			- `utils.js`: Cookie parser
 			- `api.js`: Tomatic API interface helper
 			- `colorutils.js`: Color manipulation utils
+		- **Pages:**
+			- `timetablepage.js`: Time table page
+			- `callinfopage.js`: Call info page
+			- `queuemonitor.js`: Queue monitor page
+			- `persons.js`: Persons page
 		- **Components:**
-			- `contract.js`
+			- `select.js`
+			- `labeled.js`
+			- `uploader.js`
+			- `menubutton.js`
 			- `rgbeditor.js`
+			- `callinfo_style.styl`
+			- `contract.js`
 			- `login.js`
 			- `personpicker.js`
-			- `persons.js`
-			- `select.js`
-			- `callinfopage.js`
-			- `timetablepage.js`
 			- `questionnaire.js`
-			- `callinfo_style.styl`
-			- `weekpicker.js`
+			- `weekpicker.js`: Week selector for timetables
 			- `busyeditor.js`
-			- `queuemonitor.js`
-			- `labeled.js`
-			- `menubutton.js`
-			- `uploader.js`
 			- `partnerinfo.js`
 	- `favicon.ico`: Webapp icon
 	- `autentico-tomatic-exposicion-del-club-super.jpg`: banner for standard flavor
