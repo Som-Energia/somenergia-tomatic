@@ -106,7 +106,7 @@ What smoke tests you should be doing after an upgrade to check most components s
 
 ### Tools
 
-- `execution.py`: Encapsulates an asynchronous execution of a sandboxed process (used by `planner_api.py`)
+- `execution.py`: Encapsulates an asynchronous execution of a sandboxed process (used by `plannerexecution.py`)
 - `remote.py`: Simplifies remote process execution and access to files via SSH
 - `directmessage`: modules that abstract actual direct message (hangouts or equivalents)
 - `directmessage/hangouts.py`: Google hangouts implementation of directmessage
@@ -125,12 +125,55 @@ What smoke tests you should be doing after an upgrade to check most components s
 
 - `shiftload.py`: Compute how many shifts each person has to do weekly
 - `backtracker.py`: The main timetable solver
+- `plannerexecution.py`: Encapsulates an asynchronous execution of a sandboxed timetable planner (used by `planner_api.py`)
 
 ### CRM
 
 - `callinfo.py`: Retrieves incomming call information from the ERP
 - `callregistry.py`: Call logging and annotation
 - `claims.py`: Access the ERP's Claim objects (Backend of callregistry)
+
+### UI
+
+- `dist` contains the generated javscript bundles that will be served
+- `ui/` javascript code for the user interface
+	- `tomatic.html`: Single page application html
+	- `style.styl`: Global styles (to be componentized)
+	- `graella.js`: js entry point
+	- `components/`
+		- **State handlers:**
+			- `tomatic.js`: Main aplication state manager
+			- `callinfo.js`: Callinfo state manager
+		- **Utilities**
+			- `utils.js`: Cookie parser
+			- `api.js`: Tomatic API interface helper
+			- `colorutils.js`: Color manipulation utils
+		- **Components:**
+			- `contract.js`
+			- `rgbeditor.js`
+			- `login.js`
+			- `personpicker.js`
+			- `persons.js`
+			- `select.js`
+			- `callinfopage.js`
+			- `timetablepage.js`
+			- `questionnaire.js`
+			- `callinfo_style.styl`
+			- `weekpicker.js`
+			- `busyeditor.js`
+			- `queuemonitor.js`
+			- `labeled.js`
+			- `menubutton.js`
+			- `uploader.js`
+			- `partnerinfo.js`
+	- `favicon.ico`: Webapp icon
+	- `autentico-tomatic-exposicion-del-club-super.jpg`: banner for standard flavor
+	- `ketchup.svg`: banner for ketchup flavor
+	- `ketchup.png`: banner for ketchup flavor
+	- `pebrotic.jpg`: banner for pebrotic flavor
+	- `graella-2016-02-02.yaml`: mockup data
+	- `graella-2016-02-02.json`: mockup data
+
 
 
 ## Callinfo Data Files
@@ -143,9 +186,9 @@ but can be configured using `callinfoPath` in `config.yaml`.
 	- It also contains the sections to choose when the category has no predefined one in the ERP
 	- The list is built from the ERP when /api/call/categories/update
 	- Each category has `code`, `name`, `isClaim`, `section`
-- `callinfo/dailycalls.yaml`
+- `callinfo/dailycalls/calls-NAME.yaml`
 	- "registre de trucades (reclamació i no reclamacio)"
-	- person dict to a list of incomming calls of the day
+	- a list of the last calls received by NAME
 - `callinfo/cases/YYYY-MM-DD.yaml` Daily call log
 
 ## Scheduler Data Files
