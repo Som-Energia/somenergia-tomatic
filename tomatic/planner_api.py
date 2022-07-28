@@ -3,6 +3,7 @@
 import datetime
 import decorator
 from consolemsg import step, warn, u, b
+from yamlns import ns
 from fastapi import(
     FastAPI,
     APIRouter,
@@ -18,6 +19,33 @@ from fastapi.responses import (
 )
 
 from .execution import PlannerExecution, nextMonday
+
+# TODO: Dupped from tomatic/api.py
+def yamlfy(status=200, data=[], **kwd):
+    output = ns(data, **kwd)
+    return Response(output.dump(),
+        status,
+        media_type = 'application/x-yaml',
+    )
+
+@decorator.decorator
+async def ayamlerrors(f,*args,**kwd):
+    try:
+        return await f(*args,**kwd)
+    except ApiError as e:
+        error("ApiError: {}", e)
+        return yamlfy(
+            error=format(e),
+            status=400,
+            )
+    except Exception as e:
+        error("UnexpectedError: {}", e)
+        import traceback
+        error(''.join(traceback.format_exc()))
+        return yamlfy(
+            error=format(e),
+            status=500,
+            )
 
 def humanDuration(seconds):
     units = [
@@ -157,6 +185,7 @@ def run(
     )
     return gotoList(request)
 
+
 @api.get('/status/{execution}', response_class=HTMLResponse)
 def status(execution):
     import deansi
@@ -207,6 +236,63 @@ def upload(request: Request, execution):
     step("Uploading {0.name}", execution)
     execution.upload('nobody') # TODO: Take ERP user
     return gotoList(request)
+
+@api.post('/api/run')
+@nocache
+def run(
+    request: Request,
+    nlines: int,
+    monday: str,
+    description: str,
+):
+    if nlines is not None:
+        nlines = int(nlines)
+    execution = PlannerExecution.start(
+        monday=monday,
+        description=description,
+        nlines=nlines,
+    )
+    return yamlfy(execution_id=execution)
+
+@api.get('/api/status/{id}')
+@nocache
+def run(
+    request: Request,
+    id: str,
+):
+    execution = PlannerExecution(id)
+    return yamlfy(**execution.listInfo())
+
+@api.get('/api/stop/{execution}')
+def stop(request: Request, execution):
+    execution = PlannerExecution(execution)
+    step("Stopping {0.pid} {0.name}", execution)
+    if not execution.stop():
+        return yamlfy(ok=False)
+    return yamlfy(ok=True)
+
+@api.get('/api/kill/{execution}')
+def kill(request: Request, execution):
+    execution = PlannerExecution(execution)
+    step("Killing {0.pid} {0.name}", execution)
+    if not execution.kill():
+        return yamlfy(ok=False)
+    return yamlfy(ok=True)
+
+@api.get('/api/remove/{execution}')
+def remove(request: Request, execution):
+    execution = PlannerExecution(execution)
+    step("Cleaning up {0.name}", execution)
+    if not execution.remove():
+        return yamlfy(ok=False)
+    return yamlfy(ok=True)
+
+@api.get('/api/upload/{execution}')
+def upload(request: Request, execution):
+    execution = PlannerExecution(execution)
+    step("Uploading {0.name}", execution)
+    execution.upload('nobody') # TODO: Take ERP user
+    return yamlfy(ok=True)
 
 
 if __name__ == '__main__':
