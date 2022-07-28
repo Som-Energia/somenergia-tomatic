@@ -3,6 +3,11 @@
 ## Backlog
 
 - [ ] Initial setup
+    - [ ] Option --fake is not working in debug mode since FastAPI migration.
+          Because of that tomatic.pbx.pbxirontec.Irontec.BackendError unless you have it configured
+          Why? uvicorn creates a new app instance and commandline pbx queue configuration is loss.
+          Workaround: configure tomatic.pbx="fake" in dbconfig.
+          Future Solution: Using env vars to communicate command line and the app instance?
     - [ ] Entering in execution page fails if executions/ folder does not exist
     - [ ] default for callinfoPath as callinfo
     - [ ] execution requires a holidays.conf (now it is not needed)

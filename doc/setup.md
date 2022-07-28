@@ -53,7 +53,6 @@ npm run deploy # for production assets
 
 - Copy `config-example.yaml` as `config.yaml` and edit it
 - Copy `dbconfig-example.py` as `dbconfig.py` and edit it
-- `echo '{}' > persons.yaml`
 
 ### Setting up cron tasks
 
@@ -104,20 +103,15 @@ In overall it would be:
 The gspread library, this is using provide a more detailed and up to date steps:
 http://gspread.readthedocs.org/en/latest/oauth2.html
 
-If you don't want to download the configuration data from the Google Drive
-SpreadSheet, you can provide the `--keep` option to the commands.
+Generating time tables with the `--keep` option reuses
+previously downloaded files and avoids download download.
 
-Related parameters in `config.yaml` file are:
+Google Drive related parameters in `config.yaml` file are:
 
 - `documentDrive`: the title of the spreadsheet, it must be accessible by the key
 - `fullCarregaIdeal`: the spreadsheet sheet where the ideal shift load is stored.
 - `idealLoadValuesRange`: The range name in document and sheet with the values of the ideal load values for each person
 - `idealLoadValuesName`: The range name in document and sheet with the corresponding names of each person
-- `leavesSheet`: The document sheet where a person off in leave appear in every row
-
-Holidays are taken from a sheet named as the year, pe. `2020`
-containing named ranges like `Vacances202Semester1`
-which are tables a column for each semester day and a row per person.
 
 ### PBX callerid callback
 

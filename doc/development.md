@@ -26,6 +26,10 @@ scripts/tomatic_api.py --debug --fake
 The `--fake` option enables a fake pbx to avoid messing with the actual one.
 You might setup a testing queue and use the `--queue` option instead.
 
+IMPORTANT: Since the migration to FastAPI,
+`tomatic_api` options `--fake`, `--pbx` and `--queue` do not work.
+Instead you can set the equivalent options in `dbconfig.py`
+until the [https://github.com/Som-Energia/somenergia-tomatic/issues/19](issue) is solved.
 
 ## Release process
 
