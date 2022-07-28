@@ -122,7 +122,5 @@ commented_forced:
     - 2
     - 4
   : ningu
-call_reasons_document: Trucades_3354
-credential_name: drive-certificate.json
 threshold_hits: 21
 callinfoPath: callinfo
