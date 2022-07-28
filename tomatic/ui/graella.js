@@ -30,6 +30,17 @@ css.addTypography();
 
 var kumato=JSON.parse(localStorage.getItem('kumato', false)); // Dark interface
 
+var Todo = function(message) {
+	return m(Card, {
+		content: [{
+			primary: {
+				title: 'TODO',
+				subtitle: message,
+			},
+		}],
+	});
+};
+
 var Doc = function(message) {
 	return m(Card, {
 		content: [{
@@ -99,52 +110,52 @@ const toolbarRow = function(title) {
 
 
 var PbxPage = {
-    view: function() {
-        return m('', [
+	view: function() {
+		return m('', [
 			Doc(m('',
 				"Visualitza les línies que estan actualment rebent trucades. "+
 				"Feu click al damunt per pausar-les o al signe '+' per afegir-ne")
 			),
 			m('h2[style=text-align:center]', "Linies en cua"),
 			m(QueueMonitor),
-        ]);
-    },
+		]);
+	},
 };
 
 var PersonsPage = {
-    view: function() {
-        return m('', [
+	view: function() {
+		return m('', [
 			Doc("Permet modificar la configuració personal de cadascú: "+
 				"Color, taula, extensió, indisponibilitats..."),
 			Persons(Tomatic.persons().extensions),
-        ]);
-    },
+		]);
+	},
 };
 
 
 var PersonStyles = function() {
-    var persons = Tomatic.persons();
-    return m('style',
-        Object.keys(persons.colors||{}).map(function(name) {
-            var color = '#'+persons.colors[name];
-            var darker = '#'+luminance(color, -0.3);
-            var linecolor = contrast(persons.colors[name])
-            return (
-                '.'+name+', .graella .'+name+' {\n' +
-                '  background-color: '+color+';\n' +
-                '  border-color: '+darker+';\n' +
-                '  border-width: 20pt;\n'+
-                '  color: '+linecolor+';\n'+
-                '}\n'+
-                '.pe-dark-theme .'+name+', .pe-dark-theme .graella .'+name+' {\n' +
-                '  background-color: '+darker+';\n' +
-                '  border-color: '+color+';\n' +
-                '  border-width: 2pt;\n'+
-                '  color: '+linecolor+';\n'+
-                '}\n'
-            );
-        })
-    );
+	var persons = Tomatic.persons();
+	return m('style',
+		Object.keys(persons.colors||{}).map(function(name) {
+			var color = '#'+persons.colors[name];
+			var darker = '#'+luminance(color, -0.3);
+			var linecolor = contrast(persons.colors[name])
+			return (
+				'.'+name+', .graella .'+name+' {\n' +
+				'  background-color: '+color+';\n' +
+				'  border-color: '+darker+';\n' +
+				'  border-width: 20pt;\n'+
+				'  color: '+linecolor+';\n'+
+				'}\n'+
+				'.pe-dark-theme .'+name+', .pe-dark-theme .graella .'+name+' {\n' +
+				'  background-color: '+darker+';\n' +
+				'  border-color: '+color+';\n' +
+				'  border-width: 2pt;\n'+
+				'  color: '+linecolor+';\n'+
+				'}\n'
+			);
+		})
+	);
 };
 
 const applicationPages = [
@@ -155,22 +166,22 @@ const applicationPages = [
 	];
 
 var tabs = applicationPages.map(function(name) {
-    return {
-        label: name,
+	return {
+		label: name,
 		element: m.route.Link,
-        url: {
-            href: '/'+name
-        },
-    };
+		url: {
+			href: '/'+name
+		},
+	};
 });
 const indexForRoute = function(route) {
-    return tabs.reduce(function(previousValue, tab, index) {
-        if (route === tab.url.href) {
-            return index;
-        } else {
-            return previousValue;
-        }
-    }, 0);
+	return tabs.reduce(function(previousValue, tab, index) {
+		if (route === tab.url.href) {
+			return index;
+		} else {
+			return previousValue;
+		}
+	}, 0);
 };
 
 
@@ -178,12 +189,12 @@ var TomaticApp = {}
 TomaticApp.view = function(vnode) {
 	console.log("Page: ", m.route.get());
 	var currentTabIndex = indexForRoute(m.route.get());
-    return m(''
+	return m(''
 			+(kumato?'.pe-dark-tone':'')
 			+('.variant-'+Tomatic.variant)
 			
 		,[
-        PersonStyles(),
+		PersonStyles(),
 		m('', [
 			m('.tmt-header', [
 				m('.tmt-header__dimmer'),
@@ -205,13 +216,13 @@ TomaticApp.view = function(vnode) {
 
 window.onload = function() {
 	Tomatic.init();
-    //m.redraw.strategy('diff');
+	//m.redraw.strategy('diff');
 	var element = document.getElementById("tomatic");
 	m.route(element, '/Graelles', {
-        '/Graelles': {render: function() { return m(TomaticApp, m(TimeTablePage)) }},
-        '/Centraleta': {render: function() { return m(TomaticApp, m(PbxPage)) }},
-        '/Persones': {render: function() { return m(TomaticApp, m(PersonsPage)) }},
-        '/Trucada': {render: function() { return m(TomaticApp, m(CallInfoPage)) }},
-    });
+		'/Graelles': {render: function() { return m(TomaticApp, m(TimeTablePage)) }},
+		'/Centraleta': {render: function() { return m(TomaticApp, m(PbxPage)) }},
+		'/Persones': {render: function() { return m(TomaticApp, m(PersonsPage)) }},
+		'/Trucada': {render: function() { return m(TomaticApp, m(CallInfoPage)) }},
+	});
 };
 // vim: noet ts=4 sw=4
