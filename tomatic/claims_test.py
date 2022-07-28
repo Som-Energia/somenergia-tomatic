@@ -36,6 +36,13 @@ class Claims_Test(unittest.TestCase):
         self.b2bdatapath = 'b2bdata'
         self.erp = None
 
+        if not dbconfig:
+            return
+        if not dbconfig.erppeek:
+            return
+        self.erp = ClientWST(**dbconfig.erppeek)
+        self.erp.begin()
+
         self.old_persons = None
         if hasattr(persons, 'path'):
             self.old_persons = getattr(persons, 'path')
@@ -45,16 +52,11 @@ class Claims_Test(unittest.TestCase):
               marc: Marc
         """, encoding='utf8')
 
-        if not dbconfig:
-            return
-        if not dbconfig.erppeek:
-            return
-        self.erp = ClientWST(**dbconfig.erppeek)
-        self.erp.begin()
 
     def tearDown(self):
-        persons.path.unlink()
+        Path('testpersons.yaml').unlink()
         persons(self.old_persons or False)
+
         try:
             self.erp and self.erp.rollback()
             self.erp and self.erp.close()
