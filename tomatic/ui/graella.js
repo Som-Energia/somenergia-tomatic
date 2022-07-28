@@ -30,17 +30,6 @@ css.addTypography();
 
 var kumato=JSON.parse(localStorage.getItem('kumato', false)); // Dark interface
 
-var Todo = function(message) {
-	return m(Card, {
-		content: [{
-			primary: {
-				title: 'TODO',
-				subtitle: message,
-			},
-		}],
-	});
-};
-
 var Doc = function(message) {
 	return m(Card, {
 		content: [{
