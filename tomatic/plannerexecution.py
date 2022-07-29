@@ -43,9 +43,6 @@ class PlannerExecution(Execution):
         config.nTelefons = self.nlines
         config.maxOverload = 0
         config.dump(self.path/'config.yaml')
-        (self.path/'holidays.conf').write_bytes(
-            (self.configPath/'holidays.conf').read_bytes()
-            )
         (self.path/'drive-certificate.json').symlink_to(
             (self.configPath/'drive-certificate.json').resolve())
 

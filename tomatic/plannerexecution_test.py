@@ -34,9 +34,6 @@ class PlannerExecution_Test(unittest.TestCase):
             nTelefons: 7
             maxOverload: 0
         """)
-        (self.configPath/'holidays.conf').write_text(
-            "2020-12-25\tNadal"
-        )
         (self.configPath/'drive-certificate.json').write_text(
             "{}"
         )
@@ -121,7 +118,6 @@ class PlannerExecution_Test(unittest.TestCase):
             'executions/2020-05-04',
             'executions/2020-05-04/config.yaml',
             'executions/2020-05-04/drive-certificate.json',
-            'executions/2020-05-04/holidays.conf',
         ])
 
     def test_createSandbox_createsConfig(self):
@@ -135,18 +131,6 @@ class PlannerExecution_Test(unittest.TestCase):
         self.assertNsEqual(
             ns.load(self.configPath/'config.yaml'),
             ns.load(e.path/'config.yaml'))
-
-    def test_createSandbox_createsHolidays(self):
-        e = PlannerExecution(
-            monday='2020-05-04',
-            configPath=self.configPath,
-        )
-
-        e.createSandbox()
-
-        self.assertContentEqual(
-            self.configPath/'holidays.conf',
-            e.path/'holidays.conf')
 
     def test_createSandbox_linksCertificate(self):
         e = PlannerExecution(
