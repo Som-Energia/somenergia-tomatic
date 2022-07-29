@@ -38,6 +38,9 @@ class ScheduleStorage_Test(unittest.TestCase):
         for p in reversed(sorted(self.storagedir.glob('**/*'))):
             p.rmdir() if p.is_dir() else p.unlink()
 
+        if self.storagedir.exists():
+            self.storagedir.rmdir()
+
     def write(self, filename, content):
         (self.storagedir/filename).write_text(content, encoding='utf8')
 
