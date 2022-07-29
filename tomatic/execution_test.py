@@ -41,7 +41,6 @@ class Execution_Test(unittest.TestCase):
 
     def setUp(self):
         removeRecursive(executionRoot)
-        executionRoot.mkdir()
 
     def test_simpleProperties(self):
         e = Execution(name="hola")

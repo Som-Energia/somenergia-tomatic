@@ -44,6 +44,8 @@ class Execution(object):
 
     @classmethod
     def list(cls):
+        if not executionRoot.exists():
+            return []
         return [
             cls(p.name) for p in reversed(sorted(
                 executionRoot.iterdir(),
@@ -59,7 +61,7 @@ class Execution(object):
         self._pid = None
 
     def createSandbox(self):
-        self.path.mkdir()
+        self.path.mkdir(parents=True)
 
     def run(self, command):
         output = self.outputFile.open('w')
