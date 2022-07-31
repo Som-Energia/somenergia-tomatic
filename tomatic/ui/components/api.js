@@ -3,6 +3,8 @@ module.exports = function() {
 var m = require('mithril');
 var jsyaml = require('js-yaml');
 
+const debugApi = false;
+
 var api = {
 
 	request: function(options) {
@@ -11,12 +13,12 @@ var api = {
 		};
 		options.responseType = 'yaml'; // whatever different of json indeed
 		options.deserialize = api.deserialize;
-		console.log(options.method || 'GET', options.url, "Launched", options.params || options.body || '');
+		debugApi && console.log(options.method || 'GET', options.url, "Launched", options.params || options.body || '');
 		return m.request(options).then(function(result) {
-				console.log(options.method || 'GET', options.url, "Received", result);
+				debugApi && console.log(options.method || 'GET', options.url, "Received", result);
 				return result;
 			}).catch(function(error) {
-				console.log(options.method || 'GET', options.url, "Error", error);
+				debugApi && console.log(options.method || 'GET', options.url, "Error", error);
 				if (error.code !== 401) throw error;
 				// Unauthorized
 				location.href = '/api/auth/login'

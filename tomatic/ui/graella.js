@@ -199,7 +199,7 @@ const indexForRoute = function(route) {
 
 var TomaticApp = {}
 TomaticApp.view = function(vnode) {
-	console.log("Page: ", m.route.get());
+	//console.log("Page: ", m.route.get());
 	var currentTabIndex = indexForRoute(m.route.get());
 	return m(''
 			+(Tomatic.isKumatoMode()?'.pe-dark-tone':'')
