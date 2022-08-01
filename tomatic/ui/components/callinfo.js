@@ -320,7 +320,7 @@ CallInfo.updateCategories = function() {
 CallInfo.getLogPerson = function () {
   CallInfo.callLog = []
   var username = Login.myName();
-  if (username === -1) {
+  if (username === -1 || username === '') {
     return 0
   }
   CallInfo.callLog.push("lookingfor")
