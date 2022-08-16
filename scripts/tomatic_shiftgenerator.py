@@ -27,5 +27,5 @@ response = requests.post(
     )
 )
 
-sys.exit(yaml.load(response.content, Loader=yaml.FullLoader)['execution_id'])
+sys.exit(ns.loads(response.content).execution_id)
 print(response.content)

@@ -19,16 +19,15 @@ stopuri = config.baseUrl + f"/api/planner/api/stop/{execution_id}"
 uploaduri = config.baseUrl + f"/api/planner/api/upload/{execution_id}"
 killuri = config.baseUrl + f"/api/planner/api/kill/{execution_id}"
 
-stop = yaml.load(requests.get(stopuri).content, Loader=yaml.FullLoader)['ok']
+# TODO: maybe already stopped
+stop = ns.loads(requests.get(stopuri).content).get('ok')
 if not stop:
     kill = requests.get(killuri)
 
-status = requests.get(statusuri)
-unfilledCell = yaml.load(status.content, Loader=yaml.FullLoader)['unfilledCell']
-name = yaml.load(status.content, Loader=yaml.FullLoader)['name']
+status = ns.loads(requests.get(statusuri).content)
 
 
-if unfilledCell == "Completed":
+if status.unfilledCell == "Completed":
     response = requests.get(uploaduri)
 else:
     pass
