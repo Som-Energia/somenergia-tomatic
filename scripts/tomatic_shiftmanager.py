@@ -6,11 +6,10 @@ import requests
 import yaml
 from emili import sendMail 
 from io import open
-from pathlib import Path
 from yamlns import namespace as ns
 
 
-execution_id = Path(sys.argv[1])
+execution_id = sys.argv[1]
 
 config = ns.load('config.yaml')
 
