@@ -11,5 +11,5 @@ sleep 1  # TODO: cuanto?
 
 echo ${executer_id}
 
-./scripts/tomatic_shiftmanager.py --${executor_id}
+./scripts/tomatic_shiftmanager.py ${executor_id}
 
