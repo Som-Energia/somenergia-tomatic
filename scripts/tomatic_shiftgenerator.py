@@ -27,5 +27,5 @@ response = requests.post(
     )
 )
 
-sys.exit(ns.loads(response.content).execution_id)
-print(response.content)
+print(ns.loads(response.content).execution_id)
+
