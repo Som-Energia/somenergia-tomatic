@@ -26,7 +26,7 @@ class Storage(object):
     "Stores schedules by week into a folder"
 
     def __init__(self, dirname=None):
-        if not dirname:
+        if not dirname and dbconfig:
             dirname = dbconfig.tomatic.get('storagepath')
         if not dirname:
             packagedir = Path(__file__).parent
