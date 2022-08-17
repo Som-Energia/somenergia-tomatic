@@ -12,26 +12,14 @@ import uuid
 from consolemsg import step
 
 template = """\
-No he pogut completar la graella per la setmana del {monday}.
+No he pogut generar la graella per la setmana del {monday}.
 
 - Execucio: {status.name}
 - Compleció: {status.completedCells} / {status.totalCells}
 - Penalitzacions: {status.solutionCost}
 - Cel·la de bloqueig: {status.unfilledCell}
-- [Revisar la graella]({config.baseUrl}/api/planner/solution/{execution_id})
-- [Mirar la sortida]({config.baseUrl}/api/planner/status/{execution_id})
 
-Podría ser un error, que sortiria en vermell a la sortida,
-o, podria ser que ha estat executant-se i no l'ha trobada.
-En el segon cas, proveu de posar menys torns,
-canviar l'ordre de cerca dels dies de la setmana,
-perque ompli els dies complicats primer.
-
-El torn que no pot omplir, hi havia aquestes
-indisponibilitats fortes.
-Si es poguessin canviar a opcionals potser trobarà solució.
-
-{status.busyReasons}
+{diagnosis}
 """
 
 config = ns.load('config.yaml')
@@ -62,6 +50,8 @@ def api(url):
             f"{response.status_code}: {str(response.content, 'utf8')}"
         )
     return ns.loads(response.content)
+
+
 
 step(f"Timetables: Lauching timetable for {monday}")
 result = apiPost('/api/planner/api/run',
@@ -99,6 +89,35 @@ if status.unfilledCell == "Complete":
     sys.exit()
 
 step("Timetables: Incomplete, sending report email")
+
+busy='\n'.join([
+    f'- **{person}:** ' + ', '.join(reasons)
+    for person, reasons in status.busyReasons.items()
+])
+
+diagnosis = f"""\
+La [graella]({config.baseUrl}/api/planner/solution/{execution_id}) està incomplerta.
+El torn on m'encallo es a {status.unfilledCell}.
+
+Pots provar:
+
+- [Llençar-la a mà]({config.baseUrl}/api/planner) amb **menys línies** a farcir
+- Llençar-la **farcint primer el dia del torn complicat** (de moment amb ajuda d'IT)
+- Revisar les **indisponibilitats** del torn complicat
+
+Les indisponibilitats no opcionals que afecten a aquest torn son:
+
+{busy}
+""" if status.unfilledCell else f"""\
+No he arribat a farcir cap casella de la graella.
+Segurament es deu a algun error de configuració.
+
+Revisa el missatge al final de tot de [la sortida]({config.baseUrl}/api/planner/status/{execution_id}),
+i si no es res que puguis interpretar tu mateixa,
+reenvia aquest mateix correu a incidencies de l'equip de webapps d'IT.
+"""
+
+
 sendMail(
     sender=dbconfig.tomatic.dailystats.sender,
     to=dbconfig.tomatic.dailystats.recipients,
@@ -108,12 +127,9 @@ sendMail(
         execution_id=execution_id,
         config=config,
         status=status,
+        diagnosis=diagnosis,
     ),
     config='dbconfig.py',
     verbose=True,
 )
-
-
-
-
 
