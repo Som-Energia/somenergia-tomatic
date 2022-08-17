@@ -95,7 +95,7 @@ sendMail(
     sender=dbconfig.tomatic.dailystats.sender,
     to=['david.garcia@somenergia.coop'],
     #to=dbconfig.tomatic.dailystats.recipients,
-    subject="ERROR: Graella setmanal sense solució {execution_id}",
+    subject=f"ERROR: Graella setmanal sense solució {execution_id}",
     md=template.format(
         execution_id=execution_id,
         config=config,
