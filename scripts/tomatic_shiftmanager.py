@@ -22,6 +22,18 @@ No he pogut completar la graella per la setmana.
 - Cel·la de bloqueig: {status.unfilledCell}
 - [Revisar la graella]({config.baseUrl}/api/planner/solution/{execution_id})
 - [Mirar la sortida]({config.baseUrl}/api/planner/status/{execution_id})
+
+Podría ser un error, que sortiria en vermell a la sortida,
+o, podria ser que ha estat executant-se i no l'ha trobada.
+En el segon cas, proveu de posar menys torns,
+canviar l'ordre de cerca dels dies de la setmana,
+perque ompli els dies complicats primer.
+
+El torn que no pot omplir, hi havia aquestes
+indisponibilitats fortes.
+Si es poguessin canviar a opcionals potser trobarà solució.
+
+{status.busyReasons}
 """
 
 
@@ -54,7 +66,7 @@ else:
     sendMail(
         sender=dbconfig.tomatic.dailystats.sender,
         to=dbconfig.tomatic.dailystats.recipients,
-        subject="ERROR: Generant la graelle setmanal {execution_id}",
+        subject="ERROR: Graella setmanal sense solució {execution_id}",
         md=template.format(
             execution_id=execution_id,
             config=config,
