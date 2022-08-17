@@ -104,7 +104,7 @@ def downloadVacations_notoi(config):
                 '%Y-%m-%dT%H:%M:%S'
             ).date()
 
-    with open('indisponibilitats-vacances.conf', 'w') as holidaysfile:
+    with open('indisponibilitats-vacances.conf', 'w') as vacationsfile:
         for absence in absences:
             name = notoi2tomatic.get(absence['worker'])
             start = dateFromIso(absence['start_time'])
@@ -116,7 +116,7 @@ def downloadVacations_notoi(config):
             ]
             for day in days:
                 out("+{} {} # vacances", name, day)
-                holidaysfile.write("+{} {} # vacances\n".format(name, day))
+                vacationsfile.write("+{} {} # vacances\n".format(name, day))
 
 def downloadVacations_odoo(config):
     step("Baixant vacances de l'odoo...")
@@ -236,7 +236,8 @@ def downloadFestivities(config):
         ('date', '>=', str(firstDay)),
         ('date', '<=', str(lastDay)),
     ])
-    with Path('holidays.conf').open('w', encoding='utf8') as output:
+    holidaysfile = Path('holidays.conf')
+    with holidaysfile.open('w', encoding='utf8') as output:
         for festivity in Festivities.read(festivity_ids, ['date','meeting_id']) or []:
             output.write('{date}\t{meeting_id[1]}\n'.format(**festivity))
 
