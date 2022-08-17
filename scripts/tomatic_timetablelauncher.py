@@ -101,8 +101,7 @@ if status.unfilledCell == "Complete":
 step("Timetables: Incomplete, sending report email")
 sendMail(
     sender=dbconfig.tomatic.dailystats.sender,
-    to=['david.garcia@somenergia.coop'],
-    #to=dbconfig.tomatic.dailystats.recipients,
+    to=dbconfig.tomatic.dailystats.recipients,
     subject=f"ERROR: Graella setmanal sense solució {execution_id}",
     md=template.format(
         execution_id=execution_id,
