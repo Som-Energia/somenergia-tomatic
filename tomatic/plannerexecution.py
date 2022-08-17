@@ -96,7 +96,7 @@ class PlannerExecution(Execution):
 
     # TODO: TEST
     def upload(self, uploader):
-        schedules = schedulestorage.Storage.default()
+        schedules = schedulestorage.Storage()
         timetable = ns.load(self.solutionYaml)
         logmsg = (
             "{}: {} ha pujat {} ".format(

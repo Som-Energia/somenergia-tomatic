@@ -110,7 +110,7 @@ def add(backend, queue, member):
 def set(backend, queue, date, time):
     "Sets the queue according Tomatic's schedule"
     pbx = pbxqueue(backend, queue)
-    storage = Storage(dbconfig.tomatic.storagepath)
+    storage = Storage()
     members = storage.queueScheduledFor(now(date, time))
     pbx.setQueue(members)
 
@@ -119,7 +119,7 @@ def set(backend, queue, date, time):
 @time_option
 def preview(date, time):
     "Tells the queue according Tomatic's schedule, does no set"
-    storage = Storage(dbconfig.tomatic.storagepath)
+    storage = Storage()
     members = storage.queueScheduledFor(now(date, time))
     click.echo(', '.join((
         name

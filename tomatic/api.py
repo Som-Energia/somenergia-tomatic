@@ -40,7 +40,7 @@ except ImportError:
 
 packagedir = Path(__file__).parent
 distpath = packagedir/'dist'
-schedules = schedulestorage.Storage.default()
+schedules = schedulestorage.Storage()
 
 def fillConfigurationInfo():
     return ns.load('config.yaml')

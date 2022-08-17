@@ -6,6 +6,11 @@ from pathlib import Path
 from yamlns import namespace as ns
 from .shiftload import loadSum
 from .scheduling import Scheduling, choosers
+dbconfig=None
+try:
+    import dbconfig
+except ImportError:
+    pass
 
 def utcnow():
 	"Returns tz aware current datetime in UTC"
@@ -20,7 +25,12 @@ class StorageError(Exception): pass
 class Storage(object):
     "Stores schedules by week into a folder"
 
-    def __init__(self, dirname):
+    def __init__(self, dirname=None):
+        if not dirname:
+            dirname = dbconfig.tomatic.get('storagepath')
+        if not dirname:
+            packagedir = Path(__file__).parent
+            dirname = packagedir/'..'/'graelles'
         self._dirname = Path(dirname)
 
     def _checkMonday(self, monday):
@@ -157,21 +167,10 @@ class Storage(object):
         scheduling = Scheduling(data)
         return scheduling.peekQueue(dow, time)
 
-    @classmethod
-    def default(cls):
-        packagedir = Path(__file__).parent
-        schedules_path = packagedir/'..'/'graelles'
-        return Storage(schedules_path)
-
 # TODO: Move anywhere
 from .htmlgen import HtmlGen
 from .remote import remotewrite
 from consolemsg import step
-dbconfig=None
-try:
-    import dbconfig
-except ImportError:
-    pass
 
 def publishStatic(graella):
     step("publishStatic")
