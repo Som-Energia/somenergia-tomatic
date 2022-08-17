@@ -18,10 +18,6 @@ def timestamp(strdate):
 
 class ScheduleStorage_Test(unittest.TestCase):
 
-    # Py2 compatibility
-    if sys.version_info < (3,2):
-        assertRegex = unittest.TestCase.assertRegexpMatches
-
     from yamlns.testutils import assertNsEqual
 
     def setUp(self):
