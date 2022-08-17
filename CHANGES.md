@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+- Cool unicode icons on the menu
+- Cron job to schedule timetables weekly
+- Day search order can be set from the timetable planner
+- After setup resilience:
+  - Resilient to a non existing persons.yaml after install
+  - Resilient to a non existing execution dir
+- Documentation:
+  - Updated initial setup
+  - How to circumvent `--fake` not working with `--debug`
+
 ## 4.6.2 2022-07-21
 
 - Queue Monitor: fix: not forcing black text on items
