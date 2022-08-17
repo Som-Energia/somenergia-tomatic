@@ -11,6 +11,13 @@
     - [ ] Entering in execution page fails if executions/ folder does not exist
     - [ ] default for callinfoPath as callinfo
     - [ ] execution requires a holidays.conf (now it is not needed)
+    - [ ] executions dir does not exist, planner page fails
+    - [ ] graelles dir does not exist, uploading timetable fails
+    - [ ] When planner generates timetable, some filed are passed by the API but fails if they don't exist
+        - [ ] oneshot.conf
+        - [ ] indisponibilitats.conf
+        - [ ] indisponibilitats-vacances.conf
+        - [ ] holidays.conf
 - [ ] Remove config.yaml from git (backup the file to use it in production)
 - [ ] Configurable timetable directory ('graelles')
 - [ ] Configurable execution directory ('executions')
