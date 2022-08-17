@@ -3,15 +3,11 @@
 
 import sys
 import requests
-import yaml
 from emili import sendMail 
 from io import open
 from yamlns import namespace as ns
 import dbconfig
-
-execution_id = sys.argv[1]
-
-config = ns.load('config.yaml')
+import time
 
 template = """\
 No he pogut completar la graella per la setmana.
@@ -36,23 +32,41 @@ Si es poguessin canviar a opcionals potser trobarà solució.
 {status.busyReasons}
 """
 
+config = ns.load('config.yaml')
+monday = sys.argv[1]
+minutes = 2
 
-def api(uri):
-    response = requests.get(config.baseUrl + uri)
-    if response.status_code != 200:
+def apiPost(url, **params):
+    response = requests.post(
+        config.baseUrl + url,
+        params=params,
+    )
+
+    if respons.status_code != 200:
         raise Exception(
-            f"While fetching {config.baseUrl}{uri}\n"
+            f"While posting {params} to {config.baseUrl}{uri}\n"
             f"{response.status_code}: {str(response.content, 'utf8')}"
         )
     return ns.loads(response.content)
+
+result = apiPost('/api/planner/api/run',
+    nlines=config.nTelefons,
+    monday=nextmonday,
+    description='llençada-automatica',
+)
+execution_id = result.execution_id
+
 
 statusuri = f"/api/planner/api/status/{execution_id}"
 stopuri = f"/api/planner/api/stop/{execution_id}"
 uploaduri = f"/api/planner/api/upload/{execution_id}"
 killuri = f"/api/planner/api/kill/{execution_id}"
 
+time.sleep(minutes*60)
+
 status = api(statusuri)
 print(status.dump())
+
 if status.get('status') != 'Stopped':
     stop = api(stopuri).get('ok')
     if not stop:
@@ -62,19 +76,21 @@ if status.unfilledCell == "Complete":
     response = api(uploaduri)
     if response.get('ok')!=True:
         pass # TODO: ERROR
-else:
-    sendMail(
-        sender=dbconfig.tomatic.dailystats.sender,
-        to=dbconfig.tomatic.dailystats.recipients,
-        subject="ERROR: Graella setmanal sense solució {execution_id}",
-        md=template.format(
-            execution_id=execution_id,
-            config=config,
-            status=status,
-        ),
-        config='dbconfig.py',
-        verbose=True,
-    )
+    sys.exit()
+
+sendMail(
+    sender=dbconfig.tomatic.dailystats.sender,
+    to=['david.garcia@somenergia.coop'],
+    #to=dbconfig.tomatic.dailystats.recipients,
+    subject="ERROR: Graella setmanal sense solució {execution_id}",
+    md=template.format(
+        execution_id=execution_id,
+        config=config,
+        status=status,
+    ),
+    config='dbconfig.py',
+    verbose=True,
+)
 
 
 
