@@ -196,6 +196,16 @@ class PlannerExecution_Test(unittest.TestCase):
         config = ns.load(e.path/'config.yaml')
         self.assertEqual(config.diesCerca, ['dj', 'dv', 'dl', 'dm', 'dx'])
 
+    def test_createSandbox_searchDays_stripped(self):
+        e = PlannerExecution(
+            monday='2020-05-04',
+            configPath=self.configPath,
+            searchDays='dj , dx',
+        )
+        e.createSandbox()
+        config = ns.load(e.path/'config.yaml')
+        self.assertEqual(config.diesCerca, ['dj', 'dx', 'dv', 'dl', 'dm'])
+
     def test_listInfo_commonValues_noSandbox(self):
         e = PlannerExecution(
             monday='2020-05-04',

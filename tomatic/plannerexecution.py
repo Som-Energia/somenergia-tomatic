@@ -34,7 +34,11 @@ class PlannerExecution(Execution):
         self.monday = monday
         self.description = description
         self.nlines = nlines
-        self.searchDays = searchDays.split(',')
+        self.searchDays = [
+            x.strip()
+            for x in searchDays.split(',')
+            if x.strip()
+        ]
 
         # TODO: configless not tested
         self.configPath = Path(configPath or '.')
