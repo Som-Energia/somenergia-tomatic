@@ -12,7 +12,7 @@ import uuid
 from consolemsg import step
 
 template = """\
-No he pogut completar la graella per la setmana.
+No he pogut completar la graella per la setmana del {monday}.
 
 - Execucio: {status.name}
 - Compleció: {status.completedCells} / {status.totalCells}
@@ -104,6 +104,7 @@ sendMail(
     to=dbconfig.tomatic.dailystats.recipients,
     subject=f"ERROR: Graella setmanal sense solució {execution_id}",
     md=template.format(
+        monday=monday,
         execution_id=execution_id,
         config=config,
         status=status,
