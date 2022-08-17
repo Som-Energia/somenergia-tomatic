@@ -9,6 +9,7 @@ from yamlns import namespace as ns
 import dbconfig
 import time
 import uuid
+from consolemsg import step
 
 template = """\
 No he pogut completar la graella per la setmana.
@@ -62,6 +63,7 @@ def api(url):
         )
     return ns.loads(response.content)
 
+step("Timetables: Lauching timetable for {monday}")
 result = apiPost('/api/planner/api/run',
     nlines=config.nTelefons,
     monday=monday,
@@ -75,22 +77,28 @@ stopuri = f"/api/planner/api/stop/{execution_id}"
 uploaduri = f"/api/planner/api/upload/{execution_id}"
 killuri = f"/api/planner/api/kill/{execution_id}"
 
+step("Timetables: Sleepning for {hours} hours until completition")
 time.sleep(minutes*60)
+step("Timetables: Sleepning for {hours} hours until completition")
 
 status = api(statusuri)
 print(status.dump())
 
 if status.get('status') != 'Stopped':
+    step("Timetables: Still running, stopping")
     stop = api(stopuri).get('ok')
     if not stop:
+        step("Timetables: Still running, killing")
         kill = api(killuri)
 
 if status.unfilledCell == "Complete":
+    step("Timetables: Complete, uploading")
     response = api(uploaduri)
     if response.get('ok')!=True:
         pass # TODO: ERROR
     sys.exit()
 
+step("Timetables: Inomplete, sending report email")
 sendMail(
     sender=dbconfig.tomatic.dailystats.sender,
     to=['david.garcia@somenergia.coop'],
