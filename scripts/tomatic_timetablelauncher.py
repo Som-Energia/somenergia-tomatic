@@ -8,6 +8,7 @@ from io import open
 from yamlns import namespace as ns
 import dbconfig
 import time
+import uuid
 
 template = """\
 No he pogut completar la graella per la setmana.
@@ -52,7 +53,7 @@ def apiPost(url, **params):
 result = apiPost('/api/planner/api/run',
     nlines=config.nTelefons,
     monday=monday,
-    description='llençada-automatica',
+    description='llençada-automatica-{}'.format(uuid.uuid4()),
 )
 execution_id = result.execution_id
 
