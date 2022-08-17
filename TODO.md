@@ -8,10 +8,8 @@
           Why? uvicorn creates a new app instance and commandline pbx queue configuration is loss.
           Workaround: configure tomatic.pbx="fake" in dbconfig.
           Future Solution: Using env vars to communicate command line and the app instance?
-    - [ ] Entering in execution page fails if executions/ folder does not exist
     - [ ] default for callinfoPath as callinfo
     - [ ] execution requires a holidays.conf (now it is not needed)
-    - [ ] executions dir does not exist, planner page fails
     - [ ] graelles dir does not exist, uploading timetable fails
     - [ ] When planner generates timetable, some filed are passed by the API but fails if they don't exist
         - [ ] oneshot.conf
@@ -34,20 +32,17 @@
 	- [ ] Refactor as Single Page App
 	- [ ] Style it
 	- [ ] Show cutting reasons of best solutions
+	- [ ] Show cost sources when hovering the cost
 	- [ ] Ask before deleting, killing, uploading...
 - Scheduler:
-	- [ ] Join load computation into the scheduler script
 	- [ ] Like we did with callinfo, review files loaded and dumped to rationalize it
 - Person editor:
 	- [ ] Disable ok until all fields are valid
 	- [ ] Check extension not taken already
 	- [ ] Check erp user exists
-	- [ ] Focus on first field on open dialog
 	- [ ] Take person info from holidays manager
 	- [ ] List/admin mode
-	- [ ] Nicer date picker for one-shot busy
 - Callinfo
-	- [x] config `callinfoPath` instead of `my_calls_log` parent folder
 	- [ ] Edit previous annotations
 	- [ ] /api/info/ringring -> api/call/ringring (ext) (caution: used by partners)
 	- [ ] /api/personlog/<ext> en els casos de fallada returnar una llista buida sense errors (no son de fallada, encara no hi ha logs i prou)
@@ -71,6 +66,11 @@
 
 ## Dones
 
+- [x] executions dir does not exist, planner page fails
+- [x] Entering in execution page fails if executions/ folder does not exist
+- [x] PersonEditor: Focus on first field on open dialog
+- [x] PersonEditor: Nicer date picker for one-shot busy
+- [x] Callinfo: config `callinfoPath` instead of `my_calls_log` parent folder
 - [x] Strip spaces in the search
 - [x] On ringing sandwich pbx ext, and use tomatic users inside (do not log by ext but by user)
 - [x] Translate call log field names from catalan
