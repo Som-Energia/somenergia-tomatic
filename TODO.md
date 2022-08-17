@@ -19,6 +19,7 @@
         - [ ] indisponibilitats-vacances.conf
         - [ ] holidays.conf
 - [ ] Remove config.yaml from git (backup the file to use it in production)
+- [ ] Remove extensions for Inalàmbric / Recepcio / Contestador
 - [ ] Configurable timetable directory ('graelles')
 - [ ] Configurable execution directory ('executions')
 - [ ] Move shiftload generated files to a configurable dir (maybe same as timetables dir?)
