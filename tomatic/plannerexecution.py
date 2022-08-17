@@ -19,6 +19,7 @@ class PlannerExecution(Execution):
             configPath=None,
             description='',
             nlines=7,
+            searchDays='',
             ):
         if not name:
             name = monday
@@ -33,6 +34,7 @@ class PlannerExecution(Execution):
         self.monday = monday
         self.description = description
         self.nlines = nlines
+        self.searchDays = searchDays.split(',')
 
         # TODO: configless not tested
         self.configPath = Path(configPath or '.')
@@ -41,6 +43,13 @@ class PlannerExecution(Execution):
         super(PlannerExecution, self).createSandbox()
         config = ns.load(self.configPath/'config.yaml')
         config.nTelefons = self.nlines
+        config.diesCerca = [
+            x for x in self.searchDays 
+            if x in config.diesCerca
+        ] + [
+            x for x in config.diesCerca
+            if x not in self.searchDays
+        ]
         config.maxOverload = 0
         config.dump(self.path/'config.yaml')
         (self.path/'drive-certificate.json').symlink_to(

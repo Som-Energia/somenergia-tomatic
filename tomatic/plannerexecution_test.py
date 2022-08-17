@@ -33,6 +33,12 @@ class PlannerExecution_Test(unittest.TestCase):
         (self.configPath/'config.yaml').write_text("""
             nTelefons: 7
             maxOverload: 0
+            diesCerca:
+            - dv
+            - dl
+            - dm
+            - dj
+            - dx
         """)
         (self.configPath/'drive-certificate.json').write_text(
             "{}"
@@ -159,6 +165,36 @@ class PlannerExecution_Test(unittest.TestCase):
         e.createSandbox()
         config = ns.load(e.path/'config.yaml')
         self.assertEqual(config.nTelefons, 8)
+
+    def test_createSandbox_changingSearchDays(self):
+        e = PlannerExecution(
+            monday='2020-05-04',
+            configPath=self.configPath,
+            searchDays='dx',
+        )
+        e.createSandbox()
+        config = ns.load(e.path/'config.yaml')
+        self.assertEqual(config.diesCerca, ['dx', 'dv', 'dl', 'dm', 'dj'])
+
+    def test_createSandbox_changingSearchDays(self):
+        e = PlannerExecution(
+            monday='2020-05-04',
+            configPath=self.configPath,
+            searchDays='dj,dx',
+        )
+        e.createSandbox()
+        config = ns.load(e.path/'config.yaml')
+        self.assertEqual(config.diesCerca, ['dj', 'dx', 'dv', 'dl', 'dm'])
+
+    def test_createSandbox_badSearchDay_ignored(self):
+        e = PlannerExecution(
+            monday='2020-05-04',
+            configPath=self.configPath,
+            searchDays='dj,caca',
+        )
+        e.createSandbox()
+        config = ns.load(e.path/'config.yaml')
+        self.assertEqual(config.diesCerca, ['dj', 'dv', 'dl', 'dm', 'dx'])
 
     def test_listInfo_commonValues_noSandbox(self):
         e = PlannerExecution(
