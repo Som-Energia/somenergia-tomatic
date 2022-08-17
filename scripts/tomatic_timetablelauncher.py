@@ -63,7 +63,7 @@ def api(url):
         )
     return ns.loads(response.content)
 
-step("Timetables: Lauching timetable for {monday}")
+step(f"Timetables: Lauching timetable for {monday}")
 result = apiPost('/api/planner/api/run',
     nlines=config.nTelefons,
     monday=monday,
@@ -77,9 +77,9 @@ stopuri = f"/api/planner/api/stop/{execution_id}"
 uploaduri = f"/api/planner/api/upload/{execution_id}"
 killuri = f"/api/planner/api/kill/{execution_id}"
 
-step("Timetables: Sleepning for {hours} hours until completition")
+step(f"Timetables: Sleeping for {minutes} minutes until completition")
 time.sleep(minutes*60)
-step("Timetables: Sleepning for {hours} hours until completition")
+step(f"Timetables: Stop sleeping after {minutes} minutes")
 
 status = api(statusuri)
 print(status.dump())
@@ -98,7 +98,7 @@ if status.unfilledCell == "Complete":
         pass # TODO: ERROR
     sys.exit()
 
-step("Timetables: Inomplete, sending report email")
+step("Timetables: Incomplete, sending report email")
 sendMail(
     sender=dbconfig.tomatic.dailystats.sender,
     to=['david.garcia@somenergia.coop'],
