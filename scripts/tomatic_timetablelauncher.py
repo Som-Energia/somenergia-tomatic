@@ -99,11 +99,11 @@ diagnosis = f"""\
 La [graella]({config.baseUrl}/api/planner/solution/{execution_id}) està incomplerta.
 El torn on m'encallo es a {status.unfilledCell}.
 
-Pots provar:
+Pots provar [llençar-la a mà]({config.baseUrl}/api/planner) però:
 
-- [Llençar-la a mà]({config.baseUrl}/api/planner) amb **menys línies** a farcir
-- Llençar-la **farcint primer el dia del torn complicat** (de moment amb ajuda d'IT)
-- Revisar les **indisponibilitats** del torn complicat
+- amb **menys línies** (sobretot si hi ha molts torns amb 'ningu')
+- indicant que vols **omplir primer el dia** amb el torn complicat
+- si encara es bloqueja, revisant les **indisponibilitats** del torn complicat
 
 Les indisponibilitats no opcionals que afecten a aquest torn son:
 
