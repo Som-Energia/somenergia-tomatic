@@ -5,6 +5,11 @@ import sys
 from yamlns import namespace as ns
 from pathlib import Path
 from . import schedulestorage
+dbconfig=None
+try:
+    import dbconfig
+except ImportError:
+    pass
 
 yaml20121112 = u"week: '2012-11-12'"
 yaml20030203 = u"week: '2003-02-03'"
@@ -39,6 +44,35 @@ class ScheduleStorage_Test(unittest.TestCase):
 
     def write(self, filename, content):
         (self.storagedir/filename).write_text(content, encoding='utf8')
+
+    def test_default_withDbConfig(self):
+        previous = dbconfig.tomatic.get('storagepath')
+        try:
+            dbconfig.tomatic.storagepath = 'mydir'
+            storage = schedulestorage.Storage()
+            self.assertEqual(
+                storage.backupdir.parent,
+                Path('mydir')
+            )
+        finally:
+            if previous is None:
+                del dbconfig.tomatic.storagepath
+            else:
+                dbconfig.tomatic.storagepath = previous
+
+    def test_default_withoutDbConfig(self):
+        previous = dbconfig.tomatic.get('storagepath')
+        try:
+            if previous:
+                del dbconfig.tomatic.storagepath
+            storage = schedulestorage.Storage()
+            self.assertEqual(
+                storage.backupdir.parent,
+                Path(__file__).parent/'../graelles'
+            )
+        finally:
+            if previous is not None:
+                dbconfig.tomatic.storagepath = previous
 
     def test_load(self):
         self.write('graella-2012-11-12.yaml', yaml20121112)
