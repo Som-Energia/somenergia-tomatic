@@ -42,16 +42,16 @@ def apiPost(url, **params):
         params=params,
     )
 
-    if respons.status_code != 200:
+    if response.status_code != 200:
         raise Exception(
-            f"While posting {params} to {config.baseUrl}{uri}\n"
+            f"While posting {params} to {config.baseUrl}{url}\n"
             f"{response.status_code}: {str(response.content, 'utf8')}"
         )
     return ns.loads(response.content)
 
 result = apiPost('/api/planner/api/run',
     nlines=config.nTelefons,
-    monday=nextmonday,
+    monday=monday,
     description='llençada-automatica',
 )
 execution_id = result.execution_id
