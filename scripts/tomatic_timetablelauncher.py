@@ -50,7 +50,7 @@ def apiPost(url, **params):
         )
     return ns.loads(response.content)
 
-def api(url, execution_id):
+def api(url):
     response = requests.get(
         config.baseUrl + url,
         params=params,
