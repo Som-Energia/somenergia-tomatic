@@ -137,6 +137,7 @@ def list():
             """Dilluns&nbsp;(YYYY-MM-DD):&nbsp;<input name=monday type=text value={nexmonday} /><br/>"""
             """Linies:&nbsp;<input name=nlines type=text value=8 /><br/>"""
             """Descripció:&nbsp;<input name=description type=text /><br/>"""
+            """Dies a omplir primer:&nbsp;<input name="search_days" type=text /> (dl, dm, dx, dj, dv, separats per comes)<br/>"""
             """<input type=submit value='Llençar' />"""
         """</form></p>"""
         """<p><a href='clear'>Clear</a></p>"""
@@ -174,6 +175,7 @@ def run(
     request: Request,
     nlines: int = Form(None),
     monday: str = Form(''),
+    search_days: str = Form(''),
     description: str = Form(''),
 ):
     if nlines is not None:
@@ -182,6 +184,7 @@ def run(
         monday=monday,
         description=description,
         nlines=nlines,
+        searchDays=search_days,
     )
     return gotoList(request)
 

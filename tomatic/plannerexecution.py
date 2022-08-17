@@ -86,6 +86,7 @@ class PlannerExecution(Execution):
             monday=monday,
             description=description or u(uuid.uuid4()),
             nlines=kwds.get('nlines'),
+            searchDays = kwds.get('searchDays'),
             configPath=Path('.'),
         )
         execution.createSandbox()
