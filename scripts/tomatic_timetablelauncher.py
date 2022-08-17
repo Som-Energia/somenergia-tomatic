@@ -53,7 +53,6 @@ def apiPost(url, **params):
 def api(url):
     response = requests.get(
         config.baseUrl + url,
-        params=params,
     )
 
     if response.status_code != 200:
