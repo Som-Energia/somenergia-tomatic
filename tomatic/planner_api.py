@@ -240,6 +240,8 @@ def upload(request: Request, execution):
     execution.upload('nobody') # TODO: Take ERP user
     return gotoList(request)
 
+# Follows the non page based api
+
 @api.post('/api/run')
 @nocache
 def run(
@@ -250,49 +252,49 @@ def run(
 ):
     if nlines is not None:
         nlines = int(nlines)
-    execution = PlannerExecution.start(
+    execution_id = PlannerExecution.start(
         monday=monday,
         description=description,
         nlines=nlines,
     )
-    return yamlfy(execution_id=execution)
+    return yamlfy(execution_id=execution_id)
 
-@api.get('/api/status/{id}')
+@api.get('/api/status/{execution_id}')
 @nocache
-def run(
+def status(
     request: Request,
-    id: str,
+    execution_id: str,
 ):
-    execution = PlannerExecution(id)
+    execution = PlannerExecution(execution_id)
     return yamlfy(**execution.listInfo())
 
-@api.get('/api/stop/{execution}')
-def stop(request: Request, execution):
-    execution = PlannerExecution(execution)
+@api.get('/api/stop/{execution_id}')
+def stop(request: Request, execution_id):
+    execution = PlannerExecution(execution_id)
     step("Stopping {0.pid} {0.name}", execution)
     if not execution.stop():
         return yamlfy(ok=False)
     return yamlfy(ok=True)
 
-@api.get('/api/kill/{execution}')
-def kill(request: Request, execution):
-    execution = PlannerExecution(execution)
+@api.get('/api/kill/{execution_id}')
+def kill(request: Request, execution_id):
+    execution = PlannerExecution(execution_id)
     step("Killing {0.pid} {0.name}", execution)
     if not execution.kill():
         return yamlfy(ok=False)
     return yamlfy(ok=True)
 
-@api.get('/api/remove/{execution}')
-def remove(request: Request, execution):
-    execution = PlannerExecution(execution)
+@api.get('/api/remove/{execution_id}')
+def remove(request: Request, execution_id):
+    execution = PlannerExecution(execution_id)
     step("Cleaning up {0.name}", execution)
     if not execution.remove():
         return yamlfy(ok=False)
     return yamlfy(ok=True)
 
-@api.get('/api/upload/{execution}')
-def upload(request: Request, execution):
-    execution = PlannerExecution(execution)
+@api.get('/api/upload/{execution_id}')
+def upload(request: Request, execution_id):
+    execution = PlannerExecution(execution_id)
     step("Uploading {0.name}", execution)
     execution.upload('nobody') # TODO: Take ERP user
     return yamlfy(ok=True)
