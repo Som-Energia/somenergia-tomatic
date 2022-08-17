@@ -50,6 +50,19 @@ def apiPost(url, **params):
         )
     return ns.loads(response.content)
 
+def api(url, execution_id):
+    response = requests.get(
+        config.baseUrl + url,
+        params=params,
+    )
+
+    if response.status_code != 200:
+        raise Exception(
+            f"While getting {config.baseUrl}{url}\n"
+            f"{response.status_code}: {str(response.content, 'utf8')}"
+        )
+    return ns.loads(response.content)
+
 result = apiPost('/api/planner/api/run',
     nlines=config.nTelefons,
     monday=monday,
