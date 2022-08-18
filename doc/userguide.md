@@ -24,16 +24,16 @@ I pròximament
 
 - Navegar per les graelles
 - Canviar torns de la graella
-- Anotació de trucades
-- Generar càrregues setmanals de telèfon
+- Anotar trucades
 - Generar les graelles
 
 ## Accedir al Tomàtic
 
-Important: Heu de tenir activada la VPN coorporativa.
+**Important:** Heu de tenir activada la VPN coorporativa.
 
-http://tomatic.somenergia.lan
+Llavors, simplement visiteu: http://tomatic.somenergia.lan
 
+Clickeu el boto "IDENTIFICAR" a dalt a la dreta i seleccioneu la vostra usuaria.
 
 ## Editar el perfil d'usuaria
 
@@ -59,6 +59,7 @@ Els camps que hi ha són
 - **Nom a mostrar:** És el nom que es veu arreu.
 - **Correu:** Ha de ser el correu coorporatiu que teniu a l'Odoo (per reservar-vos les vacances)
 - **Extensió:** És la extensió telefònica que us assigna l'equip de suport a la centraleta
+- **Usuari ERP:** És el nom d'usuaria que feu servir per entrar a l'ERP
 - **Taula:** Amb qui esteu asseguts per evitar tenir torns a l'hora. ([Més info](#definir-la-meva-taula))
 - **Color:** El color de la vostra caixeta per trobar-vos més fàcilment
 
@@ -87,16 +88,17 @@ aquests _intervals amb nom_, :
 [![Video](images/video.png)
 ](https://drive.google.com/file/d/1OaWtgNryEs_444R7pK7Ln2Q0iMIMdJ8C/preview)
 
+Amb les indisponibilitats, podem demanar al Tomàtic que no ens posi telèfon a certs torns.
+**Les vacances que heu demanat a l'Odoo ja es tenen en compte i no cal posar-les.**
+Les indisponibilitats que caldria indicar al Tomàtic
+són les degudes a l'horari laboral que teniu, reunions, tasques d'equip, conciliacio familiar, viatges de treball...
+
 <img align="right" src="images/calendar-icon.png"/>
 <img align="right" src="images/persons-tab.png" />
 
 Les indisponibilitats es demanen a la **pestanya "Persones"**,
 clicant la **icona calendari** que surt quan ens posem al damunt de la teva caixa.
 
-Amb les indisponibilitats, podem demanar al Tomàtic que no ens posi telèfon a certs torns.
-**Les vacances que heu demanat a l'Odoo ja es tenen en compte i no cal posar-les.**
-Les indisponibilitats que caldria indicar al Tomàtic
-són les degudes a l'horari laboral que teniu, reunions, tasques d'equip, conciliacio familiar, viatges de treball...
 
 
 Ens surt aquest diàleg:
@@ -209,7 +211,7 @@ I del contracte seleccionat les seves factures, lectures, casos atr...
 
 De tota la informació que hi surt, cal explicar una mica les següents:
 
-**Accés directe als correus del HelpScout:***
+**Accés directe als correus del HelpScout:**
 Si cliques a l'adreça de correu de la persona
 s'obre al HelpScout amb tots els missatges
 que hem intercanviat amb ella.
