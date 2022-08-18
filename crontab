@@ -22,7 +22,7 @@ TOMATIC_CRONLOG=/var/log/somenergia/crontab-tomatic.log
 40 12   * * 1-5  somenergia    (echo "$(date -Iseconds) Notify queue"; cd $TOMATIC_PATH; crontab-warnturn.sh ) >> $TOMATIC_CRONLOG 2>&1
 10 14   * * 1-5  somenergia    (echo "$(date -Iseconds) Daily report"; cd $TOMATIC_PATH; crontab-dailyreport.sh) >> $TOMATIC_CRONLOG 2>&1
 50 23   * * *    somenergia    (echo "$(date -Iseconds) Daily stats"; cd $TOMATIC_PATH; tomatic_dailyreport.py --sendmail) >> $TOMATIC_CRONLOG 2>&1
-00 22   * * 7    somenergia    (echo "$(date -Iseconds) Timetable generation"; cd $TOMATIC_PATH; reportrun -C dbconfig.py -f tomatic@somenergia.coop -t $(python -c "import dbconfig; print(dbconfig.tomatic.supportmail)") -s "Tomatic Timetable Laucher Failed" -- crontab-launchtimetable.sh) >> $TOMATIC_CRONLOG 2>&1
+00 22   * * 7    somenergia    (echo "$(date -Iseconds) Timetable generation"; cd $TOMATIC_PATH; crontab-launchtimetable.sh) >> $TOMATIC_CRONLOG 2>&1
 
 ## Treu les graelles antigues
 52 13  * * *  somenergia    curl -q http://tomatic.somenergia.lan/api/graella/retireold >> $TOMATIC_CRONLOG 2>&1
