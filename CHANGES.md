@@ -1,13 +1,16 @@
 # Changelog
 
-## Unreleased
+## 4.7.0 2022-08-18
 
-- Cool unicode icons on the menu
 - Cron job to schedule timetables weekly
 - Day search order can be set from the timetable planner
+- Fix: Call log JS exception when no user logged in
 - After setup resilience:
   - Resilient to a non existing persons.yaml after install
   - Resilient to a non existing execution dir
+- Menu:
+  - New menu option for the user guides
+  - Cool unicode icons on the menu
 - Documentation:
   - Updated initial setup
   - How to circumvent `--fake` not working with `--debug`
