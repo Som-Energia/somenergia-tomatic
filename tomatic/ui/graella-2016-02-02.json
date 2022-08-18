@@ -123,9 +123,7 @@
 		]
 	},
 	"names": {
-		"victor": "Víctor",
-		"gijsbert": "Inalàmbric",
-		"recepcio": "Recepció"
+		"victor": "Víctor"
 	},
 	"extensions": {
 		"aleix":  3053,
@@ -149,9 +147,5 @@
 		"vic":    3185,
 		"victor": 3182,
 		"yaiza":  3044
-	},
-	"otherextensions": {
-		"gijsbert": 3385,
-		"recepcio": 3405
 	}
 }

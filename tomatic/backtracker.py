@@ -648,7 +648,6 @@ class Backtracker(object):
                     htmlgen.htmlTable()+
                     htmlgen.htmlPenalties()+
                     htmlgen.htmlExtensions()+
-                    htmlgen.htmlFixExtensions()+
                     htmlgen.htmlFooter()
                 )
             with open(self.config.monitoringFile,'w') as output:

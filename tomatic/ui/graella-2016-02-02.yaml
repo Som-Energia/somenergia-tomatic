@@ -106,8 +106,6 @@ timetable:
 
 names:
   victor: Víctor
-  gijsbert: Inalàmbric
-  recepcio: Recepció
 
 extensions:
   aleix:  3053
@@ -131,8 +129,4 @@ extensions:
   vic:    3185
   victor: 3182
   yaiza:  3044
-
-otherextensions:
-  gijsbert: 3385
-  recepcio: 3405
 

@@ -181,7 +181,7 @@ class HtmlGen(object):
             self.htmlSetmana()+
             self.htmlTable()+
             self.htmlExtensions()+
-            self.htmlFixExtensions()+
+            #self.htmlFixExtensions()+
             self.htmlFooter()
         )
 
@@ -232,19 +232,9 @@ class HtmlGen(object):
     def htmlFixExtensions(self):
         return (
             u"""<div class="extensions">\n"""
-            u"""<div class="extension gijsbert">"""
-            u"""Inalàmbric<br/>3385</div>\n"""
-            u"""<div class="extension recepcio">"""
-            u"""Recepcio<br/>3405</div>\n"""
-            u"""<div class="extension contestador">"""
-            u"""Contestador<br/>3193</div>\n"""
             u"""</div>\n"""
             u"""<h3>Recordatori desviaments</h3>\n"""
             u"""<ul>\n"""
-            u"""<li>*60 Immediat</li>\n"""
-            u"""<li>*63 Ocupat o no responem</li>\n"""
-            u"""<li>*64 Treure desviaments</li>\n"""
-            u"""<li>*90 Marcar número</li>\n"""
             u"""</ul>\n"""
         )
 
