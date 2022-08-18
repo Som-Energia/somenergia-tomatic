@@ -7,6 +7,8 @@ from yamlns import namespace as ns
 tomatic=ns(
     # local timetable storage directory
     storagepath='/home/vokimon/somenergia/somenergia-tomatic/graelles',
+    # mail to report issues
+    supportmail='frontend@somenergia.coop',
     # Choose the PBX backend:
     # - fake: emulates a real PBX
     # - asteriskcli: connects asterisk by ssh
