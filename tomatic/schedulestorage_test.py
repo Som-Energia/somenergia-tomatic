@@ -6,11 +6,7 @@ from yamlns import namespace as ns
 from pathlib import Path
 from . import schedulestorage
 from unittest.mock import patch
-dbconfig=None
-try:
-    import dbconfig
-except ImportError:
-    pass
+import contextlib
 
 yaml20121112 = u"week: '2012-11-12'"
 yaml20030203 = u"week: '2003-02-03'"
@@ -20,6 +16,23 @@ def timestamp(strdate):
         strdate,
         "%Y-%m-%d %H:%M"
         )
+
+@contextlib.contextmanager
+def dbconfigFaker(content):
+    """
+    Reloads teh schedulestorage emulating a fake dbconfig
+    with `content` as the `tomatic` attribute
+    """
+    try:
+        with patch.dict('sys.modules', dbconfig=type(sys)('dbconfig')):
+            import dbconfig
+            dbconfig.tomatic=content
+            import importlib
+            importlib.reload(schedulestorage)
+            yield
+    finally:
+        importlib.reload(schedulestorage)
+
 
 class ScheduleStorage_Test(unittest.TestCase):
 
@@ -46,32 +59,20 @@ class ScheduleStorage_Test(unittest.TestCase):
         (self.storagedir/filename).write_text(content, encoding='utf8')
 
     def test_default_withDbConfig(self):
-        with patch.dict('sys.modules', dbconfig=type(sys)('dbconfig')):
-            import dbconfig
-            dbconfig.tomatic=ns(storagepath='mydir')
-            import importlib
-            importlib.reload(schedulestorage)
-
+        with dbconfigFaker(ns(storagepath='mydir')):
             storage = schedulestorage.Storage()
             self.assertEqual(
                 storage.backupdir.parent,
                 Path('mydir')
             )
-        importlib.reload(schedulestorage)
 
     def test_default_withoutDbConfig(self):
-        with patch.dict('sys.modules', dbconfig=type(sys)('dbconfig')):
-            import dbconfig
-            dbconfig.tomatic=ns()
-            import importlib
-            importlib.reload(schedulestorage)
-
+        with dbconfigFaker(ns()):
             storage = schedulestorage.Storage()
             self.assertEqual(
                 storage.backupdir.parent,
                 Path(__file__).parent/'../graelles'
             )
-        importlib.reload(schedulestorage)
 
     def test_load(self):
         self.write('graella-2012-11-12.yaml', yaml20121112)
