@@ -5,6 +5,7 @@ import sys
 from yamlns import namespace as ns
 from pathlib import Path
 from . import schedulestorage
+from unittest.mock import patch
 dbconfig=None
 try:
     import dbconfig
@@ -13,7 +14,6 @@ except ImportError:
 
 yaml20121112 = u"week: '2012-11-12'"
 yaml20030203 = u"week: '2003-02-03'"
-StorageError = schedulestorage.StorageError
 
 def timestamp(strdate):
     return datetime.datetime.strptime(
@@ -46,33 +46,32 @@ class ScheduleStorage_Test(unittest.TestCase):
         (self.storagedir/filename).write_text(content, encoding='utf8')
 
     def test_default_withDbConfig(self):
-        previous = dbconfig.tomatic.get('storagepath')
-        try:
-            dbconfig.tomatic.storagepath = 'mydir'
+        with patch.dict('sys.modules', dbconfig=type(sys)('dbconfig')):
+            import dbconfig
+            dbconfig.tomatic=ns(storagepath='mydir')
+            import importlib
+            importlib.reload(schedulestorage)
+
             storage = schedulestorage.Storage()
             self.assertEqual(
                 storage.backupdir.parent,
                 Path('mydir')
             )
-        finally:
-            if previous is None:
-                del dbconfig.tomatic.storagepath
-            else:
-                dbconfig.tomatic.storagepath = previous
+        importlib.reload(schedulestorage)
 
     def test_default_withoutDbConfig(self):
-        previous = dbconfig.tomatic.get('storagepath')
-        try:
-            if previous:
-                del dbconfig.tomatic.storagepath
+        with patch.dict('sys.modules', dbconfig=type(sys)('dbconfig')):
+            import dbconfig
+            dbconfig.tomatic=ns()
+            import importlib
+            importlib.reload(schedulestorage)
+
             storage = schedulestorage.Storage()
             self.assertEqual(
                 storage.backupdir.parent,
                 Path(__file__).parent/'../graelles'
             )
-        finally:
-            if previous is not None:
-                dbconfig.tomatic.storagepath = previous
+        importlib.reload(schedulestorage)
 
     def test_load(self):
         self.write('graella-2012-11-12.yaml', yaml20121112)
@@ -95,14 +94,14 @@ class ScheduleStorage_Test(unittest.TestCase):
             "'2000-01-03'")
  
     def test_load_notADate(self):
-        with self.assertRaises(StorageError) as ctx:
+        with self.assertRaises(schedulestorage.StorageError) as ctx:
             self.storage.load("../../etc/passwd")
 
         self.assertEqual(str(ctx.exception),
             "time data '../../etc/passwd' does not match format '%Y-%m-%d'")
  
     def test_load_notMonday(self):
-        with self.assertRaises(StorageError) as ctx:
+        with self.assertRaises(schedulestorage.StorageError) as ctx:
             self.storage.load("2020-01-01") # not a monday
 
         self.assertEqual(str(ctx.exception),
@@ -114,7 +113,7 @@ class ScheduleStorage_Test(unittest.TestCase):
         self.assertEqual(data,ns.loads(yaml20121112))
 
     def test_save_notADate(self):
-        with self.assertRaises(StorageError) as ctx:
+        with self.assertRaises(schedulestorage.StorageError) as ctx:
             self.storage.save(ns(week='../../etc/passwd'))
         self.assertEqual(format(ctx.exception),
             "time data '../../etc/passwd' does not match format '%Y-%m-%d'")
@@ -351,13 +350,13 @@ class ScheduleStorage_Test(unittest.TestCase):
         """)
 
     def test_credit_checksIsMonday(self):
-        with self.assertRaises(StorageError) as ctx:
+        with self.assertRaises(schedulestorage.StorageError) as ctx:
             self.storage.credit('2020-01-10')
         self.assertEqual(format(ctx.exception),
             "2020-01-10 is not a monday but a friday")
 
     def test_saveCredit_checksIsMonday(self):
-        with self.assertRaises(StorageError) as ctx:
+        with self.assertRaises(schedulestorage.StorageError) as ctx:
             self.storage.saveCredit('2020-01-10', ns(bob=5))
 
         self.assertEqual(format(ctx.exception),
