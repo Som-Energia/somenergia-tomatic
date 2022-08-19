@@ -1,9 +1,11 @@
 # Changelog
 
-## Unreleased
+## 4.7.1 2022-08-19
 
 - Fixed timetable crontab
 - timetable crontab takes support mail from dbconfig
+- Removed number redirections and fixed extensions from static
+  timetable html
 - Upgrade notes
   - dbconfig.py: Add the tomatic.supportmail parameter
 
