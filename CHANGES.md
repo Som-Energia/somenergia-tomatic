@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.7.2 2022-08-19
+
+- Timetable cron: Use dbconfig.tomatic.supportmail in the
+  diagnosi of config errors mail template
+- Timetable cron: give 2 hours of computation time
+
 ## 4.7.1 2022-08-19
 
 - Fixed timetable crontab
