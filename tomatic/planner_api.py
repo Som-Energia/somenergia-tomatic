@@ -134,10 +134,10 @@ def list():
             """.tooltip {{ visibility: hidden; position:absolute; cursor: link; width: 20em; background: #ffa; border: 1px solid grey; padding:1ex}}"""
             """td:hover .tooltip {{ visibility: visible}}</style>"""
         """<p><form action='run' method='post'>"""
-            """Dilluns&nbsp;(YYYY-MM-DD):&nbsp;<input name=monday type=text value={nexmonday} /><br/>"""
-            """Linies:&nbsp;<input name=nlines type=text value=8 /><br/>"""
-            """Descripció:&nbsp;<input name=description type=text /><br/>"""
-            """Dies a omplir primer:&nbsp;<input name="search_days" type=text /> (dl, dm, dx, dj, dv, separats per comes)<br/>"""
+            """<label>Dilluns&nbsp;(YYYY-MM-DD):&nbsp;<input name=monday type=date value={nexmonday} step=7 required /></label><br/>"""
+            """<label>Linies:&nbsp;<input name=nlines type=number value={nlines} step=1 required/></label><br/>"""
+            """<label>Descripció:&nbsp;<input name=description type=text /></label><br/>"""
+            """<label>Dies a omplir primer:&nbsp;<input name="search_days" type=text /> (dl, dm, dx, dj, dv, separats per comes)</label><br/>"""
             """<input type=submit value='Llençar' />"""
         """</form></p>"""
         """<p><a href='clear'>Clear</a></p>"""
@@ -153,7 +153,10 @@ def list():
             <th>Darrera bona</th>
             <th>Actions</th>
             </tr>
-        """.format(nexmonday=nextMonday())
+        """.format(
+            nexmonday=nextMonday(),
+            nlines=8, #TODO: config.nTelefons,
+        )
     ]+[
         executionDescription(execution.listInfo())
         for execution in PlannerExecution.list()
