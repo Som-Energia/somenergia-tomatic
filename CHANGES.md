@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Fixed timetable crontab
+- timetable crontab takes support mail from dbconfig
+- Upgrade notes
+  - dbconfig.py: Add the tomatic.supportmail parameter
+
 ## 4.7.0 2022-08-18
 
 - Cron job to schedule timetables weekly
