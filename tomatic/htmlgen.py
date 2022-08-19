@@ -181,7 +181,6 @@ class HtmlGen(object):
             self.htmlSetmana()+
             self.htmlTable()+
             self.htmlExtensions()+
-            #self.htmlFixExtensions()+
             self.htmlFooter()
         )
 
@@ -228,15 +227,6 @@ class HtmlGen(object):
         ])
 
         return html
-
-    def htmlFixExtensions(self):
-        return (
-            u"""<div class="extensions">\n"""
-            u"""</div>\n"""
-            u"""<h3>Recordatori desviaments</h3>\n"""
-            u"""<ul>\n"""
-            u"""</ul>\n"""
-        )
 
     def nameToExtension(self, name):
         return self.yaml.extensions[name]
