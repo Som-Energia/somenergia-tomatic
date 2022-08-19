@@ -134,7 +134,7 @@ def list():
             """.tooltip {{ visibility: hidden; position:absolute; cursor: link; width: 20em; background: #ffa; border: 1px solid grey; padding:1ex}}"""
             """td:hover .tooltip {{ visibility: visible}}</style>"""
         """<p><form action='run' method='post'>"""
-            """<label>Dilluns&nbsp;(YYYY-MM-DD):&nbsp;<input name=monday type=date value={nexmonday} step=7 required /></label><br/>"""
+            """<label>Setmana:&nbsp;<input name=monday type=date value={nexmonday} step=7 required /></label><br/>"""
             """<label>Linies:&nbsp;<input name=nlines type=number value={nlines} step=1 required/></label><br/>"""
             """<label>Descripció:&nbsp;<input name=description type=text /></label><br/>"""
             """<label>Dies a omplir primer:&nbsp;<input name="search_days" type=text /> (dl, dm, dx, dj, dv, separats per comes)</label><br/>"""
