@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Improved timetable planner input fields
+  - Week chosen by a date picker restricted to mondays
+  - nlines uses a number field
+
 ## 4.7.2 2022-08-19
 
 - Timetable cron: Use dbconfig.tomatic.supportmail in the
