@@ -114,7 +114,7 @@ Segurament es deu a algun error de configuració.
 
 Revisa el missatge al final de tot de [la sortida]({config.baseUrl}/api/planner/status/{execution_id}),
 i si no es res que puguis interpretar tu mateixa,
-reenvia aquest mateix correu a incidencies de l'equip de webapps d'IT.
+reenvia aquest mateix correu a incidencies ({dbconfig.tomatic.supportemail}).
 """
 
 
