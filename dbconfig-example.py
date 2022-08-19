@@ -8,7 +8,7 @@ tomatic=ns(
     # local timetable storage directory
     storagepath='/home/vokimon/somenergia/somenergia-tomatic/graelles',
     # mail to report issues
-    supportmail='frontend@somenergia.coop',
+    supportmail='support@mycompany.com',
     # Choose the PBX backend:
     # - fake: emulates a real PBX
     # - asteriskcli: connects asterisk by ssh
