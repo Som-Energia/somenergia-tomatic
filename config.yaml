@@ -10,7 +10,7 @@ idealLoadNamesRange: carregaideal_noms
 idealLoadValuesRange: carregaideal_valors
 leavesSheet: Baixes
 monitoringFile: taula.html
-nTelefons: 6
+nTelefons: 8
 diesCerca:
 - dj
 - dv
