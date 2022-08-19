@@ -24,7 +24,7 @@ No he pogut generar la graella per la setmana del {monday}.
 
 config = ns.load('config.yaml')
 monday = sys.argv[1]
-minutes = 2
+minutes = 2*60
 
 def apiPost(url, **params):
     response = requests.post(
