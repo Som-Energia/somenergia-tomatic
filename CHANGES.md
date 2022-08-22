@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Locking callinfo autorefresh while annotating
 - Improved timetable planner input fields
   - Week chosen by a date picker restricted to mondays
   - nlines uses a number field

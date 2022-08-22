@@ -200,9 +200,14 @@ Questionnaire.openCaseAnnotationDialog = function() {
   }
 
   Dialog.show(function() {
+    var oldAutoRefresh = CallInfo.autoRefresh;
+    CallInfo.autoRefresh = false;
     return {
       className: 'card-annotate-case',
       backdrop: true,
+      didHide: (id) => {
+        CallInfo.autoRefresh=oldAutoRefresh
+      },
       title: "Anotar trucada",
       body: m(".layout.horizontal", [
         m(".layout.vertical.flex", [
