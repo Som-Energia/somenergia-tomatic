@@ -1,11 +1,13 @@
 # Changelog
 
-## Unreleased
+## 4.7.3 2022-08-22
 
 - Locking callinfo autorefresh while annotating
 - Improved timetable planner input fields
   - Week chosen by a date picker restricted to mondays
   - nlines uses a number field
+- wednesday placed first on the search order since
+  it is now the harder day to allocate every week.
 
 ## 4.7.2 2022-08-19
 
