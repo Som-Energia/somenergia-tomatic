@@ -94,13 +94,18 @@ class CallInfo(object):
             id_soci=self.anonymize(partner_data.ref) if partner_data.ref else "",
             lang=partner_data.lang,
             name=self.anonymize(partner_data.name),
+            address=self.anonymize(partner_data.www_street) if partner_data.www_street else "",
             city=partner_data.www_municipi[1]['name'] if partner_data.www_municipi else "",
             email=self.anonymize(partner_data.www_email),
             state=partner_data.www_provincia[1]['name'] if partner_data.www_provincia else "",
             dni=self.anonymize(partner_data.vat),
             ov=partner_data.empowering_token != False,
             energetica=24 in partner_data.category_id,
-            )
+            phones=(
+                ([self.anonymize(partner_data.www_phone)] if partner_data.www_phone else [])+
+                ([self.anonymize(partner_data.www_mobile)] if partner_data.www_mobile else [])
+            ),
+        )
         return result
 
     def getPartnerRelatedContracts(self, partner_id):
@@ -110,19 +115,21 @@ class CallInfo(object):
             ('administradora', '=', partner_id),
             ('pagador', '=', partner_id),
             ('soci', '=', partner_id),
-        ])
+        ], 0, 0, False, {'active_test':False})
         if not contract_ids: return []
         contracts = self.O.GiscedataPolissa.read(contract_ids, [
             'titular',
             'administradora',
             'pagador',
             'soci',
+            'active',
         ])
         return [
             contract['id']
             for contract in sorted(contracts,
                 reverse=True,
                 key=lambda x: (0
+                    + (16 if x['active'] else 0)
                     + (8 if x['titular'][0] == partner_id else 0)
                     + (4 if x['administradora'] and x['administradora'][0]== partner_id else 0)
                     + (2 if x['pagador'][0] == partner_id else 0)
@@ -139,6 +146,9 @@ class CallInfo(object):
             'www_email',
             'www_provincia',
             'www_municipi',
+            'www_street',
+            'www_phone',
+            'www_mobile',
             'name',
             'ref',
             'lang',

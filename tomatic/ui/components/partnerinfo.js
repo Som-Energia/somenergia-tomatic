@@ -12,6 +12,12 @@ var CallInfo = require('./callinfo');
 var PartnerInfo = {};
 
 var infoPartner = function(){
+  const languages = {
+    'ca_ES': "Català",
+    'es_ES': "Castellano",
+    'eu_ES': "Euskara",
+    'gl_ES': "Galego",
+  };
   var partner = CallInfo.selectedPartner()
   var helpscouturl = "https://secure.helpscout.net/search/?query=";
   var emails = partner.email.split(",");
@@ -19,27 +25,55 @@ var infoPartner = function(){
   return m(".partner-info",
     [
       m(".partner-info-item", [
-        m("", m(".label-right",partner.id_soci)),
+        m("", m(".label-right",
+          m('i.fa.fa-id-card', {'aria-label': "NIF"}),
+          " ",
+          dni,
+          " ",
+          m('i.fa.fa-id-badge', {'aria-label': "Codi Socia"}),
+          " ",
+          partner.id_soci)),
         m("", m(".label",partner.name))
       ]),
-      m(".partner-info-item", dni),
-      m(".partner-info-item", [partner.city, ", ", partner.state]),
-      m(".partner-info-item", m("",
+      m(".partner-info-item",
+        m('i.fa.fa-map-marker', {'aria-label':"Adreça"}),
+        " ",
+        partner.address || m('span.red', "Sense adreça")
+      ),
+      m(".partner-info-item", " ",
+        partner.city || m('span.red', "Sense municipi"),
+        ", ",
+        partner.state || m('span.red', "Sense província"),
+      ),
+      m(".partner-info-item",
+        m(".label-right",
+          m('i.fa.fa-grin-tongue', {'aria-label': "Idioma"}),
+          " ",
+          languages[partner.lang] || partner.lang || m('span.red', 'Sense idioma preferent')
+        ),
         emails.map(function(email) {
           return m(".partner-info-item",
+            m('i.fa.fa-envelope'), " ",
+            email, " (",
             m("a", {
               href: helpscouturl+email,
               target:"_blank",
-              title: "Cerca al Helpscout"
-            }, email)
+              title: "Cerca correus al Helpscout"
+            }, "Helpscout"),
+            ")"
           );
-        })
-      )),
+        }),
+      ),
+      m(".partner-info-item", m("",
+          m('i.fa.fa-phone'),
+          " ",
+          partner.phones.join(" - ")
+        )
+      ),
       m(".partner-info-item", (partner.energetica ?
         m(".label-energetica","Soci d'Energetica.") : "")
       ),
       m(".partner-info-item", [
-        m("", m(".label-right",partner.lang)),
         m("", m(".label","Ha obert OV? "), (partner.ov ? "Sí" : "No"))
       ]),
     ]

@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- Callinfo: Helpscout link explicit instead of being the email
+- Callinfo: Show inactive contracts at the end
+- Callinfo: Person fields labelled by icons
+- Callinfo: New info: person's phones
+- Callinfo: New info: person's address
+- Callinfo: Human idiom name
+- Callinfo: Missing fields marked in red
+
 ## 4.7.3 2022-08-22
 
 - Locking callinfo autorefresh while annotating
