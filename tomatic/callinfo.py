@@ -520,7 +520,7 @@ class CallInfo(object):
     def contractDetails(self, contract_numbers):
         contracts_ids = self.O.GiscedataPolissa.search([
             ('name', 'in', contract_numbers),
-        ])
+        ], 0,0,False, {'active_test': False})
         contracts = self.O.GiscedataPolissa.read(contracts_ids, [
             'name',
             'comptadors'
