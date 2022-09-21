@@ -332,7 +332,7 @@ var buttons = function(contracts) {
   if (partner === null) { return null; }
   return partner.contracts.map(function(contract, index) {
     return {
-      label: contract.number,
+      label: m('span'+(contract.end_date?'.inactive-contract':''), contract.number),
       selected: index == CallInfo.currentContract,
     };
   });
