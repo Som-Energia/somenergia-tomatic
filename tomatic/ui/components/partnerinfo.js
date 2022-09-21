@@ -22,34 +22,40 @@ var infoPartner = function(){
   var helpscouturl = "https://secure.helpscout.net/search/?query=";
   var emails = partner.email.split(",");
   var dni = (partner.dni.slice(0,2) === 'ES' ? partner.dni.slice(2) : partner.dni)
+  const markedErrorIfMissing = function(value, message) {
+        return value || m('span.red', message)
+  }
   return m(".partner-info",
     [
       m(".partner-info-item", [
-        m("", m(".label-right",
+        m("", m(".label-right", [
           m('i.fa.fa-id-card', {'aria-label': "NIF"}),
           " ",
-          dni,
-          " ",
+          markedErrorIfMissing(dni, "Sense NIF"),
+          " - ",
           m('i.fa.fa-id-badge', {'aria-label': "Codi Socia"}),
           " ",
-          partner.id_soci)),
+          markedErrorIfMissing(partner.id_soci, "No codi socia")
+        ])),
         m("", m(".label",partner.name))
       ]),
       m(".partner-info-item",
         m('i.fa.fa-map-marker', {'aria-label':"Adreça"}),
         " ",
-        partner.address || m('span.red', "Sense adreça")
+        markedErrorIfMissing(partner.address, "Sense adreça")
       ),
-      m(".partner-info-item", " ",
-        partner.city || m('span.red', "Sense municipi"),
+      m(".partner-info-item",
+        m('i.fa.fa-city', {'aria-label':"Municipi i Província"}),
+        " ",
+        markedErrorIfMissing(partner.city, "Sense municipi"),
         ", ",
-        partner.state || m('span.red', "Sense província"),
+        markedErrorIfMissing(partner.state, "Sense província"),
       ),
       m(".partner-info-item",
         m(".label-right",
           m('i.fa.fa-grin-tongue', {'aria-label': "Idioma"}),
           " ",
-          languages[partner.lang] || partner.lang || m('span.red', 'Sense idioma preferent')
+          markedErrorIfMissing(languages[partner.lang] || partner.lang, 'Sense idioma preferent')
         ),
         emails.map(function(email) {
           return m(".partner-info-item",
