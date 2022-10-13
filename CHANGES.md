@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.7.5 2022-10-13
+
+- Scheduler: Fixed getting odoo vacations
+
 ## 4.7.4 2022-09-21
 
 - Callinfo: Helpscout link explicit instead of being the email
