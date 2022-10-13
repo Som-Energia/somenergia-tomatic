@@ -126,7 +126,9 @@ def downloadVacations_odoo(config):
     erp = erppeek.Client(**dbconfig.tomatic.holidaysodoo)
     firstDay = addDays(config.monday, 0)
     lastDay = addDays(config.monday, 4)
-    absences = erp.model('hr.leave').get_leaves(str(firstDay), str(lastDay))
+    absences = erp.model('hr.leave').get_leaves(
+        firstDay.strftime("%Y-%m-%d"), lastDay.strftime("%Y-%m-%d")
+    )
 
     def dateFromIso(isoString):
         return datetime.datetime.strptime(
