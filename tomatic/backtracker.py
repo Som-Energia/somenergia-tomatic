@@ -323,6 +323,7 @@ class Backtracker(object):
 
     def solve(self) :
         self.nbactracks = 0
+        self.nningus = 0
         while not self.terminated:
             self.perseveredNodes = 0
             self.solveTorn([])
@@ -523,6 +524,9 @@ class Backtracker(object):
                         .format(company, day))
                     continue
 
+            if company == "ningu" and self.nningus == self.config.maximNingus:
+                continue
+
             # Reasons to penalize chosing that person
 
             def penalize(value, short, reason):
@@ -589,6 +593,8 @@ class Backtracker(object):
                     self.phoningOnGroup[g, day, hora] -=1
 
             # Anotem la casella
+            if company == "ningu":
+                self.nningus += 1
             self.cost += cost
             self.penalties += penalties
             #if telefon == 0: self.tePrincipal[company, day]+=1
@@ -605,6 +611,8 @@ class Backtracker(object):
             self.perseveredNodes += 1
 
             # Desanotem la casella
+            if company == "ningu":
+                self.nningus -= 1
             unmarkGroups(company,day,hora)
             self.telefonsALaTaula[day,hora,taula]-=1
             self.unuseShift(company, telefon)
