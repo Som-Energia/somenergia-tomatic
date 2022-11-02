@@ -1,19 +1,19 @@
-[34;1m:: Carregant configuració config.yaml...[0m
-[34;1m:: Generant càrrega...[0m
-[34;1m::   Carregant dades...[0m
-[34;1m::     Llegint festius...[0m
-[34;1m::     Llegint carrega ideal...[0m
-[34;1m::     Llegint vacances...[0m
-[34;1m::     Llegint baixes...[0m
-[34;1m::     Llegint altres indisponibilitats...[0m
-[34;1m::     Llegint credits i deutes (bossa d'hores)...[0m
-[34;1m::   Ponderant la ideal...[0m
-[32;1m>>     Surten 26 torns[0m
-[34;1m::   Limitant a la capacitat real...[0m
-[34;1m::   Completant la carrega de 26 a 32...[0m
-[32;1m>>     Carrega assolida 26[0m
-[34;1m::   Compensant deute amb credit...[0m
-[33mWarning: 26 torns no arriben als 32 requerits. S'assignent 6 torns, a ningu[0m
+:: Carregant configuració config.yaml...
+:: Generant càrrega...
+::   Carregant dades...
+::     Llegint festius...
+::     Llegint carrega ideal...
+::     Llegint vacances...
+::     Llegint baixes...
+::     Llegint altres indisponibilitats...
+::     Llegint credits i deutes (bossa d'hores)...
+::   Ponderant la ideal...
+>>     Surten 26 torns
+::   Limitant a la capacitat real...
+::   Completant la carrega de 26 a 32...
+>>     Carrega assolida 26
+::   Compensant deute amb credit...
+Warning: 26 torns no arriben als 32 requerits. S'assignent 6 torns, a ningu
 La sobrecarrega d'aquesta setmana seria:
 carol: -0.4
 diana: -0.4
@@ -28,17 +28,17 @@ kate: 0.4
 mary: 0.4
 olivia: 0.4
 petra: 0.4
-[34;1m:: Desant sobrecàrrega com a overload.yaml[0m
-[34;1m:: Desant càrrega final com a carrega-2022-07-11.yaml[0m
-[34;1m:: Desant càrrega distribuida en linies com a carrega-2022-07-11.csv[0m
-[34;1m:: Desant càrrega distribuida en linies com a carrega.csv[0m
-[33mWarning: No s'ha aconseguit una carrega de 32. S'han hagut d'omplir 6 forats amb ningú[0m
-[34;1m:: Muntant el solucionador...[0m
-[33mWarning: No s'inclouran els dies festius: dv, dl, dx.[0m
-[33mWarning: Configuration 'minIdleInGroup' uses group 'it' not defined in 'groups'[0m
-[33mWarning: Configuration 'maxPhoningInGroup' uses group 'infern' not defined in 'groups'[0m
-[33mWarning: Configuration 'maxPhoningInGroup' uses group 'casademont' not defined in 'groups'[0m
-[34;1m:: Generant horari...[0m
+:: Desant sobrecàrrega com a overload.yaml
+:: Desant càrrega final com a carrega-2022-07-11.yaml
+:: Desant càrrega distribuida en linies com a carrega-2022-07-11.csv
+:: Desant càrrega distribuida en linies com a carrega.csv
+Warning: No s'ha aconseguit una carrega de 32. S'han hagut d'omplir 6 forats amb ningú
+:: Muntant el solucionador...
+Warning: No s'inclouran els dies festius: dv, dl, dx.
+Warning: Configuration 'minIdleInGroup' uses group 'it' not defined in 'groups'
+Warning: Configuration 'maxPhoningInGroup' uses group 'infern' not defined in 'groups'
+Warning: Configuration 'maxPhoningInGroup' uses group 'casademont' not defined in 'groups'
+:: Generant horari...
 Nom	Ideal	Proporcional	Augmentada	CapacitatReal	Topall	AplicatTopall	CobrintTorns	CompensantDeutes	Final	Sobrecarrega	CreditCarregat	CreditInicial	CreditFinal
 alice	4	1.6	1.6	4	2	2	2	2	2	0.4	0	0	0
 barbara	3	1.2	1.2	4	1	1	1	1	1	-0.2	0	0	0
@@ -74,7 +74,7 @@ Solució incomplerta 13/32 caselles, cost 4
 Solució incomplerta 14/32 caselles, cost 5
 Solució incomplerta 15/32 caselles, cost 6
 Solució incomplerta 16/32 caselles, cost 7
-[33mWarning: A liza nomes li queden 2 forats per posar 3 hores[0m
+Warning: A liza nomes li queden 2 forats per posar 3 hores
 Solució incomplerta 16/32 caselles, cost 6
 Solució incomplerta 16/32 caselles, cost 6
 Solució incomplerta 16/32 caselles, cost 6
@@ -99,32 +99,24 @@ Solució incomplerta 21/32 caselles, cost 7
 Solució incomplerta 22/32 caselles, cost 8
 Solució incomplerta 23/32 caselles, cost 10
 Solució incomplerta 24/32 caselles, cost 13
-[33mWarning: liza es queda sense esmorzar el dm[0m
+Warning: liza es queda sense esmorzar el dm
 Solució incomplerta 25/32 caselles, cost 17
 Solució incomplerta 26/32 caselles, cost 22
 Solució incomplerta 27/32 caselles, cost 22
 Solució incomplerta 28/32 caselles, cost 22
-[33mWarning: liza te hores separades el dm[0m
+Warning: liza te hores separades el dm
 Solució incomplerta 28/32 caselles, cost 17
 Solució incomplerta 28/32 caselles, cost 17
 Solució incomplerta 29/32 caselles, cost 23
 Solució incomplerta 30/32 caselles, cost 23
 Solució incomplerta 31/32 caselles, cost 24
-Solució trobada amb cost 25.
-[33mWarning: Afegir ningu suma masa cost: 63[0m
-Solució trobada amb cost 25.
-Solució trobada amb cost 25.
-Solució trobada amb cost 25.
-Solució trobada amb cost 25.
+Warning: petra te hores separades el dm
+Solució incomplerta 31/32 caselles, cost 24
+Solució trobada amb cost 105.
+Solució trobada amb cost 105.
 Solució trobada amb cost 25.
 Solució trobada amb cost 25.
 Solució trobada amb cost 25.
-Solució trobada amb cost 25.
-Solució trobada amb cost 25.
-Solució trobada amb cost 25.
-Solució trobada amb cost 25.
-Solució trobada amb cost 25.
-[33mWarning: petra te hores separades el dm[0m
 Solució trobada amb cost 25.
 Solució trobada amb cost 25.
 Solució trobada amb cost 25.
@@ -139,6 +131,7 @@ Solució trobada amb cost 25.
 Solució trobada amb cost 25.
 Solució trobada amb cost 25.
 Solució trobada amb cost 19.
+Warning: Afegir ningu suma masa cost: 59
 Solució trobada amb cost 19.
 Solució trobada amb cost 19.
 Solució trobada amb cost 19.
@@ -152,6 +145,8 @@ Solució trobada amb cost 19.
 Solució trobada amb cost 19.
 Solució trobada amb cost 19.
 Solució trobada amb cost 19.
+Warning: Afegir ningu suma masa cost: 23
+Warning: Hi ha masses ningús en aquest dia dm i hora 3
 Solució trobada amb cost 19.
 Solució trobada amb cost 19.
 Solució trobada amb cost 19.
@@ -163,7 +158,6 @@ Solució trobada amb cost 19.
 Solució trobada amb cost 19.
 Solució trobada amb cost 19.
 Solució trobada amb cost 19.
-[33mWarning: Afegir ningu suma masa cost: 23[0m
 Solució trobada amb cost 19.
 Solució trobada amb cost 19.
 Solució trobada amb cost 19.
@@ -180,134 +174,6 @@ Solució trobada amb cost 19.
 Solució trobada amb cost 19.
 Solució trobada amb cost 19.
 Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 19.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
 Solució trobada amb cost 17.
 Solució trobada amb cost 17.
 Solució trobada amb cost 17.
@@ -328,6 +194,7 @@ Solució trobada amb cost 17.
 Solució trobada amb cost 17.
 Solució trobada amb cost 17.
 Solució trobada amb cost 17.
+Warning: Afegir ningu suma masa cost: 57
 Solució trobada amb cost 17.
 Solució trobada amb cost 17.
 Solució trobada amb cost 17.
@@ -357,7 +224,6 @@ Solució trobada amb cost 17.
 Solució trobada amb cost 17.
 Solució trobada amb cost 17.
 Solució trobada amb cost 17.
-[33mWarning: Afegir ningu suma masa cost: 21[0m
 Solució trobada amb cost 17.
 Solució trobada amb cost 17.
 Solució trobada amb cost 17.
@@ -425,6 +291,7 @@ Solució trobada amb cost 17.
 Solució trobada amb cost 17.
 Solució trobada amb cost 17.
 Solució trobada amb cost 17.
+Warning: Afegir ningu suma masa cost: 21
 Solució trobada amb cost 17.
 Solució trobada amb cost 17.
 Solució trobada amb cost 17.
@@ -685,101 +552,40 @@ Solució trobada amb cost 17.
 Solució trobada amb cost 17.
 Solució trobada amb cost 17.
 Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
-Solució trobada amb cost 17.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
+Solució trobada amb cost 15.
 Solució trobada amb cost 15.
 Solució trobada amb cost 15.
 Solució trobada amb cost 15.
@@ -842,6 +648,7 @@ Solució trobada amb cost 15.
 Solució trobada amb cost 15.
 Solució trobada amb cost 15.
 Solució trobada amb cost 15.
+Warning: Afegir ningu suma masa cost: 55
 Solució trobada amb cost 15.
 Solució trobada amb cost 15.
 Solució trobada amb cost 15.
@@ -1354,5 +1161,5 @@ Solució trobada amb cost 15.
 Solució trobada amb cost 15.
 Solució trobada amb cost 15.
 Solució trobada amb cost 15.
-[34;1m:: Millor graella grabada a 'graella-telefons-2022-07-11.html'[0m
-[34;1m:: Millor graella grabada a 'graella-telefons-2022-07-11.yaml'[0m
+:: Millor graella grabada a 'graella-telefons-2022-07-11.html'
+:: Millor graella grabada a 'graella-telefons-2022-07-11.yaml'
