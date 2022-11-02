@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.8.0 2022-11-02
+
+- Limit the number of ningus on a turn
+
 ## 4.7.5 2022-10-13
 
 - Scheduler: Fixed getting odoo vacations
