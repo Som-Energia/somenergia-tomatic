@@ -21,20 +21,23 @@ class Api_Test(unittest.TestCase):
         self.maxDiff = None
         self.client = TestClient(api.app)
 
+    def getTimeTableObjectStructure(self, time_table):
+        return ns(
+            hours=['09:00', '10:15'],
+            turns=['L1', 'L2'],
+            timetable=ns(time_table)
+        )
+
     @patch("tomatic.api.schedulestorage.Storage.load")
     @patch("tomatic.api.schedulestorage.Storage.save")
     def test_editSlot_baseCase(self, mocked_saver, mocked_loader):
         # Given a time table
-        old_time_table = ns(
-            hours=['09:00', '10:15'],
-            turns=['L1', 'L2'],
-            timetable=ns(
-                dl=[
-                    ['vic', 'cire', 'carme'],
-                    ['vic', 'cire', 'carme'],
-                ]
-            )
-        )
+        old_time_table = self.getTimeTableObjectStructure({
+            'dl': [
+                ['vic', 'cire', 'carme'],
+                ['vic', 'cire', 'carme'],
+            ]
+        })
         mocked_loader.return_value = old_time_table
         day = 'dl'
         hour_index = 0
@@ -60,16 +63,12 @@ class Api_Test(unittest.TestCase):
     @patch("tomatic.api.schedulestorage.Storage.save")
     def test_editSlot_ningusLimit(self, mocked_saver, mocked_loader):
         # Given a time table
-        old_time_table = ns(
-            hours=['09:00', '10:15'],
-            turns=['L1', 'L2'],
-            timetable=ns(
-                dl=[
-                    ['vic', 'ningu', 'ningu'],
-                    ['vic', 'ningu', 'ningu'],
-                ]
-            )
-        )
+        old_time_table = self.getTimeTableObjectStructure({
+            'dl': [
+                ['vic', 'ningu', 'ningu'],
+                ['vic', 'ningu', 'ningu'],
+            ]
+        })
         mocked_loader.return_value = old_time_table
         day = 'dl'
         hour_index = 0

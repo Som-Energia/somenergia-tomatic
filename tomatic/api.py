@@ -213,7 +213,7 @@ async def editSlot(week, day, houri: int, turni: int, name, request: Request):
     graella = schedules.load(week)
     # TODO: Ensure day, houri, turni and name are in graella
     oldName = graella.timetable[day][int(houri)][int(turni)]
-    if name == 'ningu' and occurrencesInTurn(graella, day, houri, name) == 2:  # TODO: Magic number
+    if name == 'ningu' and occurrencesInTurn(graella, day, houri, name) == CONFIG.maxNingusPerTurn:
         raise ApiError("Hi ha masses Ningu en aquest torn")
     graella.timetable[day][int(houri)][int(turni)] = name
     graella.overload = graella.get('overload', ns())
