@@ -77,6 +77,7 @@ setup(
         'lxml',
         'erppeek',
         'ERPPeek-WST',
+        'mock',
     ],
     classifiers = [
         'Programming Language :: Python',

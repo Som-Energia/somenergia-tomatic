@@ -183,7 +183,7 @@ Tomatic.editCell = function(day,houri,turni,name,myname) {
 		Tomatic.requestGrid(Tomatic.grid().week);
 	}, function(error) {
 		Tomatic.error("Problemes editant la graella: "+
-			(error.error || "Inexperat"));
+			(error || "Inexperat"));
 	});
 };
 Tomatic.setPersonData = function (name, data) {

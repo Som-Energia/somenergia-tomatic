@@ -78,6 +78,11 @@ app = FastAPI()
 app.include_router(Planner, prefix='/api/planner')
 
 
+def occurrencesInTurn(graella, day, houri, name):
+    nominated = graella.timetable[day][int(houri)]
+    return nominated.count(name)
+
+
 class ApiError(Exception): pass
 
 def yamlfy(status=200, data=[], **kwd):
@@ -208,6 +213,8 @@ async def editSlot(week, day, houri: int, turni: int, name, request: Request):
     graella = schedules.load(week)
     # TODO: Ensure day, houri, turni and name are in graella
     oldName = graella.timetable[day][int(houri)][int(turni)]
+    if name == 'ningu' and occurrencesInTurn(graella, day, houri, name) == CONFIG.maxNingusPerTurn:
+        raise ApiError("Hi ha masses Ningu en aquest torn")
     graella.timetable[day][int(houri)][int(turni)] = name
     graella.overload = graella.get('overload', ns())
     graella.overload[oldName] = graella.overload.get(oldName, 0) -1
