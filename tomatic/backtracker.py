@@ -524,7 +524,7 @@ class Backtracker(object):
                         .format(company, day))
                     continue
 
-            if company == "ningu" and self.nningus == self.config.maximNingus:
+            if company == "ningu" and self.nningus == self.config.maxNingusPerTurn:
                 continue
 
             # Reasons to penalize chosing that person
