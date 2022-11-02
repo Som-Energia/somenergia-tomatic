@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.9.0 2022-11-02
+
+- Limit the number of ningus on a turn when the time table was created
+
 ## 4.8.0 2022-11-02
 
 - Limit the number of ningus on a turn
