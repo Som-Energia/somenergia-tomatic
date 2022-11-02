@@ -31,6 +31,7 @@ maxNodesToPersevere: 10000 # How long, in node visits on the search tree, the se
 costLimit: 200 # Minimum cost to consider, partial solutions above that will be discarded
 descartaNoPrometedores: true # Prune partial solutions which already have bad penalty (proportional cost is very beyond the limit)
 deixaEsmorzar: true     # True to force free one of the middle time slot to lunch
+maxNingusPerTurn: 2
 noVolenEsmorzar: # Specific persons that do not want to lunch
 - ningu
 maximPerTaula: 2   # Maximum number of persons attending phone at the same time on the same table, to avoid cacophonies
