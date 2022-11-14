@@ -3,7 +3,7 @@
 #    sudo chmod 755 crontab
 #    sudo ln -s $(pwd)/crontab /etc/cron.d/tomatic
 SHELL=/bin/bash
-TOMATIC_PATH=/opt/www/somenergia-tomatic
+TOMATIC_PATH=/opt/www/somenergia-tomatic/scripts
 PATH=/opt/www/somenergia-tomatic/.venv/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 TOMATIC_CRONLOG=/var/log/somenergia/crontab-tomatic.log
 
