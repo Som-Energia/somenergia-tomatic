@@ -44,11 +44,11 @@ timetable:
     - ningu
     - jolie
   - - liza
-    - ningu
-    - ningu
-    - petra
-  - - liza
     - noel
+    - olivia
+    - ningu
+  - - liza
+    - ningu
     - olivia
     - petra
   dx:
@@ -83,8 +83,8 @@ timetable:
     - jolie
   - - liza
     - mary
-    - olivia
     - ningu
+    - petra
   dv:
   - - festiu
     - festiu
@@ -129,16 +129,28 @@ penalties:
   - diana té més de 1 hores el dj
 - - 1
   - gemma té més de 1 hores el dj
+- - 10
+  - Hi ha 1 torns buits a 3a hora del dj
+- - 10
+  - Hi ha 1 torns buits a 0a hora del dm
+- - 10
+  - Hi ha 1 torns buits a 1a hora del dm
 - - 1
   - ningu té més de 1 hores el dm
+- - 20
+  - Hi ha 2 torns buits a 1a hora del dm
 - - 2
   - ningu té més de 2 hores el dm
+- - 10
+  - Hi ha 1 torns buits a 2a hora del dm
 - - 3
   - ningu té més de 3 hores el dm
+- - 1
+  - liza té més de 1 hores el dm
+- - 10
+  - Hi ha 1 torns buits a 3a hora del dm
 - - 4
   - ningu té més de 4 hores el dm
 - - 1
-  - liza té més de 1 hores el dm
-- - 1
-  - petra té més de 1 hores el dm
-cost: 15
+  - olivia té més de 1 hores el dm
+cost: 85

@@ -43,6 +43,7 @@ costHoresDiscontinues: 40
 costHoresConcentrades: 1
 costTaulaSorollosa: 5
 costHoraNoDesitjada: 0
+costTornBuit: 10 # Penalty for having empty slots a day (Overall effect multipies this cost by n·(n-1)/2, being n the number of non-continuous hours)
 tables:
   marc: 16
   joan: 5

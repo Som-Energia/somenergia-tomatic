@@ -58,6 +58,7 @@ costHoresDiscontinues: 40
 costHoresConcentrades: 1
 costTaulaSorollosa: 5
 costHoraNoDesitjada: 10
+costTornBuit: 10
 maxPhoningInGroup:
   infern: 2
   casademont: 4

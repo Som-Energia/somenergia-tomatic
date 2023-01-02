@@ -526,9 +526,9 @@ class Backtracker(object):
 
             if company == "ningu" and self.ningusPerTurn[day,hora] == self.config.maxNingusPerTurn:
                 self.cut(
-                    "Ningus",
+                    "MassaForats",
                     partial,
-                    "Hi ha masses ningús en aquest dia {} i hora {}".format(day, hora)
+                    "Hi ha masses forats a {}a hora del {}".format(hora+1, day)
                 )
                 continue
 
@@ -547,6 +547,16 @@ class Backtracker(object):
                 if self.config.costHoresDiscontinues:
                     cost += penalize(self.config.costHoresDiscontinues, "Discontinu",
                         "{} te hores separades el {}".format(company, day))
+
+            if company == "ningu":
+                cost += penalize(self.config.costTornBuit * (self.ningusPerTurn[day,hora]+1),
+                    "ForatsSimultanis",
+                    u"Hi ha {} torns buits a {}a hora del {}".format(
+                        self.ningusPerTurn[day,hora]+1,
+                        hora+1,
+                        day,
+                    )
+                )
 
             undesiredReason = self.isUndesiredShift(company, day, hora)
             if undesiredReason:
@@ -693,6 +703,7 @@ class Backtracker(object):
                 timeOfLastSolution=u(datetime.datetime.utcnow()),
                 unfilledCell=unfilled,
                 busyReasons=busyReasons,
+                penalties=penalties,
             ).dump('status-temp.yaml')
             # To avoid reading half written files
             Path('status-temp.yaml').rename('status.yaml')

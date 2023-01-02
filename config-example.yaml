@@ -43,6 +43,7 @@ costHoresDiscontinues: 40   # Penalty for a person having non-continuous shifts 
 costHoresConcentrades: 1   # Penalty for a person having continuous shift a day. Overall effect multipies this cost by n·(n-1)/2, being n the number of continuous hours
 costTaulaSorollosa: 5   # Penalty for having a simultaneus persons on the same table. Overall effect multipies this cost by n·(n-1)/2, being n the number of person on the same table.
 costHoraNoDesitjada: 0   # Penalty for having a shift that a person marked as optionally busy
+costTornBuit: 10 # Penalty for having empty slots a day (Overall effect multipies this cost by n·(n-1)/2, being n the number of non-continuous hours)
 maxPhoningInGroup: # A limit for the persons simultaneously doing shifts in that group
   ningu: 8
 minIdleInGroup: # A limit for the persons simultaneously NOT doing shifts in each group
