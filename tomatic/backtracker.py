@@ -79,16 +79,10 @@ class Backtracker(object):
         self.busyReasons = self.busy.explain()
         self.undesiredShifts = self.initUndesiredTable(*busyFiles)                # (day,turn,person) reason
 
-        self.teTelefon = createTable(False,  self.dies, range(len(self.hours)), self.companys)  # (day,turn,person) has phone?
+        self.teTelefon = createTable(False,  self.dies, range(len(self.hours)), self.companys)  # (day, hour,person) has phone?
         self.tePrincipal = createTable(0,  self.companys, self.dies)    # (person,day) first turns?
         self.horesDiaries = createTable(0,  self.companys, self.dies)   # (person,day) turns?
-        self.ningusPerTurn = dict(
-            dl=[ 0, 0, 0, 0 ],
-            dm=[ 0, 0, 0, 0 ],
-            dx=[ 0, 0, 0, 0 ],
-            dj=[ 0, 0, 0, 0 ],
-            dv=[ 0, 0, 0, 0 ],
-        )
+        self.ningusPerTurn = createTable(0, self.dies, range(len(self.hours))) # (day, hour)
 
         self.tables = config.get('tables',{})                           # (person) table
         self.telefonsALaTaula = createTable(0,                          # (day,turn,table) phones actives?
@@ -530,7 +524,7 @@ class Backtracker(object):
                         .format(company, day))
                     continue
 
-            if company == "ningu" and self.ningusPerTurn[day][hora] == self.config.maxNingusPerTurn:
+            if company == "ningu" and self.ningusPerTurn[day,hora] == self.config.maxNingusPerTurn:
                 self.cut(
                     "Ningus",
                     partial,
@@ -605,7 +599,7 @@ class Backtracker(object):
 
             # Anotem la casella
             if company == "ningu":
-                self.ningusPerTurn[day][hora] += 1
+                self.ningusPerTurn[day,hora] += 1
             self.cost += cost
             self.penalties += penalties
             #if telefon == 0: self.tePrincipal[company, day]+=1
@@ -623,7 +617,7 @@ class Backtracker(object):
 
             # Desanotem la casella
             if company == "ningu":
-                self.ningusPerTurn[day][hora] -= 1
+                self.ningusPerTurn[day,hora] -= 1
             unmarkGroups(company,day,hora)
             self.telefonsALaTaula[day,hora,taula]-=1
             self.unuseShift(company, telefon)
