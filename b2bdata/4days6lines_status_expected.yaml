@@ -1,0 +1,91 @@
+totalCells: 96
+completedCells: 72
+solutionCost: 50
+timeOfLastSolution: '2023-01-02 20:19:26.889056'
+unfilledCell: dj 09:00 L1
+busyReasons:
+  albert:
+  - Portar els nens al cole
+  carme:
+  - Export/Import
+  eduard:
+  - Primera hora porto nena a escola
+  eloi:
+  - Arribo tard
+  erola:
+  - arriba mes tard
+  joan:
+  - Primera hora
+  judith:
+  - Ioga
+  merce:
+  - Conciliació familiar
+  monicag:
+  - He de deixar el fill a escola
+  nuria:
+  - Conciliació familiar
+  silvia:
+  - teletreball
+  tania:
+  - no hi soc
+  victor:
+  - Per poder portar a la Bruna a l'escoleta m'aniria bé no fer telèfon a primera
+    hora. Gràcies
+penalties:
+- - 5
+  - carme té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dl
+- - 0
+  - 'guifre fa dl a 1a hora que no li va be perque: "Bioritme de Tarda"'
+- - 5
+  - guifre té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dl
+- - 1
+  - aram té més de 1 hores el dl
+- - 1
+  - adria té més de 1 hores el dl
+- - 0
+  - 'guifre fa dl a 2a hora que no li va be perque: "Reunions Traspàs Factura"'
+- - 1
+  - guifre té més de 1 hores el dl
+- - 5
+  - guifre té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dl
+- - 1
+  - carme té més de 1 hores el dl
+- - 0
+  - 'joanb fa dl a 4a hora que no li va be perque: "Dinar a les 13h"'
+- - 1
+  - joanb té més de 1 hores el dl
+- - 1
+  - joanm té més de 1 hores el dl
+- - 5
+  - albertg té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dm
+- - 1
+  - gemma té més de 1 hores el dm
+- - 1
+  - carme té més de 1 hores el dm
+- - 1
+  - adria té més de 1 hores el dm
+- - 1
+  - albertg té més de 1 hores el dm
+- - 5
+  - albertg té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dm
+- - 1
+  - mariona té més de 1 hores el dm
+- - 5
+  - mariona té altres 1 persones amb telèfon a la mateixa taula a 4a hora del dm
+- - 1
+  - eloi té més de 1 hores el dm
+- - 1
+  - judith té més de 1 hores el dm
+- - 0
+  - 'marc fa dx a 1a hora que no li va be perque: "Ronda IT"'
+- - 1
+  - monica té més de 1 hores el dx
+- - 5
+  - nuria té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dx
+- - 1
+  - carol té més de 1 hores el dx
+- - 0
+  - 'pau fa dx a 3a hora que no li va be perque: "Organització de la càrrega de feina
+    i de les reunions"'
+- - 0
+  - 'gemma fa dx a 3a hora que no li va be perque: "Telèfon a primera hora"'

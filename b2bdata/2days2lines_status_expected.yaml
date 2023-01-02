@@ -1,0 +1,13 @@
+totalCells: 16
+completedCells: 16
+solutionCost: 10
+timeOfLastSolution: '2023-01-02 20:19:23.395827'
+unfilledCell: Complete
+busyReasons: {}
+penalties:
+- - 5
+  - carme té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dm
+- - 5
+  - carme té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dj
+- - 0
+  - 'monicag fa dj a 4a hora que no li va be perque: "Opcional incumplible"'

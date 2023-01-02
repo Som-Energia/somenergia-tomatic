@@ -23,6 +23,7 @@ testcases:
         - b2bdata/inputs/load-and-schedule-2-days/carrega.csv
         - b2bdata/inputs/load-and-schedule-2-days/graella-telefons-2022-07-11.html
         - b2bdata/inputs/load-and-schedule-2-days/graella-telefons-2022-07-11.yaml
+        - b2bdata/inputs/load-and-schedule-2-days/status.yaml
 
     load-and-schedule-2-days-4-lines:
         command: |
@@ -47,6 +48,7 @@ testcases:
         - b2bdata/inputs/load-and-schedule-2-days/carrega.csv
         - b2bdata/inputs/load-and-schedule-2-days/graella-telefons-2022-07-11.html
         - b2bdata/inputs/load-and-schedule-2-days/graella-telefons-2022-07-11.yaml
+        - b2bdata/inputs/load-and-schedule-2-days/status.yaml
 
     load-2020-03-02:
         command: |
@@ -90,6 +92,7 @@ testcases:
         - graella-telefons-2019-11-11.html
         - graella-telefons-2019-11-11.yaml
         - graella-telefons-2019-11-11.log
+        - status.yaml
     3days6lines:
         command: |
             tomatic_scheduler.py 2019-11-18 \
@@ -105,6 +108,7 @@ testcases:
         - graella-telefons-2019-11-18.html
         - graella-telefons-2019-11-18.yaml
         - graella-telefons-2019-11-18.log
+        - status.yaml
     4days6lines:
         command: |
             tomatic_scheduler.py 2019-10-28 \
@@ -122,4 +126,5 @@ testcases:
         - graella-telefons-2019-10-28.html
         - graella-telefons-2019-10-28.yaml
         - graella-telefons.log
+        - status.yaml
 
