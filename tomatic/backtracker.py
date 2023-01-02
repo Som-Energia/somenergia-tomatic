@@ -307,7 +307,7 @@ class Backtracker(object):
             self.deeperCutLog = set()
             self.deeperCutDepth = len(partial)
 
-        if motiu == 'TotColocat':
+        if motiu == 'FullLoad':
             return # Not worth to log
 
         with open(self.config.monitoringFile,'a') as output:
@@ -405,7 +405,7 @@ class Backtracker(object):
                     for dia in self.dies[idia:]
                     )
                 if company != 'ningu' and tornsPendents > tornsColocables:
-                    self.cut("RestantsIncolocables", partial,
+                    self.cut("UnableToAllocateLoad", partial,
                         "A {} nomes li queden {} forats per posar {} hores"
                         .format(company, tornsColocables, tornsPendents))
                     if isInfraSolution: return
@@ -452,14 +452,14 @@ class Backtracker(object):
 
             # Person has no turns left to do
             if self.pendingShifts(company, telefon) <= 0:
-                self.cut("TotColocat", partial,
+                self.cut("FullLoad", partial,
                     "{} ja ha exhaurit els seus torns de linia {}aria"
                     .format( company, telefon+1))
                 continue
 
             # Person busy in this turn (it has another line in this turn or it is unavailable)
             if self.isBusy(company, day, hora) and company != 'ningu' :
-                self.cut("Indisponible", partial,
+                self.cut("Busy", partial,
                     "{} no esta disponible el {} a {}a hora"
                     .format( company, day, hora+1))
                 continue
@@ -474,7 +474,7 @@ class Backtracker(object):
 
             # Reduce cacophonies, by limiting people in the same table at once
             if taula!=-1 and self.telefonsALaTaula[day, hora, taula]>=self.config.maximPerTaula :
-                self.cut("TaulaSorollosa", partial,
+                self.cut("Crosstalk", partial,
                     "{} ja té {} persones a la mateixa taula amb telefon a {}a hora del {}"
                     .format(company, self.telefonsALaTaula[day, hora, taula], hora+1, day))
                 continue
@@ -511,7 +511,7 @@ class Backtracker(object):
 
             # Limit the number of daily turns
             if company != 'ningu' and self.horesDiaries[company, day] >= self.personDailyLimit(company):
-                self.cut("DiaATope", partial,
+                self.cut("FullDay", partial,
                     "No li posem mes a {} que ja te {} hores el {}"
                     .format( company, self.horesDiaries[company, day], day))
                 continue
@@ -519,14 +519,14 @@ class Backtracker(object):
             # Allow lunch break, do no take both central hours one day
             if self.config.deixaEsmorzar and company not in self.config.noVolenEsmorzar:
                 if hora==2 and self.teTelefon[day, 1, company]:
-                    self.cut("Esmorzar", partial,
+                    self.cut("Brunch", partial,
                         "{} es queda sense esmorzar el {}"
                         .format(company, day))
                     continue
 
             if company == "ningu" and self.ningusPerTurn[day,hora] == self.config.maxNingusPerTurn:
                 self.cut(
-                    "MassaForats",
+                    "TooManyConcurrentHoles",
                     partial,
                     "Hi ha masses forats a {}a hora del {}".format(hora+1, day)
                 )
@@ -540,17 +540,17 @@ class Backtracker(object):
 
             if hora and self.horesDiaries[company, day] and not self.teTelefon[day, hora-1, company]:
                 if self.personDailyLimit(company) < 3:
-                    self.cut("Discontinu", partial,
+                    self.cut("Discontinuous", partial,
                         "{} te hores separades el {}".format(company,day))
                     continue
 
                 if self.config.costHoresDiscontinues:
-                    cost += penalize(self.config.costHoresDiscontinues, "Discontinu",
+                    cost += penalize(self.config.costHoresDiscontinues, "Discontinuous",
                         "{} te hores separades el {}".format(company, day))
 
             if company == "ningu":
                 cost += penalize(self.config.costTornBuit * (self.ningusPerTurn[day,hora]+1),
-                    "ForatsSimultanis",
+                    "ConcurrentHoles",
                     u"Hi ha {} torns buits a {}a hora del {}".format(
                         self.ningusPerTurn[day,hora]+1,
                         hora+1,
@@ -567,7 +567,7 @@ class Backtracker(object):
             if self.horesDiaries[company, day]>0 :
                 cost += penalize(
                     self.config.costHoresConcentrades * self.horesDiaries[company, day],
-                    "Repartiment",
+                    "ConcentratedLoad",
                     u"{} té més de {} hores el {}".format(company, self.horesDiaries[company, day], day))
 
             if taula!=-1 and self.telefonsALaTaula[day, hora, taula]>0 :

@@ -29,12 +29,12 @@ Les restriccions i penalitzacions implementades són les següents:
 
 ## Restriccions
 
-- **Indisponible**\
+- **Busy**\
     La persona no està disponible pel torn que s'està repartint.
     Pot ser per indisponibilitat o perqué ja l'hem posat a una altra linia
     el mateix torn.
 
-- **TotColocat**\
+- **FullLoad**\
     A la persona no li queden torns a colocar (amb discriminació,
     no té torns de la linia a la que correspon la casella)
 
@@ -42,7 +42,7 @@ Les restriccions i penalitzacions implementades són les següents:
     Quan no hi ha discriminació de lines, talla les solucions que només
     reordenen les persones d'un torn. S'activa amb `pruneRedundant`
 
-- **DiaATope**\
+- **FullDay**\
     La persona ha superat el seu màxim nombre d'hores diaries.
     Es defineix en general a `maximHoresDiariesGeneral`
     o especificament per la persona a `maximHoresDiaries`.
@@ -50,12 +50,12 @@ Les restriccions i penalitzacions implementades són les següents:
     per `ningu` o quan es una graella molt complicada i volem fer
     una excepció.
 
-- **MassesPrincipals**\
+- **MassesPrincipals** (obsolete)\ 
     Quan hi ha discriminació de linies,
     podem limitar els torns primaris (L1) que fa una persona per dia.\
     Es defineix a `maximsT1PerDia` i normalment és 1.\
 
-- **TaulaSorollosa**\
+- **Crosstalk**\
     Per evitar crosstalking, limitem a `maximPerTaula` (per defecte, 2)
     la gent que pot estar rebent trucades assegudes a la mateixa taula.
     Per això definim les taules a la interficie web del Tomatic.
@@ -72,13 +72,13 @@ Les restriccions i penalitzacions implementades són les següents:
     Per exemple, si volem limitar les persones parlant en un espai.
     De fet la majoria de grups definits son per aquest motiu.
 
-- **Esmorzar**\
+- **Brunch**\
     Estem posant un tercer torn a una persona que està fent el segon torn
     del mateix dia, això vol dir que no tindrà el temps que otorga la POL per esmorzar.
     Es pot deshabilitar globalment amb `deixaEsmorzar` o per una persona
     afegint-la a la llista `noVolenEsmorzar`.
 
-- **Discontinu**\
+- **Discontinuous**\
     La persona ja té hores posades el mateix dia però no són consecutives.
     Es converteix en una penalització a les persones amb un maxim de torns major que 2
 
@@ -102,19 +102,19 @@ Les restriccions i penalitzacions implementades són les següents:
 
 A mirar en començar a omplir un dia:
 
-- **L1RestantsIncolocables**\
+- **L1RestantsIncolocables**\ (Obsolete)
     A una persona no li queden forats per ficar tota la seva càrrega de primeres linies.
     Normalment vol dir que hauriem d'haver colocat el seus torns de primera linia en dies anteriors.
     Està a part perque, si discriminem linies, les primeres linies estan restringides
     a una per dia (`maximsT1PerDia`) i ens permet descartar abans.
 
-- **RestantsIncolocables**\
+- **UnableToAllocateLoad**\
     A una persona no li queden forats per ficar tota la seva càrrega.
     Normalment vol dir que hauriem d'haver colocat el seus torns abans.
 
 ## Penalitzacións
 
-- **Discontinu** `costHoresDiscontinues`\
+- **Discontinuous** `costHoresDiscontinues`\
     La persona ja té hores posades el mateix dia però no són consecutives.\
     Es converteix en una restricció a les persones amb un maxim de torns menor que 3\
     Objectiu: Procurar no interrompre la feina normal amb hores de telèfon
@@ -123,11 +123,11 @@ A mirar en començar a omplir un dia:
     La persona ha de fer un torn que té marcat com a indisponibilitat opcional.
     Objectiu: Respectar el màxim de indisponibilitats opcionals
 
-- **Repartiment** (`costHoresConcentrades` * número d'hores anteriors)\
+- **ConcentratedLoad** (`costHoresConcentrades` * número d'hores anteriors)\
     La persona ja tenia col·locades més hores el mateix dia.\
     Objectiu: Afavoreix que els torns es reparteixin al llarg de la setmana.
 
-- **Crosstalk** (`costTaulaSorollosa * altres persones parlant a la taula)\
+- **Crosstalk** (`costTaulaSorollosa` * altres persones parlant a la taula)\
     La persona farà telèfon simultàneament amb altres persones que es
     seuen juntes a la mateixa taula\
     Objetiu: Reduir l'efecte de converses creuades quan tens una altra 
