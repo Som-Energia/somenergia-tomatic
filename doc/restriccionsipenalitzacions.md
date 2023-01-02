@@ -96,6 +96,10 @@ Les restriccions i penalitzacions implementades són les següents:
     si la parcial té un cost per día superior a la complerta.
     Es fa amb la benentesa de que molts dels costos s'afegeixen a les darreres casselles.
 
+- **TooManyConcurrentHoles**\
+    La solució té massa forats simultanis (línies amb `ningu` al mateix dia i hora)
+    superant el nombre configurat `maxNingusPerTurn`.
+
 A mirar en començar a omplir un dia:
 
 - **L1RestantsIncolocables**\
@@ -129,5 +133,7 @@ A mirar en començar a omplir un dia:
     Objetiu: Reduir l'efecte de converses creuades quan tens una altra 
     persona fent telèfon al costat i repartir espaialment el soroll generat
 
-
+- **ConcurrentHoles** (`costTornBuit` * nombre de casselles amb `ningu` a la mateixa hora i dia)  \
+    Es col·loca un `ningu` a la graella.
+    Objectiu: Que els forats/`ningu` es reparteixin en diferents dies
 
