@@ -13,7 +13,8 @@ testcases:
                 --deterministic \
                 --lines 2 \
                 --compute-shifts \
-                2>&1 | tee console.log
+                2>&1 | tee console.log && \
+                sed -i '/timeOfLastSolution/d' status.yaml
         outputs:
         - b2bdata/inputs/load-and-schedule-2-days/console.log
         - b2bdata/inputs/load-and-schedule-2-days/overload.yaml
@@ -38,7 +39,8 @@ testcases:
                 --deterministic \
                 --lines 4 \
                 --compute-shifts \
-                2>&1 | tee console.log
+                2>&1 | tee console.log && \
+            sed -i '/timeOfLastSolution/d' status.yaml
         outputs:
         - b2bdata/inputs/load-and-schedule-2-days/console.log
         - b2bdata/inputs/load-and-schedule-2-days/overload.yaml
@@ -62,7 +64,6 @@ testcases:
         - b2bdata/inputs/load-2020-03-02/ponderatedideal-2020-03-02.yaml
         - b2bdata/inputs/load-2020-03-02/carrega-2020-03-02.yaml
         - b2bdata/inputs/load-2020-03-02/carrega-2020-03-02.csv
-
     load-forgiving-2020-03-02:
         command: |
             cd b2bdata/inputs/load-2020-03-02; tomatic_shiftload.py 2020-03-02 \
@@ -87,7 +88,8 @@ testcases:
                 --personsfile b2bdata/inputs/persons.yaml \
                 --lines 2 \
                 --search-days dm,dj \
-                2>&1 | tee graella-telefons-2019-11-11.log
+                2>&1 | tee graella-telefons-2019-11-11.log && \
+            sed -i '/timeOfLastSolution/d' status.yaml
         outputs:
         - graella-telefons-2019-11-11.html
         - graella-telefons-2019-11-11.yaml
@@ -103,7 +105,9 @@ testcases:
                 --personsfile b2bdata/inputs/persons.yaml \
                 --lines 6 \
                 --search-days dl,dx,dv \
-                2>&1 | tee graella-telefons-2019-11-18.log
+                2>&1 | tee graella-telefons-2019-11-18.log && \
+            sed -i '/timeOfLastSolution/d' status.yaml
+
         outputs:
         - graella-telefons-2019-11-18.html
         - graella-telefons-2019-11-18.yaml
@@ -121,7 +125,9 @@ testcases:
                 --stop-penalty 86 \
                 --deterministic \
                 --search-days "dl,dm,dx,dj" \
-                2>&1 | tee graella-telefons.log
+                2>&1 | tee graella-telefons.log && \
+            sed -i '/timeOfLastSolution/d' status.yaml
+
         outputs:
         - graella-telefons-2019-10-28.html
         - graella-telefons-2019-10-28.yaml

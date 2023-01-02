@@ -5,6 +5,7 @@
 - Scheduler: Cost to simultaneous empty slots in timetable
 - Renamed prunning and cut reason id's to english
 - Fix: reporting hour on too many empty slots was zero based
+- status.yaml stores the penalties
 
 ## 4.9.0 2022-11-02
 

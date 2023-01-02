@@ -1,7 +1,6 @@
 totalCells: 96
 completedCells: 72
 solutionCost: 50
-timeOfLastSolution: '2023-01-02 20:19:26.889056'
 unfilledCell: dj 09:00 L1
 busyReasons:
   albert:
