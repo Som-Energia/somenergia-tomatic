@@ -1,12 +1,18 @@
 # Changelog
 
+## Unreleased
+
+- Scheduler: Cost to simultaneous empty slots in timetable
+- Renamed prunning and cut reason id's to english
+- Fix: reporting hour on too many empty slots was zero based
+
 ## 4.9.0 2022-11-02
 
-- Limit the number of ningus on a turn when the time table was created
+- Scheduler: Limit the number simultaneous empty slots in timetable when the time table was created
 
 ## 4.8.0 2022-11-02
 
-- Limit the number of ningus on a turn
+- Timetable Editor: Limit the number of simultaneous empty slots in timetable
 
 ## 4.7.5 2022-10-13
 
