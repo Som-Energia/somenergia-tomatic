@@ -110,10 +110,10 @@ def list():
             ]+[
                 "<b>{penalty}:</b> {reason}<br>"
                     .format(penalty=u(penalty), reason=u(reason))
-                for penalty, reason in info.penalties
+                for penalty, reason in info.get('penalties',[])
             ]+[
             """</div>"""
-        ]) if info.penalties else ""
+        ])
         now = datetime.datetime.utcnow()
         return ("""\
             <tr>
