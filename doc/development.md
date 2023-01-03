@@ -37,6 +37,7 @@ until the [https://github.com/Som-Energia/somenergia-tomatic/issues/19](issue) i
 	- `package.json`
 	- `tomatic/__init__.py`
 - Add versions changes to `CHANGES.md`
+    - Specify any configuration, deployment changes... as "Upgrade Notes" for the version
 - Commit "bump to M.m.r"
 - `git tag tomatic-M.m.r` (Major minor release)
 - `git push`
@@ -49,6 +50,7 @@ Warning: This might be kind of specific for Som Energia's setup
 because of the paths and the usage of supervisorctl.
 
 ```bash
+# First review any "Upgrade Notes" in `CHANGES.md` for the last versions
 cd /opt/www/somenergia-tomatic # Or wherever you installed it
 git fetch
 git rebase
