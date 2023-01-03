@@ -480,6 +480,15 @@ def updateClaimTypes():
         CallRegistry().updateAnnotationCategories(O)
     return yamlfy(info=ns(message='ok'))
 
+@app.get('/api/calendar/{person}')
+def icalendar(person):
+    calendar = schedules.personIcs(person)
+    from fastapi.responses import StreamingResponse
+    return StreamingResponse(
+        iter(calendar),
+        200,
+        media_type = 'text/calendar',
+    )
 
 
 

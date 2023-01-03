@@ -167,6 +167,41 @@ class Storage(object):
         scheduling = Scheduling(data)
         return scheduling.peekQueue(dow, time)
 
+    def personIcs(self, person):
+        def constructDate(week, weekday, turn):
+            monday = datetime.date.fromisoformat(week)
+            date = addDays(monday, days.index(day))
+            isoString = f"{date}T{times[turn]}:00"
+            import zoneinfo
+            tz = zoneinfo.ZoneInfo("Europe/Madrid")
+            dt = datetime.datetime.strptime(isoString, "%Y-%m-%dT%H:%M:%S")
+            return dt.replace(tzinfo=tz)
+
+        from .retriever import addDays
+        import ics
+        calendar = ics.Calendar()
+        for week in self.list():
+            data = self.load(week)
+            times = data.hours
+            monday = datetime.date.fromisoformat(week)
+            days='dl dm dx dj dv'.split()
+            for day, turns in data.timetable.items():
+                for turn, people in enumerate(turns):
+                    if person not in people: continue
+                    event = ics.Event(
+                        name = "Telèfon",
+                        begin = constructDate(week, day, turn),
+                        end = constructDate(week, day, turn+1),
+                        description="Torn d'atenció",
+                    )
+                    alarm = ics.DisplayAlarm(
+                        trigger=datetime.timedelta(minutes=-15),
+                    )
+                    event.alarms.append(alarm)
+                    calendar.events.add(event)
+        return calendar
+        
+
 # TODO: Move anywhere
 from .htmlgen import HtmlGen
 from .remote import remotewrite

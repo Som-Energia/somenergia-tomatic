@@ -68,6 +68,7 @@ setup(
         'aiofiles', # Static files for fastapi
         'hangups',
         'elasticsearch<8', # 8 version is incompatible with irontec server
+        'ics',
     #],
     #tests_require=[
         'pytest-cov',
