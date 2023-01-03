@@ -45,7 +45,7 @@ maxNodesToPersevere: 10000
 costLimit: 200
 descartaNoPrometedores: true
 deixaEsmorzar: true
-maxNingusPerTurn: 2
+maxNingusPerTurn: 10
 noVolenEsmorzar:
 - david
 - ningu
