@@ -190,6 +190,7 @@ class Storage(object):
                     if person not in people: continue
                     event = ics.Event(
                         name = "Telèfon",
+                        uid = f"{week}-{day}-{turn}-{person}@tomatic.somenergia.lan",
                         begin = constructDate(week, day, turn),
                         end = constructDate(week, day, turn+1),
                         description="Torn d'atenció",
@@ -200,7 +201,6 @@ class Storage(object):
                     event.alarms.append(alarm)
                     calendar.events.add(event)
         return calendar
-        
 
 # TODO: Move anywhere
 from .htmlgen import HtmlGen

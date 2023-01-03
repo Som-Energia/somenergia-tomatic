@@ -512,6 +512,39 @@ class ScheduleStorage_Test(unittest.TestCase):
         queue = self.storage.queueScheduledFor(timestamp("2020-01-07 09:40"))
         self.assertEqual(queue, ['second'])
 
+    def test_calendar(self):
+        self.storage.save(ns.loads("""\
+        week: '2020-01-06'
+        hours:
+        - '09:00'
+        - '10:00'
+        timetable:
+          dl:
+          - - first
+          dm:
+          - - second
+        """))
+        calendar = self.storage.personIcs('first')
+        nchars=290
+        self.assertEqual(''.join(calendar)[:nchars],
+            'BEGIN:VCALENDAR\r\n'
+            'VERSION:2.0\r\n'
+            'PRODID:ics.py - http://git.io/lLljaA\r\n'
+            'BEGIN:VEVENT\r\n'
+            'BEGIN:VALARM\r\n'
+            'ACTION:DISPLAY\r\n'
+            'DESCRIPTION:\r\n'
+            'TRIGGER:-PT15M\r\n'
+            'END:VALARM\r\n'
+            "DESCRIPTION:Torn d'atenció\r\n"
+            'DTEND:20200106T090000Z\r\n'
+            'DTSTART:20200106T080000Z\r\n'
+            'SUMMARY:Telèfon\r\n'
+            'UID:2020-01-06-dl-0-first@tomatic.somenergia.lan\r\n'
+            'END:VEVENT\r\n'
+            'END:VCALENDAR'[:nchars]
+        )
+
 
 
 
