@@ -26,6 +26,7 @@ var TimeTable = function(grid) {
 		var oldPerson = Tomatic.cell(day,houri,turni);
 		Dialog.show({
 			id: 'GridCellEditor',
+			className: 'grid-cell-editor',
 			title: 'Edita posició de la graella',
 			backdrop: true,
 			body: [
