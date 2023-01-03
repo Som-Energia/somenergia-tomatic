@@ -353,7 +353,7 @@ class Irontec(object):
                 '/agent/modify', json=dict(
                     agent = extension,
                     name = transliterate(fullname),
-                    email = email or 'none@nowhere.com',
+                    email = email or f'none_{extension}@nowhere.com',
                 ),
             )
         except Irontec.BackendError as e:
