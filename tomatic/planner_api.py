@@ -104,6 +104,16 @@ def list():
             ]+[
             """</div>"""
         ]) if info.busyReasons else ""
+        penalties = "".join([
+            """<div class=tooltip>"""
+            """<h3>Penalitzacions</h3>"""
+            ]+[
+                "<b>{penalty}:</b> {reason}<br>"
+                    .format(penalty=u(penalty), reason=u(reason))
+                for penalty, reason in info.penalties
+            ]+[
+            """</div>"""
+        ]) if info.penalties else ""
         now = datetime.datetime.utcnow()
         return ("""\
             <tr>
@@ -112,7 +122,7 @@ def list():
             <td>{state}</td>
             <td><a href='solution/{name}'>{completedCells}/{totalCells}</a></td>
             <td>{unfilledCell} {busyReasons}</td>
-            <td>{solutionCost}</td>
+            <td>{solutionCost} {penalties}</td>
             <td>{timeSinceLastSolution}</td>
             <td>
         """ + stopAction + uploadAction + removeAction + killAction + """</td>
@@ -127,6 +137,7 @@ def list():
                 solutionCost = info.solutionCost or '--',
                 unfilledCell = info.unfilledCell or '??',
                 busyReasons = busyReasons,
+                penalties = penalties,
             ))
 
     return "\n".join([
