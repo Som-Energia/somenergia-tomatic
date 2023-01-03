@@ -2,10 +2,19 @@
 
 ## Unreleased
 
-- Scheduler: Cost to simultaneous empty slots in timetable
-- Renamed prunning and cut reason id's to english
-- Fix: reporting hour on too many empty slots was zero based
-- status.yaml stores the penalties
+- pbxirontec: Fix: when no email use the extension as parte of the made off
+  email to ensure they are distinct, since the pbx requires that.
+- scheduler:
+    - Fix: when reporting too many empty slots the hour was zero based
+    - scheduler: Cost to simultaneous empty slots in timetable
+    - Renamed prunning and cut reason id's to english
+    - status.yaml stores the penalties
+- Execution list: Reasons for penalties are shown on hovering the cost value
+- Upgrade Notes:
+  - Add `costTornBuit` parameter to `config.yaml`
+  - Set `maxNingusPerTurn` parameter in `config.yaml` to a higher value now
+    now that is not required to have nice results and it blocks solutions
+    when not enough actual turns are available.
 
 ## 4.9.0 2022-11-02
 
