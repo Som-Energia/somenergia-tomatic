@@ -11,10 +11,10 @@
     - status.yaml stores the penalties
 - Execution list: Reasons for penalties are shown on hovering the cost value
 - Upgrade Notes:
-  - Add `costTornBuit` parameter to `config.yaml`
-  - Set `maxNingusPerTurn` parameter in `config.yaml` to a higher value now
-    now that is not required to have nice results and it blocks solutions
-    when not enough actual turns are available.
+    - Add `costTornBuit` parameter to `config.yaml`
+    - Set `maxNingusPerTurn` parameter in `config.yaml` to a higher value now
+      now that is not required to have nice results and it blocks solutions
+      when not enough actual turns are available.
 
 ## 4.9.0 2022-11-02
 
@@ -42,8 +42,8 @@
 
 - Locking callinfo autorefresh while annotating
 - Improved timetable planner input fields
-  - Week chosen by a date picker restricted to mondays
-  - nlines uses a number field
+    - Week chosen by a date picker restricted to mondays
+    - nlines uses a number field
 - wednesday placed first on the search order since
   it is now the harder day to allocate every week.
 
@@ -60,7 +60,7 @@
 - Removed number redirections and fixed extensions from static
   timetable html
 - Upgrade notes
-  - dbconfig.py: Add the tomatic.supportmail parameter
+    - dbconfig.py: Add the tomatic.supportmail parameter
 
 ## 4.7.0 2022-08-18
 
@@ -68,14 +68,14 @@
 - Day search order can be set from the timetable planner
 - Fix: Call log JS exception when no user logged in
 - After setup resilience:
-  - Resilient to a non existing persons.yaml after install
-  - Resilient to a non existing execution dir
+    - Resilient to a non existing persons.yaml after install
+    - Resilient to a non existing execution dir
 - Menu:
-  - New menu option for the user guides
-  - Cool unicode icons on the menu
+    - New menu option for the user guides
+    - Cool unicode icons on the menu
 - Documentation:
-  - Updated initial setup
-  - How to circumvent `--fake` not working with `--debug`
+    - Updated initial setup
+    - How to circumvent `--fake` not working with `--debug`
 
 ## 4.6.2 2022-07-21
 
@@ -96,21 +96,21 @@
 - Internal: Components extracted as modules
 
 - Update notes:
-  - npm install required (emotion and babel dependencies)
-  - config.yaml `callinfoPath` should point to the parent of current `my_calls_log`.
-    If not specified it will be `callinfo` by default (relative to the working path).
-  - config.yaml: `my_calls_log` should be removed
-  - day
-  - `callinfo/dailycalls.yaml` not used anymore,
-     now `callinfo/dailycalls/calls-[user].yaml is used
+    - npm install required (emotion and babel dependencies)
+    - config.yaml `callinfoPath` should point to the parent of current `my_calls_log`.
+      If not specified it will be `callinfo` by default (relative to the working path).
+    - config.yaml: `my_calls_log` should be removed
+    - day
+    - `callinfo/dailycalls.yaml` not used anymore,
+       now `callinfo/dailycalls/calls-[user].yaml is used
 
 ## 4.6.0 2022-07-12
 
 - Stats mails shows the seconds also in 00:00:00 format
 - Scheduler:
-  - Load computation inside scheduler
-  - If achieved load is not enough nobody/ningu is added
-  - Made nobody/ningu flexible to add (not a regular person)
+    - Load computation inside scheduler
+    - If achieved load is not enough nobody/ningu is added
+    - Made nobody/ningu flexible to add (not a regular person)
 
 ## 4.5.7 2022-06-02
 
@@ -151,8 +151,8 @@ Post new provider fixes
 ## 4.5.2 2022-04-05
 
 - `areavoip_dumpstats`:
-  - Fix: `--nodump` option was ignored
-  - Instaled with setup.py
+    - Fix: `--nodump` option was ignored
+    - Instaled with setup.py
 - pbxareavoip: better error reporting
 
 
@@ -175,8 +175,8 @@ Post new provider fixes
 - dailyreport also reports stats by chat
 - irontec: implementation of the stats functionality
 - new cli commands:
-  - `tomatic_rtqueue.py stats` to get the daily stats
-  - `tomatic_rtqueue.py calls` to get the raw daily call details
+    - `tomatic_rtqueue.py stats` to get the daily stats
+    - `tomatic_rtqueue.py calls` to get the raw daily call details
 
 ## 4.4.2 2022-01-28
 
@@ -206,15 +206,15 @@ Post new provider fixes
 ## 4.4.0 2022-01-27
 
 - Call annotation workflow redesign
-  - Claims and infos unified, single log, api entry, topic list...
-  - Structured info on topics/categories are retrieved
-    from api avoiding fragile parsing of the description
-  - Save Annotation without call, person or contract
-  - `tomatic_uploadcases.py` upload both info and claims
-  - All categories have a code and optionally a section
-  - Translate HelpDesk section as CONSULTA
-  - Translate 
-  - ERP user is set on cases
+    - Claims and infos unified, single log, api entry, topic list...
+    - Structured info on topics/categories are retrieved
+      from api avoiding fragile parsing of the description
+    - Save Annotation without call, person or contract
+    - `tomatic_uploadcases.py` upload both info and claims
+    - All categories have a code and optionally a section
+    - Translate HelpDesk section as CONSULTA
+    - Translate 
+    - ERP user is set on cases
 - Custom banners for pebrotic and ketchup variants by CLI
 - Fix: search values trimmed and urlencoded
 
@@ -234,9 +234,9 @@ Post new provider fixes
 
 - First version Irontec PBX Backend
 - PBX backend generalization and plugability
-  - PBX backend factory
-  - Add dbconfig.tomatic.pbx option to choose the default PBX
-  - `--backend` option for all PBX related CLI tools
+    - PBX backend factory
+    - Add dbconfig.tomatic.pbx option to choose the default PBX
+    - `--backend` option for all PBX related CLI tools
 - Daily stats mail now include a csv file with the historical data
 
 ## 4.2.5 2021-11-23
@@ -334,18 +334,18 @@ Post new provider fixes
 - Fix: Zero energy invoices now are shown as 0 not blank
 - Fix: Better detection changing users on other tabs
 - Implementation changes
-  - Callinfo model and view split so that subviews can acces common state directly
+    - Callinfo model and view split so that subviews can acces common state directly
 - Menú options to planter and scripts
 - Kumato mode (dark style)
 
 ## 3.11.0 2021-06-15
 
 - Call info
-  - Interface redesigned to be responsive and more usable
-  - Manual annotations (without an incomming call)
-  - Colored scrollable call log
-  - Backend info stored in a single directory
-  - More reliable backend info storage
+    - Interface redesigned to be responsive and more usable
+    - Manual annotations (without an incomming call)
+    - Colored scrollable call log
+    - Backend info stored in a single directory
+    - More reliable backend info storage
 - Server has --queue option to enable a second 
   Tomatic instance with a testing queue to make
   experiments
