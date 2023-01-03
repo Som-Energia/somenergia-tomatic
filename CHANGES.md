@@ -9,6 +9,7 @@
     - scheduler: Cost to simultaneous empty slots in timetable
     - Renamed prunning and cut reason id's to english
     - status.yaml stores the penalties
+- ICS calendar for a user /api/calendar/<user>
 - Execution list: Reasons for penalties are shown on hovering the cost value
 - Upgrade Notes:
     - Add `costTornBuit` parameter to `config.yaml`
