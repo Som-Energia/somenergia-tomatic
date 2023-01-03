@@ -1,9 +1,10 @@
 # Changelog
 
-## Unreleased
+## 4.10.0 2023-01-03
 
-- pbxirontec: Fix: when no email use the extension as parte of the made off
-  email to ensure they are distinct, since the pbx requires that.
+- pbxirontec: Fix: when updating extensions on the pbx, and no email is
+  provided, use the extension as part of the made off email to ensure
+  they are distinct, since the pbx requires that.
 - scheduler:
     - Fix: when reporting too many empty slots the hour was zero based
     - scheduler: Cost to simultaneous empty slots in timetable
