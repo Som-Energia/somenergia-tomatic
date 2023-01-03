@@ -4,6 +4,7 @@ import unittest
 import b2btest
 import os
 from consolemsg import error
+from pathlib import Path
 from erppeek_wst import ClientWST
 from yamlns import namespace as ns
 from xmlrpc import client as xmlrpclib
