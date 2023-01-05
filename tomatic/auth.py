@@ -11,7 +11,8 @@ from yamlns import namespace as ns
 from consolemsg import error
 from . import persons
 import dbconfig
-
+from jose import JWTError, jwt
+JWT_ALGORITHM='HS256'
 
 config = Config('config.fastapi')
 print(config.file_values)
@@ -68,8 +69,6 @@ async def logout(request: Request):
     request.session.pop('user', None)
     return RedirectResponse(url='/')
 
-from jose import JWTError, jwt
-JWT_ALGORITHM='HS256'
 def create_access_token(data: dict, expiration_delta: datetime.timedelta = None):
     passthru_fields = (
         'username name email locale family_name given_name picture'
