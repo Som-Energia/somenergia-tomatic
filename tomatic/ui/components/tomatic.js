@@ -52,7 +52,6 @@ Tomatic.checkVersion = function() {
 	});
 };
 
-
 Tomatic.initKumato = function() {
 	// Dark interface
 	Tomatic._kumato = JSON.parse(localStorage.getItem('kumato', false));

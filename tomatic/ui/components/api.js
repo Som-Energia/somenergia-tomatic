@@ -2,6 +2,7 @@ module.exports = function() {
 
 var m = require('mithril');
 var jsyaml = require('js-yaml');
+var parseJwt = require('./utils').parseJwt;
 
 const debugApi = false;
 
@@ -40,6 +41,14 @@ var api = {
 	deserialize: function(responseText) {
 		return jsyaml.safeLoad(responseText);
 	},
+
+	userinfo: function() {
+		const token = api.token();
+		if (!token) return undefined;
+		const content = parseJwt(token);
+		return content;
+	},
+
 };
 
 return api;

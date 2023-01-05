@@ -59,13 +59,11 @@ var TimeTable = function(grid) {
 		return m('td', {
 			className: name||'ningu',
 			onclick: function(ev) {
-				if(getCookie("tomaticCookie")===":"){
-					Login.askWhoAreYou();
+				ev.preventDefault();
+				if (Login.myName()==='') {
+					return
 				}
-				else {
-					editCell(day, houri, turni);
-					ev.preventDefault();
-				}
+				editCell(day, houri, turni);
 			}
 		}, [
 			Tomatic.formatName(name),

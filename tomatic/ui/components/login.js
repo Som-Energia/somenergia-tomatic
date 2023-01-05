@@ -3,7 +3,6 @@ module.exports = function() {
 
 var m = require('mithril');
 var jsyaml = require('js-yaml');
-var getCookie = require('./utils').getCookie;
 var contrast = require('./colorutils').contrast;
 
 var Dialog = require('polythene-mithril-dialog').Dialog;
@@ -13,9 +12,9 @@ var Ripple = require('polythene-mithril-ripple').Ripple;
 
 var styleLogin = require('./callinfo_style.styl');
 var Tomatic = require('./tomatic');
+var api = require('./api')
 
 var Login = {};
-var tomaticCookie = "tomaticCookie"
 
 var previousLogin = null; // To detect login changes
 
@@ -27,10 +26,11 @@ Login.watchLoginChanges = function() {
     if (user !== previousLogin) {
         console.log("Detected login change",previousLogin,"->",user);
         previousLogin = user;
+        Login.login();
         Login.onUserChanged.map(function(callback) {
             callback();
         })
-        m.redraw();
+        //m.redraw();
     }
     Login.loginWatchTimer = setTimeout(
         Login.watchLoginChanges, 500);
@@ -41,100 +41,27 @@ Login.onLogin = [];
 Login.onUserChanged = [];
 
 Login.logout = function() {
-    document.cookie = tomaticCookie + "=; expires = Thu, 01 Jan 1970 00:00:00 GMT;SameSite=Strict;path=/"
+    api.clearToken();
     Login.onLogout.map(function(callback) {
         callback();
     })
 }
 
-Date.prototype.addHours = function(h) {
-   this.setTime(this.getTime() + (h*60*60*1000));
-   return this;
-}
-
-Login.myName = function() {
-    return getCookie(tomaticCookie);
-}
-
-var setCookieInfo = function(vnode){
-    var name_button = vnode.target.innerText;
-    var persons = Tomatic.persons().extensions;
-    var found = false;
-    for(id in persons){
-        var name = Tomatic.formatName(id);
-        if(name.toUpperCase() == name_button) {
-            found = true;
-            break;
-        }
-    }
-    if(found){
-        var exp = new Date().addHours(3);
-        var expires = "expires="+ exp.toUTCString();
-        document.cookie = tomaticCookie + "=" + id + ";" + expires + ";SameSite=Strict;path=/";
-    }
+// TODO: Call this!
+Login.login = function(){
     Login.onLogin.map(function(callback) {
         callback();
     })
 }
 
-
-var listOfPersons = function() {
-    var persons = Object.keys(Tomatic.persons().extensions).sort();
-    return m(List, {
-        tiles: persons.filter(function(personid) {
-            var name = Tomatic.formatName(personid);
-            if (name === '-') return false;
-            return true;
-        }).map(function(personid) {
-            var name = Tomatic.formatName(personid);
-            var color = "#" + Tomatic.persons().colors[personid];
-            return m(Button, {
-                id: personid,
-                className: 'btn-list ',
-                label: name,
-                border: true,
-                style: {
-                    backgroundColor: color,
-                    color: contrast(color),
-                },
-                events: {
-                    onclick: function(personid) {
-                        setCookieInfo(personid);
-                        Dialog.hide({id:'pickIdentityDialog'});
-                    },
-                },
-            });
-        }),
-        className: 'list-users',
-    });
+Login.myName = function() {
+    return api.userinfo()?.username || '';
 }
 
-
-Login.askWhoAreYou = function() {
-    Dialog.show(function() { return {
-        className: 'dialog-login',
-        title: 'Qui ets?',
-        backdrop: true,
-        body: [
-            listOfPersons()
-        ],
-        footerButtons: [
-            m(Button, {
-                label: "Cancel·la",
-                events: {
-                    onclick: function() {
-                        Dialog.hide({id:'pickIdentityDialog'});
-                    },
-                },
-            }),
-        ],
-        didHide: function() {m.redraw();}
-    };},{id:'pickIdentityDialog'});
-}
 
 var exitIcon = function(){
     return m(".icon-exit", [
-        m("i.fas.fa-times-circle"),
+        m("i.fa.fa-sign-out-alt"),
     ]);
 }
 
@@ -143,7 +70,7 @@ Login.identification = function() {
     var color = 'rgba(255, 255, 255, 0.7)';
     var id = Login.myName();
 
-    if (id !== "") {
+    if (id !== '') {
         nom = Tomatic.formatName(id);
         if (Tomatic.persons().colors) {
             color = "#" + Tomatic.persons().colors[id];
@@ -155,17 +82,13 @@ Login.identification = function() {
             className: 'btn-iden',
             label: nom,
             border: true,
-            events: {
-                onclick: function() {
-                    Login.askWhoAreYou();
-                },
-            },
             style: {
                 backgroundColor: color,
                 color: contrast(color),
             },
         }, m(Ripple)),
         m(Button, {
+            title: "Log out",
             className: 'btn-disconnect',
             label: exitIcon(),
             events: {
