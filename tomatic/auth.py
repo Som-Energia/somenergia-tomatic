@@ -69,7 +69,7 @@ async def logout(request: Request):
 
 from jose import JWTError, jwt
 JWT_ALGORITHM='HS256'
-def create_access_token(data: dict):
+def create_access_token(data: dict, expiration_delta: datetime.timedelta = None):
     passthru_fields = (
         'username name email locale family_name given_name picture'
     ).split()
@@ -78,7 +78,7 @@ def create_access_token(data: dict):
         for field in passthru_fields
         if field in data
     )
-    expires_delta = datetime.timedelta(
+    expires_delta = expiration_delta or datetime.timedelta(
         **dbconfig.tomatic.get('jwt',{}).get('expiration', dict(hours=10))
     )
     utcnow = datetime.datetime.now(datetime.timezone.utc)
