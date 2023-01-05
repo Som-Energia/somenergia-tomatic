@@ -12,52 +12,15 @@ var Ripple = require('polythene-mithril-ripple').Ripple;
 
 var styleLogin = require('./callinfo_style.styl');
 var Tomatic = require('./tomatic');
-var api = require('./api')
+var Auth = require('./auth');
 
 var Login = {};
 
 var previousLogin = null; // To detect login changes
 
-
-Login.loginWatchTimer = 0;
-Login.watchLoginChanges = function() {
-    clearTimeout(Login.loginWatchTimer);
-    var user = Login.myName();
-    if (user !== previousLogin) {
-        console.log("Detected login change",previousLogin,"->",user);
-        previousLogin = user;
-        Login.login();
-        Login.onUserChanged.map(function(callback) {
-            callback();
-        })
-        //m.redraw();
-    }
-    Login.loginWatchTimer = setTimeout(
-        Login.watchLoginChanges, 500);
-}
-
-Login.onLogout = [];
-Login.onLogin = [];
-Login.onUserChanged = [];
-
-Login.logout = function() {
-    api.clearToken();
-    Login.onLogout.map(function(callback) {
-        callback();
-    })
-}
-
-// TODO: Call this!
-Login.login = function(){
-    Login.onLogin.map(function(callback) {
-        callback();
-    })
-}
-
 Login.myName = function() {
-    return api.userinfo()?.username || '';
+    return Auth.username();
 }
-
 
 var exitIcon = function(){
     return m(".icon-exit", [
@@ -66,7 +29,7 @@ var exitIcon = function(){
 }
 
 Login.identification = function() {
-    var nom = "IDENTIFICAR";
+    var nom = "IDENTIFICA'T";
     var color = 'rgba(255, 255, 255, 0.7)';
     var id = Login.myName();
 
@@ -86,19 +49,20 @@ Login.identification = function() {
                 backgroundColor: color,
                 color: contrast(color),
             },
+            events: {
+                onclick: Auth.authenticate,
+            },
         }, m(Ripple)),
-        m(Button, {
+        id !== '' && m(Button, {
             title: "Log out",
             className: 'btn-disconnect',
             label: exitIcon(),
             events: {
-                onclick: Login.logout,
+                onclick: Auth.logout,
             },
         }, m(Ripple)),
     ]);
 }
-
-Login.watchLoginChanges();
 
 return Login;
 

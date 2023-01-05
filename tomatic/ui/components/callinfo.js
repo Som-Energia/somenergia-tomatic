@@ -7,7 +7,7 @@ module.exports = function() {
 var m = require('mithril');
 var api = require('./api');
 
-var Login = require('./login');
+var Auth = require('./auth');
 
 var websock = null;
 var CallInfo = {};
@@ -81,7 +81,7 @@ CallInfo.saveCallLog = function(claim) {
   CallInfo.savingAnnotation = true;
   var partner = CallInfo.selectedPartner();
   var contract = CallInfo.selectedContract();
-  var user = Login.myName();
+  var user = Auth.username();
   var partner_code = partner!==null ? partner.id_soci : "";
   var contract_number = contract!==null ? contract.number : "";
   var isodate = CallInfo.call.date || new Date().toISOString();
@@ -271,7 +271,7 @@ CallInfo.notifyUsage = function(event) {
     method: 'POST',
     url: '/api/logger/'+event,
     body: {
-      user: Login.myName(),
+      user: Auth.username(),
     },
   });
 }
@@ -319,7 +319,7 @@ CallInfo.updateCategories = function() {
 
 CallInfo.getLogPerson = function () {
   CallInfo.callLog = []
-  var username = Login.myName();
+  var username = Auth.username();
   if (username === -1 || username === '') {
     return 0
   }
@@ -394,7 +394,7 @@ var connectWebSocket = function() {
 }
 
 CallInfo.sendIdentification = function() {
-    var message = "IDEN:"+Login.myName()+":";
+    var message = "IDEN:"+Auth.username()+":";
     websock.send(message);
 }
 
@@ -418,12 +418,12 @@ CallInfo.onMessageReceived = function(event) {
 CallInfo.getCategories();
 CallInfo.getLogPerson()
 
-Login.onLogin.push(CallInfo.sendIdentification);
-Login.onLogin.push(CallInfo.getLogPerson);
-Login.onLogout.push(CallInfo.sendIdentification);
-Login.onLogout.push(CallInfo.getLogPerson);
-Login.onUserChanged.push(CallInfo.changeUser);
-Login.onUserChanged.push(CallInfo.getLogPerson);
+Auth.onLogin.push(CallInfo.sendIdentification);
+Auth.onLogin.push(CallInfo.getLogPerson);
+Auth.onLogout.push(CallInfo.sendIdentification);
+Auth.onLogout.push(CallInfo.getLogPerson);
+Auth.onUserChanged.push(CallInfo.changeUser);
+Auth.onUserChanged.push(CallInfo.getLogPerson);
 connectWebSocket();
 
 return CallInfo;

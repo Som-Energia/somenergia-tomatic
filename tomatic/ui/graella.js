@@ -19,6 +19,7 @@ var Login = require('./components/login');
 var Persons = require('./components/persons');
 var TimeTablePage = require('./components/timetablepage');
 var MenuButton = require('./components/menubutton');
+var LoginPage = require('./components/loginpage');
 
 var css = require('polythene-css');
 var customStyle = require('./style.styl');
@@ -235,6 +236,7 @@ window.onload = function() {
 		'/Centraleta': {render: function() { return m(TomaticApp, m(PbxPage)) }},
 		'/Persones': {render: function() { return m(TomaticApp, m(PersonsPage)) }},
 		'/Trucada': {render: function() { return m(TomaticApp, m(CallInfoPage)) }},
+		'/Login': {render: function() { return m(TomaticApp, m(LoginPage)) }},
 	});
 };
 // vim: noet ts=4 sw=4
