@@ -14,12 +14,12 @@ var WeekPicker = require('./weekpicker');
 var Uploader = require('./uploader');
 var PersonPicker = require('./personpicker');
 var getCookie = require('./utils').getCookie;
-var Login = require('./login');
+var Auth = require('./auth');
 
 var TimeTable = function(grid) {
 	var editCell = function(day, houri, turni) {
 		var setPerson = function(name) {
-			var myname = Login.myName();
+			var myname = Auth.username();
 			Tomatic.editCell(day, houri, turni, name, myname)
 			Dialog.hide({id:'GridCellEditor'});
 		};
@@ -60,7 +60,7 @@ var TimeTable = function(grid) {
 			className: name||'ningu',
 			onclick: function(ev) {
 				ev.preventDefault();
-				if (Login.myName()==='') {
+				if (Auth.username()==='') {
 					return
 				}
 				editCell(day, houri, turni);

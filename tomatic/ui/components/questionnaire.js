@@ -19,7 +19,7 @@ var Checkbox = require('polythene-mithril-checkbox').Checkbox;
 var RadioGroup = require('polythene-mithril-radio-group').RadioGroup;
 var RadioButton = require('polythene-mithril-radio-button').RadioButton;
 var CallInfo = require('./callinfo');
-var Login = require('./login');
+var Auth = require('./auth');
 
 var Questionnaire = {};
 
@@ -85,7 +85,7 @@ Questionnaire.annotationButton = function() {
       },
       disabled: (
         CallInfo.savingAnnotation ||
-        Login.myName() === ""
+        Auth.username() === ""
       ),
     })
   );
@@ -326,7 +326,7 @@ Questionnaire.openCaseAnnotationDialog = function() {
             CallInfo.savingAnnotation ||
             CallInfo.call.category === "" ||
             CallInfo.call.notes === "" ||
-            Login.myName() === ""
+            Auth.username() === ""
           ),
         }, m(Ripple)),
       ]

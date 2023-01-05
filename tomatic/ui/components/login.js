@@ -16,12 +16,6 @@ var Auth = require('./auth');
 
 var Login = {};
 
-var previousLogin = null; // To detect login changes
-
-Login.myName = function() {
-    return Auth.username();
-}
-
 var exitIcon = function(){
     return m(".icon-exit", [
         m("i.fa.fa-sign-out-alt"),
@@ -31,7 +25,7 @@ var exitIcon = function(){
 Login.identification = function() {
     var nom = "IDENTIFICA'T";
     var color = 'rgba(255, 255, 255, 0.7)';
-    var id = Login.myName();
+    var id = Auth.username();
 
     if (id !== '') {
         nom = Tomatic.formatName(id);
