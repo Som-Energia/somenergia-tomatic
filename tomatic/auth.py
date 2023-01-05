@@ -36,7 +36,7 @@ async def login(request: Request):
     print(redirect_uri)
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
-def redirect(token=None, error=None, code=200):
+def auth_result(token=None, error=None, code=200):
     return HTMLResponse(
         f""""<html><script>
         localStorage.setItem("token", "{token if token else ''}");
@@ -50,17 +50,18 @@ async def auth(request: Request):
     try:
         token = await oauth.google.authorize_access_token(request)
     except OAuthError as error:
-        return redirect(error=f"Error d'autenticació: {error.error}", code=400)
+        return auth_result(error=f"Error d'autenticació: {error.error}", code=400)
     user = await oauth.google.parse_id_token(request, token)
     if not user:
-        return redirect(error='Error a la resposta de Google', code=400)
+        return auth_result(error='Error a la resposta de Google', code=400)
 
     username = persons.byEmail(user['email'])
     if not username:
-        return redirect(error=f"L'usuari {user['email']} no té accés a l'aplicació", code=400)
+        return auth_result(error=f"L'usuari {user['email']} no té accés a l'aplicació", code=400)
+
     user.update(username = username)
     token = create_access_token(user)
-    return redirect(token=token)
+    return auth_result(token=token)
 
 @router.get('/logout')
 async def logout(request: Request):
