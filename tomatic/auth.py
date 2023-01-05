@@ -10,6 +10,7 @@ from starlette.config import Config
 from yamlns import namespace as ns
 from consolemsg import error
 from . import persons
+import dbconfig
 
 
 config = Config('config.fastapi')
@@ -49,10 +50,8 @@ async def auth(request: Request):
     username = persons.byEmail(user['email'])
     if not username:
         return HTMLResponse(f'<h1>Not authorized</h1>', 400)
-    print(request)
-    print(ns(user).dump())
-    user = dict(user, username = username)
-    token = create_access_token(user, datetime.timedelta(minutes=3))
+    user.update(username = username)
+    token = create_access_token(user)
     return HTMLResponse(
         f""""<html><script>
         localStorage.setItem("token", "{token}");
@@ -66,11 +65,8 @@ async def logout(request: Request):
     return RedirectResponse(url='/')
 
 from jose import JWTError, jwt
-SECRET_KEY = "09d25e094faa6ca25666818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-
-def create_access_token(data: dict, expires_delta: datetime.timedelta = None):
+JWT_ALGORITHM='HS256'
+def create_access_token(data: dict):
     passthru_fields = (
         'username name email locale family_name given_name picture'
     ).split()
@@ -79,10 +75,17 @@ def create_access_token(data: dict, expires_delta: datetime.timedelta = None):
         for field in passthru_fields
         if field in data
     )
-    default_delta = datetime.timedelta(minutes=15)
-    payload['exp'] = datetime.datetime.utcnow() + (expires_delta or default_delta)
-    token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
-    print(f"Emited token {token}")
+    expires_delta = datetime.timedelta(
+        **dbconfig.tomatic.get('jwt',{}).get('expiration', dict(hours=10))
+    )
+    utcnow = datetime.datetime.now(datetime.timezone.utc)
+    expiration = utcnow + expires_delta
+    payload['exp'] = int(expiration.timestamp())
+    token = jwt.encode(
+        payload,
+        dbconfig.tomatic.jwt.secret_key,
+        algorithm=JWT_ALGORITHM,
+    )
     return token
 
 def auth_error(message):
@@ -97,14 +100,17 @@ def auth_error(message):
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def validatedUser(token: str = Depends(oauth2_scheme)):
-    print(f"Received token {token}")
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        utcnow = datetime.datetime.now(datetime.timezone.utc)
+        payload = jwt.decode(
+            token,
+            dbconfig.tomatic.jwt.secret_key,
+            algorithms=JWT_ALGORITHM,
+        )
     except JWTError as e:
-        raise auth_error("Token decoding failed {e}")
+        raise auth_error(f"Token decoding failed: {e}")
 
     # TODO: validate all the fields
-    print(payload)
     username: str = payload.get("username")
     if username is None:
         raise auth_error("Payload failed")
