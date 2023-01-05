@@ -36,28 +36,31 @@ async def login(request: Request):
     print(redirect_uri)
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
+def redirect(token=None, error=None, code=200):
+    return HTMLResponse(
+        f""""<html><script>
+        localStorage.setItem("token", "{token if token else ''}");
+        localStorage.setItem("autherror", "{error if error else ''}");
+        location.href="/";
+        </script><h1>{error if error else ''}</h1></html>
+        """, code)
 
 @router.get('/auth')
 async def auth(request: Request):
     try:
         token = await oauth.google.authorize_access_token(request)
     except OAuthError as error:
-        return HTMLResponse(f'<h1>{error.error}</h1>', 400)
+        return redirect(error=f"Error d'autenticació: {error.error}", code=400)
     user = await oauth.google.parse_id_token(request, token)
     if not user:
-        return HTMLResponse(f'<h1>Missing user</h1>', 400)
+        return redirect(error='Error a la resposta de Google', code=400)
 
     username = persons.byEmail(user['email'])
     if not username:
-        return HTMLResponse(f'<h1>Not authorized</h1>', 400)
+        return redirect(error=f"L'usuari {user['email']} no té accés a l'aplicació", code=400)
     user.update(username = username)
     token = create_access_token(user)
-    return HTMLResponse(
-        f""""<html><script>
-        localStorage.setItem("token", "{token}");
-        location.href="/";
-        </script></html>
-        """)
+    return redirect(token=token)
 
 @router.get('/logout')
 async def logout(request: Request):

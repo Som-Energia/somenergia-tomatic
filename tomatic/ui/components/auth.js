@@ -24,6 +24,13 @@ Auth.userinfo = function() {
     return content;
 };
 
+Auth.error = function(value) {
+    if (value!==undefined) {
+        localStorage.setItem('autherror', value);
+    }
+    return localStorage.getItem('autherror')
+};
+
 Auth.loginWatchTimer = 0;
 Auth.watchLoginChanges = function() {
     clearTimeout(Auth.loginWatchTimer);

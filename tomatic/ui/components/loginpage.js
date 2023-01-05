@@ -17,7 +17,12 @@ var SimpleCard = function(args) {
             },
             {
                 text: {
-                    content: args.content
+                    content: args.content,
+                },
+            },
+            {
+                text: {
+                    content: args.error ? m('.red', "Error: ", args.error):'',
                 },
             },
             {
@@ -43,6 +48,7 @@ var LoginPage = {
             m('.loginbox',
                 SimpleCard({
                     title: "Es requereix identificació",
+                    error: Auth.error(),
                     content: "Cal que us identifiqueu a Can Google amb l'usuari de Som Energia.",
                     button: 'Som-hi!',
                     action: function() {
