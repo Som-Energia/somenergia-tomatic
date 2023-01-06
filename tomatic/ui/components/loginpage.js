@@ -4,26 +4,31 @@ module.exports = function() {
 var m = require('mithril');
 var Button = require('polythene-mithril-button').Button;
 var Card = require('polythene-mithril-card').Card;
-var Auth = require('./auth')
-require('./loginpage.styl')
+var Auth = require('./auth');
+require('./loginpage.styl');
+var tomaticAvatar = require('../tomatic-avatar.png');
 
 var SimpleCard = function(args) {
+    console.log(args)
     return m(Card, {
         content: [
             {
-                header: {
+                primary: {
                     title: args.title,
+                    media: {
+                        ratio: 'square',
+                        size: 'small',
+                        content: m('img', {
+                            src: tomaticAvatar,
+                        }),
+                    },
                 },
             },
             {
-                text: {
-                    content: args.content,
-                },
+                text: { content: args.error ? m('.red', "Error: ", args.error):''},
             },
             {
-                text: {
-                    content: args.error ? m('.red', "Error: ", args.error):'',
-                },
+                text: { content: args.content},
             },
             {
                 actions: {
@@ -50,7 +55,7 @@ var LoginPage = {
                     title: "Es requereix identificació",
                     error: Auth.error(),
                     content: "Cal que us identifiqueu a Can Google amb l'usuari de Som Energia.",
-                    button: 'Som-hi!',
+                    button: 'Ves-hi!',
                     action: function() {
                         Auth.authenticate()
                     },
