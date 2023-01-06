@@ -1,33 +1,33 @@
 import json
 import datetime
+from functools import lru_cache
 from fastapi import APIRouter, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordBearer
 from starlette.requests import Request
-from starlette.middleware.sessions import SessionMiddleware
 from starlette.responses import HTMLResponse, RedirectResponse
 from authlib.integrations.starlette_client import OAuth, OAuthError
 from starlette.config import Config
+from jose import JWTError, jwt
 from yamlns import namespace as ns
 from consolemsg import error
 from . import persons
 import dbconfig
-from jose import JWTError, jwt
 JWT_ALGORITHM='HS256'
-
-config = Config('config.fastapi')
-print(config.file_values)
-
-oauth = OAuth(config)
-
-
 CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
-oauth.register(
-    name='google',
-    server_metadata_url=CONF_URL,
-    client_kwargs={
-        'scope': 'openid email profile'
-    }
-)
+
+@lru_cache
+def oauth():
+    # TODO: Integrate the configuration with dbconfig
+    config = Config('config.fastapi')
+    oauth = OAuth(config)
+    oauth.register(
+        name='google',
+        server_metadata_url=CONF_URL,
+        client_kwargs={
+            'scope': 'openid email profile'
+        }
+    )
+    return oauth
 
 router = APIRouter()
 
@@ -35,7 +35,7 @@ router = APIRouter()
 async def login(request: Request):
     redirect_uri = request.url_for('auth')
     print(redirect_uri)
-    return await oauth.google.authorize_redirect(request, redirect_uri)
+    return await oauth().google.authorize_redirect(request, redirect_uri)
 
 def auth_result(token=None, error=None, code=200):
     return HTMLResponse(
@@ -49,10 +49,10 @@ def auth_result(token=None, error=None, code=200):
 @router.get('/auth')
 async def auth(request: Request):
     try:
-        token = await oauth.google.authorize_access_token(request)
+        token = await oauth().google.authorize_access_token(request)
     except OAuthError as error:
         return auth_result(error=f"Error d'autenticació: {error.error}", code=400)
-    user = await oauth.google.parse_id_token(request, token)
+    user = await oauth().google.parse_id_token(request, token)
     if not user:
         return auth_result(error='Error a la resposta de Google', code=400)
 
