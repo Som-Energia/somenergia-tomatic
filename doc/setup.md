@@ -69,7 +69,19 @@ sudo chmod 755 crontab
 sudo ln -s $pwd/crontab /etc/cron.d/tomatic
 ```
 
+### Setting up Google OAuth2 login
+
+- Go to https://console.cloud.google.com/apis/credentials
+- Create a new OAuth2 client id credential
+- In dbconfig:
+    - Set `tomatic.jwt.secret_key` to whatever you want
+- Create a `config.fastapi` file with env vars:
+    - Set `GOOGLE_CLIENT_ID` to the client id of the created credential
+    - Set `GOOGLE_CLIENT_SECRET` to the client secret of the created credential
+
 ### Setting up Hangouts notification
+
+**TODO:** Hangouts API has been dropped by Google. Document the new api setup.
 
 This can be done by using the hangups application that should have been installed as dependency.
 
