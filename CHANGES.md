@@ -1,5 +1,15 @@
 # Changelog
 
+## 4.11.0 2023-01-05
+
+- Google OAuth authentication
+- Upgrade notes:
+    - You should create a google oauth client id
+      https://console.cloud.google.com/apis/credentials
+    - Define accordantly `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
+      in `config.fastapi`
+    - Update `dbconfig.py` with the jwt variables. See (`dbconfig-example.py`)
+
 ## 4.10.0 2023-01-03
 
 - pbxirontec: Fix: when updating extensions on the pbx, and no email is
@@ -10,7 +20,7 @@
     - scheduler: Cost to simultaneous empty slots in timetable
     - Renamed prunning and cut reason id's to english
     - status.yaml stores the penalties
-- ICS calendar for a user /api/calendar/[user]
+- ICS calendar for a user /api/calendar/<user>
 - Execution list: Reasons for penalties are shown on hovering the cost value
 - Upgrade Notes:
     - Add `costTornBuit` parameter to `config.yaml`
