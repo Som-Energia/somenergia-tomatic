@@ -9,6 +9,14 @@ tomatic=ns(
     storagepath='/home/vokimon/somenergia/somenergia-tomatic/graelles',
     # mail to report issues
     supportmail='support@mycompany.com',
+    # auth configuration
+    jwt=ns(
+        # YOU SHOULD CHANGE THIS, used to sign authentification and other critical stuff
+        secret_key = "Vinga Supers!!",
+        expiration = dict(
+           hours=12,
+        ),
+    ),
     # Choose the PBX backend:
     # - fake: emulates a real PBX
     # - asteriskcli: connects asterisk by ssh
