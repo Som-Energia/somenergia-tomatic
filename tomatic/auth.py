@@ -34,7 +34,9 @@ router = APIRouter()
 @router.get('/login')
 async def login(request: Request):
     redirect_uri = request.url_for('auth')
-    print(redirect_uri)
+    if 'localhost' not in redirect_uri:
+        redirect_uri = redirect_uri.replace('http:', 'https:')
+    print("Auth redirect uri:", redirect_uri)
     return await oauth().google.authorize_redirect(request, redirect_uri)
 
 def auth_result(token=None, error=None, code=200):
