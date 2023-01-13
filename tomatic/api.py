@@ -314,7 +314,7 @@ def personInfoFromExtension(extension, user = Depends(validatedUser)):
 
 @app.get('/api/persons')
 @yamlerrors
-def personInfo(user = Depends(validatedUser)):
+def personInfo():
     result=persons.persons()
     return yamlfy(persons=result)
 
@@ -340,7 +340,7 @@ async def busy_post(person, request: Request, user = Depends(validatedUser)):
 
 @app.get('/api/busy/download/weekly')
 @yamlerrors
-def downloadWeeklyBusy(user = Depends(validatedUser)):
+def downloadWeeklyBusy(): # TODO requires validation
     response = FileResponse(
         path='indisponibilitats.conf',
         #as_attachment=True,
@@ -350,7 +350,7 @@ def downloadWeeklyBusy(user = Depends(validatedUser)):
 
 @app.get('/api/busy/download/oneshot')
 @yamlerrors
-def downloadOneShotBusy(user = Depends(validatedUser)):
+def downloadOneShotBusy(): # TODO requires validation
     return FileResponse(
         'oneshot.conf',
         #as_attachment=True,
@@ -359,7 +359,7 @@ def downloadOneShotBusy(user = Depends(validatedUser)):
 
 @app.get('/api/shifts/download/credit/{week}')
 @yamlerrors
-def downloadWeekShiftCredit(week):
+def downloadWeekShiftCredit(week): # TODO requires validation
     try:
         credit = schedules.credit(week)
     except schedulestorage.StorageError as e:
@@ -367,7 +367,7 @@ def downloadWeekShiftCredit(week):
     return yamlfy(**credit)
 
 @app.get('/api/shifts/download/shiftload/{week}')
-def downloadShiftLoad(week, user = Depends(validatedUser)):
+def downloadShiftLoad(week): # TODO requires validation
     loadfile = Path('carrega-{}.csv'.format(week))
 
     return FileResponse(
@@ -377,7 +377,7 @@ def downloadShiftLoad(week, user = Depends(validatedUser)):
     )
 
 @app.get('/api/shifts/download/overload/{week}')
-def downloadOverload(week, user = Depends(validatedUser)):
+def downloadOverload(week): # TODO requires validation
     loadfile = Path('overload-{}.yaml'.format(week))
 
     return FileResponse(
