@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.11.1 2023-01-13
+
+- No authentication for scheduler required entry points.
+
 ## 4.11.0 2023-01-05
 
 - Google OAuth authentication
@@ -139,7 +143,7 @@
 Post new provider fixes
 
 - Call stats: Fix: properly filtering inbound calls in irontec
-- Call stats: Fix: hard limit to 10 calls moved to 10,000 
+- Call stats: Fix: hard limit to 10 calls moved to 10,000
 - Call stats: added bouncedcalls: calls bounced because the queue size
 - Call stats: added testcalls: calls arriving to a different platform/queue
 
@@ -225,7 +229,7 @@ Post new provider fixes
     - `tomatic_uploadcases.py` upload both info and claims
     - All categories have a code and optionally a section
     - Translate HelpDesk section as CONSULTA
-    - Translate 
+    - Translate
     - ERP user is set on cases
 - Custom banners for pebrotic and ketchup variants by CLI
 - Fix: search values trimmed and urlencoded
@@ -253,7 +257,7 @@ Post new provider fixes
 
 ## 4.2.5 2021-11-23
 
-- Call annotations are uploaded by a cron to the ERP as CRM and ATC Cases 
+- Call annotations are uploaded by a cron to the ERP as CRM and ATC Cases
 - Call logging and annotation simplified in a single log (Breaks backward compatibility)
 - persons.yaml is created the first time Tomatic is run
 
@@ -358,7 +362,7 @@ Post new provider fixes
     - Colored scrollable call log
     - Backend info stored in a single directory
     - More reliable backend info storage
-- Server has --queue option to enable a second 
+- Server has --queue option to enable a second
   Tomatic instance with a testing queue to make
   experiments
 - Searches can be registered as atc/info cases
@@ -520,7 +524,7 @@ Post new provider fixes
 
 - New script: `tomatic_shiftload.py` to automate weekly load generation
 - New script: `tomatic_mergedicts.py` to perform person by person manipulations
-	in person->value yaml dicts (add, substract, extract 
+	in person->value yaml dicts (add, substract, extract
 - script `scheduler.py` renamed as `tomatic_schedule.py`
 - Scheduler: `--lines` option to indicate the number of lines
 - Scheduler: `--personsfile` option to indicate the persons file
@@ -552,6 +556,6 @@ Post new provider fixes
 
 ## 2.1.0  2018-02-07
 
-- First tagged release 
+- First tagged release
 
 
