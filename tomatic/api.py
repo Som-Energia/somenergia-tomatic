@@ -162,7 +162,7 @@ def tomatic(request: Request, file=None):
 
 @app.get('/api/version')
 @yamlerrors
-def apiVersion(user = Depends(validatedUser)):
+def apiVersion():
     return yamlfy(
         version = version,
         variant = os.environ.get('TOMATIC_VARIANT', 'tomatic')
