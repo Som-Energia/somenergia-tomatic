@@ -73,6 +73,7 @@ setup(
         'authlib<1.0', # auth
         'httpx', # auth
         'python-jose[cryptography]', # auth
+        'charset-normalizer<3', # request and httpio complains once 3.x is out
     #],
     #tests_require=[
         'pytest-cov',
