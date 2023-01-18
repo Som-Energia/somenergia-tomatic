@@ -74,6 +74,7 @@ setup(
         'httpx', # auth
         'python-jose[cryptography]', # auth
         'charset-normalizer<3', # request and httpio complains once 3.x is out
+        'httplib2', # Google chat code
     #],
     #tests_require=[
         'pytest-cov',
