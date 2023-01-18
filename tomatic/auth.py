@@ -11,7 +11,6 @@ from jose import JWTError, jwt
 from yamlns import namespace as ns
 from consolemsg import error
 from . import persons
-import dbconfig
 JWT_ALGORITHM='HS256'
 CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
 
@@ -72,6 +71,7 @@ async def logout(request: Request):
     return RedirectResponse(url='/')
 
 def create_access_token(data: dict, expiration_delta: datetime.timedelta = None):
+    import dbconfig
     passthru_fields = (
         'username name email locale family_name given_name picture'
     ).split()
@@ -105,6 +105,7 @@ def auth_error(message):
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def validatedUser(token: str = Depends(oauth2_scheme)):
+    import dbconfig
     try:
         utcnow = datetime.datetime.now(datetime.timezone.utc)
         payload = jwt.decode(
