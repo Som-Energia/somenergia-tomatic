@@ -1,4 +1,6 @@
 import unittest
+import os
+from unittest.mock import patch
 from yamlns import namespace as ns
 from .auth import (
     create_access_token,
@@ -7,8 +9,10 @@ from .auth import (
 import datetime
 from fastapi import HTTPException
 
+@patch.dict('os.environ', TOMATIC_JWT_SECRET_KEY='NOTSOSECRET')
 class Auth_Test(unittest.TestCase):
     from yamlns.testutils import assertNsEqual
+
     def test_token_validates(self):
         payload = ns.loads("""
             username: alice

@@ -11,8 +11,26 @@ from jose import JWTError, jwt
 from yamlns import namespace as ns
 from consolemsg import error
 from . import persons
+import os
 JWT_ALGORITHM='HS256'
 CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
+
+def config(key='', default=Ellipsis):
+    keyparts = key.split('.')
+    envkey = key.replace('.','_').upper()
+    if envkey in os.environ:
+        return os.environ[envkey]
+    try:
+        import dbconfig as configuration
+    except ImportError:
+        configuration = ns(tomatic=ns())
+    if not key:
+        return configuration
+    for part in keyparts[:-1]:
+        configuration = configuration.get(part, ns())
+    if default is Ellipsis and keyparts[-1] not in configuration:
+        raise KeyError(key)
+    return configuration.get(keyparts[-1], default)
 
 @lru_cache
 def oauth():
@@ -71,7 +89,6 @@ async def logout(request: Request):
     return RedirectResponse(url='/')
 
 def create_access_token(data: dict, expiration_delta: datetime.timedelta = None):
-    import dbconfig
     passthru_fields = (
         'username name email locale family_name given_name picture'
     ).split()
@@ -81,14 +98,14 @@ def create_access_token(data: dict, expiration_delta: datetime.timedelta = None)
         if field in data
     )
     expires_delta = expiration_delta or datetime.timedelta(
-        **dbconfig.tomatic.get('jwt',{}).get('expiration', dict(hours=10))
+        **config('tomatic.jwt.expiration', dict(hours=10))
     )
     utcnow = datetime.datetime.now(datetime.timezone.utc)
     expiration = utcnow + expires_delta
     payload['exp'] = int(expiration.timestamp())
     token = jwt.encode(
         payload,
-        dbconfig.tomatic.jwt.secret_key,
+        config('tomatic.jwt.secret_key'),
         algorithm=JWT_ALGORITHM,
     )
     return token
@@ -105,12 +122,22 @@ def auth_error(message):
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def validatedUser(token: str = Depends(oauth2_scheme)):
-    import dbconfig
+    environ_user = config('tomatic.auth.dummy', None)
+    if environ_user:
+        if environ_user.isalpha():
+            return dict(
+                username = environ_user,
+                email = environ_user+'@somenergia.coop',
+            )
+        return dict(
+            username = 'alice',
+            email = 'me@here.coop',
+        )
     try:
         utcnow = datetime.datetime.now(datetime.timezone.utc)
         payload = jwt.decode(
             token,
-            dbconfig.tomatic.jwt.secret_key,
+            config('tomatic.jwt.secret_key'),
             algorithms=JWT_ALGORITHM,
         )
     except JWTError as e:
