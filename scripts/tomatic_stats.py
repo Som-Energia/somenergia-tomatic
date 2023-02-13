@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+"""
+TODO:
+- Date-Hour with 0 calls are not aggregated into the mean
+- Horitzontal lines to make the plot more readable
+- Nicer x axis labels
+"""
 
 from yamlns import ns
 from consolemsg import step, error, success
@@ -47,5 +53,6 @@ df['weekdayhour']=df['weekday']*100+df['hour']
 del df['weekday']
 del df['hour']
 df = df.plot.box(by='weekdayhour', figsize=(20,10))
+plt.title(f"Calls from {firstdate.date()} to {lastdate.date()}")
 plt.savefig('call-weekly-frequency.pdf')
 
