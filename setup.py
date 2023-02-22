@@ -34,6 +34,7 @@ setup(
         'scripts/tomatic_resetshiftcredit.sh',
         'scripts/tomatic_retrieve.py',
         'scripts/tomatic_rtqueue.py',
+        'scripts/tomatic_timetable.py',
         'scripts/tomatic_timetablelauncher.py',
         'scripts/tomatic_says.py',
         'scripts/tomatic_scheduler.py',

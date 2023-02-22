@@ -1,5 +1,11 @@
 # Changelog
 
+## unreleased
+
+- Some dbconfig parameters accessible through environment
+- Fix: Auth tests working without a dbconfig
+- Fix: Retire old timetables by cli not api, since it asked auth
+
 ## 4.11.1 2023-01-13
 
 - No authentication for scheduler required entry points.

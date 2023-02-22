@@ -25,4 +25,4 @@ TOMATIC_CRONLOG=/var/log/somenergia/crontab-tomatic.log
 00 22   * * 7    somenergia    (echo "$(date -Iseconds) Timetable generation"; cd $TOMATIC_PATH; crontab-launchtimetable.sh) >> $TOMATIC_CRONLOG 2>&1
 
 ## Treu les graelles antigues
-52 13  * * *  somenergia    curl -q http://tomatic.somenergia.lan/api/graella/retireold >> $TOMATIC_CRONLOG 2>&1
+52 13  * * *  somenergia    (echo "$(date -Iseconds) Retire old timetables"; cd $TOMATIC_PATH; tomatic_timetable.py retireold) >> $TOMATIC_CRONLOG 2>&1

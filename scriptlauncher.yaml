@@ -51,7 +51,7 @@ tomatic:
       parameters: {}
 
     retireold:
-      script: curl -q http://tomatic.somenergia.lan/api/graella/retireold
+      script: SOME_SRC/somenergia-tomatic/runhere tomatic_timetable.py retireold
       title: Graelles - Retira les graelles antigues
       description: >
         Amaga les graelles antigues conservant només la de la setmana anterior.
