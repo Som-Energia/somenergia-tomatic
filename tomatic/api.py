@@ -45,10 +45,6 @@ packagedir = Path(__file__).parent
 distpath = packagedir/'dist'
 schedules = schedulestorage.Storage()
 
-def fillConfigurationInfo():
-    return ns.load('config.yaml')
-CONFIG = fillConfigurationInfo()
-
 from contextlib import contextmanager
 @contextmanager
 def erp():
@@ -83,10 +79,6 @@ app.add_middleware(SessionMiddleware, secret_key="Hola, Supers!")
 app.include_router(Planner, prefix='/api/planner')
 app.include_router(Auth, prefix='/api/auth')
 
-
-def occurrencesInTurn(graella, day, houri, name):
-    nominated = graella.timetable[day][int(houri)]
-    return nominated.count(name)
 
 
 class ApiError(Exception): pass
@@ -214,32 +206,12 @@ def graellaYaml(week, user = Depends(validatedUser)):
 @app.patch('/api/graella/{week}/{day}/{houri}/{turni}/{name}')
 @ayamlerrors
 async def editSlot(week, day, houri: int, turni: int, name, request: Request, user = Depends(validatedUser)):
-    # TODO: This should be some kind of auth
-    user = (await request.body()).decode('utf8').split('"')[1]
-    graella = schedules.load(week)
-    # TODO: Ensure day, houri, turni and name are in graella
-    oldName = graella.timetable[day][int(houri)][int(turni)]
-    if name == 'ningu' and occurrencesInTurn(graella, day, houri, name) == CONFIG.maxNingusPerTurn:
-        raise ApiError("Hi ha masses Ningu en aquest torn")
-    graella.timetable[day][int(houri)][int(turni)] = name
-    graella.overload = graella.get('overload', ns())
-    graella.overload[oldName] = graella.overload.get(oldName, 0) -1
-    graella.overload[name] = graella.overload.get(name, 0) +1
-    logmsg = (
-        "{}: {} ha canviat {} {}-{} {} de {} a {}".format(
-        datetime.now(),
-        user, # TODO: ERP user
-        day,
-        graella.hours[int(houri)],
-        graella.hours[int(houri)+1],
-        graella.turns[int(turni)],
-        oldName,
-        name
-        ))
-    step(logmsg)
-    graella.setdefault('log',[]).append(logmsg)
-    schedules.save(graella)
-    schedulestorage.publishStatic(graella)
+    #user = (await request.body()).decode('utf8').split('"')[1]
+    user=user['username']
+    try:
+        schedules.editSlot(week, day, houri, turni, name, user)
+    except schedulestorage.BadEdit as e:
+        raise ApiError(str(e))
     return graellaYaml(week)
 
 

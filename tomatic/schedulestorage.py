@@ -12,6 +12,8 @@ try:
 except ImportError:
     pass
 
+class BadEdit(Exception): pass
+
 def utcnow():
 	"Returns tz aware current datetime in UTC"
 	# Py2 compatible version
@@ -19,6 +21,10 @@ def utcnow():
 	return datetime.datetime.now(tz=pytz.utc)
 	# Py3 only version
 	#return datetime.datetime.now(tz=datetime.timezone.utc)
+
+def fillConfigurationInfo():
+    return ns.load('config.yaml')
+CONFIG = fillConfigurationInfo()
 
 class StorageError(Exception): pass
 
@@ -159,6 +165,36 @@ class Storage(object):
             timetable.rename(retirementDir/timetable.name)
 
         self.saveCredit(monday, credit)
+
+    def editSlot(self, week: str, day: str, houri: int, turni: int, name, user: str):
+        def occurrencesInTurn(timetable, day, houri, name):
+            nominated = timetable.timetable[day][int(houri)]
+            return nominated.count(name)
+
+        timetable = self.load(week)
+        # TODO: Ensure day, houri, turni and name are in timetable
+        oldName = timetable.timetable[day][int(houri)][int(turni)]
+        if name == 'ningu' and occurrencesInTurn(timetable, day, houri, name) == CONFIG.maxNingusPerTurn:
+            raise BadEdit("Hi ha masses Ningu en aquest torn")
+        timetable.timetable[day][int(houri)][int(turni)] = name
+        timetable.overload = timetable.get('overload', ns())
+        timetable.overload[oldName] = timetable.overload.get(oldName, 0) -1
+        timetable.overload[name] = timetable.overload.get(name, 0) +1
+        logmsg = (
+            "{}: {} ha canviat {} {}-{} {} de {} a {}".format(
+            utcnow(),
+            user,
+            day,
+            timetable.hours[int(houri)],
+            timetable.hours[int(houri)+1],
+            timetable.turns[int(turni)],
+            oldName,
+            name
+            ))
+        step(logmsg)
+        timetable.setdefault('log',[]).append(logmsg)
+        self.save(timetable)
+        publishStatic(timetable)
 
     def queueScheduledFor(self, timestamp):
         week, dow, time = choosers(timestamp)
