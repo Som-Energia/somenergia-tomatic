@@ -5,7 +5,7 @@ import datetime
 from pathlib import Path
 from consolemsg import step, out, warn, fail, u
 from yamlns import namespace as ns
-from sheetfetcher import SheetFetcher
+from somutils.sheetfetcher import SheetFetcher
 from .persons import persons
 
 # Dirty Hack: Behave like python3 open regarding unicode
