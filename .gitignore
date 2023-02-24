@@ -71,6 +71,9 @@ drive-certificate.json
 # callinfo
 claim_types.txt
 
+# editorsç
+.*sw?
+
 # dependencies
 /.pnp
 .pnp.js
