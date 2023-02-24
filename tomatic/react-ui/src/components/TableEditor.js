@@ -17,8 +17,6 @@ import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import { visuallyHidden } from '@mui/utils'
-import personData from '../persons.json'
-import { contrast } from '../colorutils'
 import EditIcon from '@mui/icons-material/Edit'
 import EventBusyIcon from '@mui/icons-material/EventBusy'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -30,120 +28,6 @@ import { styled, alpha } from '@mui/material/styles'
 /* eslint-enable */
 
 const denseRowHeight = 33
-
-function compileData() {
-  const result = {}
-
-  function joinAttribute(result, attribute) {
-    Object.entries(personData[attribute + 's']).forEach(
-      ([identifier, v], i) => {
-        if (!result[identifier]) result[identifier] = { identifier: identifier }
-        result[identifier][attribute] = v
-      }
-    )
-  }
-  function joinGroups(result) {
-    Object.entries(personData.groups).forEach(([group, members], i) => {
-      members.forEach((member) => {
-        if (result[member] === undefined) {
-          result[member] = { identifier: member }
-        }
-        if (result[member].groups === undefined) {
-          result[member].groups = []
-        }
-        result[member].groups.push(group)
-      })
-    })
-  }
-
-  joinAttribute(result, 'name')
-  joinAttribute(result, 'table')
-  joinAttribute(result, 'extension')
-  joinAttribute(result, 'color')
-  joinAttribute(result, 'email')
-  joinAttribute(result, 'erpuser')
-  joinAttribute(result, 'load')
-  joinGroups(result)
-
-  return Object.entries(result).map(([identifier, v]) => {
-    return v
-  })
-}
-
-const rows = compileData()
-
-function camelize(text) {
-  text = text.toLowerCase()
-  return text.charAt(0).toUpperCase() + text.slice(1)
-}
-
-const columns = [
-  {
-    id: 'identifier',
-    numeric: false,
-    disablePadding: true,
-    label: 'Identificador',
-  },
-  {
-    id: 'name',
-    numeric: false,
-    disablePadding: false,
-    label: 'Nom / Color',
-    view: (row) => {
-      const bg = row.color || 'aaaaee'
-      const fg = contrast(bg)
-      return (
-        <div
-          style={{
-            padding: '5px',
-            backgroundColor: `#${bg}`,
-            color: `${fg}`,
-            border: `1pt solid ${fg}`,
-            textAlign: 'center',
-          }}
-        >
-          {row.name || camelize(row.identifier)}
-        </div>
-      )
-    },
-  },
-  {
-    id: 'extension',
-    numeric: false,
-    disablePadding: false,
-    label: 'Extensió',
-  },
-  {
-    id: 'email',
-    numeric: true,
-    disablePadding: false,
-    label: 'Correu Electrònic',
-  },
-  {
-    id: 'erpuser',
-    numeric: false,
-    disablePadding: false,
-    label: 'Usuaria ERP',
-  },
-  {
-    id: 'load',
-    numeric: true,
-    disablePadding: false,
-    label: 'Torns',
-  },
-  {
-    id: 'table',
-    numeric: true,
-    disablePadding: false,
-    label: 'Taula',
-  },
-  {
-    id: 'groups',
-    numeric: true,
-    disablePadding: false,
-    label: 'Grups',
-  },
-]
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -225,6 +109,7 @@ function stableSort(array, comparator) {
 }
 function EnhancedTableHead(props) {
   const {
+    columns,
     onSelectAllClick,
     order,
     orderBy,
@@ -372,7 +257,7 @@ EnhancedTableToolbar.propTypes = {
 }
 
 export default function TableEditor(props) {
-  const {title,defaultPageSize,pageSizes}=props;
+  const {title,columns,rows, defaultPageSize,pageSizes}=props;
   const [order, setOrder] = React.useState('asc')
   const [orderBy, setOrderBy] = React.useState('name')
   const [selected, setSelected] = React.useState([])
@@ -449,6 +334,7 @@ export default function TableEditor(props) {
             stickyHeader
           >
             <EnhancedTableHead
+              columns={columns}
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
