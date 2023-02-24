@@ -137,6 +137,7 @@ function ResponsiveAppBar({ children }) {
 										color: 'white',
 										backgroundColor: `rgba(0,0,0,.3)`,
 										display: 'block',
+										textShadow: '2pt 2pt black',
 									}}
 								>
 									{page}
