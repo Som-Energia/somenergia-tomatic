@@ -30,9 +30,6 @@ import { styled, alpha } from '@mui/material/styles'
 /* eslint-enable */
 
 const denseRowHeight = 33
-const title = 'Persones'
-const defaultPageSize = 12
-const pageSizes = [12, 18, 25]
 
 function compileData() {
   const result = {}
@@ -292,8 +289,7 @@ EnhancedTableHead.propTypes = {
 }
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, onSearchEdited, search } = props
-  console.log('search', search)
+  const { numSelected, onSearchEdited, search, title } = props
 
   return (
     <Toolbar
@@ -375,7 +371,8 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 }
 
-export default function EnhancedTable() {
+export default function TableEditor(props) {
+  const {title,defaultPageSize,pageSizes}=props;
   const [order, setOrder] = React.useState('asc')
   const [orderBy, setOrderBy] = React.useState('name')
   const [selected, setSelected] = React.useState([])
@@ -437,6 +434,7 @@ export default function EnhancedTable() {
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar
+          title={title}
           numSelected={selected.length}
           search={search}
           onSearchEdited={(ev) => {
