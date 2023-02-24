@@ -243,7 +243,7 @@ from .htmlgen import HtmlGen
 from .remote import remotewrite
 from consolemsg import step
 
-def publishStatic(graella):
+def publishStatic(timetable):
     step("publishStatic")
     if not dbconfig: return
     step("publishStatic: dbconfig exists")
@@ -252,10 +252,10 @@ def publishStatic(graella):
     if not hasattr(dbconfig.tomatic, 'publishStatic'): return
     step("publishStatic: publishStatic exists {}", dbconfig.tomatic.publishStatic)
     params = dbconfig.tomatic.publishStatic
-    sched=HtmlGen(graella)
+    sched=HtmlGen(timetable)
     params=ns(params,
         username = params.user,
-        filename = str(Path(params.path) / 'graella-{week}.html'.format(**graella)),
+        filename = str(Path(params.path) / 'graella-{week}.html'.format(**timetable)),
     )
     del params.user
     del params.path
