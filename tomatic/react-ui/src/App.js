@@ -1,12 +1,12 @@
 import React from 'react'
 import './App.css'
-import TableEditor from './components/TableEditor.js'
+import PersonsTable from './components/PersonsTable.js'
 import AppFrame from './containers/AppFrame.js'
 
 function App() {
   return (
     <AppFrame>
-      <TableEditor />
+      <PersonsTable />
     </AppFrame>
   )
 }
