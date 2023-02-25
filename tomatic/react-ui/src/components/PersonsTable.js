@@ -61,6 +61,7 @@ const columns = [
     label: 'Nom / Color',
     numeric: false,
     disablePadding: false,
+    searchable: true,
     view: (row) => {
       const bg = row.color || 'aaaaee'
       const fg = contrast(bg)
@@ -84,24 +85,28 @@ const columns = [
     label: 'Extensió',
     numeric: false,
     disablePadding: false,
+    searchable: true,
   },
   {
     id: 'email',
     label: 'Correu Electrònic',
     numeric: true,
     disablePadding: false,
+    searchable: true,
   },
   {
     id: 'erpuser',
     label: 'Usuaria ERP',
     numeric: false,
     disablePadding: false,
+    searchable: true,
   },
   {
     id: 'load',
     label: 'Torns',
     numeric: true,
     disablePadding: false,
+    searchable: true,
   },
   {
     id: 'table',
@@ -114,6 +119,7 @@ const columns = [
     label: 'Grups',
     numeric: true,
     disablePadding: false,
+    searchable: true,
   },
 ]
 
