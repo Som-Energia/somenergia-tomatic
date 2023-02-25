@@ -208,7 +208,7 @@ class Storage(object):
             monday = datetime.date.fromisoformat(week)
             date = addDays(monday, days.index(day))
             isoString = f"{date}T{times[turn]}:00"
-            import zoneinfo
+            from backports import zoneinfo
             tz = zoneinfo.ZoneInfo("Europe/Madrid")
             dt = datetime.datetime.strptime(isoString, "%Y-%m-%dT%H:%M:%S")
             return dt.replace(tzinfo=tz)
