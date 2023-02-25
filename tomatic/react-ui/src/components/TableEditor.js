@@ -345,12 +345,14 @@ export default function TableEditor(props) {
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
                 .filter((row) => {
-                  return (
-                    !search ||
-                    (row.name && row.name.includes(search)) ||
-                    (row.identifier && row.identifier.includes(search)) ||
-                    (row.email && row.email.includes(search))
-                  )
+                  if (!search) return true;
+                  for (const i in columns) {
+                    const column=columns[i]
+                    if (!column.searchable) continue;
+                    const fieldContent = row[column.id]+''
+                    if (fieldContent.includes(search)) return true
+                  }
+                  return false
                 })
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
