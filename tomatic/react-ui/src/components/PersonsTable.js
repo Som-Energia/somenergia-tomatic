@@ -8,9 +8,9 @@ function compileData() {
 
   function joinAttribute(result, attribute) {
     Object.entries(personData[attribute + 's']).forEach(
-      ([identifier, v], i) => {
-        if (!result[identifier]) result[identifier] = { identifier: identifier }
-        result[identifier][attribute] = v
+      ([id, v], i) => {
+        if (!result[id]) result[id] = { id: id }
+        result[id][attribute] = v
       }
     )
   }
@@ -18,7 +18,7 @@ function compileData() {
     Object.entries(personData.groups).forEach(([group, members], i) => {
       members.forEach((member) => {
         if (result[member] === undefined) {
-          result[member] = { identifier: member }
+          result[member] = { id: member }
         }
         if (result[member].groups === undefined) {
           result[member].groups = []
@@ -37,7 +37,7 @@ function compileData() {
   joinAttribute(result, 'load')
   joinGroups(result)
 
-  return Object.entries(result).map(([identifier, v]) => {
+  return Object.entries(result).map(([id, v]) => {
     return v
   })
 }
@@ -51,7 +51,7 @@ function camelize(text) {
 
 const columns = [
   {
-    id: 'identifier',
+    id: 'id',
     numeric: false,
     disablePadding: true,
     label: 'Identificador',
@@ -75,7 +75,7 @@ const columns = [
             textAlign: 'center',
           }}
         >
-          {row.name || camelize(row.identifier)}
+          {row.name || camelize(row.id)}
         </div>
       )
     },

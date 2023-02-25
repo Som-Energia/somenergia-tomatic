@@ -15,7 +15,6 @@ import Paper from '@mui/material/Paper'
 import Checkbox from '@mui/material/Checkbox'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
-import FilterListIcon from '@mui/icons-material/FilterList'
 import { visuallyHidden } from '@mui/utils'
 import EditIcon from '@mui/icons-material/Edit'
 import EventBusyIcon from '@mui/icons-material/EventBusy'
@@ -279,19 +278,19 @@ export default function TableEditor(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.identifier)
+      const newSelected = rows.map((n) => n.id)
       setSelected(newSelected)
       return
     }
     setSelected([])
   }
 
-  const handleClick = (event, identifier) => {
-    const selectedIndex = selected.indexOf(identifier)
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id)
     let newSelected = []
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, identifier)
+      newSelected = newSelected.concat(selected, id)
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1))
     } else if (selectedIndex === selected.length - 1) {
@@ -315,7 +314,7 @@ export default function TableEditor(props) {
     setPage(0)
   }
 
-  const isSelected = (identifier) => selected.indexOf(identifier) !== -1
+  const isSelected = (id) => selected.indexOf(id) !== -1
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -362,17 +361,17 @@ export default function TableEditor(props) {
                 })
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.identifier)
+                  const isItemSelected = isSelected(row.id)
                   const labelId = `enhanced-table-checkbox-${index}`
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.identifier)}
+                      onClick={(event) => handleClick(event, row.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.identifier}
+                      key={row.id}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -390,14 +389,14 @@ export default function TableEditor(props) {
                         scope="row"
                         padding="none"
                       >
-                        {row.identifier}
+                        {row.id}
                       </TableCell>
                       {columns
-                        .filter((x) => x.id !== 'identifier')
+                        .filter((x) => x.id !== 'id')
                         .map((column) => {
                           return (
                             <TableCell
-                              key={row.identifier + '_' + column.id}
+                              key={row.id + '_' + column.id}
                               align="right"
                             >
                               {column.view
