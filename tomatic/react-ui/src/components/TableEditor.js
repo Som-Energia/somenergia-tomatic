@@ -257,7 +257,13 @@ EnhancedTableToolbar.propTypes = {
 }
 
 export default function TableEditor(props) {
-  const {title,columns,rows, defaultPageSize,pageSizes}=props;
+  const {
+    title,
+    columns,
+    rows,
+    defaultPageSize=10,
+    pageSizes=[10,15,20],
+  }=props;
   const [order, setOrder] = React.useState('asc')
   const [orderBy, setOrderBy] = React.useState('name')
   const [selected, setSelected] = React.useState([])
