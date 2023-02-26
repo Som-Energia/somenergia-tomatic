@@ -14,14 +14,9 @@ import Typography from '@mui/material/Typography'
 import Paper from '@mui/material/Paper'
 import Checkbox from '@mui/material/Checkbox'
 import IconButton from '@mui/material/IconButton'
+import SearchIcon from '@mui/icons-material/Search'
 import Tooltip from '@mui/material/Tooltip'
 import { visuallyHidden } from '@mui/utils'
-import EditIcon from '@mui/icons-material/Edit'
-import EventBusyIcon from '@mui/icons-material/EventBusy'
-import DeleteIcon from '@mui/icons-material/Delete'
-import GroupAddIcon from '@mui/icons-material/GroupAdd'
-import GroupRemoveIcon from '@mui/icons-material/GroupRemove'
-import SearchIcon from '@mui/icons-material/Search'
 import InputBase from '@mui/material/InputBase'
 import { styled, alpha } from '@mui/material/styles'
 /* eslint-enable */
@@ -173,7 +168,7 @@ EnhancedTableHead.propTypes = {
 }
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, onSearchEdited, search, title } = props
+  const { numSelected, onSearchEdited, search, title, actions, selectionActions } = props
 
   return (
     <Toolbar
@@ -223,29 +218,23 @@ function EnhancedTableToolbar(props) {
         </Search>
       </Box>
       {numSelected > 0 ? (
-        <>
-          <Tooltip title="Add to Group">
+        selectionActions.map((action) => {
+          return ( <Tooltip title={action.title}>
             <IconButton>
-              <GroupAddIcon />
+            {action.icon}
             </IconButton>
           </Tooltip>
-          <Tooltip title="Remove from Grou">
-            <IconButton>
-              <GroupRemoveIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Esborra">
-            <IconButton>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        </>
+          )
+        })
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+        actions.map((action) => {
+          return ( <Tooltip title={action.title}>
+            <IconButton>
+            {action.icon}
+            </IconButton>
+          </Tooltip>
+          )
+        })
       )}
     </Toolbar>
   )
@@ -262,6 +251,9 @@ export default function TableEditor(props) {
     rows,
     defaultPageSize=10,
     pageSizes=[10,15,20],
+    actions=[],
+    itemActions=[],
+    selectionActions=[],
   }=props;
   const [order, setOrder] = React.useState('asc')
   const [orderBy, setOrderBy] = React.useState('name')
@@ -330,6 +322,8 @@ export default function TableEditor(props) {
           onSearchEdited={(ev) => {
             setSearch(ev.target.value)
           }}
+          actions={actions}
+          selectionActions={selectionActions}
         />
         <TableContainer>
           <Table
@@ -409,25 +403,18 @@ export default function TableEditor(props) {
                             </TableCell>
                           )
                         })}
-                      <TableCell>
-                        <Tooltip title="Edita">
+                      <TableCell> {
+                        itemActions.map((action) => {
+                          return <Tooltip title={action.title}>
                           <IconButton
                             onClick={(ev) => {
                               ev.stopPropagation()
                             }}
                           >
-                            <EditIcon />
+                            {action.icon}
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title="Indisponibilitats">
-                          <IconButton
-                            onClick={(ev) => {
-                              ev.stopPropagation()
-                            }}
-                          >
-                            <EventBusyIcon />
-                          </IconButton>
-                        </Tooltip>
+                        })}
                       </TableCell>
                     </TableRow>
                   )

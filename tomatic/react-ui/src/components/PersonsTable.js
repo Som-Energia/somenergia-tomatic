@@ -2,6 +2,12 @@ import React from 'react'
 import TableEditor from './TableEditor'
 import personData from '../persons.json'
 import { contrast } from '../colorutils'
+import EditIcon from '@mui/icons-material/Edit'
+import EventBusyIcon from '@mui/icons-material/EventBusy'
+import DeleteIcon from '@mui/icons-material/Delete'
+import GroupAddIcon from '@mui/icons-material/GroupAdd'
+import GroupRemoveIcon from '@mui/icons-material/GroupRemove'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
 
 function compileData() {
   const result = {}
@@ -123,6 +129,38 @@ const columns = [
   },
 ]
 
+const selectionActions=[
+  {
+          title: "Add to Group",
+          icon: <GroupAddIcon />,
+  },
+  {
+          title: "Remove from Grou",
+          icon: <GroupRemoveIcon />,
+  },
+  {
+          title: "Remove Person",
+          icon: <DeleteIcon />
+  },
+]
+
+const itemActions=[
+  {
+          title: "Edit",
+          icon: <EditIcon />,
+  },
+  {
+          title: "Indisponibilitats",
+          icon: <EventBusyIcon />,
+  },
+]
+
+const actions=[
+  {
+          title: "Add Person",
+          icon: <PersonAddIcon />
+  },
+]
 
 function PersonsTable() {
   return <TableEditor 
@@ -131,6 +169,9 @@ function PersonsTable() {
     pageSizes={[12, 18, 25]}
     columns={columns}
     rows={rows}
+    actions={actions}
+    selectionActions={selectionActions}
+    itemActions={itemActions}
   />
 }
 
