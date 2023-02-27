@@ -131,34 +131,34 @@ const columns = [
 
 const selectionActions=[
   {
-          title: "Add to Group",
-          icon: <GroupAddIcon />,
+    title: "Add to Group",
+    icon: <GroupAddIcon />,
   },
   {
-          title: "Remove from Grou",
-          icon: <GroupRemoveIcon />,
+    title: "Remove from Grou",
+    icon: <GroupRemoveIcon />,
   },
   {
-          title: "Remove Person",
-          icon: <DeleteIcon />
+    title: "Remove Person",
+    icon: <DeleteIcon />
   },
 ]
 
 const itemActions=[
   {
-          title: "Edit",
-          icon: <EditIcon />,
+    title: "Edit",
+    icon: <EditIcon />,
   },
   {
-          title: "Indisponibilitats",
-          icon: <EventBusyIcon />,
+    title: "Indisponibilitats",
+    icon: <EventBusyIcon />,
   },
 ]
 
 const actions=[
   {
-          title: "Add Person",
-          icon: <PersonAddIcon />
+    title: "Add Person",
+    icon: <PersonAddIcon />
   },
 ]
 
