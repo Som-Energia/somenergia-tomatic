@@ -10,7 +10,7 @@ idealLoadNamesRange: carregaideal_noms
 idealLoadValuesRange: carregaideal_valors
 leavesSheet: Baixes
 monitoringFile: taula.html
-nTelefons: 8
+nTelefons: 7
 diesCerca:
 - dx
 - dj
@@ -35,7 +35,7 @@ clusterize: true
 discriminateLines: true
 pruneRedundant: false
 newYearHack: false
-ignoreOptionalAbsences: true
+ignoreOptionalAbsences: false
 mostraCami: false
 maximCamiAMostrar: 60
 aleatori: true

@@ -3,6 +3,10 @@
 from yamlns import namespace as ns
 from .. import persons
 from ..remote import Remote
+try:
+    import dbconfig
+except ImportError:
+    dbconfig = None
 
 """
 This is a patch until we find a way to obtain this info

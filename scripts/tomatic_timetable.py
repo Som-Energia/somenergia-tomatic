@@ -4,6 +4,7 @@ import click
 from consolemsg import fail, step
 from datetime import datetime, timedelta
 from tomatic import schedulestorage
+from pathlib import Path
 
 @click.group()
 def cli():
@@ -19,7 +20,7 @@ def retireold():
     schedules.retireOld(twoMondaysAgo)
 
 @cli.command()
-@cli.argument(
+@click.argument(
     'yaml',
     type=Path,
 )

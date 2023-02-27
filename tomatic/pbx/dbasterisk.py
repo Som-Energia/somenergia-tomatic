@@ -75,8 +75,10 @@ class DbAsterisk(object):
 
     @db_session
     def queue(self, queue):
+        """
         if dbconfig and 'ssh' in dbconfig.tomatic:
             return queueFromSsh(queue)
+        """
 
         return [
             ns(
