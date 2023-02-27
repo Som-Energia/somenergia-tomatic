@@ -22,6 +22,7 @@ def config(key='', default=Ellipsis):
         return os.environ[envkey]
     try:
         import dbconfig as configuration
+        configuration = ns(configuration.__dict__)
     except ImportError:
         configuration = ns(tomatic=ns())
     if not key:
