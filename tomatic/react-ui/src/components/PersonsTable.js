@@ -1,5 +1,6 @@
 import React from 'react'
 import TableEditor from './TableEditor'
+import Chip from '@mui/material/Chip'
 import personData from '../persons.json'
 import { contrast } from '../colorutils'
 import EditIcon from '@mui/icons-material/Edit'
@@ -126,6 +127,11 @@ const columns = [
     numeric: true,
     disablePadding: false,
     searchable: true,
+    view: (row) =>
+      row.groups &&
+      row.groups.map((group) => {
+        return <Chip size="small" label={group} />
+      }),
   },
 ]
 
