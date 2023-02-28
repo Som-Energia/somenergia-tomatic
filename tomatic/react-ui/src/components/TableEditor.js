@@ -26,15 +26,15 @@ const denseRowHeight = 33
 function ActionButtons(props) {
   return props.actions.map((action, i) => {
     return (
-      <Tooltip
-        title={action.title}
-        key={i}
-        onClick={(ev) => {
-          ev.stopPropagation()
-          action.handler && action.handler(props.context)
-        }}
-      >
-        <IconButton onClick={action.handler}>{action.icon}</IconButton>
+      <Tooltip title={action.title} key={i}>
+        <IconButton
+          onClick={(ev) => {
+            ev.stopPropagation()
+            action.handler && action.handler(props.context)
+          }}
+        >
+          {action.icon}
+        </IconButton>
       </Tooltip>
     )
   })
