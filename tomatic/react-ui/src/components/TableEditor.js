@@ -23,6 +23,33 @@ import { styled, alpha } from '@mui/material/styles'
 
 const denseRowHeight = 33
 
+function ActionButtons(props) {
+  return props.actions.map((action, i) => {
+    return (
+      <Tooltip
+        title={action.title}
+        key={i}
+        onClick={(ev) => {
+          ev.stopPropagation()
+          action.handler && action.handler(props.context)
+        }}
+      >
+        <IconButton onClick={action.handler}>{action.icon}</IconButton>
+      </Tooltip>
+    )
+  })
+}
+const ActionsType = PropTypes.arrayOf(
+  PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    icon: PropTypes.element.isRequired,
+    action: PropTypes.func,
+  })
+)
+ActionButtons.propTypes = {
+  actions: ActionsType,
+}
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -168,7 +195,14 @@ EnhancedTableHead.propTypes = {
 }
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, onSearchEdited, search, title, actions, selectionActions } = props
+  const {
+    title,
+    numSelected,
+    onSearchEdited,
+    search,
+    actions,
+    selectionActions,
+  } = props
 
   return (
     <Toolbar
@@ -217,31 +251,22 @@ function EnhancedTableToolbar(props) {
           />
         </Search>
       </Box>
-      {numSelected > 0 ? (
-        selectionActions.map((action) => {
-          return ( <Tooltip title={action.title}>
-            <IconButton>
-            {action.icon}
-            </IconButton>
-          </Tooltip>
-          )
-        })
-      ) : (
-        actions.map((action) => {
-          return ( <Tooltip title={action.title}>
-            <IconButton>
-            {action.icon}
-            </IconButton>
-          </Tooltip>
-          )
-        })
-      )}
+      <ActionButtons
+        actions={
+          numSelected > 0 && selectionActions ? selectionActions : actions
+        }
+      />
     </Toolbar>
   )
 }
 
 EnhancedTableToolbar.propTypes = {
+  title: PropTypes.string.isRequired,
   numSelected: PropTypes.number.isRequired,
+  search: PropTypes.string,
+  onSearchEdited: PropTypes.func,
+  actions: ActionsType,
+  selectionActions: ActionsType,
 }
 
 export default function TableEditor(props) {
@@ -249,12 +274,12 @@ export default function TableEditor(props) {
     title,
     columns,
     rows,
-    defaultPageSize=10,
-    pageSizes=[10,15,20],
-    actions=[],
-    itemActions=[],
-    selectionActions=[],
-  }=props;
+    defaultPageSize = 10,
+    pageSizes = [10, 15, 20],
+    actions = [],
+    itemActions = [],
+    selectionActions = [],
+  } = props
   const [order, setOrder] = React.useState('asc')
   const [orderBy, setOrderBy] = React.useState('name')
   const [selected, setSelected] = React.useState([])
@@ -403,18 +428,8 @@ export default function TableEditor(props) {
                             </TableCell>
                           )
                         })}
-                      <TableCell> {
-                        itemActions.map((action) => {
-                          return <Tooltip title={action.title}>
-                          <IconButton
-                            onClick={(ev) => {
-                              ev.stopPropagation()
-                            }}
-                          >
-                            {action.icon}
-                          </IconButton>
-                        </Tooltip>
-                        })}
+                      <TableCell>
+                        <ActionButtons actions={itemActions} context={row} />
                       </TableCell>
                     </TableRow>
                   )
