@@ -152,7 +152,7 @@ function EnhancedTableHead(props) {
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{
-              'aria-label': "Select all",
+              'aria-label': 'Select all',
             }}
           />
         </TableCell>
@@ -369,11 +369,11 @@ export default function TableEditor(props) {
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
                 .filter((row) => {
-                  if (!search) return true;
+                  if (!search) return true
                   for (const i in columns) {
-                    const column=columns[i]
-                    if (!column.searchable) continue;
-                    const fieldContent = row[column.id]+''
+                    const column = columns[i]
+                    if (!column.searchable) continue
+                    const fieldContent = row[column.id] + ''
                     if (fieldContent.includes(search)) return true
                   }
                   return false

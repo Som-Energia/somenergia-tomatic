@@ -1,7 +1,7 @@
-import React from 'react'
-import './App.css'
-import PersonsTable from './components/PersonsTable.js'
-import AppFrame from './containers/AppFrame.js'
+import * as React from "react"
+import "./App.css"
+import PersonsTable from "./components/PersonsTable.js"
+import AppFrame from "./containers/AppFrame.js"
 
 function App() {
   return (
