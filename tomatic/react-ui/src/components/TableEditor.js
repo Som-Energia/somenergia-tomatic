@@ -420,9 +420,9 @@ export default function TableEditor(props) {
                             >
                               {column.view
                                 ? column.view(row)
-                                : row === undefined
+                                : row[column.id] === undefined
                                 ? '-'
-                                : row === null
+                                : row[column.id] === null
                                 ? '-'
                                 : row[column.id]}
                             </TableCell>
