@@ -9,17 +9,16 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import GroupRemoveIcon from '@mui/icons-material/GroupRemove'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import Dialog from '@mui/material/Dialog'
 
 function compileData() {
   const result = {}
 
   function joinAttribute(result, attribute) {
-    Object.entries(personData[attribute + 's']).forEach(
-      ([id, v], i) => {
-        if (!result[id]) result[id] = { id: id }
-        result[id][attribute] = v
-      }
-    )
+    Object.entries(personData[attribute + 's']).forEach(([id, v], i) => {
+      if (!result[id]) result[id] = { id: id }
+      result[id][attribute] = v
+    })
   }
   function joinGroups(result) {
     Object.entries(personData.groups).forEach(([group, members], i) => {
@@ -135,36 +134,37 @@ const columns = [
   },
 ]
 
-const selectionActions=[
+const selectionActions = [
   {
-    title: "Add to Group",
+    title: 'Add to Group',
     icon: <GroupAddIcon />,
   },
   {
-    title: "Remove from Grou",
+    title: 'Remove from Grou',
     icon: <GroupRemoveIcon />,
   },
   {
-    title: "Remove Person",
-    icon: <DeleteIcon />
+    title: 'Remove Person',
+    icon: <DeleteIcon />,
   },
 ]
 
-const itemActions=[
+const itemActions = [
   {
-    title: "Edit",
+    title: 'Edit',
     icon: <EditIcon />,
   },
   {
-    title: "Indisponibilitats",
+    title: 'Indisponibilitats',
     icon: <EventBusyIcon />,
   },
 ]
 
-const actions=[
+const actions = [
   {
-    title: "Add Person",
-    icon: <PersonAddIcon />
+    title: 'Add Person',
+    icon: <PersonAddIcon />,
+    action: onPersonAdd,
   },
 ]
 
@@ -182,4 +182,3 @@ function PersonsTable() {
 }
 
 export default PersonsTable
-
