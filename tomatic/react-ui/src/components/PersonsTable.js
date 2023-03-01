@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import TableEditor from './TableEditor'
+import PersonEditor from './PersonEditor'
 import Chip from '@mui/material/Chip'
 import personData from '../persons.json'
 import { contrast } from '../colorutils'
@@ -9,13 +10,13 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import GroupRemoveIcon from '@mui/icons-material/GroupRemove'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
-import Dialog from '@mui/material/Dialog'
 
 function compileData() {
   const result = {}
 
   function joinAttribute(result, attribute) {
-    Object.entries(personData[attribute + 's']).forEach(([id, v], i) => {
+    const attributeValues = personData[attribute + 's']
+    Object.entries(attributeValues).forEach(([id, v], i) => {
       if (!result[id]) result[id] = { id: id }
       result[id][attribute] = v
     })
@@ -48,7 +49,53 @@ function compileData() {
   })
 }
 
+function range(end) {
+  return [...Array(end).keys()]
+}
+
+function formatName(row) {
+  if (row.name) return row.name
+  return camelize(row.id)
+}
+
+function availableTables(rows) {
+  const tableMembers = rows.reduce((d, row) => {
+    if (row.table === undefined) return d
+    if (row.table === -1) return d
+    if (d[row.table] === undefined) {
+      d[row.table] = []
+    }
+    d[row.table].push(formatName(row))
+    console.log(d)
+    return d
+  }, {})
+  console.log(tableMembers)
+  const result = [[-1, 'Sense taula']]
+  const nTables = Math.max(...Object.keys(tableMembers))
+  for (const i in range(nTables + 1)) {
+    console.log('i', i)
+    if (tableMembers[i] === undefined) {
+      result.push([i, `Taula ${i} amb ningú`])
+    } else {
+      console.log('tablemembers', tableMembers[i])
+      result.push([i, `Taula ${i} amb ` + tableMembers[i].join(', ')])
+    }
+  }
+  return result
+}
+
 const rows = compileData()
+const tables = availableTables(rows)
+const allGroups = [
+  ...new Set(
+    rows
+      .map((row) => {
+        return row.groups || []
+      })
+      .flat()
+  ),
+]
+console.log('allGroups', allGroups)
 
 function camelize(text) {
   text = text.toLowerCase()
@@ -81,7 +128,7 @@ const columns = [
             textAlign: 'center',
           }}
         >
-          {row.name || camelize(row.id)}
+          {formatName(row)}
         </div>
       )
     },
@@ -134,51 +181,78 @@ const columns = [
   },
 ]
 
-const selectionActions = [
-  {
-    title: 'Add to Group',
-    icon: <GroupAddIcon />,
-  },
-  {
-    title: 'Remove from Grou',
-    icon: <GroupRemoveIcon />,
-  },
-  {
-    title: 'Remove Person',
-    icon: <DeleteIcon />,
-  },
-]
-
-const itemActions = [
-  {
-    title: 'Edit',
-    icon: <EditIcon />,
-  },
-  {
-    title: 'Indisponibilitats',
-    icon: <EventBusyIcon />,
-  },
-]
-
-const actions = [
-  {
-    title: 'Add Person',
-    icon: <PersonAddIcon />,
-    action: onPersonAdd,
-  },
-]
-
 function PersonsTable() {
-  return <TableEditor 
-    title={"Persones"}
-    defaultPageSize={12}
-    pageSizes={[12, 18, 25]}
-    columns={columns}
-    rows={rows}
-    actions={actions}
-    selectionActions={selectionActions}
-    itemActions={itemActions}
-  />
+  const [editingPerson, setEditingPerson] = useState(undefined)
+
+  function handleStartAddingPerson() {
+    setEditingPerson({})
+  }
+  function handleEndAddingPerson() {
+    setEditingPerson(undefined)
+  }
+  function handleStartEditingPerson(person) {
+    setEditingPerson(person)
+  }
+  function handleEndEditingPerson() {
+    setEditingPerson(undefined)
+  }
+
+  const actions = [
+    {
+      title: 'Add Person',
+      icon: <PersonAddIcon />,
+      handler: handleStartAddingPerson,
+    },
+  ]
+  const selectionActions = [
+    {
+      title: 'Add to Group',
+      icon: <GroupAddIcon />,
+    },
+    {
+      title: 'Remove from Grou',
+      icon: <GroupRemoveIcon />,
+    },
+    {
+      title: 'Remove Person',
+      icon: <DeleteIcon />,
+    },
+  ]
+
+  const itemActions = [
+    {
+      title: 'Edit',
+      icon: <EditIcon />,
+      handler: handleStartEditingPerson,
+    },
+    {
+      title: 'Indisponibilitats',
+      icon: <EventBusyIcon />,
+    },
+  ]
+
+  return (
+    <>
+      <TableEditor
+        title={'Persones'}
+        defaultPageSize={12}
+        pageSizes={[12, 18, 25]}
+        columns={columns}
+        rows={rows}
+        actions={actions}
+        selectionActions={selectionActions}
+        itemActions={itemActions}
+      ></TableEditor>
+      <PersonEditor
+        open={editingPerson !== undefined}
+        onClose={handleEndAddingPerson}
+        disableEscapeKeyDown={false}
+        person={editingPerson}
+        allGroups={allGroups}
+        tables={tables}
+      />
+    </>
+  )
 }
 
 export default PersonsTable
