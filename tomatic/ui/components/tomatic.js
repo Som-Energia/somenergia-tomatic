@@ -1,8 +1,6 @@
 // Tomatic application model component
 module.exports = function() {
 
-var Snackbar = require('polythene-mithril-snackbar').Snackbar;
-
 var m = require('mithril');
 m.prop = require('mithril/stream');
 var Package = require('../../../package.json');
@@ -14,6 +12,10 @@ var Tomatic = {
 
 Tomatic.variant = 'tomatic';
 
+Tomatic.loggers = [];
+Tomatic.addLogger= function(logger) {
+	this.loggers.push(logger);
+};
 Tomatic.queue = m.prop([]);
 Tomatic.persons = m.prop({});
 Tomatic.init = function() {
@@ -259,22 +261,19 @@ Tomatic.requestWeeks = function() {
 	});
 };
 
+
 Tomatic.log = function(message) {
 	console.log("log: ", message);
-	Snackbar.show({
-		containerSelector: '#snackbar',
-		title: message,
-	});
+	Tomaic.loggers.forEach((logger) => {
+		logger.log(message)
+	})
 };
 
 Tomatic.error = function(message) {
 	console.log("error: ", message);
-	Snackbar.show({
-		containerSelector: '#snackbar',
-		title: message,
-		className: 'error',
-		timeout: 10,
-	});
+	Tomaic.loggers.forEach((logger) => {
+		logger.error(message)
+	})
 };
 
 Tomatic.sendBusyData = function(name, data) {
