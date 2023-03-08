@@ -1,6 +1,6 @@
 # Changelog
 
-## unreleased
+## 4.12.0 2023-03-08
 
 - Callinfo: Open virtual office as the selected user
 - Callinfo: View partner comments
