@@ -53,17 +53,6 @@ def launch(monday):
     import time
     import uuid
 
-    template = """\
-No he pogut generar la graella per la setmana del {monday}.
-
-- Execucio: {status.name}
-- Compleció: {status.completedCells} / {status.totalCells}
-- Penalitzacions: {status.solutionCost}
-- Cel·la de bloqueig: {status.unfilledCell}
-
-{diagnosis}
-"""
-
     config = ns.load('config.yaml')
     minutes = 2#*60
 
@@ -100,6 +89,17 @@ No he pogut generar la graella per la setmana del {monday}.
         for person, reasons in status.busyReasons.items()
     ])
 
+    failure_template = """\
+No he pogut generar la graella per la setmana del {monday}.
+
+- Execucio: {status.name}
+- Compleció: {status.completedCells} / {status.totalCells}
+- Penalitzacions: {status.solutionCost}
+- Cel·la de bloqueig: {status.unfilledCell}
+
+{diagnosis}
+"""
+
     diagnosis = f"""\
 La [graella]({config.baseUrl}/api/planner/solution/{execution_id}) està incomplerta.
 El torn on m'encallo es a {status.unfilledCell}.
@@ -127,7 +127,7 @@ reenvia aquest mateix correu a incidencies ({dbconfig.tomatic.supportmail}).
         sender=dbconfig.tomatic.dailystats.sender,
         to=dbconfig.tomatic.dailystats.recipients,
         subject=f"ERROR: Graella setmanal sense solució {execution_id}",
-        md=template.format(
+        md=failure_template.format(
             monday=monday,
             execution_id=execution_id,
             config=config,
