@@ -16,6 +16,7 @@ from fastapi.responses import (
     RedirectResponse,
 )
 from starlette.middleware.sessions import SessionMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 import re
 import os
@@ -76,6 +77,13 @@ from fastapi.websockets import WebSocket
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="Hola, Supers!")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.include_router(Planner, prefix='/api/planner')
 app.include_router(Auth, prefix='/api/auth')
 
