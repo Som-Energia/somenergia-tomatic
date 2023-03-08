@@ -917,8 +917,9 @@ def main():
             downloadFestivities(config)
             downloadVacations(config, source=args.holidays)
 
-        step("Baixant bossa d'hores del tomatic...")
-        downloadShiftCredit(config)
+        if config.computeShifts:
+            step("Baixant bossa d'hores del tomatic...")
+            downloadShiftCredit(config)
 
     if config.computeShifts:
         setup = ShiftLoadComputer.loadData(config)
