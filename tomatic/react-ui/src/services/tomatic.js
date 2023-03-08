@@ -2,7 +2,7 @@
 module.exports = (function () {
 	var m = require('mithril')
 	m.prop = require('mithril/stream')
-	var Package = require('../../../package.json')
+	var Package = require('../package.json')
 	var api = require('./api')
 
 	var Tomatic = {
@@ -47,16 +47,16 @@ module.exports = (function () {
 				response.version,
 				'detected.',
 				'Frontend version is ',
-				Tomatic.version,
+				Tomatic.packageinfo.version,
 				'.',
 				'Reloading in 10s...'
 			)
 			Tomatic.error(
 				'Detectada nova versió en el servidor. Recarregant pàgina en 10 segons.'
-			),
-				setTimeout(function () {
-					location.reload(true) // True to force full reload
-				}, 10000)
+			)
+			setTimeout(function () {
+				window.location.reload(true) // True to force full reload
+			}, 10000)
 		})
 	}
 
@@ -233,6 +233,9 @@ module.exports = (function () {
 					break
 				case 'erpuser':
 					postdata.erpuser = value
+					break
+				default:
+					console.log('Unexpected person parameter', key)
 					break
 			}
 		}
