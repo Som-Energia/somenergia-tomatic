@@ -26,7 +26,6 @@
   },
   "homepage": "https://github.com/Som-Energia/somenergia-tomatic#readme",
   "dependencies": {
-    "@emotion/css": "^11.9.0",
     "js-yaml": "^3.14.1",
     "mithril": "^2.0.4",
     "polythene-core": "^1.7.5",
@@ -36,14 +35,19 @@
     "webpack-roboto": "^1.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.18.9",
+    "@emotion/css": "^11.9.0",
     "@emotion/babel-plugin": "^11.9.2",
+    "babel-core": "^6.26.3",
     "babel-loader": "^8.2.5",
+    "browserslist": "^4.21.2",
     "buffer": "^6.0.3",
     "clean-webpack-plugin": "^0.1.16",
     "css-loader": "^6.5.1",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.5.2",
     "mmsvg": "^1.5.3",
+    "postcss": "^8.4.14",
     "style-loader": "^3.3.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^7.1.0",
