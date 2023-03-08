@@ -285,14 +285,14 @@ module.exports = (function () {
 
 	Tomatic.log = function (message) {
 		console.log('log: ', message)
-		Tomaic.loggers.forEach((logger) => {
+		Tomatic.loggers.forEach((logger) => {
 			logger.log(message)
 		})
 	}
 
 	Tomatic.error = function (message) {
 		console.log('error: ', message)
-		Tomaic.loggers.forEach((logger) => {
+		Tomatic.loggers.forEach((logger) => {
 			logger.error(message)
 		})
 	}
