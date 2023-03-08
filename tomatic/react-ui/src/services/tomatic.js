@@ -41,7 +41,7 @@ module.exports = (function () {
 			url: '/api/version',
 		}).then(function (response) {
 			Tomatic.variant = response.variant
-			if (response.version == Tomatic.packageinfo.version) return
+			if (response.version === Tomatic.packageinfo.version) return
 			console.log(
 				'New server version',
 				response.version,
