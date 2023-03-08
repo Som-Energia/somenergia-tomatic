@@ -138,19 +138,6 @@ reenvia aquest mateix correu a incidencies ({dbconfig.tomatic.supportmail}).
         verbose=True,
     )
 
-    schedules = schedulestorage.Storage()
-    step("uploading {}".format(yaml))
-    graella = ns.load(yaml)
-    logmsg = (
-        "{}: {} ha pujat {} ".format(
-        datetime.now(),
-        "tomatic",
-        graella.week,
-        ))
-    graella.setdefault('log',[]).append(logmsg)
-    schedules.save(graella)
-    schedulestorage.publishStatic(graella)
-
 if __name__=='__main__':
     cli()
 
