@@ -105,6 +105,7 @@ class CallInfo(object):
                 ([self.anonymize(partner_data.www_phone)] if partner_data.www_phone else [])+
                 ([self.anonymize(partner_data.www_mobile)] if partner_data.www_mobile else [])
             ),
+            comment=partner_data.comment or '',
         )
         return result
 
@@ -124,6 +125,7 @@ class CallInfo(object):
             'soci',
             'active',
         ])
+        # Sort contracts by activeness and relation to the partner
         return [
             contract['id']
             for contract in sorted(contracts,
@@ -155,6 +157,7 @@ class CallInfo(object):
             'vat',
             'empowering_token',
             'category_id',
+            'comment',
         ])
         for partner_data in partners_data or []:
             partner_data = ns(partner_data)

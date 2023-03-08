@@ -47,6 +47,14 @@ var infoPartner = function(){
         markedErrorIfMissing(partner.address, "Sense adreça")
       ),
       m(".partner-info-item",
+        partner.comment && m("", m(".label-right", {
+            'title': partner.comment,
+          },
+          m('i.fa.fa-comment', {
+            'aria-label': "Té anotacions",
+          }),
+          " Té anotacions ",
+        )),
         m('i.fa.fa-city', {'aria-label':"Municipi i Província"}),
         " ",
         markedErrorIfMissing(partner.city, "Sense municipi"),
