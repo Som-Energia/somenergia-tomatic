@@ -46,7 +46,7 @@ def cli(date, sandbox, optional, required):
 	u'Manages busy hours that persons cannot be attending phone'
 	date = busy.isodate(date)
 	sandbox=Path(sandbox)
-	activePersons = ns.load(sandbox/'ponderatedideal-{}.yaml'.format(date)).keys()
+	activePersons = ns.load(sandbox/'idealshifts.yaml'.format(date)).keys()
 	busytable = busy.BusyTable(
 		days=busy.weekdays,
 		nhours = busy.nturns,
@@ -70,7 +70,8 @@ def cli(date, sandbox, optional, required):
 				for weekday in busy.weekdays
 			]
 			for hour in range(busy.nturns)
-		]))
+		]
+    ))
 
 	out("\n# Detall\n")
 	for weekday in busy.weekdays:
