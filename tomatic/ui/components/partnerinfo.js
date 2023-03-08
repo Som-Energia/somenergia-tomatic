@@ -91,7 +91,8 @@ var infoPartner = function(){
       ),
       m(".partner-info-item", [
         m("", m(".label-right", [
-            "(",
+            m('i.fa.fa-user-secret', {'aria-label':"Segresta"}),
+            " (",
             m("a", {
               href: ovhijackurl+dni,
               target:"_blank",
