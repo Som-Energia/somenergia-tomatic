@@ -1,5 +1,15 @@
 # Changelog
 
+## 4.12.1 2023-03-08
+
+- dbconfig.tomatic.foreplanweeks to configure how many weeks
+  in advance the crontab will compute the next timetable.
+- dbconfig.tomatic.plannerGraceTime to configure how long
+  the crontab timetable planner will wait for a solution.
+- Upgrade notes:
+  - Set dbconfig.tomatic.plannerGraceTime and
+    dbconfig.tomatic.foreplanweeks
+
 ## 4.12.0 2023-03-08
 
 - Callinfo: Open virtual office as the selected user
