@@ -4,9 +4,10 @@
 
 - Callinfo: Open virtual office as the selected user
 - Callinfo: View partner comments
-- Fix: Launch tmetable by cli not using api, since it asket auth
-- Fix: Retire old timetables by cli not api, since it asked auth
-- Tomatic Notifications independent of mithril
+- Callinfo: View partner postalcode
+- Fix: Launch timetable by cli, not api, since it asked auth
+- Fix: Retire old timetables by cli, not api, since it asked auth
+- Tomatic Notifications independent of mithril via holiwood
 - Some dbconfig parameters accessible through environment
 - Fix: Auth tests working without a dbconfig
 - Environment var `TOMATIC_TEST_ERP` to activate erp tests
