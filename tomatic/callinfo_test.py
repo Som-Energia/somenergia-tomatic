@@ -13,8 +13,8 @@ except ImportError:
     dbconfig = None
 
 
-@unittest.skipIf(os.environ.get("TRAVIS"),
-    "Database not available in Travis")
+@unittest.skipIf(not os.environ.get("TOMATIC_TEST_ERP"),
+    "Define the environment TOMATIC_TEST_ERP to pass those tests")
 @unittest.skipIf(not dbconfig or not dbconfig.erppeek,
     "Requires configuring dbconfig.erppeek")
 class CallInfo_Test(unittest.TestCase):
