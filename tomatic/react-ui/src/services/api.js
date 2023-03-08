@@ -4,14 +4,17 @@ module.exports = (function () {
 	var Auth = require('./auth')
 
 	const debugApi = false
+	const apiPrefix = 'http://localhost:4555'
 
 	var api = {
 		request: function (options) {
+			options = { ...options }
 			options.config = function (xhr) {
 				xhr.setRequestHeader('Authorization', 'Bearer ' + Auth.token())
 			}
 			options.responseType = 'yaml' // whatever different of json indeed
 			options.deserialize = api.deserialize
+			options.url = apiPrefix + options.url
 			debugApi &&
 				console.log(
 					options.method || 'GET',
