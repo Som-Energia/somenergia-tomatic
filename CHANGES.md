@@ -2,9 +2,11 @@
 
 ## unreleased
 
+- Callinfo: Open virtual office as the selected user
+- Fix: Launch tmetable by cli not using api, since it asket auth
+- Fix: Retire old timetables by cli not api, since it asked auth
 - Some dbconfig parameters accessible through environment
 - Fix: Auth tests working without a dbconfig
-- Fix: Retire old timetables by cli not api, since it asked auth
 
 ## 4.11.1 2023-01-13
 

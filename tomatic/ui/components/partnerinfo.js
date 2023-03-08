@@ -19,7 +19,9 @@ var infoPartner = function(){
     'gl_ES': "Galego",
   };
   var partner = CallInfo.selectedPartner()
+  // TODO: Move urls to an external configuration
   var helpscouturl = "https://secure.helpscout.net/search/?query=";
+  var ovhijackurl = "https://oficinavirtual.somenergia.coop/hijack/username/";
   var emails = partner.email.split(",");
   var dni = (partner.dni.slice(0,2) === 'ES' ? partner.dni.slice(2) : partner.dni)
   const markedErrorIfMissing = function(value, message) {
@@ -80,6 +82,15 @@ var infoPartner = function(){
         m(".label-energetica","Soci d'Energetica.") : "")
       ),
       m(".partner-info-item", [
+        m("", m(".label-right", [
+            "(",
+            m("a", {
+              href: ovhijackurl+dni,
+              target:"_blank",
+              title: "Entrar a la Oficina Virtual amb aquest usuari"
+            }, "Segrest Oficina Virtual"),
+            ")"
+        ])),
         m("", m(".label","Ha obert OV? "), (partner.ov ? "Sí" : "No"))
       ]),
     ]
