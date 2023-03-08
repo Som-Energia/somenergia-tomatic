@@ -13,6 +13,8 @@ import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import appBackground from '../tomatic_bg.jpg'
 import appLogo from '../tomatic-logo.png'
+import Tomatic from '../services/tomatic'
+import SnackbarLogger from '../components/SnackbarLogger'
 
 const pages = ['Graelles', 'Centraleta', 'Persones', 'Trucada']
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
@@ -226,6 +228,7 @@ function ResponsiveAppBar({ children }) {
         </Container>
       </AppBar>
       {children}
+      <SnackbarLogger />
     </>
   )
 }
