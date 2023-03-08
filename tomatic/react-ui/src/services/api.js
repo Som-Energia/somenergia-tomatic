@@ -46,7 +46,7 @@ module.exports = (function () {
 		},
 
 		deserialize: function (responseText) {
-			return jsyaml.safeLoad(responseText)
+			return jsyaml.load(responseText)
 		},
 	}
 
