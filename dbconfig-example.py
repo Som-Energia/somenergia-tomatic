@@ -98,6 +98,16 @@ tomatic=ns(
     ),
     # Hangout channel to warn managers
     monitorChatChannel = 'Telefon',
+    # Dummy auth
+    #auth=ns(
+    #    dummy='david.garcia',
+    #),
+    # How many weeks in advance the crontab planner
+    # will compute the timetables each weak
+    foreplanweeks = 2,
+    # How long automated timetable planner launch should
+    # wait for a good solution, in minutes
+    plannerGraceTime = 2*60,
 )
 # Used to send mails
 smtp = ns(

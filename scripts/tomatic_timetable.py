@@ -54,7 +54,7 @@ def launch(monday):
     import uuid
 
     config = ns.load('config.yaml')
-    minutes = 2#*60
+    minutes = dbconfig.tomatic.get('plannerGraceTime', 2*60)
 
     step(f"Timetables: Lauching timetable for {monday}")
     execution_id = PlannerExecution.start(
