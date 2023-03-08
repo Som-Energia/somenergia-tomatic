@@ -29,23 +29,25 @@ var CallInfoPage = require('./components/callinfopage');
 css.addLayoutStyles();
 css.addTypography();
 
-const SnackbarLogger = () => {
-	log: (message) => {
-		Snackbar.show({
-			containerSelector: '#snackbar',
-			title: message,
-		});
-	},
-	error: (message) => {
-		Snackbar.show({
-			containerSelector: '#snackbar',
-			title: message,
-			className: 'error',
-			timeout: 10,
-		});
-	},
-}
-Tomatic.loggers.push(SnackbarLogger())
+const SnackbarLogger = function() {
+	return {
+		log: function(message) {
+			Snackbar.show({
+				containerSelector: '#snackbar',
+				title: message,
+			});
+		},
+		error: function(message) {
+			Snackbar.show({
+				containerSelector: '#snackbar',
+				title: message,
+				className: 'error',
+				timeout: 10,
+			});
+		},
+	};
+};
+Tomatic.loggers.push(SnackbarLogger());
 
 var Todo = function(message) {
 	return m(Card, {
