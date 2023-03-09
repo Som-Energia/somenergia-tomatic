@@ -33,6 +33,7 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
+            loads: {}
         """)
         self.assertEqual(persons.persons.path, Path('p.yaml'))
 
@@ -66,6 +67,7 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
+            loads: {}
         """)
 
     def test_persons_updated(self):
@@ -84,6 +86,7 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
+            loads: {}
         """)
 
     def test_persons_differentPath(self):
@@ -100,6 +103,7 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
+            loads: {}
         """)
 
     def test_byExtension(self):
@@ -219,6 +223,7 @@ class Persons_Test(unittest.TestCase):
             emails:
               someone: name@home.com
             groups: {}
+            loads: {}
         """)
 
     def test_update_groups_addedNew(self):
@@ -239,6 +244,7 @@ class Persons_Test(unittest.TestCase):
             groups:
               mygroup:
               - someone
+            loads: {}
         """)
 
     def test_update_groups_addedExisting(self):
@@ -262,6 +268,7 @@ class Persons_Test(unittest.TestCase):
               mygroup:
               - anotherone
               - someone
+            loads: {}
         """)
 
     def test_update_groups_removeGroup(self):
@@ -285,6 +292,7 @@ class Persons_Test(unittest.TestCase):
             groups:
               mygroup:
               - someother
+            loads: {}
         """)
 
 
@@ -306,6 +314,7 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
+            loads: {}
         """)
 
     def test_update_getSaved(self):
@@ -326,6 +335,7 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
+            loads: {}
         """)
 
     def test_persons_explicit(self):
@@ -339,6 +349,7 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
+            loads: {}
         """)
 
 # vim: et ts=4 sw=4

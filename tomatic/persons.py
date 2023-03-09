@@ -13,6 +13,7 @@ def _load(path=None):
         'emails',
         'groups',
         'erpusers',
+        'loads',
     ):
         loaded.setdefault(key, ns())
     return loaded
@@ -102,6 +103,8 @@ def update(key, data):
         result.emails[key] = data.email
     if 'erpuser' in data:
         result.erpusers[key] = data.erpuser
+    if 'load' in data:
+        result.loads[key] = data.load
     if 'groups' in data:
         for group in data.groups:
             result.groups.setdefault(group, []).append(key)
