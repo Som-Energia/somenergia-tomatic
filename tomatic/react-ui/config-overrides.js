@@ -1,7 +1,7 @@
 const multipleEntry = require('react-app-rewire-multiple-entry')([
         {
-                entry: 'src/index.js',
-                template: 'public/index.html',
+                entry: 'src/admin.js',
+                //template: 'public/index.html',
                 outPath: '/admin.html',
         },
 ])
