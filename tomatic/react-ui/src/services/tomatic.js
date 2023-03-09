@@ -234,6 +234,9 @@ module.exports = (function () {
 				case 'erpuser':
 					postdata.erpuser = value
 					break
+				case 'load':
+					postdata.load = value
+					break
 				default:
 					console.log('Unexpected person parameter', key)
 					break

@@ -218,6 +218,9 @@ Tomatic.setPersonData = function (name, data) {
 		case 'erpuser':
 			postdata.erpuser = value;
 			break;
+		case 'load':
+			postdata.load = value;
+			break;
 		}
 	}
 	console.log("posting",postdata);
