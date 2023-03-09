@@ -13,16 +13,17 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd'
 
 function compileData() {
   const result = {}
+  if (personData === undefined) return {}
 
   function joinAttribute(result, attribute) {
-    const attributeValues = personData[attribute + 's']
+    const attributeValues = personData[attribute + 's'] || {}
     Object.entries(attributeValues).forEach(([id, v], i) => {
       if (!result[id]) result[id] = { id: id }
       result[id][attribute] = v
     })
   }
   function joinGroups(result) {
-    Object.entries(personData.groups).forEach(([group, members], i) => {
+    Object.entries(personData.groups || {}).forEach(([group, members], i) => {
       members.forEach((member) => {
         if (result[member] === undefined) {
           result[member] = { id: member }
@@ -50,6 +51,7 @@ function compileData() {
 }
 
 function range(end) {
+  if (end < 1) return []
   return [...Array(end).keys()]
 }
 
