@@ -166,7 +166,7 @@ module.exports = (function () {
 			Tomatic.persons().tables = {}
 		} // TODO: Move that anywhere else
 		var table = Tomatic.persons().tables[name]
-		if (table == undefined) {
+		if (table === undefined) {
 			return -1
 		}
 		return table
