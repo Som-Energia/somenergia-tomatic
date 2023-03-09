@@ -240,12 +240,12 @@ function PersonsTable() {
   const itemActions = [
     {
       title: 'Edit',
-      icon: <EditIcon />,
+      icon: <EditIcon fontSize="inherit" />,
       handler: handleStartEditingPerson,
     },
     {
       title: 'Indisponibilitats',
-      icon: <EventBusyIcon />,
+      icon: <EventBusyIcon fontSize="inherit" />,
     },
   ]
 

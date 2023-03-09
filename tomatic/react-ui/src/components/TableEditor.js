@@ -24,20 +24,26 @@ import { styled, alpha } from '@mui/material/styles'
 const denseRowHeight = 33
 
 function ActionButtons(props) {
-  return props.actions.map((action, i) => {
-    return (
-      <Tooltip title={action.title} key={i}>
-        <IconButton
-          onClick={(ev) => {
-            ev.stopPropagation()
-            action.handler && action.handler(props.context)
-          }}
-        >
-          {action.icon}
-        </IconButton>
-      </Tooltip>
-    )
-  })
+  const { actions, context, ...rest } = props
+  return (
+    <div style={{ display: 'flex', flex: 'row no-wrap' }}>
+      {props.actions.map((action, i) => {
+        return (
+          <Tooltip title={action.title} key={i}>
+            <IconButton
+              {...rest}
+              onClick={(ev) => {
+                ev.stopPropagation()
+                action.handler && action.handler(props.context)
+              }}
+            >
+              {action.icon}
+            </IconButton>
+          </Tooltip>
+        )
+      })}
+    </div>
+  )
 }
 const ActionsType = PropTypes.arrayOf(
   PropTypes.shape({
@@ -429,7 +435,11 @@ export default function TableEditor(props) {
                           )
                         })}
                       <TableCell>
-                        <ActionButtons actions={itemActions} context={row} />
+                        <ActionButtons
+                          size="small"
+                          actions={itemActions}
+                          context={row}
+                        />
                       </TableCell>
                     </TableRow>
                   )
