@@ -31,17 +31,18 @@ function inputFilter_erpuser(value) {
   return value.replace(/[^A-Za-z]/g, '')
 }
 
+const defaultData = {
+  id: '',
+  name: '',
+  email: '',
+  erpuser: '',
+  table: -1,
+  extension: '',
+  color: 'aaaaff',
+  groups: [],
+}
+
 export default function PersonEditor(props) {
-  const defaultData = {
-    id: '',
-    name: '',
-    email: '',
-    erpuser: '',
-    table: -1,
-    extension: '',
-    color: 'aaaaff',
-    groups: [],
-  }
   const { open, onClose, person, tables, allGroups } = props
   const [data, setData] = useState(defaultData)
   const [errors, setErrors] = useState({
@@ -60,7 +61,7 @@ export default function PersonEditor(props) {
     } else if (person === {}) {
       setData(defaultData)
     } else setData(person)
-  }, [person])
+  }, [person, defaultData])
 
   const validators = {
     email: (value) => {
