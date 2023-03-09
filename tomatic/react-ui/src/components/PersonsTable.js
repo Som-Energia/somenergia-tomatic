@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import TableEditor from './TableEditor'
 import PersonEditor from './PersonEditor'
 import Chip from '@mui/material/Chip'
-import personData from '../persons.json'
+//import personData from '../persons.json'
 import { contrast } from '../colorutils'
 import EditIcon from '@mui/icons-material/Edit'
 import EventBusyIcon from '@mui/icons-material/EventBusy'
@@ -10,8 +10,11 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import GroupRemoveIcon from '@mui/icons-material/GroupRemove'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import Tomatic from '../services/tomatic'
 
-function compileData() {
+Tomatic.init()
+
+function compileData(personData) {
   const result = {}
   if (personData === undefined) return {}
 
@@ -84,24 +87,6 @@ function availableTables(rows) {
     }
   }
   return result
-}
-
-const rows = compileData()
-const tables = availableTables(rows)
-const allGroups = [
-  ...new Set(
-    rows
-      .map((row) => {
-        return row.groups || []
-      })
-      .flat()
-  ),
-]
-console.log('allGroups', allGroups)
-
-function camelize(text) {
-  text = text.toLowerCase()
-  return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
 const columns = [
@@ -183,8 +168,40 @@ const columns = [
   },
 ]
 
+function availableGroups(rows) {
+  return [
+    ...new Set(
+      rows
+        .map((row) => {
+          return row.groups || []
+        })
+        .flat()
+    ),
+  ]
+}
+function camelize(text) {
+  text = text.toLowerCase()
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}
+
+var handlePersonsUpdated = () => {}
+
+Tomatic.onPersonsUpdated.push(() => handlePersonsUpdated())
+
 function PersonsTable() {
-  const [editingPerson, setEditingPerson] = useState(undefined)
+  const [rows, setRows] = React.useState([])
+  const [tables, setTables] = React.useState([])
+  const [groups, setGroups] = React.useState([])
+  const [editingPerson, setEditingPerson] = React.useState(undefined)
+
+  handlePersonsUpdated = () => {
+    const persons = Tomatic.persons()
+    console.log('Redrawing persons', persons)
+    const rows = compileData(persons)
+    setRows(rows)
+    setTables(availableTables(rows))
+    setGroups(availableGroups(rows))
+  }
 
   function handleStartAddingPerson() {
     setEditingPerson({})
@@ -250,7 +267,7 @@ function PersonsTable() {
         onClose={handleEndAddingPerson}
         disableEscapeKeyDown={false}
         person={editingPerson}
-        allGroups={allGroups}
+        allGroups={groups}
         tables={tables}
       />
     </>

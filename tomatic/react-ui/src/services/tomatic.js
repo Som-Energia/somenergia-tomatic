@@ -2,7 +2,7 @@
 module.exports = (function () {
 	var m = require('mithril')
 	m.prop = require('mithril/stream')
-	var Package = require('../package.json')
+	var Package = require('../../package.json')
 	var api = require('./api')
 
 	var Tomatic = {
@@ -17,6 +17,7 @@ module.exports = (function () {
 	}
 	Tomatic.queue = m.prop([])
 	Tomatic.persons = m.prop({})
+	Tomatic.onPersonsUpdated = []
 	Tomatic.init = function () {
 		this.checkVersionPeriodically()
 		this.requestWeeks()
@@ -80,6 +81,7 @@ module.exports = (function () {
 			.then(function (response) {
 				if (response.persons !== undefined) {
 					Tomatic.persons(response.persons)
+					Tomatic.onPersonsUpdated.forEach((callback) => callback())
 				}
 			})
 	}
