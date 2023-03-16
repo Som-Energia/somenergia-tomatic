@@ -205,6 +205,63 @@ module.exports = (function () {
 			}
 		)
 	}
+	Tomatic.setPersonDataReact = function (id, data) {
+		if (id === undefined) {
+			id = data.id
+		}
+		var postdata = {}
+
+		for (var key in data) {
+			var value = data[key]
+			switch (key) {
+				case 'name':
+					delete Tomatic.persons().names[id]
+					var formatName = Tomatic.formatName(id)
+					if (formatName !== value) {
+						postdata.name = value
+					}
+					break
+				case 'extension':
+					postdata.extension = value
+					break
+				case 'table':
+					postdata.table = parseInt(value, 10)
+					break
+				case 'color':
+					postdata.color = value
+					break
+				case 'email':
+					postdata.email = value
+					break
+				case 'erpuser':
+					postdata.erpuser = value
+					break
+				case 'load':
+					postdata.load = value
+					break
+				default:
+					console.log('Unexpected person parameter', key)
+					break
+			}
+		}
+		console.log('posting', postdata)
+		api.request({
+			method: 'POST',
+			url: '/api/person/' + id,
+			body: postdata,
+		}).then(
+			function (data) {
+				Tomatic.requestPersons()
+			},
+			function (error) {
+				console.log(error)
+				Tomatic.error(
+					'Problemes editant la persona: ' +
+						(error.error || 'Inexperat')
+				)
+			}
+		)
+	}
 	Tomatic.setPersonData = function (name, data) {
 		if (name === undefined) {
 			name = data.name

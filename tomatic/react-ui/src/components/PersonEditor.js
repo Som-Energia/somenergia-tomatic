@@ -2,13 +2,51 @@ import React, { useState, useEffect } from 'react'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
 import DialogActions from '@mui/material/DialogActions'
 import TextField from '@mui/material/TextField'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import Autocomplete from '@mui/material/Autocomplete'
 import Button from '@mui/material/Button'
+import FormHelperText from '@mui/material/FormHelperText'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
+import Alert from '@mui/material/Alert'
+
+const fields = {
+  id: {
+    label: 'Identificador',
+    help: 'Identificador que es fa servir internament.',
+  },
+  name: {
+    label: 'Nom mostrat',
+    help: 'Nom amb espais, accents, majúscules i el que calgui.',
+  },
+  email: {
+    label: 'Adreça de correu',
+    help: 'Correu oficial que tens a Som Energia.',
+  },
+  erpuser: {
+    label: 'Usuari ERP',
+    help: "Usuari amb el que entres a l'erp.",
+  },
+  load: {
+    label: 'Càrrega de torns',
+    help: 'Torns que farà normalment en una setmana de 5 dies laborals. En blanc si no fa atenció.',
+  },
+  extension: {
+    label: 'Extensió',
+    help: 'Extensió de telèfon assignada a la centraleta.',
+  },
+  table: {
+    label: 'Taula',
+    help: 'Posem a la gent propera a la mateixa taula per evitar torns amb cacofonies',
+  },
+  color: {
+    label: 'Color',
+    help: 'Color personal',
+  },
+}
 
 function inputFilter_ID(value) {
   return value
@@ -43,7 +81,7 @@ const defaultData = {
 }
 
 export default function PersonEditor(props) {
-  const { open, onClose, person, tables, allGroups } = props
+  const { open, onClose, onSave, person, tables, allGroups } = props
   const [data, setData] = useState(defaultData)
   const [errors, setErrors] = useState({
     id: false,
@@ -55,45 +93,78 @@ export default function PersonEditor(props) {
     color: false,
     groups: false,
   })
+  function setCheckedData(person) {
+    setData(person)
+    if (!person) return
+    setErrors({
+      ...errors,
+      ...Object.fromEntries(
+        Object.keys(validators).map((key) => {
+          const validator = validators[key]
+          return [key, validator(person[key])]
+        })
+      ),
+    })
+  }
+
   useEffect(() => {
-    if (person === undefined) {
-      setData(defaultData)
-    } else if (person === {}) {
-      setData(defaultData)
-    } else setData(person)
-  }, [person, defaultData])
+    setCheckedData(
+      person === undefined ? defaultData : person === {} ? defaultData : person
+    )
+  }, [person])
 
   const validators = {
+    id: (value) => {
+      if (!value) return "L'identificador és requisit"
+      if (value.length < 3) return "L'identificador és massa curt"
+      if (!value.match(/[a-z]{3,10}/))
+        return "L'identificador nomes pot tenir lletres minuscules"
+      return false
+    },
     email: (value) => {
+      if (value === undefined) return false
+      if (value === '') return false
       if (!value.includes('@')) return 'Ha de ser una adreça de correu vàlida'
+      return false
+    },
+    erpuser: (value) => {
+      if (value === undefined) return false
+      if (value.length === 0) return false
+      if (!value.match('^[a-zA-Z]{3,10}$'))
+        return "El nom d'usuari ERP és invàlid"
+      return false
+    },
+    load: (value) => {
+      if (value === undefined) return false
+      if (!value.match(/^\d+$/)) return 'Ha de ser un número'
+      if (value > 10) return "Potser t'has passat"
       return false
     },
   }
 
-  console.log('data', data)
   function updater(field) {
     return (ev) => {
       const newvalue = ev.target.value
       const validator = validators[field]
-      if (validator) {
+      if (validator !== undefined) {
+        const validationError = validator(newvalue, data)
         setErrors({
           ...errors,
-          [field]: validator(newvalue, data),
+          [field]: validationError,
         })
       }
       setData({ ...data, [field]: newvalue })
+      console.log(errors)
     }
   }
-  console.log('errors', errors)
-  const attributeOptions = (attribute) => {
+  const fieldOptions = (field) => {
     return {
-      id: attribute,
-      error: !!errors[attribute],
-      value:
-        data[attribute] === undefined
-          ? defaultData[attribute]
-          : data[attribute],
-      onChange: updater(attribute),
+      id: field,
+      label: fields[field].label,
+      helperText: errors[field] || fields[field].help,
+      error: !!errors[field],
+      value: data[field] === undefined ? defaultData[field] : data[field],
+      onChange: updater(field),
     }
   }
 
@@ -102,6 +173,7 @@ export default function PersonEditor(props) {
     variant: 'standard',
     margin: 'dense',
   }
+  const isNew = person?.id === undefined
   return (
     <Dialog
       open={open}
@@ -109,19 +181,17 @@ export default function PersonEditor(props) {
       aria-describedby="person-editor-description"
       onClose={onClose}
     >
-      <DialogTitle id="person-editor-title">Adding a person</DialogTitle>
+      <DialogTitle id="person-editor-title">
+        {isNew
+          ? 'Afegeix una persona nova'
+          : 'Edita la informació de la persona'}
+      </DialogTitle>
       <DialogContent>
-        <DialogContentText id="person-editor-description">
-          {'Informació de la usuaria'}
-        </DialogContentText>
         <TextField
-          {...attributeOptions('id')}
-          label="Identificador"
-          helperText="Identificador que es fa servir internament."
-          aerror="De 3 a 10 carácters. Només lletres en minúscules."
+          {...fieldOptions('id')}
           inputProps={{ pattern: '[a-z]{3,10}$' }}
-          disabled={person !== {}}
-          autoFocus={person === {}}
+          disabled={!isNew}
+          autoFocus={isNew}
           required
           onInput={(ev) => {
             ev.target.value = inputFilter_ID(ev.target.value)
@@ -129,72 +199,65 @@ export default function PersonEditor(props) {
           {...commonFieldOptions}
         />
         <TextField
-          {...attributeOptions('name')}
-          label="Nom mostrat"
-          helperText="Nom amb accents, majúscules..."
           required
-          autoFocus={person !== {}}
+          autoFocus={!isNew}
+          {...fieldOptions('name')}
           {...commonFieldOptions}
         />
         <TextField
-          {...attributeOptions('email')}
-          label="Adreça de correu"
-          helperText="Correu oficial que tens a Som Energia."
           type="email"
+          {...fieldOptions('email')}
           {...commonFieldOptions}
         />
         <TextField
-          {...attributeOptions('erpuser')}
-          label="Usuari ERP"
-          helperText="Usuari amb el que entres a l'erp."
+          {...fieldOptions('erpuser')}
+          {...commonFieldOptions}
           onInput={(ev) =>
             (ev.target.value = inputFilter_erpuser(ev.target.value))
           }
           inputProps={{ pattern: '^[a-zA-Z]{3,10}$' }}
-          {...commonFieldOptions}
         />
-        <TextField
-          {...attributeOptions('load')}
-          label="Càrrega de torns"
-          helperText="Torns que farà normalment en una setmana de 5 dies. En blanc si no fa atenció."
+        {/*
           onInput={(ev) =>
             (ev.target.value = inputFilter_numbers(ev.target.value))
           }
-          inputProps={{ pattern: '^[0-9]{0,10}$' }}
+        */}
+        <TextField
+          {...fieldOptions('load')}
           {...commonFieldOptions}
+          inputProps={{ pattern: '^[0-9]{0,10}$' }}
         />
         <TextField
-          {...attributeOptions('extension')}
-          label="Extensió"
-          helperText="Extensió de telèfon assignada a la centraleta."
+          {...fieldOptions('extension')}
           onInput={(ev) =>
             (ev.target.value = inputFilter_numbers(ev.target.value))
           }
           inputProps={{ pattern: '^[0-9]{4}$' }}
           {...commonFieldOptions}
         />
-        <Select
-          id="table"
-          label="Taula"
-          labelId="table-label"
-          value={data.table === undefined ? -1 : data.table}
-          onChange={updater('table')}
-          {...commonFieldOptions}
-        >
-          {tables.map(([value, description]) => {
-            return (
-              <MenuItem key={value} value={value}>
-                {description}
-              </MenuItem>
-            )
-          })}
-        </Select>
+        <FormControl {...commonFieldOptions}>
+          <InputLabel id="table-label">{fields.table.label}</InputLabel>
+          <Select
+            id="table"
+            labelId="table-label"
+            label={fields.table.label}
+            value={data.table === undefined ? -1 : data.table}
+            onChange={updater('table')}
+            {...commonFieldOptions}
+          >
+            {tables.map(([value, description]) => {
+              return (
+                <MenuItem key={value} value={value}>
+                  {description}
+                </MenuItem>
+              )
+            })}
+          </Select>
+          <FormHelperText>{fields['table'].help}</FormHelperText>
+        </FormControl>
         {/* TODO: Use a color picker */}
         <TextField
           id="color"
-          label="Color"
-          helperText="Color personal"
-          errorText="que color mas cutre"
           value={data.color || 'ffffff'}
           onChange={updater('color')}
           inputProps={{ pattern: '^[0-9a-f]{4}$' }}
@@ -214,8 +277,19 @@ export default function PersonEditor(props) {
         />
       </DialogContent>
       <DialogActions>
+        {Array.some(Object.values(errors)) ? (
+          <Alert>"Hi ha camps incorrectes"</Alert>
+        ) : null}
+        <div></div>
         <Button onClick={onClose}>Cancel</Button>
-        <Button variant="contained" onClick={onClose}>
+        <Button
+          variant="contained"
+          title={Object.values(errors).join('\n')}
+          disabled={!Object.values(errors).every((error) => !error)}
+          onClick={() => {
+            onSave(person?.id, data)
+          }}
+        >
           {'Desar'}
         </Button>
       </DialogActions>

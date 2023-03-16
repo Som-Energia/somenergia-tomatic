@@ -125,7 +125,12 @@ function ResponsiveAppBar({ children }) {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <MenuItem key={page} onClick={
+                    ()=> {
+                    handleCloseNavMenu()
+                      Tomatic.error("La funcionalitat encara no està implementada")
+                    }
+                  }>
                     <Typography textAlign="center">{page}</Typography>
                   </MenuItem>
                 ))}

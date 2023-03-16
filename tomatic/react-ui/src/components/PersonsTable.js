@@ -205,13 +205,15 @@ function PersonsTable() {
   function handleStartAddingPerson() {
     setEditingPerson({})
   }
-  function handleEndAddingPerson() {
-    setEditingPerson(undefined)
-  }
   function handleStartEditingPerson(person) {
     setEditingPerson(person)
   }
   function handleEndEditingPerson() {
+    setEditingPerson(undefined)
+  }
+  function handleSavePerson(id, data) {
+    console.log(id, data)
+    Tomatic.setPersonDataReact(id, data)
     setEditingPerson(undefined)
   }
 
@@ -263,7 +265,8 @@ function PersonsTable() {
       ></TableEditor>
       <PersonEditor
         open={editingPerson !== undefined}
-        onClose={handleEndAddingPerson}
+        onClose={handleEndEditingPerson}
+        onSave={handleSavePerson}
         disableEscapeKeyDown={false}
         person={editingPerson}
         allGroups={groups}
