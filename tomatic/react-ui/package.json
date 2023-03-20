@@ -44,7 +44,6 @@
   },
   "devDependencies": {
     "prettier": "^2.8.4",
-    "react-app-rewire-build-dev": "^1.0.1",
     "react-app-rewire-multiple-entry": "^2.2.3",
     "react-app-rewired": "^2.2.1",
     "react-router-dom": "^6.8.2",

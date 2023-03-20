@@ -1,5 +1,5 @@
-const reactAppRewireBuildDev = require('react-app-rewire-build-dev')
 const path = require('path')
+
 const multipleEntry = require('react-app-rewire-multiple-entry')([
         {
                 entry: 'src/admin.js',
@@ -7,12 +7,6 @@ const multipleEntry = require('react-app-rewire-multiple-entry')([
                 outPath: '/admin.html',
         },
 ])
-
-const options = {
-        outputPath: 'output' /***** required *****/,
-        basename: 'deploydir', // deploy react-app in a subdirectory /***** optional *****/
-        //hotReloadPort : "<port of webpack-server>" // default:3000,simply relaod the webpage on changes./***** optional *****/
-}
 
 module.exports = {
         webpack: function (config, env) {
@@ -24,7 +18,7 @@ module.exports = {
                         __dirname,
                         isdev ? '../dist' : config.output.path
                 )
-                return reactAppRewireBuildDev(config, env, options)
+                return config
         },
         devServer: function (configFunction) {
                 return function (proxy, allowedHost) {
