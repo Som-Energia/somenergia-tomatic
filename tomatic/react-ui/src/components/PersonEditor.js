@@ -277,7 +277,7 @@ export default function PersonEditor(props) {
         />
       </DialogContent>
       <DialogActions>
-        {Array.some(Object.values(errors)) ? (
+        {Object.values(errors).some((x) => x) ? (
           <Alert>"Hi ha camps incorrectes"</Alert>
         ) : null}
         <div></div>
