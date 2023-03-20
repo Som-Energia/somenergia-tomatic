@@ -22,7 +22,7 @@ module.exports = {
                 //console.log('pre config:', config)
                 config.output.path = path.resolve(
                         __dirname,
-                        config.output.path + (isdev ? '-dev' : '')
+                        isdev ? '../dist' : config.output.path
                 )
                 return reactAppRewireBuildDev(config, env, options)
         },
