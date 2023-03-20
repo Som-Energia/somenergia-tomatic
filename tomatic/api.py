@@ -160,6 +160,10 @@ async def websocketSession(websocket: WebSocket):
 def tomatic(request: Request, file=None):
     return FileResponse(distpath / (file or 'index.html'))
 
+@app.get('/static/{dir}/{file}')
+def tomatic(request: Request, file=None, dir=None):
+    return FileResponse(distpath / 'static' / dir / (file or 'index.html'))
+
 @app.get('/api/version')
 @yamlerrors
 def apiVersion():
