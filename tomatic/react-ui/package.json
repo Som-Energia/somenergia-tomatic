@@ -25,10 +25,17 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": ["react-app", "react-app/jest"]
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -37,6 +44,7 @@
   },
   "devDependencies": {
     "prettier": "^2.8.4",
+    "react-app-rewire-build-dev": "^1.0.1",
     "react-app-rewire-multiple-entry": "^2.2.3",
     "react-app-rewired": "^2.2.1",
     "react-router-dom": "^6.8.2",
