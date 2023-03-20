@@ -162,7 +162,7 @@ const columns = [
     view: (row) =>
       row.groups &&
       row.groups.map((group) => {
-        return <Chip size="small" label={group} />
+        return <Chip key={group} size="small" label={group} />
       }),
   },
 ]
