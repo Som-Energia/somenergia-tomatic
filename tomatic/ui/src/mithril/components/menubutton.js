@@ -1,7 +1,4 @@
-'use strict'
-
 // MenuButton
-
 module.exports = (function () {
 	var m = require('mithril')
 	var IconButton = require('polythene-mithril-icon-button').IconButton
@@ -9,7 +6,6 @@ module.exports = (function () {
 	var List = require('polythene-mithril-list').List
 	var Shadow = require('polythene-mithril-shadow').Shadow
 	var Menu = require('polythene-mithril-menu').Menu
-	var Tomatic = require('./tomatic')
 	var iconMore = require('mmsvg/google/msvg/navigation/more-vert')
 
 	const MenuContent = function (options) {
