@@ -12,6 +12,7 @@ import FormHelperText from '@mui/material/FormHelperText'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Alert from '@mui/material/Alert'
+import { MuiColorInput } from 'mui-color-input'
 
 const fields = {
   id: {
@@ -256,13 +257,20 @@ export default function PersonEditor(props) {
           <FormHelperText>{fields['table'].help}</FormHelperText>
         </FormControl>
         {/* TODO: Use a color picker */}
-        <TextField
+        <MuiColorInput
           id="color"
-          value={data.color || 'ffffff'}
-          onChange={updater('color')}
-          inputProps={{ pattern: '^[0-9a-f]{4}$' }}
+          value={'#' + (data.color || 'ffffff')}
+          format="hex"
+          onChange={(value) => {
+            console.log('Changed color', value)
+            const field = 'color'
+            const newvalue = value.replace(/^#/gm, '')
+            setData({ ...data, [field]: newvalue })
+            console.log(errors)
+          }}
+          isAlphaHidden
           {...commonFieldOptions}
-        ></TextField>
+        ></MuiColorInput>
         <Autocomplete
           id="groups"
           multiple
