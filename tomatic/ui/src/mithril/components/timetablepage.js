@@ -1,8 +1,5 @@
-'use strict'
-
 // TimeTablePage
-// Page to browser each week timetables
-
+// Page to browse timetables for each week
 module.exports = (function () {
 	var m = require('mithril')
 	var Dialog = require('polythene-mithril-dialog').Dialog
@@ -12,7 +9,6 @@ module.exports = (function () {
 	var WeekPicker = require('./weekpicker')
 	var Uploader = require('./uploader')
 	var PersonPicker = require('./personpicker')
-	var getCookie = require('./utils').getCookie
 	var Auth = require('./auth')
 
 	var TimeTable = function (grid) {
@@ -106,7 +102,7 @@ module.exports = (function () {
 						}),
 						grid.hours.slice(0, -1).map(function (hour, houri) {
 							return m('tr', [
-								dayi != 0 && false
+								dayi !== 0 && false
 									? m('th.separator', m.trust('&nbsp;'))
 									: m(
 											'th.separator',
