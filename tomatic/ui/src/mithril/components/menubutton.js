@@ -11,6 +11,7 @@ var List = require('polythene-mithril-list').List;
 var Shadow = require('polythene-mithril-shadow').Shadow;
 var Menu = require('polythene-mithril-menu').Menu;
 var Tomatic = require('./tomatic');
+var iconMore = require('mmsvg/google/msvg/navigation/more-vert');
 
 const MenuContent = function(options) {
 	return m(List, {
