@@ -76,25 +76,25 @@ const menuOptions = function() { return [{
 	icon: "🕜",
 	title: "Planificador de Graelles",
 	action: function() {
-		location.href = "/api/planner/";
+		window.location.href = "/api/planner/";
 	},
 },{
 	icon: "📊",
 	title: "Estadístiques de trucades",
 	action: function() {
-		location.href = scriptLauncherBase + "/runner/statshistory";
+		window.location.href = scriptLauncherBase + "/runner/statshistory";
 	},
 },{
 	icon: "📢",
 	title: "En Tomàtic diu...",
 	action: function() {
-		location.href = scriptLauncherBase + "/runner/says";
+		window.location.href = scriptLauncherBase + "/runner/says";
 	},
 },{
 	icon: "🔄",
 	title: "Restableix el torn a la cua",
 	action: function() {
-		location.href = scriptLauncherBase + "/runner/reloadqueue";
+		window.location.href = scriptLauncherBase + "/runner/reloadqueue";
 	},
 },{
 	icon: "🏷️",
@@ -106,7 +106,7 @@ const menuOptions = function() { return [{
 	icon: "🚀",
 	title: "Altres scripts de Centraleta",
 	action: function() {
-		location.href = scriptLauncherBase;
+		window.location.href = scriptLauncherBase;
 	},
 },{
 	icon: "😎",

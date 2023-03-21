@@ -49,7 +49,7 @@ Tomatic.checkVersion = function() {
 			"Detectada nova versió en el servidor. Recarregant pàgina en 10 segons."
 		),
 		setTimeout(function() {
-			location.reload(true); // True to force full reload
+			window.location.reload(true); // True to force full reload
 		}, 10000);
 	});
 };
