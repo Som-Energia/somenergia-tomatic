@@ -1,5 +1,5 @@
-const m = require('mithril')
-
+const m = require('./mithril/graella')
+/*
 class app {
   constructor() {
     this.els = ['first itemisim']
@@ -29,3 +29,4 @@ class app {
 }
 
 m.mount(document.body, app)
+*/
