@@ -283,9 +283,11 @@ export default function PersonEditor(props) {
       </DialogContent>
       <DialogActions>
         {Object.values(errors).some((x) => x) ? (
-          <Alert>"Hi ha camps incorrectes"</Alert>
+          <Alert severity="error" sx={{ height: '55%' }}>
+            {'Hi ha camps incorrectes'}
+          </Alert>
         ) : null}
-        <div></div>
+        <div style={{ flex: 1 }}></div>
         <Button onClick={onClose}>Cancel</Button>
         <Button
           variant="contained"
