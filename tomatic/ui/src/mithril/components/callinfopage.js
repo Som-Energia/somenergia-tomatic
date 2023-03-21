@@ -199,7 +199,7 @@ module.exports = (function () {
       )
     }
     var currentDate = new Date().toLocaleDateString()
-    items = CallInfo.callLog
+    var items = CallInfo.callLog
       .slice(0)
       .reverse()
       .map(function (item, index) {
