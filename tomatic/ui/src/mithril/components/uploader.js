@@ -3,7 +3,7 @@ module.exports = function() {
 var m = require('mithril');
 var css = require('@emotion/css').css;
 var RaisedButton = require('polythene-mithril-raised-button').RaisedButton;
-var api = require('./api');
+var api = require('../../services/api');
 
 
 const uploaderStyle = css`

@@ -4,7 +4,7 @@ module.exports = function() {
 var m = require('mithril');
 var Button = require('polythene-mithril-button').Button;
 var Card = require('polythene-mithril-card').Card;
-var Auth = require('./auth');
+var Auth = require('../../services/auth');
 require('./loginpage.styl');
 var tomaticAvatar = require('../tomatic-avatar.png');
 

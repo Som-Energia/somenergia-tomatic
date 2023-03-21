@@ -11,7 +11,7 @@ var Tabs = require('polythene-mithril-tabs').Tabs;
 var iconMenu = require('mmsvg/google/msvg/navigation/menu');
 var iconMore = require('mmsvg/google/msvg/navigation/more-vert');
 
-var Tomatic = require('./components/tomatic');
+var Tomatic = require('../services/tomatic');
 var QueueMonitor = require('./components/queuemonitor');
 var luminance = require('./components/colorutils').luminance;
 var contrast = require('./components/colorutils').contrast;

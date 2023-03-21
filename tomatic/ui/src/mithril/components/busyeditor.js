@@ -12,7 +12,7 @@ var IconButton = require('polythene-mithril-icon-button').IconButton;
 var Checkbox = require('polythene-mithril-checkbox').Checkbox;
 var Select = require('./select');
 var Labeled = require('./labeled');
-var Tomatic = require('./tomatic')
+var Tomatic = require('../../services/tomatic')
 var iconPlus =  require('mmsvg/templarian/msvg/plus');
 var iconDelete =  require('mmsvg/google/msvg/action/delete');
 

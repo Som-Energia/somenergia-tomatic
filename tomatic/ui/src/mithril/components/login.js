@@ -11,8 +11,8 @@ var List = require ('polythene-mithril-list').List;
 var Ripple = require('polythene-mithril-ripple').Ripple;
 
 var styleLogin = require('./callinfo_style.styl');
-var Tomatic = require('./tomatic');
-var Auth = require('./auth');
+var Tomatic = require('../../services/tomatic');
+var Auth = require('../../services/auth');
 
 var Login = {};
 

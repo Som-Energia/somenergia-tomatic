@@ -19,7 +19,7 @@ var Checkbox = require('polythene-mithril-checkbox').Checkbox;
 var RadioGroup = require('polythene-mithril-radio-group').RadioGroup;
 var RadioButton = require('polythene-mithril-radio-button').RadioButton;
 var CallInfo = require('./callinfo');
-var Auth = require('./auth');
+var Auth = require('../../services/auth');
 
 var Questionnaire = {};
 

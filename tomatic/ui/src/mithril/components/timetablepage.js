@@ -5,11 +5,11 @@ module.exports = (function () {
 	var Dialog = require('polythene-mithril-dialog').Dialog
 	var Button = require('polythene-mithril-button').Button
 	var Ripple = require('polythene-mithril-ripple').Ripple
-	var Tomatic = require('./tomatic')
+	var Tomatic = require('../../services/tomatic')
+	var Auth = require('../../services/auth')
 	var WeekPicker = require('./weekpicker')
 	var Uploader = require('./uploader')
 	var PersonPicker = require('./personpicker')
-	var Auth = require('./auth')
 
 	var TimeTable = function (grid) {
 		var editCell = function (day, houri, turni) {

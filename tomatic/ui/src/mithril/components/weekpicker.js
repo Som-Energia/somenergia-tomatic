@@ -3,7 +3,7 @@
 module.exports = function() {
 var css = require('@emotion/css').css;
 var m = require('mithril');
-var Tomatic = require('./tomatic');
+var Tomatic = require('../../services/tomatic');
 
 const styles = {
 	weeks: css`

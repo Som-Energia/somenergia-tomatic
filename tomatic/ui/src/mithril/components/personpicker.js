@@ -10,7 +10,7 @@
 module.exports = function() {
 
 var m = require('mithril');
-var Tomatic = require('./tomatic');
+var Tomatic = require('../../services/tomatic');
 
 var PersonPicker = {
 	oninit: function(vnode) {
