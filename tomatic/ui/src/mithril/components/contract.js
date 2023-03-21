@@ -244,7 +244,7 @@ module.exports = (function () {
         m('.loading.layout.vertical.center', ['No hi ha lectures disponibles.'])
       )
     }
-    meter_readings = []
+    var meter_readings = []
     meter_readings.push(
       m('tr', [
         m('th', 'Comptador'),
@@ -254,8 +254,8 @@ module.exports = (function () {
         m('th', 'Període'),
       ])
     )
-    for (reading_index in readings) {
-      reading = readings[reading_index]
+    for (const reading_index in readings) {
+      const reading = readings[reading_index]
       meter_readings.push(
         m('tr', [
           m('td', reading.comptador),
@@ -324,29 +324,28 @@ module.exports = (function () {
     var suspended_invoicing = contract.suspended_invoicing
     var has_debt = contract.has_debt
 
-    if (
+    var info =
       !selfconsumption &&
       !generation &&
       !energetica &&
       !suspended_invoicing &&
       !has_debt
-    ) {
-      info = m('no-info', 'No hi ha informació extra.')
-    } else {
-      info = m('.extra-info', [
-        m(
-          '',
-          selfconsumption ? m('.label-selfconsumption', 'Autoconsum.') : ''
-        ),
-        m('', generation ? m('.label-generation', 'Rep Generation.') : ''),
-        m('', energetica ? m('.label-energetica', "És d'EnergEtica.") : ''),
-        m(
-          '',
-          suspended_invoicing ? m('.label-alert', 'Facturació suspesa.') : ''
-        ),
-        m('', has_debt ? m('.label-alert', 'Té deute: ' + has_debt) : ''),
-      ])
-    }
+        ? m('no-info', 'No hi ha informació extra.')
+        : m('.extra-info', [
+            m(
+              '',
+              selfconsumption ? m('.label-selfconsumption', 'Autoconsum.') : ''
+            ),
+            m('', generation ? m('.label-generation', 'Rep Generation.') : ''),
+            m('', energetica ? m('.label-energetica', "És d'EnergEtica.") : ''),
+            m(
+              '',
+              suspended_invoicing
+                ? m('.label-alert', 'Facturació suspesa.')
+                : ''
+            ),
+            m('', has_debt ? m('.label-alert', 'Té deute: ' + has_debt) : ''),
+          ])
     return m(Card, {
       className: 'extra-info',
       content: [
