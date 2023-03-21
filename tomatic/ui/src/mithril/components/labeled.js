@@ -5,7 +5,7 @@ module.exports = (function () {
 
 	var Labeled = {
 		view: function (vnode) {
-			labeledId = vnode.children[0].id
+			var labeledId = vnode.children[0].id
 			return m('.label-wrapper', [
 				m(
 					'label.label-wrapper--label',
