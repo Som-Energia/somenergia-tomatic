@@ -47,7 +47,7 @@ Tomatic.checkVersion = function() {
 		);
 		Tomatic.error(
 			"Detectada nova versió en el servidor. Recarregant pàgina en 10 segons."
-		),
+		)
 		setTimeout(function() {
 			window.location.reload(true); // True to force full reload
 		}, 10000);
