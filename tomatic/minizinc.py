@@ -4,19 +4,10 @@ from tomato_cooker.models import TomaticProblem, tomatic
 from consolemsg import step, error
 from yamlns import namespace as ns
 import datetime
-from .retriever import (
-        downloadLeaves,
-        downloadIdealLoad,
-        downloadVacations,
-        downloadFestivities,
-        downloadBusy,
-        downloadShiftload,
-        downloadShiftCredit,
-        downloadOverload,
-        addDays,
-    )
+from .retriever import addDays
 from .shiftload import ShiftLoadComputer
 from .backtracker import parseArgs
+from .persons import persons
 
 WEEKDAY = {
     'dl': 0,
@@ -25,6 +16,22 @@ WEEKDAY = {
     'dj': 3,
     'dv': 4,
 }
+
+# TODO: extract this
+def update_config(config):
+    config.update(persons(config.get('personsfile', None)))
+    # TODO: We should have the option to specity other mondays
+    today = datetime.date.today()
+    config.monday = addDays(today, 7 - today.weekday())
+    # TODO: Removed the download files, check side effects
+    config.idealshifts = config.get('idealshifts') or 'idealshifts.yaml'
+    config.weekShifts = config.get('weekShifts') or 'carrega.csv'
+    config.overloadfile = "overload-{}.yaml".format(config.monday)
+    if config.computeShifts:
+        setup = ShiftLoadComputer.loadData(config)
+        config.idealLoad = setup.idealLoad
+        config.busyTable = setup.busyTable._table
+
 
 class Menu:
 
@@ -79,7 +86,6 @@ class Menu:
 def main():
     global args
     args = parseArgs()
-
     step('Carregant configuració {}...', args.config_file)
     try:
         config = ns.load(args.config_file)
@@ -87,46 +93,7 @@ def main():
         error("Configuració incorrecta")
         raise
 
-    from .persons import persons
-    # WIP: Config must contain the name of personsfile
-    config.update(persons(config.get('personsfile', None)))
-
-    # WIP: At this moment, monday is always the next monday
-    today = datetime.date.today()
-    config.monday = addDays(today, 7-today.weekday())
-
-    # Suggestion: dont check and dowload this info here!
-    mustDownloadIdealShifts = not config.get('idealshifts')
-    config.idealshifts = config.get('idealshifts') or 'idealshifts.yaml'
-    mustDownloadShifts = not config.get('weekShifts') and not config.computeShifts
-    config.weekShifts = config.get('weekShifts') or 'carrega.csv'
-    mustDownloadOverload = not config.computeShifts
-    config.overloadfile = "overload-{}.yaml".format(config.monday)
-
-    if not args.keep:
-        step("Baixant persones de baixa del drive...")
-        certificate = config.driveCertificate
-        downloadLeaves(config, certificate)
-
-        if mustDownloadIdealShifts:
-            downloadIdealLoad(config, certificate)
-        if mustDownloadShifts:
-            downloadShiftload(config)
-        if mustDownloadOverload:
-            downloadOverload(config)
-        if not config.get('busyFiles'):
-            downloadBusy(config)
-            downloadFestivities(config)
-            downloadVacations(config, source=args.holidays)
-
-        if config.computeShifts:
-            step("Baixant bossa d'hores del tomatic...")
-            downloadShiftCredit(config)
-
-    if config.computeShifts:
-        setup = ShiftLoadComputer.loadData(config)
-        config.idealLoad = setup.idealLoad
-        config.busyTable = setup.busyTable._table
+    update_config(config)
 
     # I'm hungry, I want something to eat
     menu = Menu(config)
