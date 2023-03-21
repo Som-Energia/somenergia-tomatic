@@ -3,66 +3,65 @@
 ## Backlog
 
 - [ ] Initial setup
-    - [ ] Option --fake is not working in debug mode since FastAPI migration.
-          Because of that tomatic.pbx.pbxirontec.Irontec.BackendError unless you have it configured
-          Why? uvicorn creates a new app instance and commandline pbx queue configuration is loss.
-          Workaround: configure tomatic.pbx="fake" in dbconfig.
-          Future Solution: Using env vars to communicate command line and the app instance?
-    - [ ] default for callinfoPath as callinfo
-    - [ ] execution requires a holidays.conf (now it is not needed)
-    - [ ] graelles dir does not exist, uploading timetable fails
-    - [ ] When planner generates timetable, some filed are passed by the API but fails if they don't exist
-        - [ ] oneshot.conf
-        - [ ] indisponibilitats.conf
-        - [ ] indisponibilitats-vacances.conf
-        - [ ] holidays.conf
+     - [ ] Option --fake is not working in debug mode since FastAPI migration.
+           Because of that tomatic.pbx.pbxirontec.Irontec.BackendError unless you have it configured
+           Why? uvicorn creates a new app instance and commandline pbx queue configuration is loss.
+           Workaround: configure tomatic.pbx="fake" in dbconfig.
+           Future Solution: Using env vars to communicate command line and the app instance?
+     - [ ] default for callinfoPath as callinfo
+     - [ ] execution requires a holidays.conf (now it is not needed)
+     - [ ] graelles dir does not exist, uploading timetable fails
+     - [ ] When planner generates timetable, some filed are passed by the API but fails if they don't exist
+          - [ ] oneshot.conf
+          - [ ] indisponibilitats.conf
+          - [ ] indisponibilitats-vacances.conf
+          - [ ] holidays.conf
 - [ ] Remove config.yaml from git (backup the file to use it in production)
 - [ ] Remove extensions for Inalàmbric / Recepcio / Contestador
 - [ ] Configurable timetable directory ('graelles')
 - [ ] Configurable execution directory ('executions')
 - [ ] Move shiftload generated files to a configurable dir (maybe same as timetables dir?)
-- [ ] callinfo: As an agent i want to be able to see cancelled contracts in callinfo (pe. for claims of unauthorized switching)
-- [ ] Google login
+- [x] callinfo: As an agent i want to be able to see cancelled contracts in callinfo (pe. for claims of unauthorized switching)
+- [x] Google login
 - [ ] API tests in fastapi
 - [ ] Accept fragile erp tests
 - [ ] GSpread docs say that moving the credential to `~/.config/gspread/service_account.json` avoids having to pass it around as parameter
 - [ ] `tomatic_calls` should use persons module instead referring persons.yaml directly
 
 - Planner:
-	- [ ] Refactor as Single Page App
-	- [ ] Style it
-	- [ ] Show cutting reasons of best solutions
-	- [ ] Show cost sources when hovering the cost
-	- [ ] Ask before deleting, killing, uploading...
+     - [ ] Refactor as Single Page App
+     - [ ] Style it
+     - [ ] Show cutting reasons of best solutions
+     - [ ] Show cost sources when hovering the cost
+     - [ ] Ask before deleting, killing, uploading...
 - Scheduler:
-	- [ ] Like we did with callinfo, review files loaded and dumped to rationalize it
+     - [ ] Like we did with callinfo, review files loaded and dumped to rationalize it
 - Person editor:
-	- [ ] Disable ok until all fields are valid
-	- [ ] Check extension not taken already
-	- [ ] Check erp user exists
-	- [ ] Take person info from holidays manager
-	- [ ] List/admin mode
+     - [ ] Disable ok until all fields are valid
+     - [ ] Check extension not taken already
+     - [ ] Check erp user exists
+     - [ ] Take person info from holidays manager
+     - [ ] List/admin mode
 - Callinfo
-	- [ ] Edit previous annotations
-	- [ ] /api/info/ringring -> api/call/ringring (ext) (caution: used by partners)
-	- [ ] /api/personlog/<ext> en els casos de fallada returnar una llista buida sense errors (no son de fallada, encara no hi ha logs i prou)
-	- [ ] /api/personlog/{ext} -> api/call/log/{user}
-	- [ ] /api/call/categories/update -> called by cron or init
-	- [ ] Ask AiS: All cases set to state=done but the unsolved state=open, is ok?
-	- [ ] Check: are we translating CONSULTA to HELPDESK when saving cases
-	- [ ] Call Info: Report diferently, search cleared from no search found
-	- [ ] Special search results (too many, not found, error...) meaningfull (ie, "empty" means searching, while {} means not found)
-	- [ ] Call Info: Intercept backend connection errors and behave
-	- [ ] Call info: List previous calls from same person/contract
-	- [ ] New alert: Unpaid invoices
-	- [ ] join cases with call log (consider performance and usage)
-	- [ ] create crm: extract seccio del reason and remove the field
-	- [ ] create crm: test cas contracte no existeix
-	- [ ] callreg: Rename Claims to reflect its repurposing
-	- [ ] callreg: On failing annotation, ui notifies the user
-	- [ ] Urlencoding the search does not work (search something with slash, commas...)
-	- [ ] Manual annotations with some search renders "Registre..." in the call list
-
+     - [ ] Edit previous annotations
+     - [ ] /api/info/ringring -> api/call/ringring (ext) (caution: used by partners)
+     - [ ] /api/personlog/<ext> en els casos de fallada returnar una llista buida sense errors (no son de fallada, encara no hi ha logs i prou)
+     - [ ] /api/personlog/{ext} -> api/call/log/{user}
+     - [ ] /api/call/categories/update -> called by cron or init
+     - [ ] Ask AiS: All cases set to state=done but the unsolved state=open, is ok?
+     - [ ] Check: are we translating CONSULTA to HELPDESK when saving cases
+     - [ ] Call Info: Report diferently, search cleared from no search found
+     - [ ] Special search results (too many, not found, error...) meaningfull (ie, "empty" means searching, while {} means not found)
+     - [ ] Call Info: Intercept backend connection errors and behave
+     - [ ] Call info: List previous calls from same person/contract
+     - [ ] New alert: Unpaid invoices
+     - [ ] join cases with call log (consider performance and usage)
+     - [ ] create crm: extract seccio del reason and remove the field
+     - [ ] create crm: test cas contracte no existeix
+     - [ ] callreg: Rename Claims to reflect its repurposing
+     - [ ] callreg: On failing annotation, ui notifies the user
+     - [ ] Urlencoding the search does not work (search something with slash, commas...)
+     - [ ] Manual annotations with some search renders "Registre..." in the call list
 
 ## Dones
 
@@ -96,7 +95,7 @@
 - [x] Fix: Person color picker sliders are not valued with the initial color
 - [x] persons interface: api uses persons
 - [x] persons interface: persons() set attributes with ns() if not found
-- [x] persons interface: persons.update(person, **kwds)
+- [x] persons interface: persons.update(person, \*\*kwds)
 - [x] persons interface: tomatic_says use persons
 - [x] persons interface: scheduler use persons
 - [x] persons interface: shiftload uses persons
@@ -130,10 +129,10 @@
 - [x] Detecting user changed by other tab or cookie timeout
 - [x] Call Registry: Codi titular -> Persona atesa
 - [x] Change websocket lib to enable sharing http port and debug mode
-    - [x] Fast api spike
-        - [x] Migrate main api
-        - [x] Migrate sockets
-        - [x] Migrate planner api
+     - [x] Fast api spike
+          - [x] Migrate main api
+          - [x] Migrate sockets
+          - [x] Migrate planner api
 - [x] Fix: annotations save date with miliseconds and duplicates existing entries
 - [x] Menu for planner and scripts
 - [x] As an agent i want to annotate about a partner having no contracts
@@ -148,10 +147,10 @@
 
 - [x] Create Claim case
 - [x] One endpoint for call registry in API
-	- [x] joining updatelog, infoCase and atrCase
-	- [x] api/updatelog/{user} -> api/call/annotation (joined)
-	- [x] api/infoCase -> api/call/annotation (joined)
-	- [x] api/atrCase -> api/call/annotation (joined)
+     - [x] joining updatelog, infoCase and atrCase
+     - [x] api/updatelog/{user} -> api/call/annotation (joined)
+     - [x] api/infoCase -> api/call/annotation (joined)
+     - [x] api/atrCase -> api/call/annotation (joined)
 - [x] One method for call registry in CallRegistry
 - [x] Bug: Antotacions UI: Radio button no resolt + tenia rao > no tenia rao
 - [x] create crm: cas amb tot
@@ -163,6 +162,3 @@
 - [x] empty kalinfo.crmcase and remove
 - [x] Claims.get_claims -> claimCategories()
 - [x] callinfo log: do not dump cups
-
-
-
