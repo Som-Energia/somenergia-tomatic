@@ -5,7 +5,6 @@ from consolemsg import step, error
 from yamlns import namespace as ns
 import datetime
 from .retriever import (
-        downloadPersons,
         downloadLeaves,
         downloadIdealLoad,
         downloadVacations,
@@ -19,27 +18,42 @@ from .retriever import (
 from .shiftload import ShiftLoadComputer
 from .backtracker import parseArgs
 
+WEEKDAY = {
+    'dl': 0,
+    'dm': 1,
+    'dx': 2,
+    'dj': 3,
+    'dv': 4,
+}
+
 class Menu:
 
     def __init__(self, config):
-        self.nPersones = self.__numberOfPersons(config)
+        self.nPersones = len(config.idealLoad)
         self.nLinies = config.nTelefons
-        self.nSlots = len(config.hours)
+        self.nSlots = len(config.hours) - 1
         self.nNingus = config.maxNingusPerTurn  # revisar
         self.nDies = len(config.diesCerca)
         self.maxTorns = config.maximHoresDiariesGeneral
-        self.nTorns = [4, 4, 4, 4, 4]
+        # TODO: create a method to shuffle this
+        self.nTorns = list(config.idealLoad.values())
+        self.names = list(config.idealLoad.keys())
         # TODO: check this because when a set is empty it crashes
-        self.indisponibilitats = [
-            {1}, {1}, {1}, {1}, {1},
-            {1}, {2}, {1}, {2}, {3},
-            {5}, {3}, {5}, {3}, {5},
-            {4, 5}, {5}, {5}, {5}, {5},
-            {4}, {4, 5}, {4}, {4, 5}, {5},
-        ]
+        self.indisponibilitats = self._indisponibilities(config)
 
-    def __numberOfPersons(self, config):
-        return 5
+    def _indisponibilities(self, config):
+        persons_indisponibilities = {
+            name: [set()] * self.nDies for name in self.names
+        }
+        for day, turn, name in config.busyTable:
+            if config.busyTable[(day, turn, name)]:
+                persons_indisponibilities[name][WEEKDAY[day]].add(turn + 1)
+
+        indisponibilities = []
+        for name in self.names:
+            indisponibilities.extend(persons_indisponibilities[name])
+
+        return indisponibilities
 
     def ingredients(self):
         return dict(
@@ -52,6 +66,15 @@ class Menu:
             nTorns=self.nTorns,
             indisponibilitats=self.indisponibilitats,
         )
+
+    def translate(self, solution):
+        # TODO: format solution to tomatic scheduling format
+        print("\n")
+        for solution in solution.solution.ocupacioSlot:
+            for sol in solution:
+                print(f"({len(sol)}):   ", [self.names[s] for s in sol])
+            print("\n")
+        return solution
 
 def main():
     global args
@@ -101,12 +124,15 @@ def main():
             downloadShiftCredit(config)
 
     if config.computeShifts:
-        # Note: this setup contains the data we need to parse
         setup = ShiftLoadComputer.loadData(config)
-        print("Data we need to parse:", setup)
+        config.idealLoad = setup.idealLoad
+        config.busyTable = setup.busyTable._table
+
+    # I'm hungry, I want something to eat
+    menu = Menu(config)
 
     # define a problem
-    tomatic_problem_params = Menu(config).ingredients()
+    tomatic_problem_params = menu.ingredients()
     tomatic_problem = TomaticProblem(**tomatic_problem_params)
 
     # choose a list of minizinc solvers to user
@@ -117,4 +143,8 @@ def main():
 
     # Now, we can solve the problem
     solution = asyncio.run(tomato_cooker.cook(tomatic_problem))
-    print(solution)
+
+    # Tomatic does not understand the solution
+    translated_menu = menu.translate(solution)
+
+    print("Translated solution :D\n", translated_menu)
