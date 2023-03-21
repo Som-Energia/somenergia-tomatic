@@ -115,6 +115,14 @@ const menuOptions = function() { return [{
 		Tomatic.toggleKumato()
 	},
 },{
+	icon: "🦸‍♀️",
+	navigation: true,
+	title: "Administració",
+	action: function() {
+		const url = 'admin.html';
+		window.open(url, '_blank');
+	},
+},{
 	icon: "🛟",
 	navigation: true,
 	title: "Guies d'usuaria i videos",
