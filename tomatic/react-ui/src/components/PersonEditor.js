@@ -155,7 +155,6 @@ export default function PersonEditor(props) {
         })
       }
       setData({ ...data, [field]: newvalue })
-      console.log(errors)
     }
   }
   const fieldOptions = (field) => {
@@ -262,11 +261,9 @@ export default function PersonEditor(props) {
           value={'#' + (data.color || 'ffffff')}
           format="hex"
           onChange={(value) => {
-            console.log('Changed color', value)
             const field = 'color'
             const newvalue = value.replace(/^#/gm, '')
             setData({ ...data, [field]: newvalue })
-            console.log(errors)
           }}
           isAlphaHidden
           {...commonFieldOptions}
