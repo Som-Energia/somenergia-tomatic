@@ -1,9 +1,5 @@
-'use strict'
-
 module.exports = (function () {
   // This module controls the state regarding the callinfo page
-
-  var m = require('mithril')
   var api = require('./api')
 
   var Auth = require('./auth')
