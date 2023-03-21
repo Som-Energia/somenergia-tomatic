@@ -3,7 +3,7 @@ module.exports = (function () {
 	var jsyaml = require('js-yaml')
 	var Auth = require('./auth')
 
-	const debugApi = false
+	const debugApi = true
 	const apiPrefix = 'http://localhost:4555'
 
 	var api = {
