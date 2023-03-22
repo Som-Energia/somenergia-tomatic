@@ -39,13 +39,12 @@ class Menu:
         self.nPersones = len(config.idealLoad)
         self.nLinies = config.nTelefons
         self.nSlots = len(config.hours) - 1
-        self.nNingus = config.maxNingusPerTurn  # revisar
+        self.nNingus = config.nNingusMinizinc
         self.nDies = len(config.diesCerca)
         self.maxTorns = config.maximHoresDiariesGeneral
         # TODO: create a method to shuffle this
         self.nTorns = list(config.idealLoad.values())
         self.names = list(config.idealLoad.keys())
-        # TODO: check this because when a set is empty it crashes
         self.indisponibilitats = self._indisponibilities(config)
 
     def _indisponibilities(self, config):
@@ -79,9 +78,22 @@ class Menu:
         print("\n")
         for solution in solution.solution.ocupacioSlot:
             for sol in solution:
-                print(f"({len(sol)}):   ", [self.names[s] for s in sol])
+                print(f"({len(sol)}):   ", [self.names[s - 1] for s in sol])
             print("\n")
         return solution
+
+
+def solve_problem(config, solvers):
+    menu = Menu(config)
+    # define a problem
+    tomatic_problem_params = menu.ingredients()
+    tomatic_problem = TomaticProblem(**tomatic_problem_params)
+    # create an instance of the cooker
+    tomato_cooker = GrillTomatoCooker(tomatic.MODEL_DEFINITION_PATH, solvers)
+    # Now, we can solve the problem
+    solution = asyncio.run(tomato_cooker.cook(tomatic_problem))
+    return menu.translate(solution) if solution else False
+
 
 def main():
     global args
@@ -94,24 +106,16 @@ def main():
         raise
 
     update_config(config)
-
-    # I'm hungry, I want something to eat
-    menu = Menu(config)
-
-    # define a problem
-    tomatic_problem_params = menu.ingredients()
-    tomatic_problem = TomaticProblem(**tomatic_problem_params)
-
+    # Fist try to get a solution with optional absences
+    step('Provant amb les indisponibilitats opcionals...')
+    config.ignoreOptionalAbsences = False
     # choose a list of minizinc solvers to user
     solvers = ["chuffed", "coin-bc"]
+    solution = solve_problem(config, solvers)
+    if not solution:
+        step('Sense solució.\nProvant sense les opcionals...')
+        # Ignore optional absences
+        config.ignoreOptionalAbsences = True
+        solution = solve_problem(config, solvers)
 
-    # create an instance of the cooker
-    tomato_cooker = GrillTomatoCooker(tomatic.MODEL_DEFINITION_PATH, solvers)
-
-    # Now, we can solve the problem
-    solution = asyncio.run(tomato_cooker.cook(tomatic_problem))
-
-    # Tomatic does not understand the solution
-    translated_menu = menu.translate(solution)
-
-    print("Translated solution :D\n", translated_menu)
+    print("Translated solution :D\n", solution)

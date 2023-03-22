@@ -126,3 +126,4 @@ commented_forced:
   : ningu
 threshold_hits: 21
 callinfoPath: callinfo
+nNingusMinizinc: 2
