@@ -104,11 +104,10 @@ def main():
     except:
         error("Configuració incorrecta")
         raise
-
-    update_config(config)
     # Fist try to get a solution with optional absences
     step('Provant amb les indisponibilitats opcionals...')
     config.ignoreOptionalAbsences = False
+    update_config(config)
     # choose a list of minizinc solvers to user
     solvers = ["chuffed", "coin-bc"]
     solution = solve_problem(config, solvers)
@@ -116,6 +115,7 @@ def main():
         step('Sense solució.\nProvant sense les opcionals...')
         # Ignore optional absences
         config.ignoreOptionalAbsences = True
+        update_config(config)  # TODO: not download everything
         solution = solve_problem(config, solvers)
 
     print("Translated solution :D\n", solution)
