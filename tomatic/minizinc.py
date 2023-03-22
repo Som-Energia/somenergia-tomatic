@@ -4,6 +4,7 @@ from tomato_cooker.models import TomaticProblem, tomatic
 from consolemsg import step, error
 from yamlns import namespace as ns
 import datetime
+import random
 from .retriever import addDays
 from .shiftload import ShiftLoadComputer
 from .backtracker import parseArgs
@@ -43,9 +44,16 @@ class Menu:
         self.nDies = len(config.diesCerca)
         self.maxTorns = config.maximHoresDiariesGeneral
         # TODO: create a method to shuffle this
-        self.nTorns = list(config.idealLoad.values())
-        self.names = list(config.idealLoad.keys())
+        self._saveNamesAndTurns(config.idealLoad)
         self.indisponibilitats = self._indisponibilities(config)
+
+    def _saveNamesAndTurns(self, ideals):
+        persons = list(ideals.keys())
+        random.shuffle(persons)
+        shuffled_ideals = [(key, ideals[key]) for key in persons]
+        names, turns = zip(*shuffled_ideals)
+        self.nTorns = list(turns)
+        self.names = list(names)
 
     def _indisponibilities(self, config):
         persons_indisponibilities = {
@@ -92,6 +100,7 @@ def solve_problem(config, solvers):
     tomato_cooker = GrillTomatoCooker(tomatic.MODEL_DEFINITION_PATH, solvers)
     # Now, we can solve the problem
     solution = asyncio.run(tomato_cooker.cook(tomatic_problem))
+    print(solution)
     return menu.translate(solution) if solution else False
 
 
