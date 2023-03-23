@@ -9,6 +9,16 @@ from .retriever import addDays
 from .shiftload import ShiftLoadComputer
 from .backtracker import parseArgs
 from .persons import persons
+from tomatic.retriever import (
+    downloadLeaves,
+    downloadIdealLoad,
+    downloadVacations,
+    downloadFestivities,
+    downloadBusy,
+    downloadShiftload,
+    downloadOverload,
+    addDays,
+)
 
 WEEKDAY = {
     'dl': 0,
@@ -25,9 +35,25 @@ def update_config(config):
     today = datetime.date.today()
     config.monday = addDays(today, 7 - today.weekday())
     # TODO: Removed the download files, check side effects
+    mustDownloadIdealShifts = not config.get('idealshifts')
     config.idealshifts = config.get('idealshifts') or 'idealshifts.yaml'
+    mustDownloadShifts = not config.computeShifts
     config.weekShifts = config.get('weekShifts') or 'carrega.csv'
+    mustDownloadOverload = not config.computeShifts
     config.overloadfile = "overload-{}.yaml".format(config.monday)
+    step("Baixant persones de baixa del drive...")
+    config.driveCertificate = args.certificate
+    downloadLeaves(config, args.certificate)
+    if mustDownloadIdealShifts:
+        downloadIdealLoad(config, args.certificate)
+    if mustDownloadShifts:
+        downloadShiftload(config)
+    if mustDownloadOverload:
+        downloadOverload(config)
+    if not config.get('busyFiles'):
+        downloadBusy(config)
+        downloadFestivities(config)
+        downloadVacations(config, source=args.holidays)
     if config.computeShifts:
         setup = ShiftLoadComputer.loadData(config)
         config.idealLoad = setup.idealLoad
