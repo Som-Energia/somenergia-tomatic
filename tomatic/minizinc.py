@@ -8,8 +8,8 @@ import random
 from .retriever import addDays
 from .shiftload import ShiftLoadComputer
 from .backtracker import parseArgs
-from .persons import persons
 from tomatic.retriever import (
+    downloadPersons,
     downloadLeaves,
     downloadIdealLoad,
     downloadVacations,
@@ -28,36 +28,66 @@ WEEKDAY = {
     'dv': 4,
 }
 
+
 # TODO: extract this
-def update_config(config):
-    config.update(persons(config.get('personsfile', None)))
-    # TODO: We should have the option to specity other mondays
-    today = datetime.date.today()
-    config.monday = addDays(today, 7 - today.weekday())
-    # TODO: Removed the download files, check side effects
-    mustDownloadIdealShifts = not config.get('idealshifts')
-    config.idealshifts = config.get('idealshifts') or 'idealshifts.yaml'
-    mustDownloadShifts = not config.computeShifts
-    config.weekShifts = config.get('weekShifts') or 'carrega.csv'
-    mustDownloadOverload = not config.computeShifts
-    config.overloadfile = "overload-{}.yaml".format(config.monday)
-    step("Baixant persones de baixa del drive...")
-    config.driveCertificate = args.certificate
-    downloadLeaves(config, args.certificate)
-    if mustDownloadIdealShifts:
-        downloadIdealLoad(config, args.certificate)
-    if mustDownloadShifts:
-        downloadShiftload(config)
-    if mustDownloadOverload:
-        downloadOverload(config)
-    if not config.get('busyFiles'):
-        downloadBusy(config)
-        downloadFestivities(config)
-        downloadVacations(config, source=args.holidays)
-    if config.computeShifts:
-        setup = ShiftLoadComputer.loadData(config)
-        config.idealLoad = setup.idealLoad
-        config.busyTable = setup.busyTable._table
+class Config:
+
+    def __init__(self, config_file, date = None, keep = False):
+        step('Carregant configuració {}...', config_file)
+        try:
+            self.data = ns.load(config_file)
+            self._update_monday(date)
+            not keep and downloadPersons(self.data)
+            self._update_persons()
+            if not self.data.get('idealshifts'):
+                self.data.idealshifts = 'idealshifts.yaml'
+                not keep and downloadIdealLoad(self.data, args.certificate)
+            if not self.data.get('weekShifts') and not self.data.computeShifts:
+                self.data.weekShifts = 'carrega.csv'
+                not keep and downloadShiftload(self.data)
+            if not self.data.computeShifts:
+                self.data.overloadfile = "overload-{}.yaml".format(self.data.monday)
+                not keep and downloadOverload(self.data)
+            not keep and self._download_leaves()
+            if not self.data.get('busyFiles'):
+                not keep and self._download_busy()
+            if self.data.computeShifts:
+                self.update_shifts()
+        except:
+            error("Configuració incorrecta")
+            raise
+
+    def update_shifts(self):
+        setup = ShiftLoadComputer.loadData(self.data)
+        self.data.idealLoad = setup.idealLoad
+        self.data.busyTable = setup.busyTable._table
+
+    def _update_persons(self):
+        from .persons import persons
+        self.data.update(persons(self.data.get('personsfile', None)))
+
+    def _update_monday(self, date):
+        if date is not None:
+            # take the monday of the week including that date
+            givenDate = datetime.datetime.strptime(date,"%Y-%m-%d").date()
+            self.data.monday = addDays(givenDate, -givenDate.weekday())
+        else:
+            # If no date provided, take the next monday
+            today = datetime.date.today()
+            self.data.monday = addDays(today, 7-today.weekday())
+
+    def _download_leaves(self):
+        self.data.driveCertificate = args.certificate
+        downloadLeaves(self.data, args.certificate)
+
+    def _download_busy(self):
+        downloadBusy(self.data)
+        downloadFestivities(self.data)
+        downloadVacations(self.data, source=args.holidays)
+
+    def set_ignore_optionals(self, ignore = False):
+        self.data.ignoreOptionalAbsences = ignore
+
 
 
 class Menu:
@@ -69,7 +99,6 @@ class Menu:
         self.nNingus = config.nNingusMinizinc
         self.nDies = len(config.diesCerca)
         self.maxTorns = config.maximHoresDiariesGeneral
-        # TODO: create a method to shuffle this
         self._saveNamesAndTurns(config.idealLoad)
         self.indisponibilitats = self._indisponibilities(config)
 
@@ -110,11 +139,11 @@ class Menu:
     def translate(self, solution):
         # TODO: format solution to tomatic scheduling format
         print("\n")
-        for solution in solution.solution.ocupacioSlot:
-            for sol in solution:
+        for solution2 in solution.solution.ocupacioSlot:
+            for sol in solution2:
                 print(f"({len(sol)}):   ", [self.names[s - 1] for s in sol])
             print("\n")
-        return solution
+        return solution2
 
 
 def solve_problem(config, solvers):
@@ -133,24 +162,18 @@ def solve_problem(config, solvers):
 def main():
     global args
     args = parseArgs()
-    step('Carregant configuració {}...', args.config_file)
-    try:
-        config = ns.load(args.config_file)
-    except:
-        error("Configuració incorrecta")
-        raise
+    config = Config(args.config_file, args.date, args.keep)
     # Fist try to get a solution with optional absences
     step('Provant amb les indisponibilitats opcionals...')
-    config.ignoreOptionalAbsences = False
-    update_config(config)
     # choose a list of minizinc solvers to user
     solvers = ["chuffed", "coin-bc"]
-    solution = solve_problem(config, solvers)
+    solution = solve_problem(config.data, solvers)
     if not solution:
         step('Sense solució.\nProvant sense les opcionals...')
         # Ignore optional absences
-        config.ignoreOptionalAbsences = True
-        update_config(config)  # TODO: not download everything
-        solution = solve_problem(config, solvers)
+        config.set_ignore_optionals(True)
+        # Update scenario without optional absences
+        config.update_shifts()
+        solution = solve_problem(config.data, solvers)
 
     print("Translated solution :D\n", solution)
