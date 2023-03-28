@@ -1,7 +1,8 @@
 import asyncio
 from tomato_cooker.grill import GrillTomatoCooker
 from tomato_cooker.models import TomaticProblem, tomatic
-from consolemsg import step
+from consolemsg import step, error, success
+from yamlns import namespace as ns
 import random
 from .backtracker import parseArgs
 from .scenario_config import Config
@@ -61,14 +62,29 @@ class Menu:
             indisponibilitats=self.indisponibilitats,
         )
 
-    def translate(self, solution):
-        # TODO: format solution to tomatic scheduling format
-        print("\n")
-        for solution2 in solution.solution.ocupacioSlot:
-            for sol in solution2:
-                print(f"({len(sol)}):   ", [self.names[s - 1] for s in sol])
-            print("\n")
-        return solution2
+    def translate(self, solution, config):
+        days = list(self.WEEKDAY.keys())
+        timetable = {
+            day: [
+              [self.names[person-1] for person in slot] for slot in turn
+            ]
+            for day, turn in zip(days, solution.solution.ocupacioSlot)
+        }
+        result = ns(
+            week=config.monday,
+            days=days,
+            hours=config.hours,
+            turns=[ f"T{torn+1}" for torn in range(config.nTelefons) ],
+            timetable=timetable,
+            colors=config.colors,
+            extensions=config.extensions,
+            names=config.names,
+            overload={},  # empty here
+            penalties=[],  # empty here
+            cost=solution.solution.totalTorns,
+            log=[]  # TODO: empty?
+        )
+        return result
 
 
 def solve_problem(config, solvers):
@@ -80,8 +96,7 @@ def solve_problem(config, solvers):
     tomato_cooker = GrillTomatoCooker(tomatic.MODEL_DEFINITION_PATH, solvers)
     # Now, we can solve the problem
     solution = asyncio.run(tomato_cooker.cook(tomatic_problem))
-    print(solution)
-    return menu.translate(solution) if solution else False
+    return menu.translate(solution, config) if solution else False
 
 
 def main():
@@ -94,6 +109,8 @@ def main():
         args.certificate,
         args.holidays
     )
+    # TODO: check where to save this
+    output_yaml = "graelles/graella-telefons-{}.yaml".format(args.date)
     # Fist try to get a solution with optional absences
     step('Provant amb les indisponibilitats opcionals...')
     # choose a list of minizinc solvers to user
@@ -106,5 +123,9 @@ def main():
         # Update scenario without optional absences
         config.update_shifts()
         solution = solve_problem(config.data, solvers)
-
-    print("Translated solution :D\n", solution)
+    # Save reslut if result else say there is no result
+    if solution:
+        solution.dump(output_yaml)
+        success("Resultat desat a {}", output_yaml)
+    else:
+        error("No s'ha trobat resultat... :(")
