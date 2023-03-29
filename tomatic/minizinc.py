@@ -38,16 +38,14 @@ class Menu:
 
     def _indisponibilities(self, config):
         persons_indisponibilities = {
-            name: [set()] * self.nDies for name in self.names
+            name: [set() for _ in range(self.nDies)] for name in self.names
         }
         for day, turn, name in config.busyTable:
             if config.busyTable[(day, turn, name)]:
                 persons_indisponibilities[name][self.WEEKDAY[day]].add(turn + 1)
-
         indisponibilities = []
         for name in self.names:
             indisponibilities.extend(persons_indisponibilities[name])
-
         return indisponibilities
 
     def ingredients(self):
@@ -110,7 +108,7 @@ def main():
         args.holidays
     )
     # TODO: check where to save this
-    output_yaml = "graelles/graella-telefons-{}.yaml".format(args.date)
+    output_yaml = "graelles/graella-{}.yaml".format(args.date)
     # Fist try to get a solution with optional absences
     step('Provant amb les indisponibilitats opcionals...')
     # choose a list of minizinc solvers to user
