@@ -108,7 +108,8 @@ def main():
         args.holidays
     )
     # TODO: check where to save this
-    output_yaml = "graelles/graella-{}.yaml".format(args.date)
+    target_date = args.date or config.data.monday
+    output_yaml = "graelles/graella-{}.yaml".format(target_date)
     # Fist try to get a solution with optional absences
     step('Provant amb les indisponibilitats opcionals...')
     # choose a list of minizinc solvers to user
