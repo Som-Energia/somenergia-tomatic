@@ -6,6 +6,7 @@ from yamlns import namespace as ns
 import random
 from .backtracker import parseArgs
 from .scenario_config import Config
+from .htmlgen import HtmlGen
 
 
 class Menu:
@@ -92,6 +93,21 @@ class Menu:
         return result
 
 
+def make_html_file(solution, filename):
+    html_gen = HtmlGen(solution)
+    with open(filename, 'w') as file:
+        file.write(
+            html_gen.htmlHeader() +
+            html_gen.htmlColors() +
+            html_gen.htmlSubHeader() +
+            html_gen.htmlSetmana() +
+            html_gen.htmlTable()+
+            html_gen.htmlPenalties()+
+            html_gen.htmlExtensions()+
+            html_gen.htmlFooter()
+        )
+
+
 def solve_problem(config, solvers):
     menu = Menu(config)
     # define a problem
@@ -117,6 +133,7 @@ def main():
     # TODO: check where to save this
     target_date = args.date or config.data.monday
     output_yaml = "graelles/graella-{}.yaml".format(target_date)
+    output_html = "graelles/graella-{}.html".format(target_date)
     # Fist try to get a solution with optional absences
     step('Provant amb les indisponibilitats opcionals...')
     # choose a list of minizinc solvers to user
@@ -132,6 +149,8 @@ def main():
     # Save reslut if result else say there is no result
     if solution:
         solution.dump(output_yaml)
+        make_html_file(solution, output_html)
         success("Resultat desat a {}", output_yaml)
+        success("Resultat desat a {}", output_html)
     else:
         error("No s'ha trobat resultat... :(")
