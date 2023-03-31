@@ -27,6 +27,7 @@ class Menu:
         self.maxTorns = config.maximHoresDiariesGeneral
         self._saveNamesAndTurns(config.idealLoad)
         self.indisponibilitats = self._indisponibilities(config)
+        self.preferencies = self._preferences()
 
     def _saveNamesAndTurns(self, ideals):
         persons = list(ideals.keys())
@@ -48,6 +49,11 @@ class Menu:
             indisponibilities.extend(persons_indisponibilities[name])
         return indisponibilities
 
+    # TODO: Read preferences from 🕳️
+    def _preferences(self):
+        preferences = [set() for _ in range(self.nPersones * self.nDies)]
+        return preferences
+
     def ingredients(self):
         return dict(
             nPersones=self.nPersones,
@@ -58,6 +64,7 @@ class Menu:
             maxTorns=self.maxTorns,
             nTorns=self.nTorns,
             indisponibilitats=self.indisponibilitats,
+            preferencies=self.preferencies
         )
 
     def translate(self, solution, config):
