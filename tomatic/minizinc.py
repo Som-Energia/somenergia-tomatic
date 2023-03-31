@@ -4,6 +4,7 @@ from tomato_cooker.models import TomaticProblem, tomatic
 from consolemsg import step, error, success
 from yamlns import namespace as ns
 import random
+import datetime
 from .backtracker import parseArgs
 from .scenario_config import Config
 from .htmlgen import HtmlGen
@@ -83,7 +84,7 @@ class Menu:
                 timetable_day.append(timetable_hour)
             timetable[day] = timetable_day
         result = ns(
-            week=config.monday,
+            week=f'{config.monday}',
             days=days,
             hours=config.hours,
             turns=[ f"T{torn+1}" for torn in range(config.nTelefons) ],
@@ -140,6 +141,7 @@ def main():
     target_date = args.date or config.data.monday
     output_yaml = "graella-telefons-{}.yaml".format(target_date)
     output_html = "graella-telefons-{}.html".format(target_date)
+    status_file = "status.yaml"
     # Fist try to get a solution with optional absences
     step('Provant amb les indisponibilitats opcionals...')
     # choose a list of minizinc solvers to user
@@ -158,6 +160,16 @@ def main():
         make_html_file(solution, output_html)
         success("Resultat desat a {}", output_yaml)
         success("Resultat desat a {}", output_html)
+        # TODO: try to not do this 🥺
+        ns(
+            totalCells=-1,
+            completedCells=-1,
+            solutionCost=0,
+            timeOfLastSolution=f'{datetime.datetime.now()}',
+            unfilledCell='Complete',
+            busyReasons={},
+            penalties=[]
+        ).dump(status_file)
         return True
 
     error("No s'ha trobat resultat... :(")
