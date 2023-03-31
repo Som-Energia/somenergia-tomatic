@@ -11,6 +11,7 @@ from .htmlgen import HtmlGen
 
 class Menu:
 
+    NINGU = 'ningu'
     WEEKDAY = {
         'dl': 0,
         'dm': 1,
@@ -70,12 +71,17 @@ class Menu:
 
     def translate(self, solution, config):
         days = list(self.WEEKDAY.keys())
-        timetable = {
-            day: [
-              [self.names[person-1] for person in slot] for slot in turn
-            ]
-            for day, turn in zip(days, solution.solution.ocupacioSlot)
-        }
+        timetable = {}
+        for day, turns in zip(days, solution.solution.ocupacioSlot):
+            timetable_day = []
+            for turn in turns:
+                timetable_hour = []
+                for person in turn:
+                    timetable_hour.append(self.names[person-1])
+                for _ in range(self.nLinies - len(turn)):
+                    timetable_hour.append(self.NINGU)
+                timetable_day.append(timetable_hour)
+            timetable[day] = timetable_day
         result = ns(
             week=config.monday,
             days=days,
@@ -132,8 +138,8 @@ def main():
     )
     # TODO: check where to save this
     target_date = args.date or config.data.monday
-    output_yaml = "graelles/graella-{}.yaml".format(target_date)
-    output_html = "graelles/graella-{}.html".format(target_date)
+    output_yaml = "graella-telefons-{}.yaml".format(target_date)
+    output_html = "graella-telefons-{}.html".format(target_date)
     # Fist try to get a solution with optional absences
     step('Provant amb les indisponibilitats opcionals...')
     # choose a list of minizinc solvers to user
@@ -152,5 +158,7 @@ def main():
         make_html_file(solution, output_html)
         success("Resultat desat a {}", output_yaml)
         success("Resultat desat a {}", output_html)
-    else:
-        error("No s'ha trobat resultat... :(")
+        return True
+
+    error("No s'ha trobat resultat... :(")
+    return False

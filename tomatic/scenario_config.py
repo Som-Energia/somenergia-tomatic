@@ -12,10 +12,11 @@ from tomatic.retriever import (
     downloadBusy,
     downloadShiftload,
     downloadOverload,
+    downloadShiftCredit,
     addDays,
 )
 
-# TODO: extract this
+
 class Config:
 
     def __init__(self, config_file, date, keep, certificate, holidays):
@@ -38,6 +39,8 @@ class Config:
             if not self.data.get('busyFiles'):
                 not keep and self._download_busy(holidays)
             if self.data.computeShifts:
+                not keep and step("Baixant bossa d'hores del tomatic...")
+                not keep and downloadShiftCredit(self.data)
                 self.update_shifts()
         except:
             error("Configuració incorrecta")
