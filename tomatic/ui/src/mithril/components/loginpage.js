@@ -6,7 +6,7 @@ var Button = require('polythene-mithril-button').Button;
 var Card = require('polythene-mithril-card').Card;
 var Auth = require('../../services/auth');
 require('./loginpage.styl');
-var tomaticAvatar = require('../tomatic-avatar.png');
+var tomaticAvatar = require('../../images/tomatic-avatar.png');
 
 var SimpleCard = function(args) {
     console.log(args)
