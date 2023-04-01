@@ -10,7 +10,6 @@ module.exports = (function () {
   var Tabs = require('polythene-mithril-tabs').Tabs
 
   var CallInfo = require('./callinfo')
-  var Questionnaire = require('./questionnaire')
 
   var ContractInfo = {}
 
