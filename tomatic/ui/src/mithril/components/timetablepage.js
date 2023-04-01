@@ -6,9 +6,9 @@ module.exports = (function () {
 	var Button = require('polythene-mithril-button').Button
 	var Ripple = require('polythene-mithril-ripple').Ripple
 	var Tomatic = require('../../services/tomatic')
-	var Auth = require('../../services/auth')
-	var WeekPicker = require('./weekpicker')
-	var Uploader = require('./uploader')
+	var Auth = require('../../services/auth').default
+	var WeekPicker = require('./weekpicker').default
+	var Uploader = require('./uploader').default
 	var PersonPicker = require('./personpicker')
 
 	var TimeTable = function (grid) {

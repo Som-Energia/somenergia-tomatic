@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function() {
+export default (function() {
 var css = require('@emotion/css').css;
 var m = require('mithril');
 var Tomatic = require('../../services/tomatic');
@@ -36,7 +36,7 @@ const styles = {
 			content: "◄";
 		}
 	`,
-}
+};
 
 var WeekPicker = {
 	oninit: function(vnode) {
@@ -64,5 +64,5 @@ var WeekPicker = {
 
 return WeekPicker;
 
-}();
+})();
 // vim: noet sw=4 ts=4

@@ -2,7 +2,7 @@
 module.exports = (function () {
 	var m = require('mithril')
 	m.prop = require('mithril/stream')
-	var api = require('./api')
+	var api = require('./api').default
 
 	var Tomatic = {
 		packageinfo: {

@@ -1,4 +1,4 @@
-module.exports = function() {
+export default (function() {
 
 var m = require('mithril');
 var css = require('@emotion/css').css;
@@ -57,6 +57,6 @@ var Uploader = {
 	},
 };
 return Uploader;
-}();
+})();
 
 // vim: noet ts=4 sw=4

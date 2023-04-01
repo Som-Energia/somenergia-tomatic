@@ -1,6 +1,6 @@
 module.exports = (function () {
   // This module controls the state regarding the callinfo page
-  var api = require('../../services/api')
+  var api = require('../../services/api').default
   var Auth = require('../../services/auth')
 
   var websock = null

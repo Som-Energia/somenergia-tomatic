@@ -1,7 +1,6 @@
-module.exports = (function () {
-	var m = require('mithril')
-	var jsyaml = require('js-yaml')
-	var Auth = require('./auth')
+	import m from 'mithril'
+	import jsyaml from 'js-yaml'
+	import Auth from './auth'
 
 	const debugApi = true
 	const apiPrefix = 'http://localhost:4555'
@@ -53,7 +52,5 @@ module.exports = (function () {
 		},
 	}
 
-	return api
-})()
-
+	export default api
 // vim: noet ts=4 sw=4
