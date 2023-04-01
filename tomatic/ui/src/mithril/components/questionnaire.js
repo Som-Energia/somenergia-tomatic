@@ -12,12 +12,9 @@ var Button = require('polythene-mithril-button').Button;
 var ButtonGroup = require('polythene-mithril-button-group').ButtonGroup;
 var IconButton = require('polythene-mithril-icon-button').IconButton;
 var TextField = require('polythene-mithril-textfield').TextField;
-var Card = require('polythene-mithril-card').Card;
 var ListTile = require('polythene-mithril-list-tile').ListTile;
 var List = require ('polythene-mithril-list').List;
-var Checkbox = require('polythene-mithril-checkbox').Checkbox;
 var RadioGroup = require('polythene-mithril-radio-group').RadioGroup;
-var RadioButton = require('polythene-mithril-radio-button').RadioButton;
 var CallInfo = require('./callinfo');
 var Auth = require('../../services/auth');
 
@@ -33,7 +30,6 @@ var categoryList = function() {
   return m(".motius", m(List, {
     compact: true,
     indentedBorder: true,
-    compact: true,
     tiles: categories.map(function(category) {
       var displayText = category.isclaim? (
         "[" + (category.section || CallInfo.noSection) + "] " + category.name
