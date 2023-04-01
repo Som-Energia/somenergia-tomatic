@@ -30,7 +30,7 @@ var Uploader = {
 	oninit: function(vnode) {
 		var c = vnode.state;
 		c.uploadFile = function(ev) {
-			var formData = new FormData;
+			var formData = new FormData();
 			formData.append(vnode.attrs.name || "file", ev.target.files[0]);
 			api.request({
 				method: "POST",
