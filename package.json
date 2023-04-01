@@ -1,59 +1,64 @@
 {
   "name": "somenergia-tomatic",
   "version": "4.14.0",
-  "description": "Phone Support helper",
-  "main": "index.js",
-  "scripts": {
-    "start": "webpack --progress --watch --mode development",
-    "deploy": "webpack --progress --mode production",
-    "build": "webpack --progress --mode development",
-    "server": "webpack-dev-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "Phone Support Companion",
+  "dependencies": {
+    "@emotion/css": "^11.10.6",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.9",
+    "@mui/material": "^5.11.10",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "js-yaml": "^4.1.0",
+    "js-yaml-loader": "^1.2.2",
+    "mithril": "^2.2.2",
+    "mmsvg": "^1.5.3",
+    "mui-color-input": "^1.0.5",
+    "polythene-mithril": "^1.7.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
+    "web-vitals": "^2.1.4"
   },
+  "scripts": {
+    "start": "BUILD_PATH=tomatic/dist react-app-rewired --openssl-legacy-provider start",
+    "build": "BUILD_PATH=tomatic/dist react-app-rewired --openssl-legacy-provider build",
+    "test": "BUILD_PATH=tomatic/dist react-app-rewired test",
+    "eject": "react-scripts eject"
+  },
+  "config-overrides-path": "tomatic/ui/config-overrides.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Som-Energia/somenergia-tomatic.git"
   },
-  "keywords": [
-    "phone",
-    "asterisk",
-    "scheduling"
-  ],
-  "author": "David García Garzón",
-  "license": "AGPL-3.0+",
+  "keywords": ["phone", "asterisk", "scheduling", "crm"],
+  "author": "Som Energia SCCL",
+  "license": "AGPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/Som-Energia/somenergia-tomatic/issues"
   },
-  "homepage": "https://github.com/Som-Energia/somenergia-tomatic#readme",
-  "dependencies": {
-    "js-yaml": "^3.14.1",
-    "mithril": "^2.0.4",
-    "polythene-core": "^1.7.5",
-    "polythene-css": "^1.7.2",
-    "polythene-mithril": "^1.7.2",
-    "polythene-utilities": "^1.7.5",
-    "webpack-roboto": "^1.0.0"
+  "eslintConfig": {
+    "extends": ["react-app", "react-app/jest"]
+  },
+  "browserslist": {
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "devDependencies": {
-    "@babel/core": "^7.18.9",
-    "@emotion/css": "^11.9.0",
-    "@emotion/babel-plugin": "^11.9.2",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^8.2.5",
-    "browserslist": "^4.21.2",
-    "buffer": "^6.0.3",
-    "clean-webpack-plugin": "^0.1.16",
-    "css-loader": "^6.5.1",
-    "html-webpack-plugin": "^5.5.0",
-    "mini-css-extract-plugin": "^2.5.2",
-    "mmsvg": "^1.5.3",
-    "postcss": "^8.4.14",
-    "style-loader": "^3.3.1",
-    "stylus": "^0.54.5",
-    "stylus-loader": "^7.1.0",
-    "webpack": "^5.66.0",
-    "webpack-bundle-analyzer": "^4.4.2",
-    "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.7.3"
+    "mini-css-extract-plugin": "^2.7.5",
+    "prettier": "^2.8.4",
+    "react-app-rewire-multiple-entry": "^2.2.3",
+    "react-app-rewire-stylus-modules": "^0.0.2",
+    "react-app-rewire-yaml": "^1.1.0",
+    "react-app-rewired": "^2.2.1",
+    "react-router-dom": "^6.8.2",
+    "webpack-cli": "^5.0.1",
+    "yaml-loader": "^0.8.0"
   }
 }

@@ -2,11 +2,13 @@
 module.exports = (function () {
 	var m = require('mithril')
 	m.prop = require('mithril/stream')
-	var Package = require('../../package.json')
 	var api = require('./api')
 
 	var Tomatic = {
-		packageinfo: Package,
+		packageinfo: {
+			name: process.env.REACT_APP_NAME,
+			version: process.env.REACT_APP_VERSION,
+		},
 	}
 
 	Tomatic.variant = 'tomatic'

@@ -1,17 +1,13 @@
 const path = require('path')
+const paths = require('react-scripts/config/paths')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const rewireStylus = require('react-app-rewire-stylus-modules')
 const multipleEntry = require('react-app-rewire-multiple-entry')([
         {
-                entry: 'src/mithril/graella.js',
-                template: 'src/mithril/tomatic.html',
-                outPath: '/index.html',
-                favicon: 'src/mithril/favicon.ico',
-        },
-        {
-                entry: 'src/admin.js',
-                template: 'public/index.html',
+                entry: 'tomatic/ui/src/admin.js',
+                template: 'tomatic/ui/public/index.html',
                 outPath: '/admin.html',
+                favicon: 'tomatic/ui/src/mithril/favicon.ico',
         },
 ])
 
@@ -20,10 +16,15 @@ module.exports = {
                 console.log('NODE_ENV:', process.env.NODE_ENV)
                 console.log('webpack config before', config)
                 const isdev = process.env.NODE_ENV == 'development'
+                // Set the context to the path of this file
+                config.context = path.resolve(__dirname)
+
+                // Loader for yaml
                 config.module.rules.push({
                         test: /\.yaml$/,
                         loader: 'yaml-loader',
                 })
+                // Loader for stylus
                 config.module.rules.push({
                         test: /\.styl$/,
                         use: [
@@ -32,12 +33,13 @@ module.exports = {
                                 'stylus-loader',
                         ],
                 })
+                // Add our entries
                 multipleEntry.addMultiEntry(config)
+                // Set the output to tomatic/dist
                 config.output.path = path.resolve(
                         __dirname,
-                        isdev ? '../dist' : config.output.path
+                        isdev ? 'tomatic/dist' : config.output.path
                 )
-                config.plugins.shift() // remove the first htmlplugin
                 config.plugins.push(
                         new MiniCssExtractPlugin({
                                 filename: 'styles-[chunkhash].css',
@@ -53,5 +55,24 @@ module.exports = {
                         }
                         return config
                 }
+        },
+        paths: function (paths, env) {
+                console.error(paths.appNodeModules)
+                paths.appIndexJs = path.resolve(
+                        __dirname,
+                        'tomatic/ui/src/index.js'
+                )
+                paths.appPath = path.resolve(__dirname)
+                paths.appSrc = path.resolve(__dirname, 'src')
+                paths.appPublic = path.resolve(__dirname, 'public')
+                paths.appHtml = path.resolve(
+                        __dirname,
+                        'src/mithril/tomatic.html'
+                )
+                paths.appIndexJs = path.resolve(
+                        __dirname,
+                        'src/mithril/graella.js'
+                )
+                return paths
         },
 }
