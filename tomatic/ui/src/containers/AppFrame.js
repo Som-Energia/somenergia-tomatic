@@ -12,7 +12,7 @@ import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import appBackground from '../tomatic_bg.jpg'
-import appLogo from '../tomatic-logo.png'
+import appLogo from '../images/tomatic-logo-24.png'
 import Tomatic from '../services/tomatic'
 import SnackbarLogger from '../components/SnackbarLogger'
 

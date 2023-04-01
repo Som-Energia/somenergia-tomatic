@@ -35,11 +35,7 @@ module.exports = {
                 })
                 // Add our entries
                 multipleEntry.addMultiEntry(config)
-                // Set the output to tomatic/dist
-                config.output.path = path.resolve(
-                        __dirname,
-                        isdev ? 'tomatic/dist' : config.output.path
-                )
+                // Plugins per stylus
                 config.plugins.push(
                         new MiniCssExtractPlugin({
                                 filename: 'styles-[chunkhash].css',
@@ -57,11 +53,6 @@ module.exports = {
                 }
         },
         paths: function (paths, env) {
-                console.error(paths.appNodeModules)
-                paths.appIndexJs = path.resolve(
-                        __dirname,
-                        'tomatic/ui/src/index.js'
-                )
                 paths.appPath = path.resolve(__dirname)
                 paths.appSrc = path.resolve(__dirname, 'src')
                 paths.appPublic = path.resolve(__dirname, 'public')
