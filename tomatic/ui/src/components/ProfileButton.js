@@ -20,6 +20,7 @@ import IconKumato from '@mui/icons-material/SettingsBrightness'
 import Tomatic from '../services/tomatic'
 import Auth from '../services/auth'
 import { contrast } from '../mithril/components/colorutils'
+import AuthContext from '../contexts/AuthContext'
 
 const menuProfile = [
   {
@@ -42,19 +43,10 @@ const menuProfile = [
   },
 ]
 
-// TODO: This should be done in a context
-var updateUser = null
-Auth.onUserChanged.push(() => updateUser && updateUser(Auth.username()))
-
 function ProfileButton() {
-  const [userid, setUserId] = React.useState(Auth.username())
+  const { userid, fullname, initials, color, avatar } =
+    React.useContext(AuthContext)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
-  updateUser = setUserId
-  const userName = Tomatic.formatName(userid)
-  const userAvatarLetters = Tomatic.nameInitials(userid)
-  const userColor = '#' + Tomatic.personColor(userid)
-  const userAvatar = null
-  //'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50'
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget)
@@ -75,14 +67,14 @@ function ProfileButton() {
               }}
             >
               <Avatar
-                alt={userAvatarLetters}
-                src={userAvatar}
+                alt={initials}
+                src={avatar}
                 sx={{
-                  bgcolor: userColor,
-                  color: contrast(userColor),
+                  bgcolor: color,
+                  color: contrast(color),
                 }}
               >
-                {userAvatarLetters}
+                {initials}
               </Avatar>
             </IconButton>
           </Tooltip>
@@ -110,12 +102,12 @@ function ProfileButton() {
                   sx={{
                     width: 24,
                     height: 24,
-                    bgcolor: userColor,
-                    color: contrast(userColor),
+                    bgcolor: color,
+                    color: contrast(color),
                   }}
                 />
               </ListItemIcon>
-              {userName}
+              {fullname}
             </MenuItem>
             <Divider />
             {menuProfile.map((option, i) => (

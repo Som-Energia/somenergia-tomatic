@@ -13,6 +13,7 @@ import appBackground from '../images/tomatic_bg.jpg'
 import appLogo from '../images/tomatic-logo-24.png'
 import SnackbarLogger from '../components/SnackbarLogger'
 import ProfileButton from '../components/ProfileButton'
+import LoginRequired from '../containers/LoginRequired'
 
 const pages = ['Graelles', 'Centraleta', 'Persones', 'Trucada']
 const appTitle = 'Tomàtic - Som Energia'
@@ -188,7 +189,7 @@ function ResponsiveAppBar({ children }) {
           </Toolbar>
         </Container>
       </AppBar>
-      {children}
+      <LoginRequired>{children}</LoginRequired>
       <SnackbarLogger />
     </>
   )

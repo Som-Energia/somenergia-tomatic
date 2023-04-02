@@ -5,6 +5,7 @@ import AppFrame from './containers/AppFrame.js'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import Tomatic from './services/tomatic'
+import { AuthProvider } from './contexts/AuthContext'
 
 const darkTheme = createTheme({
   palette: {
@@ -26,12 +27,14 @@ function App() {
     setKumato(Tomatic.isKumatoMode())
   }
   return (
-    <ThemeProvider theme={isKumatoMode ? darkTheme : ligthTheme}>
-      <CssBaseline />
-      <AppFrame>
-        <PersonsTable />
-      </AppFrame>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider theme={isKumatoMode ? darkTheme : ligthTheme}>
+        <CssBaseline />
+        <AppFrame>
+          <PersonsTable />
+        </AppFrame>
+      </ThemeProvider>
+    </AuthProvider>
   )
 }
 
