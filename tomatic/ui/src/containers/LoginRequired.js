@@ -12,7 +12,6 @@ import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import AuthContext from '../contexts/AuthContext'
-//import tomaticAvatar from '../images/tomatic-avatar.png'
 import tomaticAvatar from '../images/tomatic-logo.png'
 import Auth from '../services/auth'
 
@@ -56,7 +55,6 @@ export default function LoginRequired({ children }) {
           {Auth.error() && (
             <Typography color="error">{`Error: ${Auth.error()}`}</Typography>
           )}
-          <Typography>{}</Typography>
         </CardContent>
         <CardActions>
           <Button sx={{ ml: 'auto' }} onClick={Auth.authenticate}>
