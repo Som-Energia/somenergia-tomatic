@@ -148,6 +148,19 @@ module.exports = (function () {
 	Tomatic.weekday = function (short, alternative) {
 		return Tomatic.weekdays[short] || alternative || '??'
 	}
+	Tomatic.personColor = function (name) {
+		if (!Tomatic.persons().colors) {
+			return '#aaaaaa'
+		}
+		return Tomatic.persons().colors[name]
+	}
+	Tomatic.nameInitials = function (name) {
+		return Tomatic.formatName(name)
+			.split('')
+			.filter((l) => l.trim().toUpperCase() === l)
+			.slice(0, 2)
+			.join('')
+	}
 	Tomatic.formatName = function (name) {
 		function titleCase(str) {
 			return str.replace(/\w\S*/g, function (txt) {

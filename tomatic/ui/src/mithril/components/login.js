@@ -22,6 +22,10 @@ var exitIcon = function(){
     ]);
 }
 
+Auth.onLogout.push(()=>
+	m.route.set('/Login')
+)
+
 Login.identification = function() {
     var nom = "IDENTIFICA'T";
     var color = 'rgba(255, 255, 255, 0.7)';

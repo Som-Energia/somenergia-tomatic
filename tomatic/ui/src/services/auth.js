@@ -1,5 +1,4 @@
 module.exports = (function () {
-	var m = require('mithril')
 	var parseJwt = require('./utils').parseJwt
 
 	const Auth = {}
@@ -41,7 +40,6 @@ module.exports = (function () {
 			Auth.onUserChanged.forEach(function (callback) {
 				callback()
 			})
-			//m.redraw();
 		}
 		Auth.loginWatchTimer = setTimeout(Auth.watchLoginChanges, 500)
 	}
@@ -55,7 +53,6 @@ module.exports = (function () {
 		Auth.onLogout.forEach(function (callback) {
 			callback()
 		})
-		m.route.set('/Login')
 	}
 
 	// TODO: Call this!

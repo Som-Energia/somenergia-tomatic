@@ -11,16 +11,49 @@ import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
+import Divider from '@mui/material/Divider'
+import ListItemIcon from '@mui/material/ListItemIcon'
 import appBackground from '../images/tomatic_bg.jpg'
 import appLogo from '../images/tomatic-logo-24.png'
 import Tomatic from '../services/tomatic'
+import Auth from '../services/auth'
 import SnackbarLogger from '../components/SnackbarLogger'
+import Settings from '@mui/icons-material/Settings'
+import EventBusy from '@mui/icons-material/EventBusy'
+import Logout from '@mui/icons-material/Logout'
+import { contrast } from '../mithril/components/colorutils'
 
 const pages = ['Graelles', 'Centraleta', 'Persones', 'Trucada']
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
+const menuProfile = [
+  {
+    text: 'Perfil',
+    icon: <Settings />,
+  },
+  {
+    text: 'Indisponibilitats',
+    icon: <EventBusy />,
+  },
+  {
+    text: 'Logout',
+    icon: <Logout />,
+    onclick: Auth.logout,
+  },
+]
 const appTitle = 'Tomàtic - Som Energia'
 
+var updateUser = null
+Auth.onUserChanged.push(() => updateUser && updateUser(Auth.username()))
+
 function ResponsiveAppBar({ children }) {
+  const [userid, setUserId] = React.useState(Auth.username())
+  updateUser = setUserId
+  const userName = Tomatic.formatName(userid)
+  const userAvatarLetters = Tomatic.nameInitials(userid)
+  console.log('Name initials', userAvatarLetters)
+  const userColor = '#' + Tomatic.personColor(userid)
+  const userAvatar = null
+  //'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50'
+
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
 
@@ -197,40 +230,80 @@ function ResponsiveAppBar({ children }) {
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Propietats">
-                <IconButton
-                  onClick={handleOpenUserMenu}
-                  sx={{
-                    p: 0,
-                  }}
-                >
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{
-                  mt: '45px',
-                }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
+              {userid ? (
+                <>
+                  <Tooltip title={'Perfil'}>
+                    <IconButton
+                      onClick={handleOpenUserMenu}
+                      sx={{
+                        p: 0,
+                      }}
+                    >
+                      <Avatar
+                        alt={userAvatarLetters}
+                        src={userAvatar}
+                        sx={{
+                          bgcolor: userColor,
+                          color: contrast(userColor),
+                        }}
+                      >
+                        {userAvatarLetters}
+                      </Avatar>
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    sx={{
+                      mt: '45px',
+                    }}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                  >
+                    <MenuItem onClick={handleCloseUserMenu}>
+                      <ListItemIcon>
+                        <Avatar
+                          sx={{
+                            width: 24,
+                            height: 24,
+                            bgcolor: userColor,
+                            color: contrast(userColor),
+                          }}
+                        />
+                      </ListItemIcon>
+                      {userName}
+                    </MenuItem>
+                    <Divider />
+                    {menuProfile.map((option, i) => (
+                      <MenuItem
+                        key={i}
+                        onClick={() => {
+                          handleCloseUserMenu()
+                          option.onclick && option.onclick()
+                        }}
+                      >
+                        <ListItemIcon>{option.icon}</ListItemIcon>
+                        <Typography textAlign="center">
+                          {option.text}
+                        </Typography>
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </>
+              ) : (
+                <Button variant="contained" onClick={Auth.authenticate}>
+                  {"IDENTIFICA'T"}
+                </Button>
+              )}
             </Box>
           </Toolbar>
         </Container>
