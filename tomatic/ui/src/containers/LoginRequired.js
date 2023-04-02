@@ -28,6 +28,7 @@ export default function LoginRequired({ children }) {
     >
       <Card
         sx={{
+          maxWidth: 'min(80%, 40rem)',
           marginBlock: '5vh',
           marginInline: 'auto',
         }}
@@ -36,24 +37,26 @@ export default function LoginRequired({ children }) {
           <CardHeader
             title={'Es requereix identificació!'}
             titleTypographyProps={{
-              variant: 'h5',
+              variant: 'h4',
+            }}
+            subheader={
+              "Cal que us identifiqueu a Can Google amb l'usuari de Som Energia."
+            }
+            subheaderTypographyProps={{
+              variant: 'body1',
             }}
             avatar={
               <Avatar
                 variant="rounded"
-                sx={{ width: 64, height: 64 }}
+                sx={{ width: 100, height: 100 }}
                 src={tomaticAvatar}
               ></Avatar>
             }
           ></CardHeader>
           {Auth.error() && (
-            <Typography color="error">{'Error: ' + Auth.error()}</Typography>
+            <Typography color="error">{`Error: ${Auth.error()}`}</Typography>
           )}
-          <Typography>
-            {
-              "Cal que us identifiqueu a Can Google amb l'usuari de Som Energia."
-            }
-          </Typography>
+          <Typography>{}</Typography>
         </CardContent>
         <CardActions>
           <Button sx={{ ml: 'auto' }} onClick={Auth.authenticate}>
