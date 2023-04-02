@@ -21,6 +21,10 @@
 - Some dbconfig parameters accessible through environment
 - Fix: Auth tests working without a dbconfig
 - Environment var `TOMATIC_TEST_ERP` to activate erp tests
+- new script: `tomatic_stats.py` to plot hourly week profile
+  of incoming calls
+- Upgrade notes:
+  - Needed to reinstall dependencies and new scripts
 
 ## 4.11.1 2023-01-13
 
