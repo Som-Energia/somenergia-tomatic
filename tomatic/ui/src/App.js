@@ -2,38 +2,18 @@ import * as React from 'react'
 import './App.css'
 import PersonsTable from './components/PersonsTable.js'
 import AppFrame from './containers/AppFrame.js'
-import { ThemeProvider, createTheme } from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
 import Tomatic from './services/tomatic'
 import { AuthProvider } from './contexts/AuthContext'
-
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-})
-
-const ligthTheme = createTheme({
-  palette: {},
-})
-
-// TODO: could be turn into a context
-var updateMode = null
-Tomatic.onKumatoChanged.push(() => updateMode && updateMode())
+import KumatoProvider from './containers/KumatoProvider'
 
 function App() {
-  const [isKumatoMode, setKumato] = React.useState(Tomatic.isKumatoMode)
-  updateMode = () => {
-    setKumato(Tomatic.isKumatoMode())
-  }
   return (
     <AuthProvider>
-      <ThemeProvider theme={isKumatoMode ? darkTheme : ligthTheme}>
-        <CssBaseline />
+      <KumatoProvider>
         <AppFrame>
           <PersonsTable />
         </AppFrame>
-      </ThemeProvider>
+      </KumatoProvider>
     </AuthProvider>
   )
 }
