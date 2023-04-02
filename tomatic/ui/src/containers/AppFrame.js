@@ -117,9 +117,7 @@ function ResponsiveAppBar({ children }) {
                     key={page}
                     onClick={() => {
                       handleCloseNavMenu()
-                      Tomatic.error(
-                        'La funcionalitat encara no està implementada'
-                      )
+                      window.location = '/#!/' + page
                     }}
                   >
                     <Typography textAlign="center">{page}</Typography>
@@ -170,7 +168,10 @@ function ResponsiveAppBar({ children }) {
               {pages.map((page) => (
                 <Button
                   key={page}
-                  onClick={handleCloseNavMenu}
+                  onClick={() => {
+                    handleCloseNavMenu()
+                    window.location = '/#!/' + page
+                  }}
                   sx={{
                     my: 2,
                     color: 'white',
