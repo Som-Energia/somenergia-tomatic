@@ -16,6 +16,7 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import IconSettings from '@mui/icons-material/Settings'
 import IconEventBusy from '@mui/icons-material/EventBusy'
 import IconLogout from '@mui/icons-material/Logout'
+import IconKumato from '@mui/icons-material/SettingsBrightness'
 import Tomatic from '../services/tomatic'
 import Auth from '../services/auth'
 import { contrast } from '../mithril/components/colorutils'
@@ -28,6 +29,11 @@ const menuProfile = [
   {
     text: 'Indisponibilitats',
     icon: <IconEventBusy />,
+  },
+  {
+    text: 'Kumato mode',
+    icon: <IconKumato />,
+    onclick: Tomatic.toggleKumato,
   },
   {
     text: 'Logout',

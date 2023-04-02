@@ -63,13 +63,16 @@ module.exports = (function () {
 		})
 	}
 
+	Tomatic.onKumatoChanged = []
 	Tomatic.initKumato = function () {
 		// Dark interface
 		Tomatic._kumato = JSON.parse(localStorage.getItem('kumato', false))
+		Tomatic.onKumatoChanged.forEach((callback) => callback())
 	}
 	Tomatic.toggleKumato = function () {
 		Tomatic._kumato = !Tomatic._kumato
 		localStorage.kumato = Tomatic._kumato
+		Tomatic.onKumatoChanged.forEach((callback) => callback())
 	}
 	Tomatic.isKumatoMode = function () {
 		return Tomatic._kumato
