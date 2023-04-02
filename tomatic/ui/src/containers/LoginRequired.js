@@ -15,9 +15,9 @@ import AuthContext from '../contexts/AuthContext'
 import tomaticAvatar from '../images/tomatic-logo.png'
 import Auth from '../services/auth'
 
-export default function LoginRequired({ children }) {
-  const auth = React.useContext(AuthContext)
-  if (auth?.userid) return children
+function SimpleCard(props) {
+  const { title, error, content, button, action } = props
+
   return (
     <Box
       sx={{
@@ -34,13 +34,11 @@ export default function LoginRequired({ children }) {
       >
         <CardContent>
           <CardHeader
-            title={'Es requereix identificació!'}
+            title={title}
             titleTypographyProps={{
               variant: 'h4',
             }}
-            subheader={
-              "Cal que us identifiqueu a Can Google amb l'usuari de Som Energia."
-            }
+            subheader={content}
             subheaderTypographyProps={{
               variant: 'body1',
             }}
@@ -52,16 +50,30 @@ export default function LoginRequired({ children }) {
               ></Avatar>
             }
           ></CardHeader>
-          {Auth.error() && (
-            <Typography color="error">{`Error: ${Auth.error()}`}</Typography>
-          )}
+          {error && <Typography color="error">{`Error: ${error}`}</Typography>}
         </CardContent>
         <CardActions>
-          <Button sx={{ ml: 'auto' }} onClick={Auth.authenticate}>
-            {'Ves-hi!'}
+          <Button sx={{ ml: 'auto' }} onClick={action}>
+            {button}
           </Button>
         </CardActions>
       </Card>
     </Box>
+  )
+}
+
+export default function LoginRequired({ children }) {
+  const auth = React.useContext(AuthContext)
+  if (auth?.userid) return children
+  return (
+    <SimpleCard
+      title={'Es requereix identificació'}
+      error={Auth.error()}
+      content={
+        "Cal que us identifiqueu a Can Google amb l'usuari de Som Energia."
+      }
+      button={'Ves-hi!'}
+      action={Auth.authenticate}
+    />
   )
 }
