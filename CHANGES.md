@@ -1,4 +1,17 @@
 # Changelog
+  
+## Unreleased
+
+- New React UI, still in progress (Mithril and React will coexist for a while)
+- New persons editor
+	- List based view that allows comparing values
+	- Also sorting, filtering...
+	- Groups assignment are editable
+	- Turn loads are editable
+- Upgrade notes:
+    - New frontend dependencies, npm install required
+    - Frontend development flow has changed, see docs
+    - Ideal loads are now kept in persons.yaml
 
 ## 4.14.0 2023-06-26
 
