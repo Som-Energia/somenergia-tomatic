@@ -270,6 +270,13 @@ module.exports = (function () {
                 partner.contracts.map(function (contract) {
                   var number = formatContractNumber(contract.number)
                   var retrieved = response.info.info[number]
+                  if (retrieved===undefined) {
+                    console.error(
+                      'No extended contract info for contract',
+                      number
+                    )
+                    return
+                  }
                   contract.invoices = retrieved.invoices
                   contract.lectures_comptadors = retrieved.lectures_comptadors
                   contract.atr_cases = retrieved.atr_cases
