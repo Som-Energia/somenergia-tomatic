@@ -11,8 +11,6 @@ import GroupRemoveIcon from '@mui/icons-material/GroupRemove'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import Tomatic from '../services/tomatic'
 
-Tomatic.init()
-
 function compileData(personData) {
   const result = {}
   if (personData === undefined) return {}
@@ -20,7 +18,9 @@ function compileData(personData) {
   function joinAttribute(result, attribute) {
     const attributeValues = personData[attribute + 's'] || {}
     Object.entries(attributeValues).forEach(([id, v], i) => {
-      if (!result[id]) result[id] = { id: id }
+      if (!result[id]) {
+        result[id] = { id: id }
+      }
       result[id][attribute] = v
     })
   }
@@ -179,9 +179,11 @@ function camelize(text) {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
-var handlePersonsUpdated = () => {}
+var handlePersonsUpdated = null
 
-Tomatic.onPersonsUpdated.push(() => handlePersonsUpdated())
+Tomatic.onPersonsUpdated.push(
+  () => handlePersonsUpdated && handlePersonsUpdated()
+)
 
 function PersonsTable() {
   const [rows, setRows] = React.useState([])
@@ -197,6 +199,8 @@ function PersonsTable() {
     setTables(availableTables(rows))
     setGroups(availableGroups(rows))
   }
+
+  React.useEffect(handlePersonsUpdated, [Tomatic.persons()])
 
   function handleStartAddingPerson() {
     setEditingPerson({})

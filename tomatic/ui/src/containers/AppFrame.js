@@ -14,6 +14,7 @@ import appLogo from '../images/tomatic-logo-24.png'
 import SnackbarLogger from '../components/SnackbarLogger'
 import ProfileButton from '../components/ProfileButton'
 import LoginRequired from '../containers/LoginRequired'
+import { Link } from 'react-router-dom'
 
 const pages = ['Graelles', 'Centraleta', 'Persones', 'Trucada']
 const appTitle = 'Tomàtic - Som Energia'
@@ -115,10 +116,11 @@ function ResponsiveAppBar({ children }) {
               >
                 {pages.map((page) => (
                   <MenuItem
+                    component={Link}
+                    to={`/${page}`}
                     key={page}
                     onClick={() => {
                       handleCloseNavMenu()
-                      window.location = '/#!/' + page
                     }}
                   >
                     <Typography textAlign="center">{page}</Typography>
@@ -169,9 +171,10 @@ function ResponsiveAppBar({ children }) {
               {pages.map((page) => (
                 <Button
                   key={page}
+                  component={Link}
+                  to={`/${page}`}
                   onClick={() => {
                     handleCloseNavMenu()
-                    window.location = '/#!/' + page
                   }}
                   sx={{
                     my: 2,
