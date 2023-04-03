@@ -70,18 +70,14 @@ function availableTables(rows) {
       d[row.table] = []
     }
     d[row.table].push(formatName(row))
-    console.log(d)
     return d
   }, {})
-  console.log(tableMembers)
   const result = [[-1, 'Sense taula']]
   const nTables = Math.max(...Object.keys(tableMembers))
   for (const i in range(nTables + 1)) {
-    console.log('i', i)
     if (tableMembers[i] === undefined) {
       result.push([i, `Taula ${i} amb ningú`])
     } else {
-      console.log('tablemembers', tableMembers[i])
       result.push([i, `Taula ${i} amb ` + tableMembers[i].join(', ')])
     }
   }
