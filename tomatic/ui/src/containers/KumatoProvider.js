@@ -18,8 +18,6 @@ const ligthTheme = createTheme({
 var updateMode = null
 Tomatic.onKumatoChanged.push(() => updateMode && updateMode())
 
-function App() {}
-
 export default function KumatoProvider({ children }) {
   const [isKumatoMode, setKumato] = React.useState(Tomatic.isKumatoMode)
   updateMode = () => {
