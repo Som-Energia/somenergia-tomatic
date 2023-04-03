@@ -6,7 +6,7 @@ module.exports = (function () {
 	var Button = require('polythene-mithril-button').Button
 	var Ripple = require('polythene-mithril-ripple').Ripple
 	var Tomatic = require('../../services/tomatic')
-	var Auth = require('../../services/auth').default
+	var Auth = require('../../services/auth')
 	var WeekPicker = require('./weekpicker').default
 	var Uploader = require('./uploader').default
 	var PersonPicker = require('./personpicker')
@@ -190,7 +190,7 @@ module.exports = (function () {
 						m(Uploader, {
 							name: 'yaml',
 							label: 'Puja Nova Graella',
-							url: 'api/graella',
+							url: '/api/graella',
 							onupload: function (result) {
 								Tomatic.init()
 							},
