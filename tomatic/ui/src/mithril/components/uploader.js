@@ -3,7 +3,7 @@ export default (function() {
 var m = require('mithril');
 var css = require('@emotion/css').css;
 var RaisedButton = require('polythene-mithril-raised-button').RaisedButton;
-var api = require('../../services/api');
+var api = require('../../services/api').default;
 
 
 const uploaderStyle = css`
