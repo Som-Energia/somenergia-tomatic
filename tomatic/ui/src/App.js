@@ -1,15 +1,11 @@
 import * as React from 'react'
 import './App.css'
-import PersonsTable from './components/PersonsTable.js'
 import AppFrame from './containers/AppFrame.js'
 import Tomatic from './services/tomatic'
 import { AuthProvider } from './contexts/AuthContext'
 import KumatoProvider from './containers/KumatoProvider'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
-import MithrilWrapper from './containers/MithrilWrapper'
-import customStyle from './mithril/style.styl'
-import TimeTablePage from './mithril/components/timetablepage'
-import QueueMonitor from './mithril/components/queuemonitor'
+import PersonsTable from './components/PersonsTable.js'
 import {
   MithrilCallinfoPage,
   MithrilTimeTablePage,

@@ -17,7 +17,7 @@ const Wrapper = (mithrilComponent) => {
   return {
     view: (vnode) => {
       return m(
-        '#tomatic.main' + '.variant-' + Tomatic.variant,
+        '#tomatic.main.variant-' + Tomatic.variant,
         m(
           '',
           PersonStyles(),
