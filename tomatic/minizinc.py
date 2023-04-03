@@ -8,12 +8,13 @@ import datetime
 from .backtracker import parseArgs
 from .scenario_config import Config
 from .htmlgen import HtmlGen
+from .busy import laborableWeekDays
 
 
 class Menu:
 
     NINGU = 'ningu'
-    WEEKDAY = {
+    NORMAL_WEEKDAY = {
         'dl': 0,
         'dm': 1,
         'dx': 2,
@@ -22,13 +23,16 @@ class Menu:
     }
 
     def __init__(self, config):
+        laborable_days = laborableWeekDays(config.monday)
         self.nPersones = len(config.idealLoad)
         self.nLinies = config.nTelefons
         self.nSlots = len(config.hours) - 1
         self.nNingus = config.nNingusMinizinc
-        self.nDies = len(config.diesCerca)
+        self.nDies = len(laborable_days)
         self.maxTorns = config.maximHoresDiariesGeneral
         self._saveNamesAndTurns(config.idealLoad)
+        self.laborable_days = laborable_days
+        self.WEEKDAY = { day: i for i, day in enumerate(laborable_days) }
         self.indisponibilitats = self._indisponibilities(config)
         self.preferencies = self._preferences()
 
@@ -45,7 +49,7 @@ class Menu:
             name: [set() for _ in range(self.nDies)] for name in self.names
         }
         for day, turn, name in config.busyTable:
-            if config.busyTable[(day, turn, name)]:
+            if config.busyTable[(day, turn, name)] and day in self.laborable_days:
                 persons_indisponibilities[name][self.WEEKDAY[day]].add(turn + 1)
         indisponibilities = []
         for name in self.names:
@@ -71,18 +75,20 @@ class Menu:
         )
 
     def translate(self, solution, config):
-        days = list(self.WEEKDAY.keys())
-        timetable = {}
-        for day, turns in zip(days, solution.solution.ocupacioSlot):
-            timetable_day = []
-            for turn in turns:
-                timetable_hour = []
-                for person in turn:
-                    timetable_hour.append(self.names[person-1])
-                for _ in range(self.nLinies - len(turn)):
-                    timetable_hour.append(self.NINGU)
-                timetable_day.append(timetable_hour)
-            timetable[day] = timetable_day
+        days = list(self.NORMAL_WEEKDAY.keys())
+        timetable = {
+            day: [
+                [
+                    self.NINGU for _ in range(self.nLinies)
+                ] for _ in range(self.nSlots)
+            ] for day in days
+        }
+
+        for day, turns in zip(self.laborable_days, solution.solution.ocupacioSlot):
+            for turn_i, turn in enumerate(turns):
+                for slot_i, person in enumerate(turn):
+                    timetable[day][turn_i][slot_i] = self.names[person-1]
+
         result = ns(
             week=f'{config.monday}',
             days=days,
