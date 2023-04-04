@@ -1,10 +1,10 @@
 // MithrilStyler
 //
-// Provides style and wrapping the mithril components had
-// in the original mithril application so that they look
-// and behave properly.
+// Mithril function that generates a wrapped component.
+// The wrapping provides style and parent context that the
+// original mithril Tomatic components had, so that they
+// look and behave similar.
 
-import * as React from 'react'
 import m from 'mithril'
 import { Dialog } from 'polythene-mithril-dialog'
 import * as css from 'polythene-css'
