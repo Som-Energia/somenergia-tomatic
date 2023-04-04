@@ -1,5 +1,8 @@
-// KumatoProvider Provides light and dark themes
-// to the inner components.
+// KumatoProvider
+//
+// Provides light and dark themes to the inner components
+// based on Tomatic Kumato state.
+
 import * as React from 'react'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'

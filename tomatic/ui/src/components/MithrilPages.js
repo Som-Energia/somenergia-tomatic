@@ -1,3 +1,8 @@
+// MithrilPages
+//
+// Provides old Mithril application pages as React Components
+// to be included in the React app as is.
+
 import * as React from 'react'
 import MithrilWrapper from '../containers/MithrilWrapper'
 import MithrilStyler from '../containers/MithrilStyler'

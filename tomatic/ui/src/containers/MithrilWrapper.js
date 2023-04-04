@@ -1,3 +1,7 @@
+// MithrilWrapper
+//
+// Wrapps a Mithril component inside React
+
 import * as React from 'react'
 import m from 'mithril'
 

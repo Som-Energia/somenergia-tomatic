@@ -1,3 +1,9 @@
+// MithrilStyler
+//
+// Provides style and wrapping the mithril components had
+// in the original mithril application so that they look
+// and behave properly.
+
 import * as React from 'react'
 import m from 'mithril'
 import { Dialog } from 'polythene-mithril-dialog'
