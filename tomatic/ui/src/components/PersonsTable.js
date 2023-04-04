@@ -10,6 +10,10 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import GroupRemoveIcon from '@mui/icons-material/GroupRemove'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import Tomatic from '../services/tomatic'
+import editAvailabilities from '../mithril/components/busyeditor'
+import MithrilWrapper from '../containers/MithrilWrapper'
+import MithrilStyler from '../containers/MithrilStyler'
+import { Dialog as MithrilDialog } from 'polythene-mithril-dialog'
 
 function compileData(personData) {
   const result = {}
@@ -216,6 +220,10 @@ function PersonsTable() {
     Tomatic.setPersonDataReact(id, data)
     setEditingPerson(undefined)
   }
+  function handleStartBusyEditor(person) {
+    console.log(person)
+    editAvailabilities(person.id)
+  }
 
   const actions = [
     {
@@ -248,6 +256,7 @@ function PersonsTable() {
     {
       title: 'Indisponibilitats',
       icon: <EventBusyIcon fontSize="inherit" />,
+      handler: handleStartBusyEditor,
     },
   ]
 
@@ -272,6 +281,7 @@ function PersonsTable() {
         allGroups={groups}
         tables={tables}
       />
+      <MithrilWrapper component={MithrilStyler(MithrilDialog)} />
     </>
   )
 }
