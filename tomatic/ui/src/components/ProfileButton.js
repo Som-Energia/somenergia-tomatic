@@ -21,6 +21,7 @@ import Tomatic from '../services/tomatic'
 import Auth from '../services/auth'
 import { contrast } from '../mithril/components/colorutils'
 import AuthContext from '../contexts/AuthContext'
+import editAvailabilities from '../mithril/components/busyeditor'
 
 const menuProfile = [
   {
@@ -30,6 +31,9 @@ const menuProfile = [
   {
     text: 'Indisponibilitats',
     icon: <IconEventBusy />,
+    onclick: () => {
+      editAvailabilities(Auth.username())
+    },
   },
   {
     text: 'Kumato mode',
