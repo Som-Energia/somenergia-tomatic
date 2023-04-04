@@ -16,14 +16,14 @@ var Persons = require('./components/persons')
 var TimeTablePage = require('./components/timetablepage')
 var MenuButton = require('./components/menubutton')
 var LoginPage = require('./components/loginpage')
+var CallInfoPage = require('./components/callinfopage')
+var PbxPage = require('./components/pbxpage').default
 var PersonStyles = require('./components/personstyles').default
 var Doc = require('./components/doc').default
+var extraMenuOptions = require('../services/extramenu').default
 
 var css = require('polythene-css')
 var customStyle = require('./style.styl')
-
-var CallInfoPage = require('./components/callinfopage')
-var PbxPage = require('./components/pbxpage')
 
 css.addLayoutStyles()
 css.addTypography()
@@ -48,82 +48,6 @@ const SnackbarLogger = function () {
 }
 Tomatic.loggers.push(SnackbarLogger())
 
-const scriptLauncherBase = 'http://tomatic.somenergia.lan:5000'
-const menuOptions = function () {
-	return [
-		{
-			icon: '🕜',
-			title: 'Planificador de Graelles',
-			action: function () {
-				window.location.href = '/api/planner/'
-			},
-		},
-		{
-			icon: '📊',
-			title: 'Estadístiques de trucades',
-			action: function () {
-				window.location.href =
-					scriptLauncherBase + '/runner/statshistory'
-			},
-		},
-		{
-			icon: '📢',
-			title: 'En Tomàtic diu...',
-			action: function () {
-				window.location.href = scriptLauncherBase + '/runner/says'
-			},
-		},
-		{
-			icon: '🔄',
-			title: 'Restableix el torn a la cua',
-			action: function () {
-				window.location.href =
-					scriptLauncherBase + '/runner/reloadqueue'
-			},
-		},
-		{
-			icon: '🏷️',
-			title: 'Anotacions: Actualitza categories',
-			action: function () {
-				CallInfoPage.settingsDialog()
-			},
-		},
-		{
-			icon: '🚀',
-			title: 'Altres scripts de Centraleta',
-			action: function () {
-				window.location.href = scriptLauncherBase
-			},
-		},
-		{
-			icon: '😎',
-			title: 'Kumato mode',
-			action: function () {
-				Tomatic.toggleKumato()
-			},
-		},
-		{
-			icon: '🦸‍♀️',
-			navigation: true,
-			title: 'Administració',
-			action: function () {
-				const url = 'admin.html'
-				window.open(url, '_blank')
-			},
-		},
-		{
-			icon: '🛟',
-			navigation: true,
-			title: "Guies d'usuaria i videos",
-			action: function () {
-				const url =
-					'https://github.com/Som-Energia/somenergia-tomatic/blob/master/doc/userguide.md'
-				window.open(url, '_blank')
-			},
-		},
-	]
-}
-
 const toolbarRow = function (title) {
 	return m('.pe-dark-tone.pe-toolbar.flex.layout', [
 		m(MenuButton, {
@@ -136,7 +60,7 @@ const toolbarRow = function (title) {
 			id: 'right-menu',
 			icon: iconMore,
 			origin: 'top-right',
-			options: menuOptions(),
+			options: extraMenuOptions(),
 		}),
 	])
 }

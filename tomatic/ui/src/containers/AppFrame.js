@@ -6,15 +6,18 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import Menu from '@mui/material/Menu'
 import MenuIcon from '@mui/icons-material/Menu'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 import Container from '@mui/material/Container'
 import Button from '@mui/material/Button'
 import MenuItem from '@mui/material/MenuItem'
+import ListItemIcon from '@mui/material/ListItemIcon'
 import appBackground from '../images/tomatic_bg.jpg'
 import appLogo from '../images/tomatic-logo-24.png'
 import SnackbarLogger from '../components/SnackbarLogger'
 import ProfileButton from '../components/ProfileButton'
 import LoginRequired from '../containers/LoginRequired'
 import { Link } from 'react-router-dom'
+import extraMenuOptions from '../services/extramenu'
 
 const pages = ['Graelles', 'Centraleta', 'Persones', 'Trucada']
 const appTitle = 'Tomàtic - Som Energia'
@@ -27,6 +30,15 @@ function ResponsiveAppBar({ children }) {
   }
   const handleCloseNavMenu = () => {
     setAnchorElNav(null)
+  }
+
+  const [anchorElMenu, setAnchorElMenu] = React.useState(null)
+
+  const handleOpenMenu = (event) => {
+    setAnchorElMenu(event.currentTarget)
+  }
+  const handleCloseMenu = () => {
+    setAnchorElMenu(null)
   }
 
   return (
@@ -118,7 +130,7 @@ function ResponsiveAppBar({ children }) {
                   <MenuItem
                     component={Link}
                     to={`/${page}`}
-                    key={page}
+                    key={page.title}
                     onClick={() => {
                       handleCloseNavMenu()
                     }}
@@ -189,6 +201,46 @@ function ResponsiveAppBar({ children }) {
               ))}
             </Box>
             <ProfileButton />
+            <Box>
+              <IconButton
+                size="large"
+                aria-label={'Extra functionalities'}
+                aria-controls="menu-extra"
+                aria-haspopup="true"
+                onClick={handleOpenMenu}
+                color="inherit"
+              >
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id="menu-extra"
+                anchorEl={anchorElMenu}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElMenu)}
+                onClose={handleCloseMenu}
+              >
+                {extraMenuOptions().map((option, i) => (
+                  <MenuItem
+                    key={i}
+                    onClick={() => {
+                      handleCloseMenu()
+                      option.action()
+                    }}
+                  >
+                    <ListItemIcon>{option.icon}</ListItemIcon>
+                    <Typography textAlign="center">{option.title}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
           </Toolbar>
         </Container>
       </AppBar>
