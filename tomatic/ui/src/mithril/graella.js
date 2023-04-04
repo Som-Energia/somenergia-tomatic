@@ -133,29 +133,19 @@ window.onload = function () {
 	var element = document.getElementById('tomatic')
 	m.route(element, '/Graelles', {
 		'/Graelles': {
-			render: function () {
-				return m(TomaticApp, m(TimeTablePage))
-			},
+			render: () => m(TomaticApp, m(TimeTablePage)),
 		},
 		'/Centraleta': {
-			render: function () {
-				return m(TomaticApp, m(PbxPage))
-			},
+			render: () => m(TomaticApp, m(PbxPage)),
 		},
 		'/Persones': {
-			render: function () {
-				return m(TomaticApp, m(PersonsPage))
-			},
+			render: () => m(TomaticApp, m(PersonsPage)),
 		},
 		'/Trucada': {
-			render: function () {
-				return m(TomaticApp, m(CallInfoPage))
-			},
+			render: () => m(TomaticApp, m(CallInfoPage)),
 		},
 		'/Login': {
-			render: function () {
-				return m(TomaticApp, m(LoginPage))
-			},
+			render: () => m(TomaticApp, m(LoginPage)),
 		},
 	})
 }
