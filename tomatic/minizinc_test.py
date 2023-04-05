@@ -43,6 +43,24 @@ def fixture():
         names=[],
     )
 
+
+def make_minizinc_ns_result(timetable, cost):
+    return ns(
+        week='2023-03-27 00:00:00',
+        days=['dl', 'dm', 'dx', 'dj', 'dv'],
+        hours=['8:00', '9:00'],
+        turns=['T1', 'T2'],
+        timetable=timetable,
+        colors=[],
+        extensions=[],
+        names=[],
+        overload={},
+        penalties=[],
+        cost=cost,
+        log=[]
+    )
+
+
 class Menu_Test(unittest.TestCase):
     from somutils.testutils import assertNsEqual
 
@@ -132,11 +150,7 @@ class Menu_Test(unittest.TestCase):
         result = menu.translate(solution, config)
 
         # Then we get the result as the expected namespace
-        expected = ns(
-            week='2023-03-27 00:00:00',
-            days=['dl', 'dm', 'dx', 'dj', 'dv'],
-            hours=['8:00', '9:00'],
-            turns=['T1', 'T2'],
+        expected = make_minizinc_ns_result(
             timetable={
                 'dl': [['vegeta', 'krilin']],
                 'dm': [['goku', 'krilin']],
@@ -144,13 +158,7 @@ class Menu_Test(unittest.TestCase):
                 'dj': [['goku', 'vegeta']],
                 'dv': [['vegeta', 'krilin']]
             },
-            colors=[],
-            extensions=[],
-            names=[],
-            overload={},
-            penalties=[],
-            cost=10,
-            log=[]
+            cost=10
         )
         self.assertNsEqual(expected, result)
 
@@ -177,11 +185,7 @@ class Menu_Test(unittest.TestCase):
         result = menu.translate(solution, config)
 
         # Then we get the result as the expected namespace
-        expected = ns(
-            week='2023-03-27 00:00:00',
-            days=['dl', 'dm', 'dx', 'dj', 'dv'],
-            hours=['8:00', '9:00'],
-            turns=['T1', 'T2'],
+        expected = make_minizinc_ns_result(
             timetable={
                 'dl': [['krilin', 'ningu']],
                 'dm': [['goku', 'krilin']],
@@ -189,13 +193,7 @@ class Menu_Test(unittest.TestCase):
                 'dj': [['goku', 'ningu']],
                 'dv': [['vegeta', 'krilin']]
             },
-            colors=[],
-            extensions=[],
-            names=[],
-            overload={},
-            penalties=[],
-            cost=10,
-            log=[]
+            cost=10
         )
         self.assertNsEqual(expected, result)
 
@@ -222,11 +220,7 @@ class Menu_Test(unittest.TestCase):
         result = menu.translate(solution, config)
 
         # Then we get the result as the expected namespace
-        expected = ns(
-            week='2023-03-27 00:00:00',
-            days=['dl', 'dm', 'dx', 'dj', 'dv'],
-            hours=['8:00', '9:00'],
-            turns=['T1', 'T2'],
+        expected = make_minizinc_ns_result(
             timetable={
                 'dl': [['krilin', 'ningu']],
                 'dm': [['goku', 'krilin']],
@@ -234,13 +228,7 @@ class Menu_Test(unittest.TestCase):
                 'dj': [['ningu', 'ningu']],
                 'dv': [['goku', 'ningu']]
             },
-            colors=[],
-            extensions=[],
-            names=[],
-            overload={},
-            penalties=[],
-            cost=8,
-            log=[]
+            cost=8
         )
         self.assertNsEqual(expected, result)
 
