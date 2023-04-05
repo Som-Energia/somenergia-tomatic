@@ -112,7 +112,6 @@ class Menu_Test(unittest.TestCase):
 
     def test_translate(self):
         # Given a solution and a config
-        # When we call the menu translate method
         config = fixture()
         menu = Menu(config)
         menu.names = ['goku', 'vegeta', 'krilin']
@@ -128,6 +127,11 @@ class Menu_Test(unittest.TestCase):
                 totalTorns=10
             )
         )
+
+        # When we call the menu translate method
+        result = menu.translate(solution, config)
+
+        # Then we get the result as the expected namespace
         expected = ns(
             week='2023-03-27 00:00:00',
             days=['dl', 'dm', 'dx', 'dj', 'dv'],
@@ -148,14 +152,11 @@ class Menu_Test(unittest.TestCase):
             cost=10,
             log=[]
         )
-        # Then we get the result as the expected namespace
-        result = menu.translate(solution, config)
         self.assertNsEqual(expected, result)
 
 
     def test_translate_with_ningus(self):
         # Given a solution and a config
-        # When we call the menu translate method
         config = fixture()
         menu = Menu(config)
         menu.names = ['goku', 'vegeta', 'krilin']
@@ -171,6 +172,11 @@ class Menu_Test(unittest.TestCase):
                 totalTorns=10
             )
         )
+
+        # When we call the menu translate method
+        result = menu.translate(solution, config)
+
+        # Then we get the result as the expected namespace
         expected = ns(
             week='2023-03-27 00:00:00',
             days=['dl', 'dm', 'dx', 'dj', 'dv'],
@@ -191,14 +197,11 @@ class Menu_Test(unittest.TestCase):
             cost=10,
             log=[]
         )
-        # Then we get the result as the expected namespace
-        result = menu.translate(solution, config)
         self.assertNsEqual(expected, result)
 
 
     def test_translate_with_holidays(self):
         # Given a solution and a config with one holiday
-        # When we call the menu translate method
         config = fixture()
         menu = Menu(config)
         menu.names = ['goku', 'vegeta', 'krilin']
@@ -214,6 +217,11 @@ class Menu_Test(unittest.TestCase):
                 totalTorns=8
             )
         )
+
+        # When we call the menu translate method
+        result = menu.translate(solution, config)
+
+        # Then we get the result as the expected namespace
         expected = ns(
             week='2023-03-27 00:00:00',
             days=['dl', 'dm', 'dx', 'dj', 'dv'],
@@ -234,8 +242,6 @@ class Menu_Test(unittest.TestCase):
             cost=8,
             log=[]
         )
-        # Then we get the result as the expected namespace
-        result = menu.translate(solution, config)
         self.assertNsEqual(expected, result)
 
 
@@ -243,8 +249,8 @@ class Minizinc_Test(unittest.TestCase):
 
     def test_solve_problem_ok(self):
         # Given well formatted config
-        # When we call the solve problem method
         config = fixture()
+        # When we call the solve problem method
         solution = solve_problem(config, ['chuffed', 'coin-bc'])
         # Then we have a solution
         self.assertNotEqual(False, solution)
