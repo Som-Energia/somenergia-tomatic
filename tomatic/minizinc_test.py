@@ -153,6 +153,92 @@ class Menu_Test(unittest.TestCase):
         self.assertNsEqual(expected, result)
 
 
+    def test_translate_with_ningus(self):
+        # Given a solution and a config
+        # When we call the menu translate method
+        config = fixture()
+        menu = Menu(config)
+        menu.names = ['goku', 'vegeta', 'krilin']
+        solution = ns(
+            solution=ns(
+                ocupacioSlot=[
+                    [{3}],  # dl
+                    [{3, 1}],  # dm
+                    [{1, 2}],  # dx
+                    [{1}],  # dj
+                    [{3, 2}],  # dv
+                ],
+                totalTorns=10
+            )
+        )
+        expected = ns(
+            week='2023-03-27 00:00:00',
+            days=['dl', 'dm', 'dx', 'dj', 'dv'],
+            hours=['8:00', '9:00'],
+            turns=['T1', 'T2'],
+            timetable={
+                'dl': [['krilin', 'ningu']],
+                'dm': [['goku', 'krilin']],
+                'dx': [['goku', 'vegeta']],
+                'dj': [['goku', 'ningu']],
+                'dv': [['vegeta', 'krilin']]
+            },
+            colors=[],
+            extensions=[],
+            names=[],
+            overload={},
+            penalties=[],
+            cost=10,
+            log=[]
+        )
+        # Then we get the result as the expected namespace
+        result = menu.translate(solution, config)
+        self.assertNsEqual(expected, result)
+
+
+    def test_translate_with_holidays(self):
+        # Given a solution and a config with one holiday
+        # When we call the menu translate method
+        config = fixture()
+        menu = Menu(config)
+        menu.names = ['goku', 'vegeta', 'krilin']
+        menu.laborable_days = ['dl', 'dm', 'dx', 'dv']
+        solution = ns(
+            solution=ns(
+                ocupacioSlot=[
+                    [{3}],  # dl
+                    [{3, 1}],  # dm
+                    [{1, 2}],  # dx
+                    [{1}],  # dv
+                ],
+                totalTorns=8
+            )
+        )
+        expected = ns(
+            week='2023-03-27 00:00:00',
+            days=['dl', 'dm', 'dx', 'dj', 'dv'],
+            hours=['8:00', '9:00'],
+            turns=['T1', 'T2'],
+            timetable={
+                'dl': [['krilin', 'ningu']],
+                'dm': [['goku', 'krilin']],
+                'dx': [['goku', 'vegeta']],
+                'dj': [['ningu', 'ningu']],
+                'dv': [['goku', 'ningu']]
+            },
+            colors=[],
+            extensions=[],
+            names=[],
+            overload={},
+            penalties=[],
+            cost=8,
+            log=[]
+        )
+        # Then we get the result as the expected namespace
+        result = menu.translate(solution, config)
+        self.assertNsEqual(expected, result)
+
+
 class Minizinc_Test(unittest.TestCase):
 
     def test_solve_problem_ok(self):
