@@ -107,12 +107,12 @@ class Menu_Test(unittest.TestCase):
             )
         self.assertEqual(expected_indisponibilities, menu.indisponibilitats)
 
-    @patch("tomatic.busy.laborableWeekDays")
+    @patch("tomatic.minizinc.laborableWeekDays")
     def test_indisponibilities_with_holidays(self, mocked_laborableWeekDays):
+        mocked_laborableWeekDays.return_value = ['dl', 'dm', 'dx', 'dj']
         # Given a config with a monday of a week with holidays (friday)
         config = fixture()
         config.monday = datetime.date(2023, 4, 3)
-        mocked_laborableWeekDays.return_value = ['dl', 'dm', 'dx', 'dj']
         # When we get a menu
         menu = Menu(config)
         # then we have the indisponibilities without the holiday
