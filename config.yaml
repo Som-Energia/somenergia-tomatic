@@ -11,6 +11,9 @@ idealLoadValuesRange: carregaideal_valors
 leavesSheet: Baixes
 monitoringFile: taula.html
 nTelefons: 7
+minizincSolvers:
+- chuffed
+- coin-bc
 diesCerca:
 - dx
 - dj

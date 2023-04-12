@@ -151,7 +151,7 @@ def main():
     # Fist try to get a solution with optional absences
     step('Provant amb les indisponibilitats opcionals...')
     # choose a list of minizinc solvers to user
-    solvers = ["chuffed", "coin-bc"]
+    solvers = config.data.minizincSolvers
     solution = solve_problem(config.data, solvers)
     if not solution:
         step('Sense solució.\nProvant sense les opcionals...')
