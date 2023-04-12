@@ -5,11 +5,12 @@ from tomatic.minizinc import main as minizinc
 from consolemsg import error
 
 if __name__ == '__main__':
-    success = False
     try:
-      success = minizinc()
+        success = minizinc()
     except:
-       error("Minizinc crashed!")
+        success = False
+        error("Minizinc crashed!")
+
     if not success:
         backtracking()
 
