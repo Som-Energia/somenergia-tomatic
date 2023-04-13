@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.12.2 2023-04-13
+
+- added MiniZinc runner from Som-MiniZinc for shceduling generator
+
 ## 4.12.1 2023-03-08
 
 - dbconfig.tomatic.foreplanweeks to configure how many weeks
