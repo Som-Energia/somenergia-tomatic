@@ -81,6 +81,7 @@ def launch(monday):
     if status.unfilledCell == "Complete":
         step("Timetables: Complete, uploading")
         execution.upload('tomatic')
+        return
 
     step("Timetables: Incomplete, sending report email")
 
