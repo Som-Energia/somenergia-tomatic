@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.12.3 2023-05-05
+
+- Fix: avoid sending failure mail even when not such failure
+
 ## 4.12.2 2023-04-13
 
 - added MiniZinc runner from Som-MiniZinc for shceduling generator
