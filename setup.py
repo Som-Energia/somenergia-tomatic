@@ -72,7 +72,7 @@ setup(
         'ics', # icalendar generation
         'itsdangerous', # auth
         'authlib<1.0', # auth
-        'httpx', # auth
+        'httpx<1', # auth, 1.0 changes API, incompatible with fastapi 0.95.0 and earlier
         'python-jose[cryptography]', # auth
         'charset-normalizer<3', # request and httpio complains once 3.x is out
         'httplib2', # Google chat code
