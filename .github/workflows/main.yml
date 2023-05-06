@@ -32,6 +32,7 @@ jobs:
         run: |
           sudo apt install gcc libffi-dev libssl-dev nodejs npm libyaml-dev libxslt1-dev
           sudo apt install rustc cargo # needed for pip cryptography in some python versions without egg
+          sudo apt install minizinc # needed for the scheduler
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
