@@ -84,6 +84,14 @@ async def auth(request: Request):
     token = create_access_token(user)
     return auth_result(token=token)
 
+def expiration_timestamp(expiration_delta=None):
+    expires_delta = expiration_delta or datetime.timedelta(
+        **config('tomatic.jwt.expiration', dict(hours=10))
+    )
+    utcnow = datetime.datetime.now(datetime.timezone.utc)
+    expiration = utcnow + expires_delta
+    return int(expiration.timestamp())
+
 @router.get('/logout')
 async def logout(request: Request):
     request.session.pop('user', None)
@@ -98,12 +106,7 @@ def create_access_token(data: dict, expiration_delta: datetime.timedelta = None)
         for field in passthru_fields
         if field in data
     )
-    expires_delta = expiration_delta or datetime.timedelta(
-        **config('tomatic.jwt.expiration', dict(hours=10))
-    )
-    utcnow = datetime.datetime.now(datetime.timezone.utc)
-    expiration = utcnow + expires_delta
-    payload['exp'] = int(expiration.timestamp())
+    payload['exp'] = expiration_timestamp(expiration_delta)
     token = jwt.encode(
         payload,
         config('tomatic.jwt.secret_key'),
@@ -129,10 +132,12 @@ def validatedUser(token: str = Depends(oauth2_scheme)):
             return dict(
                 username = environ_user,
                 email = environ_user+'@somenergia.coop',
+                exp = expiration_timestamp(),
             )
         return dict(
             username = 'alice',
             email = 'me@here.coop',
+            exp = expiration_timestamp(),
         )
     try:
         utcnow = datetime.datetime.now(datetime.timezone.utc)

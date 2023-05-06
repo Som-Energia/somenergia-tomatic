@@ -10,6 +10,7 @@ import datetime
 from fastapi import HTTPException
 
 @patch.dict('os.environ', TOMATIC_JWT_SECRET_KEY='NOTSOSECRET')
+@patch.dict('os.environ', TOMATIC_AUTH_DUMMY='') # Use the real auth
 class Auth_Test(unittest.TestCase):
     from yamlns.testutils import assertNsEqual
 
@@ -21,7 +22,7 @@ class Auth_Test(unittest.TestCase):
         user = validatedUser(token)
         self.assertNsEqual(user, f"""
             username: alice
-            exp: {user.exp} # self referring
+            exp: {user.get('exp', 'MISSING')} # self referring
         """)
 
     def test_token_ignoresExtra(self):
@@ -34,7 +35,7 @@ class Auth_Test(unittest.TestCase):
         user = validatedUser(token)
         self.assertNsEqual(user, f"""
             username: alice
-            exp: {user.exp} # self referring
+            exp: {user.get('exp', 'MISSING')} # self referring
         """)
 
     def test_token_passesThruAccepted(self):
@@ -57,7 +58,7 @@ class Auth_Test(unittest.TestCase):
             family_name: Wonderlander
             locale: ca
             username: alice
-            exp: {user.exp} # self referring
+            exp: {user.get('exp', 'MISSING')} # self referring
         """)
 
     def test_token_expired(self):
@@ -86,5 +87,31 @@ class Auth_Test(unittest.TestCase):
             "Invalid authentication credentials")
 
         # TODO: assert logged: Payload failed
+
+    @patch.dict('os.environ', TOMATIC_AUTH_DUMMY='bob')
+    def test_token_dummy_auth(self):
+        payload = ns.loads("""
+            username: alice
+        """)
+        token = create_access_token(payload)
+        user = validatedUser(token)
+        self.assertNsEqual(user, f"""
+            username: bob
+            email: bob@somenergia.coop
+            exp: {user.get('exp', 'MISSING')} # self referring
+        """)
+
+    @patch.dict('os.environ', TOMATIC_AUTH_DUMMY='1')
+    def test_token_default_dummy_auth(self):
+        payload = ns.loads("""
+            username: bob
+        """)
+        token = create_access_token(payload)
+        user = validatedUser(token)
+        self.assertNsEqual(user, f"""
+            username: alice
+            email: me@here.coop
+            exp: {user.get('exp', 'MISSING')} # self referring
+        """)
 
 
