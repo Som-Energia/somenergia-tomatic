@@ -24,24 +24,24 @@ class Menu:
 
     def __init__(self, config):
         laborable_days = laborableWeekDays(config.monday)
-        self.nPersones = len(config.idealLoad)
+        self.nPersones = len(config.fullLoad)
         self.nLinies = config.nTelefons
         self.nSlots = len(config.hours) - 1
         self.nNingus = config.nNingusMinizinc
         self.nDies = len(laborable_days)
         self.maxTorns = config.maximHoresDiariesGeneral
-        self._saveNamesAndTurns(config.idealLoad)
+        self._saveNamesAndTurns(config.fullLoad)
         self.laborable_days = laborable_days
         self.WEEKDAY = { day: i for i, day in enumerate(laborable_days) }
         self.indisponibilitats = self._indisponibilities(config)
         self.preferencies = self._preferences()
 
-    def _saveNamesAndTurns(self, ideals):
-        persons = list(ideals.keys())
+    def _saveNamesAndTurns(self, fulls):
+        persons = list(fulls.keys())
         random.shuffle(persons)
-        shuffled_ideals = [(key, ideals[key]) for key in persons]
-        names, turns = zip(*shuffled_ideals)
-        self.nTorns = list(turns)
+        shuffled_fulls = [(key, fulls[key]) for key in persons]
+        names, turns = zip(*shuffled_fulls)
+        self.nTorns  = list(turns)
         self.names = list(names)
 
     def _indisponibilities(self, config):

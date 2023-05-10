@@ -7,12 +7,18 @@ from yamlns import namespace as ns
 
 from .minizinc import Menu
 from .minizinc import solve_problem
+from pathlib import Path
 
 # TODO: real fixture ?
 def fixture():
     return ns(
         monday=datetime.datetime(2023, 3, 27),
         idealLoad=ns(
+            goku=4,
+            vegeta=4,
+            krilin=4,
+        ),
+        fullLoad=ns(
             goku=4,
             vegeta=4,
             krilin=4,
@@ -41,6 +47,13 @@ def fixture():
         colors=[],
         extensions=[],
         names=[],
+        holidaysfile = Path('holidays.conf').write_text(
+            "2020-12-24\tNadal\n"
+            "2020-12-25\tNadal\n"
+            "2020-12-26\tNadal\n"
+            "",
+            encoding='utf8',
+        )
     )
 
 
@@ -77,7 +90,7 @@ class Menu_Test(unittest.TestCase):
         # When we get a menu
         config = fixture()
         menu = Menu(config)
-        given_persons = list(config.idealLoad.keys())
+        given_persons = list(config.fullLoad.keys())
         shuffled_persons = menu.names
         # then we have the persons shuffled
         self.assertEqual(len(shuffled_persons), len(given_persons))
@@ -86,8 +99,8 @@ class Menu_Test(unittest.TestCase):
         # and the turns well saved
         for i, torns in enumerate(menu.nTorns):
             name = menu.names[i]
-            ideal_load = config.idealLoad[name]
-            self.assertEqual(ideal_load, torns)
+            full_load = config.fullLoad[name]
+            self.assertEqual(full_load, torns)
 
     def test_indisponibilities(self):
         # Given a config with all the needed parameters
@@ -247,7 +260,7 @@ class Minizinc_Test(unittest.TestCase):
     def test_solve_problem_ko(self):
         # Given well formatted config but no solution
         config = fixture()
-        config.idealLoad.goku = 1
+        config.fullLoad.goku = 1
         # When we call the solve problem method
         solution = solve_problem(config, ['chuffed', 'coin-bc'])
         # Then we do not have a solution
