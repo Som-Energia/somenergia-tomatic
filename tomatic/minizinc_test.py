@@ -47,13 +47,7 @@ def fixture():
         colors=[],
         extensions=[],
         names=[],
-        holidaysfile = Path('holidays.conf').write_text(
-            "2020-12-24\tNadal\n"
-            "2020-12-25\tNadal\n"
-            "2020-12-26\tNadal\n"
-            "",
-            encoding='utf8',
-        )
+        holidaysfile = Path('holidays.conf')
     )
 
 
