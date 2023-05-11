@@ -174,7 +174,7 @@ class Storage(object):
         timetable = self.load(week)
         # TODO: Ensure day, houri, turni and name are in timetable
         oldName = timetable.timetable[day][int(houri)][int(turni)]
-        if name == 'ningu' and occurrencesInTurn(timetable, day, houri, name) == CONFIG.maxNingusPerTurn:
+        if name == 'ningu' and occurrencesInTurn(timetable, day, houri, name) == CONFIG.maxNingusPerTurnInEdition:
             raise BadEdit("Hi ha masses Ningu en aquest torn")
         timetable.timetable[day][int(houri)][int(turni)] = name
         timetable.overload = timetable.get('overload', ns())

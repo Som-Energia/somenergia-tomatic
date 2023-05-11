@@ -49,6 +49,7 @@ costLimit: 200
 descartaNoPrometedores: true
 deixaEsmorzar: true
 maxNingusPerTurn: 10
+maxNingusPerTurnInEdition: 2
 noVolenEsmorzar:
 - david
 - ningu
