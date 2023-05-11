@@ -9,6 +9,7 @@ from .minizinc import Menu
 from .minizinc import solve_problem
 from pathlib import Path
 
+
 # TODO: real fixture ?
 def fixture():
     return ns(
@@ -47,7 +48,6 @@ def fixture():
         colors=[],
         extensions=[],
         names=[],
-        holidaysfile = Path('holidays.conf')
     )
 
 
@@ -70,6 +70,29 @@ def make_minizinc_ns_result(timetable, cost):
 
 class Menu_Test(unittest.TestCase):
     from somutils.testutils import assertNsEqual
+
+    def setUp(self):
+        self.todelete=[]
+        self.holidaysfile = Path('holidays.conf')
+        self.oldholidays = None
+        if self.holidaysfile.exists():
+            self.oldholidays = self.holidaysfile.read_text(encoding='utf8')
+        self.holidaysfile.write_text(
+            "2020-12-24\tNadal\n"
+            "2020-12-25\tNadal\n"
+            "2020-12-26\tNadal\n"
+            "",
+            encoding='utf8',
+        )
+
+    def tearDown(self):
+        for filename in self.todelete:
+            os.remove(filename)
+        if self.oldholidays is None:
+            self.holidaysfile.unlink()
+        else:
+            self.holidaysfile.write_text(
+                self.oldholidays, encoding='utf8')
 
     def test_create_menu_instance(self):
         # Given a config with all the needed paramenters
@@ -241,6 +264,29 @@ class Menu_Test(unittest.TestCase):
 
 
 class Minizinc_Test(unittest.TestCase):
+
+    def setUp(self):
+        self.todelete=[]
+        self.holidaysfile = Path('holidays.conf')
+        self.oldholidays = None
+        if self.holidaysfile.exists():
+            self.oldholidays = self.holidaysfile.read_text(encoding='utf8')
+        self.holidaysfile.write_text(
+            "2020-12-24\tNadal\n"
+            "2020-12-25\tNadal\n"
+            "2020-12-26\tNadal\n"
+            "",
+            encoding='utf8',
+        )
+
+    def tearDown(self):
+        for filename in self.todelete:
+            os.remove(filename)
+        if self.oldholidays is None:
+            self.holidaysfile.unlink()
+        else:
+            self.holidaysfile.write_text(
+                self.oldholidays, encoding='utf8')
 
     def test_solve_problem_ok(self):
         # Given well formatted config
