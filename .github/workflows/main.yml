@@ -32,7 +32,15 @@ jobs:
         run: |
           sudo apt install gcc libffi-dev libssl-dev nodejs npm libyaml-dev libxslt1-dev
           sudo apt install rustc cargo # needed for pip cryptography in some python versions without egg
-          sudo apt install minizinc # needed for the scheduler
+          sudo apt install libegl1 libfuse2 # minizinc dependencies not in the appimage
+      - name: Minizinc installation
+        run: |
+          wget -q https://github.com/MiniZinc/MiniZincIDE/releases/download/2.7.4/MiniZincIDE-2.7.4-x86_64.AppImage
+          mv MiniZincIDE-2.7.4-x86_64.AppImage /usr/local/bin/minizinc
+          chmod +x /usr/local/bin/minizinc
+          minizinc --version
+          minizinc --help
+
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
