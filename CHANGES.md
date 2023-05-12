@@ -1,5 +1,10 @@
 # Changelog
 
+## unreleased
+
+- Added minizinc related dependencies: tomato-cooker, minizinc...
+- Fixed auth tests
+
 ## 4.12.3 2023-05-05
 
 - Fix: avoid sending failure mail even when not such failure
