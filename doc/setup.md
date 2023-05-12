@@ -75,9 +75,8 @@ sudo ln -s $pwd/crontab /etc/cron.d/tomatic
 - Create a new OAuth2 client id credential
 - In dbconfig:
     - Set `tomatic.jwt.secret_key` to whatever you want
-- Create a `config.fastapi` file with env vars:
-    - Set `GOOGLE_CLIENT_ID` to the client id of the created credential
-    - Set `GOOGLE_CLIENT_SECRET` to the client secret of the created credential
+    - Set `tomatic.oauth.client_id` to the client id of the created credential
+    - Set `tomatic.oauth.client_secret` to the client secret of the created credential
 
 ### Setting up Hangouts notification
 
@@ -140,8 +139,3 @@ $ curl --max-time 1 -X POST  $BASEURL/api/info/ringring --data ext=101 --data ph
 Notice the `--max-time 1` used to avoid stalling the call if the api is down.
 And notice, also, the trailing `|| true` to ensure the call success.
 Both may be needed, depending on how you call this from you PBX.
-
-
-
-
-
