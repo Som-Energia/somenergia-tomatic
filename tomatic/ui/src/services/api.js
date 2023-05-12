@@ -4,6 +4,7 @@
 
 	const debugApi = true
 	const apiPrefix = 'http://localhost:4555'
+	const apiPrefix = ''
 
 	var api = {
 		request: function (options) {
