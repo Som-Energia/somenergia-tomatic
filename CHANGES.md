@@ -5,6 +5,12 @@
 - Added minizinc related dependencies: tomato-cooker, minizinc...
 - Fixed auth tests
 - Add `maxNingusPerTurnInEdition` parameter to `config.yaml` and set to 2
+- Google OAuth configuration does not need a separate configuration
+  file (config.fastapi) anymore. Moved to dbconfig.
+- Upgrade notes:
+    - Parameters in `config.fastapi` have been moved to `dbconfig.py`
+	- `GOOGLE_CLIENT_ID` -> `tomatic.oauth.client_id` 
+	- `GOOGLE_CLIENT_SECRET` -> `tomatic.oauth.client_secret`
 
 ## 4.12.3 2023-05-05
 

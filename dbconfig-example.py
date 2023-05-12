@@ -14,8 +14,14 @@ tomatic=ns(
         # YOU SHOULD CHANGE THIS, used to sign authentification and other critical stuff
         secret_key = "Vinga Supers!!",
         expiration = dict(
-           hours=12,
+            hours=12,
         ),
+    ),
+    oauth=ns(
+        # For new deployments, create auth2 client credentials following:
+        # https://blog.hanchon.live/guides/google-login-with-fastapi/
+        client_id='999999999999-l0ng4lp4num3riccod3.apps.googleusercontent.com'
+        client_secret='AAAAA-An0th3r4lph4num3r1c_c0d3'
     ),
     # Choose the PBX backend:
     # - fake: emulates a real PBX
