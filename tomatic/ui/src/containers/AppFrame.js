@@ -11,19 +11,37 @@ import Container from '@mui/material/Container'
 import Button from '@mui/material/Button'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import appBackground from '../images/tomatic_bg.jpg'
+import appBackground_tomatic from '../images/tomatic_bg.jpg'
+import appBackground_pebrotic from '../images/pebrotic.jpg'
+import appBackground_ketchup from '../images/ketchup.png'
 import appLogo from '../images/tomatic-logo-24.png'
 import SnackbarLogger from '../components/SnackbarLogger'
 import ProfileButton from '../components/ProfileButton'
 import LoginRequired from '../containers/LoginRequired'
 import { Link } from 'react-router-dom'
 import extraMenuOptions from '../services/extramenu'
+import Tomatic from '../services/tomatic'
 
 const pages = ['Graelles', 'Centraleta', 'Persones', 'Trucada']
-const appTitle = 'Tomàtic - Som Energia'
+
+const variantBackground = {
+  tomatic: appBackground_tomatic,
+  pebrotic: appBackground_pebrotic,
+  ketchup: appBackground_ketchup,
+}
+
+const variantTitle = {
+  tomatic: 'Tomàtic - Som Energia',
+  pebrotic: 'Pebròtic - Som Energia',
+  ketchup: 'Tomàtic Ketchup - Som Energia',
+}
 
 function ResponsiveAppBar({ children }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null)
+
+  const appBackground =
+    variantBackground[Tomatic.variant] || appBackground_tomatic
+  const appTitle = variantTitle[Tomatic.variant] || variantTitle['tomatic']
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
