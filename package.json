@@ -33,17 +33,29 @@
     "type": "git",
     "url": "git+https://github.com/Som-Energia/somenergia-tomatic.git"
   },
-  "keywords": ["phone", "asterisk", "scheduling", "crm"],
+  "keywords": [
+    "phone",
+    "asterisk",
+    "scheduling",
+    "crm"
+  ],
   "author": "Som Energia SCCL",
   "license": "AGPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/Som-Energia/somenergia-tomatic/issues"
   },
   "eslintConfig": {
-    "extends": ["react-app", "react-app/jest"]
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -58,6 +70,7 @@
     "react-app-rewire-yaml": "^1.1.0",
     "react-app-rewired": "^2.2.1",
     "react-router-dom": "^6.8.2",
+    "stylus-loader": "^7.1.0",
     "webpack-cli": "^5.0.1",
     "yaml-loader": "^0.8.0"
   }
