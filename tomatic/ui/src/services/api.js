@@ -3,7 +3,7 @@
 	import Auth from './auth'
 
 	const debugApi = true
-	const apiPrefix = 'http://localhost:4555'
+	//const apiPrefix = 'http://localhost:4555'
 	const apiPrefix = ''
 
 	var api = {
