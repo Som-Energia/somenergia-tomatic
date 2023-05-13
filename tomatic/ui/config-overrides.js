@@ -4,10 +4,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const rewireStylus = require('react-app-rewire-stylus-modules')
 const multipleEntry = require('react-app-rewire-multiple-entry')([
         {
-                entry: 'tomatic/ui/src/admin.js',
-                template: 'tomatic/ui/public/index.html',
-                outPath: '/admin.html',
-                favicon: 'tomatic/ui/src/mithril/favicon.ico',
+                entry: 'tomatic/ui/src/mithril/graella.js',
+                template: 'tomatic/ui/src/mithril/tomatic.html',
+                outPath: '/mithril.html',
+                favicon: 'tomatic/ui/public/favicon.ico',
         },
 ])
 
@@ -58,11 +58,11 @@ module.exports = {
                 paths.appPublic = path.resolve(__dirname, 'public')
                 paths.appHtml = path.resolve(
                         __dirname,
-                        'src/mithril/tomatic.html'
+                        'public/index.html',
                 )
                 paths.appIndexJs = path.resolve(
                         __dirname,
-                        'src/mithril/graella.js'
+                        'src/admin.js',
                 )
                 return paths
         },
