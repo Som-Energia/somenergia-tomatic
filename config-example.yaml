@@ -36,6 +36,7 @@ costLimit: 200 # Minimum cost to consider, partial solutions above that will be 
 descartaNoPrometedores: true # Prune partial solutions which already have bad penalty (proportional cost is very beyond the limit)
 deixaEsmorzar: true     # True to force free one of the middle time slot to lunch
 maxNingusPerTurn: 2
+maxNingusPerTurnInEdition: 2 # Maxim number of ningus when edit torn by an user
 noVolenEsmorzar: # Specific persons that do not want to lunch
 - ningu
 maximPerTaula: 2   # Maximum number of persons attending phone at the same time on the same table, to avoid cacophonies

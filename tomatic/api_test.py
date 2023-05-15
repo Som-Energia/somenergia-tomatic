@@ -96,7 +96,6 @@ class Api_Test(unittest.TestCase):
 
     @patch("tomatic.api.schedulestorage.Storage.load")
     @patch("tomatic.api.schedulestorage.Storage.save")
-    @patch.dict('tomatic.schedulestorage.CONFIG', maxNingusPerTurn=2)
     def test_editSlot_ningusLimit(self, mocked_saver, mocked_loader):
         # Given a time table
         old_time_table = self.getTimeTableObjectStructure({
