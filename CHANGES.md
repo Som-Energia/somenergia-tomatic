@@ -4,6 +4,7 @@
 
 - Added minizinc related dependencies: tomato-cooker, minizinc...
 - Fixed auth tests
+- Add `maxNingusPerTurnInEdition` parameter to `config.yaml` and set to 2
 
 ## 4.12.3 2023-05-05
 
