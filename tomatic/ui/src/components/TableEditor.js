@@ -244,7 +244,7 @@ function EnhancedTableToolbar(props) {
         </Box>
       )}
 
-      <Box sx={{ flex: '1 1 100%' }} variant="h6" id="Filter" component="div">
+      <Box variant="h6" id="Filter" component="div">
         <Search>
           <SearchIconWrapper>
             <SearchIcon />
@@ -257,6 +257,7 @@ function EnhancedTableToolbar(props) {
           />
         </Search>
       </Box>
+      <Box sx={{ flex: '1 1 100%' }}></Box>
       <ActionButtons
         actions={
           numSelected > 0 && selectionActions ? selectionActions : actions
