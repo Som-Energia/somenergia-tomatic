@@ -1,6 +1,6 @@
 # Changelog
 
-## unreleased
+## 4.12.4 2023-05-16
 
 - Added minizinc related dependencies: tomato-cooker, minizinc...
 - Fixed auth tests
