@@ -51,9 +51,26 @@ class Config:
             raise
 
     def update_shifts(self):
-        setup = ShiftLoadComputer.loadData(self.data)
-        self.data.idealLoad = setup.idealLoad
-        self.data.busyTable = setup.busyTable._table
+        config = self.data
+        setup = ShiftLoadComputer.loadData(config)
+        computer = ShiftLoadComputer(
+            nlines = config.nTelefons,
+            generalMaxPerDay = config.maximHoresDiariesGeneral,
+            maxPerDay = config.maximHoresDiaries,
+            maxOverload = config.maxOverload,
+            leaves = setup.leaves,
+            daysoff = setup.daysoff,
+            busyTable = setup.busyTable,
+            businessDays = setup.businessDays,
+            idealLoad = setup.idealLoad,
+            credits = setup.formerCredit,
+            monday = config.monday,
+            forgive = config.get('forgive', False), # TODO: Pass forgive from args to config
+            inclusters = config.get('clusterize', False), #TODO: Pass clusterize from args to config
+        )
+
+        config.finalLoad = computer.final
+        config.busyTable = setup.busyTable._table
 
     def _update_persons(self):
         from .persons import persons

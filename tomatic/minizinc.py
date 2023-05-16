@@ -24,13 +24,13 @@ class Menu:
 
     def __init__(self, config):
         laborable_days = laborableWeekDays(config.monday)
-        self.nPersones = len(config.fullLoad)
+        self.nPersones = len(config.finalLoad)
         self.nLinies = config.nTelefons
         self.nSlots = len(config.hours) - 1
         self.nNingus = config.nNingusMinizinc
         self.nDies = len(laborable_days)
         self.maxTorns = config.maximHoresDiariesGeneral
-        self._saveNamesAndTurns(config.fullLoad)
+        self._saveNamesAndTurns(config.finalLoad)
         self.laborable_days = laborable_days
         self.WEEKDAY = { day: i for i, day in enumerate(laborable_days) }
         self.indisponibilitats = self._indisponibilities(config)
