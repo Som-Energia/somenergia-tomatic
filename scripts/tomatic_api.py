@@ -90,7 +90,7 @@ def main(fake, debug, host, port, printrules, date, time, backend, queue, varian
         for rule in app.routes:
             step("- {}", rule.path)
     import uvicorn
-    uvicorn.run("tomatic.api:app", debug=debug, host=host, port=port, reload=debug)
+    uvicorn.run("tomatic.api:app", host=host, port=port, reload=debug)
     step("API stopped")
 
 if __name__=='__main__':
