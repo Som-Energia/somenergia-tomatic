@@ -1,17 +1,25 @@
 #!/usr/bin/env python
 
-from tomatic.backtracker import main as backtracking
-from tomatic.minizinc import main as minizinc
-from consolemsg import error
+from tomatic import backtracker
+from tomatic import minizinc
+from consolemsg import error, step
+import traceback
+
+def main()
+    solvers = [
+        minizinc,
+        backtracker,
+    ]
+    for solver in solvers:
+        step("Running solver {}", solver.__name__)
+        try:
+            solver.main()
+            return
+        except Exception as e:
+            error("Solver {} crashed", solver.__name__)
+            error(traceback.format_exc())
 
 if __name__ == '__main__':
-    try:
-        success = minizinc()
-    except:
-        success = False
-        error("Minizinc crashed!")
-
-    if not success:
-        backtracking()
+    main()
 
 # vim: noet
