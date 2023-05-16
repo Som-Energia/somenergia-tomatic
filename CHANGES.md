@@ -7,6 +7,8 @@
 - Add `maxNingusPerTurnInEdition` parameter to `config.yaml` and set to 2
 - Google OAuth configuration does not need a separate configuration
   file (config.fastapi) anymore. Moved to dbconfig.
+- Fix Minizinc to use finalLoad instead of idealLoad
+- Remove degub parameter from uvicorn to be compatible with new version
 - Upgrade notes:
     - Parameters in `config.fastapi` have been moved to `dbconfig.py`
 	- `GOOGLE_CLIENT_ID` -> `tomatic.oauth.client_id` 
