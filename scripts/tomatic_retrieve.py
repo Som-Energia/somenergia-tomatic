@@ -115,8 +115,8 @@ def main():
     step('Carregant configuració {}...', args.config_file)
     try:
         config = ns.load(args.config_file)
-    except:
-        error("Configuració incorrecta")
+    except Exception as e:
+        error("Error llegint {}: {}", args.config_file, e)
         raise
 
     if args.date is not None:

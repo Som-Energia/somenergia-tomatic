@@ -23,6 +23,10 @@ class Config:
         step('Carregant configuració {}...', config_file)
         try:
             self.data = ns.load(config_file)
+        except Exception as e:
+            error("Error llegint {}: {}", config_file, e)
+            raise
+        try:
             self._update_monday(date)
             not keep and downloadPersons(self.data)
             self._update_persons()
@@ -42,8 +46,8 @@ class Config:
                 not keep and step("Baixant bossa d'hores del tomatic...")
                 not keep and downloadShiftCredit(self.data)
                 self.update_shifts()
-        except:
-            error("Configuració incorrecta")
+        except Exception as e:
+            error("{}", e)
             raise
 
     def update_shifts(self):
