@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- call stats dumped into stats/ instead of the working dir
+
 ## 4.12.4 2023-05-16
 
 - Added minizinc related dependencies: tomato-cooker, minizinc...
@@ -13,6 +17,8 @@
     - Parameters in `config.fastapi` have been moved to `dbconfig.py`
 	- `GOOGLE_CLIENT_ID` -> `tomatic.oauth.client_id` 
 	- `GOOGLE_CLIENT_SECRET` -> `tomatic.oauth.client_secret`
+    - Rename old-calls/ -> stats/
+    - Move all call-YYYY-MM-DD.yaml in working dir to stats/
 
 ## 4.12.3 2023-05-05
 

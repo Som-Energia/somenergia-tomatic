@@ -8,7 +8,7 @@ TODO:
 """
 
 from yamlns import ns
-from consolemsg import step, error, success
+from consolemsg import step, error, success, fail
 from pathlib import Path
 import datetime
 import pytz
@@ -18,6 +18,8 @@ queue='atencio_client'
 
 localtz=pytz.timezone('Europe/Madrid')
 
+stats_dir = Path('stats') # TODO: Take it from configuration
+
 def p(x): print(x); return x
 
 dates = [
@@ -25,11 +27,14 @@ dates = [
         call['@calldate']/1000,
         tz=localtz,
     )
-    for calllogyaml in sorted(Path('old-calls').glob('calls-*.yaml'))
+    for calllogyaml in sorted(stats_dir.glob('calls-*.yaml'))
     for call in ns.load(calllogyaml).calls
     if call.get('call_type') == 'entrante'
     and call.get('queuename')==queue
 ]
+
+if not dates:
+    fail(f"No stats data found in {stats_dir}")
 
 import pandas as pd
 import matplotlib.pyplot as plt

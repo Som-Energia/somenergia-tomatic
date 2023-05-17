@@ -8,6 +8,7 @@ import os
 from enum import Enum
 from somutils import isodates
 from .. import persons
+from pathlib import Path
 
 def TODO(*args, **kwds):
     raise NotImplementedError()
@@ -216,7 +217,11 @@ class Irontec(object):
         stoptime = combined_timestamp_ms(date, 14) # TODO: from config
 
         calls = self.calls(queue, date)
-        ns(calls=calls).dump(f"calls-{date}.yaml")
+
+        statsDir = Path('stats')
+        statsDir.mkdir(exists_ok=True)
+        ns(calls=calls).dump(statsDir / f"calls-{date}.yaml")
+
 
         incalls = [call for call in calls if call.call_type=='entrante']
 
