@@ -19,7 +19,7 @@ def fixture():
             vegeta=4,
             krilin=4,
         ),
-        fullLoad=ns(
+        finalLoad=ns(
             goku=4,
             vegeta=4,
             krilin=4,
@@ -107,7 +107,7 @@ class Menu_Test(unittest.TestCase):
         # When we get a menu
         config = fixture()
         menu = Menu(config)
-        given_persons = list(config.fullLoad.keys())
+        given_persons = list(config.finalLoad.keys())
         shuffled_persons = menu.names
         # then we have the persons shuffled
         self.assertEqual(len(shuffled_persons), len(given_persons))
@@ -116,7 +116,7 @@ class Menu_Test(unittest.TestCase):
         # and the turns well saved
         for i, torns in enumerate(menu.nTorns):
             name = menu.names[i]
-            full_load = config.fullLoad[name]
+            full_load = config.finalLoad[name]
             self.assertEqual(full_load, torns)
 
     def test_indisponibilities(self):
@@ -300,7 +300,7 @@ class Minizinc_Test(unittest.TestCase):
     def test_solve_problem_ko(self):
         # Given well formatted config but no solution
         config = fixture()
-        config.fullLoad.goku = 1
+        config.finalLoad.goku = 1
         # When we call the solve problem method
         solution = solve_problem(config, ['chuffed', 'coin-bc'])
         # Then we do not have a solution
