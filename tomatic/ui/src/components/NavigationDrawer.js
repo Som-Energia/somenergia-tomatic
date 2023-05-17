@@ -80,6 +80,7 @@ export default function NavigationDrawer(props) {
         {items.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block' }}>
             <ListItemButton
+              title={item.text}
               component={Link}
               to={`/${item.text}`}
               sx={{
@@ -94,7 +95,6 @@ export default function NavigationDrawer(props) {
                   mr: open ? 3 : 'auto',
                   justifyContent: 'center',
                 }}
-                title={item.text}
               >
                 {item.icon}
               </ListItemIcon>
