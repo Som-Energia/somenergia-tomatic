@@ -70,7 +70,7 @@ setup(
         'aiofiles', # Static files for fastapi
         'hangups',
         'elasticsearch<8', # 8 version is incompatible with irontec server
-        'ics', # icalendar generation
+        'ics<0.8', # icalendar generation. 0.8 changes interface and not yet available in all Pythons
         'itsdangerous', # auth
         'authlib<1.0', # auth
         'httpx<1', # auth, 1.0 changes API, incompatible with fastapi 0.95.0 and earlier
