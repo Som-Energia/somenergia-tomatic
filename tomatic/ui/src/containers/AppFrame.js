@@ -1,28 +1,53 @@
 import * as React from 'react'
-import AppBar from '@mui/material/AppBar'
+import { styled } from '@mui/material/styles'
+import MuiAppBar from '@mui/material/AppBar'
+import CssBaseline from '@mui/material/CssBaseline'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import Menu from '@mui/material/Menu'
-import MenuIcon from '@mui/icons-material/Menu'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import Container from '@mui/material/Container'
 import Button from '@mui/material/Button'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
+import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
+import RecentActorsIcon from '@mui/icons-material/RecentActors'
+import SupportAgentIcon from '@mui/icons-material/SupportAgent'
+import PeopleIcon from '@mui/icons-material/People'
+import MenuIcon from '@mui/icons-material/Menu'
+import CallIcon from '@mui/icons-material/Call'
 import appBackground_tomatic from '../images/tomatic_bg.jpg'
 import appBackground_pebrotic from '../images/pebrotic.jpg'
 import appBackground_ketchup from '../images/ketchup.png'
 import appLogo from '../images/tomatic-logo-24.png'
 import SnackbarLogger from '../components/SnackbarLogger'
+import NavigationDrawer, { drawerWidth } from '../components/NavigationDrawer'
 import ProfileButton from '../components/ProfileButton'
 import LoginRequired from '../containers/LoginRequired'
 import { Link } from 'react-router-dom'
 import extraMenuOptions from '../services/extramenu'
 import Tomatic from '../services/tomatic'
 
-const pages = ['Graelles', 'Centraleta', 'Persones', 'Trucada']
+const pages = [
+  {
+    icon: <CalendarViewMonthIcon />,
+    text: 'Graelles',
+  },
+  {
+    icon: <PeopleIcon />,
+    text: 'Persones',
+  },
+  {
+    icon: <SupportAgentIcon />,
+    text: 'Centraleta',
+  },
+  {
+    icon: <CallIcon />,
+    text: 'Trucada',
+  },
+]
 
 const variantBackground = {
   tomatic: appBackground_tomatic,
@@ -36,8 +61,41 @@ const variantTitle = {
   ketchup: 'Tomàtic Ketchup - Som Energia',
 }
 
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+}))
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'drawerOpen',
+})(({ theme, drawerOpen }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(['width', 'margin'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(drawerOpen && {
+    zIndex: theme.zIndex.drawer - 1,
+    marginLeft: drawerWidth,
+    paddingLeft: {
+      xs: 0,
+      md: drawerOpen ? drawerWidth + 'px' : '60px',
+    },
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}))
+
 function ResponsiveAppBar({ children }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null)
+  const [drawerOpen, setDrawerOpen] = React.useState(false)
 
   const appBackground =
     variantBackground[Tomatic.variant] || appBackground_tomatic
@@ -58,9 +116,13 @@ function ResponsiveAppBar({ children }) {
   const handleCloseMenu = () => {
     setAnchorElMenu(null)
   }
+  const handleCloseDrawer = (event) => {
+    setDrawerOpen(false)
+  }
 
   return (
-    <>
+    <Box sx={{ displah: 'flex' }}>
+      <CssBaseline />
       <AppBar
         position="sticky"
         sx={{
@@ -70,9 +132,29 @@ function ResponsiveAppBar({ children }) {
           backgroundPosition: 'right',
           backgroundColor: 'black',
         }}
+        drawerOpen={drawerOpen}
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
+            <IconButton
+              size="large"
+              aria-label={'Open drawer'}
+              aria-controls="drawer"
+              onClick={() => setDrawerOpen(!drawerOpen)}
+              edge="start"
+              color="inherit"
+              sx={{
+                marginRight: 5,
+                ...{
+                  display: {
+                    xs: 'none',
+                    md: drawerOpen ? 'none' : 'flex',
+                  },
+                },
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
             <Box
               sx={{
                 display: {
@@ -144,16 +226,17 @@ function ResponsiveAppBar({ children }) {
                   },
                 }}
               >
-                {pages.map((page) => (
+                {pages.map((page, index) => (
                   <MenuItem
                     component={Link}
-                    to={`/${page}`}
-                    key={page.title}
+                    to={`/${page.text}`}
+                    key={index}
                     onClick={() => {
                       handleCloseNavMenu()
                     }}
                   >
-                    <Typography textAlign="center">{page}</Typography>
+                    <ListItemIcon>{page.icon}</ListItemIcon>
+                    <Typography textAlign="center">{page.text}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
@@ -198,11 +281,11 @@ function ResponsiveAppBar({ children }) {
                 },
               }}
             >
-              {pages.map((page) => (
+              {pages.map((page, index) => (
                 <Button
-                  key={page}
+                  key={index}
                   component={Link}
-                  to={`/${page}`}
+                  to={`/${page.text}`}
                   onClick={() => {
                     handleCloseNavMenu()
                   }}
@@ -214,7 +297,7 @@ function ResponsiveAppBar({ children }) {
                     textShadow: '2pt 2pt black',
                   }}
                 >
-                  {page}
+                  {page.text}
                 </Button>
               ))}
             </Box>
@@ -262,9 +345,32 @@ function ResponsiveAppBar({ children }) {
           </Toolbar>
         </Container>
       </AppBar>
-      <LoginRequired>{children}</LoginRequired>
+      <NavigationDrawer
+        id="drawer"
+        items={pages}
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        sx={{
+          display: {
+            xs: 'none',
+            md: 'flex',
+          },
+        }}
+      />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          paddingLeft: {
+            xs: 0,
+            md: drawerOpen ? drawerWidth + 'px' : '60px',
+          },
+        }}
+      >
+        <LoginRequired>{children}</LoginRequired>
+      </Box>
       <SnackbarLogger />
-    </>
+    </Box>
   )
 }
 export default ResponsiveAppBar
