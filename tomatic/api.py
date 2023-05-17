@@ -160,17 +160,19 @@ def apiVersion():
         variant = os.environ.get('TOMATIC_VARIANT', 'tomatic')
     )
 
-@app.post('/api/logger/{event}')
-@ayamlerrors
-async def logger(request: Request, event: str):
-    print("RUNNING")
-    log = ns.loads(await request.body())
-    user = log.get('user', 'anonymous')
+def log_user_event(user, event):
     timestamp = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
     logline = f"{timestamp}\t{event}\t{user}\n"
     print(logline)
-    with Path('usagelog.log').open('a') as logfile:
+    with Path('stats/usagelog.log').open('a') as logfile:
         logfile.write(logline)
+
+@app.post('/api/logger/{event}')
+@ayamlerrors
+async def logger(request: Request, event: str):
+    log = ns.loads(await request.body())
+    user = log.get('user', 'anonymous')
+    log_user_event(user, event)
     return yamlfy(
         result = 'ok',
     )
