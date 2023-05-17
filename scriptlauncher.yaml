@@ -16,6 +16,29 @@ tomatic:
           extension: csv
           filename: centraleta-historic-estadistiques.csv
 
+    weekcallprofile:
+      script: ./runhere tomatic_stats.py {output}
+      title: Centraleta - Perfil típic setmanal de trucades
+      description: >
+        Retorna una gràfica amb la distribució estadística
+        de trucades a cada hora de cada dia de la setmana
+      parameters:
+        output:
+          type: FILEDOWN
+          extension: pdf
+          filename: centraleta-perfil-horari-setmanal.pdf
+
+    downloadstats:
+      script: tar cvfz {output} stats
+      title: Centraleta - Logs en brut
+      description: >
+        Retorna un arxiu comprimit amb tots els logs de trucades.
+      parameters:
+        output:
+          type: FILEDOWN
+          extension: tar.gz
+          filename: logs-centraleta-bruts.tar.gz
+
     carregues:
       script: SOME_SRC/somenergia-tomatic/runhere tomatic_shiftload.py {monday} --clusterize --lines {numberOfLines} --summary {summary} --forgive
       # --weekshifts {load} 

@@ -12,6 +12,7 @@ from consolemsg import step, error, success, fail
 from pathlib import Path
 import datetime
 import pytz
+import sys
 #import configdb
 #queue=configdb.tomatic.irontec.queue
 queue='atencio_client'
@@ -59,5 +60,5 @@ del df['weekday']
 del df['hour']
 df = df.plot.box(by='weekdayhour', figsize=(20,10))
 plt.title(f"Calls from {firstdate.date()} to {lastdate.date()}")
-plt.savefig('call-weekly-frequency.pdf')
+plt.savefig(sys.argv[1] if len(sys.argv)>1 else 'call-weekly-frequency.pdf')
 

@@ -79,6 +79,8 @@ setup(
         'httplib2', # Google chat code
         'backports.zoneinfo; python_version < "3.9"', # Py3.8 support for Py3.9 zoneinfo
         'tomato-cooker',
+        'pandas',
+        'matplotlib',
     #],
     #tests_require=[
         'pytest-cov',
