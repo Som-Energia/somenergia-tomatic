@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.12.6 2023-05-17
+
+- Minizinc tests fixed
+- Added script launcher entries to get the weekly
+  call profile and the raw call data.
+
 ## 4.12.5 2023-05-17
 
 - call stats dumped into stats/ instead of the working dir
