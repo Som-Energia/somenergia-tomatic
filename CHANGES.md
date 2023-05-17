@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 4.12.5 2023-05-17
 
 - call stats dumped into stats/ instead of the working dir
 
