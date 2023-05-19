@@ -5,7 +5,7 @@ from tomatic import minizinc
 from consolemsg import error, step
 import traceback
 
-def main()
+def main():
     solvers = [
         minizinc,
         backtracker,
