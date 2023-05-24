@@ -219,7 +219,7 @@ class Irontec(object):
         calls = self.calls(queue, date)
 
         statsDir = Path('stats')
-        statsDir.mkdir(exists_ok=True)
+        statsDir.mkdir(exist_ok=True)
         ns(calls=calls).dump(statsDir / f"calls-{date}.yaml")
 
 
