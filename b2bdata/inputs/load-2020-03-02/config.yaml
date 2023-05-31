@@ -9,6 +9,9 @@ intervalCarrega: carrega{:02d}{:02d}{:02d}
 idealLoadNamesRange: carregaideal_noms
 idealLoadValuesRange: carregaideal_valors
 monitoringFile: taula.html
+minizincSolvers:
+- chuffed
+- coin-bc
 nTelefons: 6
 diesCerca:
 - dv

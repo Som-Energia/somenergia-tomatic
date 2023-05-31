@@ -1,20 +1,20 @@
 baseUrl: http://example.com:4555 # CLI tools will use that base url to retrieve info from the API
-appSecret: "VerySecret" # YOU SHOULD CHANGE THIS, used to sign authentification and other critical stuff
-googleAuth: # Generate them from https://console.cloud.google.com/apis/credentials
-  GOOGLE_CLIENT_ID='alongstring.apps.googleusercontent.com'
-  GOOGLE_CLIENT_SECRET='anotherlongstring'
+personsfile: persons.yaml
+monitoringFile: taula.html # file to dump the partial solutions in, for monitoring
 hangoutChannel: 'EwCesKUaJZ1yCpn3R4J4AaABAQ' # the channel id used to warn operators
+driveCertificate: drive-certificate.json
 # Drive spreadsheet with input information to compute scheduling
 documentDrive: Tomatic Control # Drive document name with the input information
 fullCarregaIdeal: "Ideal Load" # Drive sheet name containing ideal load
 idealLoadNamesRange: idealload_names # Range name for the ideal load person names
 idealLoadValuesRange: idealload_values # Range name for the ideal load values
 leavesSheet: Leaves # Drive sheet name containing the list of people in leave
-monitoringFile: taula.html # file to dump the partial solutions in, for monitoring
+minizincSolvers:
+- chuffed
+- coin-bc
 nTelefons: 6 # Number of lines
 diesCerca: ['dm', 'dv', 'dx', 'dl', 'dj',] # Search order, recommendation: harder to fit, first
 diesVisualitzacio: ['dl','dm','dx','dj','dv'] # Visualization order
-
 hours:  # Time slot limits. Last hour is the closing one
 - '09:00'
 - '10:15'
@@ -22,6 +22,8 @@ hours:  # Time slot limits. Last hour is the closing one
 - '12:45'
 - '14:00'
 computeShifts: true
+maxOverload: 0 # Max number of turns from the ideal for each person
+clusterize: true # True if people is pre-asigned to specific lines
 discriminateLines: true # True to consider a different line ordering a different solution
 pruneRedundant: false # Activate to prune line ordering other than the sorted names one
 newYearHack: false # To activate at the end of the semester or year when holidays table continues beyond the year
@@ -69,3 +71,4 @@ forced: # Forced timetable slots, mapping "[day, time, line]: person". pe. "[dx,
 
 threshold_hits: 21
 callinfoPath: callinfo
+nNingusMinizinc: 2

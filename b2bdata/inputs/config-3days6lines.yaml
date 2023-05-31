@@ -1,6 +1,9 @@
 documentDrive: Quadre de Vacances
 fullIndisponibilitats: Reunions i altres afers
 monitoringFile: taula.html
+minizincSolvers:
+- chuffed
+- coin-bc
 nTelefons: 6
 diesCerca:
 - dl

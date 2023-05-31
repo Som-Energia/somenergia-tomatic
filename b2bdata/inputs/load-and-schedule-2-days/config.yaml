@@ -10,6 +10,9 @@ idealLoadNamesRange: carregaideal_noms
 idealLoadValuesRange: carregaideal_valors
 leavesSheet: Baixes
 monitoringFile: taula.html
+minizincSolvers:
+- chuffed
+- coin-bc
 nTelefons: 6
 diesCerca:
 - dj
