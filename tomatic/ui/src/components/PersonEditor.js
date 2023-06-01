@@ -255,7 +255,6 @@ export default function PersonEditor(props) {
           </Select>
           <FormHelperText>{fields['table'].help}</FormHelperText>
         </FormControl>
-        {/* TODO: Use a color picker */}
         <MuiColorInput
           id="color"
           value={'#' + (data.color || 'ffffff')}

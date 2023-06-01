@@ -17,7 +17,7 @@ var iconPlus =  require('mmsvg/templarian/msvg/plus');
 var iconDelete =  require('mmsvg/google/msvg/action/delete');
 
 function nextMonday(date) {
-	var d = d || new Date();
+	var d = date || new Date();
 	d.setDate(d.getDate() + 14 - (6+d.getDay())%7);
 	return d.toISOString().substr(0,10);
 }

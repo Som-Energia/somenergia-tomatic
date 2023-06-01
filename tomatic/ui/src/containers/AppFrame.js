@@ -13,7 +13,6 @@ import Button from '@mui/material/Button'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
-import RecentActorsIcon from '@mui/icons-material/RecentActors'
 import SupportAgentIcon from '@mui/icons-material/SupportAgent'
 import PeopleIcon from '@mui/icons-material/People'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -61,15 +60,6 @@ const variantTitle = {
   ketchup: 'Tomàtic Ketchup - Som Energia',
 }
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}))
-
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'drawerOpen',
 })(({ theme, drawerOpen }) => ({
@@ -115,9 +105,6 @@ function ResponsiveAppBar({ children }) {
   }
   const handleCloseMenu = () => {
     setAnchorElMenu(null)
-  }
-  const handleCloseDrawer = (event) => {
-    setDrawerOpen(false)
   }
 
   return (
