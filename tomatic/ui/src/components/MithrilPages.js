@@ -9,6 +9,7 @@ import MithrilStyler from '../containers/MithrilStyler'
 import TimeTablePage from '../mithril/components/timetablepage'
 import CallinfoPage from '../mithril/components/callinfopage'
 import PbxPage from '../mithril/components/pbxpage'
+import PersonsPage from '../mithril/components/personspage'
 
 function MithrilCallinfoPage() {
   return <MithrilWrapper component={MithrilStyler(CallinfoPage)} />
@@ -22,4 +23,13 @@ function MithrilQueueMonitor() {
   return <MithrilWrapper component={MithrilStyler(PbxPage)} />
 }
 
-export { MithrilCallinfoPage, MithrilQueueMonitor, MithrilTimeTablePage }
+function MithrilPersonsPage() {
+  return <MithrilWrapper component={MithrilStyler(PersonsPage)} />
+}
+
+export {
+  MithrilCallinfoPage,
+  MithrilQueueMonitor,
+  MithrilTimeTablePage,
+  MithrilPersonsPage,
+}

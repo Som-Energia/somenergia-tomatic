@@ -1,5 +1,6 @@
 var CallInfoPage = require('../mithril/components/callinfopage')
 var Tomatic = require('../services/tomatic')
+const { redirect, useNavigate } = require('react-router-dom')
 
 const scriptLauncherBase = 'http://tomatic.somenergia.lan:5000'
 const menuOptions = function () {
@@ -57,12 +58,8 @@ const menuOptions = function () {
 		},
 		{
 			icon: '🦸‍♀️',
-			navigation: true,
 			title: 'Administració',
-			action: function () {
-				const url = 'admin.html'
-				window.open(url, '_blank')
-			},
+			route: '/Administration',
 		},
 		{
 			icon: '🛟',

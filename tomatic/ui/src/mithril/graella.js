@@ -12,7 +12,7 @@ var iconMore = require('mmsvg/google/msvg/navigation/more-vert')
 
 var Tomatic = require('../services/tomatic')
 var Login = require('./components/login')
-var Persons = require('./components/persons')
+var PersonsPage = require('./components/personspage').default
 var TimeTablePage = require('./components/timetablepage')
 var MenuButton = require('./components/menubutton')
 var LoginPage = require('./components/loginpage')
@@ -63,18 +63,6 @@ const toolbarRow = function (title) {
 			options: extraMenuOptions(),
 		}),
 	])
-}
-
-var PersonsPage = {
-	view: function () {
-		return m('', [
-			Doc(
-				'Permet modificar la configuració personal de cadascú: ' +
-					'Color, taula, extensió, indisponibilitats...'
-			),
-			Persons(Tomatic.persons().extensions),
-		])
-	},
 }
 
 const applicationPages = ['Graelles', 'Centraleta', 'Persones', 'Trucada']

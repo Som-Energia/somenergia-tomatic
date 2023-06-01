@@ -10,6 +10,7 @@ import {
   MithrilCallinfoPage,
   MithrilTimeTablePage,
   MithrilQueueMonitor,
+  MithrilPersonsPage,
 } from './components/MithrilPages'
 
 Tomatic.init()
@@ -25,10 +26,18 @@ const router = createHashRouter(
       ),
     },
     {
-      path: '/Persones',
+      path: '/Administration',
       element: (
         <AppFrame>
           <PersonsTable />
+        </AppFrame>
+      ),
+    },
+    {
+      path: '/Persones',
+      element: (
+        <AppFrame>
+          <MithrilPersonsPage />
         </AppFrame>
       ),
     },

@@ -25,7 +25,7 @@ import SnackbarLogger from '../components/SnackbarLogger'
 import NavigationDrawer, { drawerWidth } from '../components/NavigationDrawer'
 import ProfileButton from '../components/ProfileButton'
 import LoginRequired from '../containers/LoginRequired'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import extraMenuOptions from '../services/extramenu'
 import Tomatic from '../services/tomatic'
 
@@ -86,6 +86,7 @@ const AppBar = styled(MuiAppBar, {
 function ResponsiveAppBar({ children }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [drawerOpen, setDrawerOpen] = React.useState(false)
+  const navigate = useNavigate()
 
   const appBackground =
     variantBackground[Tomatic.variant] || appBackground_tomatic
@@ -320,6 +321,10 @@ function ResponsiveAppBar({ children }) {
                     key={i}
                     onClick={() => {
                       handleCloseMenu()
+                      if (option.route) {
+                        navigate(option.route)
+                        return
+                      }
                       option.action()
                     }}
                   >
