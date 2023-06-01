@@ -21,19 +21,25 @@
   File "/home/vokimon/somenergia/tomatic/.venv/lib/python3.11/site-packages/yamlns/__init__.py", line 40, in __getattr__
     return self[name]
            ~~~~^^^^^^
-KeyError: 'minizincSolvers'
+KeyError: 'nNingusMinizinc'
 
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
   File "/home/vokimon/somenergia/tomatic/scripts/tomatic_scheduler.py", line 16, in main
     solver.main()
-  File "/home/vokimon/somenergia/tomatic/tomatic/minizinc.py", line 154, in main
-    solvers = config.data.minizincSolvers
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokimon/somenergia/tomatic/tomatic/minizinc.py", line 155, in main
+    solution = solve_problem(config.data, solvers)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokimon/somenergia/tomatic/tomatic/minizinc.py", line 125, in solve_problem
+    menu = Menu(config)
+           ^^^^^^^^^^^^
+  File "/home/vokimon/somenergia/tomatic/tomatic/minizinc.py", line 30, in __init__
+    self.nNingus = config.nNingusMinizinc
+                   ^^^^^^^^^^^^^^^^^^^^^^
   File "/home/vokimon/somenergia/tomatic/.venv/lib/python3.11/site-packages/yamlns/__init__.py", line 42, in __getattr__
     raise AttributeError(name)
-AttributeError: minizincSolvers
+AttributeError: nNingusMinizinc
 [0m
 [34;1m:: Running solver tomatic.backtracker[0m
 [34;1m:: Carregant configuració config.yaml...[0m
