@@ -24,11 +24,11 @@ class Menu:
 
     def __init__(self, config):
         laborable_days = laborableWeekDays(config.monday)
-        self.nPersones = len(config.finalLoad)
-        self.nLinies = config.nTelefons
-        self.nSlots = len(config.hours) - 1
+        self.nPersons = len(config.finalLoad)
+        self.nLines = config.nTelefons
+        self.nHours = len(config.hours) - 1
         self.nNingus = config.nNingusMinizinc
-        self.nDies = len(laborable_days)
+        self.nDays = len(laborable_days)
         self.maxTorns = config.maximHoresDiariesGeneral
         self._saveNamesAndTurns(config.finalLoad)
         self.laborable_days = laborable_days
@@ -46,7 +46,7 @@ class Menu:
 
     def _indisponibilities(self, config):
         persons_indisponibilities = {
-            name: [set() for _ in range(self.nDies)] for name in self.names
+            name: [set() for _ in range(self.nDays)] for name in self.names
         }
         for day, turn, name in config.busyTable:
             if config.busyTable[(day, turn, name)] and day in self.laborable_days:
@@ -57,28 +57,28 @@ class Menu:
         return indisponibilities
 
     def _forcedTurns(self, config):
-        forcedTurns = [set() for _ in range(self.nPersones * self.nDies)]
+        forcedTurns = [set() for _ in range(self.nPersons * self.nDays)]
         for ((day, hour, line), person) in config.get('forced',{}).items():
             if day not in self.laborable_days: continue
             if person not in self.names: continue
 
             iday = self.laborable_days.index(day)
             iperson = self.names.index(person)
-            idx = iperson * self.nDies + iday
+            idx = iperson * self.nDays + iday
             forcedTurns[idx].add(hour+1)
         return forcedTurns
 
     def ingredients(self):
         return dict(
-            nPersones=self.nPersones,
-            nLinies=self.nLinies,
-            nSlots=self.nSlots,
+            nPersons=self.nPersons,
+            nLines=self.nLines,
+            nHours=self.nHours,
             nNingus=self.nNingus,
-            nDies=self.nDies,
+            nDays=self.nDays,
             maxTorns=self.maxTorns,
             nTorns=self.nTorns,
             indisponibilitats=self.indisponibilitats,
-            forcedTurns=self.forcedTurns
+            forcedTurns=self.forcedTurns,
         )
 
     def translate(self, solution, config):
@@ -86,8 +86,8 @@ class Menu:
         timetable = {
             day: [
                 [
-                    self.NINGU for _ in range(self.nLinies)
-                ] for _ in range(self.nSlots)
+                    self.NINGU for _ in range(self.nLines)
+                ] for _ in range(self.nHours)
             ] for day in days
         }
 
