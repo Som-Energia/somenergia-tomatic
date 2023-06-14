@@ -34,7 +34,7 @@ class Menu:
         self.laborable_days = laborable_days
         self.WEEKDAY = { day: i for i, day in enumerate(laborable_days) }
         self.indisponibilitats = self._indisponibilities(config)
-        self.forcedTurns = self._forcedTurns()
+        self.forcedTurns = self._forcedTurns(config)
 
     def _saveNamesAndTurns(self, fulls):
         persons = list(fulls.keys())
@@ -56,8 +56,7 @@ class Menu:
             indisponibilities.extend(persons_indisponibilities[name])
         return indisponibilities
 
-    # TODO: Read forcedTurns from 🕳️
-    def _forcedTurns(self):
+    def _forcedTurns(self, config):
         forcedTurns = [set() for _ in range(self.nPersones * self.nDies)]
         return forcedTurns
 

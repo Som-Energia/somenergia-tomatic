@@ -137,6 +137,18 @@ class Menu_Test(unittest.TestCase):
             )
         self.assertEqual(expected_indisponibilities, menu.indisponibilitats)
 
+    def test_forcedTurns_whenMissing(self):
+        # Given a config with all the needed parameters
+        # When we get a menu
+        nDays = 5 # week with no festivities
+        config = fixture()
+        menu = Menu(config)
+
+        self.assertEqual(menu.forcedTurns, [
+            set()
+            for _ in range(len(config.finalLoad) * nDays)
+        ])
+
     @patch("tomatic.minizinc.laborableWeekDays")
     def test_indisponibilities_with_holidays(self, mocked_laborableWeekDays):
         mocked_laborableWeekDays.return_value = ['dl', 'dm', 'dx', 'dj']
