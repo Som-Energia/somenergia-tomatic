@@ -60,6 +60,7 @@ class Menu:
         forcedTurns = [set() for _ in range(self.nPersones * self.nDies)]
         for ((day, hour, line), person) in config.get('forced',{}).items():
             if day not in self.laborable_days: continue
+            if person not in self.names: continue
 
             iday = self.laborable_days.index(day)
             iperson = self.names.index(person)

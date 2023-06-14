@@ -161,7 +161,7 @@ class Menu_Test(unittest.TestCase):
         line = 3
         config = fixture()
         config.forced = {
-            (day, hour-1 , line): 'goku'
+            (day, hour-1 , line): person
         }
         menu = Menu(config)
         expectation = [
@@ -186,7 +186,27 @@ class Menu_Test(unittest.TestCase):
         line = 3
         config = fixture()
         config.forced = {
-            (day, hour-1 , line): 'goku'
+            (day, hour-1 , line): person
+        }
+        menu = Menu(config)
+        expectation = [
+            set()
+            for idx in range(len(config.finalLoad) * nDays)
+        ]
+        self.assertEqual(menu.forcedTurns, expectation)
+
+    def test_forcedTurns_withAMissingPerson(self):
+        # Given a config with all the needed parameters
+        # When we get a menu
+        nDays = 5 # week with no festivities
+        day = 'dm'
+        iday = fullWeekdays.index(day)
+        person = 'mortadelo' # Not in Dragon Ball
+        hour = 1
+        line = 3
+        config = fixture()
+        config.forced = {
+            (day, hour-1 , line): person
         }
         menu = Menu(config)
         expectation = [
