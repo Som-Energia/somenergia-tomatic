@@ -134,7 +134,6 @@ def solve_problem(config, solvers):
 
 
 def main():
-    global args
     args = parseArgs()
     config = Config(
         args.config_file,

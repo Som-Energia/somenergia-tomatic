@@ -647,8 +647,6 @@ def parseArgs():
 
     return parser.parse_args()
 
-args=None
-
 def main():
     from .retriever import (
         downloadPersons,
@@ -660,8 +658,6 @@ def main():
         downloadShiftCredit,
         addDays,
     )
-
-    global args
 
     args = parseArgs()
 

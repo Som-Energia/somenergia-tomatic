@@ -297,7 +297,7 @@ class Backtracker(object):
 
         message = log or motiu
 
-        if motiu in args.verbose or 'all' in args.verbose:
+        if motiu in config.verbose or 'all' in config.verbose:
             warn(message)
 
         # Do not log when a more complete solution solution exists
@@ -593,7 +593,7 @@ class Backtracker(object):
                     .format(self.cost+cost))
                 break
 
-            if self.config.mostraCami or args.track:
+            if self.config.mostraCami:
                 if len(partial) < self.config.maximCamiAMostrar :
                     out("  "*len(partial)+company[:2])
 
@@ -839,8 +839,6 @@ def parseArgs():
 
     return parser.parse_args()
 
-args=None
-
 def main():
     from .retriever import (
         downloadPersons,
@@ -855,8 +853,6 @@ def main():
         addDays,
     )
 
-    global args
-
     args = parseArgs()
 
     step('Carregant configuració {}...', args.config_file)
@@ -865,6 +861,11 @@ def main():
     except:
         error("Configuració incorrecta")
         raise
+
+    if args.verbose:
+        config.verbose = args.verbose
+    if args.track:
+        config.mostraCami = True
 
     if args.personsfile:
         config.personsfile = args.personsfile
