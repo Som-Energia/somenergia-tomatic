@@ -34,7 +34,7 @@ class Menu:
         self.laborable_days = laborable_days
         self.WEEKDAY = { day: i for i, day in enumerate(laborable_days) }
         self.indisponibilitats = self._indisponibilities(config)
-        self.preferencies = self._preferences()
+        self.forcedTurns = self._forcedTurns()
 
     def _saveNamesAndTurns(self, fulls):
         persons = list(fulls.keys())
@@ -56,10 +56,10 @@ class Menu:
             indisponibilities.extend(persons_indisponibilities[name])
         return indisponibilities
 
-    # TODO: Read preferences from 🕳️
-    def _preferences(self):
-        preferences = [set() for _ in range(self.nPersones * self.nDies)]
-        return preferences
+    # TODO: Read forcedTurns from 🕳️
+    def _forcedTurns(self):
+        forcedTurns = [set() for _ in range(self.nPersones * self.nDies)]
+        return forcedTurns
 
     def ingredients(self):
         return dict(
@@ -71,7 +71,7 @@ class Menu:
             maxTorns=self.maxTorns,
             nTorns=self.nTorns,
             indisponibilitats=self.indisponibilitats,
-            preferencies=self.preferencies
+            forcedTurns=self.forcedTurns
         )
 
     def translate(self, solution, config):
