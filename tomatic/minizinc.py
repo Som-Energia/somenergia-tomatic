@@ -37,12 +37,8 @@ class Menu:
         self.forcedTurns = self._forcedTurns(config)
 
     def _saveNamesAndTurns(self, fulls):
-        persons = list(fulls.keys())
-        random.shuffle(persons)
-        shuffled_fulls = [(key, fulls[key]) for key in persons]
-        names, turns = zip(*shuffled_fulls)
-        self.nTorns  = list(turns)
-        self.names = list(names)
+        self.names = random.sample(list(fulls), len(fulls))
+        self.nTorns = [fulls[p] for p in self.names]
 
     def _indisponibilities(self, config):
         persons_indisponibilities = {
@@ -79,6 +75,7 @@ class Menu:
             nTorns=self.nTorns,
             indisponibilitats=self.indisponibilitats,
             forcedTurns=self.forcedTurns,
+            names=self.names,
         )
 
     def translate(self, solution, config):
@@ -93,8 +90,8 @@ class Menu:
 
         for day, turns in zip(self.laborable_days, solution.solution.ocupacioSlot):
             for turn_i, turn in enumerate(turns):
-                for slot_i, person in enumerate(turn):
-                    timetable[day][turn_i][slot_i] = self.names[person-1]
+                for slot_i, person in enumerate(sorted(turn)):
+                    timetable[day][turn_i][slot_i] = person
 
         result = ns(
             week=f'{config.monday}',

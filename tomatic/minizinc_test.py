@@ -240,15 +240,14 @@ class Menu_Test(unittest.TestCase):
         # Given a solution and a config
         config = fixture()
         menu = Menu(config)
-        menu.names = ['goku', 'vegeta', 'krilin']
         solution = ns(
             solution=ns(
                 ocupacioSlot=[
-                    [{3, 2}],  # dl
-                    [{3, 1}],  # dm
-                    [{1, 2}],  # dx
-                    [{1, 2}],  # dj
-                    [{3, 2}],  # dv
+                    [{'krilin', 'vegeta'}],  # dl
+                    [{'krilin', 'goku'}],  # dm
+                    [{'goku', 'vegeta'}],  # dx
+                    [{'goku', 'vegeta'}],  # dj
+                    [{'krilin', 'vegeta'}],  # dv
                 ],
                 totalTorns=10
             )
@@ -260,11 +259,11 @@ class Menu_Test(unittest.TestCase):
         # Then we get the result as the expected namespace
         expected = make_minizinc_ns_result(
             timetable={
-                'dl': [['vegeta', 'krilin']],
+                'dl': [['krilin', 'vegeta']],
                 'dm': [['goku', 'krilin']],
                 'dx': [['goku', 'vegeta']],
                 'dj': [['goku', 'vegeta']],
-                'dv': [['vegeta', 'krilin']]
+                'dv': [['krilin', 'vegeta']],
             },
             cost=10
         )
@@ -275,15 +274,14 @@ class Menu_Test(unittest.TestCase):
         # Given a solution and a config
         config = fixture()
         menu = Menu(config)
-        menu.names = ['goku', 'vegeta', 'krilin']
         solution = ns(
             solution=ns(
                 ocupacioSlot=[
-                    [{3}],  # dl
-                    [{3, 1}],  # dm
-                    [{1, 2}],  # dx
-                    [{1}],  # dj
-                    [{3, 2}],  # dv
+                    [{'krilin'}],  # dl
+                    [{'krilin', 'goku'}],  # dm
+                    [{'goku', 'vegeta'}],  # dx
+                    [{'goku'}],  # dj
+                    [{'krilin', 'vegeta'}],  # dv
                 ],
                 totalTorns=10
             )
@@ -299,7 +297,7 @@ class Menu_Test(unittest.TestCase):
                 'dm': [['goku', 'krilin']],
                 'dx': [['goku', 'vegeta']],
                 'dj': [['goku', 'ningu']],
-                'dv': [['vegeta', 'krilin']]
+                'dv': [['krilin', 'vegeta']]
             },
             cost=10
         )
@@ -310,15 +308,14 @@ class Menu_Test(unittest.TestCase):
         # Given a solution and a config with one holiday
         config = fixture()
         menu = Menu(config)
-        menu.names = ['goku', 'vegeta', 'krilin']
         menu.laborable_days = ['dl', 'dm', 'dx', 'dv']
         solution = ns(
             solution=ns(
                 ocupacioSlot=[
-                    [{3}],  # dl
-                    [{3, 1}],  # dm
-                    [{1, 2}],  # dx
-                    [{1}],  # dv
+                    [{'krilin'}],  # dl
+                    [{'krilin', 'goku'}],  # dm
+                    [{'goku', 'vegeta'}],  # dx
+                    [{'goku'}],  # dv
                 ],
                 totalTorns=8
             )
