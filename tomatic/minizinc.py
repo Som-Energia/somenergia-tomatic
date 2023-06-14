@@ -58,6 +58,13 @@ class Menu:
 
     def _forcedTurns(self, config):
         forcedTurns = [set() for _ in range(self.nPersones * self.nDies)]
+        for ((day, hour, line), person) in config.get('forced',{}).items():
+            if day not in self.laborable_days: continue
+
+            iday = self.laborable_days.index(day)
+            iperson = self.names.index(person)
+            idx = iperson * self.nDies + iday
+            forcedTurns[idx].add(hour+1)
         return forcedTurns
 
     def ingredients(self):

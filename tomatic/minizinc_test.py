@@ -7,6 +7,7 @@ from yamlns import namespace as ns
 
 from .minizinc import Menu
 from .minizinc import solve_problem
+from .busy import weekdays as fullWeekdays
 from pathlib import Path
 
 
@@ -148,6 +149,51 @@ class Menu_Test(unittest.TestCase):
             set()
             for _ in range(len(config.finalLoad) * nDays)
         ])
+
+    def test_forcedTurns_withAForcedTurn(self):
+        # Given a config with all the needed parameters
+        # When we get a menu
+        nDays = 5 # week with no festivities
+        day = 'dm'
+        iday = fullWeekdays.index(day)
+        person = 'goku'
+        hour = 1
+        line = 3
+        config = fixture()
+        config.forced = {
+            (day, hour-1 , line): 'goku'
+        }
+        menu = Menu(config)
+        expectation = [
+            set()
+            for idx in range(len(config.finalLoad) * nDays)
+        ]
+        iperson = menu.names.index(person)
+        expectation[iday + nDays*iperson] = {hour}
+
+        self.assertEqual(menu.forcedTurns, expectation)
+
+    @patch("tomatic.minizinc.laborableWeekDays")
+    def test_forcedTurns_withAForcedTurn_inAFestivity_ignored(self, mocked_laborableWeekDays):
+        mocked_laborableWeekDays.return_value = ['dl', 'dx', 'dj', 'dv'] # dm removed
+        # Given a config with all the needed parameters
+        # When we get a menu
+        nDays = 4 # week with a festivity
+        day = 'dm'
+        iday = fullWeekdays.index(day)
+        person = 'goku'
+        hour = 1
+        line = 3
+        config = fixture()
+        config.forced = {
+            (day, hour-1 , line): 'goku'
+        }
+        menu = Menu(config)
+        expectation = [
+            set()
+            for idx in range(len(config.finalLoad) * nDays)
+        ]
+        self.assertEqual(menu.forcedTurns, expectation)
 
     @patch("tomatic.minizinc.laborableWeekDays")
     def test_indisponibilities_with_holidays(self, mocked_laborableWeekDays):
