@@ -12,6 +12,7 @@ from .scheduling import (
     nextweek,
     choosers,
     Scheduling,
+    timetable2forced,
 )
 
 class Scheduling_Test(unittest.TestCase):
@@ -947,6 +948,104 @@ class Scheduling_Test(unittest.TestCase):
                   cesar:  César
                   victor: Víctor
             """)
+
+    def test_timetable2forcedTurns_baseCase(self):
+        timetable = ns.loads("""\
+              dl:
+              - - jordi
+                - tania
+              - - tania
+                - silvia
+              - - judith
+                - ana
+              - - ana
+                - erola
+              dm:
+              - - pere
+                - victor
+              - - carles
+                - ana
+              - - joan
+                - eduard
+              - - david
+                - monica
+              dx:
+              - - yaiza
+                - pere
+              - - erola
+                - marta
+              - - victor
+                - jordi
+              - - eduard
+                - victor
+              dj:
+              - - judith
+                - carles
+              - - silvia
+                - judith
+              - - monica
+                - judit
+              - - judit
+                - joan
+              dv:
+              - - ana
+                - judith
+              - - jordi
+                - ana
+              - - victor
+                - carles
+              - - marta
+                - silvia
+        """)
+        forced = timetable2forced(timetable)
+        self.assertNsEqual(forced, """\
+              [dl, 0, 0]: jordi
+              [dl, 0, 1]: tania
+              [dl, 1, 0]: tania
+              [dl, 1, 1]: silvia
+              [dl, 2, 0]: judith
+              [dl, 2, 1]: ana
+              [dl, 3, 0]: ana
+              [dl, 3, 1]: erola
+
+              [dm, 0, 0]: pere
+              [dm, 0, 1]: victor
+              [dm, 1, 0]: carles
+              [dm, 1, 1]: ana
+              [dm, 2, 0]: joan
+              [dm, 2, 1]: eduard
+              [dm, 3, 0]: david
+              [dm, 3, 1]: monica
+
+              [dx, 0, 0]: yaiza
+              [dx, 0, 1]: pere
+              [dx, 1, 0]: erola
+              [dx, 1, 1]: marta
+              [dx, 2, 0]: victor
+              [dx, 2, 1]: jordi
+              [dx, 3, 0]: eduard
+              [dx, 3, 1]: victor
+
+              [dj, 0, 0]: judith
+              [dj, 0, 1]: carles
+              [dj, 1, 0]: silvia
+              [dj, 1, 1]: judith
+              [dj, 2, 0]: monica
+              [dj, 2, 1]: judit
+              [dj, 3, 0]: judit
+              [dj, 3, 1]: joan
+
+              [dv, 0, 0]: ana
+              [dv, 0, 1]: judith
+              [dv, 1, 0]: jordi
+              [dv, 1, 1]: ana
+              [dv, 2, 0]: victor
+              [dv, 2, 1]: carles
+              [dv, 3, 0]: marta
+              [dv, 3, 1]: silvia
+        """)
+
+
 
 
 unittest.TestCase.__str__ = unittest.TestCase.id

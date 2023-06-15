@@ -130,7 +130,13 @@ def solution2schedule(config, solution, date=None):
     result.names = config.get('names', {})
     return result
 
-
+def timetable2forced(timetable):
+    result = ns()
+    for day, hours in timetable.items():
+        for hour, lines in enumerate(hours):
+            for line, person in enumerate(lines):
+                result[day, hour, line] = person
+    return result
 
 
 # vim: ts=4 sw=4 et
