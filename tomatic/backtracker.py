@@ -297,7 +297,7 @@ class Backtracker(object):
 
         message = log or motiu
 
-        if motiu in config.verbose or 'all' in config.verbose:
+        if motiu in self.config.verbose or 'all' in self.config.verbose:
             warn(message)
 
         # Do not log when a more complete solution solution exists
