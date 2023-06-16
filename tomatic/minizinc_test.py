@@ -15,11 +15,6 @@ from pathlib import Path
 def fixture():
     return ns(
         monday=datetime.datetime(2023, 3, 27),
-        idealLoad=ns(
-            goku=4,
-            vegeta=4,
-            krilin=4,
-        ),
         finalLoad=ns(
             goku=4,
             vegeta=4,
