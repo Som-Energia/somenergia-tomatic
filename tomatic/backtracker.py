@@ -862,8 +862,7 @@ def main():
         error("Configuració incorrecta")
         raise
 
-    if args.verbose:
-        config.verbose = args.verbose
+    config.verbose = args.verbose if args.verbose else []
     if args.track:
         config.mostraCami = True
 
