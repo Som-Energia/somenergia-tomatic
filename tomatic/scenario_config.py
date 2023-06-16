@@ -19,7 +19,7 @@ from tomatic.retriever import (
 
 class Config:
 
-    def __init__(self, config_file, date, keep, certificate, holidays):
+    def __init__(self, config_file, date, keep, certificate, holidays, nLines=None):
         step('Carregant configuració {}...', config_file)
         try:
             self.data = ns.load(config_file)
@@ -27,22 +27,24 @@ class Config:
             error("Error llegint {}: {}", config_file, e)
             raise
         try:
+            if nLines is not None:
+                self.data.nTelefons = nLines
             self._update_monday(date)
             not keep and downloadPersons(self.data)
             self._update_persons()
             if not self.data.get('idealshifts'):
                 self.data.idealshifts = 'idealshifts.yaml'
                 not keep and downloadIdealLoad(self.data, certificate)
-            if not self.data.get('weekShifts') and not self.data.computeShifts:
+            if not self.data.get('weekShifts') and not self.data.get("computeShifts"):
                 self.data.weekShifts = 'carrega.csv'
                 not keep and downloadShiftload(self.data)
-            if not self.data.computeShifts:
+            if not self.data.get("computeShifts"):
                 self.data.overloadfile = "overload-{}.yaml".format(self.data.monday)
                 not keep and downloadOverload(self.data)
             not keep and self._download_leaves(certificate)
             if not self.data.get('busyFiles'):
                 not keep and self._download_busy(holidays)
-            if self.data.computeShifts:
+            if self.data.get("computeShifts"):
                 not keep and step("Baixant bossa d'hores del tomatic...")
                 not keep and downloadShiftCredit(self.data)
                 self.update_shifts()

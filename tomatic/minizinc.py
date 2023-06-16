@@ -27,7 +27,7 @@ class Menu:
         self.nPersons = len(config.finalLoad)
         self.nLines = config.nTelefons
         self.nHours = len(config.hours) - 1
-        self.nNingus = config.nNingusMinizinc
+        self.nNingus = config.get("nNingusMinizinc", self.nLines)
         self.nDays = len(laborable_days)
         self.maxTorns = config.maximHoresDiariesGeneral
         self._saveNamesAndTurns(config.finalLoad)
@@ -144,7 +144,8 @@ def main():
         args.date,
         args.keep,
         args.certificate,
-        args.holidays
+        args.holidays,
+        args.lines,
     )
     # TODO: check where to save this
     target_date = args.date or config.data.monday

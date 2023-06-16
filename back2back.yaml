@@ -134,3 +134,28 @@ testcases:
         - graella-telefons.log
         - status.yaml
 
+    load-and-schedule-2-days-2-lines-minizinc:
+        command: |
+            cd b2bdata/inputs/load-and-schedule-2-days/ ;
+            tomatic_scheduler_minizinc.py 2022-07-11 \
+                --keep \
+                --config-file config.yaml \
+                --personsfile persons.yaml \
+                --idealshifts idealshifts.yaml \
+                --overload overload.yaml \
+                --clusterize \
+                --deterministic \
+                --lines 2 \
+                --compute-shifts \
+                2>&1 | tee console.log && \
+                sed -i '/timeOfLastSolution/d' status.yaml
+        outputs:
+        - b2bdata/inputs/load-and-schedule-2-days/console.log
+        - b2bdata/inputs/load-and-schedule-2-days/overload.yaml
+        - b2bdata/inputs/load-and-schedule-2-days/ponderatedideal-2022-07-11.yaml
+        - b2bdata/inputs/load-and-schedule-2-days/carrega-2022-07-11.yaml
+        - b2bdata/inputs/load-and-schedule-2-days/carrega-2022-07-11.csv
+        - b2bdata/inputs/load-and-schedule-2-days/carrega.csv
+        - b2bdata/inputs/load-and-schedule-2-days/graella-telefons-2022-07-11.html
+        - b2bdata/inputs/load-and-schedule-2-days/graella-telefons-2022-07-11.yaml
+        - b2bdata/inputs/load-and-schedule-2-days/status.yaml
