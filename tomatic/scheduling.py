@@ -135,6 +135,7 @@ def timetable2forced(timetable):
     for day, hours in timetable.items():
         for hour, lines in enumerate(hours):
             for line, person in enumerate(lines):
+                if person is None: continue
                 result[day, hour, line] = person
     return result
 
