@@ -1,5 +1,20 @@
 # Changelog
 
+## unreleased
+
+- Forced turns can be configured with a time table
+- Minizinc scheduler obeys the forced turns
+- Minizinc with deterministic mode for b2b tests
+- Upgrade notes:
+    - Requires tomato-cooker upgrade tot 0.2
+    - data/forced-turns.yaml should contain a timetable
+      with the forced turns.
+    - suggestion: while there is no ui to edit it
+      we suggest to link to a timetable in the past
+    - If you use a generated timetable for that,
+      remember to change 'ningu' to null, because,
+      'ningu' means a forced empty slot.
+
 ## 4.12.6 2023-05-17
 
 - Minizinc tests fixed
