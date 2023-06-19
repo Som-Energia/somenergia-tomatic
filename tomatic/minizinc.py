@@ -24,7 +24,7 @@ class Menu:
 
     def __init__(self, config):
         laborable_days = laborableWeekDays(config.monday)
-        self.deterministic = config.deterministic
+        self.deterministic = config.get('deterministic', False)
         self.nPersons = len(config.finalLoad)
         self.nLines = config.nTelefons
         self.nHours = len(config.hours) - 1
