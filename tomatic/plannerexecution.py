@@ -58,7 +58,7 @@ class PlannerExecution(Execution):
 
         forcedTurnsFile = self.configPath/'data'/'forced-turns.yaml'
         if forcedTurnsFile.exists():
-            config.forcedTimetable = 'forced-turns.yaml'
+            config.forcedTimeTable = 'forced-turns.yaml'
             (self.path/'forced-turns.yaml').symlink_to(forcedTurnsFile.resolve())
 
         config.dump(self.path/'config.yaml')

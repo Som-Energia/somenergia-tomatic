@@ -1,4 +1,4 @@
-from consolemsg import step, error
+from consolemsg import step, error, warn
 from yamlns import namespace as ns
 import datetime
 from .retriever import addDays
@@ -51,8 +51,11 @@ class Config:
                 not keep and downloadShiftCredit(self.data)
                 self.update_shifts()
             if self.data.get('forcedTimeTable'):
+                step(f"Lodading forced turns from {self.data.get('forcedTimeTable')}...")
                 forcedTimeTable = ns.load(self.data.get('forcedTimeTable'))
                 self.data.forced = timetable2forced(forcedTimeTable.timetable)
+            else:
+                warn("No forcedTimeTable configured")
         except Exception as e:
             error("{}", e)
             raise
