@@ -3,6 +3,7 @@ from yamlns import namespace as ns
 import datetime
 from .retriever import addDays
 from .shiftload import ShiftLoadComputer
+from .scheduling import timetable2forced
 from tomatic.retriever import (
     downloadPersons,
     downloadLeaves,
@@ -49,6 +50,9 @@ class Config:
                 not keep and step("Baixant bossa d'hores del tomatic...")
                 not keep and downloadShiftCredit(self.data)
                 self.update_shifts()
+            if self.data.get('forcedTimeTable'):
+                forcedTimeTable = ns.load(self.data.get('forcedTimeTable'))
+                self.data.forced = timetable2forced(forcedTimeTable.timetable)
         except Exception as e:
             error("{}", e)
             raise

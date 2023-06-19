@@ -55,6 +55,12 @@ class PlannerExecution(Execution):
             if x not in self.searchDays
         ]
         config.maxOverload = 0
+
+        forcedTurnsFile = self.configPath/'data'/'forced-turns.yaml'
+        if forcedTurnsFile.exists():
+            config.forcedTimetable = 'forced-turns.yaml'
+            (self.path/'forced-turns.yaml').symlink_to(forcedTurnsFile.resolve())
+
         config.dump(self.path/'config.yaml')
         (self.path/'drive-certificate.json').symlink_to(
             (self.configPath/'drive-certificate.json').resolve())
