@@ -1,0 +1,6 @@
+totalCells: -1
+completedCells: -1
+solutionCost: 0
+unfilledCell: Complete
+busyReasons: {}
+penalties: []

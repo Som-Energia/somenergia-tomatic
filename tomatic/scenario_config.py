@@ -70,6 +70,12 @@ class Config:
             forgive = config.get('forgive', False), # TODO: Pass forgive from args to config
             inclusters = config.get('clusterize', False), #TODO: Pass clusterize from args to config
         )
+        args = ns(
+            weekshifts='carrega.yaml',
+            overload='overload.yaml',
+            summary=None,
+        )
+        computer.outputResults(args)
 
         config.finalLoad = computer.final
         config.busyTable = setup.busyTable._table

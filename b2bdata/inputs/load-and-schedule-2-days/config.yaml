@@ -10,6 +10,7 @@ idealLoadNamesRange: carregaideal_noms
 idealLoadValuesRange: carregaideal_valors
 leavesSheet: Baixes
 monitoringFile: taula.html
+forcedTimeTable: forced-turns.yaml
 minizincSolvers:
 - chuffed
 - coin-bc

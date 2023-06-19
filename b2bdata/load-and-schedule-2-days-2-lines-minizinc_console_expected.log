@@ -1,0 +1,57 @@
+[34;1m:: Carregant configuració config.yaml...[0m
+[34;1m:: Generant càrrega...[0m
+[34;1m::   Carregant dades...[0m
+[34;1m::     Llegint festius...[0m
+[34;1m::     Llegint carrega ideal...[0m
+[34;1m::     Llegint vacances...[0m
+[34;1m::     Llegint baixes...[0m
+[34;1m::     Llegint altres indisponibilitats...[0m
+[34;1m::     Llegint credits i deutes (bossa d'hores)...[0m
+[34;1m::   Ponderant la ideal...[0m
+[32;1m>>     Surten 26 torns[0m
+[34;1m::   Limitant a la capacitat real...[0m
+[34;1m::   Completant la carrega de 26 a 16...[0m
+[32;1m>>     Carrega assolida 16[0m
+[34;1m::   Compensant deute amb credit...[0m
+La sobrecarrega d'aquesta setmana seria:
+diana: -1.4
+jolie: -1.4
+barbara: -1.2
+hellen: -1.0
+irma: -1.0
+felicity: -0.8
+liza: -0.8
+alice: -0.6
+gemma: -0.6
+kate: -0.6
+carol: -0.4
+noel: -0.2
+mary: 0.4
+olivia: 0.4
+petra: 0.4
+[34;1m:: Desant sobrecàrrega com a overload.yaml[0m
+[34;1m:: Desant càrrega final com a carrega-2022-07-11.yaml[0m
+[34;1m:: Desant càrrega final com a carrega.yaml[0m
+[34;1m:: Desant càrrega distribuida en linies com a carrega-2022-07-11.csv[0m
+[34;1m:: Desant càrrega distribuida en linies com a carrega.csv[0m
+[32;1m>> S'ha aconseguit amb èxit una càrrega de 16 torns[0m
+[34;1m:: Provant amb les indisponibilitats opcionals...[0m
+[32;1m>> Resultat desat a graella-telefons-2022-07-11.yaml[0m
+[32;1m>> Resultat desat a graella-telefons-2022-07-11.html[0m
+Nom	Ideal	Proporcional	Augmentada	CapacitatReal	Topall	AplicatTopall	CobrintTorns	CompensantDeutes	Final	Sobrecarrega	CreditCarregat	CreditInicial	CreditFinal
+alice	4	1.6	1.6	4	2	2	1	1	1	-0.6	0	0	-1
+barbara	3	1.2	1.2	4	1	1	0	0	0	-1.2	0	0	-1
+carol	1	0.4	0.4	4	0	0	0	0	0	-0.4	0	0	0
+diana	6	2.4	2.4	4	2	2	1	1	1	-1.4	0	0	-1
+elith	0	0.0	0.0	4	0	0	0	0	0	0.0	0	0	0
+felicity	2	0.8	0.8	4	1	1	0	0	0	-0.8	0	0	-1
+gemma	4	1.6	1.6	4	2	2	1	1	1	-0.6	0	0	-1
+hellen	5	2.0	2.0	4	2	2	1	1	1	-1.0	0	0	-1
+irma	5	2.0	2.0	4	2	2	1	1	1	-1.0	0	0	-1
+jolie	6	2.4	2.4	4	2	2	1	1	1	-1.4	0	0	-1
+kate	4	1.6	1.6	4	2	2	1	1	1	-0.6	0	0	-1
+liza	7	2.8	2.8	4	3	3	2	2	2	-0.8	0	0	-1
+mary	4	1.6	1.6	4	2	2	2	2	2	0.4	0	0	0
+noel	3	1.2	1.2	4	1	1	1	1	1	-0.2	0	0	0
+olivia	4	1.6	1.6	4	2	2	2	2	2	0.4	0	0	0
+petra	4	1.6	1.6	4	2	2	2	2	2	0.4	0	0	0

@@ -151,11 +151,12 @@ testcases:
                 sed -i '/timeOfLastSolution/d' status.yaml
         outputs:
         - b2bdata/inputs/load-and-schedule-2-days/console.log
-        - b2bdata/inputs/load-and-schedule-2-days/overload.yaml
         - b2bdata/inputs/load-and-schedule-2-days/ponderatedideal-2022-07-11.yaml
         - b2bdata/inputs/load-and-schedule-2-days/carrega-2022-07-11.yaml
         - b2bdata/inputs/load-and-schedule-2-days/carrega-2022-07-11.csv
         - b2bdata/inputs/load-and-schedule-2-days/carrega.csv
+        - b2bdata/inputs/load-and-schedule-2-days/carrega.yaml
+        - b2bdata/inputs/load-and-schedule-2-days/overload.yaml
         - b2bdata/inputs/load-and-schedule-2-days/graella-telefons-2022-07-11.html
         - b2bdata/inputs/load-and-schedule-2-days/graella-telefons-2022-07-11.yaml
         - b2bdata/inputs/load-and-schedule-2-days/status.yaml
