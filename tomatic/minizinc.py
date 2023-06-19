@@ -24,6 +24,7 @@ class Menu:
 
     def __init__(self, config):
         laborable_days = laborableWeekDays(config.monday)
+        self.deterministic = config.deterministic
         self.nPersons = len(config.finalLoad)
         self.nLines = config.nTelefons
         self.nHours = len(config.hours) - 1
@@ -37,7 +38,10 @@ class Menu:
         self.forcedTurns = self._forcedTurns(config)
 
     def _saveNamesAndTurns(self, fulls):
-        self.names = random.sample(list(fulls), len(fulls))
+        if self.deterministic:
+                self.names = list(sorted(fulls))
+        else:
+                self.names = random.sample(list(fulls), len(fulls))
         self.nTorns = [fulls[p] for p in self.names]
 
     def _indisponibilities(self, config):
@@ -133,7 +137,7 @@ def solve_problem(config, solvers):
     # create an instance of the cooker
     tomato_cooker = GrillTomatoCooker(tomatic.MODEL_DEFINITION_PATH, solvers)
     # Now, we can solve the problem
-    solution = asyncio.run(tomato_cooker.cook(tomatic_problem))
+    solution = asyncio.run(tomato_cooker.cook(tomatic_problem, deterministic=config.deterministic))
     return menu.translate(solution, config) if solution else False
 
 
@@ -146,6 +150,7 @@ def main():
         args.certificate,
         args.holidays,
         args.lines,
+        args.deterministic,
     )
     # TODO: check where to save this
     target_date = args.date or config.data.monday

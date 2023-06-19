@@ -19,7 +19,7 @@ from tomatic.retriever import (
 
 class Config:
 
-    def __init__(self, config_file, date, keep, certificate, holidays, nLines=None):
+    def __init__(self, config_file, date, keep, certificate, holidays, nLines=None, deterministic=False):
         step('Carregant configuració {}...', config_file)
         try:
             self.data = ns.load(config_file)
@@ -27,6 +27,7 @@ class Config:
             error("Error llegint {}: {}", config_file, e)
             raise
         try:
+            self.data.deterministic = deterministic
             if nLines is not None:
                 self.data.nTelefons = nLines
             self._update_monday(date)
