@@ -8,15 +8,10 @@
 	- Also sorting, filtering...
 	- Groups assignment are editable
 	- Turn loads are editable
-- Google OAuth configuration does not need a separate configuration
-  file (config.fastapi) anymore. Moved to dbconfig.
 - Upgrade notes:
     - New frontend dependencies, npm install required
     - Frontend development flow has changed, see docs
     - Ideal loads are now kept in persons.yaml
-    - Parameters in `config.fastapi` have been moved to `dbconfig.py`
-	- `GOOGLE_CLIENT_ID` -> `tomatic.oauth.client_id` 
-	- `GOOGLE_CLIENT_SECRET` -> `tomatic.oauth.client_secret`
 
 ## 4.14.0 2023-06-26
 
