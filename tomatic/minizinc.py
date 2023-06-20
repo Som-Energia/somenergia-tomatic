@@ -137,7 +137,7 @@ def solve_problem(config, solvers):
     # create an instance of the cooker
     tomato_cooker = GrillTomatoCooker(tomatic.MODEL_DEFINITION_PATH, solvers)
     # Now, we can solve the problem
-    solution = asyncio.run(tomato_cooker.cook(tomatic_problem, deterministic=config.deterministic))
+    solution = asyncio.run(tomato_cooker.cook(tomatic_problem, deterministic=config.get('deterministic', False)))
     return menu.translate(solution, config) if solution else False
 
 
