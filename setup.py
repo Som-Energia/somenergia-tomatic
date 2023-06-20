@@ -79,7 +79,7 @@ setup(
         'charset-normalizer<3', # request and httpio complains once 3.x is out
         'httplib2', # Google chat code
         'backports.zoneinfo; python_version < "3.9"', # Py3.8 support for Py3.9 zoneinfo
-        'tomato-cooker',
+        'tomato-cooker>=0.2',
         'pandas',
         'matplotlib',
     #],
