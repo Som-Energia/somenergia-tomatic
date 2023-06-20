@@ -1,6 +1,6 @@
 # Changelog
 
-## unreleased
+## 4.13.0 2023-06-20
 
 - Forced turns can be configured with a time table
 - Minizinc scheduler obeys the forced turns
