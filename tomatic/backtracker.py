@@ -862,11 +862,11 @@ def main():
         error("Configuració incorrecta")
         raise
 
-    # Optionally download and load persons information
     config.verbose = args.verbose if args.verbose else []
     if args.track:
         config.mostraCami = True
 
+    # Optionally download and load persons information
     if args.personsfile:
         config.personsfile = args.personsfile
 
