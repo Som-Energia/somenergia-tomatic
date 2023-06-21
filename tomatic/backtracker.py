@@ -862,104 +862,8 @@ def main(args):
         downloadOverload,
         addDays,
     )
-
-    step('Carregant configuració {}...', args.config_file)
-    try:
-        config = ns.load(args.config_file)
-    except:
-        error("Configuració incorrecta")
-        raise
-
-    config.verbose = args.verbose if args.verbose else []
-    if args.track:
-        config.mostraCami = True
-
-    # Optionally download and load persons information
-    if args.personsfile:
-        config.personsfile = args.personsfile
-
-    if not args.keep and not args.personsfile:
-        downloadPersons(config)
-
-    from .persons import persons
-    config.update(persons(config.get('personsfile',None)))
-
-    if args.date is not None:
-        # take the monday of the week including that date
-        givenDate = datetime.datetime.strptime(args.date,"%Y-%m-%d").date()
-        config.monday = addDays(givenDate, -givenDate.weekday())
-    else:
-        # If no date provided, take the next monday
-        today = datetime.date.today()
-        config.monday = addDays(today, 7-today.weekday())
-
-    if args.lines:
-        config.nTelefons = args.lines
-
-    if args.drive_file:
-        config.documentDrive = args.drive_file
-
-    config.computeShifts = config.get('computeShifts') or args.compute_shifts
-
-    mustDownloadIdealShifts = not args.idealshifts and not config.get('idealshifts')
-    config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.yaml'
-
-    mustDownloadShifts = not args.weekshifts and not config.get('weekShifts') and not config.computeShifts
-    config.weekShifts = config.get('weekShifts') or args.weekshifts or 'carrega.csv'
-
-    mustDownloadOverload = not args.overload and not config.computeShifts
-    config.overloadfile = args.overload or "overload-{}.yaml".format(config.monday)
-
-    if not args.keep:
-        step("Baixant persones de baixa del drive...")
-        config.driveCertificate = args.certificate
-        downloadLeaves(config, args.certificate)
-
-        if mustDownloadIdealShifts:
-            downloadIdealLoad(config, args.certificate)
-        if mustDownloadShifts:
-            downloadShiftload(config)
-        if mustDownloadOverload:
-            downloadOverload(config)
-        if not config.get('busyFiles'):
-            downloadBusy(config)
-            downloadFestivities(config)
-            downloadVacations(config, source=args.holidays)
-
-        if config.computeShifts:
-            step("Baixant bossa d'hores del tomatic...")
-            downloadShiftCredit(config)
-
-    if config.computeShifts:
-        setup = ShiftLoadComputer.loadData(config)
-
-        computer = ShiftLoadComputer(
-            nlines = config.nTelefons,
-            generalMaxPerDay = config.maximHoresDiariesGeneral,
-            maxPerDay = config.maximHoresDiaries,
-            maxOverload = config.maxOverload,
-            leaves = setup.leaves,
-            daysoff = setup.daysoff,
-            busyTable = setup.busyTable,
-            businessDays = setup.businessDays,
-            idealLoad = setup.idealLoad,
-            credits = setup.formerCredit,
-            monday = config.monday,
-            forgive = args.forgive,
-            inclusters = args.clusterize or config.get('clusterize', False),
-        )
-
-        computer.outputResults(args)
-
-    if args.search_days:
-        config.diesCerca = args.search_days.split(',')
-
-    if args.stop_penalty:
-        config.stopPenalty = args.stop_penalty
-
-    if args.deterministic:
-        config.aleatori = not args.deterministic
-
+    from .scenario_config import Config
+    config = Config(**vars(args))
 
     import signal
 
@@ -971,7 +875,7 @@ def main(args):
 
     step('Muntant el solucionador...')
     try:
-        b = Backtracker(config)
+        b = Backtracker(config.data)
     except:
         error("Configuració incorrecta")
         raise

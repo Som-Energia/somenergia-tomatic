@@ -40,6 +40,7 @@ class Config:
         clusterize=None,
         search_days=None,
         stop_penalty=None,
+        summary=None,
         **kwds
     ):
         step('Carregant configuració {}...', config_file)
@@ -55,11 +56,13 @@ class Config:
             if track:
                 config.mostraCami = True
 
-            self.data.deterministic = deterministic
             self.data.forgive = forgive if forgive is not None else confgi.get('forgive', False)
             self.data.clusterize = clusterize if clusterize is not None else confgi.get('clusterize', False)
+            self.data.summary = summary
             # specific of backtracker
-            self.data.aleatori = not self.data.deterministic
+            if deterministic:
+                self.data.aleatori = not deterministic
+            self.data.deterministic = not self.data.get('aleatori', True)
 
             # specific of backtracker
             if search_days:
@@ -89,7 +92,7 @@ class Config:
 
             mustDownloadIdealShifts = not idealshifts and not config.get('idealshifts')
             config.idealshifts = idealshifts or config.get('idealshifts') or 'idealshifts.yaml'
-            ###
+
             if not keep:
                 self._download_leaves(certificate)
 
@@ -150,9 +153,9 @@ class Config:
         )
         # TODO: Take it from proper source
         args = ns(
-            weekshifts='carrega.yaml',
-            overload='overload.yaml',
-            summary=None,
+            weekshifts=config.weekShifts,
+            overload=config.overloadfile,
+            summary=config.summary,
         )
         computer.outputResults(args)
 
