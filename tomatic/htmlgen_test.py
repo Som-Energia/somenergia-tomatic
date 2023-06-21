@@ -1573,7 +1573,7 @@ class Schedule_Test(unittest.TestCase):
             - '09:00'
             - '10:15'
             turns:
-            - T1
+            - L1
             colors:
               ana: aa11aa
             extensions:
@@ -1603,7 +1603,7 @@ class Schedule_Test(unittest.TestCase):
             - '09:00'
             - '10:15'
             turns:
-            - T1
+            - L1
             colors:
               ana: aa11aa
             extensions:
@@ -1633,7 +1633,7 @@ class Schedule_Test(unittest.TestCase):
             - '09:00'
             - '10:15'
             turns:
-            - T1
+            - L1
             colors:
               ana: aa11aa
             extensions:
@@ -1671,7 +1671,7 @@ class Schedule_Test(unittest.TestCase):
             - '09:00'
             - '10:15'
             turns:
-            - T1
+            - L1
             colors:
               ana: aa11aa
             extensions:

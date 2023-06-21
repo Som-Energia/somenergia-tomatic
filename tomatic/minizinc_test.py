@@ -52,7 +52,7 @@ def make_minizinc_ns_result(timetable, cost):
         week='2023-03-27 00:00:00',
         days=['dl', 'dm', 'dx', 'dj', 'dv'],
         hours=['8:00', '9:00'],
-        turns=['T1', 'T2'],
+        turns=['L1', 'L2'],
         timetable=timetable,
         colors=[],
         extensions=[],
