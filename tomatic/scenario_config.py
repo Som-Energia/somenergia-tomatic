@@ -85,8 +85,17 @@ class Config:
         )
         computer.outputResults(args)
 
-        config.finalLoad = computer.final
+        # When 'ningu' has more load than turns exist, just adjust the lines
+        nHours = len(config.hours) - 1
+        nTurns = len(setup.businessDays) *  nHours
+        nUncoverdLines, nEmptySlots = divmod(computer.final.get('ningu', 0), nTurns)
+
+        config.finalLoad = ns(
+            computer.final,
+            ningu=nEmptySlots,
+        )
         config.busyTable = setup.busyTable._table
+        config.nTelefons -= nUncoverdLines
 
     def _update_persons(self):
         from .persons import persons
