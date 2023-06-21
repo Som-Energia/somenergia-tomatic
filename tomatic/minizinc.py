@@ -176,9 +176,16 @@ def main():
         success("Resultat desat a {}", output_yaml)
         success("Resultat desat a {}", output_html)
         # TODO: try to not do this 🥺
+        totalCells=len(solution.days)*(len(solution.hours)-1)*len(solution.turns)
+        completedCells=sum(
+            1 if cell != 'ningu' else 0
+            for hours in solution.timetable.values()
+            for lines in hours
+            for cell in lines
+        )
         ns(
-            totalCells=-1,
-            completedCells=-1,
+            totalCells=totalCells,
+            completedCells=completedCells,
             solutionCost=0,
             timeOfLastSolution=f'{datetime.datetime.now()}',
             unfilledCell='Complete',
