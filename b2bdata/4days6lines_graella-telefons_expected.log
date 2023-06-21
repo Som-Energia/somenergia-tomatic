@@ -1,28 +1,3 @@
-[34;1m:: Running solver tomatic.minizinc[0m
-[34;1m:: Carregant configuració b2bdata/inputs/config-4days6lines.yaml...[0m
-[31;1mError: computeShifts[0m
-[31;1mError: Solver tomatic.minizinc crashed[0m
-[31;1mError: Traceback (most recent call last):
-  File "/home/vokimon/somenergia/tomatic/.venv/lib/python3.11/site-packages/yamlns/__init__.py", line 40, in __getattr__
-    return self[name]
-           ~~~~^^^^^^
-KeyError: 'computeShifts'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/vokimon/somenergia/tomatic/scripts/tomatic_scheduler.py", line 16, in main
-    solver.main()
-  File "/home/vokimon/somenergia/tomatic/tomatic/minizinc.py", line 139, in main
-    config = Config(
-             ^^^^^^^
-  File "/home/vokimon/somenergia/tomatic/tomatic/scenario_config.py", line 36, in __init__
-    if not self.data.get('weekShifts') and not self.data.computeShifts:
-                                               ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/vokimon/somenergia/tomatic/.venv/lib/python3.11/site-packages/yamlns/__init__.py", line 42, in __getattr__
-    raise AttributeError(name)
-AttributeError: computeShifts
-[0m
 [34;1m:: Running solver tomatic.backtracker[0m
 [34;1m:: Carregant configuració b2bdata/inputs/config-4days6lines.yaml...[0m
 [34;1m:: Muntant el solucionador...[0m

@@ -12,8 +12,8 @@ hours:
 - '12:45'
 - '14:00'
 turns:
-- T1
-- T2
+- L1
+- L2
 timetable:
   dl:
   - - ningu

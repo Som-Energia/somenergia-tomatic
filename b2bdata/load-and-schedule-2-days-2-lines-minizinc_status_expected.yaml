@@ -1,5 +1,5 @@
-totalCells: -1
-completedCells: -1
+totalCells: 40
+completedCells: 40
 solutionCost: 0
 unfilledCell: Complete
 busyReasons: {}

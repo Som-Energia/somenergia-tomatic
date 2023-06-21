@@ -35,6 +35,7 @@ petra: 0.4
 [34;1m:: Desant càrrega distribuida en linies com a carrega-2022-07-11.csv[0m
 [34;1m:: Desant càrrega distribuida en linies com a carrega.csv[0m
 [32;1m>> S'ha aconseguit amb èxit una càrrega de 16 torns[0m
+[34;1m:: Lodading forced turns from forced-turns.yaml...[0m
 [34;1m:: Provant amb les indisponibilitats opcionals...[0m
 [32;1m>> Resultat desat a graella-telefons-2022-07-11.yaml[0m
 [32;1m>> Resultat desat a graella-telefons-2022-07-11.html[0m
