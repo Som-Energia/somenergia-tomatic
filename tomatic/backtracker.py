@@ -749,6 +749,13 @@ def parseArgs():
         )
 
     parser.add_argument(
+        '--scheduler',
+        default='backtracker',
+        choices='backtracker minizinc'.split(),
+        help="search engine for the timetable scheduling",
+    )
+
+    parser.add_argument(
         '--holidays',
         default='odoo',
         choices='drive notoi odoo'.split(),
