@@ -38,7 +38,6 @@ setup(
         'scripts/tomatic_timetablelauncher.py',
         'scripts/tomatic_says.py',
         'scripts/tomatic_scheduler.py',
-        'scripts/tomatic_scheduler_minizinc.py',
         'scripts/tomatic_shiftload.py',
         'scripts/tomatic_stats.py',
         'scripts/tomatic_uploadcases.py',

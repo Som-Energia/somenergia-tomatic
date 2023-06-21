@@ -556,98 +556,8 @@ class ShiftLoadComputer():
         if args.summary:
             Path(args.summary).write_text(summary, encoding='utf8')
 
-def parseArgs():
-    import argparse
-    parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        '--keep',
-        action='store_true',
-        help="no baixa les dades del drive"
-        )
-
-    parser.add_argument(
-        dest='date',
-        nargs='?',
-        default=None,
-        help='generates the schedule for the week including such date',
-        )
-
-    parser.add_argument(
-        '--certificate','-C',
-        metavar='CERTIFICATE.json',
-        default='drive-certificate.json',
-        help='certificat amb permisos per accedir al document gdrive',
-        )
-
-    parser.add_argument(
-        '--holidays',
-        default='odoo',
-        choices='drive notoi odoo'.split(),
-        help="Origen d'on agafa les vacances",
-    )
-
-    parser.add_argument(
-        '--clusterize',
-        action='store_true',
-        help="output a line clusterized load",
-        )
-    parser.add_argument(
-        '-l',
-        '--lines',
-        default=None,
-        type=int,
-        help="Nombre de linies rebent trucades a la vegada",
-    )
-
-    parser.add_argument(
-        '--drive-file',
-        help="Document del drive origen de dades externes"
-        )
-
-    parser.add_argument(
-        '--config-file',
-        default='config.yaml',
-        help="fitxer de configuració principal",
-    )
-    parser.add_argument(
-        '--personsfile',
-        help="fitxer de configuració de les persones, si s'especifica aqui, no es baixarà",
-    )
-
-    parser.add_argument(
-        '--idealshifts',
-        default=None,
-        help="fitxer yaml amb la càrrega ideal de cada persona, si s'especifica aqui no es baixarà",
-    )
-
-    parser.add_argument(
-        '--weekshifts',
-        default=None,
-        help="fitxer yaml de sortida amb la càrrega final de cada persona",
-    )
-
-    parser.add_argument(
-        '--overload',
-        default=None,
-        help="fitxer yaml de sortida amb la sobrecàrrega final sobre l'ideal ponderat de cada persona",
-    )
-
-    parser.add_argument(
-        '--summary',
-        default=None,
-        help="fitxer tsv amb els detalls de com s'ha anat calculant la càrrega",
-    )
-
-    parser.add_argument(
-        '--forgive',
-        action='store_true',
-        help="Deactivate any past debts and credits",
-    )
-
-    return parser.parse_args()
-
-def main():
+def main(args):
     from .retriever import (
         downloadPersons,
         downloadLeaves,
@@ -658,8 +568,6 @@ def main():
         downloadShiftCredit,
         addDays,
     )
-
-    args = parseArgs()
 
     step('Carregant configuració {}...', args.config_file)
     try:

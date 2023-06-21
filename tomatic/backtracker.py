@@ -824,6 +824,8 @@ def parseArgs():
         '--weekshifts',
         default=None,
         help="fitxer tsv amb la carrega a cada torn (columna) de cada persona (fila)",
+        # TODO: This comes from shiftload
+        #help="fitxer yaml de sortida amb la càrrega final de cada persona",
     )
 
     parser.add_argument(
@@ -846,7 +848,8 @@ def parseArgs():
 
     return parser.parse_args()
 
-def main():
+
+def main(args):
     from .retriever import (
         downloadPersons,
         downloadLeaves,
@@ -859,8 +862,6 @@ def main():
         downloadOverload,
         addDays,
     )
-
-    args = parseArgs()
 
     step('Carregant configuració {}...', args.config_file)
     try:

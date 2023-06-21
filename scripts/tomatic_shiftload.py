@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
+from tomatic import backtracker
 from tomatic import shiftload
 
 if __name__ == '__main__':
-    shiftload.main()
+    args = backtracker.parseArgs()
+    shiftload.main(args)
 
 

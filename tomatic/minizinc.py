@@ -141,8 +141,7 @@ def solve_problem(config, solvers):
     return menu.translate(solution, config) if solution else False
 
 
-def main():
-    args = parseArgs()
+def main(args):
     config = Config(**vars(args))
     # TODO: check where to save this
     target_date = args.date or config.data.monday
