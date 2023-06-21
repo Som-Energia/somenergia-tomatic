@@ -20,7 +20,7 @@ from tomatic.retriever import (
 
 class Config:
 
-    def __init__(self, config_file, date, keep, certificate, holidays, nLines=None, deterministic=False):
+    def __init__(self, config_file, date, keep, certificate, holidays, lines=None, deterministic=False, **kwds):
         step('Carregant configuració {}...', config_file)
         try:
             self.data = ns.load(config_file)
@@ -29,8 +29,8 @@ class Config:
             raise
         try:
             self.data.deterministic = deterministic
-            if nLines is not None:
-                self.data.nTelefons = nLines
+            if lines is not None:
+                self.data.nTelefons = lines
             self._update_monday(date)
             not keep and downloadPersons(self.data)
             self._update_persons()

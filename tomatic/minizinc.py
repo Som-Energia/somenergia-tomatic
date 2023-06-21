@@ -143,15 +143,7 @@ def solve_problem(config, solvers):
 
 def main():
     args = parseArgs()
-    config = Config(
-        args.config_file,
-        args.date,
-        args.keep,
-        args.certificate,
-        args.holidays,
-        args.lines,
-        args.deterministic,
-    )
+    config = Config(**vars(args))
     # TODO: check where to save this
     target_date = args.date or config.data.monday
     output_yaml = "graella-telefons-{}.yaml".format(target_date)
