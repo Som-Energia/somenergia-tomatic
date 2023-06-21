@@ -5,7 +5,6 @@ from consolemsg import step, error, success
 from yamlns import namespace as ns
 import random
 import datetime
-from .backtracker import parseArgs
 from .scenario_config import Config
 from .htmlgen import HtmlGen
 from .busy import laborableWeekDays

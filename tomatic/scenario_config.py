@@ -17,6 +17,146 @@ from tomatic.retriever import (
     addDays,
 )
 
+def parseArgs():
+    import argparse
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        '--keep',
+        action='store_true',
+        help="no baixa les dades del drive"
+        )
+
+    parser.add_argument(
+        '--track',
+        action='store_true',
+        help="visualitza per pantalla el progres de la cerca (molt lent)"
+        )
+
+    parser.add_argument(
+        '-v',
+        '--verbose',
+        dest='verbose',
+        metavar='message',
+        nargs='+',
+        default=[],
+        help="activa els missatges de tall del tipus indicat ('all' per tots)",
+        )
+
+    parser.add_argument(
+        dest='date',
+        nargs='?',
+        default=None,
+        help='generates the schedule for the week including such date',
+        )
+
+    parser.add_argument(
+        '--certificate','-C',
+        metavar='CERTIFICATE.json',
+        default='drive-certificate.json',
+        help='certificat amb permisos per accedir al document gdrive',
+        )
+
+    parser.add_argument(
+        '--scheduler',
+        default='backtracker',
+        choices='backtracker minizinc'.split(),
+        help="search engine for the timetable scheduling",
+    )
+
+    parser.add_argument(
+        '--holidays',
+        default='odoo',
+        choices='drive notoi odoo'.split(),
+        help="Origen d'on agafa les vacances",
+    )
+
+    parser.add_argument(
+        '--clusterize',
+        action='store_true',
+        help="output a line clusterized load",
+        )
+    parser.add_argument(
+        '-l',
+        '--lines',
+        default=None,
+        type=int,
+        help="Nombre de linies rebent trucades a la vegada",
+    )
+
+    parser.add_argument(
+        '--search-days',
+        help="dies de cerca per comanda p.e dl,dm,dx,dj,dv sobreescriu config.yaml"
+        )
+
+    parser.add_argument(
+        '--stop-penalty',
+        type=int,
+        help="condició de parada al arribar a solució amb la penalització, sobreescriu config.yaml"
+        )
+
+    parser.add_argument(
+        '--deterministic',
+        action='store_true',
+        help="desaleatoritza la cerca de branques i possibilitats, sobreescriu config.yaml"
+        )
+
+    parser.add_argument(
+        '--drive-file',
+        help="Document del drive origen de dades externes"
+        )
+
+    parser.add_argument(
+        '--compute-shifts',
+        action='store_true',
+        help="Compute the shifts instead of taking the ones in the files"
+        )
+
+    parser.add_argument(
+        '--config-file',
+        default='config.yaml',
+        help="fitxer de configuració principal",
+    )
+
+    parser.add_argument(
+        '--personsfile',
+        help="fitxer de configuració de les persones, si s'especifica aqui, no es baixarà",
+    )
+
+    parser.add_argument(
+        '--idealshifts',
+        default=None,
+        help="fitxer yaml amb la càrrega ideal de cada persona, si s'especifica aqui no es baixarà",
+    )
+
+    parser.add_argument(
+        '--weekshifts',
+        default=None,
+        help="fitxer tsv amb la carrega a cada torn (columna) de cada persona (fila)",
+        # TODO: This comes from shiftload
+        #help="fitxer yaml de sortida amb la càrrega final de cada persona",
+    )
+
+    parser.add_argument(
+        '--overload',
+        default=None,
+        help="fitxer yaml de sortida amb la sobrecàrrega final sobre l'ideal ponderat de cada persona",
+    )
+
+    parser.add_argument(
+        '--summary',
+        default=None,
+        help="fitxer tsv amb els detalls de com s'ha anat calculant la càrrega",
+    )
+
+    parser.add_argument(
+        '--forgive',
+        action='store_true',
+        help="Deactivate any past debts and credits",
+    )
+
+    return parser.parse_args()
+
 
 class Config:
 

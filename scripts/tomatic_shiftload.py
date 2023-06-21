@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-from tomatic import backtracker
+from tomatic import scenario_config
 from tomatic import shiftload
 
 if __name__ == '__main__':
-    args = backtracker.parseArgs()
+    args = scenario_config.parseArgs()
     shiftload.main(args)
 
 

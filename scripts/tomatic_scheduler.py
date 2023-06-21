@@ -2,11 +2,12 @@
 
 from tomatic import backtracker
 from tomatic import minizinc
+from tomatic import scenario_config
 from consolemsg import error, step
 import traceback
 
 def main():
-    args = backtracker.parseArgs()
+    args = scenario_config.parseArgs()
     solvers = [
         minizinc,
         backtracker,
