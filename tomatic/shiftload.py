@@ -668,6 +668,7 @@ def main():
         error("Configuració incorrecta")
         raise
 
+    # Optionally download and load persons information
     config.personsfile = args.personsfile or config.get('personsfile', 'persons.yaml')
     if not args.keep and not args.personsfile:
         downloadPersons(config)
