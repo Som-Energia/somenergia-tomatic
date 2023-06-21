@@ -20,42 +20,112 @@ from tomatic.retriever import (
 
 class Config:
 
-    def __init__(self, config_file, date, keep, certificate, holidays, lines=None, deterministic=False, **kwds):
+    def __init__(self,
+        config_file,
+        date,
+        keep,
+        certificate,
+        holidays,
+        lines=None,
+        deterministic=False,
+        verbose=None,
+        track=None,
+        personsfile=None,
+        compute_shifts=None,
+        drive_file=None,
+        idealshifts=None,
+        weekshifts=None,
+        overload=None,
+        forgive=None,
+        clusterize=None,
+        search_days=None,
+        stop_penalty=None,
+        **kwds
+    ):
         step('Carregant configuració {}...', config_file)
         try:
             self.data = ns.load(config_file)
+            config = self.data
         except Exception as e:
             error("Error llegint {}: {}", config_file, e)
             raise
         try:
+
+            config.verbose = verbose if verbose else []
+            if track:
+                config.mostraCami = True
+
             self.data.deterministic = deterministic
+            self.data.forgive = forgive if forgive is not None else confgi.get('forgive', False)
+            self.data.clusterize = clusterize if clusterize is not None else confgi.get('clusterize', False)
+            # specific of backtracker
+            self.data.aleatori = not self.data.deterministic
+
+            # specific of backtracker
+            if search_days:
+                config.diesCerca = search_days.split(',')
+
+            # specific of backtracker
+            if stop_penalty:
+                config.stopPenalty = stop_penalty
+
+
+            # Configure persons
+            config.personsfile = personsfile or config.get('personsfile', 'persons.yaml')
+            if not personsfile and not keep:
+                downloadPersons(config)
+            from .persons import persons
+            config.update(persons(config.personsfile))
+
+            self._update_monday(date)
+
             if lines is not None:
                 self.data.nTelefons = lines
-            self._update_monday(date)
-            not keep and downloadPersons(self.data)
-            self._update_persons()
-            if not self.data.get('idealshifts'):
-                self.data.idealshifts = 'idealshifts.yaml'
-                not keep and downloadIdealLoad(self.data, certificate)
-            if not self.data.get('weekShifts') and not self.data.get("computeShifts"):
-                self.data.weekShifts = 'carrega.csv'
-                not keep and downloadShiftload(self.data)
-            if not self.data.get("computeShifts"):
-                self.data.overloadfile = "overload-{}.yaml".format(self.data.monday)
-                not keep and downloadOverload(self.data)
-            not keep and self._download_leaves(certificate)
-            if not self.data.get('busyFiles'):
-                not keep and self._download_busy(holidays)
+
+            if drive_file:
+                config.documentDrive = drive_file
+
+            config.computeShifts = config.get('computeShifts') or compute_shifts
+
+            mustDownloadIdealShifts = not idealshifts and not config.get('idealshifts')
+            config.idealshifts = idealshifts or config.get('idealshifts') or 'idealshifts.yaml'
+            ###
+            if not keep:
+                self._download_leaves(certificate)
+
+            if not keep and mustDownloadIdealShifts:
+                downloadIdealLoad(self.data, certificate)
+
+            # TODO: Not for shiftload
+            mustDownloadShifts = not weekshifts and not config.get('weekShifts') and not config.computeShifts
+            config.weekShifts = config.get('weekShifts') or weekshifts or 'carrega.csv'
+            if not keep and mustDownloadShifts:
+                downloadShiftload(self.data)
+
+            # TODO: Not in shiftload.py
+            mustDownloadOverload = not overload and not config.computeShifts
+            config.overloadfile = overload or "overload-{}.yaml".format(config.monday)
+            if not keep and mustDownloadOverload:
+                downloadOverload(config)
+
+            if not keep and not self.data.get('busyFiles'):
+                self._download_busy(holidays)
+
+            # TODO: shiftload.py does it inconditional
             if self.data.get("computeShifts"):
-                not keep and step("Baixant bossa d'hores del tomatic...")
-                not keep and downloadShiftCredit(self.data)
+                if not keep:
+                    step("Baixant bossa d'hores del tomatic...")
+                    downloadShiftCredit(self.data)
                 self.update_shifts()
+
             if self.data.get('forcedTimeTable'):
                 step(f"Lodading forced turns from {self.data.get('forcedTimeTable')}...")
                 forcedTimeTable = ns.load(self.data.get('forcedTimeTable'))
                 self.data.forced = timetable2forced(forcedTimeTable.timetable)
             else:
                 warn("No forcedTimeTable configured")
+
+
         except Exception as e:
             error("{}", e)
             raise
@@ -75,9 +145,10 @@ class Config:
             idealLoad = setup.idealLoad,
             credits = setup.formerCredit,
             monday = config.monday,
-            forgive = config.get('forgive', False), # TODO: Pass forgive from args to config
-            inclusters = config.get('clusterize', False), #TODO: Pass clusterize from args to config
+            forgive = config.forgive,
+            inclusters = config.clusterize,
         )
+        # TODO: Take it from proper source
         args = ns(
             weekshifts='carrega.yaml',
             overload='overload.yaml',
@@ -96,10 +167,6 @@ class Config:
         )
         config.busyTable = setup.busyTable._table
         config.nTelefons -= nUncoverdLines
-
-    def _update_persons(self):
-        from .persons import persons
-        self.data.update(persons(self.data.get('personsfile', None)))
 
     def _update_monday(self, date):
         if date is not None:
