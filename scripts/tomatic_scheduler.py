@@ -7,8 +7,8 @@ import traceback
 
 def main():
     solvers = [
-        minizinc,
         backtracker,
+        minizinc,
     ]
     for solver in solvers:
         step("Running solver {}", solver.__name__)
