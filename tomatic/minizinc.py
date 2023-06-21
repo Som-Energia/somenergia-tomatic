@@ -92,16 +92,16 @@ class Menu:
             ] for day in days
         }
 
-        for day, turns in zip(self.laborable_days, solution.solution.ocupacioSlot):
-            for turn_i, turn in enumerate(turns):
-                for slot_i, person in enumerate(sorted(turn)):
-                    timetable[day][turn_i][slot_i] = person
+        for day, hours in zip(self.laborable_days, solution.solution.ocupacioSlot):
+            for hour_i, hour in enumerate(hours):
+                for line_i, person in enumerate(sorted(hour)):
+                    timetable[day][hour_i][line_i] = person
 
         result = ns(
             week=f'{config.monday}',
             days=days,
             hours=config.hours,
-            turns=[ f"T{torn+1}" for torn in range(config.nTelefons) ],
+            turns=[ f"L{line+1}" for line in range(config.nTelefons) ],
             timetable=timetable,
             colors=config.colors,
             extensions=config.extensions,
