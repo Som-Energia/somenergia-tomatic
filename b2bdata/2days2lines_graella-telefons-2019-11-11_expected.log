@@ -1,5 +1,6 @@
 [34;1m:: Running solver tomatic.backtracker[0m
 [34;1m:: Carregant configuració b2bdata/inputs/config-2days2lines.yaml...[0m
+[33mWarning: No forcedTimeTable configured[0m
 [34;1m:: Muntant el solucionador...[0m
 [33mWarning: T'has deixat dies laborables: ['dl', 'dv', 'dx'][0m
 [34;1m:: Generant horari...[0m

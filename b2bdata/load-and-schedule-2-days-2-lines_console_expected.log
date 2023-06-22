@@ -35,6 +35,7 @@ petra: 0.4
 [34;1m:: Desant càrrega distribuida en linies com a carrega-2022-07-11.csv[0m
 [34;1m:: Desant càrrega distribuida en linies com a carrega.csv[0m
 [32;1m>> S'ha aconseguit amb èxit una càrrega de 16 torns[0m
+[34;1m:: Lodading forced turns from forced-turns.yaml...[0m
 [34;1m:: Muntant el solucionador...[0m
 [33mWarning: No s'inclouran els dies festius: dv, dl, dx.[0m
 [33mWarning: Configuration 'minIdleInGroup' uses group 'it' not defined in 'groups'[0m

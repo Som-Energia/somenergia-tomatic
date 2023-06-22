@@ -1,5 +1,6 @@
 [34;1m:: Running solver tomatic.backtracker[0m
 [34;1m:: Carregant configuració b2bdata/inputs/config-4days6lines.yaml...[0m
+[33mWarning: No forcedTimeTable configured[0m
 [34;1m:: Muntant el solucionador...[0m
 [33mWarning: T'has deixat dies laborables: ['dv'][0m
 [33mWarning: Ignorant indisponibilitats de pere, que no entra al repartiment[0m

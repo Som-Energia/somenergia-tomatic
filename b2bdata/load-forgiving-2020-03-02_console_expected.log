@@ -31,6 +31,7 @@ carme: 1.0
 [34;1m:: Desant càrrega distribuida en linies com a carrega-2020-03-02.csv[0m
 [34;1m:: Desant càrrega distribuida en linies com a carrega.csv[0m
 [32;1m>> S'ha aconseguit amb èxit una càrrega de 120 torns[0m
+[33mWarning: No forcedTimeTable configured[0m
 Nom	Ideal	Proporcional	Augmentada	CapacitatReal	Topall	AplicatTopall	CobrintTorns	CompensantDeutes	Final	Sobrecarrega	CreditCarregat	CreditInicial	CreditFinal
 adria	5	5.0	6.0	10	6	5	6	6	6	1.0	0	0	1
 albertg	5	5.0	6.0	9	6	5	6	6	6	1.0	0	0	1
