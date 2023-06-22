@@ -177,8 +177,8 @@ class Config:
         clusterize=None,
         search_days=None,
         stop_penalty=None,
+        scheduler=None,
         summary=None,
-        **kwds
     ):
         step('Carregant configuració {}...', config_file)
         try:
