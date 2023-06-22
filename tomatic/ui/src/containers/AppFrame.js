@@ -122,220 +122,219 @@ function ResponsiveAppBar({ children }) {
         }}
         drawerOpen={drawerOpen}
       >
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
+        <Toolbar disableGutters>
+          <IconButton
+            size="large"
+            aria-label={'Open drawer'}
+            aria-controls="drawer"
+            onClick={() => setDrawerOpen(!drawerOpen)}
+            edge="start"
+            color="inherit"
+            sx={{
+              marginRight: 5,
+              marginLeft: 1.3,
+              ...{
+                display: {
+                  xs: 'none',
+                  md: drawerOpen ? 'none' : 'flex',
+                },
+              },
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Box
+            sx={{
+              display: {
+                xs: 'none',
+                md: 'flex',
+              },
+              mr: 1,
+            }}
+          >
+            <img alt={'Logo'} src={appLogo} />
+          </Box>
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: {
+                xs: 'none',
+                md: 'flex',
+              },
+              fontWeight: 700,
+              letterSpacing: '.1rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            {appTitle}
+          </Typography>
+
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: {
+                xs: 'flex',
+                md: 'none',
+              },
+            }}
+          >
             <IconButton
               size="large"
-              aria-label={'Open drawer'}
-              aria-controls="drawer"
-              onClick={() => setDrawerOpen(!drawerOpen)}
-              edge="start"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
               color="inherit"
-              sx={{
-                marginRight: 5,
-                ...{
-                  display: {
-                    xs: 'none',
-                    md: drawerOpen ? 'none' : 'flex',
-                  },
-                },
-              }}
             >
               <MenuIcon />
             </IconButton>
-            <Box
-              sx={{
-                display: {
-                  xs: 'none',
-                  md: 'flex',
-                },
-                mr: 1,
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
               }}
-            >
-              <img alt={'Logo'} src={appLogo} />
-            </Box>
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: {
-                  xs: 'none',
-                  md: 'flex',
-                },
-                fontWeight: 700,
-                letterSpacing: '.1rem',
-                color: 'inherit',
-                textDecoration: 'none',
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
               }}
-            >
-              {appTitle}
-            </Typography>
-
-            <Box
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
               sx={{
-                flexGrow: 1,
                 display: {
-                  xs: 'flex',
+                  xs: 'block',
                   md: 'none',
-                },
-              }}
-            >
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: {
-                    xs: 'block',
-                    md: 'none',
-                  },
-                }}
-              >
-                {pages.map((page, index) => (
-                  <MenuItem
-                    component={Link}
-                    to={`/${page.text}`}
-                    key={index}
-                    onClick={() => {
-                      handleCloseNavMenu()
-                    }}
-                  >
-                    <ListItemIcon>{page.icon}</ListItemIcon>
-                    <Typography textAlign="center">{page.text}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-            <Box
-              sx={{
-                display: {
-                  xs: 'flex',
-                  md: 'none',
-                },
-                mr: 1,
-              }}
-            >
-              <img alt={'Logo'} src={appLogo} />
-            </Box>
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href=""
-              sx={{
-                mr: 2,
-                display: {
-                  xs: 'flex',
-                  md: 'none',
-                },
-                flexGrow: 1,
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              {appTitle}
-            </Typography>
-            <Box
-              sx={{
-                flexGrow: 1,
-                display: {
-                  xs: 'none',
-                  md: 'flex',
                 },
               }}
             >
               {pages.map((page, index) => (
-                <Button
-                  key={index}
+                <MenuItem
                   component={Link}
                   to={`/${page.text}`}
+                  key={index}
                   onClick={() => {
                     handleCloseNavMenu()
                   }}
-                  sx={{
-                    my: 2,
-                    color: 'white',
-                    backgroundColor: `rgba(0,0,0,.3)`,
-                    display: 'block',
-                    textShadow: '2pt 2pt black',
+                >
+                  <ListItemIcon>{page.icon}</ListItemIcon>
+                  <Typography textAlign="center">{page.text}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          <Box
+            sx={{
+              display: {
+                xs: 'flex',
+                md: 'none',
+              },
+              mr: 1,
+            }}
+          >
+            <img alt={'Logo'} src={appLogo} />
+          </Box>
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href=""
+            sx={{
+              mr: 2,
+              display: {
+                xs: 'flex',
+                md: 'none',
+              },
+              flexGrow: 1,
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            {appTitle}
+          </Typography>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: {
+                xs: 'none',
+                md: 'flex',
+              },
+            }}
+          >
+            {pages.map((page, index) => (
+              <Button
+                key={index}
+                component={Link}
+                to={`/${page.text}`}
+                onClick={() => {
+                  handleCloseNavMenu()
+                }}
+                sx={{
+                  my: 2,
+                  color: 'white',
+                  backgroundColor: `rgba(0,0,0,.3)`,
+                  display: 'block',
+                  textShadow: '2pt 2pt black',
+                }}
+              >
+                {page.text}
+              </Button>
+            ))}
+          </Box>
+          <ProfileButton />
+          <Box>
+            <IconButton
+              size="large"
+              aria-label={'Extra functionalities'}
+              aria-controls="menu-extra"
+              aria-haspopup="true"
+              onClick={handleOpenMenu}
+              color="inherit"
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="menu-extra"
+              anchorEl={anchorElMenu}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElMenu)}
+              onClose={handleCloseMenu}
+            >
+              {extraMenuOptions().map((option, i) => (
+                <MenuItem
+                  key={i}
+                  onClick={() => {
+                    handleCloseMenu()
+                    if (option.route) {
+                      navigate(option.route)
+                      return
+                    }
+                    option.action()
                   }}
                 >
-                  {page.text}
-                </Button>
+                  <ListItemIcon>{option.icon}</ListItemIcon>
+                  <Typography textAlign="center">{option.title}</Typography>
+                </MenuItem>
               ))}
-            </Box>
-            <ProfileButton />
-            <Box>
-              <IconButton
-                size="large"
-                aria-label={'Extra functionalities'}
-                aria-controls="menu-extra"
-                aria-haspopup="true"
-                onClick={handleOpenMenu}
-                color="inherit"
-              >
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                id="menu-extra"
-                anchorEl={anchorElMenu}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorElMenu)}
-                onClose={handleCloseMenu}
-              >
-                {extraMenuOptions().map((option, i) => (
-                  <MenuItem
-                    key={i}
-                    onClick={() => {
-                      handleCloseMenu()
-                      if (option.route) {
-                        navigate(option.route)
-                        return
-                      }
-                      option.action()
-                    }}
-                  >
-                    <ListItemIcon>{option.icon}</ListItemIcon>
-                    <Typography textAlign="center">{option.title}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-          </Toolbar>
-        </Container>
+            </Menu>
+          </Box>
+        </Toolbar>
       </AppBar>
       <NavigationDrawer
         id="drawer"
