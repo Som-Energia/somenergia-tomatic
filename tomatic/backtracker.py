@@ -710,18 +710,6 @@ class Backtracker(object):
 
 
 def main(args):
-    from .retriever import (
-        downloadPersons,
-        downloadLeaves,
-        downloadIdealLoad,
-        downloadVacations,
-        downloadFestivities,
-        downloadBusy,
-        downloadShiftload,
-        downloadShiftCredit,
-        downloadOverload,
-        addDays,
-    )
     from .scenario_config import Config
     config = Config(**vars(args))
 
