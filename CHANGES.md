@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.13.1 2023-06-22
+
+- Fix: completion stats for minizinc
+- Schedulers adapts the lines to actual feasible load
+- `tomatic_schedule.py`: option --scheduler to choose minizinc
+  or backtracker as first option
+
 ## 4.13.0 2023-06-20
 
 - Forced turns can be configured with a time table
