@@ -305,13 +305,13 @@ class Config:
         nHours = len(config.hours) - 1
         nTurns = len(setup.businessDays) *  nHours
         nUncoverdLines, nEmptySlots = divmod(computer.final.get('ningu', 0), nTurns)
-
         config.finalLoad = ns(
             computer.final,
             ningu=nEmptySlots,
         )
-        config.busyTable = setup.busyTable._table
         config.nTelefons -= nUncoverdLines
+
+        config.busyTable = setup.busyTable._table
 
     def _update_monday(self, date):
         if date is not None:
