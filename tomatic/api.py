@@ -164,7 +164,9 @@ def log_user_event(user, event):
     timestamp = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
     logline = f"{timestamp}\t{event}\t{user}\n"
     print(logline)
-    with Path('stats/usagelog.log').open('a') as logfile:
+    statsDir = Path('stats')
+    statsDir.mkdir(exist_ok=True)
+    with (statsDir/'usagelog.log').open('a') as logfile:
         logfile.write(logline)
 
 @app.post('/api/logger/{event}')
