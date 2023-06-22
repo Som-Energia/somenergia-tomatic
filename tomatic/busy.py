@@ -233,13 +233,17 @@ class BusyTable(object):
 			for hour in range(nhours)
 			for day in days
 		}
+		self._reportedIgnoredPersons = set()
 
 	def isBusy(self, day, hour, person):
 		return self._table.get((day,hour,person), True)
 
 	def setBusy(self, day, hour, person, isBusy=True):
 		if person not in self._persons:
-			return warn("Ignorant una indisponibilitat de {}, que no entra al repartiment"
+			if person in self._reportedIgnoredPersons:
+				return
+			self._reportedIgnoredPersons.add(person)
+			return warn("Ignorant indisponibilitats de {}, que no entra al repartiment"
 				.format(person))
 		if day not in self._days:
 			return warn("Ignorant una indisponibilitat del dia {} que no considerem"

@@ -6,25 +6,9 @@
 [34;1m::     Llegint vacances...[0m
 [34;1m::     Llegint baixes...[0m
 [34;1m::     Llegint altres indisponibilitats...[0m
-[33mWarning: Ignorant una indisponibilitat de ningu, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de ningu, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de ningu, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de ningu, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de ningu, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de ningu, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de ningu, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de ningu, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de ningu, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de ningu, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de pere, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de pere, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de pere, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de pere, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de fran, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de fran, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de fran, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de fran, que no entra al repartiment[0m
-[33mWarning: Ignorant una indisponibilitat de fran, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de ningu, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de pere, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de fran, que no entra al repartiment[0m
 [34;1m::     Llegint credits i deutes (bossa d'hores)...[0m
 [34;1m::   Ponderant la ideal...[0m
 [32;1m>>     Surten 114 torns[0m
