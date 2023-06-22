@@ -32,7 +32,6 @@ olivia: 0.4
 petra: 0.4
 [34;1m:: Desant sobrecàrrega com a overload.yaml[0m
 [34;1m:: Desant càrrega final com a carrega-2022-07-11.yaml[0m
-[34;1m:: Desant càrrega final com a carrega.yaml[0m
 [34;1m:: Desant càrrega distribuida en linies com a carrega-2022-07-11.csv[0m
 [34;1m:: Desant càrrega distribuida en linies com a carrega.csv[0m
 [32;1m>> S'ha aconseguit amb èxit una càrrega de 16 torns[0m

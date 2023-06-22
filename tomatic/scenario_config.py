@@ -132,8 +132,6 @@ def parseArgs():
         '--weekshifts',
         default=None,
         help="fitxer tsv amb la carrega a cada torn (columna) de cada persona (fila)",
-        # TODO: This comes from shiftload
-        #help="fitxer yaml de sortida amb la càrrega final de cada persona",
     )
 
     parser.add_argument(
@@ -197,7 +195,7 @@ class Config:
 
             self.data.forgive = forgive if forgive is not None else confgi.get('forgive', False)
             self.data.clusterize = clusterize if clusterize is not None else confgi.get('clusterize', False)
-            self.data.summary = summary
+            self.data.loadSummaryFile = summary
             # specific of backtracker
             if deterministic:
                 self.data.aleatori = not deterministic
@@ -229,14 +227,25 @@ class Config:
 
             config.computeShifts = config.get('computeShifts') or compute_shifts
 
-            mustDownloadIdealShifts = not idealshifts and not config.get('idealshifts')
-            config.idealshifts = idealshifts or config.get('idealshifts') or 'idealshifts.yaml'
-
             if not keep:
                 self._download_leaves(certificate)
 
+            mustDownloadIdealShifts = not idealshifts and not config.get('idealshifts')
+            config.idealshifts = idealshifts or config.get('idealshifts') or 'idealshifts.yaml'
             if not keep and mustDownloadIdealShifts:
                 downloadIdealLoad(self.data, certificate)
+
+            """
+            TODO: Remove the download mode for weekshifts and shiftload
+            There are 3 of geting weekshifts and shiftload
+            - Download it from the server (by default behavior)
+            - Compute it with Shiftloader (with computeShifts option)
+            - Take already computed files (when files are passed by parameters or --keep)
+            Downloading them from the server had sense when computing shifts
+            was a different step run in the server. Now that the shiftloader
+            has been integrated, downloading them has no sense.
+            Clean up the API entries, the retriever functions and simplify this configuration
+            """
 
             # TODO: Not for shiftload
             mustDownloadShifts = not weekshifts and not config.get('weekShifts') and not config.computeShifts
@@ -254,7 +263,7 @@ class Config:
                 self._download_busy(holidays)
 
             # TODO: shiftload.py does it inconditional
-            if self.data.get("computeShifts"):
+            if self.data.computeShifts:
                 if not keep:
                     step("Baixant bossa d'hores del tomatic...")
                     downloadShiftCredit(self.data)
@@ -290,13 +299,7 @@ class Config:
             forgive = config.forgive,
             inclusters = config.clusterize,
         )
-        # TODO: Take it from proper source
-        args = ns(
-            weekshifts=config.weekShifts,
-            overload=config.overloadfile,
-            summary=config.summary,
-        )
-        computer.outputResults(args)
+        computer.outputResults(config)
 
         # When 'ningu' has more load than turns exist, just adjust the lines
         nHours = len(config.hours) - 1

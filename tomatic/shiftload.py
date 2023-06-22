@@ -519,7 +519,7 @@ class ShiftLoadComputer():
         ])
         return summarycontent
 
-    def outputResults(self, args):
+    def outputResults(self, config):
         self.dump(self.ponderated, None, #"càrrega ponderada",
             "ponderatedideal-{}.yaml".format(self.monday))
 
@@ -529,21 +529,17 @@ class ShiftLoadComputer():
 
         self.displayOverload()
         self.dump(self.overload, "sobrecàrrega",
-            args.overload or "overload-{}.yaml".format(self.monday))
+            config.overloadfile or "overload-{}.yaml".format(self.monday))
 
-        for finalfile in [
-            "carrega-{}.yaml".format(self.monday),
-            args.weekshifts,
-        ]:
-            if not finalfile: continue
-            self.dump(self.final, "càrrega final", finalfile)
+        finalfile = "carrega-{}.yaml".format(self.monday)
+        self.dump(self.final, "càrrega final", finalfile)
 
         if hasattr(self, 'clusterized'):
             self.dumpCsv(self.clusterized, "càrrega distribuida en linies",
                 "carrega-{}.csv".format(self.monday))
             # TODO: Unduplicate this
             self.dumpCsv(self.clusterized, "càrrega distribuida en linies",
-                "carrega.csv".format(self.monday))
+                config.weekShifts)
 
         finalLoad = self.finalLoad()
         if not self.final.get('ningu',0):
@@ -553,90 +549,16 @@ class ShiftLoadComputer():
 
         summary = self.summary()
         print(summary)
-        if args.summary:
-            Path(args.summary).write_text(summary, encoding='utf8')
+        if config.loadSummaryFile:
+            Path(config.loadSummaryFile).write_text(summary, encoding='utf8')
 
 
 def main(args):
-    from .retriever import (
-        downloadPersons,
-        downloadLeaves,
-        downloadIdealLoad,
-        downloadVacations,
-        downloadFestivities,
-        downloadBusy,
-        downloadShiftCredit,
-        addDays,
-    )
-
-    step('Carregant configuració {}...', args.config_file)
-    try:
-        config = ns.load(args.config_file)
-    except:
-        error("Configuració incorrecta")
-        raise
-
-    # Optionally download and load persons information
-    config.personsfile = args.personsfile or config.get('personsfile', 'persons.yaml')
-    if not args.keep and not args.personsfile:
-        downloadPersons(config)
-
-    from .persons import persons
-    config.update(persons(config.get('personsfile',None)))
-
-    if args.date is not None:
-        # take the monday of the week including that date
-        givenDate = datetime.datetime.strptime(args.date,"%Y-%m-%d").date()
-        config.monday = addDays(givenDate, -givenDate.weekday())
-    else:
-        # If no date provided, take the next monday
-        today = datetime.date.today()
-        config.monday = addDays(today, 7-today.weekday())
-
-    if args.lines:
-        config.nTelefons = args.lines
-
-    if args.drive_file:
-        config.documentDrive = args.drive_file
-
-    mustDownloadIdealShifts = not args.idealshifts and not config.get('idealshifts')
-    config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.yaml'
-
-    if not args.keep:
-        step("Baixant persones de baixa del drive...")
-        config.driveCertificate = args.certificate
-        downloadLeaves(config, args.certificate)
-
-        if mustDownloadIdealShifts:
-            downloadIdealLoad(config, args.certificate)
-        if not config.get('busyFiles'):
-            downloadBusy(config)
-            downloadFestivities(config)
-            downloadVacations(config, source=args.holidays)
-
-        step("Baixant bossa d'hores del tomatic...")
-        downloadShiftCredit(config)
-
-    setup = ShiftLoadComputer.loadData(config)
-
-    computer = ShiftLoadComputer(
-        nlines = config.nTelefons,
-        generalMaxPerDay = config.maximHoresDiariesGeneral,
-        maxPerDay = config.maximHoresDiaries,
-        maxOverload = config.maxOverload,
-        leaves = setup.leaves,
-        daysoff = setup.daysoff,
-        busyTable = setup.busyTable,
-        businessDays = setup.businessDays,
-        idealLoad = setup.idealLoad,
-        credits = setup.formerCredit,
-        monday = config.monday,
-        forgive = args.forgive,
-        inclusters = args.clusterize,
-    )
-
-    computer.outputResults(args)
-
+    from .scenario_config import Config
+    config = Config(**dict(
+        vars(args),
+        compute_shifts=True,
+    ))
 
 if __name__ == '__main__':
     main()
