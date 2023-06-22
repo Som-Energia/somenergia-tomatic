@@ -243,21 +243,6 @@ def downloadFestivities(config):
         for festivity in Festivities.read(festivity_ids, ['date','meeting_id']) or []:
             output.write('{date}\t{meeting_id[1]}\n'.format(**festivity))
 
-def downloadShiftload(config):
-    step('Baixant carrega setmanal...')
-    url = config.baseUrl + '/api/shifts/download/shiftload/{}'.format(config.monday)
-    step("  Baixant {} from {}", config.weekShifts, url)
-    r = requests.get(url)
-    r.raise_for_status()
-    Path(config.weekShifts).write_bytes(r.content)
-
-def downloadOverload(config):
-    url = config.baseUrl + '/api/shifts/download/overload/{}'.format(config.monday)
-    step("  Baixant {} from {}", config.overloadfile, url)
-    r = requests.get(url)
-    r.raise_for_status()
-    Path(config.overloadfile).write_bytes(r.content)
-
 def downloadIdealLoad(config, certificat):
     step('Autentificant al Google Drive')
     fetcher = SheetFetcher(

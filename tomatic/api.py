@@ -340,26 +340,6 @@ def downloadWeekShiftCredit(week): # TODO requires validation
         raise ApiError(e)
     return yamlfy(**credit)
 
-@app.get('/api/shifts/download/shiftload/{week}')
-def downloadShiftLoad(week): # TODO requires validation
-    loadfile = Path('carrega-{}.csv'.format(week))
-
-    return FileResponse(
-        str(loadfile),
-        #as_attachment=True,
-        media_type='text/csv',
-    )
-
-@app.get('/api/shifts/download/overload/{week}')
-def downloadOverload(week): # TODO requires validation
-    loadfile = Path('overload-{}.yaml'.format(week))
-
-    return FileResponse(
-        str(loadfile),
-        #as_attachment=True,
-        media_type = 'application/x-yaml',
-    )
-
 def yamlinfoerror(code, message, *args, **kwds):
     error(message, *args, **kwds)
     return yamlfy(info=ns(

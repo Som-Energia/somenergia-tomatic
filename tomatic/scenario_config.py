@@ -10,8 +10,6 @@ from .retriever import (
     downloadVacations,
     downloadFestivities,
     downloadBusy,
-    downloadShiftload,
-    downloadOverload,
     downloadShiftCredit,
     addDays,
 )
@@ -235,34 +233,12 @@ class Config:
             if not keep and mustDownloadIdealShifts:
                 downloadIdealLoad(self.data, certificate)
 
-            """
-            TODO: Remove the download mode for weekshifts and shiftload
-            There are 3 of geting weekshifts and shiftload
-            - Download it from the server (by default behavior)
-            - Compute it with Shiftloader (with computeShifts option)
-            - Take already computed files (when files are passed by parameters or --keep)
-            Downloading them from the server had sense when computing shifts
-            was a different step run in the server. Now that the shiftloader
-            has been integrated, downloading them has no sense.
-            Clean up the API entries, the retriever functions and simplify this configuration
-            """
-
-            # TODO: Not for shiftload
-            mustDownloadShifts = not weekshifts and not config.get('weekShifts') and not config.computeShifts
-            config.weekShifts = config.get('weekShifts') or weekshifts or 'carrega.csv'
-            if not keep and mustDownloadShifts:
-                downloadShiftload(self.data)
-
-            # TODO: Not in shiftload.py
-            mustDownloadOverload = not overload and not config.computeShifts
-            config.overloadfile = overload or "overload-{}.yaml".format(config.monday)
-            if not keep and mustDownloadOverload:
-                downloadOverload(config)
+            config.weekShifts = weekshifts or config.get('weekShifts') or 'carrega.csv'
+            config.overloadfile = overload or config.get('overloadfile') or "overload-{}.yaml".format(config.monday)
 
             if not keep and not self.data.get('busyFiles'):
                 self._download_busy(holidays)
 
-            # TODO: shiftload.py does it inconditional
             if self.data.computeShifts:
                 if not keep:
                     step("Baixant bossa d'hores del tomatic...")
