@@ -225,13 +225,16 @@ class Config:
 
             config.computeShifts = config.get('computeShifts') or compute_shifts
 
+            if certificate:
+                config.driveCertificate = certificate
+
             if not keep:
-                self._download_leaves(certificate)
+                self._download_leaves()
 
             mustDownloadIdealShifts = not idealshifts and not config.get('idealshifts')
             config.idealshifts = idealshifts or config.get('idealshifts') or 'idealshifts.yaml'
             if not keep and mustDownloadIdealShifts:
-                downloadIdealLoad(self.data, certificate)
+                downloadIdealLoad(self.data)
 
             config.weekShifts = weekshifts or config.get('weekShifts') or 'carrega.csv'
             config.overloadfile = overload or config.get('overloadfile') or "overload-{}.yaml".format(config.monday)
@@ -300,8 +303,7 @@ class Config:
             self.data.monday = addDays(today, 7-today.weekday())
 
     def _download_leaves(self, certificate):
-        self.data.driveCertificate = certificate
-        downloadLeaves(self.data, certificate)
+        downloadLeaves(self.data)
 
     def _download_busy(self, holidays):
         downloadBusy(self.data)

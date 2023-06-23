@@ -243,11 +243,11 @@ def downloadFestivities(config):
         for festivity in Festivities.read(festivity_ids, ['date','meeting_id']) or []:
             output.write('{date}\t{meeting_id[1]}\n'.format(**festivity))
 
-def downloadIdealLoad(config, certificat):
+def downloadIdealLoad(config):
     step('Autentificant al Google Drive')
     fetcher = SheetFetcher(
         documentName=config.documentDrive,
-        credentialFilename=certificat,
+        credentialFilename=config.driveCertificate,
         )
 
     step('Baixant carrega setmanal...')
@@ -264,11 +264,11 @@ def downloadIdealLoad(config, certificat):
         for name, value in zip(names,values))
     carregaIdeal.dump(config.idealshifts)
 
-def downloadLeaves(config, certificat):
+def downloadLeaves(config):
     step('Autentificant al Google Drive')
     fetcher = SheetFetcher(
         documentName=config.documentDrive,
-        credentialFilename=certificat,
+        credentialFilename=config.driveCertificate,
         )
     leavesSheet = config.get('leavesSheet',"Baixes")
     leavesFile = "leaves.conf"

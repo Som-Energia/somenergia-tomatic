@@ -145,11 +145,11 @@ def main():
 
     if not args.command or 'leaves' in args.command:
         step("Baixant persones de baixa del drive...")
-        downloadLeaves(config, args.certificate)
+        downloadLeaves(config)
 
     if not args.command or 'idealload' in args.command:
         config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.yaml'
-        downloadIdealLoad(config, args.certificate)
+        downloadIdealLoad(config)
     if not args.command or 'busy' in args.command:
         downloadBusy(config)
     if not args.command or 'festivities' in args.command:

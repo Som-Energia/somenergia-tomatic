@@ -27,7 +27,7 @@ def nextMonday(date):
 
 def getActivePersons(config, sandbox):
 	from tomatic.retriever import downloadIdealLoad
-	downloadIdealLoad(config, config.driveCertificate)
+	downloadIdealLoad(config)
 	return ns.load(config.idealshifts).keys()
 
 def getVacations(config, sandbox):
