@@ -9,7 +9,7 @@ from yamlns import ns
 from tomatic import schedulestorage
 from tomatic.plannerexecution import PlannerExecution, nextMonday
 from tomatic.retriever import downloadIdealLoad
-from tomatic.persons import update as updatePerson
+from tomatic.persons import update as updatePerson, persons
 
 @click.group()
 def cli():
