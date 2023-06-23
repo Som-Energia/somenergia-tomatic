@@ -233,6 +233,8 @@ function PersonsTable() {
     },
   ]
   const selectionActions = [
+    /*
+    // TODO: Not implemented yet
     {
       title: 'Add to Group',
       icon: <GroupAddIcon />,
@@ -245,6 +247,7 @@ function PersonsTable() {
       title: 'Remove Person',
       icon: <DeleteIcon />,
     },
+    */
   ]
 
   const itemActions = [
