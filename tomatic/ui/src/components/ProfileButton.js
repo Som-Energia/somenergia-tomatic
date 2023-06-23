@@ -22,11 +22,15 @@ import Auth from '../services/auth'
 import { contrast } from '../mithril/components/colorutils'
 import AuthContext from '../contexts/AuthContext'
 import editAvailabilities from '../mithril/components/busyeditor'
+import editPerson from '../mithril/components/editperson'
 
 const menuProfile = [
   {
     text: 'Perfil',
     icon: <IconSettings />,
+    onclick: () => {
+      editPerson(Auth.username())
+    },
   },
   {
     text: 'Indisponibilitats',
