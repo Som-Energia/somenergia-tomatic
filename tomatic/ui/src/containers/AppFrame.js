@@ -16,7 +16,7 @@ import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import SupportAgentIcon from '@mui/icons-material/SupportAgent'
 import PeopleIcon from '@mui/icons-material/People'
 import MenuIcon from '@mui/icons-material/Menu'
-import CallIcon from '@mui/icons-material/Call'
+import PhoneCallbackIcon from '@mui/icons-material/PhoneCallback'
 import appBackground_tomatic from '../images/tomatic_bg.jpg'
 import appBackground_pebrotic from '../images/pebrotic.jpg'
 import appBackground_ketchup from '../images/ketchup.png'
@@ -43,7 +43,7 @@ const pages = [
     text: 'Centraleta',
   },
   {
-    icon: <CallIcon />,
+    icon: <PhoneCallbackIcon />,
     text: 'Trucada',
   },
 ]
