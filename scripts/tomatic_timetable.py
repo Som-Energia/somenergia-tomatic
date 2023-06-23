@@ -8,11 +8,27 @@ from yamlns.dateutils import Date
 from yamlns import ns
 from tomatic import schedulestorage
 from tomatic.plannerexecution import PlannerExecution, nextMonday
+from tomatic.retriever import downloadIdealLoad
+from tomatic.persons import update as updatePerson
 
 @click.group()
 def cli():
     pass
 
+@cli.command()
+def importidealload():
+    """
+    Takes the ideal shift load from the drive document (to be deprecated)
+    and imports it into tomatic persons.yaml file.
+    """
+    import dbconfig
+    config = ns.load("config.yaml")
+    config.idealshifts = "idealshifts.yaml"
+    downloadIdealLoad(config)
+    loads = ns.load(config.idealshifts)
+    del persons()['loads']
+    for person, load in loads.items():
+        updatePerson(person, ns(load=load))
 
 @cli.command()
 def retireold():
