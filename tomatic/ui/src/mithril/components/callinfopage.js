@@ -40,10 +40,8 @@ module.exports = (function () {
 
   var typeOfSearch = function () {
     return m(
-      'select',
+      'select.select-search#search-by',
       {
-        id: 'search-by',
-        className: '.select-search',
         onchange: function () {
           CallInfo.search_by = document.getElementById('search-by').value
         },

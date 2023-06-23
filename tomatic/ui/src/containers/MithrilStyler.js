@@ -12,6 +12,8 @@ import PersonStyles from '../mithril/components/personstyles'
 import customStyle from '../mithril/style.styl'
 import Tomatic from '../services/tomatic'
 
+Tomatic.onKumatoChanged.push(() => m.redraw())
+
 css.addLayoutStyles()
 css.addTypography()
 console.log('customStyle', customStyle)
