@@ -22,7 +22,7 @@ var updateMode = null
 Tomatic.onKumatoChanged.push(() => updateMode && updateMode())
 
 export default function KumatoProvider({ children }) {
-  const [isKumatoMode, setKumato] = React.useState(Tomatic.isKumatoMode)
+  const [isKumatoMode, setKumato] = React.useState(Tomatic.isKumatoMode())
   updateMode = () => {
     setKumato(Tomatic.isKumatoMode())
   }

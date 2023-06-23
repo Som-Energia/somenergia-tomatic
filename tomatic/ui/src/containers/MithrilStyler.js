@@ -23,7 +23,7 @@ const MithrilStyler = (mithrilComponent) => {
         m(
           '',
           PersonStyles(),
-          m(Tomatic.isKumatoMode() ? 'pe-dark-tone' : '', [
+          m(Tomatic.isKumatoMode() ? '.pe-dark-tone' : '', [
             m(mithrilComponent),
             m(Dialog),
           ])
