@@ -105,7 +105,10 @@ def update(key, data):
         result.erpusers[key] = data.erpuser
     # Explicit, load and loads are a method
     if 'load' in data.keys():
-        result['loads'][key] = data['load']
+        if type(data['load']) == int:
+            result['loads'][key] = data['load']
+        else:
+            del result['loads'][key]
     if 'groups' in data:
         for group in data.groups:
             result.groups.setdefault(group, []).append(key)
