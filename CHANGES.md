@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Fix: Do not fail on registering user actions if no stats dir exists
+- `tomatic_busy.py forced-overlaps` checks overlaps between busy and forced turns
+- Suport for the loads attribute in the persons.yaml file, not used yet
+- `tomatic_timetable.py importidealload` import loads from drive
+  into persons.yaml, preparing for the migration
+
 ## 4.13.1 2023-06-22
 
 - Fix: completion stats for minizinc
