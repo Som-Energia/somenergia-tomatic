@@ -82,11 +82,22 @@ tomatic:
         a la bossa d'hores.
 
     explainBusy:
-      script: SOME_SRC/somenergia-tomatic/runhere tomatic_busy.py {monday} --required
+      script: SOME_SRC/somenergia-tomatic/runhere tomatic_busy.py list {monday} --required
       title: Graelles - Resum d'indisponibilitats per torn
       description: >
         Explica quanta gent hi ha indisponible a cada torn i perquè.
         Atencio, només funciona amb setmanes amb càrrega ja generada.
+      parameters:
+        monday:
+          description: Dilluns de la setmana, en format AAAA-MM-DD
+          type: DATE
+
+    forcedBusyOverlap:
+      script: SOME_SRC/somenergia-tomatic/runhere tomatic_busy.py forced-overlap {monday}
+      title: Graelles - Conflictes entre Ïndisponibilitats i Torns forçats
+      description: >
+        Mostra els torns forçats que coincideixen amb indisponibilitat
+        permanent i no opcional.
       parameters:
         monday:
           description: Dilluns de la setmana, en format AAAA-MM-DD

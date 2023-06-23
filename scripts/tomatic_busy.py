@@ -25,9 +25,26 @@ def nextMonday(date):
 	today = date or datetime.datetime.today()
 	return format(today + datetime.timedelta(days=(7-today.weekday()) or 7))
 
-@click.command()
+def getActivePersons(sandbox):
+	from tomatic.retriever import downloadIdealLoad
+	config = ns.load('config.yaml')
+	config.idealshifts = sandbox/'idealshifts.yaml'
+	downloadIdealLoad(config, config.driveCertificate)
+	return ns.load(config.idealshifts).keys()
+
+def getVacations(sandbox, date):
+	from tomatic.retriever import downloadVacations
+	config = ns.load('config.yaml')
+	config.monday = date
+	downloadVacations(config, 'odoo')
+
+@click.group()
 @click.help_option()
 @click.version_option(__version__)
+def cli():
+	u'Manages busy hours that persons cannot be attending phone'
+
+@cli.command()
 @click.argument('date',
 	default=None,
 	)
@@ -42,11 +59,11 @@ def nextMonday(date):
 	help=u"Mira només quants son obligats",
 	is_flag=True,
 	)
-def cli(date, sandbox, optional, required):
-	u'Manages busy hours that persons cannot be attending phone'
+def list(date, sandbox, optional, required):
 	date = busy.isodate(date)
 	sandbox=Path(sandbox)
-	activePersons = ns.load(sandbox/'idealshifts.yaml'.format(date)).keys()
+	activePersons = getActivePersons(sandbox)
+	getVacations(sandbox, date)
 	busytable = busy.BusyTable(
 		days=busy.weekdays,
 		nhours = busy.nturns,
@@ -82,6 +99,44 @@ def cli(date, sandbox, optional, required):
 			for person, reasons in sorted(busyAtTime.items()):
 				for reason in reasons:
 					out("- {}: {}", person, reason)
+@cli.command()
+@click.argument('date',
+	default=None,
+	)
+@click.argument('sandbox',
+	default='',
+	)
+def forced_overlap(date, sandbox):
+	date = busy.isodate(date)
+	sandbox=Path(sandbox)
+
+	activePersons = getActivePersons(sandbox)
+
+	busytable = busy.BusyTable(
+		days=busy.weekdays,
+		nhours = busy.nturns,
+		persons = activePersons,
+	)
+	for busyfile in [
+		'indisponibilitats.conf',
+		]:
+		busytable.load(format(sandbox/busyfile), date)
+
+	reasonTable = busytable.explain()
+
+	forced_turns = ns.load('data/forced-turns.yaml').timetable
+
+	out("\n# Indisponibilitats permaments no opcionals que es solapen amb torns forçats\n")
+
+	for weekday, hours in forced_turns.items():
+		for hour, lines in enumerate(hours):
+			for person in lines:
+				if person not in activePersons:
+					print(weekday, hour, person, "No te carrega ideal")
+					continue
+				reason = busytable.isBusy(weekday, hour, person)
+				if not reason: continue
+				print(weekday, hour, person, reason)
 
 
 if __name__=='__main__':
