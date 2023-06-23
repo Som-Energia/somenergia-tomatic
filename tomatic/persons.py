@@ -106,8 +106,8 @@ def update(key, data):
     # Explicit, load and loads are a method
     if 'load' in data.keys():
         if type(data['load']) == int:
-            result['loads'][key] = data['load']
-        else:
+            result.setdefault('loads',ns())[key] = data['load']
+        elif key in result.setdefault('loads', ns()):
             del result['loads'][key]
     if 'groups' in data:
         for group in data.groups:
