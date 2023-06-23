@@ -290,7 +290,6 @@ export default function PersonEditor(props) {
         <Button onClick={onClose}>Cancel</Button>
         <Button
           variant="contained"
-          title={Object.values(errors).join('\n')}
           disabled={!Object.values(errors).every((error) => !error)}
           onClick={() => {
             onSave(person?.id, data)
