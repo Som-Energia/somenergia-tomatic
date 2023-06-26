@@ -137,8 +137,8 @@ export default function PersonEditor(props) {
     },
     load: (value) => {
       if (value === undefined) return false
-      if (!value.match(/^\d+$/)) return 'Ha de ser un número'
-      if (value > 10) return "Potser t'has passat"
+      if (value === "") return false
+      if (isNaN(parseInt(value))) return 'Ha de ser un número'
       return false
     },
   }
@@ -225,7 +225,7 @@ export default function PersonEditor(props) {
         <TextField
           {...fieldOptions('load')}
           {...commonFieldOptions}
-          inputProps={{ pattern: '^[0-9]{0,10}$' }}
+          inputProps={{ pattern: '^[0-9]{0,2}$' }}
         />
         <TextField
           {...fieldOptions('extension')}

@@ -255,7 +255,9 @@ module.exports = (function () {
 					postdata.erpuser = value
 					break
 				case 'load':
-					postdata.load = value
+					const newLoad = parseInt(value)
+					postdata.load = isNaN(newLoad) ? null : newLoad;
+					break
 				case 'groups':
 					postdata.groups = value
 					break

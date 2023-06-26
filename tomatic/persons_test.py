@@ -407,6 +407,30 @@ class Persons_Test(unittest.TestCase):
             loads: {}
         """)
 
+    def test_update_load_unset_keeps(self):
+        Path('p.yaml').write_text(u"""\
+                names: {}
+            """)
+        persons.persons('p.yaml')
+        persons.update('someone', ns(
+            load = 7,
+        ))
+        persons.update('someone', ns(
+            extension='555',
+        ))
+        self.assertNsEqual(persons.persons(), """\
+            names: {}
+            extensions:
+                someone: '555'
+            erpusers: {}
+            tables: {}
+            colors: {}
+            emails: {}
+            groups: {}
+            loads:
+                someone: 7
+        """)
+
     def test_update_getSaved(self):
         Path('p.yaml').write_text(u"""\
                 extensions: {}
