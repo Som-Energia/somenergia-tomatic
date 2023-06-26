@@ -49,6 +49,17 @@ npm install
 npm run deploy # for production assets
 ```
 
+### Setting up minizinc (used by timetable scheduler)
+
+```bash
+TARGET_PATH=.venv/bin # or anything in your PATH
+wget -q https://github.com/MiniZinc/MiniZincIDE/releases/download/2.7.4/MiniZincIDE-2.7.4-x86_64.AppImage
+mv MiniZincIDE-2.7.4-x86_64.AppImage $TARGET_PATH/minizinc
+chmod +x $TARGET_PATH/minizinc
+minizinc --version
+minizinc --help # Should show COIN-BC and Chuffed as "available solvers"
+```
+
 ### Configuration
 
 - Copy `config-example.yaml` as `config.yaml` and edit it
