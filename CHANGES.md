@@ -3,6 +3,7 @@
 ## 5.0.0 2023-06-26
 
 - New React UI, still in progress (Mithril and React will coexist for a while)
+- Lateral menu
 - New persons editor
 	- List based view that allows comparing values
 	- Also sorting, filtering...
@@ -10,6 +11,7 @@
 	- Turn loads are editable
 - Upgrade notes:
     - New frontend dependencies, npm install required
+    - Recommended to delete `node_modules` and packages-lock.json`
     - Frontend development flow has changed, see docs
     - Ideal loads are now kept in persons.yaml
 
