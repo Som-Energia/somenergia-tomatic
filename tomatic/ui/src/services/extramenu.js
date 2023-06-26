@@ -62,7 +62,7 @@ const menuOptions = function () {
 		},
 		{
 			icon: '🦸‍♀️',
-			title: 'Administració',
+			title: 'Administració d\'usuàries',
 			route: '/Administration',
 		},
 		{
