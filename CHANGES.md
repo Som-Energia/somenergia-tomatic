@@ -1,6 +1,6 @@
 # Changelog
   
-## Unreleased
+## 5.0.0 2023-06-26
 
 - New React UI, still in progress (Mithril and React will coexist for a while)
 - New persons editor
