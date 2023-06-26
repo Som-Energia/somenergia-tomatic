@@ -143,19 +143,27 @@ def downloadVacations_odoo(config):
     step("  Guardant indisponibilitats per vacances a 'indisponibilitats-vacances.conf'...")
     weekdays = ['dl', 'dm', 'dx', 'dj', 'dv']
     days = [addDays(config.monday, i) for i in range(5)]
+    ignored = set()
     with open('indisponibilitats-vacances.conf', 'w') as holidaysfile:
         for absence in absences:
-            name = email2tomatic.get(absence['worker'])
+            worker = absence['worker']
+            name = email2tomatic.get(worker)
             if name is None:
-                warn("Ignorant les vacances de {} que no està al Tomàtic",
-                    absence['worker'])
+                if worker in ignored:
+                    continue
+                ignored.add(worker)
+                warn(
+                    "Ignorant les vacances de {} que no està al Tomàtic",
+                    worker,
+                )
                 continue
 
             start = dateFromIso(absence['start_time'])
             end = dateFromIso(absence['end_time'])
             for weekday, day in zip(weekdays, days):
                 if start <= day <= end:
-                    out("+{} {} # vacances", name, weekday)
+                    if config.get('verbose'):
+                        out("+{} {} # vacances", name, weekday)
                     holidaysfile.write("+{} {} # vacances\n".format(name, weekday))
 
 
