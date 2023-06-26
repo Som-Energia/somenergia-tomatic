@@ -256,6 +256,9 @@ module.exports = (function () {
 					break
 				case 'load':
 					postdata.load = value
+				case 'groups':
+					postdata.groups = value
+					break
 					break
 				default:
 					console.log('Unexpected person parameter', key)

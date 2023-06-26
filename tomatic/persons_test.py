@@ -317,6 +317,54 @@ class Persons_Test(unittest.TestCase):
             loads: {}
         """)
 
+    def test_update_groups_existingGroups_untouched(self):
+        Path('p.yaml').write_text(u"""\
+            groups:
+              mygroup:
+              - someone
+              othergroup:
+              - other
+            """)
+        persons.persons('p.yaml')
+        persons.update('someone', ns(
+            groups = []
+        ))
+        self.assertNsEqual(persons.persons(), """\
+            names: {}
+            erpusers: {}
+            extensions: {}
+            tables: {}
+            colors: {}
+            emails: {}
+            groups:
+              othergroup:
+              - other
+            loads: {}
+        """)
+
+    def test_update_groups_existingGroups_keepGroups(self):
+        Path('p.yaml').write_text(u"""\
+            groups:
+              mygroup:
+              - someone
+            """)
+        persons.persons('p.yaml')
+        persons.update('someone', ns(
+            groups = ['mygroup']
+        ))
+        self.assertNsEqual(persons.persons(), """\
+            names: {}
+            erpusers: {}
+            extensions: {}
+            tables: {}
+            colors: {}
+            emails: {}
+            groups:
+              mygroup:
+              - someone
+            loads: {}
+        """)
+
     def test_update_load_adds(self):
         Path('p.yaml').write_text(u"""\
                 names: {}

@@ -111,13 +111,19 @@ def update(key, data):
             del result['loads'][key]
     if 'groups' in data:
         for group in data.groups:
-            result.groups.setdefault(group, []).append(key)
+            members = result.groups.setdefault(group, [])
+            if key not in members:
+                members.append(key)
         for group, components in result.groups.items():
             if group in data.groups:
                 continue
-            result.groups[group].remove(key)
-            if not result.groups[group]:
-                del result.groups[group]
+            if key in result.groups[group]:
+                result.groups[group].remove(key)
+        result.groups = {
+            group: members
+            for group, members in result.groups.items()
+            if members
+        }
     result.dump(persons.path)
 
 
