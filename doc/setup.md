@@ -150,3 +150,14 @@ $ curl --max-time 1 -X POST  $BASEURL/api/info/ringring --data ext=101 --data ph
 Notice the `--max-time 1` used to avoid stalling the call if the api is down.
 And notice, also, the trailing `|| true` to ensure the call success.
 Both may be needed, depending on how you call this from you PBX.
+
+## How to get an updated node environment
+
+```bash
+sudo npm install -g n # Install n (node version chooser)
+sudo n stable  # Install stable as option
+sudo n # choose the current version
+```
+
+And then you need to start a new shell session to see the changes
+
