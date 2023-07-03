@@ -302,7 +302,7 @@ class Config:
             today = datetime.date.today()
             self.data.monday = addDays(today, 7-today.weekday())
 
-    def _download_leaves(self, certificate):
+    def _download_leaves(self):
         downloadLeaves(self.data)
 
     def _download_busy(self, holidays):
