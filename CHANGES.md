@@ -1,5 +1,9 @@
 # Changelog
-  
+
+## 5.0.1 2023-07-03
+
+- Fix: wrong call to `_download_leaves` when generating timetables
+
 ## 5.0.0 2023-06-26
 
 - New React UI, still in progress (Mithril and React will coexist for a while)
