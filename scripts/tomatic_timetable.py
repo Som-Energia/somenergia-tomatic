@@ -10,6 +10,7 @@ from tomatic import schedulestorage
 from tomatic.plannerexecution import PlannerExecution, nextMonday
 from tomatic.retriever import downloadIdealLoad
 from tomatic.persons import update as updatePerson, persons
+import sys
 
 @click.group()
 def cli():
@@ -56,6 +57,48 @@ def upload():
     graella.setdefault('log',[]).append(logmsg)
     schedules.save(graella)
     schedulestorage.publishStatic(graella)
+
+@cli.command()
+@click.argument(
+    'tsv',
+    type=click.File("wt"),
+    default=sys.stdout,
+)
+def workforce(tsv):
+    from tomatic.retriever import addDays
+    path_graelles = Path('graelles')
+
+    graelles = sorted(
+        # Retired timetables
+        list(path_graelles.glob('old/graella-????-??-??.yaml')) +
+        # Currently visible ones
+        list(path_graelles.glob('graella-????-??-??.yaml')),
+        # Sorted ignoring path, by date
+        key=lambda x: x.name,
+    )
+    included = set()
+    excluded = {'ningu', None, 'festiu', '?'}
+    for graella in graelles:
+        step("Processing {}".format(graella))
+        timetable = ns.load(graella).timetable
+        monday = Date(graella.stem[len('graella-'):])
+        for i, weekday in enumerate(('dl', 'dm', 'dx', 'dj', 'dv')):
+            day = addDays(monday, i)
+            hours = timetable[weekday]
+            workforce = sum(
+                1
+                for lines in hours
+                for person in lines
+                if person not in excluded
+            )
+            included.update({
+                person
+                for lines in hours
+                for person in lines
+                if person not in excluded
+            })
+            tsv.write(f"{day}\t{workforce}\n")
+
 
 @cli.command()
 @click.argument(

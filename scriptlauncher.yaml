@@ -60,6 +60,20 @@ tomatic_stats:
           extension: tar.gz
           filename: logs-centraleta-bruts.tar.gz
 
+    historicalWorkforce:
+      script: ./runhere tomatic_timetable.py workforce {output}
+      title: Centraleta - Històric de força de treball diaria
+      description: >
+        Retorna una taula amb l'històric de nombre de torns
+        programats cada dia.
+        No inclou els canvis que s'hagin fet en temps real
+        pausant o afegint persones.
+      parameters:
+        output:
+          type: FILEDOWN
+          extension: tsv
+          filename: workforce.tsv
+
 tomatic_graelles:
   description: Tomàtic (Graelles)
   scripts:
