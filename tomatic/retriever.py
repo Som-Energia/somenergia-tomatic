@@ -26,7 +26,7 @@ def addDays(date, ndays):
     return date + datetime.timedelta(days=ndays)
 
 
-def downloadVacations_odoo(config):
+def downloadVacations(config):
     step("Baixant vacances de l'odoo...")
 
     import dbconfig
@@ -74,12 +74,6 @@ def downloadVacations_odoo(config):
                         out("+{} {} # vacances", name, weekday)
                     holidaysfile.write("+{} {} # vacances\n".format(name, weekday))
 
-
-def downloadVacations(config, source=None):
-    if source=='odoo':
-        return downloadVacations_odoo(config)
-
-    fail("Bad source for vacations: {}".format(source))
 
 def downloadFestivities(config):
     step("Baixant festivitats de l'odoo...")

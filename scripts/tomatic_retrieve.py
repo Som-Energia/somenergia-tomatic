@@ -48,13 +48,6 @@ def parseArgs():
         )
 
     parser.add_argument(
-        '--holidays',
-        default='odoo',
-        choices='drive odoo'.split(),
-        help="Origen d'on agafa les vacances",
-    )
-
-    parser.add_argument(
         '--drive-file',
         help="Document del drive origen de dades externes"
         )
@@ -153,7 +146,7 @@ def main():
     if not args.command or 'festivities' in args.command:
         downloadFestivities(config)
     if not args.command or 'vacations' in args.command:
-        downloadVacations(config, source=args.holidays)
+        downloadVacations(config)
 
     if not args.command or 'shiftcredit' in args.command:
         step("Baixant bossa d'hores del tomatic...")

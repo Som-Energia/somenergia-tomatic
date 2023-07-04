@@ -62,17 +62,11 @@ def parseArgs():
     )
 
     parser.add_argument(
-        '--holidays',
-        default='odoo',
-        choices='drive odoo'.split(),
-        help="Origen d'on agafa les vacances",
-    )
-
-    parser.add_argument(
         '--clusterize',
         action='store_true',
         help="output a line clusterized load",
         )
+
     parser.add_argument(
         '-l',
         '--lines',
@@ -160,7 +154,6 @@ class Config:
         date,
         keep,
         certificate,
-        holidays,
         lines=None,
         deterministic=False,
         verbose=None,
@@ -240,7 +233,7 @@ class Config:
             config.overloadfile = overload or config.get('overloadfile') or "overload-{}.yaml".format(config.monday)
 
             if not keep and not self.data.get('busyFiles'):
-                self._download_busy(holidays)
+                self._download_busy()
 
             if self.data.computeShifts:
                 if not keep:
@@ -305,10 +298,10 @@ class Config:
     def _download_leaves(self):
         downloadLeaves(self.data)
 
-    def _download_busy(self, holidays):
+    def _download_busy(self):
         downloadBusy(self.data)
         downloadFestivities(self.data)
-        downloadVacations(self.data, source=holidays)
+        downloadVacations(self.data)
 
     def set_ignore_optionals(self, ignore = False):
         self.data.ignoreOptionalAbsences = ignore
