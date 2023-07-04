@@ -103,8 +103,6 @@ def main():
         downloadFestivities,
         downloadBusy,
         downloadShiftCredit,
-        downloadShiftload,
-        downloadOverload,
         addDays,
     )
 
