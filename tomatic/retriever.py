@@ -40,9 +40,9 @@ def downloadVacations_odoo(config):
 
     def dateFromIso(isoString):
         return datetime.datetime.strptime(
-                isoString,
-                '%Y-%m-%d %H:%M:%S'
-            ).date()
+            isoString,
+            '%Y-%m-%d %H:%M:%S'
+        ).date()
     email2tomatic = {
         email: id
         for id, email in persons().emails.items()
