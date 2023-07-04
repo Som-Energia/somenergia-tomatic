@@ -80,13 +80,6 @@ tomatic=ns(
         user='webmaster',
         path='/home/webmaster/timetables/',
     ),
-    # Configure this to download vacations from Notoi API
-    # remove the no_ prefix to activate it
-    no_notoi_data = ns(
-        service_url = "https://....",
-        user = "myuser",
-        password = "mypassword",
-    ),
     # Configure this to download vacations from odoo
     # remove the no_ prefix to activate it
     no_holidaysodoo = ns(

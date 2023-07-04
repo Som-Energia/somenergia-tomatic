@@ -1,5 +1,9 @@
 # Changelog
 
+## unreleased
+
+- Removed notoi vacations source
+
 ## 5.0.1 2023-07-03
 
 - Fix: wrong call to `_download_leaves` when generating timetables
