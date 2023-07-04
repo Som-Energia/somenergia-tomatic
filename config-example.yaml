@@ -26,7 +26,6 @@ maxOverload: 0 # Max number of turns from the ideal for each person
 clusterize: true # True if people is pre-asigned to specific lines
 discriminateLines: true # True to consider a different line ordering a different solution
 pruneRedundant: false # Activate to prune line ordering other than the sorted names one
-newYearHack: false # To activate at the end of the semester or year when holidays table continues beyond the year
 ignoreOptionalAbsences: true # False to enforce optional absences not to be optional
 mostraCami: false   # show the trail while it search for a solution
 maximCamiAMostrar: 60   # max level to show the trail for

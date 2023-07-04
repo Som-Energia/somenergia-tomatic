@@ -2,7 +2,11 @@
 
 ## unreleased
 
-- Removed notoi vacations source
+- Removed notoi vacations retriever
+- Removed drive vacations retriever
+- Upgrade notes:
+    - Remove notoi var group from dbconfig.py, related to notoi vacations retriever
+    - Remove newYearHack var from config.yaml, related to drive vacations retriever
 
 ## 5.0.1 2023-07-03
 

@@ -75,62 +75,9 @@ def downloadVacations_odoo(config):
                     holidaysfile.write("+{} {} # vacances\n".format(name, weekday))
 
 
-
-def downloadVacations_drive(config):
-    step('Autentificant al Google Drive')
-    fetcher = SheetFetcher(
-        documentName=config.documentDrive,
-        credentialFilename=config.driveCertificate,
-    )
-
-    step('Baixant vacances del drive...')
-
-    nextFriday = addDays(config.monday, 4)
-    mondayYear = config.monday.year
-    startingSemester = 1 if config.monday < datetime.date(mondayYear,7,1) else 2
-
-    # HACK: Activate this flag until we have holidays spreadsheet for the new year
-    if config.get("newYearHack",False):
-        mondayYear-=1
-        startingSemester = 2
-
-    semesterFirsMonth = 1 if startingSemester==1 else 7
-    semesterFirstDay = datetime.date(mondayYear, semesterFirsMonth, 1)
-    startingOffset = (config.monday - semesterFirstDay).days
-
-    holidays2SRange = 'Vacances{}Semestre{}'.format(
-        mondayYear,
-        startingSemester,
-        )
-    step("  Baixant vacances de l'interval {}".format(holidays2SRange))
-    holidays2S = fetcher.get_range(u(mondayYear), holidays2SRange)
-
-    # TODO: Compose from two semesters (won't happen till 2018 Jan)
-#    endingSemester = 1 if nextFriday < datetime.date(mondayYear,7,1) else 2
-#    if startingSemester == endingSemester :
-    who = [row[0] for row in holidays2S ]
-    holidays = [
-        (transliterate(name), [
-            day for day, value in zip(
-                ['dl','dm','dx','dj','dv'],
-                row[startingOffset+1:startingOffset+6]
-                )
-            if value.strip()
-            ])
-        for name, row in zip(who, holidays2S)
-        ]
-    step("  Guardant indisponibilitats per vacances a 'indisponibilitats-vacances.conf'...")
-    with open('indisponibilitats-vacances.conf','w') as holidaysfile:
-        for name, days in holidays:
-            for day in days:
-                holidaysfile.write("+{} {} # vacances\n".format(name, day))
-
-
 def downloadVacations(config, source=None):
     if source=='odoo':
         return downloadVacations_odoo(config)
-    if source=='drive':
-        return downloadVacations_drive(config)
 
     fail("Bad source for vacations: {}".format(source))
 

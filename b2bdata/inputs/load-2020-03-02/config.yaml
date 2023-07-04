@@ -36,7 +36,6 @@ maxOverload: 1
 clusterize: false
 discriminateLines: true
 pruneRedundant: true
-newYearHack: false
 ignoreOptionalAbsences: true
 mostraCami: false
 maximCamiAMostrar: 60
