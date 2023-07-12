@@ -23,12 +23,11 @@ function EditDialog(props){
         <div>
             <Dialog open={open}>
                 <DialogTitle>Edita posició de la graella</DialogTitle>
-                <DialogContent> {Tomatic.weekday(data.day) +' a les ' + Tomatic.grid().hours[data.hour] + ', línia ' + (data.turn + 1) +', la feia ' + Tomatic.formatName(oldPerson) + '. Qui ho ha de fer?'} </DialogContent>
+                <DialogContent> {Tomatic.weekday(data.day) +' a les ' + Tomatic.grid().hours[data.hour] + ', línia ' + (data.turn + 1) +', la feia '} <span className={'extension ' + oldPerson}>{Tomatic.formatName(oldPerson)}</span> {'. Qui ho ha de fer?'} </DialogContent>
                 <DialogContent><PersonPicker onPick={setPerson}></PersonPicker></DialogContent>
                 <DialogActions>
                     <Button onClick={onClose}>Cancel·la</Button>
                 </DialogActions>
-                {/* <button onClick={() => handleChange(nom_persona)}> Casella amb nom </button> */}
             </Dialog>
         </div>
     )

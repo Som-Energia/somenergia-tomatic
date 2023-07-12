@@ -15,7 +15,7 @@ const menuOptions = function () {
 			},
 		},
 		{
-			icon: '',
+			icon: '📌',
 			title: 'Torns fixes',
 			action: function () {
 				const url = '/api/planner/'

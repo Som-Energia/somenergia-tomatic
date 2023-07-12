@@ -2,14 +2,8 @@ import React, {useState} from 'react'
 import Tomatic from '../services/tomatic';
 import Auth from '../services/auth';
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Tooltip from '@mui/material/Tooltip';
+import PersonStyles from './PersonStyles'
+import customStyle from '../mithril/style.styl'
 
 import EditDialog from './EditDialog';
 
@@ -32,10 +26,12 @@ function TimeTable() {
     function cell (day, houri, turni) {
         var name = Tomatic.cell(day, houri, turni)
         return (
-            <Tooltip title={Tomatic.formatExtension(name)} placement="top-end">
-                <TableCell className={name} onClick={() => handleClick(day, houri, turni)}>{Tomatic.formatName(name)}
-                </TableCell>
-            </Tooltip>
+            <td className={name} onClick={() => handleClick(day, houri, turni)}>
+                {Tomatic.formatName(name)}
+                <div className="tooltip" >
+                    {Tomatic.formatExtension(name)}
+                </div>
+            </td>
         )
     }    
 
@@ -45,39 +41,36 @@ function TimeTable() {
         closeDialog();
     }
 
-
     return (
         <>
+        <PersonStyles />
         {dialogIsOpen 
         ? <EditDialog open={dialogIsOpen} data={cellData} handleChange={handleChange} onClose={closeDialog}></EditDialog>
         : null }
-        <TableContainer className='.graella' component={Paper}>
-        {gridData?.days.map((day) =>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-            <TableHead>
-            <TableRow>
-                <TableCell>{Tomatic.weekday(day)}</TableCell>
-                {gridData?.turns.map((turn) => 
-                    <TableCell align="left">{turn}</TableCell>
-                )}
-            </TableRow>
-            </TableHead>
-            <TableBody>
-            {gridData?.hours.slice(0, -1).map((hour, houri) => (
-                <TableRow
-                key={hour}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                <TableCell component="th" scope="row">
-                    {gridData?.hours[houri] + '-' + gridData?.hours[houri + 1]}
-                </TableCell>
-                {gridData.turns.map((turn, turni) => cell(day, houri, turni))}
-                </TableRow>
-            ))}
-            </TableBody>
-        </Table>
-        )}
-        </TableContainer>
+        <div className='graella'>
+            {gridData?.days.map((day) =>
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan={grid.turns.length }>{Tomatic.weekday(day)}</th>
+                        {gridData?.turns.map((turn) =>
+                            <td align="left">{turn}</td>
+                        )}
+                    </tr>
+                </thead>
+                <tbody>
+                    {gridData?.hours.slice(0, -1).map((hour, houri) => (
+                        <tr key={hour}>
+                        <td colspan={grid.turns.length }>
+                            {gridData?.hours[houri] + '-' + gridData?.hours[houri + 1]}
+                        </td>
+                        {gridData.turns.map((turn, turni) => cell(day, houri, turni))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            )}
+        </div>
         </>
     )
 }

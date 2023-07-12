@@ -9,17 +9,17 @@ function PersonPicker(props) {
 
     function pickCell(name) {
         return (
-            <Button
-            className={name}
+            <span
+            className={'extension ' + name}
             onClick={() => onPick(name)}
             >
                 {Tomatic.formatName(name)}
-            </Button>
+            </span>
         );
     };
 
     return (
-        <div>
+        <div className='extensions'>
 			{Object.keys(extensions).sort().map((name) => pickCell(name))}
         </div>
     )
