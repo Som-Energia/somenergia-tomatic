@@ -47,29 +47,31 @@ function TimeTable() {
         {dialogIsOpen 
         ? <EditDialog open={dialogIsOpen} data={cellData} handleChange={handleChange} onClose={closeDialog}></EditDialog>
         : null }
+        <div className='layout center-center wrap'>
         <div className='graella'>
             {gridData?.days.map((day) =>
             <table>
                 <thead>
                     <tr>
-                        <th colspan={grid.turns.length }>{Tomatic.weekday(day)}</th>
+                        <th>{Tomatic.weekday(day)}</th>
                         {gridData?.turns.map((turn) =>
-                            <td align="left">{turn}</td>
+                            <td>{turn}</td>
                         )}
                     </tr>
                 </thead>
                 <tbody>
                     {gridData?.hours.slice(0, -1).map((hour, houri) => (
                         <tr key={hour}>
-                        <td colspan={grid.turns.length }>
+                        <th className='separator'>
                             {gridData?.hours[houri] + '-' + gridData?.hours[houri + 1]}
-                        </td>
+                        </th>
                         {gridData.turns.map((turn, turni) => cell(day, houri, turni))}
                         </tr>
                     ))}
                 </tbody>
             </table>
             )}
+        </div>
         </div>
         </>
     )
