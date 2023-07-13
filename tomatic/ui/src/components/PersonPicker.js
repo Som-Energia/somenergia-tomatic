@@ -14,6 +14,7 @@ function PersonPicker(props) {
         cursor: pointer;
         text-align: center;
         padding: .5em;
+        width: 8em;
         margin: .3em;
         :hover {
             background: #bcb;
@@ -24,7 +25,7 @@ function PersonPicker(props) {
         cursor: pointer;
         text-align: center;
         padding: .5em 3em .5em 3em;
-        width: 5em;
+        width: 8em;
         border: 1px solid;
         margin: .3em;
         :hover {
