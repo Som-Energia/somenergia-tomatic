@@ -9,7 +9,6 @@ import PersonPicker from './PersonPicker';
 import styled from '@emotion/styled';
 
 import Tomatic from '../services/tomatic';
-import Auth from '../services/auth';
 
 
 function EditDialog(props){
@@ -32,7 +31,7 @@ function EditDialog(props){
                 <DialogTitle>Edita posició de la graella</DialogTitle>
                 <DialogContent> {Tomatic.weekday(data.day) +' a les ' + Tomatic.grid().hours[data.hour] + ', línia ' + (data.turn + 1) +', la feia '} <CellItem className={'extension ' + oldPerson}>{Tomatic.formatName(oldPerson)}</CellItem> {'. Qui ho ha de fer?'} </DialogContent>
                 <DialogContent>
-                    <PersonPicker onPick={setPerson}></PersonPicker>
+                    <PersonPicker onPick={setPerson} nobodyPickable='true' ></PersonPicker>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={onClose}>Cancel·la</Button>
