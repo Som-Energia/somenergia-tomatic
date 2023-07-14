@@ -32,6 +32,7 @@ from . import __version__ as version
 from .callinfo import CallInfo
 from .callregistry import CallRegistry
 from . import schedulestorage
+from . import schedulestorageforcedturns
 from .pbx import pbxqueue as pbx
 from . import persons
 from .backchannel import BackChannel
@@ -45,6 +46,7 @@ except ImportError:
 packagedir = Path(__file__).parent
 distpath = packagedir/'dist'
 schedules = schedulestorage.Storage()
+forcedTurns = schedulestorageforcedturns.Storage()
 
 from contextlib import contextmanager
 @contextmanager
@@ -210,6 +212,21 @@ def retireOldTimeTable(user = Depends(validatedUser)):
         schedules.retireOld(twoMondaysAgo)
     return yamlfy(result='ok')
 
+@app.get('/api/forcedturns')
+@yamlerrors
+def graellaTornsFixesYaml(user = Depends(validatedUser)):
+    timetable = forcedTurns.load()
+    return yamlfy(**timetable)
+
+@app.patch('/api/forcedturns/{day}/{houri}/{turni}/{name}')
+@ayamlerrors
+async def editSlot(day, houri: int, turni: int, name, request: Request, user = Depends(validatedUser)):
+    user=user['username']
+    try:
+        forcedTurns.editSlot(day, houri, turni, name, user)
+    except schedulestorageforcedturns.BadEdit as e:
+        raise ApiError(str(e))
+    return graellaTornsFixesYaml()
 
 @app.get('/api/graella-{week}.yaml')
 @app.get('/api/graella/{week}')

@@ -6,12 +6,14 @@ import { AuthProvider } from './contexts/AuthContext'
 import KumatoProvider from './containers/KumatoProvider'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
 import PersonsTable from './components/PersonsTable.js'
+
 import {
   MithrilCallinfoPage,
   MithrilTimeTablePage,
   MithrilQueueMonitor,
   MithrilPersonsPage,
 } from './components/MithrilPages'
+import ForcedTurns from './components/ForcedTurns'
 
 Tomatic.init()
 
@@ -30,6 +32,14 @@ const router = createHashRouter(
       element: (
         <AppFrame>
           <PersonsTable />
+        </AppFrame>
+      ),
+    },
+    {
+      path: '/ForcedTurns',
+      element: (
+        <AppFrame>
+          <ForcedTurns/>
         </AppFrame>
       ),
     },
@@ -73,11 +83,13 @@ const router = createHashRouter(
 
 function App() {
   return (
-    <AuthProvider>
-      <KumatoProvider>
-        <RouterProvider router={router} />
-      </KumatoProvider>
-    </AuthProvider>
+    <div id="tomatic" className='main'>
+      <AuthProvider>
+        <KumatoProvider>
+          <RouterProvider router={router} />
+        </KumatoProvider>
+      </AuthProvider>
+    </div>
   )
 }
 

@@ -17,10 +17,7 @@ const menuOptions = function () {
 		{
 			icon: '📌',
 			title: 'Torns fixes',
-			action: function () {
-				const url = '/api/planner/'
-				window.open(url, '_blank')
-			},
+			route: '/ForcedTurns',
 		},
 		{
 			icon: '📊',
