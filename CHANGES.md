@@ -2,9 +2,9 @@
 
 ## unreleased
 
+- `tomatic_timetable.py workload`: New script to get the daily workload from old timetables
 - Removed notoi vacations retriever
 - Removed drive vacations retriever
-- `tomatic_timetable.py workload`: New script to get the daily workload from old timetables
 - Upgrade notes:
     - Remove notoi var group from dbconfig.py, related to notoi vacations retriever
     - Remove newYearHack var from config.yaml, related to drive vacations retriever
