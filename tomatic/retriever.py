@@ -5,7 +5,6 @@ import datetime
 from pathlib import Path
 from consolemsg import step, out, warn, fail, u
 from yamlns import namespace as ns
-from somutils.sheetfetcher import SheetFetcher
 from .persons import persons
 
 # Dirty Hack: Behave like python3 open regarding unicode
@@ -100,6 +99,7 @@ def downloadFestivities(config):
 
 def downloadIdealLoad(config):
     step('Autentificant al Google Drive')
+    from somutils.sheetfetcher import SheetFetcher
     fetcher = SheetFetcher(
         documentName=config.documentDrive,
         credentialFilename=config.driveCertificate,
@@ -121,6 +121,7 @@ def downloadIdealLoad(config):
 
 def downloadLeaves(config):
     step('Autentificant al Google Drive')
+    from somutils.sheetfetcher import SheetFetcher
     fetcher = SheetFetcher(
         documentName=config.documentDrive,
         credentialFilename=config.driveCertificate,
