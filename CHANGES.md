@@ -1,6 +1,6 @@
 # Changelog
 
-## unreleased
+## 5.0.2 2023-07-14
 
 - `tomatic_timetable.py workload`: New script to get the daily workload from old timetables
 - Removed notoi vacations retriever
