@@ -26,7 +26,6 @@ function PersonPicker(props) {
         text-align: center;
         padding: .5em 3em .5em 3em;
         width: 8em;
-        border: 1px solid;
         margin: .3em;
         :hover {
             background: #bcb;
@@ -34,7 +33,7 @@ function PersonPicker(props) {
     `
 
     function pickCell(name) {
-        if (name == 'ningu')
+        if (name === 'ningu')
         {
             return (
                 <CellItemNingu
