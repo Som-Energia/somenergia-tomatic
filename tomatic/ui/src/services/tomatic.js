@@ -26,6 +26,7 @@ module.exports = (function () {
 		this.updateQueuePeriodically()
 		this.requestPersons()
 		this.initKumato()
+		this.requestForcedTurns()
 	}
 
 	Tomatic.versionTimer = 0
@@ -126,7 +127,6 @@ module.exports = (function () {
 		Tomatic.requestQueue()
 	}
 
-	Tomatic.grid = m.prop({})
 	Tomatic.weekdays = {
 		dl: 'Dilluns',
 		dm: 'Dimarts',
@@ -135,6 +135,51 @@ module.exports = (function () {
 		dv: 'Divendres',
 	}
 
+	/* Forced Turns */
+	Tomatic.forcedTurns = m.prop({});
+	Tomatic.onForcedTurnsUpdated = [];
+	Tomatic.requestForcedTurns = function () {
+		api.request({
+			url: '/api/forcedturns',
+		}).then(function (data) {
+			data.days = data.days || 'dl dm dx dj dv'.split(' ')
+			delete data.colors
+			delete data.names
+			delete data.extensions
+			delete data.tables // TODO: This one was never added
+			Tomatic.forcedTurns(data)
+			Tomatic.onForcedTurnsUpdated.forEach((callback) => callback())
+		})
+	}
+	Tomatic.forcedTurnCell = function (day, houri, turni) {
+		try {
+			return Tomatic.forcedTurns().timetable[day][houri][turni]
+		} catch (err) {
+			return undefined
+		}
+	}
+
+	Tomatic.editForcedTurn = function (day, houri, turni, name) {
+		// Direct edition, just for debug purposes
+		//Tomatic.grid().timetable[day][houri][turni] = name;
+		api.request({
+			method: 'PATCH',
+			url:
+				'/api/forcedturns/' +
+				[day, houri, turni, name].join('/'),
+		}).then(
+			function (data) {
+				Tomatic.requestForcedTurns()
+			},
+			function (error) {
+				Tomatic.error(
+					'Problemes editant els torns fixos: ' + (error || 'Inexperat')
+				)
+			}
+		)
+	}
+
+	Tomatic.grid = m.prop({})
 	Tomatic.requestGrid = function (week) {
 		api.request({
 			url: '/api/graella-' + week + '.yaml',

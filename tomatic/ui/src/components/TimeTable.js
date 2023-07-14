@@ -1,16 +1,14 @@
 import React, {useState} from 'react'
 import Tomatic from '../services/tomatic';
-import Auth from '../services/auth';
 
 import PersonStyles from './PersonStyles'
 import customStyle from '../mithril/style.styl'
 
 import EditDialog from './EditDialog';
 
-function TimeTable() {
-    const grid = Tomatic.grid()
+function TimeTable(props) {
+    const {grid, setCell, getCell} = props
 
-    const [gridData, setGridData] = useState(grid)
     const [dialogIsOpen, setDialogIsOpen] = useState(false)
     const [cellData, setCellData] = useState({})
 
@@ -24,7 +22,7 @@ function TimeTable() {
 	}
 
     function cell (day, houri, turni) {
-        var name = Tomatic.cell(day, houri, turni)
+        var name = getCell(day, houri, turni)
         return (
             <td className={name} onClick={() => handleClick(day, houri, turni)}>
                 {Tomatic.formatName(name)}
@@ -35,9 +33,23 @@ function TimeTable() {
         )
     }    
 
+    function Changelog(grid) {
+        return (
+            <div className='graella'>
+                <h5>Darrers canvis</h5>
+                <ul className='changelog'>
+                    {grid.log? [] : <li>'Cap canvi registrat'</li>}
+                    {grid.log.slice(0, -1).reverse().map((change) => (
+                        <li>{change}</li>
+                    ))
+                    }
+                </ul>
+            </div>
+        )
+	}
+
     const handleChange = (name, data) => {
-        var myname = Auth.username();
-        Tomatic.editCell(data.day, data.hour, data.turn, name, myname)
+        setCell(data.day, data.hour, data.turn, name)
         closeDialog();
     }
 
@@ -49,29 +61,32 @@ function TimeTable() {
         : null }
         <div className='layout center-center wrap'>
         <div className='graella'>
-            {gridData?.days.map((day) =>
+            {grid?.days.map((day) =>
             <table>
                 <thead>
                     <tr>
                         <th>{Tomatic.weekday(day)}</th>
-                        {gridData?.turns.map((turn) =>
+                        {grid?.turns.map((turn) =>
                             <td>{turn}</td>
                         )}
                     </tr>
                 </thead>
                 <tbody>
-                    {gridData?.hours.slice(0, -1).map((hour, houri) => (
+                    {grid?.hours.slice(0, -1).map((hour, houri) => (
                         <tr key={hour}>
                         <th className='separator'>
-                            {gridData?.hours[houri] + '-' + gridData?.hours[houri + 1]}
+                            {grid?.hours[houri] + '-' + grid?.hours[houri + 1]}
                         </th>
-                        {gridData.turns.map((turn, turni) => cell(day, houri, turni))}
+                        {grid.turns.map((turn, turni) => cell(day, houri, turni))}
                         </tr>
                     ))}
                 </tbody>
             </table>
             )}
         </div>
+        </div>
+        <div className='layout.around-justified.wrap'>
+            {grid?.log? Changelog(grid):[]}
         </div>
         </>
     )
