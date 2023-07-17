@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import Tomatic from '../services/tomatic'
 import TimeTable from './TimeTable'
+import Doc from './Doc'
+import Typography from '@mui/material/Typography';
 
 var onForcedTurnsUpdated = null
 Tomatic.onForcedTurnsUpdated.push(()=>
@@ -23,11 +25,19 @@ function ForcedTurns() {
         return Tomatic.forcedTurnCell(day, houri, turni)
     }
     return (
+        <>
+        <Doc
+            message="Visualitza la graella de torns fixats. Feu click al damunt d'una cel·la per bescanviar el turn."
+        ></Doc>
+        <Typography gutterBottom variant="h2" align="center" component="div">
+            Torns fixats
+        </Typography>
         <TimeTable
             grid={grid}
             setCell={setCell}
             getCell={getCell}
         ></TimeTable>
+        </>
     )
 }
 
