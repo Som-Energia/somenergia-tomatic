@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Tomatic from '../services/tomatic'
 import TimeTable from './TimeTable'
 
@@ -13,6 +13,9 @@ function ForcedTurns() {
     onForcedTurnsUpdated = () => {
         setGrid(Tomatic.forcedTurns())
     }
+
+    useEffect(onForcedTurnsUpdated, [Tomatic.forcedTurns()])
+
     const setCell = (day, houri, turni, name) => {
         Tomatic.editForcedTurn(day, houri, turni, name)
     }
