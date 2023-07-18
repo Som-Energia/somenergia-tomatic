@@ -27,7 +27,7 @@ function ForcedTurns() {
     return (
         <>
         <Doc
-            message="Visualitza la graella de torns fixats. Feu click al damunt d'una cel·la per bescanviar el turn."
+            message="Els torns fixats es tenen en compte per generar la grella cada setmana si n'hi ha disponibilitat. Feu click al damunt d'una cel·la per bescanviar el turn."
         ></Doc>
         <Typography gutterBottom variant="h2" align="center" component="div">
             Torns fixats
