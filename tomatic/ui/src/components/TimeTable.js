@@ -117,7 +117,7 @@ function TimeTable(props) {
         : null
         }
         <div className='layout center-center wrap'>
-            {grid?.days.map((day) =>
+            {(grid?.days || []).map((day) =>
             <div className='graella'>
                 <table>
                     <thead>
