@@ -20,15 +20,15 @@ function TimeTable(props) {
   
     const closeDialog = () => setDialogIsOpen(false)
 
-    const handleClick = (day, houri, turni) => {
-    	setCellData({day:day, hour:houri, turn:turni});
+    const handleClick = (day, houri, turni, name) => {
+	    setCellData({day:day, hour:houri, turn:turni, name:name});
         openDialog()
 	}
 
     function cell (day, houri, turni) {
         var name = getCell(day, houri, turni)
         return (
-            <td className={name} onClick={() => handleClick(day, houri, turni)}>
+            <td className={name} onClick={() => handleClick(day, houri, turni, name)}>
                 {Tomatic.formatName(name)}
                 <div className="tooltip" >
                     {Tomatic.formatExtension(name)}

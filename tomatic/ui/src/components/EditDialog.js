@@ -14,8 +14,6 @@ import Tomatic from '../services/tomatic';
 function EditDialog(props){
     const { open, onClose, data, handleChange } = props
  
-    var oldPerson = Tomatic.cell(data.day, data.hour, data.turn)
-
     const setPerson = (name) => {
         handleChange(name, data)
     }
@@ -29,7 +27,7 @@ function EditDialog(props){
         <div>
             <Dialog open={open}>
                 <DialogTitle>Edita posició de la graella</DialogTitle>
-                <DialogContent> {Tomatic.weekday(data.day) +' a les ' + Tomatic.grid().hours[data.hour] + ', línia ' + (data.turn + 1) +', la feia '} <CellItem className={'extension ' + oldPerson}>{Tomatic.formatName(oldPerson)}</CellItem> {'. Qui ho ha de fer?'} </DialogContent>
+                <DialogContent> {Tomatic.weekday(data.day) +' a les ' + Tomatic.grid().hours[data.hour] + ', línia ' + (data.turn + 1) +', la feia '} <CellItem className={'extension ' + data.name}>{Tomatic.formatName(data.name)}</CellItem> {'. Qui ho ha de fer?'} </DialogContent>
                 <DialogContent>
                     <PersonPicker onPick={setPerson} nobodyPickable='true' ></PersonPicker>
                 </DialogContent>
