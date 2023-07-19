@@ -1,5 +1,23 @@
 # Changelog
 
+## unrelease
+
+- New React components:
+    - WeekPicker
+    - TimeTable
+    - EditDialog
+    - PersonPicker
+    - Doc
+    - ForcedTurns
+    - TimeTablePage
+- Create schedulestorageforcedturns to manage backend
+    - Refactor pending to unify with schedulestorage
+- Add endpoints for forcedturns
+- Add temporary end point to render react grid
+    . Pending replace current mithril grid by react grid
+- Upgrade notes:
+    - Add configuration to dbconfig: forcedturnspath (see dbconfig-example)
+
 ## 5.0.2 2023-07-14
 
 - `tomatic_timetable.py workload`: New script to get the daily workload from old timetables
