@@ -6,6 +6,7 @@ import { AuthProvider } from './contexts/AuthContext'
 import KumatoProvider from './containers/KumatoProvider'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
 import PersonsTable from './components/PersonsTable.js'
+import TimeTablePage from './components/TimeTablePage'
 
 import {
   MithrilCallinfoPage,
@@ -56,6 +57,14 @@ const router = createHashRouter(
       element: (
         <AppFrame>
           <MithrilTimeTablePage />
+        </AppFrame>
+      ),
+    },
+    {
+      path: '/Grid',
+      element: (
+        <AppFrame>
+          <TimeTablePage />
         </AppFrame>
       ),
     },

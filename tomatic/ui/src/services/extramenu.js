@@ -71,6 +71,11 @@ const menuOptions = function () {
 			route: '/Administration',
 		},
 		{
+			icon: '🗓️',
+			title: 'React Grid',
+			route: '/Grid',
+		},
+		{
 			icon: '🛟',
 			navigation: true,
 			title: "Guies d'usuaria i videos",

@@ -214,6 +214,7 @@ module.exports = (function () {
 	}
 
 	Tomatic.grid = m.prop({})
+	Tomatic.onGridUpdated = [];
 	Tomatic.requestGrid = function (week) {
 		api.request({
 			url: '/api/graella-' + week + '.yaml',
@@ -225,6 +226,7 @@ module.exports = (function () {
 			delete data.tables // TODO: This one was never added
 			Tomatic.currentWeek(week)
 			Tomatic.grid(data)
+			Tomatic.onGridUpdated.forEach((callback) => callback())
 		})
 	}
 	Tomatic.weekday = function (short, alternative) {
@@ -302,6 +304,7 @@ module.exports = (function () {
 			}
 		)
 	}
+
 	Tomatic.setPersonDataReact = function (id, data) {
 		if (id === undefined) {
 			id = data.id
