@@ -179,6 +179,40 @@ module.exports = (function () {
 		)
 	}
 
+	Tomatic.forcedTurnsAddColumn = function () {
+		api.request({
+			method: 'PATCH',
+			url:
+				'/api/forcedturns/addColumn',
+		}).then(
+			function (data) {
+				Tomatic.requestForcedTurns()
+			},
+			function (error) {
+				Tomatic.error(
+					'Problemes editant la graella: ' + (error || 'Inexperat')
+				)
+			}
+		)
+	}
+
+	Tomatic.forcedTurnsRemoveColumn = function () {
+		api.request({
+			method: 'PATCH',
+			url:
+				'/api/forcedturns/removeColumn',
+		}).then(
+			function (data) {
+				Tomatic.requestForcedTurns()
+			},
+			function (error) {
+				Tomatic.error(
+					'Problemes editant la graella: ' + (error || 'Inexperat')
+				)
+			}
+		)
+	}
+
 	Tomatic.grid = m.prop({})
 	Tomatic.requestGrid = function (week) {
 		api.request({

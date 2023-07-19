@@ -74,6 +74,37 @@ class Storage(object):
         self.save(timetable)
         publishStatic(timetable)
 
+    def addColumn(self):
+        timetable = self.load()
+        numberOfTurns = len(timetable.turns) + 1
+        timetable.turns.append('T'+ str(numberOfTurns))
+        for day in timetable.timetable:
+            for hour in timetable.timetable[day]:
+                hour.append(None)
+        self.save(timetable)
+        publishStatic(timetable)
+
+    def removeColumn(self):
+        timetable = self.load()
+
+        def columnCanBeRemoved():
+            canRemove = True
+            for day in timetable.timetable:
+                for hour in timetable.timetable[day]:
+                    if (hour[-1] != None and hour[-1] != 'ningu'):
+                        canRemove = False
+            return canRemove
+
+        if columnCanBeRemoved():
+            timetable.turns.pop()
+            for day in timetable.timetable:
+                for hour in timetable.timetable[day]:
+                    hour.pop()
+        else:
+            raise BadEdit("No es pot esborrar la columna perquè conté assignacions.")
+        self.save(timetable)
+        publishStatic(timetable)
+
 # TODO: Move anywhere
 from .htmlgen import HtmlGen
 from .remote import remotewrite

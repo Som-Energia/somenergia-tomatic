@@ -7,6 +7,7 @@ const List = styled.ul `
 	label: weeks;
 	display: inline-block;
 	width: 100%;
+	padding: 0px;
 `
 
 const ListItem = styled.li `
@@ -39,20 +40,21 @@ const CurrentItem = styled.li `
 `
 
 function WeekPicker() {
-	const [weeks, setWeeks] = useState([])
-	const [currentWeek, setCurrentWeek] = useState(null)
+	const [weeks, setWeeks] = useState([]);
+	const [currentWeek, setCurrentWeek] = useState(Tomatic.currentWeek());
 
 	useEffect(() => {
-		setWeeks(Tomatic.weeks())
+		setWeeks(Tomatic.weeks());
 	},[])
 
 	const handleClick = (week) => {
 		setCurrentWeek(week);
+		Tomatic.requestGrid(week);
 	}
   
   	return (
 		<List>
-		{weeks.map(element =>{
+		{weeks.map((element)=>{
 			if(element === currentWeek){
 				return <CurrentItem onClick={() => handleClick(element)} >{"Setmana del " + element}</CurrentItem>
 			}

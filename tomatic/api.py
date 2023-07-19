@@ -228,6 +228,24 @@ async def editSlot(day, houri: int, turni: int, name, request: Request, user = D
         raise ApiError(str(e))
     return graellaTornsFixesYaml()
 
+@app.patch('/api/forcedturns/addColumn')
+@ayamlerrors
+async def addColumn():
+    try:
+        forcedTurns.addColumn()
+    except schedulestorageforcedturns.BadEdit as e:
+        raise ApiError(str(e))
+    return graellaTornsFixesYaml()
+
+@app.patch('/api/forcedturns/removeColumn')
+@ayamlerrors
+async def addColumn():
+    try:
+        forcedTurns.removeColumn()
+    except schedulestorageforcedturns.BadEdit as e:
+        raise ApiError(str(e))
+    return graellaTornsFixesYaml()
+
 @app.get('/api/graella-{week}.yaml')
 @app.get('/api/graella/{week}')
 @yamlerrors
