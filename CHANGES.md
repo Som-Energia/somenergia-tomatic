@@ -1,8 +1,8 @@
 # Changelog
 
-## unrelease
+## 5.1.0 2023-07-20
 
-- New fixed editor component
+- New fixed turns editor component
 - WIP: React based timetable editor
 - New React components:
     - WeekPicker
