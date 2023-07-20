@@ -2,6 +2,8 @@
 
 ## unrelease
 
+- New fixed editor component
+- WIP: React based timetable editor
 - New React components:
     - WeekPicker
     - TimeTable
@@ -14,7 +16,8 @@
     - Refactor pending to unify with schedulestorage
 - Add endpoints for forcedturns
 - Add temporary end point to render react grid
-    . Pending replace current mithril grid by react grid
+    - Pending replace current mithril grid by react grid
+- Create empty timetable for forced turns when it does not exits
 - Upgrade notes:
     - Add configuration to dbconfig: forcedturnspath (see dbconfig-example)
 
