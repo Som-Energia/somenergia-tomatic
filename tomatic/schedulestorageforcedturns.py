@@ -42,8 +42,21 @@ class Storage(object):
     def backupdir(self):
         return self._dirname/'backups'
 
+    def createEmptyFile(self):
+        emptytimetable = {}
+        emptytimetable['days'] = 'dl dm dx dj dv'.split(' ')
+        emptytimetable['turns'] = ['T1']
+        emptytimetable['hours'] = ['09:00','10:15','11:30','12:45','14:00']
+        emptytimetable['timetable'] = {'dl': [[None]], 'dm': [[None]], 'dx': [[None]], 'dj': [[None]], 'dv': [[None]]}
+        timetable = ns(**emptytimetable)
+        self.save(timetable)
+        publishStatic(timetable)
+
     def load(self):
         filename = self._timetableFile()
+        if not filename.is_file():
+            self.createEmptyFile()
+
         try:
             return ns.load(str(filename))
         except IOError:
