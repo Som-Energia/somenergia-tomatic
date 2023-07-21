@@ -145,12 +145,31 @@ module.exports = (function () {
     return result
   }
 
+  function fixContractNumbers(info) {
+    info.partners.map(function (partner) {
+      partner.contracts.map(function (contract) {
+        contract.number = formatContractNumber(contract.number)
+      })
+    })
+  }
+
+  function fixContractNumbersInDetails(response) {
+    // KLUDGE: js-yaml parses 09999 as 9999 instead of '09999'
+    response.info.info = Object.keys(response.info.info).reduce(
+      (result, key) => {
+        result[formatContractNumber(key)] = response.info.info[key]
+        return result
+      },
+      {}
+    )
+    return response
+  }
+
   function contractNumbers(info) {
     var result = {}
     info.partners.map(function (partner) {
       partner.contracts.map(function (contract) {
-        var number = formatContractNumber(contract.number)
-        result[number] = contract
+        result[contract.number] = contract
       })
     })
     return Object.keys(result)
@@ -250,6 +269,7 @@ module.exports = (function () {
           }
 
           CallInfo.searchResults = response.info.info
+          fixContractNumbers(response.info.info)
           if (CallInfo.call.date === '') {
             // TODO: If selection is none
             CallInfo.call.date = new Date().toISOString()
@@ -265,12 +285,13 @@ module.exports = (function () {
                 contracts: contractNumbers(context),
               },
             })
+            .then(fixContractNumbersInDetails)
             .then(function (response) {
               context.partners.map(function (partner) {
                 partner.contracts.map(function (contract) {
                   var number = formatContractNumber(contract.number)
                   var retrieved = response.info.info[number]
-                  if (retrieved===undefined) {
+                  if (retrieved === undefined) {
                     console.error(
                       'No extended contract info for contract',
                       number

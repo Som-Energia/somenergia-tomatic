@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Fix: Callinfo: Contracts starting with a single zero, did not load details
+- Fix: Callinfo: Changing to a single zero contract tab, did not work
+
 ## 5.1.0 2023-07-20
 
 - New fixed turns editor component
