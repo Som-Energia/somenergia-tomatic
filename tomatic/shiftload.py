@@ -9,6 +9,7 @@ from consolemsg import step, error, warn, success, fail, out, u
 from yamlns import namespace as ns
 
 from . import busy
+from .persons import persons
 
 
 def ponderatedLoad(idealLoad, businessDays, daysoff, leaves):
@@ -301,8 +302,6 @@ def increaseUntilFullLoad(fullLoad, shifts, limits, credits):
             operatingWithDebts = False
     return result
 
-
-
 class ShiftLoadComputer():
 
     @staticmethod
@@ -313,9 +312,13 @@ class ShiftLoadComputer():
         step("    Llegint festius...")
         businessDays = busy.laborableWeekDays(config.monday)
 
-        step("    Llegint carrega ideal...")
-        idealLoad = ns.load(config.idealshifts)
-        persons=list(idealLoad.keys())
+        if config.idealshifts:
+            step(f"    Llegint carrega ideal de {config.idealshifts}...")
+            idealLoad = ns.load(config.idealshifts)
+        else:
+            step("    Llegint carrega ideal de persons.yaml...")
+            idealLoad = persons().get('idealloads', {})
+        attendingPersons=list(idealLoad.keys())
 
         step("    Llegint vacances...")
         daysoffcontent = Path('indisponibilitats-vacances.conf').read_text(encoding='utf8').split("\n")
@@ -328,7 +331,7 @@ class ShiftLoadComputer():
         busyTable = busy.BusyTable(
             days=businessDays,
             nhours=busy.nturns,
-            persons=persons,
+            persons=attendingPersons,
         )
         busyFiles = config.get('busyFiles', [
             'oneshot.conf',
