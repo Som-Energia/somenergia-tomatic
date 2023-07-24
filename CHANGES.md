@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Take idealloads from persons.yaml instead of the drive spreadsheet
 - Fix: Callinfo: Contracts starting with a single zero, did not load details
 - Fix: Callinfo: Changing to a single zero contract tab, did not work
 
