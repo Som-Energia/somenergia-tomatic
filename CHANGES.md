@@ -5,6 +5,9 @@
 - Take idealloads from persons.yaml instead of the drive spreadsheet
 - Fix: Callinfo: Contracts starting with a single zero, did not load details
 - Fix: Callinfo: Changing to a single zero contract tab, did not work
+- Upgrade notes:
+    - Run `tomatic_timetable.py importidealload` to import the last
+      ideal loads into `persons.yaml` (there is also a scriptlauncher script)
 
 ## 5.1.0 2023-07-20
 
