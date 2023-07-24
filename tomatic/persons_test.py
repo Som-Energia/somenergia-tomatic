@@ -33,7 +33,7 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
-            loads: {}
+            idealloads: {}
         """)
         self.assertEqual(persons.persons.path, Path('p.yaml'))
 
@@ -67,7 +67,7 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
-            loads: {}
+            idealloads: {}
         """)
 
     def test_persons_updated(self):
@@ -86,7 +86,7 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
-            loads: {}
+            idealloads: {}
         """)
 
     def test_persons_differentPath(self):
@@ -103,7 +103,7 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
-            loads: {}
+            idealloads: {}
         """)
 
     def test_byExtension(self):
@@ -223,7 +223,7 @@ class Persons_Test(unittest.TestCase):
             emails:
               someone: name@home.com
             groups: {}
-            loads: {}
+            idealloads: {}
         """)
 
     def test_update_groups_addedNew(self):
@@ -244,7 +244,7 @@ class Persons_Test(unittest.TestCase):
             groups:
               mygroup:
               - someone
-            loads: {}
+            idealloads: {}
         """)
 
     def test_update_groups_addedExisting(self):
@@ -268,7 +268,7 @@ class Persons_Test(unittest.TestCase):
               mygroup:
               - anotherone
               - someone
-            loads: {}
+            idealloads: {}
         """)
 
     def test_update_groups_removeGroup(self):
@@ -292,7 +292,7 @@ class Persons_Test(unittest.TestCase):
             groups:
               mygroup:
               - someother
-            loads: {}
+            idealloads: {}
         """)
 
 
@@ -314,7 +314,7 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
-            loads: {}
+            idealloads: {}
         """)
 
     def test_update_groups_existingGroups_untouched(self):
@@ -339,7 +339,7 @@ class Persons_Test(unittest.TestCase):
             groups:
               othergroup:
               - other
-            loads: {}
+            idealloads: {}
         """)
 
     def test_update_groups_existingGroups_keepGroups(self):
@@ -362,16 +362,16 @@ class Persons_Test(unittest.TestCase):
             groups:
               mygroup:
               - someone
-            loads: {}
+            idealloads: {}
         """)
 
-    def test_update_load_adds(self):
+    def test_update_idealload_adds(self):
         Path('p.yaml').write_text(u"""\
                 names: {}
             """)
         persons.persons('p.yaml')
         persons.update('someone', ns(
-            load = 7,
+            idealload = 7,
         ))
         self.assertNsEqual(persons.persons(), """\
             names: {}
@@ -381,20 +381,20 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
-            loads:
+            idealloads:
               someone: 7
         """)
 
-    def test_update_load_toNone_removes(self):
+    def test_update_idealload_toNone_removes(self):
         Path('p.yaml').write_text(u"""\
                 names: {}
             """)
         persons.persons('p.yaml')
         persons.update('someone', ns(
-            load = 7,
+            idealload = 7,
         ))
         persons.update('someone', ns(
-            load = None,
+            idealload = None,
         ))
         self.assertNsEqual(persons.persons(), """\
             names: {}
@@ -404,16 +404,16 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
-            loads: {}
+            idealloads: {}
         """)
 
-    def test_update_load_unset_keeps(self):
+    def test_update_idealload_unset_keeps(self):
         Path('p.yaml').write_text(u"""\
                 names: {}
             """)
         persons.persons('p.yaml')
         persons.update('someone', ns(
-            load = 7,
+            idealload = 7,
         ))
         persons.update('someone', ns(
             extension='555',
@@ -427,7 +427,7 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
-            loads:
+            idealloads:
                 someone: 7
         """)
 
@@ -449,7 +449,7 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
-            loads: {}
+            idealloads: {}
         """)
 
     def test_persons_explicit(self):
@@ -463,7 +463,7 @@ class Persons_Test(unittest.TestCase):
             colors: {}
             emails: {}
             groups: {}
-            loads: {}
+            idealloads: {}
         """)
 
 # vim: et ts=4 sw=4
