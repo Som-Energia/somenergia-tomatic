@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Backtracker: Adapt the number of lines to the available load
+- Backtracker: Do not force anybody if not available
+- Upgrade notes:
+    - new parameter adjustLines in config.yaml
+
 ## 5.2.2 2023-07-27
 
 - Fix: do not upload forced turns to tomatic-static
