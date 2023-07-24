@@ -431,7 +431,9 @@ class Backtracker(object):
 
         # Is forced position? Take it
         if (day, ihour+1, iline+1) in self.config.forced:
-            companys = [self.config.forced[(day,ihour+1,iline+1)]]
+            forcedPerson = self.config.forced[(day,ihour+1,iline+1)]
+            if forcedPerson == 'ningu' or not self.isBusy(forcedPerson, day, ihour):
+                companys = [forcedPerson]
 
         for company in companys:
 
