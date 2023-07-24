@@ -48,7 +48,7 @@ function compileData(personData) {
   joinAttribute(result, 'color')
   joinAttribute(result, 'email')
   joinAttribute(result, 'erpuser')
-  joinAttribute(result, 'load')
+  joinAttribute(result, 'idealload')
   joinGroups(result)
 
   return Object.entries(result).map(([id, v]) => {
@@ -141,7 +141,7 @@ const columns = [
     searchable: true,
   },
   {
-    id: 'load',
+    id: 'idealload',
     label: 'Torns',
     numeric: true,
     disablePadding: false,

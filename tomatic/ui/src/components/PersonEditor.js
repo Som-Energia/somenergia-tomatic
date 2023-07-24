@@ -31,7 +31,7 @@ const fields = {
     label: 'Usuari ERP',
     help: "Usuari amb el que entres a l'erp.",
   },
-  load: {
+  idealload: {
     label: 'Càrrega de torns',
     help: 'Torns que farà normalment en una setmana de 5 dies laborals. En blanc si no fa atenció.',
   },
@@ -135,9 +135,9 @@ export default function PersonEditor(props) {
         return "El nom d'usuari ERP és invàlid"
       return false
     },
-    load: (value) => {
+    idealload: (value) => {
       if (value === undefined) return false
-      if (value === "") return false
+      if (value === '') return false
       if (isNaN(parseInt(value))) return 'Ha de ser un número'
       return false
     },
@@ -223,7 +223,7 @@ export default function PersonEditor(props) {
           }
         */}
         <TextField
-          {...fieldOptions('load')}
+          {...fieldOptions('idealload')}
           {...commonFieldOptions}
           inputProps={{ pattern: '^[0-9]{0,2}$' }}
         />

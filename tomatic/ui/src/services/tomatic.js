@@ -336,9 +336,9 @@ module.exports = (function () {
 				case 'erpuser':
 					postdata.erpuser = value
 					break
-				case 'load':
+				case 'idealload':
 					const newLoad = parseInt(value)
-					postdata.load = isNaN(newLoad) ? null : newLoad;
+					postdata.idealload = isNaN(newLoad) ? null : newLoad;
 					break
 				case 'groups':
 					postdata.groups = value
@@ -400,8 +400,8 @@ module.exports = (function () {
 				case 'erpuser':
 					postdata.erpuser = value
 					break
-				case 'load':
-					postdata.load = value
+				case 'idealload':
+					postdata.idealload = value
 					break
 				default:
 					console.log('Unexpected person parameter', key)
