@@ -367,6 +367,7 @@ class ShiftLoadComputer():
         forgive=False,
         maxOverload=1,
         inclusters=False,
+        adjustLines=False,
     ):
         self.monday = monday
         self.nlines = nlines
@@ -443,6 +444,17 @@ class ShiftLoadComputer():
                 + self.fullLoad
                 - finalLoad
             )
+
+        if adjustLines:
+            # When 'ningu' has more load than turns exist, just adjust the lines
+            nHours = busy.nturns # TODO: Polysemic mess
+            nTurns = len(self.businessDays) *  nHours
+            nUncoverdLines, nEmptySlots = divmod(self.final.get('ningu', 0), nTurns)
+            self.final = ns(
+                self.final,
+                ningu=nEmptySlots,
+            )
+            self.nlines -= nUncoverdLines
 
         if inclusters:
             self.clusterized = clusterize(self.nlines, self.final)

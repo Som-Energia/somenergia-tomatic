@@ -262,20 +262,14 @@ class Config:
             monday = config.monday,
             forgive = config.forgive,
             inclusters = config.clusterize,
+            adjustLines = config.get('adjustLines', False),
         )
+        config.finalLoad = computer.final
+        config.nTelefons = computer.nlines
+        config.busyTable = setup.busyTable._table
+
         computer.outputResults(config)
 
-        # When 'ningu' has more load than turns exist, just adjust the lines
-        nHours = len(config.hours) - 1
-        nTurns = len(setup.businessDays) *  nHours
-        nUncoverdLines, nEmptySlots = divmod(computer.final.get('ningu', 0), nTurns)
-        config.finalLoad = ns(
-            computer.final,
-            ningu=nEmptySlots,
-        )
-        config.nTelefons -= nUncoverdLines
-
-        config.busyTable = setup.busyTable._table
 
     def _update_monday(self, date):
         if date is not None:
