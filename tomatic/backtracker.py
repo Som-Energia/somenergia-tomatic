@@ -11,7 +11,6 @@ from yamlns import namespace as ns
 
 from .htmlgen import HtmlGen
 from . import busy
-from .shiftload import ShiftLoadComputer
 from .persons import persons
 
 
