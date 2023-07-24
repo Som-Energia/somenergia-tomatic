@@ -224,11 +224,7 @@ class Config:
             if not keep:
                 self._download_leaves()
 
-            mustDownloadIdealShifts = not idealshifts and not config.get('idealshifts')
-            config.idealshifts = idealshifts or config.get('idealshifts') or 'idealshifts.yaml'
-            if not keep and mustDownloadIdealShifts:
-                downloadIdealLoad(self.data)
-
+            config.idealshifts = idealshifts or config.get('idealshifts')
             config.weekShifts = weekshifts or config.get('weekShifts') or 'carrega.csv'
             config.overloadfile = overload or config.get('overloadfile') or "overload-{}.yaml".format(config.monday)
 
