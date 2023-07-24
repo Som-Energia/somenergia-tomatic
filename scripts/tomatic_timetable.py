@@ -28,8 +28,8 @@ def importidealload():
     downloadIdealLoad(config)
     loads = ns.load(config.idealshifts)
     del persons()['loads']
-    for person, load in loads.items():
-        updatePerson(person, ns(load=load))
+    for person, idealload in loads.items():
+        updatePerson(person, ns(idealload=idealload))
 
 @cli.command()
 def retireold():
