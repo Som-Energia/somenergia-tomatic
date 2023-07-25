@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.2.0 2023-07-25
 
 - Take idealloads from persons.yaml instead of the drive spreadsheet
 - Fix: Callinfo: Contracts starting with a single zero, did not load details
