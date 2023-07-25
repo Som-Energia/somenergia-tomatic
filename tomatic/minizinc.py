@@ -152,6 +152,7 @@ def main(args):
     # choose a list of minizinc solvers to user
     solvers = config.data.minizincSolvers
     solution = solve_problem(config.data, solvers)
+
     if not solution:
         step('Sense solució.\nProvant sense les opcionals...')
         # Ignore optional absences
@@ -159,6 +160,8 @@ def main(args):
         # Update scenario without optional absences
         config.update_shifts()
         solution = solve_problem(config.data, solvers)
+
+    if not solution:
         error("No s'ha trobat resultat... :(")
         return False
 

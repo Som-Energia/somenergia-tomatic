@@ -18,8 +18,9 @@ def main():
     for solver in solvers:
         step("Running solver {}", solver.__name__)
         try:
-            solver.main(args)
-            return
+            if solver.main(args):
+                return
+            error("Solver {} didn't find a solution", solver.__name__)
         except Exception as e:
             error("Solver {} crashed", solver.__name__)
             error(traceback.format_exc())
