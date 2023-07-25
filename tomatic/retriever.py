@@ -70,8 +70,8 @@ def downloadVacations(config):
             for weekday, day in zip(weekdays, days):
                 if start <= day <= end:
                     if config.get('verbose'):
-                        out("+{} {} # vacances", name, weekday)
-                    holidaysfile.write("+{} {} # vacances\n".format(name, weekday))
+                        out("+{} {} # absencia odoo (vacances, baixa...)", name, weekday)
+                    holidaysfile.write("+{} {} # absencia odoo (vacances, baixa...)\n".format(name, weekday))
 
 
 def downloadFestivities(config):
