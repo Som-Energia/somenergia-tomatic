@@ -4,8 +4,10 @@ import datetime
 import glob
 from pathlib import Path
 from yamlns import namespace as ns
+from consolemsg import step
 from .shiftload import loadSum
 from .scheduling import Scheduling, choosers
+
 dbconfig=None
 try:
     import dbconfig
@@ -50,7 +52,6 @@ class Storage(object):
         emptytimetable['timetable'] = {'dl': [[None]], 'dm': [[None]], 'dx': [[None]], 'dj': [[None]], 'dv': [[None]]}
         timetable = ns(**emptytimetable)
         self.save(timetable)
-        publishStatic(timetable)
 
     def load(self):
         filename = self._timetableFile()
@@ -85,7 +86,6 @@ class Storage(object):
         step(logmsg)
         timetable.setdefault('log',[]).append(logmsg)
         self.save(timetable)
-        publishStatic(timetable)
 
     def addColumn(self):
         timetable = self.load()
@@ -95,7 +95,6 @@ class Storage(object):
             for hour in timetable.timetable[day]:
                 hour.append(None)
         self.save(timetable)
-        publishStatic(timetable)
 
     def removeColumn(self):
         timetable = self.load()
@@ -116,32 +115,5 @@ class Storage(object):
         else:
             raise BadEdit("No es pot esborrar la columna perquè conté assignacions.")
         self.save(timetable)
-        publishStatic(timetable)
-
-# TODO: Move anywhere
-from .htmlgen import HtmlGen
-from .remote import remotewrite
-from consolemsg import step
-
-def publishStatic(timetable):
-    step("publishStatic")
-    if not dbconfig: return
-    step("publishStatic: dbconfig exists")
-    if not hasattr(dbconfig, 'tomatic'): return
-    step("publishStatic: tomatic exists")
-    if not hasattr(dbconfig.tomatic, 'publishStatic'): return
-    step("publishStatic: publishStatic exists {}", dbconfig.tomatic.publishStatic)
-    params = dbconfig.tomatic.publishStatic
-    sched=HtmlGen(timetable)
-    params=ns(params,
-        username = params.user,
-        filename = str(Path(params.path) / 'forced-turns.html'),
-    )
-    del params.user
-    del params.path
-    remotewrite(
-        content = sched.html(),
-        **params
-    )
 
 #vim: ts=4 sw=4 et
