@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.2.1 2023-07-27
+
+- Fix: importidealload unrenamed attribute
+
 ## 5.2.0 2023-07-25
 
 - Take idealloads from persons.yaml instead of the drive spreadsheet
