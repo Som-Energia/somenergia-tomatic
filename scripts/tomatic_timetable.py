@@ -26,9 +26,9 @@ def importidealload():
     config = ns.load("config.yaml")
     config.idealshifts = "idealshifts.yaml"
     downloadIdealLoad(config)
-    loads = ns.load(config.idealshifts)
-    del persons()['loads']
-    for person, idealload in loads.items():
+    idealloads = ns.load(config.idealshifts)
+    del persons()['idealloads']
+    for person, idealload in idealloads.items():
         updatePerson(person, ns(idealload=idealload))
 
 @cli.command()
