@@ -1,6 +1,6 @@
 {
   "name": "somenergia-tomatic",
-  "version": "5.2.1",
+  "version": "5.2.2",
   "description": "Phone Support Companion",
   "dependencies": {
     "@emotion/css": "^11.10.6",
@@ -33,29 +33,17 @@
     "type": "git",
     "url": "git+https://github.com/Som-Energia/somenergia-tomatic.git"
   },
-  "keywords": [
-    "phone",
-    "asterisk",
-    "scheduling",
-    "crm"
-  ],
+  "keywords": ["phone", "asterisk", "scheduling", "crm"],
   "author": "Som Energia SCCL",
   "license": "AGPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/Som-Energia/somenergia-tomatic/issues"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": ["react-app", "react-app/jest"]
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",

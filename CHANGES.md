@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.2.2 2023-07-27
+
+- Fix: do not upload forced turns to tomatic-static
+
 ## 5.2.1 2023-07-27
 
 - Fix: importidealload unrenamed attribute
