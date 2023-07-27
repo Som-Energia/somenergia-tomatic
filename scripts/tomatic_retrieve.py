@@ -90,7 +90,6 @@ args=None
 def main():
     from tomatic.retriever import (
         downloadPersons,
-        downloadLeaves,
         downloadIdealLoad,
         downloadVacations,
         downloadFestivities,
@@ -133,10 +132,6 @@ def main():
 
         step("Baixant persones del tomatic...")
         downloadPersons(config)
-
-    if not args.command or 'leaves' in args.command:
-        step("Baixant persones de baixa del drive...")
-        downloadLeaves(config)
 
     if not args.command or 'idealload' in args.command:
         config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.yaml'

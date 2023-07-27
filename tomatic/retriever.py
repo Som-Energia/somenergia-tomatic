@@ -119,24 +119,6 @@ def downloadIdealLoad(config):
         for name, value in zip(names,values))
     carregaIdeal.dump(config.idealshifts)
 
-def downloadLeaves(config):
-    step('Autentificant al Google Drive')
-    from somutils.sheetfetcher import SheetFetcher
-    fetcher = SheetFetcher(
-        documentName=config.documentDrive,
-        credentialFilename=config.driveCertificate,
-        )
-    leavesSheet = config.get('leavesSheet',"Baixes")
-    leavesFile = "leaves.conf"
-
-    step('Baixant baixes...')
-
-    step("  Descarregant fulla '{}'...", leavesSheet)
-    leaves = fetcher.get_fullsheet(leavesSheet)
-    leaves = u'\n'.join([person for line in leaves for person in line])
-    step("  Guardant-ho com '{}'...".format(leavesFile))
-    Path(leavesFile).write_text(leaves, encoding='utf8')
-
 def downloadPersons(config):
     step("Baixant informació de les persones del tomatic...")
     url = config.baseUrl + '/api/persons'

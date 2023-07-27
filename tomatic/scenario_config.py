@@ -5,7 +5,6 @@ from .shiftload import ShiftLoadComputer
 from .scheduling import timetable2forced
 from .retriever import (
     downloadPersons,
-    downloadLeaves,
     downloadIdealLoad,
     downloadVacations,
     downloadFestivities,
@@ -221,9 +220,6 @@ class Config:
             if certificate:
                 config.driveCertificate = certificate
 
-            if not keep:
-                self._download_leaves()
-
             config.idealshifts = idealshifts or config.get('idealshifts')
             config.weekShifts = weekshifts or config.get('weekShifts') or 'carrega.csv'
             config.overloadfile = overload or config.get('overloadfile') or "overload-{}.yaml".format(config.monday)
@@ -290,9 +286,6 @@ class Config:
             # If no date provided, take the next monday
             today = datetime.date.today()
             self.data.monday = addDays(today, 7-today.weekday())
-
-    def _download_leaves(self):
-        downloadLeaves(self.data)
 
     def _download_busy(self):
         downloadBusy(self.data)

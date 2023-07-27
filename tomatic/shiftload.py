@@ -324,9 +324,6 @@ class ShiftLoadComputer():
         daysoffcontent = Path('indisponibilitats-vacances.conf').read_text(encoding='utf8').split("\n")
         daysoff = list(busy.parseBusy(daysoffcontent, error))
 
-        step("    Llegint baixes...")
-        leaves = Path('leaves.conf').read_text(encoding='utf8').split()
-
         step("    Llegint altres indisponibilitats...")
         busyTable = busy.BusyTable(
             days=businessDays,
@@ -348,7 +345,7 @@ class ShiftLoadComputer():
         formerCredit = ns.load('shiftcredit.yaml')
         return ns(
             monday = config.monday,
-            leaves = leaves,
+            leaves = [], # Leaves now come from
             daysoff = daysoff,
             busyTable = busyTable,
             businessDays = businessDays,
