@@ -94,6 +94,29 @@ class ShiftLoadTest(unittest.TestCase):
         )
         self.assertEqual(workingDays,3)
 
+    def test_workingDays_repeatedDaysOff_onlyCountsOne(self):
+        workingDays = shiftload.workingDays(
+            person='alice',
+            businessDays=['dl', 'dm', 'dx', 'dj', 'dv'],
+            daysoff=[
+                ns(
+                    optional = False,
+                    person = 'alice',
+                    reason = 'a reason',
+                    turns = '1111',
+                    weekday = 'dl',
+                ),
+                ns(
+                    optional = False,
+                    person = 'alice',
+                    reason = 'a reason',
+                    turns = '1111',
+                    weekday = 'dl',
+                )],
+            leaves=[],
+        )
+        self.assertEqual(workingDays,4)
+
     def test_workingDays_withOneHoliday(self):
         workingDays = shiftload.workingDays(
             person='alice',

@@ -39,11 +39,12 @@ def workingDays(person, businessDays, daysoff, leaves):
     removing the days off or all if in sick leave.
     """
     if person in leaves: return 0
-    ndaysoff = sum(
-            day.person == person
-            for day in daysoff
-            if day.weekday in businessDays
-            )
+    ndaysoff = len(set(
+        day.weekday
+        for day in daysoff
+        if day.weekday in businessDays
+        and day.person == person
+    ))
     return len(businessDays)-ndaysoff
 
 def capacity(busytable, generalMaxPerDay, maxPerDay=ns(), leaves=[]):
