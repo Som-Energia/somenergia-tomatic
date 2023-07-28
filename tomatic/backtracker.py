@@ -731,6 +731,7 @@ def main(args):
 
     step('Generant horari...')
     b.solve()
+    return len(b.bestSolution) == len(b.caselles)
 
 
 if __name__ == '__main__':
