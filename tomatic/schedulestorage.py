@@ -4,6 +4,7 @@ import datetime
 import glob
 from pathlib import Path
 from yamlns import namespace as ns
+from tomatic import persons
 from .shiftload import loadSum
 from .scheduling import Scheduling, choosers
 dbconfig=None
@@ -218,7 +219,9 @@ class Storage(object):
 
         from .retriever import addDays
         import ics
+        import ics.utils
         calendar = ics.Calendar()
+        calendar.extra.append(ics.utils.ContentLine(name="NAME", value="Atenció telèfon {}".format(persons.name(person))))
         for week in self.list():
             data = self.load(week)
             times = data.hours
@@ -228,11 +231,11 @@ class Storage(object):
                 for turn, people in enumerate(turns):
                     if person not in people: continue
                     event = ics.Event(
-                        name = "Telèfon",
+                        name = "Telèfon {}".format(persons.name(person)),
                         uid = f"{week}-{day}-{turn}-{person}@tomatic.somenergia.lan",
                         begin = constructDate(week, day, turn),
                         end = constructDate(week, day, turn+1),
-                        description="Torn d'atenció",
+                        description="Torn d'atenció {}".format(persons.name(person)),
                     )
                     alarm = ics.DisplayAlarm(
                         trigger=datetime.timedelta(minutes=-15),
