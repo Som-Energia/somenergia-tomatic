@@ -1,13 +1,4 @@
 baseUrl: http://192.168.35.244:4555
-documentDrive: Quadre de Vacances
-fullIndisponibilitats: Reunions i altres afers
-fullCarrega_4: o9rxhxk
-fullCarrega_5: opm82es
-fullCarrega: om1qfyn
-fullCarregaIdeal: "IDEALS_6t_Càrrega telèfon"
-intervalCarrega: carrega{:02d}{:02d}{:02d}
-idealLoadNamesRange: carregaideal_noms
-idealLoadValuesRange: carregaideal_valors
 monitoringFile: taula.html
 minizincSolvers:
 - chuffed

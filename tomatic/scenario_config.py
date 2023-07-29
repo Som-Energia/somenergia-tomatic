@@ -5,7 +5,6 @@ from .shiftload import ShiftLoadComputer
 from .scheduling import timetable2forced
 from .retriever import (
     downloadPersons,
-    downloadIdealLoad,
     downloadVacations,
     downloadFestivities,
     downloadBusy,
@@ -47,13 +46,6 @@ def parseArgs():
         )
 
     parser.add_argument(
-        '--certificate','-C',
-        metavar='CERTIFICATE.json',
-        default='drive-certificate.json',
-        help='certificat amb permisos per accedir al document gdrive',
-        )
-
-    parser.add_argument(
         '--scheduler',
         default='backtracker',
         choices='backtracker minizinc'.split(),
@@ -89,11 +81,6 @@ def parseArgs():
         '--deterministic',
         action='store_true',
         help="desaleatoritza la cerca de branques i possibilitats, sobreescriu config.yaml"
-        )
-
-    parser.add_argument(
-        '--drive-file',
-        help="Document del drive origen de dades externes"
         )
 
     parser.add_argument(
@@ -152,14 +139,12 @@ class Config:
         config_file,
         date,
         keep,
-        certificate,
         lines=None,
         deterministic=False,
         verbose=None,
         track=None,
         personsfile=None,
         compute_shifts=None,
-        drive_file=None,
         idealshifts=None,
         weekshifts=None,
         overload=None,
@@ -212,13 +197,7 @@ class Config:
             if lines is not None:
                 self.data.nTelefons = lines
 
-            if drive_file:
-                config.documentDrive = drive_file
-
             config.computeShifts = config.get('computeShifts') or compute_shifts
-
-            if certificate:
-                config.driveCertificate = certificate
 
             config.idealshifts = idealshifts or config.get('idealshifts')
             config.weekShifts = weekshifts or config.get('weekShifts') or 'carrega.csv'

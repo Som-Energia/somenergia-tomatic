@@ -117,15 +117,6 @@ tomatic_graelles:
           description: Dilluns de la setmana, en format AAAA-MM-DD
           type: DATE
 
-    importidealload:
-      script: SOME_SRC/somenergia-tomatic/runhere tomatic_timetable.py importidealload
-      title: Graelles - (Migració) Importa càrregues ideals del drive al Tomàtic
-      description: >
-        En el procés de migració del drive al tomàtic per editar les càrregues de torns,
-        aquest script servirà per importar-les al Tomàtic definitivament.
-        Compte, que, si ja s'han importat un cop, aquest script les torna a resetejar
-        al que hi hagi al drive i es perdran els canvis que s'hagin fet.
-
 tomatic_stats:
   description: Tomàtic (Centraleta)
   scripts:

@@ -41,18 +41,6 @@ def parseArgs():
         )
 
     parser.add_argument(
-        '--certificate','-C',
-        metavar='CERTIFICATE.json',
-        default='drive-certificate.json',
-        help='certificat amb permisos per accedir al document gdrive',
-        )
-
-    parser.add_argument(
-        '--drive-file',
-        help="Document del drive origen de dades externes"
-        )
-
-    parser.add_argument(
         '--config-file',
         default='config.yaml',
         help="fitxer de configuració principal",
@@ -90,7 +78,6 @@ args=None
 def main():
     from tomatic.retriever import (
         downloadPersons,
-        downloadIdealLoad,
         downloadVacations,
         downloadFestivities,
         downloadBusy,
@@ -118,11 +105,6 @@ def main():
         today = Date.today()
         config.monday = addDays(today, 7-today.weekday())
 
-    config.driveCertificate = args.certificate
-
-    if args.drive_file:
-        config.documentDrive = args.drive_file
-
     if args.personsfile:
         config.personsfile = args.personsfile
 
@@ -133,9 +115,6 @@ def main():
         step("Baixant persones del tomatic...")
         downloadPersons(config)
 
-    if not args.command or 'idealload' in args.command:
-        config.idealshifts = config.get('idealshifts') or args.idealshifts or 'idealshifts.yaml'
-        downloadIdealLoad(config)
     if not args.command or 'busy' in args.command:
         downloadBusy(config)
     if not args.command or 'festivities' in args.command:

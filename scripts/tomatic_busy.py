@@ -26,9 +26,8 @@ def nextMonday(date):
 	return format(today + datetime.timedelta(days=(7-today.weekday()) or 7))
 
 def getActivePersons(config, sandbox):
-	from tomatic.retriever import downloadIdealLoad
-	downloadIdealLoad(config)
-	return ns.load(config.idealshifts).keys()
+	from tomatic.persons import persons
+	return list(persons().idealloads.keys())
 
 def getVacations(config, sandbox):
 	from tomatic.retriever import downloadVacations

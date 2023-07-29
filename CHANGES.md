@@ -10,8 +10,17 @@
 
 - Backtracker: Adapt the number of lines to the available load
 - Backtracker: Do not force anybody if not available
+- Not downloading leaves from google drive anymore
+- Fix: in some duplicated holidays generated negative loads
+- Fix: properly indicate successfull executions on backtracker or minizinc
 - Upgrade notes:
     - new parameter adjustLines in config.yaml
+    - deprecated config.yaml parameters
+        - documentDrive
+        - fullCarregaIdeal
+        - idealLoadValuesRange
+        - idealLoadValuesName
+        - leavesSheet
 
 ## 5.2.2 2023-07-27
 

@@ -110,6 +110,8 @@ This can be done by using the hangups application that should have been installe
 
 ### Google Drive data sources
 
+**This is not required anymore**
+
 Computing timetables requires access to a Google Drive Spreadsheet
 where you store the source configuration: leaves, ideal work load...
 In order to access it, you must provide a certificate.

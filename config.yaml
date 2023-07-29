@@ -4,13 +4,6 @@ monitoringFile: taula.html
 #hangoutChannel: 'UgwbNDnElaQHezX-qXN4AaABAQ' # it
 #hangoutChannel: 'UgzYiKUaJZ1yCpn3R4J4AaABAQ' # petit dejuner
 hangoutChannel: 'Ugz7g64jUEDxQOzCUoh4AaABAQ' # Equip atenció telefònica i bústia info
-driveCertificate: drive-certificate.json
-# Drive spreadsheet with input information to compute scheduling
-documentDrive: Quadre de Vacances
-fullCarregaIdeal: "IDEALS_6t_Càrrega telèfon"
-idealLoadNamesRange: carregaideal_noms
-idealLoadValuesRange: carregaideal_valors
-leavesSheet: Baixes
 minizincSolvers:
 - chuffed
 - coin-bc

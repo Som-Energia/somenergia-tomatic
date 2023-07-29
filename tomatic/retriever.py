@@ -97,28 +97,6 @@ def downloadFestivities(config):
         for festivity in Festivities.read(festivity_ids, ['date','meeting_id']) or []:
             output.write('{date}\t{meeting_id[1]}\n'.format(**festivity))
 
-def downloadIdealLoad(config):
-    step('Autentificant al Google Drive')
-    from somutils.sheetfetcher import SheetFetcher
-    fetcher = SheetFetcher(
-        documentName=config.documentDrive,
-        credentialFilename=config.driveCertificate,
-        )
-
-    step('Baixant carrega setmanal...')
-
-    step("  Descarregant el rang '{}'...", config.idealLoadNamesRange)
-    names = fetcher.get_range(
-        config.fullCarregaIdeal, config.idealLoadNamesRange)
-    step("  Descarregant el rang '{}'...", config.idealLoadValuesRange)
-    values = fetcher.get_range(
-        config.fullCarregaIdeal, config.idealLoadValuesRange)
-    step("  Guardant-ho com '{}'...".format(config.idealshifts))
-    carregaIdeal = ns(
-        (transliterate(name[0]), int(value[0]))
-        for name, value in zip(names,values))
-    carregaIdeal.dump(config.idealshifts)
-
 def downloadPersons(config):
     step("Baixant informació de les persones del tomatic...")
     url = config.baseUrl + '/api/persons'
