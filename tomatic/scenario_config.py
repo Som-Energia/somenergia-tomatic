@@ -5,7 +5,6 @@ from .shiftload import ShiftLoadComputer
 from .scheduling import timetable2forced
 from .retriever import (
     downloadPersons,
-    downloadLeaves,
     downloadIdealLoad,
     downloadVacations,
     downloadFestivities,
@@ -221,9 +220,6 @@ class Config:
             if certificate:
                 config.driveCertificate = certificate
 
-            if not keep:
-                self._download_leaves()
-
             config.idealshifts = idealshifts or config.get('idealshifts')
             config.weekShifts = weekshifts or config.get('weekShifts') or 'carrega.csv'
             config.overloadfile = overload or config.get('overloadfile') or "overload-{}.yaml".format(config.monday)
@@ -266,20 +262,14 @@ class Config:
             monday = config.monday,
             forgive = config.forgive,
             inclusters = config.clusterize,
+            adjustLines = config.get('adjustLines', False),
         )
+        config.finalLoad = computer.final
+        config.nTelefons = computer.nlines
+        config.busyTable = setup.busyTable._table
+
         computer.outputResults(config)
 
-        # When 'ningu' has more load than turns exist, just adjust the lines
-        nHours = len(config.hours) - 1
-        nTurns = len(setup.businessDays) *  nHours
-        nUncoverdLines, nEmptySlots = divmod(computer.final.get('ningu', 0), nTurns)
-        config.finalLoad = ns(
-            computer.final,
-            ningu=nEmptySlots,
-        )
-        config.nTelefons -= nUncoverdLines
-
-        config.busyTable = setup.busyTable._table
 
     def _update_monday(self, date):
         if date is not None:
@@ -290,9 +280,6 @@ class Config:
             # If no date provided, take the next monday
             today = datetime.date.today()
             self.data.monday = addDays(today, 7-today.weekday())
-
-    def _download_leaves(self):
-        downloadLeaves(self.data)
 
     def _download_busy(self):
         downloadBusy(self.data)

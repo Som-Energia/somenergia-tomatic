@@ -152,6 +152,7 @@ def main(args):
     # choose a list of minizinc solvers to user
     solvers = config.data.minizincSolvers
     solution = solve_problem(config.data, solvers)
+
     if not solution:
         step('Sense solució.\nProvant sense les opcionals...')
         # Ignore optional absences
@@ -159,24 +160,26 @@ def main(args):
         # Update scenario without optional absences
         config.update_shifts()
         solution = solve_problem(config.data, solvers)
-    # Save reslut if result else say there is no result
-    if solution:
-        solution.dump(output_yaml)
-        make_html_file(solution, output_html)
-        success("Resultat desat a {}", output_yaml)
-        success("Resultat desat a {}", output_html)
-        # TODO: try to not do this 🥺
-        totalCells=len(solution.days)*(len(solution.hours)-1)*len(solution.turns)
-        ns(
-            totalCells=totalCells,
-            completedCells=totalCells,
-            solutionCost=0,
-            timeOfLastSolution=f'{datetime.datetime.now()}',
-            unfilledCell='Complete',
-            busyReasons={},
-            penalties=[]
-        ).dump(status_file)
-        return True
 
-    error("No s'ha trobat resultat... :(")
-    return False
+    if not solution:
+        error("No s'ha trobat resultat... :(")
+        return False
+
+    # Save result if result else say there is no result
+    solution.dump(output_yaml)
+    make_html_file(solution, output_html)
+    success("Resultat desat a {}", output_yaml)
+    success("Resultat desat a {}", output_html)
+    # TODO: try to not do this 🥺
+    totalCells=len(solution.days)*(len(solution.hours)-1)*len(solution.turns)
+    ns(
+        totalCells=totalCells,
+        completedCells=totalCells,
+        solutionCost=0,
+        timeOfLastSolution=f'{datetime.datetime.now()}',
+        unfilledCell='Complete',
+        busyReasons={},
+        penalties=[]
+    ).dump(status_file)
+    return True
+

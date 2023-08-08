@@ -23,6 +23,7 @@ hours:  # Time slot limits. Last hour is the closing one
 - '14:00'
 computeShifts: true
 maxOverload: 0 # Max number of turns from the ideal for each person
+adjustLines: false # True to adapt the size of the timetable to the available load, minimizing empty slots
 clusterize: true # True if people is pre-asigned to specific lines
 discriminateLines: true # True to consider a different line ordering a different solution
 pruneRedundant: false # Activate to prune line ordering other than the sorted names one

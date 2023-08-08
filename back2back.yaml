@@ -119,27 +119,31 @@ testcases:
         - graella-telefons-2019-11-18.yaml
         - graella-telefons-2019-11-18.log
         - status.yaml
+
     4days6lines:
         command: |
+            cd b2bdata/inputs/4days6lines/
             tomatic_scheduler.py 2019-10-28 \
                 --scheduler backtracker \
                 --keep \
-                --config-file b2bdata/inputs/config-4days6lines.yaml \
-                --weekshifts b2bdata/inputs/carrega-4days6lines.csv \
-                --overload b2bdata/inputs/emptyoverload.yaml \
-                --personsfile b2bdata/inputs/persons-withgroups.yaml \
+                --config-file config-4days6lines.yaml \
+                --weekshifts carrega-4days6lines.csv \
+                --overload emptyoverload.yaml \
+                --personsfile persons-withgroups.yaml \
+                --idealshifts idealshifts.yaml \
                 --lines 6 \
                 --stop-penalty 86 \
                 --deterministic \
+                --compute-shifts \
                 --search-days "dl,dm,dx,dj" \
                 2>&1 | tee graella-telefons.log && \
             sed -i '/timeOfLastSolution/d' status.yaml
 
         outputs:
-        - graella-telefons-2019-10-28.html
-        - graella-telefons-2019-10-28.yaml
-        - graella-telefons.log
-        - status.yaml
+        - b2bdata/inputs/4days6lines/graella-telefons-2019-10-28.html
+        - b2bdata/inputs/4days6lines/graella-telefons-2019-10-28.yaml
+        - b2bdata/inputs/4days6lines/graella-telefons.log
+        - b2bdata/inputs/4days6lines/status.yaml
 
     load-and-schedule-2-days-2-lines-minizinc:
         command: |

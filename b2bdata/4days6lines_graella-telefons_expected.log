@@ -1,5 +1,44 @@
 [34;1m:: Running solver tomatic.backtracker[0m
-[34;1m:: Carregant configuració b2bdata/inputs/config-4days6lines.yaml...[0m
+[34;1m:: Carregant configuració config-4days6lines.yaml...[0m
+[34;1m:: Generant càrrega...[0m
+[34;1m::   Carregant dades...[0m
+[34;1m::     Llegint festius...[0m
+[34;1m::     Llegint carrega ideal de idealshifts.yaml...[0m
+[34;1m::     Llegint vacances...[0m
+[34;1m::     Llegint altres indisponibilitats...[0m
+[33mWarning: Ignorant indisponibilitats de ningu, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de pere, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de david, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de miguelanxo, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de fran, que no entra al repartiment[0m
+[34;1m::     Llegint credits i deutes (bossa d'hores)...[0m
+[34;1m::   Ponderant la ideal...[0m
+[32;1m>>     Surten 137 torns[0m
+[34;1m::   Limitant a la capacitat real...[0m
+[34;1m::   Completant la carrega de 137 a 120...[0m
+[32;1m>>     Carrega assolida 120[0m
+[34;1m::   Compensant deute amb credit...[0m
+La sobrecarrega d'aquesta setmana seria:
+adria: -1.0
+albert: -1.0
+albertg: -1.0
+ana: -1.0
+annab: -1.0
+aram: -1.0
+carles: -1.0
+carme: -1.0
+carol: -1.0
+eduard: -1.0
+eloi: -1.0
+erola: -1.0
+gabriel: -1.0
+gemma: -1.0
+guifre: -1.0
+joan: -1.0
+joanb: -1.0
+[34;1m:: Desant sobrecàrrega com a emptyoverload.yaml[0m
+[34;1m:: Desant càrrega final com a carrega-2019-10-28.yaml[0m
+[32;1m>> S'ha aconseguit amb èxit una càrrega de 120 torns[0m
 [33mWarning: No forcedTimeTable configured[0m
 [34;1m:: Muntant el solucionador...[0m
 [33mWarning: T'has deixat dies laborables: ['dv'][0m
@@ -60,6 +99,52 @@
 [33mWarning: 'benjami' es al grup 'it', però no es al fitxer de càrrega[0m
 [33mWarning: Configuration 'maxPhoningInGroup' uses group 'nouramat' not defined in 'groups'[0m
 [34;1m:: Generant horari...[0m
+Nom	Ideal	Proporcional	Augmentada	CapacitatReal	Topall	AplicatTopall	CobrintTorns	CompensantDeutes	Final	Sobrecarrega	CreditCarregat	CreditInicial	CreditFinal
+adria	5	5.0	5.0	10	5	5	4	4	4	-1.0	0	0	-1
+albertg	5	5.0	5.0	9	5	5	4	4	4	-1.0	0	0	-1
+aram	5	5.0	5.0	10	5	5	4	4	4	-1.0	0	0	-1
+gemma	5	5.0	5.0	10	5	5	4	4	4	-1.0	0	0	-1
+guifre	5	5.0	5.0	10	5	5	4	4	4	-1.0	0	0	-1
+carme	5	5.0	5.0	10	5	5	4	4	4	-1.0	0	0	-1
+merce	5	5.0	5.0	10	5	5	5	5	5	0.0	0	0	0
+monicag	5	5.0	5.0	10	5	5	5	5	5	0.0	0	0	0
+nuria	5	5.0	5.0	10	5	5	5	5	5	0.0	0	0	0
+otilia	5	5.0	5.0	10	5	5	5	5	5	0.0	0	0	0
+rogerlf	5	5.0	5.0	10	5	5	5	5	5	0.0	0	0	0
+eloi	4	4.0	4.0	8	4	4	3	3	3	-1.0	0	0	-1
+roger	4	4.0	4.0	10	4	4	4	4	4	0.0	0	0	0
+mar	4	4.0	4.0	10	4	4	4	4	4	0.0	0	0	0
+olga	4	4.0	4.0	10	4	4	4	4	4	0.0	0	0	0
+annab	4	4.0	4.0	10	4	4	3	3	3	-1.0	0	0	-1
+joanm	4	4.0	4.0	10	4	4	4	4	4	0.0	0	0	0
+vane	4	4.0	4.0	10	4	4	4	4	4	0.0	0	0	0
+vero	4	4.0	4.0	9	4	4	4	4	4	0.0	0	0	0
+albert	3	3.0	3.0	8	3	3	2	2	2	-1.0	0	0	-1
+carol	2	2.0	2.0	8	2	2	1	1	1	-1.0	0	0	-1
+maria	2	2.0	2.0	8	2	2	2	2	2	0.0	0	0	0
+pau	2	2.0	2.0	8	2	2	2	2	2	0.0	0	0	0
+joanb	2	2.0	2.0	10	2	2	1	1	1	-1.0	0	0	-1
+maite	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+gabriel	2	2.0	2.0	9	2	2	1	1	1	-1.0	0	0	-1
+mariona	2	2.0	2.0	9	2	2	2	2	2	0.0	0	0	0
+sergi	2	2.0	2.0	8	2	2	2	2	2	0.0	0	0	0
+lucia	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+vic	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+victor	2	2.0	2.0	8	2	2	2	2	2	0.0	0	0	0
+ana	2	2.0	2.0	8	2	2	1	1	1	-1.0	0	0	-1
+judith	2	2.0	2.0	8	2	2	2	2	2	0.0	0	0	0
+joan	2	2.0	2.0	10	2	2	1	1	1	-1.0	0	0	-1
+silvia	2	2.0	2.0	7	2	2	2	2	2	0.0	0	0	0
+manel	2	2.0	2.0	7	2	2	2	2	2	0.0	0	0	0
+tania	2	2.0	2.0	9	2	2	2	2	2	0.0	0	0	0
+monica	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+yaiza	2	2.0	2.0	5	2	2	2	2	2	0.0	0	0	0
+marta	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+erola	2	2.0	2.0	7	2	2	1	1	1	-1.0	0	0	-1
+judit	2	2.0	2.0	8	2	2	2	2	2	0.0	0	0	0
+eduard	1	1.0	1.0	7	1	1	0	0	0	-1.0	0	0	-1
+carles	1	1.0	1.0	9	1	1	0	0	0	-1.0	0	0	-1
+marc	1	1.0	1.0	5	1	1	1	1	1	0.0	0	0	0
 Solució incomplerta 0/96 caselles, cost 0
 Solució incomplerta 1/96 caselles, cost 0
 Solució incomplerta 2/96 caselles, cost 0
@@ -446,3 +531,95 @@ A vane nomes li queden 2 forats per posar 3 hores
 A vane nomes li queden 2 forats per posar 4 hores
 A vero nomes li queden 2 forats per posar 3 hores
 A vero nomes li queden 2 forats per posar 4 hores[0m
+[31;1mError: Solver tomatic.backtracker didn't find a solution[0m
+[34;1m:: Running solver tomatic.minizinc[0m
+[34;1m:: Carregant configuració config-4days6lines.yaml...[0m
+[34;1m:: Generant càrrega...[0m
+[34;1m::   Carregant dades...[0m
+[34;1m::     Llegint festius...[0m
+[34;1m::     Llegint carrega ideal de idealshifts.yaml...[0m
+[34;1m::     Llegint vacances...[0m
+[34;1m::     Llegint altres indisponibilitats...[0m
+[33mWarning: Ignorant indisponibilitats de ningu, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de pere, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de david, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de miguelanxo, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de fran, que no entra al repartiment[0m
+[34;1m::     Llegint credits i deutes (bossa d'hores)...[0m
+[34;1m::   Ponderant la ideal...[0m
+[32;1m>>     Surten 137 torns[0m
+[34;1m::   Limitant a la capacitat real...[0m
+[34;1m::   Completant la carrega de 137 a 120...[0m
+[32;1m>>     Carrega assolida 120[0m
+[34;1m::   Compensant deute amb credit...[0m
+La sobrecarrega d'aquesta setmana seria:
+adria: -1.0
+albert: -1.0
+albertg: -1.0
+ana: -1.0
+annab: -1.0
+aram: -1.0
+carles: -1.0
+carme: -1.0
+carol: -1.0
+eduard: -1.0
+eloi: -1.0
+erola: -1.0
+gabriel: -1.0
+gemma: -1.0
+guifre: -1.0
+joan: -1.0
+joanb: -1.0
+[34;1m:: Desant sobrecàrrega com a emptyoverload.yaml[0m
+[34;1m:: Desant càrrega final com a carrega-2019-10-28.yaml[0m
+[32;1m>> S'ha aconseguit amb èxit una càrrega de 120 torns[0m
+[33mWarning: No forcedTimeTable configured[0m
+[34;1m:: Provant amb les indisponibilitats opcionals...[0m
+[32;1m>> Resultat desat a graella-telefons-2019-10-28.yaml[0m
+[32;1m>> Resultat desat a graella-telefons-2019-10-28.html[0m
+Nom	Ideal	Proporcional	Augmentada	CapacitatReal	Topall	AplicatTopall	CobrintTorns	CompensantDeutes	Final	Sobrecarrega	CreditCarregat	CreditInicial	CreditFinal
+adria	5	5.0	5.0	10	5	5	4	4	4	-1.0	0	0	-1
+albertg	5	5.0	5.0	9	5	5	4	4	4	-1.0	0	0	-1
+aram	5	5.0	5.0	10	5	5	4	4	4	-1.0	0	0	-1
+gemma	5	5.0	5.0	10	5	5	4	4	4	-1.0	0	0	-1
+guifre	5	5.0	5.0	10	5	5	4	4	4	-1.0	0	0	-1
+carme	5	5.0	5.0	10	5	5	4	4	4	-1.0	0	0	-1
+merce	5	5.0	5.0	10	5	5	5	5	5	0.0	0	0	0
+monicag	5	5.0	5.0	10	5	5	5	5	5	0.0	0	0	0
+nuria	5	5.0	5.0	10	5	5	5	5	5	0.0	0	0	0
+otilia	5	5.0	5.0	10	5	5	5	5	5	0.0	0	0	0
+rogerlf	5	5.0	5.0	10	5	5	5	5	5	0.0	0	0	0
+eloi	4	4.0	4.0	8	4	4	3	3	3	-1.0	0	0	-1
+roger	4	4.0	4.0	10	4	4	4	4	4	0.0	0	0	0
+mar	4	4.0	4.0	10	4	4	4	4	4	0.0	0	0	0
+olga	4	4.0	4.0	10	4	4	4	4	4	0.0	0	0	0
+annab	4	4.0	4.0	10	4	4	3	3	3	-1.0	0	0	-1
+joanm	4	4.0	4.0	10	4	4	4	4	4	0.0	0	0	0
+vane	4	4.0	4.0	10	4	4	4	4	4	0.0	0	0	0
+vero	4	4.0	4.0	9	4	4	4	4	4	0.0	0	0	0
+albert	3	3.0	3.0	8	3	3	2	2	2	-1.0	0	0	-1
+carol	2	2.0	2.0	8	2	2	1	1	1	-1.0	0	0	-1
+maria	2	2.0	2.0	8	2	2	2	2	2	0.0	0	0	0
+pau	2	2.0	2.0	8	2	2	2	2	2	0.0	0	0	0
+joanb	2	2.0	2.0	10	2	2	1	1	1	-1.0	0	0	-1
+maite	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+gabriel	2	2.0	2.0	9	2	2	1	1	1	-1.0	0	0	-1
+mariona	2	2.0	2.0	9	2	2	2	2	2	0.0	0	0	0
+sergi	2	2.0	2.0	8	2	2	2	2	2	0.0	0	0	0
+lucia	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+vic	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+victor	2	2.0	2.0	8	2	2	2	2	2	0.0	0	0	0
+ana	2	2.0	2.0	8	2	2	1	1	1	-1.0	0	0	-1
+judith	2	2.0	2.0	8	2	2	2	2	2	0.0	0	0	0
+joan	2	2.0	2.0	10	2	2	1	1	1	-1.0	0	0	-1
+silvia	2	2.0	2.0	7	2	2	2	2	2	0.0	0	0	0
+manel	2	2.0	2.0	7	2	2	2	2	2	0.0	0	0	0
+tania	2	2.0	2.0	9	2	2	2	2	2	0.0	0	0	0
+monica	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+yaiza	2	2.0	2.0	5	2	2	2	2	2	0.0	0	0	0
+marta	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+erola	2	2.0	2.0	7	2	2	1	1	1	-1.0	0	0	-1
+judit	2	2.0	2.0	8	2	2	2	2	2	0.0	0	0	0
+eduard	1	1.0	1.0	7	1	1	0	0	0	-1.0	0	0	-1
+carles	1	1.0	1.0	9	1	1	0	0	0	-1.0	0	0	-1
+marc	1	1.0	1.0	5	1	1	1	1	1	0.0	0	0	0

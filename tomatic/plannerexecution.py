@@ -101,6 +101,7 @@ class PlannerExecution(Execution):
             str(Path('./scripts/tomatic_scheduler.py').resolve()),
             monday or nextMonday(),
             '--clusterize',
+            '--scheduler', 'minizinc',
         ])
         step("Process {}...", execution.pid)
         children[process.pid] = process

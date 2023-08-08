@@ -20,130 +20,130 @@ turns:
 - L6
 timetable:
   dl:
-  - - carles
-    - adria
-    - aram
-    - albertg
+  - - albertg
+    - annab
     - carme
     - guifre
-  - - eduard
-    - aram
-    - adria
-    - gemma
-    - guifre
-    - carme
-  - - erola
-    - joan
-    - joanb
     - joanm
-    - lucia
-    - maite
-  - - eloi
-    - joanb
-    - gabriel
-    - albert
-    - manel
-    - joanm
-  dm:
-  - - carol
-    - carme
-    - gemma
-    - adria
-    - albertg
     - mar
-  - - joanm
-    - gemma
-    - carme
+  - - adria
     - aram
-    - adria
-    - albertg
-  - - marta
-    - judith
-    - eloi
+    - gemma
     - guifre
-    - maria
-    - mariona
-  - - otilia
-    - lucia
-    - mariona
+    - joanm
+    - judit
+  - - adria
+    - aram
+    - erola
+    - gemma
+    - maite
+    - merce
+  - - albert
+    - albertg
+    - carme
     - eloi
-    - judith
+    - mariona
+    - merce
+  dm:
+  - - albertg
+    - ana
+    - annab
+    - aram
+    - carme
+    - carol
+  - - annab
+    - aram
+    - carme
+    - eloi
+    - gemma
+    - guifre
+  - - eloi
+    - gabriel
+    - gemma
+    - guifre
+    - joanm
+    - mar
+  - - joan
+    - joanb
+    - joanm
+    - judit
+    - mar
     - monicag
   dx:
-  - - marc
+  - - adria
+    - albertg
+    - judith
+    - manel
+    - marc
+    - otilia
+  - - lucia
     - maite
-    - joanm
-    - carol
-    - aram
-    - monica
+    - mar
+    - maria
+    - marta
+    - monicag
+  - - lucia
+    - maria
+    - mariona
+    - marta
+    - merce
+    - monicag
+  - - adria
+    - albert
+    - judith
+    - manel
+    - nuria
+    - rogerlf
+  dj:
   - - monica
+    - olga
+    - otilia
+    - pau
+    - roger
+    - rogerlf
+  - - merce
+    - monica
     - monicag
     - nuria
-    - joan
-    - carol
-    - eloi
-  - - pau
-    - otilia
-    - roger
-    - mar
-    - gemma
-    - tania
-  - - rogerlf
-    - manel
+    - olga
+    - rogerlf
+  - - merce
+    - monicag
+    - nuria
+    - vane
     - vero
     - yaiza
+  - - otilia
+    - pau
+    - roger
+    - vane
+    - vero
+    - yaiza
+  dv:
+  - - olga
+    - otilia
+    - roger
+    - rogerlf
     - sergi
     - vane
-  dj:
-  - - '?'
-    - '?'
-    - '?'
-    - '?'
-    - '?'
-    - '?'
-  - - '?'
-    - '?'
-    - '?'
-    - '?'
-    - '?'
-    - '?'
-  - - '?'
-    - '?'
-    - '?'
-    - '?'
-    - '?'
-    - '?'
-  - - '?'
-    - '?'
-    - '?'
-    - '?'
-    - '?'
-    - '?'
-  dv:
-  - - festiu
-    - festiu
-    - festiu
-    - festiu
-    - festiu
-    - festiu
-  - - festiu
-    - festiu
-    - festiu
-    - festiu
-    - festiu
-    - festiu
-  - - festiu
-    - festiu
-    - festiu
-    - festiu
-    - festiu
-    - festiu
-  - - festiu
-    - festiu
-    - festiu
-    - festiu
-    - festiu
-    - festiu
+  - - nuria
+    - olga
+    - otilia
+    - roger
+    - rogerlf
+    - sergi
+  - - nuria
+    - silvia
+    - tania
+    - vero
+    - vic
+    - victor
+  - - silvia
+    - tania
+    - vane
+    - vero
+    - vic
+    - victor
 colors:
   marc: fbe8bc
   eduard: d8b9c5
@@ -326,62 +326,6 @@ names:
   albertsimo: AlbertSi
   jaume: JaumeA
 overload: {}
-penalties:
-- - 5
-  - carme té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dl
-- - 0
-  - 'guifre fa dl a 1a hora que no li va be perque: "Bioritme de Tarda"'
-- - 5
-  - guifre té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dl
-- - 1
-  - aram té més de 1 hores el dl
-- - 1
-  - adria té més de 1 hores el dl
-- - 0
-  - 'guifre fa dl a 2a hora que no li va be perque: "Reunions Traspàs Factura"'
-- - 1
-  - guifre té més de 1 hores el dl
-- - 5
-  - guifre té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dl
-- - 1
-  - carme té més de 1 hores el dl
-- - 0
-  - 'joanb fa dl a 4a hora que no li va be perque: "Dinar a les 13h"'
-- - 1
-  - joanb té més de 1 hores el dl
-- - 1
-  - joanm té més de 1 hores el dl
-- - 5
-  - albertg té altres 1 persones amb telèfon a la mateixa taula a 1a hora del dm
-- - 1
-  - gemma té més de 1 hores el dm
-- - 1
-  - carme té més de 1 hores el dm
-- - 1
-  - adria té més de 1 hores el dm
-- - 1
-  - albertg té més de 1 hores el dm
-- - 5
-  - albertg té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dm
-- - 1
-  - mariona té més de 1 hores el dm
-- - 5
-  - mariona té altres 1 persones amb telèfon a la mateixa taula a 4a hora del dm
-- - 1
-  - eloi té més de 1 hores el dm
-- - 1
-  - judith té més de 1 hores el dm
-- - 0
-  - 'marc fa dx a 1a hora que no li va be perque: "Ronda IT"'
-- - 1
-  - monica té més de 1 hores el dx
-- - 5
-  - nuria té altres 1 persones amb telèfon a la mateixa taula a 2a hora del dx
-- - 1
-  - carol té més de 1 hores el dx
-- - 0
-  - 'pau fa dx a 3a hora que no li va be perque: "Organització de la càrrega de feina
-    i de les reunions"'
-- - 0
-  - 'gemma fa dx a 3a hora que no li va be perque: "Telèfon a primera hora"'
-cost: 50
+penalties: []
+cost: 120
+log: []

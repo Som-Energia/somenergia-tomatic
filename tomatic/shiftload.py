@@ -39,11 +39,12 @@ def workingDays(person, businessDays, daysoff, leaves):
     removing the days off or all if in sick leave.
     """
     if person in leaves: return 0
-    ndaysoff = sum(
-            day.person == person
-            for day in daysoff
-            if day.weekday in businessDays
-            )
+    ndaysoff = len(set(
+        day.weekday
+        for day in daysoff
+        if day.weekday in businessDays
+        and day.person == person
+    ))
     return len(businessDays)-ndaysoff
 
 def capacity(busytable, generalMaxPerDay, maxPerDay=ns(), leaves=[]):
@@ -324,9 +325,6 @@ class ShiftLoadComputer():
         daysoffcontent = Path('indisponibilitats-vacances.conf').read_text(encoding='utf8').split("\n")
         daysoff = list(busy.parseBusy(daysoffcontent, error))
 
-        step("    Llegint baixes...")
-        leaves = Path('leaves.conf').read_text(encoding='utf8').split()
-
         step("    Llegint altres indisponibilitats...")
         busyTable = busy.BusyTable(
             days=businessDays,
@@ -348,7 +346,7 @@ class ShiftLoadComputer():
         formerCredit = ns.load('shiftcredit.yaml')
         return ns(
             monday = config.monday,
-            leaves = leaves,
+            leaves = [], # Leaves now come from
             daysoff = daysoff,
             busyTable = busyTable,
             businessDays = businessDays,
@@ -370,6 +368,7 @@ class ShiftLoadComputer():
         forgive=False,
         maxOverload=1,
         inclusters=False,
+        adjustLines=False,
     ):
         self.monday = monday
         self.nlines = nlines
@@ -446,6 +445,17 @@ class ShiftLoadComputer():
                 + self.fullLoad
                 - finalLoad
             )
+
+        if adjustLines:
+            # When 'ningu' has more load than turns exist, just adjust the lines
+            nHours = busy.nturns # TODO: Polysemic mess
+            nTurns = len(self.businessDays) *  nHours
+            nUncoverdLines, nEmptySlots = divmod(self.final.get('ningu', 0), nTurns)
+            self.final = ns(
+                self.final,
+                ningu=nEmptySlots,
+            )
+            self.nlines -= nUncoverdLines
 
         if inclusters:
             self.clusterized = clusterize(self.nlines, self.final)

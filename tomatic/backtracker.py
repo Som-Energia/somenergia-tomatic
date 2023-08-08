@@ -11,7 +11,6 @@ from yamlns import namespace as ns
 
 from .htmlgen import HtmlGen
 from . import busy
-from .shiftload import ShiftLoadComputer
 from .persons import persons
 
 
@@ -93,8 +92,8 @@ class Backtracker(object):
             ((nom,dia), min(
                 self.personDailyLimit(nom),
                 sum(
-                    0 if self.isBusy(nom,dia,hora) else 1
-                    for hora in range(len(self.hours)))
+                    0 if self.isBusy(nom,dia,ihour) else 1
+                    for ihour in range(len(self.hours)))
                 ))
             for nom, dia in xproduct(self.companys, self.dies))
 
@@ -133,13 +132,13 @@ class Backtracker(object):
         # Idle persons in each group (not busy nor on phone)
         self.idleInGroup = dict([                                       # (group,day,turn) available persons in group
             (
-                (group, dia, hora),
+                (group, dia, ihour),
                 sum(
-                    0 if self.isBusy(person,dia,hora) else 1
+                    0 if self.isBusy(person,dia,ihour) else 1
                     for person in persons
                     if person in self.companys
                 ))
-            for (group, persons), dia, hora
+            for (group, persons), dia, ihour
             in xproduct(
                 groups.items(),
                 self.dies,
@@ -181,19 +180,19 @@ class Backtracker(object):
                 name = row[0]
                 if len(row)!=nlines+1 :
                     raise Backtracker.ErrorConfiguracio(
-                        "{}:{}: S'experaven {} telefons per {} pero tenim {}".format(
+                        "{}:{}: S'esperaven {} telefons per {} pero tenim {}".format(
                             tornsfile, numline, nlines, name, len(row)-1
                         ))
                 result[name] = [int(c) for c in row[1:]]
 
         # checks
-        for telefon in range(nlines):
-            horesTelefon = sum(v[telefon] for nom, v in result.items())
+        for iline in range(nlines):
+            horesTelefon = sum(v[iline] for nom, v in result.items())
             if horesTelefon == len(self.dies)*len(self.hours):
                 continue
             raise Backtracker.ErrorConfiguracio(
                 "Les hores de L{} sumen {} i no pas {}, revisa {}".format(
-                    telefon+1, horesTelefon, len(self.dies)*len(self.hours), tornsfile))
+                    iline+1, horesTelefon, len(self.dies)*len(self.hours), tornsfile))
         if self.config.discriminateLines:
             return result
         return {
@@ -248,11 +247,11 @@ class Backtracker(object):
                 for entry in thisweekentries:
                     if not entry.optional:
                         continue
-                    for hora, isBusy in enumerate(entry.turns):
+                    for ihour, isBusy in enumerate(entry.turns):
                         if isBusy!='1': continue
                         weekdays = [entry.weekday] if entry.weekday else self.dies
                         for dia in weekdays:
-                            undesired[dia, hora, entry.person] = entry.reason
+                            undesired[dia, ihour, entry.person] = entry.reason
         return undesired
 
     def isUndesiredShift(self, person, day, hour):
@@ -372,10 +371,10 @@ class Backtracker(object):
             self.reportSolution(partial, self.cost, self.penalties)
             return
 
-        day, hora, telefon = self.caselles[len(partial)] # (day,turn,slot) to be filled
+        day, ihour, iline = self.caselles[len(partial)] # (day,turn,slot) to be filled
 
         # Comencem dia, mirem si podem acomplir els objectius amb els dies restants
-        if telefon==0 and hora==0:
+        if iline==0 and ihour==0:
 
             idia = self.dies.index(day)
             diesRestants =  len(self.dies)-idia
@@ -415,7 +414,7 @@ class Backtracker(object):
 
         if self.config.pruneRedundant:
             # Last non-nigu person within the turn if any
-            lastPersonInTurn = next((person for person in partial[:-1-telefon:-1] if person != 'ningu'), None)
+            lastPersonInTurn = next((person for person in partial[:-1-iline:-1] if person != 'ningu'), None)
             # Just take persons alfabetically greater than the last one if any
             companys = [
                 person
@@ -430,8 +429,10 @@ class Backtracker(object):
             random.shuffle(companys)
 
         # Is forced position? Take it
-        if (day, hora+1, telefon+1) in self.config.forced:
-            companys = [self.config.forced[(day,hora+1,telefon+1)]]
+        if (day, ihour+1, iline+1) in self.config.forced:
+            forcedPerson = self.config.forced[(day,ihour+1,iline+1)]
+            if forcedPerson == 'ningu' or not self.isBusy(forcedPerson, day, ihour):
+                companys = [forcedPerson]
 
         for company in companys:
 
@@ -451,32 +452,32 @@ class Backtracker(object):
                     continue
 
             # Person has no turns left to do
-            if self.pendingShifts(company, telefon) <= 0:
+            if self.pendingShifts(company, iline) <= 0:
                 self.cut("FullLoad", partial,
                     "{} ja ha exhaurit els seus torns de linia {}aria"
-                    .format( company, telefon+1))
+                    .format( company, iline+1))
                 continue
 
             # Person busy in this turn (it has another line in this turn or it is unavailable)
-            if self.isBusy(company, day, hora) and company != 'ningu' :
+            if self.isBusy(company, day, ihour) and company != 'ningu' :
                 self.cut("Busy", partial,
                     "{} no esta disponible el {} a {}a hora"
-                    .format( company, day, hora+1))
+                    .format( company, day, ihour+1))
                 continue
 
             # Its a main line and person already has taken a main line that day
             if self.config.discriminateLines:
-                if telefon==0 and self.tePrincipal[company, day] >= self.config.maximsT1PerDia:
+                if iline==0 and self.tePrincipal[company, day] >= self.config.maximsT1PerDia:
                     self.cut("MassesPrincipals", partial,
                         "Dos principals per {} el {} no, sisplau"
                         .format(company,day))
                     continue
 
             # Reduce cacophonies, by limiting people in the same table at once
-            if taula!=-1 and self.telefonsALaTaula[day, hora, taula]>=self.config.maximPerTaula :
+            if taula!=-1 and self.telefonsALaTaula[day, ihour, taula]>=self.config.maximPerTaula :
                 self.cut("Crosstalk", partial,
-                    "{} ja té {} persones a la mateixa taula amb telefon a {}a hora del {}"
-                    .format(company, self.telefonsALaTaula[day, hora, taula], hora+1, day))
+                    "{} ja té {} persones a la mateixa taula amb iline a {}a hora del {}"
+                    .format(company, self.telefonsALaTaula[day, ihour, taula], ihour+1, day))
                 continue
 
             # Ensure groups with a minimum of idle persons
@@ -484,10 +485,10 @@ class Backtracker(object):
                 for group in self.personGroups[company] :
                     if group not in self.config.minIdleInGroup: continue
                     minIdle = self.config.minIdleInGroup[group]
-                    if self.idleInGroup[group, day, hora] > minIdle+1:
+                    if self.idleInGroup[group, day, ihour] > minIdle+1:
                         continue
                     return ("El grup {} on pertany {} no tindria {} persones alliberades el {} a {} hora"
-                        .format(group, company, minIdle, day, hora+1))
+                        .format(group, company, minIdle, day, ihour+1))
                 return False
 
             if notEnoughIdleInGroup(company):
@@ -499,10 +500,10 @@ class Backtracker(object):
                 for group in self.personGroups[company] :
                     if group not in self.config.maxPhoningInGroup: continue
                     maxPhoning = self.config.maxPhoningInGroup[group]
-                    if self.phoningOnGroup[group, day, hora] < maxPhoning:
+                    if self.phoningOnGroup[group, day, ihour] < maxPhoning:
                         continue
                     return ("El grup {} on pertany {} ja te {} persones al telèfon el {} a {} hora"
-                        .format(group, company, maxPhoning, day, hora+1))
+                        .format(group, company, maxPhoning, day, ihour+1))
                 return False
 
             if tooManyPhoningOnGroup(company):
@@ -518,17 +519,17 @@ class Backtracker(object):
 
             # Allow lunch break, do no take both central hours one day
             if self.config.deixaEsmorzar and company not in self.config.noVolenEsmorzar:
-                if hora==2 and self.teTelefon[day, 1, company]:
+                if ihour==2 and self.teTelefon[day, 1, company]:
                     self.cut("Brunch", partial,
                         "{} es queda sense esmorzar el {}"
                         .format(company, day))
                     continue
 
-            if company == "ningu" and self.ningusPerTurn[day,hora] == self.config.maxNingusPerTurn:
+            if company == "ningu" and self.ningusPerTurn[day,ihour] == self.config.maxNingusPerTurn:
                 self.cut(
                     "TooManyConcurrentHoles",
                     partial,
-                    "Hi ha masses forats a {}a hora del {}".format(hora+1, day)
+                    "Hi ha masses forats a {}a hora del {}".format(ihour+1, day)
                 )
                 continue
 
@@ -538,7 +539,7 @@ class Backtracker(object):
                 penalties.append((value,reason))
                 return value
 
-            if hora and self.horesDiaries[company, day] and not self.teTelefon[day, hora-1, company]:
+            if ihour and self.horesDiaries[company, day] and not self.teTelefon[day, ihour-1, company]:
                 if self.personDailyLimit(company) < 3:
                     self.cut("Discontinuous", partial,
                         "{} te hores separades el {}".format(company,day))
@@ -549,20 +550,20 @@ class Backtracker(object):
                         "{} te hores separades el {}".format(company, day))
 
             if company == "ningu":
-                cost += penalize(self.config.costTornBuit * (self.ningusPerTurn[day,hora]+1),
+                cost += penalize(self.config.costTornBuit * (self.ningusPerTurn[day,ihour]+1),
                     "ConcurrentHoles",
                     u"Hi ha {} torns buits a {}a hora del {}".format(
-                        self.ningusPerTurn[day,hora]+1,
-                        hora+1,
+                        self.ningusPerTurn[day,ihour]+1,
+                        ihour+1,
                         day,
                     )
                 )
 
-            undesiredReason = self.isUndesiredShift(company, day, hora)
+            undesiredReason = self.isUndesiredShift(company, day, ihour)
             if undesiredReason:
                 cost += penalize(self.config.costHoraNoDesitjada, "Undesired",
                     u"{} fa {} a {}a hora que no li va be perque: \"{}\""
-                    .format(company, day, hora+1, undesiredReason))
+                    .format(company, day, ihour+1, undesiredReason))
 
             if self.horesDiaries[company, day]>0 :
                 cost += penalize(
@@ -570,12 +571,12 @@ class Backtracker(object):
                     "ConcentratedLoad",
                     u"{} té més de {} hores el {}".format(company, self.horesDiaries[company, day], day))
 
-            if taula!=-1 and self.telefonsALaTaula[day, hora, taula]>0 :
+            if taula!=-1 and self.telefonsALaTaula[day, ihour, taula]>0 :
                 cost += penalize(
-                    self.config.costTaulaSorollosa * self.telefonsALaTaula[day, hora, taula],
+                    self.config.costTaulaSorollosa * self.telefonsALaTaula[day, ihour, taula],
                     "Crosstalk",
                     u"{} té altres {} persones amb telèfon a la mateixa taula a {}a hora del {}".format(
-                        company, self.telefonsALaTaula[day, hora, taula], hora+1, day))
+                        company, self.telefonsALaTaula[day, ihour, taula], ihour+1, day))
 
             # If penalty is too high also prune
 
@@ -597,28 +598,28 @@ class Backtracker(object):
                 if len(partial) < self.config.maximCamiAMostrar :
                     out("  "*len(partial)+company[:2])
 
-            def markGroups(company, day, hora):
+            def markGroups(company, day, ihour):
                 for g in self.personGroups[company] :
-                    self.idleInGroup[g, day, hora] -= 1
-                    self.phoningOnGroup[g, day, hora] +=1
+                    self.idleInGroup[g, day, ihour] -= 1
+                    self.phoningOnGroup[g, day, ihour] +=1
 
-            def unmarkGroups(company, day, hora):
+            def unmarkGroups(company, day, ihour):
                 for g in self.personGroups[company] :
-                    self.idleInGroup[g, day, hora] += 1
-                    self.phoningOnGroup[g, day, hora] -=1
+                    self.idleInGroup[g, day, ihour] += 1
+                    self.phoningOnGroup[g, day, ihour] -=1
 
             # Anotem la casella
             if company == "ningu":
-                self.ningusPerTurn[day,hora] += 1
+                self.ningusPerTurn[day,ihour] += 1
             self.cost += cost
             self.penalties += penalties
-            #if telefon == 0: self.tePrincipal[company, day]+=1
-            self.teTelefon[day, hora, company]=True
-            self.setBusy(company,day,hora)
+            #if iline == 0: self.tePrincipal[company, day]+=1
+            self.teTelefon[day, ihour, company]=True
+            self.setBusy(company,day,ihour)
             self.horesDiaries[company,day]+=1
-            self.useShift(company, telefon)
-            self.telefonsALaTaula[day,hora,taula]+=1
-            markGroups(company,day,hora)
+            self.useShift(company, iline)
+            self.telefonsALaTaula[day,ihour,taula]+=1
+            markGroups(company,day,ihour)
 
             # Provem amb la seguent casella
             self.solveTorn(partial+[company])
@@ -627,14 +628,14 @@ class Backtracker(object):
 
             # Desanotem la casella
             if company == "ningu":
-                self.ningusPerTurn[day,hora] -= 1
-            unmarkGroups(company,day,hora)
-            self.telefonsALaTaula[day,hora,taula]-=1
-            self.unuseShift(company, telefon)
+                self.ningusPerTurn[day,ihour] -= 1
+            unmarkGroups(company,day,ihour)
+            self.telefonsALaTaula[day,ihour,taula]-=1
+            self.unuseShift(company, iline)
             self.horesDiaries[company,day]-=1
-            self.setBusy(company,day,hora, False)
-            self.teTelefon[day, hora, company]=False
-            #if telefon == 0: self.tePrincipal[company, day]-=1
+            self.setBusy(company,day,ihour, False)
+            self.teTelefon[day, ihour, company]=False
+            #if iline == 0: self.tePrincipal[company, day]-=1
             if penalties:
                 del self.penalties[-len(penalties):]
             self.cost -= cost
@@ -730,6 +731,7 @@ def main(args):
 
     step('Generant horari...')
     b.solve()
+    return len(b.bestSolution) == len(b.caselles)
 
 
 if __name__ == '__main__':

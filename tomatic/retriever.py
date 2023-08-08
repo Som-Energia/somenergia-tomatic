@@ -70,8 +70,8 @@ def downloadVacations(config):
             for weekday, day in zip(weekdays, days):
                 if start <= day <= end:
                     if config.get('verbose'):
-                        out("+{} {} # vacances", name, weekday)
-                    holidaysfile.write("+{} {} # vacances\n".format(name, weekday))
+                        out("+{} {} # absencia odoo (vacances, baixa...)", name, weekday)
+                    holidaysfile.write("+{} {} # absencia odoo (vacances, baixa...)\n".format(name, weekday))
 
 
 def downloadFestivities(config):
@@ -118,24 +118,6 @@ def downloadIdealLoad(config):
         (transliterate(name[0]), int(value[0]))
         for name, value in zip(names,values))
     carregaIdeal.dump(config.idealshifts)
-
-def downloadLeaves(config):
-    step('Autentificant al Google Drive')
-    from somutils.sheetfetcher import SheetFetcher
-    fetcher = SheetFetcher(
-        documentName=config.documentDrive,
-        credentialFilename=config.driveCertificate,
-        )
-    leavesSheet = config.get('leavesSheet',"Baixes")
-    leavesFile = "leaves.conf"
-
-    step('Baixant baixes...')
-
-    step("  Descarregant fulla '{}'...", leavesSheet)
-    leaves = fetcher.get_fullsheet(leavesSheet)
-    leaves = u'\n'.join([person for line in leaves for person in line])
-    step("  Guardant-ho com '{}'...".format(leavesFile))
-    Path(leavesFile).write_text(leaves, encoding='utf8')
 
 def downloadPersons(config):
     step("Baixant informació de les persones del tomatic...")
