@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.3.0 2023-08-08
 
 - Backtracker: Adapt the number of lines to the available load
 - Backtracker: Do not force anybody if not available
