@@ -16,14 +16,14 @@ turns:
 - L2
 timetable:
   dl:
-  - - ningu
-    - ningu
-  - - ningu
-    - ningu
-  - - ningu
-    - ningu
-  - - ningu
-    - ningu
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
   dm:
   - - jolie
     - liza
@@ -34,14 +34,14 @@ timetable:
   - - irma
     - kate
   dx:
-  - - ningu
-    - ningu
-  - - ningu
-    - ningu
-  - - ningu
-    - ningu
-  - - ningu
-    - ningu
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
   dj:
   - - liza
     - mary
@@ -52,14 +52,14 @@ timetable:
   - - olivia
     - petra
   dv:
-  - - ningu
-    - ningu
-  - - ningu
-    - ningu
-  - - ningu
-    - ningu
-  - - ningu
-    - ningu
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
+  - - festiu
+    - festiu
 colors: {}
 extensions: {}
 names: {}

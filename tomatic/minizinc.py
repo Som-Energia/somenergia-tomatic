@@ -13,6 +13,7 @@ from .busy import laborableWeekDays
 class Menu:
 
     NINGU = 'ningu'
+    FESTIVITY = 'festiu'
     NORMAL_WEEKDAY = {
         'dl': 0,
         'dm': 1,
@@ -86,7 +87,8 @@ class Menu:
         timetable = {
             day: [
                 [
-                    self.NINGU for _ in range(self.nLines)
+                    self.NINGU if day in self.laborable_days else self.FESTIVITY
+                    for _ in range(self.nLines)
                 ] for _ in range(self.nHours)
             ] for day in days
         }
