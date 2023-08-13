@@ -62,8 +62,6 @@ class PlannerExecution(Execution):
             (self.path/'forced-turns.yaml').symlink_to(forcedTurnsFile.resolve())
 
         config.dump(self.path/'config.yaml')
-        (self.path/'drive-certificate.json').symlink_to(
-            (self.configPath/'drive-certificate.json').resolve())
 
     def listInfo(self):
         info = ns(

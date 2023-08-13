@@ -40,7 +40,10 @@ class PlannerExecution_Test(unittest.TestCase):
             - dj
             - dx
         """)
-        (self.configPath/'drive-certificate.json').write_text(
+
+    def addForcedTurnsFile(self):
+        (self.configPath/'data').mkdir()
+        (self.configPath/'data'/'forced-turns.yaml').write_text(
             "{}"
         )
 
@@ -123,7 +126,6 @@ class PlannerExecution_Test(unittest.TestCase):
         self.assertSandboxes([
             'executions/2020-05-04',
             'executions/2020-05-04/config.yaml',
-            'executions/2020-05-04/drive-certificate.json',
         ])
 
     def test_createSandbox_createsConfig(self):
@@ -136,9 +138,11 @@ class PlannerExecution_Test(unittest.TestCase):
 
         self.assertNsEqual(
             ns.load(self.configPath/'config.yaml'),
-            ns.load(e.path/'config.yaml'))
+            ns.load(e.path/'config.yaml'),
+        )
 
-    def test_createSandbox_linksCertificate(self):
+    def test_createSandbox_linksForcedTurns(self):
+        self.addForcedTurnsFile()
         e = PlannerExecution(
             monday='2020-05-04',
             configPath=self.configPath,
@@ -146,15 +150,27 @@ class PlannerExecution_Test(unittest.TestCase):
 
         e.createSandbox()
 
-        self.assertContentEqual(
-            self.configPath/'drive-certificate.json',
-            e.path/'drive-certificate.json')
-
+        # A link to the original force-turns.yaml is created
+        self.assertSandboxes([
+            'executions/2020-05-04',
+            'executions/2020-05-04/config.yaml',
+            'executions/2020-05-04/forced-turns.yaml', # this
+        ])
         self.assertEqual(True,
-            (e.path/'drive-certificate.json').is_symlink())
+            (e.path/'forced-turns.yaml').is_symlink())
         self.assertEqual(
-            (self.configPath/'drive-certificate.json').resolve(),
-            (e.path/'drive-certificate.json').resolve())
+            (self.configPath/'data'/'forced-turns.yaml').resolve(),
+            (e.path/'forced-turns.yaml').resolve(),
+        )
+
+        # Config adds the forcedTimeTable parameter
+        self.assertNsEqual(
+            ns(
+                ns.load(self.configPath/'config.yaml'),
+                forcedTimeTable ='forced-turns.yaml',
+            ),
+            ns.load(e.path/'config.yaml'),
+        )
 
     def test_createSandbox_changingLines(self):
         e = PlannerExecution(
