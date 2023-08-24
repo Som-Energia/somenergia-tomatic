@@ -35,6 +35,7 @@ hours:
 - '14:00'
 computeShifts: true
 maxOverload: 0
+adjustLines: true
 clusterize: true
 discriminateLines: true
 pruneRedundant: false
