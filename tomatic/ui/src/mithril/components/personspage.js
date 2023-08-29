@@ -8,7 +8,7 @@ const PersonsPage = {
     return m('', [
       Doc(
         'Permet modificar la configuració personal de cadascú: ' +
-          'Color, taula, extensió, indisponibilitats...'
+          'Color, taula, extensió, indisponibilitats...',
       ),
       Persons(Tomatic.persons().extensions),
     ])

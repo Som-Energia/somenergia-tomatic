@@ -63,9 +63,9 @@ module.exports = (function () {
             value: name,
             selected: CallInfo.search_by === name,
           },
-          text
+          text,
         )
-      })
+      }),
     )
   }
 
@@ -90,7 +90,7 @@ module.exports = (function () {
                   },
                 },
               },
-              m(Ripple)
+              m(Ripple),
             ),
             CallInfo.updatingCategories
               ? [
@@ -110,7 +110,7 @@ module.exports = (function () {
           }),
         }
       },
-      { id: 'settingsDialog' }
+      { id: 'settingsDialog' },
     )
   }
 
@@ -165,7 +165,7 @@ module.exports = (function () {
         ? m(
             'span.partner',
             { title: 'Persona Atesa' },
-            info.partner ? info.partner : 'Sense informació'
+            info.partner ? info.partner : 'Sense informació',
           )
         : '',
       info.reason && info.contract
@@ -175,7 +175,7 @@ module.exports = (function () {
           ]
         : '',
       !info.reason ? m('span.pending', " Pendent d'anotar") : '',
-      ''
+      '',
     )
   }
 
@@ -193,7 +193,7 @@ module.exports = (function () {
               title: 'Cap trucada al registre.',
             }),
           ],
-        })
+        }),
       )
     }
     var currentDate = new Date().toLocaleDateString()
@@ -312,7 +312,7 @@ module.exports = (function () {
                 : CallInfo.searchStatus() === 'TOOMANYRESULTS'
                 ? m(
                     '.searching',
-                    'Cerca poc específica, retorna masses resultats.'
+                    'Cerca poc específica, retorna masses resultats.',
                   )
                 : m('.plane-info', [
                     m('.layout.vertical.flex', [
@@ -320,7 +320,7 @@ module.exports = (function () {
                       ContractInfo.mainPanel(CallInfo.searchResults),
                     ]),
                     ContractInfo.detailsPanel(CallInfo.searchResults),
-                  ])
+                  ]),
             ),
           ]),
         ]),

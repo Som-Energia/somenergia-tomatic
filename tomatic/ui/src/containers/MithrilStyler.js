@@ -28,8 +28,8 @@ const MithrilStyler = (mithrilComponent) => {
           m(Tomatic.isKumatoMode() ? '.pe-dark-tone' : '', [
             m(mithrilComponent),
             m(Dialog),
-          ])
-        )
+          ]),
+        ),
       )
     },
   }

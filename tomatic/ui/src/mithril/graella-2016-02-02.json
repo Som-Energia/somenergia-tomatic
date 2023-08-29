@@ -1,151 +1,64 @@
 {
-	"date": "2016-02-02",
-	"hours": [
-		"09:00",
-		"10:15",
-		"11:30",
-		"12:45",
-		"14:00"
-		],
-	"turns": ["L1","L2","L3"],
-	"days": ["dl","dm","dx","dj","dv"],
-	"timetable": {
-		"dl": [
-			[
-				"david",
-				"eduard",
-				"victor"
-			],
-			[
-				"victor",
-				"david",
-				"eduard"
-			],
-			[
-				"david",
-				"victor",
-				"eduard"
-			],
-			[
-				"eduard",
-				"victor",
-				"invitado",
-				"silvia"
-			]
-		],
-		"dm": [
-			[
-				"david",
-				"eduard",
-				"victor"
-			],
-			[
-				"victor",
-				"david",
-				"eduard"
-			],
-			[
-				"david",
-				"victor",
-				"eduard"
-			],
-			[
-				"eduard",
-				"victor",
-				"david"
-			]
-		],
-		"dx": [
-			[
-				"erola",
-				"judit",
-				"jordi"
-			],
-			[
-				"jordi",
-				"ana",
-				"judit"
-			],
-			[
-				"ana",
-				"jordi",
-				"manel"
-			],
-			[
-				"manel",
-				"jordi",
-				"ana"
-			]
-		],
-		"dj": [
-			[
-				"erola",
-				"judit",
-				"jordi"
-			],
-			[
-				"jordi",
-				"ana",
-				"judit"
-			],
-			[
-				"ana",
-				"jordi",
-				"manel"
-			],
-			[
-				"manel",
-				"jordi",
-				"ana"
-			]
-		],
-		"dv": [
-			[
-				"erola",
-				"judit",
-				"jordi"
-			],
-			[
-				"jordi",
-				"ana",
-				"judit"
-			],
-			[
-				"ana",
-				"jordi",
-				"manel"
-			],
-			[
-				"manel",
-				"jordi",
-				"ana"
-			]
-		]
-	},
-	"names": {
-		"victor": "Víctor"
-	},
-	"extensions": {
-		"aleix":  3053,
-		"ana":    3181,
-		"carles": 3051,
-		"david":  3054,
-		"eduard": 3045,
-		"erola":  3043,
-		"joan":   3056,
-		"jordi":  3183,
-		"judit":  3047,
-		"judith": 3057,
-		"lucia":  3184,
-		"manel":  3042,
-		"marc":   3046,
-		"marta":  3040,
-		"monica": 3041,
-		"pere":   3052,
-		"silvia": 3055,
-		"tania":  3048,
-		"vic":    3185,
-		"victor": 3182,
-		"yaiza":  3044
-	}
+  "date": "2016-02-02",
+  "hours": ["09:00", "10:15", "11:30", "12:45", "14:00"],
+  "turns": ["L1", "L2", "L3"],
+  "days": ["dl", "dm", "dx", "dj", "dv"],
+  "timetable": {
+    "dl": [
+      ["david", "eduard", "victor"],
+      ["victor", "david", "eduard"],
+      ["david", "victor", "eduard"],
+      ["eduard", "victor", "invitado", "silvia"]
+    ],
+    "dm": [
+      ["david", "eduard", "victor"],
+      ["victor", "david", "eduard"],
+      ["david", "victor", "eduard"],
+      ["eduard", "victor", "david"]
+    ],
+    "dx": [
+      ["erola", "judit", "jordi"],
+      ["jordi", "ana", "judit"],
+      ["ana", "jordi", "manel"],
+      ["manel", "jordi", "ana"]
+    ],
+    "dj": [
+      ["erola", "judit", "jordi"],
+      ["jordi", "ana", "judit"],
+      ["ana", "jordi", "manel"],
+      ["manel", "jordi", "ana"]
+    ],
+    "dv": [
+      ["erola", "judit", "jordi"],
+      ["jordi", "ana", "judit"],
+      ["ana", "jordi", "manel"],
+      ["manel", "jordi", "ana"]
+    ]
+  },
+  "names": {
+    "victor": "Víctor"
+  },
+  "extensions": {
+    "aleix": 3053,
+    "ana": 3181,
+    "carles": 3051,
+    "david": 3054,
+    "eduard": 3045,
+    "erola": 3043,
+    "joan": 3056,
+    "jordi": 3183,
+    "judit": 3047,
+    "judith": 3057,
+    "lucia": 3184,
+    "manel": 3042,
+    "marc": 3046,
+    "marta": 3040,
+    "monica": 3041,
+    "pere": 3052,
+    "silvia": 3055,
+    "tania": 3048,
+    "vic": 3185,
+    "victor": 3182,
+    "yaiza": 3044
+  }
 }

@@ -103,14 +103,14 @@ export default function PersonEditor(props) {
         Object.keys(validators).map((key) => {
           const validator = validators[key]
           return [key, validator(person[key])]
-        })
+        }),
       ),
     })
   }
 
   useEffect(() => {
     setCheckedData(
-      person === undefined ? defaultData : person === {} ? defaultData : person
+      person === undefined ? defaultData : person === {} ? defaultData : person,
     )
   }, [person])
 

@@ -40,7 +40,7 @@ const router = createHashRouter(
       path: '/ForcedTurns',
       element: (
         <AppFrame>
-          <ForcedTurns/>
+          <ForcedTurns />
         </AppFrame>
       ),
     },
@@ -87,12 +87,12 @@ const router = createHashRouter(
   ],
   {
     //basename: '/admin.html',
-  }
+  },
 )
 
 function App() {
   return (
-    <div id="tomatic" className='main'>
+    <div id="tomatic" className="main">
       <AuthProvider>
         <KumatoProvider>
           <RouterProvider router={router} />

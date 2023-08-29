@@ -174,7 +174,7 @@ function availableGroups(rows) {
         .map((row) => {
           return row.groups || []
         })
-        .flat()
+        .flat(),
     ),
   ]
 }
@@ -186,7 +186,7 @@ function camelize(text) {
 var handlePersonsUpdated = null
 
 Tomatic.onPersonsUpdated.push(
-  () => handlePersonsUpdated && handlePersonsUpdated()
+  () => handlePersonsUpdated && handlePersonsUpdated(),
 )
 
 function PersonsTable() {

@@ -61,7 +61,7 @@ module.exports = (function () {
           if (response.info.message !== 'ok') {
             console.debug(
               'Error al desar motius telefon: ',
-              response.info.message
+              response.info.message,
             )
           } else {
             console.debug('INFO case saved')
@@ -70,7 +70,7 @@ module.exports = (function () {
         },
         function (error) {
           console.debug('Info POST apicall failed: ', error)
-        }
+        },
       )
   }
 
@@ -160,7 +160,7 @@ module.exports = (function () {
         result[formatContractNumber(key)] = response.info.info[key]
         return result
       },
-      {}
+      {},
     )
     return response
   }
@@ -294,7 +294,7 @@ module.exports = (function () {
                   if (retrieved === undefined) {
                     console.error(
                       'No extended contract info for contract',
-                      number
+                      number,
                     )
                     return
                   }
@@ -307,7 +307,7 @@ module.exports = (function () {
         },
         function (error) {
           console.debug('Info GET apicall failed: ', error)
-        }
+        },
       )
   }
 
@@ -346,7 +346,7 @@ module.exports = (function () {
         },
         function (error) {
           console.debug('Info GET apicall failed: ', error)
-        }
+        },
       )
   }
 
@@ -362,7 +362,7 @@ module.exports = (function () {
           if (response.info.message !== 'ok') {
             console.debug(
               'Error al actualitzar les categories de trucades telefòniques: ',
-              response.info.message
+              response.info.message,
             )
           } else {
             CallInfo.updatingCategories = false
@@ -371,7 +371,7 @@ module.exports = (function () {
         },
         function (error) {
           console.debug('Info GET apicall failed: ', error)
-        }
+        },
       )
   }
 
@@ -392,7 +392,7 @@ module.exports = (function () {
           if (response.info.message !== 'ok') {
             console.debug(
               'Error al obtenir trucades ateses.',
-              response.info.message
+              response.info.message,
             )
             CallInfo.callLog = []
           } else {
@@ -402,7 +402,7 @@ module.exports = (function () {
         function (error) {
           CallInfo.callLog = []
           console.debug('Info GET apicall failed: ', error)
-        }
+        },
       )
   }
 

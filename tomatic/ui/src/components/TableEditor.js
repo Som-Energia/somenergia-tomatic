@@ -50,7 +50,7 @@ const ActionsType = PropTypes.arrayOf(
     title: PropTypes.string.isRequired,
     icon: PropTypes.element.isRequired,
     action: PropTypes.func,
-  })
+  }),
 )
 ActionButtons.propTypes = {
   actions: ActionsType,
@@ -219,7 +219,7 @@ function EnhancedTableToolbar(props) {
           bgcolor: (theme) =>
             alpha(
               theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
+              theme.palette.action.activatedOpacity,
             ),
         }),
       }}
@@ -322,7 +322,7 @@ export default function TableEditor(props) {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
+        selected.slice(selectedIndex + 1),
       )
     }
 

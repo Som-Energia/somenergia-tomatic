@@ -62,7 +62,7 @@ module.exports = (function () {
       m(
         '.contract-info-item',
         m('.label', 'Nom del titular: '),
-        contract.titular_name
+        contract.titular_name,
       ),
       contract.administrator
         ? m('.contract-info-item', [
@@ -74,14 +74,14 @@ module.exports = (function () {
       m(
         '.contract-info-item',
         m('.label', 'Adreça CUPS: '),
-        contract.cups_adress
+        contract.cups_adress,
       ),
       m('.contract-info-item', m('', m('.label', 'Tarifa: '), contract.fare)),
       m(
         '.contract-info-item',
         Object.keys(contract.power).map(function (key, index) {
           return m('', m('.label', key + ': '), contract.power[key] + ' kW')
-        })
+        }),
       ),
       m('.contract-info-item', [m('.label', 'IBAN: '), contract.iban]),
       m('.contract-info-item', [
@@ -95,15 +95,15 @@ module.exports = (function () {
             return m(
               '.contract-role' + (active ? '.active' : ''),
               { title: title },
-              letter
+              letter,
             )
-          })
+          }),
         ),
       ]),
       m(
         '.contract-info-item',
         m('.label', 'Estat pendent: '),
-        contract.pending_state != '' ? contract.pending_state : 'Esborrany'
+        contract.pending_state != '' ? contract.pending_state : 'Esborrany',
       ),
       m('br'),
       extraInfo(contract),
@@ -183,7 +183,7 @@ module.exports = (function () {
         m('.loading.layout.vertical.center', [
           'Carregant casos ATR...',
           m(Spinner, { show: true }),
-        ])
+        ]),
       )
     }
     if (cases.length === 0) {
@@ -191,7 +191,7 @@ module.exports = (function () {
         '.atr-cases',
         m('.loading.layout.vertical.center', [
           'No hi ha casos ATR disponibles.',
-        ])
+        ]),
       )
     }
     return m(
@@ -211,19 +211,19 @@ module.exports = (function () {
             m('td', atr_case.step),
             m(
               'td',
-              m(atr_case.state != 'done' ? '.alert-case' : '', atr_case.state)
+              m(atr_case.state != 'done' ? '.alert-case' : '', atr_case.state),
             ),
             m(
               'td',
               m(
                 'span',
                 { title: atr_case.additional_info },
-                atr_case.additional_info
-              )
+                atr_case.additional_info,
+              ),
             ),
           ])
         }),
-      ])
+      ]),
     )
   }
 
@@ -234,13 +234,15 @@ module.exports = (function () {
         m('.loading.layout.vertical.center', [
           'Carregant Lectures...',
           m(Spinner, { show: true }),
-        ])
+        ]),
       )
     }
     if (readings.length === 0) {
       return m(
         '.meter-readings',
-        m('.loading.layout.vertical.center', ['No hi ha lectures disponibles.'])
+        m('.loading.layout.vertical.center', [
+          'No hi ha lectures disponibles.',
+        ]),
       )
     }
     var meter_readings = []
@@ -251,7 +253,7 @@ module.exports = (function () {
         m('th', 'Lectura'),
         m('th', 'Origen'),
         m('th', 'Període'),
-      ])
+      ]),
     )
     for (const reading_index in readings) {
       const reading = readings[reading_index]
@@ -262,7 +264,7 @@ module.exports = (function () {
           m('td', reading.lectura),
           m('td', reading.origen),
           m('td', reading.periode),
-        ])
+        ]),
       )
     }
     return m('.meter-readings', m('table', meter_readings))
@@ -275,13 +277,13 @@ module.exports = (function () {
         m('.loading.layout.vertical.center', [
           'Carregant Factures...',
           m(Spinner, { show: true }),
-        ])
+        ]),
       )
     }
     if (invoices.length === 0) {
       return m(
         '.factures',
-        m('.loading.layout.vertical.center', ['No hi ha factures disponibles'])
+        m('.loading.layout.vertical.center', ['No hi ha factures disponibles']),
       )
     }
     return m(
@@ -312,7 +314,7 @@ module.exports = (function () {
             ]),
           ]),
         ])
-      })
+      }),
     )
   }
 
@@ -333,7 +335,7 @@ module.exports = (function () {
         : m('.extra-info', [
             m(
               '',
-              selfconsumption ? m('.label-selfconsumption', 'Autoconsum.') : ''
+              selfconsumption ? m('.label-selfconsumption', 'Autoconsum.') : '',
             ),
             m('', generation ? m('.label-generation', 'Rep Generation.') : ''),
             m('', energetica ? m('.label-energetica', "És d'EnergEtica.") : ''),
@@ -341,7 +343,7 @@ module.exports = (function () {
               '',
               suspended_invoicing
                 ? m('.label-alert', 'Facturació suspesa.')
-                : ''
+                : '',
             ),
             m('', has_debt ? m('.label-alert', 'Té deute: ' + has_debt) : ''),
           ])
@@ -366,7 +368,7 @@ module.exports = (function () {
       return {
         label: m(
           'span' + (contract.end_date ? '.inactive-contract' : ''),
-          contract.number
+          contract.number,
         ),
         selected: index == CallInfo.currentContract,
       }
