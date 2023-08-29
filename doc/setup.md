@@ -15,7 +15,7 @@ git clone https://github.com/Som-Energia/somenergia-tomatic.git
 cd somenergia-tomatic
 npm install
 npm run build # instead of 'deploy' for development mode assets
-virtualenv .venv
+python -m venv .venv
 source .venv/bin/activate
 pip install -e .
 ```
