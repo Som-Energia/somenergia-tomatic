@@ -19,7 +19,7 @@ def parseArgs():
     parser.add_argument(
         '--keep',
         action='store_true',
-        help="no baixa les dades del drive"
+        help="mante les dades baixades en comptes de baixarles del drive/odoo/api..."
         )
 
     parser.add_argument(

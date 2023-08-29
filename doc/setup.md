@@ -5,7 +5,6 @@
 - [Configuration](#configuration)
 - [Setting up cron tasks](#setting-up-cron-tasks)
 - [Setting up Hangouts notification](#setting-up-hangouts-notification)
-- [Google Drive data sources](#google-drive-data-sources)
 - [PBX callerid callback](#pbx-callerid-callback)
 
 ### Development setup
@@ -108,35 +107,6 @@ This can be done by using the hangups application that should have been installe
 - Write down channel ID in `config.yaml` as `hangoutChannel`
 - You can test it by running `tomatic_says.py hello world`
 
-### Google Drive data sources
-
-**This is not required anymore**
-
-Computing timetables requires access to a Google Drive Spreadsheet
-where you store the source configuration: leaves, ideal work load...
-In order to access it, you must provide a certificate.
-Google change the interface so often is hard to provide a set of steps.
-In overall it would be:
-
-- Create a project in https://console.developers.google.com/project
-- Create a service account within the project (service email address)
-- Create a credential key within the service account (will result in a json file with a key)
-- Save that file as `drive-certificate.json` in the root folder of tomatic code
-- Take the `client_email` key in the json file and grant that mail access to the spreadsheet
-
-The gspread library, this is using provide a more detailed and up to date steps:
-http://gspread.readthedocs.org/en/latest/oauth2.html
-
-Generating time tables with the `--keep` option reuses
-previously downloaded files and avoids download download.
-
-Google Drive related parameters in `config.yaml` file are:
-
-- `documentDrive`: the title of the spreadsheet, it must be accessible by the key
-- `fullCarregaIdeal`: the spreadsheet sheet where the ideal shift load is stored.
-- `idealLoadValuesRange`: The range name in document and sheet with the values of the ideal load values for each person
-- `idealLoadValuesName`: The range name in document and sheet with the corresponding names of each person
-
 ### PBX callerid callback
 
 Tomatic can auto-search of the current incomming call.
@@ -162,4 +132,3 @@ sudo n # choose the current version
 ```
 
 And then you need to start a new shell session to see the changes
-

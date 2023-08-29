@@ -2,25 +2,30 @@
 
 ## Unreleased
 
-- Fix: Minizinc marked festivities as Nobody and thus
-  editable slots, where to put someone.
-- ICS calendars have name to better import
+- Fix: Minizinc marked festivities as Ningu instead of Festiu
+- Name for ICS calendars
+- Not downloading leaves from google drive anymore
+- Removed drive related code and dependencies
+- Upgrade notes:
+    - removed cli options
+        - `--certificate`
+        - `--drive-file`
+    - removed config.yaml parameters
+        - documentDrive
+        - driveCertificate
+        - fullCarregaIdeal
+        - idealLoadValuesRange
+        - idealLoadValuesName
+        - leavesSheet
 
 ## 5.3.0 2023-08-08
 
 - Backtracker: Adapt the number of lines to the available load
 - Backtracker: Do not force anybody if not available
-- Not downloading leaves from google drive anymore
 - Fix: in some duplicated holidays generated negative loads
 - Fix: properly indicate successfull executions on backtracker or minizinc
 - Upgrade notes:
     - new parameter adjustLines in config.yaml
-    - deprecated config.yaml parameters
-        - documentDrive
-        - fullCarregaIdeal
-        - idealLoadValuesRange
-        - idealLoadValuesName
-        - leavesSheet
 
 ## 5.2.2 2023-07-27
 
@@ -78,10 +83,10 @@
 - New React UI, still in progress (Mithril and React will coexist for a while)
 - Lateral menu
 - New persons editor
-	- List based view that allows comparing values
-	- Also sorting, filtering...
-	- Groups assignment are editable
-	- Turn loads are editable
+    - List based view that allows comparing values
+    - Also sorting, filtering...
+    - Groups assignment are editable
+    - Turn loads are editable
 - Upgrade notes:
     - New frontend dependencies, npm install required
     - Recommended to delete `node_modules` and packages-lock.json`
