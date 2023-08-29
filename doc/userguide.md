@@ -14,6 +14,7 @@ src="images/tomatic-teacher.png" align='right'
 
 - [Accedir al Tomàtic](#accedir-al-tomàtic)
 - [Editar el perfil d'usuaria](#editar-el-perfil-dusuaria) (Vídeo)
+- [Editar el perfil d'una altra usuaria](#editar-el-perfil-duna-altra-usuaria) (Vídeo)
 - [Donar d'alta una persona](#donar-dalta-una-persona)
 - [Marcar les meves indisponibilitats](#marcar-les-meves-indisponibilitats) (Vídeo)
 - [Definir la meva taula](#definir-la-meva-taula) (Vídeo)
@@ -31,11 +32,40 @@ I pròximament
 
 **Important:** Heu de tenir activada la VPN coorporativa.
 
-Llavors, simplement visiteu: http://tomatic.somenergia.lan
+Llavors, simplement visiteu: https://tomatic.somenergia.coop
 
-Clickeu el boto "IDENTIFICAR" a dalt a la dreta i seleccioneu la vostra usuaria.
+Primer de tot, surt un missatge demanant-vos loginejar-vos a can Google.
+Procediu clickant el botò.
+
+![](images/loginrequired.png)
+
 
 ## Editar el perfil d'usuaria
+
+Un cop us heu identificat,
+tornareu a la pàgina del tomatic i adalt a la dreta trobareu un menú amb la vostra inicial.
+
+![Pantallada del menu d'usuari, adalt a la dreta](images/profilemenu.png)
+
+Si clickem a l'opció `Perfil` en surt aquest diàleg:
+
+![Pantallada del dialeg d'edició de persones](images/personeditor.png)
+
+Els camps que hi ha són
+
+- **Identificador:** No es pot canviar.
+- **Nom a mostrar:** És el nom que es veu arreu.
+- **Correu:** Ha de ser el correu coorporatiu que teniu a l'Odoo (per reservar-vos les vacances)
+- **Extensió:** És la extensió telefònica que us assigna l'equip de suport a la centraleta
+- **Usuari ERP:** És el nom d'usuaria que feu servir per entrar a l'ERP
+- **Taula:** Amb qui esteu asseguts per evitar tenir torns a l'hora. ([Més info](#definir-la-meva-taula))
+- **Color:** El color de la vostra caixeta per trobar-vos més fàcilment
+- **Torns ideals:** (Només administradores) És la càrrega de torns que farà la persona una setmana sense dies de festa.
+- **Grups:** (Només administradores) Son els grups als que pertany la persona.
+Els grups es fan servir tant per habilitar opcions especials al Tomàtic,
+com per establir polítiques de repartiment de torns per les persones que pertanyen a un cert grup.
+
+## Editar el perfil d'una altra usuaria
 
 [![Video](images/video.png)
 ](https://drive.google.com/file/d/1OaWtgNryEs_444R7pK7Ln2Q0iMIMdJ8C/preview)
@@ -49,19 +79,7 @@ Per canviar el perfil d'usuaria cal
 - posar el ratolí a sobre del teu nom,
 - sortirà un globus amb dues iconetes
 - clicar a l'icona del _llapis_
-- ens surt aquest dialeg:
-
-![](images/personeditor.png)
-
-Els camps que hi ha són
-
-- **Identificador:** No es pot canviar.
-- **Nom a mostrar:** És el nom que es veu arreu.
-- **Correu:** Ha de ser el correu coorporatiu que teniu a l'Odoo (per reservar-vos les vacances)
-- **Extensió:** És la extensió telefònica que us assigna l'equip de suport a la centraleta
-- **Usuari ERP:** És el nom d'usuaria que feu servir per entrar a l'ERP
-- **Taula:** Amb qui esteu asseguts per evitar tenir torns a l'hora. ([Més info](#definir-la-meva-taula))
-- **Color:** El color de la vostra caixeta per trobar-vos més fàcilment
+- ens surt el mateix diàleg que editant el perfil propi
 
 
 ## Donar d'alta una persona
@@ -72,16 +90,8 @@ Els camps que hi ha són
 
 La darrera caixa de la pestanya "Persones" és per crear nous perfils.
 
-Us sortirà el mateix diàleg que per ![Editar el perfil d'usuaria](#editar-el-perfil-dusuaria).
-Però ara heu de posar un identificador.
-Aquest identificador, ha de coincidir amb el nom que poseu al full de càlcul del Drive on es posen les càrregues ideals.
-
-Quan afegiu la nova persona al Drive, enrecordeu-vos de ajustar, al menú `Dades/Intervals amb Nom` del Drive,
-aquests _intervals amb nom_, :
-
-- `carregaideal_noms` ha de cobrir tots els identificadors
-- `carregaideal_valors` ha de cobrir les càrregues ideals en el mateix ordre que els noms
-
+Us sortirà el mateix diàleg que per [Editar el perfil d'usuaria](#editar-el-perfil-dusuaria).
+Però ara heu de posar un identificador únic, sense espais i en minúscules.
 
 ## Marcar les meves indisponibilitats
 
@@ -99,7 +109,7 @@ són les degudes a l'horari laboral que teniu, reunions, tasques d'equip, concil
 Les indisponibilitats es demanen a la **pestanya "Persones"**,
 clicant la **icona calendari** que surt quan ens posem al damunt de la teva caixa.
 
-
+També, més fàcil al menú del perfil a dalt a la dreta.
 
 Ens surt aquest diàleg:
 
@@ -151,6 +161,10 @@ Per això, cal que les dues persones configurin que estan a la mateixa taula a l
 <img align="right" clear="right" src="images/persons-tab.png" />
 
 Es configura al perfil d'usuaria.
+S'accedeix a l'opció de perfil del menú personal.
+
+![Opció `perfil` del menú d'usuari adalt a la dreta](images/profilemenu.png)
+
 S'accedeix a la pestanya "Persones", posant-nos al damunt de l'usuaria
 i clicant a l'icona del _llapis_ que apareix.
 

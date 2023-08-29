@@ -57,11 +57,11 @@ git rebase
 # Rebase changes the properties of crontab file
 sudo chown root:root crontab
 sudo chmod 755 crontab
-# Npm commands just if the release modified the js part
+# Frontend deployment
 npm install
 npm run build # for development assets
 npm run deploy # for production assets
-# Then upgrading the python part
+# Backend deployment
 source .venv/bin/activate
 pip install -e .
 # Restart the application
@@ -74,8 +74,8 @@ sudo supervisorctl restart tomatic
 
 What smoke tests you should be doing after an upgrade to check most components should be up and running:
 
-- Go to http://tomatic.somenergia.lan and check it shows the production pbx queue, modify the queue (ie, add yourself and pause)
-- Go to http://ketchup.somenergia.lan and check it works the testing pbx queue, should be different than production, modify it
+- Go to http://tomatic.somenergia.coop and check it shows the production pbx queue, modify the queue (ie, add yourself and pause)
+- Go to http://pebrotic.somenergia.coop and check it works the testing pbx queue, should be different than production, modify it
 - Go to http://tomatic.somenergia.lan:5000 and check scriptlauncher, use an script, ie, reset the queue, to reset former changes to the queues
 - Check tomatic says from scriptlauncher with you email as a target (certificates and api versions problems might trigger)
 - Login as one of the operators and check callinfo shows the former calls, click one that triggers a search
@@ -127,6 +127,7 @@ What smoke tests you should be doing after an upgrade to check most components s
 
 - `shiftload.py`: Compute how many shifts each person has to do weekly
 - `backtracker.py`: The main timetable solver
+- `minizinc.py`: Minizinc based timetable solver
 - `plannerexecution.py`: Encapsulates an asynchronous execution of a sandboxed timetable planner (used by `planner_api.py`)
 
 ### CRM
