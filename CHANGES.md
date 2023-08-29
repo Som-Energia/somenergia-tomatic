@@ -4,6 +4,7 @@
 
 - Fix: Minizinc marked festivities as Nobody and thus
   editable slots, where to put someone.
+- ICS calendars have name to better import
 
 ## 5.3.0 2023-08-08
 
