@@ -168,12 +168,6 @@ class Config:
             if track:
                 config.mostraCami = True
 
-            self.data.setdefault('busyFiles', [
-                'oneshot.conf',
-                'indisponibilitats.conf',
-                'indisponibilitats-vacances.conf',
-            ])
-
             self.data.forgive = forgive if forgive is not None else confgi.get('forgive', False)
             self.data.clusterize = clusterize if clusterize is not None else confgi.get('clusterize', False)
             self.data.loadSummaryFile = summary
@@ -211,6 +205,12 @@ class Config:
 
             if not keep and not self.data.get('busyFiles'):
                 self._download_busy()
+
+            self.data.setdefault('busyFiles', [
+                'oneshot.conf',
+                'indisponibilitats.conf',
+                'indisponibilitats-vacances.conf',
+            ])
 
             if self.data.computeShifts:
                 if not keep:
@@ -266,8 +266,8 @@ class Config:
             self.data.monday = addDays(today, 7-today.weekday())
 
     def _download_busy(self):
-        downloadBusy(self.data)
         downloadFestivities(self.data)
+        downloadBusy(self.data)
         downloadVacations(self.data)
 
     def set_ignore_optionals(self, ignore = False):
