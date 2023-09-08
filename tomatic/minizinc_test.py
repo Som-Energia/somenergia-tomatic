@@ -325,7 +325,7 @@ class Menu_Test(unittest.TestCase):
                 'dl': [['krilin', 'ningu']],
                 'dm': [['goku', 'krilin']],
                 'dx': [['goku', 'vegeta']],
-                'dj': [['ningu', 'ningu']],
+                'dj': [['festiu', 'festiu']],
                 'dv': [['goku', 'ningu']]
             },
             cost=8
