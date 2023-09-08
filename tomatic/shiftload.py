@@ -331,12 +331,7 @@ class ShiftLoadComputer():
             nhours=busy.nturns,
             persons=attendingPersons,
         )
-        busyFiles = config.get('busyFiles', [
-            'oneshot.conf',
-            'indisponibilitats.conf',
-            'indisponibilitats-vacances.conf',
-        ])
-        for busyfile in busyFiles:
+        for busyfile in config.busyFiles:
             busyTable.load(busyfile,
                 monday = config.monday,
                 errorHandler = error,

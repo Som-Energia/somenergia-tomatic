@@ -68,15 +68,10 @@ class Backtracker(object):
             self.companys.sort()
 
         self.dailyLimitByPerson = self.llegeixTopesDiaris(self.companys)       # Person with it's day limit
-        busyFiles = config.get('busyFiles', [
-            'oneshot.conf',
-            'indisponibilitats.conf',
-            'indisponibilitats-vacances.conf',
-            ])
 
-        self.busy = self.initBusyTable(*busyFiles)                # (day,turn,person) is available?
+        self.busy = self.initBusyTable(*config.busyFiles)                # (day,turn,person) is available?
         self.busyReasons = self.busy.explain()
-        self.undesiredShifts = self.initUndesiredTable(*busyFiles)                # (day,turn,person) reason
+        self.undesiredShifts = self.initUndesiredTable(*config.busyFiles)                # (day,turn,person) reason
 
         self.teTelefon = createTable(False,  self.dies, range(len(self.hours)), self.companys)  # (day, hour,person) has phone?
         self.tePrincipal = createTable(0,  self.companys, self.dies)    # (person,day) first turns?
@@ -233,7 +228,6 @@ class Backtracker(object):
 
 
     def initUndesiredTable(self, *filenames) :
-        #if self.config.ignoreOptionalAbsences: return dict()
 
         undesired = dict()
         for filename in filenames:

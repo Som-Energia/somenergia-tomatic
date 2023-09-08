@@ -168,6 +168,12 @@ class Config:
             if track:
                 config.mostraCami = True
 
+            self.data.setdefault('busyFiles', [
+                'oneshot.conf',
+                'indisponibilitats.conf',
+                'indisponibilitats-vacances.conf',
+            ])
+
             self.data.forgive = forgive if forgive is not None else confgi.get('forgive', False)
             self.data.clusterize = clusterize if clusterize is not None else confgi.get('clusterize', False)
             self.data.loadSummaryFile = summary
@@ -248,7 +254,6 @@ class Config:
         config.busyTable = setup.busyTable._table
 
         computer.outputResults(config)
-
 
     def _update_monday(self, date):
         if date is not None:
