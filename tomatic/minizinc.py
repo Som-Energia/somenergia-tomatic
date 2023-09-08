@@ -1,6 +1,6 @@
 import asyncio
 from tomato_cooker.grill import GrillTomatoCooker
-from tomato_cooker.models import TomaticProblem, tomatic
+from tomato_cooker.models import TomaticProblem
 from consolemsg import step, error, success
 from yamlns import namespace as ns
 import random
@@ -136,7 +136,7 @@ def solve_problem(config, solvers):
     tomatic_problem_params = menu.ingredients()
     tomatic_problem = TomaticProblem(**tomatic_problem_params)
     # create an instance of the cooker
-    tomato_cooker = GrillTomatoCooker(tomatic.MODEL_DEFINITION_PATH, solvers)
+    tomato_cooker = GrillTomatoCooker(TomaticProblem.model_path, solvers)
     # Now, we can solve the problem
     solution = asyncio.run(tomato_cooker.cook(tomatic_problem, deterministic=config.get('deterministic', False)))
     return menu.translate(solution, config) if solution else False
