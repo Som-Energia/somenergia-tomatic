@@ -335,7 +335,7 @@ class ShiftLoadComputer():
             busyTable.load(busyfile,
                 monday = config.monday,
                 errorHandler = error,
-                justRequired = config.ignoreOptionalAbsences,
+                justRequired = True,
             )
         step("    Llegint credits i deutes (bossa d'hores)...")
         formerCredit = ns.load('shiftcredit.yaml')
