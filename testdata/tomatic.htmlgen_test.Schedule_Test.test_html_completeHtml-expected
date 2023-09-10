@@ -24,26 +24,26 @@ td { padding: 1ex;}
 	height: 100%;
 }
 .paused { background-color: #ffffff; }
-.aleix    { background-color: #eed0eb; }
-.ana      { background-color: #aa11aa; }
-.carles   { background-color: #c98e98; }
-.cesar    { background-color: #889988; }
-.david    { background-color: #ffd3ac; }
-.eduard   { background-color: #d8b9c5; }
-.erola    { background-color: #8789c8; }
-.joan     { background-color: #fae080; }
-.jordi    { background-color: #ff9999; }
-.judit    { background-color: #e781e8; }
-.judith   { background-color: #cb8a85; }
-.manel    { background-color: #88dfe3; }
-.marc     { background-color: #fbe8bc; }
-.marta    { background-color: #eb9481; }
-.monica   { background-color: #7fada0; }
-.pere     { background-color: #8f928e; }
-.silvia   { background-color: #8097fa; }
-.tania    { background-color: #c8abf4; }
-.victor   { background-color: #ff3333; }
-.yaiza    { background-color: #90cdb9; }
+.aleix    { background-color: #eed0eb; color: #000000; }
+.ana      { background-color: #aa11aa; color: #000000; }
+.carles   { background-color: #c98e98; color: #000000; }
+.cesar    { background-color: #889988; color: #000000; }
+.david    { background-color: #ffd3ac; color: #000000; }
+.eduard   { background-color: #d8b9c5; color: #000000; }
+.erola    { background-color: #8789c8; color: #000000; }
+.joan     { background-color: #fae080; color: #000000; }
+.jordi    { background-color: #ff9999; color: #000000; }
+.judit    { background-color: #e781e8; color: #000000; }
+.judith   { background-color: #cb8a85; color: #000000; }
+.manel    { background-color: #88dfe3; color: #000000; }
+.marc     { background-color: #fbe8bc; color: #000000; }
+.marta    { background-color: #eb9481; color: #000000; }
+.monica   { background-color: #7fada0; color: #000000; }
+.pere     { background-color: #8f928e; color: #000000; }
+.silvia   { background-color: #8097fa; color: #000000; }
+.tania    { background-color: #c8abf4; color: #000000; }
+.victor   { background-color: #ff3333; color: #000000; }
+.yaiza    { background-color: #90cdb9; color: #000000; }
 </style>
 </head>
 <body>
@@ -134,7 +134,9 @@ td { padding: 1ex;}
 <td class='carles'>Carles</td>
 <td class='aleix'>Aleix</td>
 </tr>
-</table><h3>Extensions</h3>
+</table><h3>Penalitzacions</h3>
+<p>Sense penalitzacions</p>
+<h3>Extensions</h3>
 <div class="extensions">
 <div class="extension aleix">Aleix<br/>3053</div>
 <div class="extension ana">Ana<br/>1001</div>

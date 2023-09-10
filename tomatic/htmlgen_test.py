@@ -31,6 +31,95 @@ class Schedule_Test(unittest.TestCase):
         self.b2bdatapath = "testdata"
         self.addTypeEqualityFunc(ns,self.eqOrdDict)
 
+    def completeCase(self):
+       return self.ns("""\
+        timetable:
+          dl:
+          - [ ana, jordi, pere ]
+          - [ jordi, aleix, pere ]
+          - [ carles, joan, eduard ]
+          - [ yaiza, joan, eduard ]
+          dm:
+          - [ victor, marta, ana ]
+          - [ ana, victor, marta ]
+          - [ silvia, eduard, monica ]
+          - [ david, silvia, marc ]
+          dx:
+          - [ aleix, pere, yaiza ]
+          - [ pere, aleix, carles ]
+          - [ marc, judit, victor ]
+          - [ david, silvia, victor ]
+          dj:
+          - [ judit, jordi, carles ]
+          - [ joan, silvia, jordi ]
+          - [ monica, marc, tania ]
+          - [ tania, monica, marc ]
+          dv:
+          - [ marta, victor, judit ]
+          - [ victor, joan, judit ]
+          - [ eduard, yaiza, jordi ]
+          - [ jordi, carles, aleix ]
+        hours:
+        - '09:00'
+        - '10:15'
+        - '11:30'
+        - '12:45'
+        - '14:00'
+        turns:
+        - L1
+        - L2
+        - L3
+        colors:
+          marc: fbe8bc
+          eduard: d8b9c5
+          pere: 8f928e
+          david: ffd3ac
+          aleix: eed0eb
+          carles: c98e98
+          marta: eb9481
+          monica: 7fada0
+          yaiza: 90cdb9
+          erola: 8789c8
+          manel: 88dfe3
+          tania: c8abf4
+          judit: e781e8
+          silvia: 8097fa
+          joan: fae080
+          ana: aa11aa
+          victor: ff3333
+          jordi: ff9999
+          judith: cb8a85
+          cesar:  '889988'
+        extensions:
+          marta: 3040
+          monica: 3041
+          manel: 3042
+          erola: 3043
+          yaiza: 3044
+          eduard: 3045
+          marc: 3046
+          judit: 3047
+          judith: 3057
+          tania: 3048
+          carles: 3051
+          pere: 3052
+          aleix: 3053
+          david: 3054
+          silvia: 3055
+          joan: 3056
+          ana: 1001
+          victor: 3182
+          jordi: 3183
+        week: '2016-07-25'
+        names: # Els que no només cal posar en majúscules
+          silvia: Sílvia
+          monica: Mònica
+          tania: Tània
+          cesar: César
+          victor: Víctor
+        """)
+
+
     def test_htmlTable_oneslot(self):
         h=HtmlGen(self.ns("""\
             week: '2016-07-25'
@@ -214,112 +303,7 @@ class Schedule_Test(unittest.TestCase):
             u"""</table>""")
 
     def test_htmlTable_manyTelephonesmanyTurnsmanyDays(self):
-        h=HtmlGen(self.ns("""\
-            week: '2016-07-25'
-            timetable:
-              dl:
-              -
-                - ana
-                - jordi
-                - pere
-              -
-                - jordi
-                - aleix
-                - pere
-              -
-                - carles
-                - joan
-                - eduard
-              -
-                - yaiza
-                - joan
-                - eduard
-              dm:
-              -
-                - victor
-                - marta
-                - ana
-              -
-                - ana
-                - victor
-                - marta
-              -
-                - silvia
-                - eduard
-                - monica
-              -
-                - david
-                - silvia
-                - marc
-              dx:
-              -
-                - aleix
-                - pere
-                - yaiza
-              -
-                - pere
-                - aleix
-                - carles
-              -
-                - marc
-                - judit
-                - victor
-              -
-                - david
-                - silvia
-                - victor
-              dj:
-              -
-                - judit
-                - jordi
-                - carles
-              -
-                - joan
-                - silvia
-                - jordi
-              -
-                - monica
-                - marc
-                - tania
-              -
-                - tania
-                - monica
-                - marc
-              dv:
-              -
-                - marta
-                - victor
-                - judit
-              -
-                - victor
-                - joan
-                - judit
-              -
-                - eduard
-                - yaiza
-                - jordi
-              -
-                - jordi
-                - carles
-                - aleix
-            hours:
-            - '09:00'
-            - '10:15'
-            - '11:30'
-            - '12:45'
-            - '14:00'
-            turns:
-            - L1
-            - L2
-            - L3
-            names: # Els que no només cal posar en majúscules
-              silvia: Sílvia
-              monica: Mònica
-              tania: Tània
-              cesar: César
-              victor: Víctor
-            """)
-        )
+        h=HtmlGen(self.completeCase())
         self.assertMultiLineEqual(
             h.htmlTable(),
             u"""<table>\n"""
@@ -487,7 +471,20 @@ class Schedule_Test(unittest.TestCase):
         )
         self.assertMultiLineEqual(
             h.htmlColors(),
-            """.marc     { background-color: #fbe8bc; }"""
+            """.marc     { background-color: #fbe8bc; color: #000000; }"""
+        )
+
+    def test_htmlColors_darkColor(self):
+        h = HtmlGen(self.ns("""\
+            colors:
+               marc: 2b3b2c
+            extensions:
+              marc: 666
+                """)
+        )
+        self.assertMultiLineEqual(
+            h.htmlColors(),
+            """.marc     { background-color: #2b3b2c; color: #FFFFFF; }"""
         )
 
     def test_htmlColors_forceRandomColor(self):
@@ -502,12 +499,12 @@ class Schedule_Test(unittest.TestCase):
         colors = h.htmlColors()
         self.assertNotEqual(
             colors,
-            """.marc      { background-color: #fbe8bc; }"""
+            """.marc      { background-color: #fbe8bc; color: #000000; }"""
         )
 
         self.assertRegex(
             colors,
-            r"\.marc    * \{ background-color: #[0-9a-f]{6}; }",
+            r"\.marc    * \{ background-color: #[0-9a-f]{6}; color: #000000; }",
         )
 
     def test_htmlColors_randomColor(self):
@@ -518,308 +515,25 @@ class Schedule_Test(unittest.TestCase):
         )
         self.assertRegex(
             h.htmlColors(),
-            r"\.cesar    *\{ background-color: #[0-9a-f]{6}; \}",
+            r"\.cesar    *\{ background-color: #[0-9a-f]{6}; color: #000000; \}",
             )
 
     def test_html_completeHtml(self):
-       h = HtmlGen(self.ns("""\
-        timetable:
-          dl:
-          -
-            - ana
-            - jordi
-            - pere
-          -
-            - jordi
-            - aleix
-            - pere
-          -
-            - carles
-            - joan
-            - eduard
-          -
-            - yaiza
-            - joan
-            - eduard
-          dm:
-          -
-            - victor
-            - marta
-            - ana
-          -
-            - ana
-            - victor
-            - marta
-          -
-            - silvia
-            - eduard
-            - monica
-          -
-            - david
-            - silvia
-            - marc
-          dx:
-          -
-            - aleix
-            - pere
-            - yaiza
-          -
-            - pere
-            - aleix
-            - carles
-          -
-            - marc
-            - judit
-            - victor
-          -
-            - david
-            - silvia
-            - victor
-          dj:
-          -
-            - judit
-            - jordi
-            - carles
-          -
-            - joan
-            - silvia
-            - jordi
-          -
-            - monica
-            - marc
-            - tania
-          -
-            - tania
-            - monica
-            - marc
-          dv:
-          -
-            - marta
-            - victor
-            - judit
-          -
-            - victor
-            - joan
-            - judit
-          -
-            - eduard
-            - yaiza
-            - jordi
-          -
-            - jordi
-            - carles
-            - aleix
-        hours:
-        - '09:00'
-        - '10:15'
-        - '11:30'
-        - '12:45'
-        - '14:00'
-        turns:
-        - L1
-        - L2
-        - L3
-        colors:
-          marc: fbe8bc
-          eduard: d8b9c5
-          pere: 8f928e
-          david: ffd3ac
-          aleix: eed0eb
-          carles: c98e98
-          marta: eb9481
-          monica: 7fada0
-          yaiza: 90cdb9
-          erola: 8789c8
-          manel: 88dfe3
-          tania: c8abf4
-          judit: e781e8
-          silvia: 8097fa
-          joan: fae080
-          ana: aa11aa
-          victor: ff3333
-          jordi: ff9999
-          judith: cb8a85
-          cesar:  '889988'
-        extensions:
-          marta: 3040
-          monica: 3041
-          manel: 3042
-          erola: 3043
-          yaiza: 3044
-          eduard: 3045
-          marc: 3046
-          judit: 3047
-          judith: 3057
-          tania: 3048
-          carles: 3051
-          pere: 3052
-          aleix: 3053
-          david: 3054
-          silvia: 3055
-          joan: 3056
-          ana: 1001
-          victor: 3182
-          jordi: 3183
-        week: '2016-07-25'
-        names: # Els que no només cal posar en majúscules
-          silvia: Sílvia
-          monica: Mònica
-          tania: Tània
-          cesar: César
-          victor: Víctor
-        """)
-       )
-       self.assertB2BEqual(h.html().encode('utf-8'))
+        case = self.completeCase()
+        h = HtmlGen(case)
+        self.assertB2BEqual(h.html().encode('utf-8'))
 
     def test_html_completeHtmlWithHoliday(self):
-       h = HtmlGen(self.ns("""\
-        timetable:
+        case = self.completeCase()
+        case.timetable.update(self.ns("""
           dl:
-          -
-            - festiu
-            - festiu
-            - festiu
-          -
-            - festiu
-            - festiu
-            - festiu
-          -
-            - festiu
-            - festiu
-            - festiu
-          -
-            - festiu
-            - festiu
-            - festiu
-          dm:
-          -
-            - victor
-            - marta
-            - ana
-          -
-            - ana
-            - victor
-            - marta
-          -
-            - silvia
-            - eduard
-            - monica
-          -
-            - david
-            - silvia
-            - marc
-          dx:
-          -
-            - aleix
-            - pere
-            - yaiza
-          -
-            - pere
-            - aleix
-            - carles
-          -
-            - marc
-            - judit
-            - victor
-          -
-            - david
-            - silvia
-            - victor
-          dj:
-          -
-            - judit
-            - jordi
-            - carles
-          -
-            - joan
-            - silvia
-            - jordi
-          -
-            - monica
-            - marc
-            - tania
-          -
-            - tania
-            - monica
-            - marc
-          dv:
-          -
-            - marta
-            - victor
-            - judit
-          -
-            - victor
-            - joan
-            - judit
-          -
-            - eduard
-            - yaiza
-            - jordi
-          -
-            - jordi
-            - carles
-            - aleix
-        hours:
-        - '09:00'
-        - '10:15'
-        - '11:30'
-        - '12:45'
-        - '14:00'
-        turns:
-        - L1
-        - L2
-        - L3
-        colors:
-          marc: fbe8bc
-          eduard: d8b9c5
-          pere: 8f928e
-          david: ffd3ac
-          aleix: eed0eb
-          carles: c98e98
-          marta: eb9481
-          monica: 7fada0
-          yaiza: 90cdb9
-          erola: 8789c8
-          manel: 88dfe3
-          tania: c8abf4
-          judit: e781e8
-          silvia: 8097fa
-          joan: fae080
-          ana: aa11aa
-          victor: ff3333
-          jordi: ff9999
-          judith: cb8a85
-          cesar:  '889988'
-        extensions:
-          marta: 3040
-          monica: 3041
-          manel: 3042
-          erola: 3043
-          yaiza: 3044
-          eduard: 3045
-          marc: 3046
-          judit: 3047
-          judith: 3057
-          tania: 3048
-          carles: 3051
-          pere: 3052
-          aleix: 3053
-          david: 3054
-          silvia: 3055
-          joan: 3056
-          ana: 1001
-          victor: 3182
-          jordi: 3183
-        week: '2016-07-25'
-        names: # Els que no només cal posar en majúscules
-          silvia: Sílvia
-          monica: Mònica
-          tania: Tània
-          cesar: César
-          victor: Víctor
-        """)
-       )
-       self.assertB2BEqual(h.html().encode('utf-8'))
+          - [ festiu, festiu, festiu ]
+          - [ festiu, festiu, festiu ]
+          - [ festiu, festiu, festiu ]
+          - [ festiu, festiu, festiu ]
+        """))
+        h = HtmlGen(case)
+        self.assertB2BEqual(h.html().encode('utf-8'))
 
     def test_nameToExtension_oneSip(self):
         yaml = """\
@@ -1074,494 +788,8 @@ class Schedule_Test(unittest.TestCase):
            )
 
     def test_schedule2asterisk_manyTurnOneLocal(self):
-        configuration = schedule2asterisk(self.ns("""\
-            timetable:
-              dl:
-              -
-                - ana
-                - jordi
-                - pere
-              -
-                - jordi
-                - aleix
-                - pere
-              -
-                - carles
-                - joan
-                - eduard
-              -
-                - yaiza
-                - joan
-                - eduard
-              dm:
-              -
-                - victor
-                - marta
-                - ana
-              -
-                - ana
-                - victor
-                - marta
-              -
-                - silvia
-                - eduard
-                - monica
-              -
-                - david
-                - silvia
-                - marc
-              dx:
-              -
-                - aleix
-                - pere
-                - yaiza
-              -
-                - pere
-                - aleix
-                - carles
-              -
-                - marc
-                - judit
-                - victor
-              -
-                - david
-                - silvia
-                - victor
-              dj:
-              -
-                - judit
-                - jordi
-                - carles
-              -
-                - joan
-                - silvia
-                - jordi
-              -
-                - monica
-                - marc
-                - tania
-              -
-                - tania
-                - monica
-                - marc
-              dv:
-              -
-                - marta
-                - victor
-                - judit
-              -
-                - victor
-                - joan
-                - judit
-              -
-                - eduard
-                - yaiza
-                - jordi
-              -
-                - jordi
-                - carles
-                - aleix
-            hours:
-            - '09:00'
-            - '10:15'
-            - '11:30'
-            - '12:45'
-            - '14:00'
-            turns:
-            - L1
-            - L2
-            - L3
-            colors:
-              marc: fbe8bc
-              eduard: d8b9c5
-              pere: 8f928e
-              david: ffd3ac
-              aleix: eed0eb
-              carles: c98e98
-              marta: eb9481
-              monica: 7fada0
-              yaiza: 90cdb9
-              erola: 8789c8
-              manel: 88dfe3
-              tania: c8abf4
-              judit: e781e8
-              silvia: 8097fa
-              joan: fae080
-              ana: aa11aa
-              victor: ff3333
-              jordi: ff9999
-              judith: cb8a85
-            extensions:
-              marta:  206
-              monica: 216
-              manel:  212
-              erola:  213
-              yaiza:  205
-              eduard: 222
-              marc:   203
-              judit:  202
-              judith: 211
-              tania:  208
-              carles: 223
-              pere:   224
-              aleix:  214
-              david:  204
-              silvia: 207
-              joan:   215
-              ana:    217
-              victor: 218
-              jordi:  210
-            week: '2016-07-25'
-            names: # Els que no només cal posar en majúscules
-               silvia: Sílvia
-               monica: Mònica
-               tania: Tània
-               cesar: César
-               victor: Víctor
-            """)
-        )
-        self.assertMultiLineEqual(configuration,
-        u"""[entrada_cua_dl_1]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/217,1\n"""
-        u"""member = SIP/210,2\n"""
-        u"""member = SIP/224,3\n"""
-        u"""[entrada_cua_dl_2]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/210,1\n"""
-        u"""member = SIP/214,2\n"""
-        u"""member = SIP/224,3\n"""
-        u"""[entrada_cua_dl_3]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/223,1\n"""
-        u"""member = SIP/215,2\n"""
-        u"""member = SIP/222,3\n"""
-        u"""[entrada_cua_dl_4]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/205,1\n"""
-        u"""member = SIP/215,2\n"""
-        u"""member = SIP/222,3\n"""
-        u"""[entrada_cua_dm_1]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/218,1\n"""
-        u"""member = SIP/206,2\n"""
-        u"""member = SIP/217,3\n"""
-        u"""[entrada_cua_dm_2]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/217,1\n"""
-        u"""member = SIP/218,2\n"""
-        u"""member = SIP/206,3\n"""
-        u"""[entrada_cua_dm_3]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/207,1\n"""
-        u"""member = SIP/222,2\n"""
-        u"""member = SIP/216,3\n"""
-        u"""[entrada_cua_dm_4]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/204,1\n"""
-        u"""member = SIP/207,2\n"""
-        u"""member = SIP/203,3\n"""
-        u"""[entrada_cua_dx_1]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/214,1\n"""
-        u"""member = SIP/224,2\n"""
-        u"""member = SIP/205,3\n"""
-        u"""[entrada_cua_dx_2]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/224,1\n"""
-        u"""member = SIP/214,2\n"""
-        u"""member = SIP/223,3\n"""
-        u"""[entrada_cua_dx_3]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/203,1\n"""
-        u"""member = SIP/202,2\n"""
-        u"""member = SIP/218,3\n"""
-        u"""[entrada_cua_dx_4]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/204,1\n"""
-        u"""member = SIP/207,2\n"""
-        u"""member = SIP/218,3\n"""
-        u"""[entrada_cua_dj_1]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/202,1\n"""
-        u"""member = SIP/210,2\n"""
-        u"""member = SIP/223,3\n"""
-        u"""[entrada_cua_dj_2]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/215,1\n"""
-        u"""member = SIP/207,2\n"""
-        u"""member = SIP/210,3\n"""
-        u"""[entrada_cua_dj_3]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/216,1\n"""
-        u"""member = SIP/203,2\n"""
-        u"""member = SIP/208,3\n"""
-        u"""[entrada_cua_dj_4]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/208,1\n"""
-        u"""member = SIP/216,2\n"""
-        u"""member = SIP/203,3\n"""
-        u"""[entrada_cua_dv_1]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/206,1\n"""
-        u"""member = SIP/218,2\n"""
-        u"""member = SIP/202,3\n"""
-        u"""[entrada_cua_dv_2]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/218,1\n"""
-        u"""member = SIP/215,2\n"""
-        u"""member = SIP/202,3\n"""
-        u"""[entrada_cua_dv_3]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/222,1\n"""
-        u"""member = SIP/205,2\n"""
-        u"""member = SIP/210,3\n"""
-        u"""[entrada_cua_dv_4]\n"""
-        u"""music=default\n"""
-        u"""strategy=linear\n"""
-        u"""eventwhencalled=yes\n"""
-        u"""timeout=15\n"""
-        u"""retry=1\n"""
-        u"""wrapuptime=0\n"""
-        u"""maxlen = 0\n"""
-        u"""; Periodic-announce = /var/lib/asterisk/sounds/bienvenida\n"""
-        u"""Periodic-announce-frequency = 15\n"""
-        u"""announce-frequency = 0\n"""
-        u"""announce-holdtime = no\n"""
-        u"""announce-position =no\n"""
-        u"""context = bustia_veu\n"""
-        u"""member = SIP/210,1\n"""
-        u"""member = SIP/223,2\n"""
-        u"""member = SIP/214,3\n"""
-        )
+        configuration = schedule2asterisk(self.completeCase())
+        self.assertB2BEqual(configuration)
 
     def test_penalties(self):
         h=HtmlGen(self.ns("""\

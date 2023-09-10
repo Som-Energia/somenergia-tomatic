@@ -128,8 +128,15 @@ class HtmlGen(object):
             self.colorFor(name)
         for name in self.yaml.get('names',[]):
             self.colorFor(name)
+
+        def contrast(color):
+            if len(color) == 3:
+                color = ''.join(c+c for c in color)
+            intensity = sum(int(h+l,16) for h,l in zip(color[0::2], color[1::2]))
+            return "000000" if intensity > 300 else "FFFFFF"
+
         colors= "\n".join(
-            ".{:<8} {{ background-color: #{}; }}".format(nom, color)
+            ".{:<8} {{ background-color: #{}; color: #{}; }}".format(nom, color, contrast(color))
             for nom, color in sorted(self.yaml.colors.items())
             )
         return colors
@@ -180,6 +187,7 @@ class HtmlGen(object):
             self.htmlSubHeader()+
             self.htmlSetmana()+
             self.htmlTable()+
+            self.htmlPenalties()+
             self.htmlExtensions()+
             self.htmlFooter()
         )
