@@ -1,10 +1,22 @@
-videos
-config.py
-tomatic/dist
+# Tomatic data files
+/data
+/persons.yaml
+/indisponibilitats.conf
+/indisponibilitats-vacances.conf
+/oneshot.conf
+/holidays.conf
+/shiftcredit.yaml
+/videos
+/callinfo
+/tomatic/dist
+/graelles
+/stats
+/stats.csv
+
 node_modules
+package-lock.json
 dbconfig.py
 cover
-graelles
 .venv
 
 .eggs
