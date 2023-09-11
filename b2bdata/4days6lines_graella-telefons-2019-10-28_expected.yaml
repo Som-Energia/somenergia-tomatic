@@ -21,129 +21,129 @@ turns:
 timetable:
   dl:
   - - albertg
-    - annab
-    - carme
-    - guifre
-    - joanm
-    - mar
-  - - adria
     - aram
-    - gemma
-    - guifre
-    - joanm
-    - judit
-  - - adria
-    - aram
-    - erola
-    - gemma
-    - maite
-    - merce
-  - - albert
-    - albertg
-    - carme
-    - eloi
-    - mariona
-    - merce
-  dm:
-  - - albertg
-    - ana
-    - annab
-    - aram
-    - carme
-    - carol
-  - - annab
-    - aram
-    - carme
-    - eloi
-    - gemma
-    - guifre
-  - - eloi
-    - gabriel
-    - gemma
-    - guifre
-    - joanm
-    - mar
-  - - joan
-    - joanb
-    - joanm
-    - judit
-    - mar
-    - monicag
-  dx:
-  - - adria
-    - albertg
-    - judith
-    - manel
     - marc
     - otilia
-  - - lucia
-    - maite
-    - mar
-    - maria
-    - marta
+    - roger
+    - rogerlf
+  - - annab
+    - carme
+    - gemma
+    - judit
     - monicag
-  - - lucia
-    - maria
+    - nuria
+  - - joanm
+    - manel
+    - mar
+    - marta
+    - vane
+    - vic
+  - - albert
+    - eloi
+    - guifre
+    - merce
+    - pau
+    - vero
+  dm:
+  - - carme
+    - gemma
+    - judit
+    - maite
+    - monica
+    - rogerlf
+  - - adria
+    - albertg
+    - judith
     - mariona
+    - otilia
+    - tania
+  - - aram
+    - joanm
+    - lucia
     - marta
     - merce
-    - monicag
-  - - adria
-    - albert
-    - judith
-    - manel
-    - nuria
-    - rogerlf
-  dj:
-  - - monica
     - olga
+  - - albert
+    - maria
+    - monicag
+    - nuria
+    - roger
+    - vane
+  dx:
+  - - adria
+    - aram
+    - carme
+    - olga
+    - roger
+    - rogerlf
+  - - annab
+    - eloi
+    - guifre
+    - joan
+    - lucia
+    - silvia
+  - - gabriel
+    - merce
+    - monicag
+    - otilia
+    - sergi
+    - yaiza
+  - - joanm
+    - manel
+    - mar
+    - nuria
+    - tania
+    - vero
+  dj:
+  - - carol
+    - gemma
+    - mariona
+    - monica
+    - olga
+    - rogerlf
+  - - albertg
+    - erola
+    - guifre
+    - mar
+    - nuria
+    - vic
+  - - aram
+    - joanb
+    - merce
+    - monicag
+    - vane
+    - victor
+  - - adria
+    - maria
     - otilia
     - pau
-    - roger
-    - rogerlf
-  - - merce
-    - monica
-    - monicag
-    - nuria
-    - olga
-    - rogerlf
-  - - merce
-    - monicag
-    - nuria
-    - vane
-    - vero
-    - yaiza
-  - - otilia
-    - pau
-    - roger
-    - vane
     - vero
     - yaiza
   dv:
-  - - olga
-    - otilia
-    - roger
-    - rogerlf
-    - sergi
-    - vane
-  - - nuria
+  - - albertg
+    - annab
+    - gemma
+    - maite
     - olga
     - otilia
-    - roger
-    - rogerlf
-    - sergi
-  - - nuria
+  - - ana
+    - eloi
+    - nuria
     - silvia
-    - tania
-    - vero
-    - vic
-    - victor
-  - - silvia
-    - tania
     - vane
-    - vero
-    - vic
     - victor
+  - - adria
+    - joanm
+    - mar
+    - merce
+    - monicag
+    - rogerlf
+  - - carme
+    - guifre
+    - judith
+    - roger
+    - sergi
+    - vero
 colors:
   marc: fbe8bc
   eduard: d8b9c5
@@ -325,7 +325,52 @@ names:
   contestado: '>>>CONTESTADOR<<<'
   albertsimo: AlbertSi
   jaume: JaumeA
-overload: {}
+overload:
+  adria: -1.0
+  albert: -1.0
+  albertg: -1.0
+  ana: -1.0
+  annab: -1.0
+  aram: -1.0
+  carles: -1.0
+  carme: -1.0
+  carol: -1.0
+  eduard: -1.0
+  eloi: -1.0
+  erola: -1.0
+  gabriel: -1.0
+  gemma: -1.0
+  guifre: -1.0
+  joan: -1.0
+  joanb: -1.0
+  joanm: 0.0
+  judit: 0.0
+  judith: 0.0
+  lucia: 0.0
+  maite: 0.0
+  manel: 0.0
+  mar: 0.0
+  marc: 0.0
+  maria: 0.0
+  mariona: 0.0
+  marta: 0.0
+  merce: 0.0
+  monica: 0.0
+  monicag: 0.0
+  nuria: 0.0
+  olga: 0.0
+  otilia: 0.0
+  pau: 0.0
+  roger: 0.0
+  rogerlf: 0.0
+  sergi: 0.0
+  silvia: 0.0
+  tania: 0.0
+  vane: 0.0
+  vero: 0.0
+  vic: 0.0
+  victor: 0.0
+  yaiza: 0.0
 penalties: []
-cost: 120
+cost: 0
 log: []

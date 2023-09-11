@@ -27,12 +27,12 @@ timetable:
   dm:
   - - jolie
     - liza
-  - - alice
-    - diana
-  - - gemma
-    - hellen
+  - - mary
+    - olivia
+  - - diana
+    - noel
   - - irma
-    - kate
+    - petra
   dx:
   - - festiu
     - festiu
@@ -43,14 +43,14 @@ timetable:
   - - festiu
     - festiu
   dj:
+  - - alice
+    - gemma
   - - liza
+    - petra
+  - - kate
+    - olivia
+  - - hellen
     - mary
-  - - mary
-    - noel
-  - - olivia
-    - petra
-  - - olivia
-    - petra
   dv:
   - - festiu
     - festiu
@@ -63,7 +63,23 @@ timetable:
 colors: {}
 extensions: {}
 names: {}
-overload: {}
+overload:
+  alice: -0.6
+  barbara: -1.2
+  carol: -0.4
+  diana: -1.4
+  elith: 0.0
+  felicity: -0.8
+  gemma: -0.6
+  hellen: -1.0
+  irma: -1.0
+  jolie: -1.4
+  kate: -0.6
+  liza: -0.8
+  mary: 0.4
+  noel: -0.2
+  olivia: 0.4
+  petra: 0.4
 penalties: []
-cost: 16
+cost: 0
 log: []

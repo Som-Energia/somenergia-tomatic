@@ -1,0 +1,365 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='utf-8' />
+<style>
+h1 {
+    color: #560;
+}
+td, th {
+	border:1px solid black;
+	width: 8em;
+	text-align: center;
+}
+td:empty { border:0;}
+td { padding: 1ex;}
+.extensions { width: 60%;}
+.extension {
+	display: inline-block;
+	padding: 1ex 0ex;
+	width: 14%;
+	text-align: center;
+	margin: 2pt 0pt;
+	border: 1pt solid black;
+	height: 100%;
+}
+.paused { background-color: #ffffff; }
+.adria    { background-color: #b68f2f; color: #000000; }
+.albert   { background-color: #f4f4f4; color: #000000; }
+.albertg  { background-color: #fcdc05; color: #000000; }
+.alex     { background-color: #ce6108; color: #000000; }
+.anaperez { background-color: #d8d7ff; color: #000000; }
+.andrea   { background-color: #e77d00; color: #000000; }
+.annab    { background-color: #c1f3d7; color: #000000; }
+.annaoller { background-color: #ddeeff; color: #000000; }
+.annap    { background-color: #00d49d; color: #000000; }
+.annarodon { background-color: #009e7d; color: #FFFFFF; }
+.annaserra { background-color: #5b1591; color: #FFFFFF; }
+.aram     { background-color: #614d02; color: #FFFFFF; }
+.bernat   { background-color: #ff0000; color: #FFFFFF; }
+.berta    { background-color: #50a65c; color: #000000; }
+.carles   { background-color: #c9d659; color: #000000; }
+.carme    { background-color: #0000ff; color: #FFFFFF; }
+.carmen   { background-color: #76b485; color: #000000; }
+.carol    { background-color: #6f9500; color: #FFFFFF; }
+.cesc     { background-color: #6fff1e; color: #000000; }
+.cire     { background-color: #994a00; color: #FFFFFF; }
+.claran   { background-color: #41ffff; color: #000000; }
+.david    { background-color: #ffb500; color: #000000; }
+.davidb   { background-color: #4cbbe2; color: #000000; }
+.eduard   { background-color: #d8b9c5; color: #000000; }
+.eloi     { background-color: #b2c3d4; color: #000000; }
+.erika    { background-color: #ff6b4c; color: #000000; }
+.erola    { background-color: #876dd8; color: #000000; }
+.gabriel  { background-color: #ffff00; color: #000000; }
+.gemma    { background-color: #a6ba8c; color: #000000; }
+.herminia { background-color: #e82cdc; color: #000000; }
+.israel   { background-color: #ddeeff; color: #000000; }
+.jairo    { background-color: #ddeeff; color: #000000; }
+.jaume    { background-color: #ddeeff; color: #000000; }
+.javi     { background-color: #79eeff; color: #000000; }
+.javicalzado { background-color: #ddeeff; color: #000000; }
+.joana    { background-color: #c9ec80; color: #000000; }
+.joanagomis { background-color: #72001d; color: #FFFFFF; }
+.joanb    { background-color: #8af47d; color: #000000; }
+.joansarola { background-color: #ddeeff; color: #000000; }
+.joel     { background-color: #00a28a; color: #FFFFFF; }
+.jordi    { background-color: #2756ff; color: #000000; }
+.judit    { background-color: #e781e8; color: #000000; }
+.judith   { background-color: #00ff00; color: #FFFFFF; }
+.juditj   { background-color: #ddeeff; color: #000000; }
+.lidia    { background-color: #bf75c5; color: #000000; }
+.lucia    { background-color: #9f24c2; color: #000000; }
+.maite    { background-color: #007877; color: #FFFFFF; }
+.manel    { background-color: #000000; color: #FFFFFF; }
+.mar      { background-color: #00ffff; color: #000000; }
+.marc     { background-color: #fbe8bc; color: #000000; }
+.marcm    { background-color: #0033aa; color: #FFFFFF; }
+.maria    { background-color: #00594d; color: #FFFFFF; }
+.mariabouza { background-color: #09b2b2; color: #000000; }
+.mariana  { background-color: #a7f9ff; color: #000000; }
+.mariona  { background-color: #813400; color: #FFFFFF; }
+.marta    { background-color: #eb9481; color: #000000; }
+.martac   { background-color: #ffff5d; color: #000000; }
+.martafarre { background-color: #c7ff3c; color: #000000; }
+.melania  { background-color: #ddeeff; color: #000000; }
+.merce    { background-color: #f5447f; color: #000000; }
+.meritxell { background-color: #dd673f; color: #000000; }
+.meritxello { background-color: #75f6cf; color: #000000; }
+.monica   { background-color: #7fada0; color: #000000; }
+.monicag  { background-color: #f44c3b; color: #000000; }
+.montser  { background-color: #ffff9b; color: #000000; }
+.naiara   { background-color: #ddeeff; color: #000000; }
+.ningu    { background-color: #ffffff; color: #000000; }
+.nuria    { background-color: #00662a; color: #FFFFFF; }
+.nuriapuigvert { background-color: #2277c4; color: #000000; }
+.olga     { background-color: #ddeeff; color: #000000; }
+.oriolcampo { background-color: #ddeeff; color: #000000; }
+.otilia   { background-color: #96b0ff; color: #000000; }
+.polmonso { background-color: #85bb67; color: #000000; }
+.reservaa { background-color: #aaff88; color: #000000; }
+.reservab { background-color: #aaff88; color: #000000; }
+.reservac { background-color: #aa9c88; color: #000000; }
+.reservad { background-color: #aa6488; color: #000000; }
+.reservae { background-color: #40ff88; color: #000000; }
+.reservaf { background-color: #aaffd1; color: #000000; }
+.reservag { background-color: #aaff88; color: #000000; }
+.rogerlf  { background-color: #00517d; color: #FFFFFF; }
+.sergi    { background-color: #8cf2df; color: #000000; }
+.sergiv   { background-color: #ff5a00; color: #000000; }
+.sergivazqu { background-color: #ffb24c; color: #000000; }
+.silvia   { background-color: #8097b8; color: #000000; }
+.sule     { background-color: #ddeeff; color: #000000; }
+.tania    { background-color: #59062d; color: #FFFFFF; }
+.tanias   { background-color: #ddeeff; color: #000000; }
+.undefined { background-color: #ddeeff; color: #000000; }
+.vane     { background-color: #bd00ff; color: #000000; }
+.vero     { background-color: #ff0048; color: #000000; }
+.vic      { background-color: #164aff; color: #000000; }
+.victor   { background-color: #ff3233; color: #000000; }
+.xavi     { background-color: #ddeeff; color: #000000; }
+.yaiza    { background-color: #ffffff; color: #000000; }
+.yolanda  { background-color: #ddeeff; color: #000000; }
+</style>
+</head>
+<body>
+<h1>Setmana 2023-08-07</h1><table>
+<tr><td></td><th colspan=5>dl</th><td></td><th colspan=5>dm</th><td></td><th colspan=5>dx</th><td></td><th colspan=5>dj</th><td></td><th colspan=5>dv</th></tr>
+<tr><td></td><th>L1</th><th>L2</th><th>L3</th><th>L4</th><th>L5</th><td></td><th>L1</th><th>L2</th><th>L3</th><th>L4</th><th>L5</th><td></td><th>L1</th><th>L2</th><th>L3</th><th>L4</th><th>L5</th><td></td><th>L1</th><th>L2</th><th>L3</th><th>L4</th><th>L5</th><td></td><th>L1</th><th>L2</th><th>L3</th><th>L4</th><th>L5</th></tr>
+<tr><th>09:00-10:15</th>
+<td class='aram'>Aram</td>
+<td class='mar'>Mar</td>
+<td class='reservae'>Contractes</td>
+<td class='tanias'>Tània Sànchez</td>
+<td class='vic'>Vic</td>
+<td>&nbsp;</td>
+<td class='judit'>Judit</td>
+<td class='reservac'>Factura</td>
+<td class='reservad'>Cobraments</td>
+<td class='tanias'>Tània Sànchez</td>
+<td class='ningu'>-</td>
+<td>&nbsp;</td>
+<td class='andrea'>Andrea</td>
+<td class='annab'>Anna B</td>
+<td class='berta'>Berta</td>
+<td class='nuriapuigvert'>Núria P</td>
+<td class='reservac'>Factura</td>
+<td>&nbsp;</td>
+<td class='annab'>Anna B</td>
+<td class='berta'>Berta</td>
+<td class='judith'>Judith</td>
+<td class='meritxello'>Txell O</td>
+<td class='reservac'>Factura</td>
+<td>&nbsp;</td>
+<td class='claran'>Clara Nualart</td>
+<td class='judith'>Judith</td>
+<td class='manel'>Manel</td>
+<td class='meritxello'>Txell O</td>
+<td class='yaiza'>Yaiza</td>
+</tr>
+<tr><th>10:15-11:30</th>
+<td class='anaperez'>Ana PML</td>
+<td class='cire'>Cire</td>
+<td class='martac'>Marta C</td>
+<td class='olga'>Olga</td>
+<td class='yolanda'>Yolanda</td>
+<td>&nbsp;</td>
+<td class='cire'>Cire</td>
+<td class='erika'>Erika </td>
+<td class='mar'>Mar</td>
+<td class='olga'>Olga</td>
+<td class='sule'>Sule</td>
+<td>&nbsp;</td>
+<td class='albert'>Albert M</td>
+<td class='anaperez'>Ana PML</td>
+<td class='maria'>Maria</td>
+<td class='sergivazqu'>Sergi Va</td>
+<td class='tanias'>Tània Sànchez</td>
+<td>&nbsp;</td>
+<td class='anaperez'>Ana PML</td>
+<td class='cesc'>Cesc</td>
+<td class='herminia'>Hermi</td>
+<td class='merce'>Mercè</td>
+<td class='tanias'>Tània Sànchez</td>
+<td>&nbsp;</td>
+<td class='manel'>Manel</td>
+<td class='meritxell'>Txell</td>
+<td class='reservac'>Factura</td>
+<td class='reservae'>Contractes</td>
+<td class='yaiza'>Yaiza</td>
+</tr>
+<tr><th>11:30-12:45</th>
+<td class='adria'>Adrià</td>
+<td class='joanb'>Joan B</td>
+<td class='nuria'>Núria</td>
+<td class='sule'>Sule</td>
+<td class='tania'>Tània</td>
+<td>&nbsp;</td>
+<td class='anaperez'>Ana PML</td>
+<td class='carmen'>Carmen H</td>
+<td class='herminia'>Hermi</td>
+<td class='martafarre'>Marta Farré</td>
+<td class='reservae'>Contractes</td>
+<td>&nbsp;</td>
+<td class='albert'>Albert M</td>
+<td class='bernat'>Bernat</td>
+<td class='maria'>Maria</td>
+<td class='meritxell'>Txell</td>
+<td class='nuria'>Núria</td>
+<td>&nbsp;</td>
+<td class='carmen'>Carmen H</td>
+<td class='eloi'>Eloi</td>
+<td class='joel'>Joel</td>
+<td class='martafarre'>Marta Farré</td>
+<td class='vane'>Vane</td>
+<td>&nbsp;</td>
+<td class='andrea'>Andrea</td>
+<td class='cesc'>Cesc</td>
+<td class='davidb'>David B</td>
+<td class='joel'>Joel</td>
+<td class='tanias'>Tània Sànchez</td>
+</tr>
+<tr><th>12:45-14:00</th>
+<td class='erika'>Erika </td>
+<td class='merce'>Mercè</td>
+<td class='montser'>Montse Ribas</td>
+<td class='reservac'>Factura</td>
+<td class='sergivazqu'>Sergi Va</td>
+<td>&nbsp;</td>
+<td class='adria'>Adrià</td>
+<td class='eloi'>Eloi</td>
+<td class='joanb'>Joan B</td>
+<td class='mariona'>Mariona</td>
+<td class='reservaf'>Coord.Comer</td>
+<td>&nbsp;</td>
+<td class='aram'>Aram</td>
+<td class='marcm'>Marc M</td>
+<td class='mariona'>Mariona</td>
+<td class='reservad'>Cobraments</td>
+<td class='yolanda'>Yolanda</td>
+<td>&nbsp;</td>
+<td class='marcm'>Marc M</td>
+<td class='martac'>Marta C</td>
+<td class='montser'>Montse Ribas</td>
+<td class='tania'>Tània</td>
+<td class='ningu'>-</td>
+<td>&nbsp;</td>
+<td class='anaperez'>Ana PML</td>
+<td class='bernat'>Bernat</td>
+<td class='davidb'>David B</td>
+<td class='vane'>Vane</td>
+<td class='vic'>Vic</td>
+</tr>
+</table><h3>Penalitzacions</h3>
+<p>Penalitzacio: 420</p>
+<ul>
+<li>100: 1 forats a dm 09:00 </li>
+<li>100: 1 forats a dj 12:45 </li>
+<li>50: dl 11:30 Torn fix no col·locat de nuriapuigvert</li>
+<li>50: dv 12:45 Torn fix no col·locat de meritxell</li>
+<li>20: albert dx té 2 hores el mateix dia</li>
+<li>20: maria dx té 2 hores el mateix dia</li>
+<li>20: davidb dv té 2 hores el mateix dia</li>
+<li>20: manel dv té 2 hores el mateix dia</li>
+<li>20: yaiza dv té 2 hores el mateix dia</li>
+<li>10: albert dx no pot esmorzar</li>
+<li>10: maria dx no pot esmorzar</li>
+</ul>
+<h3>Extensions</h3>
+<div class="extensions">
+<div class="extension adria">Adrià<br/>105</div>
+<div class="extension albert">Albert M<br/>137</div>
+<div class="extension albertg">Albert GS<br/>100</div>
+<div class="extension alex">Alex<br/>182</div>
+<div class="extension anaperez">Ana PML<br/>117</div>
+<div class="extension andrea">Andrea<br/>158</div>
+<div class="extension annab">Anna B<br/>140</div>
+<div class="extension annaoller">Annaoller<br/>102</div>
+<div class="extension annap">Anna Parera<br/>194</div>
+<div class="extension annarodon">Anna R<br/>165</div>
+<div class="extension annaserra">Anna Serra<br/>189</div>
+<div class="extension aram">Aram<br/>144</div>
+<div class="extension bernat">Bernat<br/>162</div>
+<div class="extension berta">Berta<br/>107</div>
+<div class="extension carles">Carles<br/>146</div>
+<div class="extension carme">Carme<br/>110</div>
+<div class="extension carmen">Carmen H<br/>166</div>
+<div class="extension carol">Càrol<br/>123</div>
+<div class="extension cesc">Cesc<br/>115</div>
+<div class="extension cire">Cire<br/>103</div>
+<div class="extension claran">Clara Nualart<br/>190</div>
+<div class="extension david">David G.<br/>153</div>
+<div class="extension davidb">David B<br/>161</div>
+<div class="extension eduard">Eduard<br/>183</div>
+<div class="extension eloi">Eloi<br/>111</div>
+<div class="extension erika">Erika <br/>193</div>
+<div class="extension erola">Erola<br/>112</div>
+<div class="extension gabriel">Gabriel<br/>148</div>
+<div class="extension gemma">Gemma<br/>120</div>
+<div class="extension herminia">Hermi<br/>108</div>
+<div class="extension israel">Israel del Pino<br/>159</div>
+<div class="extension jairo">Jairo<br/>195</div>
+<div class="extension jaume">Jaume<br/>196</div>
+<div class="extension javi">Javi<br/>168</div>
+<div class="extension javicalzado">Javicalzado<br/>178</div>
+<div class="extension joana">Joana<br/>152</div>
+<div class="extension joanagomis">Joana Gomis<br/>114</div>
+<div class="extension joanb">Joan B<br/>116</div>
+<div class="extension joansarola">Joan Sarola<br/>198</div>
+<div class="extension joel">Joel<br/>132</div>
+<div class="extension jordi">JordiP<br/>184</div>
+<div class="extension judit">Judit<br/>157</div>
+<div class="extension judith">Judith<br/>142</div>
+<div class="extension juditj">Judit Julià<br/>177</div>
+<div class="extension lidia">Lídia<br/>185</div>
+<div class="extension lucia">Lucía<br/>141</div>
+<div class="extension maite">Maite<br/>147</div>
+<div class="extension manel">Manel<br/>122</div>
+<div class="extension mar">Mar<br/>126</div>
+<div class="extension marc">Marc<br/>145</div>
+<div class="extension marcm">Marc M<br/>163</div>
+<div class="extension maria">Maria<br/>121</div>
+<div class="extension mariabouza">Maria Bouza<br/>200</div>
+<div class="extension mariana">Mariana<br/>167</div>
+<div class="extension mariona">Mariona<br/>101</div>
+<div class="extension marta">Marta<br/>128</div>
+<div class="extension martac">Marta C<br/>164</div>
+<div class="extension martafarre">Marta Farré<br/>186</div>
+<div class="extension melania">Melania Galán<br/>187</div>
+<div class="extension merce">Mercè<br/>124</div>
+<div class="extension meritxell">Txell<br/>181</div>
+<div class="extension meritxello">Txell O<br/>188</div>
+<div class="extension monica">Mònica<br/>129</div>
+<div class="extension monicag">Mònica G<br/>119</div>
+<div class="extension montser">Montse Ribas<br/>192</div>
+<div class="extension naiara">Naiara<br/>197</div>
+<div class="extension nuria">Núria<br/>135</div>
+<div class="extension nuriapuigvert">Núria P<br/>191</div>
+<div class="extension olga">Olga<br/>113</div>
+<div class="extension oriolcampo">Oriol Campo<br/>180</div>
+<div class="extension otilia">Otilia<br/>104</div>
+<div class="extension polmonso">Pol<br/>151</div>
+<div class="extension reservaa">Escoltes<br/>169</div>
+<div class="extension reservab">Escoltes2<br/>170</div>
+<div class="extension reservac">Factura<br/>171</div>
+<div class="extension reservad">Cobraments<br/>172</div>
+<div class="extension reservae">Contractes<br/>173</div>
+<div class="extension reservaf">Coord.Comer<br/>174</div>
+<div class="extension reservag">Nuria Iglesias<br/>175</div>
+<div class="extension rogerlf">RogerLF<br/>127</div>
+<div class="extension sergi">Sergi<br/>109</div>
+<div class="extension sergiv">SergiVilar<br/>160</div>
+<div class="extension sergivazqu">Sergi Va<br/>179</div>
+<div class="extension silvia">Sílvia<br/>131</div>
+<div class="extension sule">Sule<br/>176</div>
+<div class="extension tania">Tània<br/>134</div>
+<div class="extension tanias">Tània Sànchez<br/>199</div>
+<div class="extension vane">Vane<br/>125</div>
+<div class="extension vero">Vero<br/>149</div>
+<div class="extension vic">Vic<br/>136</div>
+<div class="extension victor">VíctorNA<br/>156</div>
+<div class="extension xavi">XaviDolz<br/>155</div>
+<div class="extension yaiza">Yaiza<br/>133</div>
+<div class="extension yolanda">Yolanda<br/>118</div>
+</div></body>
+</html>

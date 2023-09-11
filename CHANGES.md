@@ -2,10 +2,29 @@
 
 ## Unreleased
 
+- Using a rewritten Minizinc model
+    - More flexible to find solutions in complicated scenarios
+      by turning constraints into penalties. From more penalized
+      to less penalized:
+        - Incompletion (most penalized, quadratic for day/person)
+        - Missing fixed turns
+        - Day overload (quadratic for day/person)
+        - Odd daily configurations:
+            - Marathon, Discontinuous, FarDiscontinuous, NoBrunch
+        - Optional busy (former model, considered them non-optional
+          and if that failed, removed them at all, now they just
+          give penalty, so most of them are respected even if one
+          of them is unfeasible)
+    - More complete progress and final reports
+        - Report completion properly
+        - Report source of penalty
+    - Holes are moved to the end of each turn
+- Using contrast color in static timetables (planner, tomatic-static)
 - Fix: Minizinc marked festivities as Ningu instead of Festiu
-- Name for ICS calendars
-- Not downloading leaves from google drive anymore
-- Removed drive related code and dependencies
+- Persons name for ICS calendars events
+- Google Drive clean up:
+    - Not downloading leaves from google drive anymore
+    - Removed drive related code and dependencies
 - Upgrade notes:
     - removed cli options
         - `--certificate`

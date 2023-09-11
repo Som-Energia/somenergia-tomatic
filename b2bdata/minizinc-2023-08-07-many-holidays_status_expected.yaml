@@ -1,0 +1,28 @@
+totalCells: 100
+completedCells: 100
+solutionCost: 420
+unfilledCell: Complete
+busyReasons: {}
+penalties:
+- - 100
+  - '1 forats a dm 09:00 '
+- - 100
+  - '1 forats a dj 12:45 '
+- - 50
+  - dl 11:30 Torn fix no col·locat de nuriapuigvert
+- - 50
+  - dv 12:45 Torn fix no col·locat de meritxell
+- - 20
+  - albert dx té 2 hores el mateix dia
+- - 20
+  - maria dx té 2 hores el mateix dia
+- - 20
+  - davidb dv té 2 hores el mateix dia
+- - 20
+  - manel dv té 2 hores el mateix dia
+- - 20
+  - yaiza dv té 2 hores el mateix dia
+- - 10
+  - albert dx no pot esmorzar
+- - 10
+  - maria dx no pot esmorzar

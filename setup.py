@@ -46,7 +46,7 @@ setup(
     install_requires=[
         'setuptools>=20.4',
         'MarkupSafe',
-        'somutils',
+        'somutils>=1.9', # use of enterContext
         'yamlns',
         'consolemsg',
         'parse',
@@ -78,7 +78,7 @@ setup(
         'charset-normalizer<3', # request and httpio complains once 3.x is out
         'httplib2', # Google chat code
         'backports.zoneinfo; python_version < "3.9"', # Py3.8 support for Py3.9 zoneinfo
-        'tomato-cooker>=0.2.1',
+        'tomato-cooker>=0.3',
         'pandas',
         'matplotlib',
     #],

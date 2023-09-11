@@ -1,0 +1,552 @@
+[34;1m:: Running solver tomatic.minizinc[0m
+[34;1m:: Carregant configuració config.yaml...[0m
+[34;1m:: Generant càrrega...[0m
+[34;1m::   Carregant dades...[0m
+[34;1m::     Llegint festius...[0m
+[34;1m::     Llegint carrega ideal de persons.yaml...[0m
+[34;1m::     Llegint vacances...[0m
+[34;1m::     Llegint altres indisponibilitats...[0m
+[33mWarning: Ignorant indisponibilitats de fran, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de victor, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de david, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de georgina, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de lucia, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de pau, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de guifre, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de ana, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de sergi, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de mariana, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de juditj, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de joansarola, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de annaoller, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de israel, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de alex, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de naiara, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de joana, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de jairo, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de annarodon, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de polmonso, que no entra al repartiment[0m
+[33mWarning: Ignorant indisponibilitats de javi, que no entra al repartiment[0m
+[34;1m::     Llegint credits i deutes (bossa d'hores)...[0m
+[34;1m::   Ponderant la ideal...[0m
+[32;1m>>     Surten 98 torns[0m
+[34;1m::   Limitant a la capacitat real...[0m
+[34;1m::   Completant la carrega de 98 a 200...[0m
+[32;1m>>     Carrega assolida 98[0m
+[34;1m::   Compensant deute amb credit...[0m
+[33mWarning: 98 torns no arriben als 200 requerits. S'assignent 102 torns, a ningu[0m
+La sobrecarrega d'aquesta setmana seria:
+nuriapuigvert: -0.2
+claran: 0.2
+judit: 0.2
+eloi: 0.4
+erika: 0.4
+marcm: 0.4
+maria: 0.4
+tania: 0.4
+[34;1m:: Desant sobrecàrrega com a overload.yaml[0m
+[34;1m:: Desant càrrega final com a carrega-2023-08-07.yaml[0m
+[33mWarning: No s'ha aconseguit una carrega de 200. S'han hagut d'omplir 2 forats amb ningú[0m
+[34;1m:: Lodading forced turns from forced-turns.yaml...[0m
+[34;1m:: Llençant MiniZinc...[0m
+Nom	Ideal	Proporcional	Augmentada	CapacitatReal	Topall	AplicatTopall	CobrintTorns	CompensantDeutes	Final	Sobrecarrega	CreditCarregat	CreditInicial	CreditFinal
+anaperez	5	5.0	5.0	10	5	5	5	5	5	0.0	0	0	0
+joanagomis	5	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+annap	5	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+sergivazqu	2	2.0	2.0	7	2	2	2	2	2	0.0	0	0	0
+sule	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+meritxell	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+lidia	2	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+nuriapuigvert	2	1.2	1.2	6	1	1	1	1	1	-0.2	0	0	0
+montser	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+meritxello	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+melania	0	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+martafarre	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+erika	2	1.6	1.6	8	2	2	2	2	2	0.4	0	0	0
+claran	2	0.8	0.8	4	1	1	1	1	1	0.2	0	0	0
+annaserra	0	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+tanias	5	5.0	5.0	10	5	5	5	5	5	0.0	0	0	0
+carmen	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+sergiv	2	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+martac	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+bernat	2	2.0	2.0	7	2	2	2	2	2	0.0	0	0	0
+davidb	2	2.0	2.0	9	2	2	2	2	2	0.0	0	0	0
+marcm	2	1.6	1.6	8	2	2	2	2	2	0.4	0	0	0
+andrea	2	2.0	2.0	8	2	2	2	2	2	0.0	0	0	0
+herminia	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+cire	2	2.0	2.0	9	2	2	2	2	2	0.0	0	0	0
+berta	2	2.0	2.0	8	2	2	2	2	2	0.0	0	0	0
+yolanda	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+joel	2	2.0	2.0	9	2	2	2	2	2	0.0	0	0	0
+cesc	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+adria	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+albertg	0	0.0	0.0	10	0	0	0	0	0	0.0	0	0	0
+aram	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+gemma	2	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+mariabouza	5	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+carme	2	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+merce	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+monicag	2	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+nuria	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+otilia	0	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+rogerlf	0	0.0	0.0	10	0	0	0	0	0	0.0	0	0	0
+eloi	2	1.6	1.6	7	2	2	2	2	2	0.4	0	0	0
+roger	0	0.0	0.0	7	0	0	0	0	0	0.0	0	0	0
+mar	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+olga	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+annab	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+joanm	0	0.0	0.0	10	0	0	0	0	0	0.0	0	0	0
+vane	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+vero	0	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+albert	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+carol	2	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+maria	2	1.6	1.6	7	2	2	2	2	2	0.4	0	0	0
+jaume	0	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+joanb	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+maite	0	0.0	0.0	6	0	0	0	0	0	0.0	0	0	0
+gabriel	2	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+mariona	2	2.0	2.0	9	2	2	2	2	2	0.0	0	0	0
+reservac	5	5.0	5.0	10	5	5	5	5	5	0.0	0	0	0
+reservad	2	2.0	2.0	9	2	2	2	2	2	0.0	0	0	0
+vic	2	2.0	2.0	10	2	2	2	2	2	0.0	0	0	0
+reservae	3	3.0	3.0	10	3	3	3	3	3	0.0	0	0	0
+reservaf	1	1.0	1.0	10	1	1	1	1	1	0.0	0	0	0
+judith	2	2.0	2.0	9	2	2	2	2	2	0.0	0	0	0
+joan	0	0.0	0.0	10	0	0	0	0	0	0.0	0	0	0
+silvia	0	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+manel	2	2.0	2.0	2	2	2	2	2	2	0.0	0	0	0
+tania	2	1.6	1.6	8	2	2	2	2	2	0.4	0	0	0
+monica	0	0.0	0.0	8	0	0	0	0	0	0.0	0	0	0
+yaiza	2	2.0	2.0	8	2	2	2	2	2	0.0	0	0	0
+marta	2	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+erola	2	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+judit	2	0.8	0.8	3	1	1	1	1	1	0.2	0	0	0
+carles	0	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+eduard	0	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+marc	2	0.0	0.0	0	0	0	0	0	0	0.0	0	0	0
+ningu	-	-	-	-	-	-	-	-	2	-	-	-	-
+Solucio:
+
+Forçats:
+dl: .... dm: .... dx: .... dj: .... dv: .... adria
+dl: .... dm: .... dx: .xx. dj: .... dv: .... albert
+dl: .... dm: .... dx: .... dj: .... dv: .... albertg
+dl: .... dm: .... dx: .... dj: .x.. dv: .... anaperez
+dl: .... dm: .... dx: x... dj: .... dv: ..x. andrea
+dl: .... dm: .... dx: .... dj: x... dv: .... annab
+dl: .... dm: .... dx: .... dj: .x.. dv: .x.. annap
+dl: .... dm: .... dx: .... dj: .... dv: .... annaserra
+dl: x... dm: .... dx: ...x dj: .... dv: .... aram
+dl: .... dm: ...x dx: ..x. dj: .... dv: .... bernat
+dl: .... dm: .... dx: x... dj: x... dv: .... berta
+dl: .... dm: .... dx: .... dj: .... dv: .... carles
+dl: .... dm: .... dx: ...x dj: ...x dv: .... carme
+dl: .... dm: ..x. dx: .... dj: ..x. dv: .... carmen
+dl: ..x. dm: ...x dx: .... dj: .... dv: .... carol
+dl: .... dm: .... dx: .... dj: .x.. dv: ..x. cesc
+dl: .x.. dm: .... dx: .... dj: .... dv: .... cire
+dl: ...x dm: .... dx: .... dj: .... dv: x... claran
+dl: .... dm: .... dx: .... dj: .... dv: ..xx davidb
+dl: .... dm: .... dx: .... dj: .... dv: .... eduard
+dl: .... dm: .... dx: .x.. dj: .... dv: .x.. eloi
+dl: ...x dm: .x.. dx: .... dj: .... dv: .... erika
+dl: .... dm: .... dx: .x.. dj: .... dv: .x.. erola
+dl: .... dm: .... dx: .xx. dj: .... dv: .... gabriel
+dl: ...x dm: ...x dx: .... dj: .... dv: .... gemma
+dl: .... dm: ..x. dx: .... dj: .x.. dv: .... herminia
+dl: .... dm: .... dx: .... dj: .... dv: .... jaume
+dl: .... dm: .... dx: .... dj: .... dv: .... joan
+dl: .... dm: .... dx: .... dj: ..x. dv: .... joanagomis
+dl: ..x. dm: ...x dx: .... dj: .... dv: .... joanb
+dl: .... dm: .... dx: .... dj: .... dv: .... joanm
+dl: .... dm: .... dx: .... dj: ..x. dv: ..x. joel
+dl: .... dm: .... dx: x... dj: x... dv: .... judit
+dl: .... dm: .... dx: .... dj: x... dv: x... judith
+dl: .x.. dm: x... dx: .... dj: .... dv: .... lidia
+dl: .... dm: .... dx: .... dj: .... dv: .... maite
+dl: .... dm: x... dx: .... dj: .... dv: x... manel
+dl: x... dm: .x.. dx: .... dj: .... dv: .... mar
+dl: .... dm: x... dx: x... dj: .... dv: .... marc
+dl: .... dm: .... dx: ...x dj: ...x dv: .... marcm
+dl: .... dm: .... dx: .xx. dj: .... dv: .... maria
+dl: .... dm: .x.. dx: .... dj: .... dv: .... mariabouza
+dl: x... dm: .... dx: ...x dj: .... dv: .... mariona
+dl: x... dm: .... dx: .... dj: .... dv: ...x marta
+dl: .... dm: .... dx: .... dj: ...x dv: .... martac
+dl: .... dm: ..x. dx: .... dj: ..x. dv: .... martafarre
+dl: .... dm: .... dx: .... dj: .... dv: .... melania
+dl: .... dm: .... dx: .... dj: .x.. dv: .... merce
+dl: .... dm: .... dx: .... dj: .... dv: .x.x meritxell
+dl: .... dm: .... dx: .... dj: x... dv: x... meritxello
+dl: .... dm: .... dx: .... dj: .... dv: .... monica
+dl: .x.. dm: x... dx: .... dj: .... dv: .... monicag
+dl: ...x dm: .... dx: .... dj: ...x dv: .... montser
+dl: .... dm: .... dx: .... dj: .... dv: .... ningu
+dl: ..x. dm: .... dx: ..x. dj: .... dv: .... nuria
+dl: ..x. dm: .... dx: x... dj: .... dv: .... nuriapuigvert
+dl: .x.. dm: .x.. dx: .... dj: .... dv: .... olga
+dl: .... dm: .... dx: .... dj: .... dv: .... otilia
+dl: .... dm: .... dx: .... dj: .... dv: .... reservac
+dl: .... dm: .... dx: .... dj: .... dv: .... reservad
+dl: .... dm: .... dx: .... dj: .... dv: .... reservae
+dl: .... dm: .... dx: .... dj: .... dv: .... reservaf
+dl: .... dm: .... dx: .... dj: .... dv: .... roger
+dl: .... dm: .... dx: .... dj: .... dv: .... rogerlf
+dl: ...x dm: .... dx: .... dj: .... dv: ..x. sergiv
+dl: .... dm: .xx. dx: .... dj: .... dv: .... sergivazqu
+dl: .... dm: .... dx: .... dj: .... dv: .... silvia
+dl: .... dm: .... dx: .... dj: .... dv: .... sule
+dl: ..x. dm: ...x dx: .... dj: .... dv: .... tania
+dl: .... dm: x... dx: .... dj: .... dv: .... tanias
+dl: .... dm: .... dx: .... dj: ..x. dv: ...x vane
+dl: .... dm: .... dx: .... dj: .... dv: .... vero
+dl: x... dm: .... dx: .... dj: .... dv: ...x vic
+dl: .... dm: .... dx: .... dj: .... dv: xx.. yaiza
+dl: .x.. dm: .... dx: ...x dj: .... dv: .... yolanda
+
+Indisponibilitats:
+dl: .... dm: .... dx: .... dj: .... dv: .... adria
+dl: x... dm: x... dx: x... dj: x... dv: x... albert
+dl: .... dm: .... dx: .... dj: .... dv: .... albertg
+dl: .... dm: ...x dx: ..xx dj: .... dv: .... anaperez
+dl: .... dm: xxxx dx: .... dj: .... dv: .... andrea
+dl: .... dm: .... dx: .... dj: .... dv: .... annab
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx annap
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx annaserra
+dl: .... dm: .x.. dx: .... dj: .... dv: .... aram
+dl: .... dm: xxxx dx: .... dj: .... dv: .xx. bernat
+dl: xx.. dm: xxxx dx: ..xx dj: .... dv: .... berta
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx carles
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx carme
+dl: .... dm: .... dx: .... dj: ...x dv: .... carmen
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx carol
+dl: .... dm: ...x dx: ..xx dj: .... dv: .... cesc
+dl: x... dm: x... dx: x... dj: x... dv: xxx. cire
+dl: xxxx dm: xxxx dx: xxxx dj: .... dv: .... claran
+dl: .x.. dm: ..x. dx: ..xx dj: x.x. dv: .... davidb
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx eduard
+dl: .... dm: .... dx: .xxx dj: .... dv: xxxx eloi
+dl: .... dm: .... dx: xxxx dj: .... dv: .... erika
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx erola
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx gabriel
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx gemma
+dl: .... dm: .... dx: .... dj: .... dv: .... herminia
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx jaume
+dl: ..xx dm: .... dx: .... dj: .x.. dv: .... joan
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx joanagomis
+dl: .... dm: .... dx: .... dj: .... dv: x... joanb
+dl: .... dm: .... dx: .... dj: .... dv: .... joanm
+dl: .xxx dm: .... dx: ..xx dj: .x.. dv: .... joel
+dl: .... dm: .xxx dx: xxxx dj: xxxx dv: xxxx judit
+dl: x... dm: .xx. dx: ..x. dj: .... dv: .... judith
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx lidia
+dl: .... dm: .... dx: xxxx dj: .... dv: xxxx maite
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: ..xx manel
+dl: .... dm: .... dx: .... dj: .... dv: .... mar
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx marc
+dl: .... dm: .... dx: .... dj: .... dv: xxxx marcm
+dl: xxx. dm: .... dx: .... dj: ...x dv: xxxx maria
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx mariabouza
+dl: xx.. dm: .xx. dx: .... dj: .... dv: .... mariona
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx marta
+dl: .... dm: .... dx: .... dj: .... dv: .... martac
+dl: .... dm: .... dx: .... dj: .... dv: .... martafarre
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx melania
+dl: .... dm: .... dx: .... dj: .... dv: .... merce
+dl: .... dm: .... dx: .... dj: .... dv: .... meritxell
+dl: xx.. dm: .... dx: ..xx dj: .... dv: .... meritxello
+dl: .... dm: .... dx: .... dj: .... dv: xxxx monica
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx monicag
+dl: .... dm: ...x dx: ..xx dj: .... dv: .... montser
+dl: .... dm: .... dx: .... dj: .... dv: .... ningu
+dl: .... dm: .... dx: .... dj: .... dv: .... nuria
+dl: .... dm: .... dx: ..xx dj: xxxx dv: xxxx nuriapuigvert
+dl: .... dm: .... dx: .... dj: .... dv: .... olga
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx otilia
+dl: .... dm: .... dx: ..xx dj: .... dv: .... reservac
+dl: .... dm: .... dx: .... dj: .... dv: .xx. reservad
+dl: .... dm: .... dx: .... dj: .... dv: .... reservae
+dl: .... dm: .... dx: .... dj: .... dv: .... reservaf
+dl: xxxx dm: .... dx: .... dj: .... dv: .xxx roger
+dl: .... dm: .... dx: .... dj: .x.. dv: .... rogerlf
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx sergiv
+dl: .... dm: xxxx dx: .... dj: .... dv: .xxx sergivazqu
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx silvia
+dl: .... dm: .... dx: .... dj: .... dv: .... sule
+dl: xx.. dm: xxxx dx: x... dj: x... dv: x... tania
+dl: ..xx dm: .... dx: ..xx dj: .... dv: .... tanias
+dl: .... dm: .... dx: .... dj: .... dv: .... vane
+dl: xxxx dm: xxxx dx: xxxx dj: xxxx dv: xxxx vero
+dl: .... dm: .... dx: .... dj: .... dv: .... vic
+dl: xx.. dm: xxxx dx: .... dj: xx.. dv: .... yaiza
+dl: .... dm: .... dx: .... dj: .... dv: .... yolanda
+
+No desitjats:
+dl: .... dm: .... dx: .... dj: .... dv: .... adria
+dl: .... dm: .... dx: .... dj: .... dv: .... albert
+dl: .... dm: .... dx: .... dj: .... dv: .... albertg
+dl: .... dm: .... dx: .... dj: .... dv: .... anaperez
+dl: .... dm: .... dx: .... dj: .... dv: .... andrea
+dl: .... dm: .... dx: .... dj: .... dv: xxxx annab
+dl: .... dm: .... dx: .... dj: .... dv: .... annap
+dl: .... dm: .... dx: .... dj: .... dv: .... annaserra
+dl: .... dm: .... dx: .... dj: .... dv: .... aram
+dl: .... dm: .... dx: .... dj: .... dv: .... bernat
+dl: .... dm: .... dx: .... dj: .... dv: .... berta
+dl: .... dm: .... dx: .... dj: .... dv: .... carles
+dl: .... dm: .... dx: .... dj: .... dv: .... carme
+dl: .... dm: x... dx: .... dj: .... dv: .... carmen
+dl: xx.. dm: .... dx: .... dj: .... dv: .... carol
+dl: x... dm: x... dx: x... dj: x... dv: x... cesc
+dl: .... dm: .... dx: .... dj: .... dv: .... cire
+dl: .... dm: .... dx: .... dj: .... dv: .... claran
+dl: .... dm: .... dx: .... dj: .... dv: .... davidb
+dl: .... dm: .... dx: .... dj: .... dv: .... eduard
+dl: .... dm: .... dx: .... dj: .... dv: .... eloi
+dl: .... dm: .... dx: .... dj: .... dv: .... erika
+dl: .... dm: .... dx: .... dj: .... dv: .... erola
+dl: .... dm: .... dx: .... dj: .... dv: .... gabriel
+dl: .... dm: .... dx: .... dj: .... dv: .... gemma
+dl: .... dm: .... dx: .... dj: .... dv: .... herminia
+dl: .... dm: .... dx: .... dj: .... dv: .... jaume
+dl: .... dm: .... dx: .... dj: .... dv: .... joan
+dl: .... dm: .... dx: .... dj: .... dv: .... joanagomis
+dl: .x.. dm: .... dx: .... dj: .... dv: .... joanb
+dl: ...x dm: ...x dx: ...x dj: ...x dv: ...x joanm
+dl: .... dm: .... dx: .... dj: .... dv: .... joel
+dl: .... dm: .... dx: .... dj: .... dv: .... judit
+dl: .... dm: .... dx: .... dj: .... dv: .... judith
+dl: .... dm: .... dx: .... dj: .... dv: .... lidia
+dl: .... dm: .... dx: .... dj: .... dv: .... maite
+dl: .... dm: .... dx: .... dj: .... dv: .... manel
+dl: .... dm: .... dx: .... dj: .... dv: .... mar
+dl: ..xx dm: ..x. dx: .... dj: .... dv: .... marc
+dl: .... dm: .... dx: .... dj: .... dv: .... marcm
+dl: .... dm: .... dx: ...x dj: .... dv: ...x maria
+dl: .... dm: .... dx: x... dj: .... dv: .... mariabouza
+dl: x... dm: x... dx: xx.. dj: xxxx dv: x... mariona
+dl: .... dm: .... dx: .... dj: .... dv: .... marta
+dl: .... dm: .... dx: .... dj: .... dv: .... martac
+dl: .... dm: .... dx: .... dj: .... dv: .xx. martafarre
+dl: .... dm: .... dx: .... dj: .... dv: .... melania
+dl: x... dm: x.x. dx: x.x. dj: x... dv: x... merce
+dl: .... dm: .... dx: .... dj: .... dv: .... meritxell
+dl: .... dm: .... dx: .... dj: .... dv: .... meritxello
+dl: .... dm: .... dx: .... dj: .... dv: .... monica
+dl: .... dm: .... dx: .... dj: .... dv: .... monicag
+dl: .... dm: .... dx: .... dj: .... dv: .... montser
+dl: .... dm: .... dx: .... dj: .... dv: .... ningu
+dl: .... dm: .... dx: .... dj: .xx. dv: .... nuria
+dl: .... dm: .... dx: .... dj: .... dv: .... nuriapuigvert
+dl: .... dm: .... dx: .... dj: .... dv: .... olga
+dl: .... dm: .... dx: .... dj: .... dv: .... otilia
+dl: .... dm: .... dx: .... dj: .... dv: .... reservac
+dl: .... dm: .... dx: .... dj: .... dv: .... reservad
+dl: .... dm: .... dx: .... dj: .... dv: .... reservae
+dl: .... dm: .... dx: .... dj: .... dv: .... reservaf
+dl: .... dm: .... dx: .... dj: .... dv: .... roger
+dl: .... dm: .... dx: .... dj: .... dv: .... rogerlf
+dl: x... dm: x... dx: x... dj: x... dv: x... sergiv
+dl: .... dm: .... dx: .... dj: .... dv: .... sergivazqu
+dl: .... dm: .... dx: .... dj: .... dv: .... silvia
+dl: .... dm: .... dx: .... dj: .... dv: .... sule
+dl: .... dm: .... dx: .... dj: .... dv: .... tania
+dl: .... dm: .... dx: .... dj: .... dv: .... tanias
+dl: .... dm: .... dx: .... dj: .... dv: .... vane
+dl: .... dm: .... dx: .... dj: .... dv: .... vero
+dl: .... dm: .... dx: .... dj: .... dv: .... vic
+dl: .... dm: .... dx: .... dj: .... dv: .... yaiza
+dl: .... dm: .... dx: .... dj: .... dv: .... yolanda
+
+Forçats sense indisponibilitats:
+dl: .... dm: .... dx: .... dj: .... dv: .... adria
+dl: .... dm: .... dx: .xx. dj: .... dv: .... albert
+dl: .... dm: .... dx: .... dj: .... dv: .... albertg
+dl: .... dm: .... dx: .... dj: .x.. dv: .... anaperez
+dl: .... dm: .... dx: x... dj: .... dv: ..x. andrea
+dl: .... dm: .... dx: .... dj: x... dv: .... annab
+dl: .... dm: .... dx: .... dj: .... dv: .... annap
+dl: .... dm: .... dx: .... dj: .... dv: .... annaserra
+dl: x... dm: .... dx: ...x dj: .... dv: .... aram
+dl: .... dm: .... dx: ..x. dj: .... dv: .... bernat
+dl: .... dm: .... dx: x... dj: x... dv: .... berta
+dl: .... dm: .... dx: .... dj: .... dv: .... carles
+dl: .... dm: .... dx: .... dj: .... dv: .... carme
+dl: .... dm: ..x. dx: .... dj: ..x. dv: .... carmen
+dl: .... dm: .... dx: .... dj: .... dv: .... carol
+dl: .... dm: .... dx: .... dj: .x.. dv: ..x. cesc
+dl: .x.. dm: .... dx: .... dj: .... dv: .... cire
+dl: .... dm: .... dx: .... dj: .... dv: x... claran
+dl: .... dm: .... dx: .... dj: .... dv: ..xx davidb
+dl: .... dm: .... dx: .... dj: .... dv: .... eduard
+dl: .... dm: .... dx: .... dj: .... dv: .... eloi
+dl: ...x dm: .x.. dx: .... dj: .... dv: .... erika
+dl: .... dm: .... dx: .... dj: .... dv: .... erola
+dl: .... dm: .... dx: .... dj: .... dv: .... gabriel
+dl: .... dm: .... dx: .... dj: .... dv: .... gemma
+dl: .... dm: ..x. dx: .... dj: .x.. dv: .... herminia
+dl: .... dm: .... dx: .... dj: .... dv: .... jaume
+dl: .... dm: .... dx: .... dj: .... dv: .... joan
+dl: .... dm: .... dx: .... dj: .... dv: .... joanagomis
+dl: ..x. dm: ...x dx: .... dj: .... dv: .... joanb
+dl: .... dm: .... dx: .... dj: .... dv: .... joanm
+dl: .... dm: .... dx: .... dj: ..x. dv: ..x. joel
+dl: .... dm: .... dx: .... dj: .... dv: .... judit
+dl: .... dm: .... dx: .... dj: x... dv: x... judith
+dl: .... dm: .... dx: .... dj: .... dv: .... lidia
+dl: .... dm: .... dx: .... dj: .... dv: .... maite
+dl: .... dm: .... dx: .... dj: .... dv: x... manel
+dl: x... dm: .x.. dx: .... dj: .... dv: .... mar
+dl: .... dm: .... dx: .... dj: .... dv: .... marc
+dl: .... dm: .... dx: ...x dj: ...x dv: .... marcm
+dl: .... dm: .... dx: .xx. dj: .... dv: .... maria
+dl: .... dm: .... dx: .... dj: .... dv: .... mariabouza
+dl: .... dm: .... dx: ...x dj: .... dv: .... mariona
+dl: .... dm: .... dx: .... dj: .... dv: .... marta
+dl: .... dm: .... dx: .... dj: ...x dv: .... martac
+dl: .... dm: ..x. dx: .... dj: ..x. dv: .... martafarre
+dl: .... dm: .... dx: .... dj: .... dv: .... melania
+dl: .... dm: .... dx: .... dj: .x.. dv: .... merce
+dl: .... dm: .... dx: .... dj: .... dv: .x.x meritxell
+dl: .... dm: .... dx: .... dj: x... dv: x... meritxello
+dl: .... dm: .... dx: .... dj: .... dv: .... monica
+dl: .... dm: .... dx: .... dj: .... dv: .... monicag
+dl: ...x dm: .... dx: .... dj: ...x dv: .... montser
+dl: .... dm: .... dx: .... dj: .... dv: .... ningu
+dl: ..x. dm: .... dx: ..x. dj: .... dv: .... nuria
+dl: ..x. dm: .... dx: x... dj: .... dv: .... nuriapuigvert
+dl: .x.. dm: .x.. dx: .... dj: .... dv: .... olga
+dl: .... dm: .... dx: .... dj: .... dv: .... otilia
+dl: .... dm: .... dx: .... dj: .... dv: .... reservac
+dl: .... dm: .... dx: .... dj: .... dv: .... reservad
+dl: .... dm: .... dx: .... dj: .... dv: .... reservae
+dl: .... dm: .... dx: .... dj: .... dv: .... reservaf
+dl: .... dm: .... dx: .... dj: .... dv: .... roger
+dl: .... dm: .... dx: .... dj: .... dv: .... rogerlf
+dl: .... dm: .... dx: .... dj: .... dv: .... sergiv
+dl: .... dm: .... dx: .... dj: .... dv: .... sergivazqu
+dl: .... dm: .... dx: .... dj: .... dv: .... silvia
+dl: .... dm: .... dx: .... dj: .... dv: .... sule
+dl: ..x. dm: .... dx: .... dj: .... dv: .... tania
+dl: .... dm: x... dx: .... dj: .... dv: .... tanias
+dl: .... dm: .... dx: .... dj: ..x. dv: ...x vane
+dl: .... dm: .... dx: .... dj: .... dv: .... vero
+dl: x... dm: .... dx: .... dj: .... dv: ...x vic
+dl: .... dm: .... dx: .... dj: .... dv: xx.. yaiza
+dl: .x.. dm: .... dx: ...x dj: .... dv: .... yolanda
+
+Horari final
+dl: ..x. dm: ...x dx: .... dj: .... dv: .... adria
+dl: .... dm: .... dx: .xx. dj: .... dv: .... albert
+dl: .... dm: .... dx: .... dj: .... dv: .... albertg
+dl: .x.. dm: ..x. dx: .x.. dj: .x.. dv: ...x anaperez
+dl: .... dm: .... dx: x... dj: .... dv: ..x. andrea
+dl: .... dm: .... dx: x... dj: x... dv: .... annab
+dl: .... dm: .... dx: .... dj: .... dv: .... annap
+dl: .... dm: .... dx: .... dj: .... dv: .... annaserra
+dl: x... dm: .... dx: ...x dj: .... dv: .... aram
+dl: .... dm: .... dx: ..x. dj: .... dv: ...x bernat
+dl: .... dm: .... dx: x... dj: x... dv: .... berta
+dl: .... dm: .... dx: .... dj: .... dv: .... carles
+dl: .... dm: .... dx: .... dj: .... dv: .... carme
+dl: .... dm: ..x. dx: .... dj: ..x. dv: .... carmen
+dl: .... dm: .... dx: .... dj: .... dv: .... carol
+dl: .... dm: .... dx: .... dj: .x.. dv: ..x. cesc
+dl: .x.. dm: .x.. dx: .... dj: .... dv: .... cire
+dl: .... dm: .... dx: .... dj: .... dv: x... claran
+dl: .... dm: .... dx: .... dj: .... dv: ..xx davidb
+dl: .... dm: .... dx: .... dj: .... dv: .... eduard
+dl: .... dm: ...x dx: .... dj: ..x. dv: .... eloi
+dl: ...x dm: .x.. dx: .... dj: .... dv: .... erika
+dl: .... dm: .... dx: .... dj: .... dv: .... erola
+dl: .... dm: .... dx: .... dj: .... dv: .... gabriel
+dl: .... dm: .... dx: .... dj: .... dv: .... gemma
+dl: .... dm: ..x. dx: .... dj: .x.. dv: .... herminia
+dl: .... dm: .... dx: .... dj: .... dv: .... jaume
+dl: .... dm: .... dx: .... dj: .... dv: .... joan
+dl: .... dm: .... dx: .... dj: .... dv: .... joanagomis
+dl: ..x. dm: ...x dx: .... dj: .... dv: .... joanb
+dl: .... dm: .... dx: .... dj: .... dv: .... joanm
+dl: .... dm: .... dx: .... dj: ..x. dv: ..x. joel
+dl: .... dm: x... dx: .... dj: .... dv: .... judit
+dl: .... dm: .... dx: .... dj: x... dv: x... judith
+dl: .... dm: .... dx: .... dj: .... dv: .... lidia
+dl: .... dm: .... dx: .... dj: .... dv: .... maite
+dl: .... dm: .... dx: .... dj: .... dv: xx.. manel
+dl: x... dm: .x.. dx: .... dj: .... dv: .... mar
+dl: .... dm: .... dx: .... dj: .... dv: .... marc
+dl: .... dm: .... dx: ...x dj: ...x dv: .... marcm
+dl: .... dm: .... dx: .xx. dj: .... dv: .... maria
+dl: .... dm: .... dx: .... dj: .... dv: .... mariabouza
+dl: .... dm: ...x dx: ...x dj: .... dv: .... mariona
+dl: .... dm: .... dx: .... dj: .... dv: .... marta
+dl: .x.. dm: .... dx: .... dj: ...x dv: .... martac
+dl: .... dm: ..x. dx: .... dj: ..x. dv: .... martafarre
+dl: .... dm: .... dx: .... dj: .... dv: .... melania
+dl: ...x dm: .... dx: .... dj: .x.. dv: .... merce
+dl: .... dm: .... dx: ..x. dj: .... dv: .x.. meritxell
+dl: .... dm: .... dx: .... dj: x... dv: x... meritxello
+dl: .... dm: .... dx: .... dj: .... dv: .... monica
+dl: .... dm: .... dx: .... dj: .... dv: .... monicag
+dl: ...x dm: .... dx: .... dj: ...x dv: .... montser
+dl: .... dm: x... dx: .... dj: ...x dv: .... ningu
+dl: ..x. dm: .... dx: ..x. dj: .... dv: .... nuria
+dl: .... dm: .... dx: x... dj: .... dv: .... nuriapuigvert
+dl: .x.. dm: .x.. dx: .... dj: .... dv: .... olga
+dl: .... dm: .... dx: .... dj: .... dv: .... otilia
+dl: ...x dm: x... dx: x... dj: x... dv: .x.. reservac
+dl: .... dm: x... dx: ...x dj: .... dv: .... reservad
+dl: x... dm: ..x. dx: .... dj: .... dv: .x.. reservae
+dl: .... dm: ...x dx: .... dj: .... dv: .... reservaf
+dl: .... dm: .... dx: .... dj: .... dv: .... roger
+dl: .... dm: .... dx: .... dj: .... dv: .... rogerlf
+dl: .... dm: .... dx: .... dj: .... dv: .... sergiv
+dl: ...x dm: .... dx: .x.. dj: .... dv: .... sergivazqu
+dl: .... dm: .... dx: .... dj: .... dv: .... silvia
+dl: ..x. dm: .x.. dx: .... dj: .... dv: .... sule
+dl: ..x. dm: .... dx: .... dj: ...x dv: .... tania
+dl: x... dm: x... dx: .x.. dj: .x.. dv: ..x. tanias
+dl: .... dm: .... dx: .... dj: ..x. dv: ...x vane
+dl: .... dm: .... dx: .... dj: .... dv: .... vero
+dl: x... dm: .... dx: .... dj: .... dv: ...x vic
+dl: .... dm: .... dx: .... dj: .... dv: xx.. yaiza
+dl: .x.. dm: .... dx: ...x dj: .... dv: .... yolanda
+
+Empty slots:
+[(dm, 1, 1), (dj, 4, 1)]
+
+Unplaced Load:
+[]
+
+Unforced fixed turns:
+[(dl, 3, nuriapuigvert), (dv, 4, meritxell)]
+
+Undesired Penalties:
+[]
+
+Concentrated Load Penalties:
+[(dx, albert, 2), (dx, maria, 2), (dv, davidb, 2), (dv, manel, 2), (dv, yaiza, 2)]
+
+Discontinuous Load Penalties:
+[]
+
+Far discontinuous Load Penalties:
+[]
+
+Marathon Load Penalties:
+[]
+
+No Brunch Penalties:
+[(dx, albert), (dx, maria)]
+
+Solution cost: 420
+[| dl:              {aram, mar, reservae, tanias, vic},       {anaperez, cire, martac, olga, yolanda},                 {adria, joanb, nuria, sule, tania}, {erika, merce, montser, reservac, sergivazqu}
+ | dm:      {judit, ningu, reservac, reservad, tanias},                {cire, erika, mar, olga, sule}, {anaperez, carmen, herminia, martafarre, reservae},       {adria, eloi, joanb, mariona, reservaf}
+ | dx: {andrea, annab, berta, nuriapuigvert, reservac}, {albert, anaperez, maria, sergivazqu, tanias},          {albert, bernat, maria, meritxell, nuria},     {aram, marcm, mariona, reservad, yolanda}
+ | dj:    {annab, berta, judith, meritxello, reservac},     {anaperez, cesc, herminia, merce, tanias},             {carmen, eloi, joel, martafarre, vane},        {marcm, martac, montser, ningu, tania}
+ | dv:      {claran, judith, manel, meritxello, yaiza}, {manel, meritxell, reservac, reservae, yaiza},               {andrea, cesc, davidb, joel, tanias},         {anaperez, bernat, davidb, vane, vic}
+ |]
+
+[32;1m>> Resultat desat a graella-telefons-2023-08-07.yaml[0m
+[32;1m>> Resultat desat a graella-telefons-2023-08-07.html[0m
+

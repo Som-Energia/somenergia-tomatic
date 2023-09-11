@@ -35,7 +35,7 @@ petra: 0.4
 [34;1m:: Desant càrrega distribuida en linies com a carrega.csv[0m
 [32;1m>> S'ha aconseguit amb èxit una càrrega de 16 torns[0m
 [34;1m:: Lodading forced turns from forced-turns.yaml...[0m
-[34;1m:: Provant amb les indisponibilitats opcionals...[0m
+[34;1m:: Llençant MiniZinc...[0m
 [32;1m>> Resultat desat a graella-telefons-2022-07-11.yaml[0m
 [32;1m>> Resultat desat a graella-telefons-2022-07-11.html[0m
 Nom	Ideal	Proporcional	Augmentada	CapacitatReal	Topall	AplicatTopall	CobrintTorns	CompensantDeutes	Final	Sobrecarrega	CreditCarregat	CreditInicial	CreditFinal
@@ -55,3 +55,133 @@ mary	4	1.6	1.6	4	2	2	2	2	2	0.4	0	0	0
 noel	3	1.2	1.2	4	1	1	1	1	1	-0.2	0	0	0
 olivia	4	1.6	1.6	4	2	2	2	2	2	0.4	0	0	0
 petra	4	1.6	1.6	4	2	2	2	2	2	0.4	0	0	0
+Solucio:
+
+Forçats:
+dm: .... dj: .... alice
+dm: .... dj: .... barbara
+dm: .... dj: .... carol
+dm: .... dj: .... diana
+dm: .... dj: .... elith
+dm: .... dj: .... felicity
+dm: .... dj: .... gemma
+dm: .... dj: .... hellen
+dm: .... dj: .... irma
+dm: x... dj: .... jolie
+dm: .... dj: .... kate
+dm: x... dj: .... liza
+dm: .... dj: .... mary
+dm: .... dj: .... noel
+dm: .... dj: .... olivia
+dm: .... dj: .... petra
+dm: .... dj: .... ningu
+
+Indisponibilitats:
+dm: .... dj: .... alice
+dm: .... dj: .... barbara
+dm: .... dj: .... carol
+dm: .... dj: .... diana
+dm: .... dj: .... elith
+dm: .... dj: .... felicity
+dm: .... dj: .... gemma
+dm: .... dj: .... hellen
+dm: .... dj: .... irma
+dm: .... dj: .... jolie
+dm: .... dj: .... kate
+dm: .... dj: .... liza
+dm: .... dj: .... mary
+dm: .... dj: .... noel
+dm: .... dj: .... olivia
+dm: .... dj: .... petra
+dm: .... dj: .... ningu
+
+No desitjats:
+dm: .... dj: .... alice
+dm: .... dj: .... barbara
+dm: .... dj: .... carol
+dm: .... dj: .... diana
+dm: .... dj: .... elith
+dm: .... dj: .... felicity
+dm: .... dj: .... gemma
+dm: .... dj: .... hellen
+dm: .... dj: .... irma
+dm: .... dj: .... jolie
+dm: .... dj: .... kate
+dm: .... dj: .... liza
+dm: .... dj: .... mary
+dm: .... dj: .... noel
+dm: .... dj: .... olivia
+dm: .... dj: .... petra
+dm: .... dj: .... ningu
+
+Forçats sense indisponibilitats:
+dm: .... dj: .... alice
+dm: .... dj: .... barbara
+dm: .... dj: .... carol
+dm: .... dj: .... diana
+dm: .... dj: .... elith
+dm: .... dj: .... felicity
+dm: .... dj: .... gemma
+dm: .... dj: .... hellen
+dm: .... dj: .... irma
+dm: x... dj: .... jolie
+dm: .... dj: .... kate
+dm: x... dj: .... liza
+dm: .... dj: .... mary
+dm: .... dj: .... noel
+dm: .... dj: .... olivia
+dm: .... dj: .... petra
+dm: .... dj: .... ningu
+
+Horari final
+dm: .... dj: x... alice
+dm: .... dj: .... barbara
+dm: .... dj: .... carol
+dm: ..x. dj: .... diana
+dm: .... dj: .... elith
+dm: .... dj: .... felicity
+dm: .... dj: x... gemma
+dm: .... dj: ...x hellen
+dm: ...x dj: .... irma
+dm: x... dj: .... jolie
+dm: .... dj: ..x. kate
+dm: x... dj: .x.. liza
+dm: .x.. dj: ...x mary
+dm: ..x. dj: .... noel
+dm: .x.. dj: ..x. olivia
+dm: ...x dj: .x.. petra
+dm: .... dj: .... ningu
+
+Empty slots:
+[]
+
+Unplaced Load:
+[]
+
+Unforced fixed turns:
+[]
+
+Undesired Penalties:
+[]
+
+Concentrated Load Penalties:
+[]
+
+Discontinuous Load Penalties:
+[]
+
+Far discontinuous Load Penalties:
+[]
+
+Marathon Load Penalties:
+[]
+
+No Brunch Penalties:
+[]
+
+Solution cost: 0
+[| dm:  {jolie, liza}, {mary, olivia},  {diana, noel},  {irma, petra}
+ | dj: {alice, gemma},  {liza, petra}, {kate, olivia}, {hellen, mary}
+ |]
+
+
