@@ -32,7 +32,6 @@ adjustLines: true
 clusterize: true
 discriminateLines: false
 pruneRedundant: false
-ignoreOptionalAbsences: false
 mostraCami: false
 maximCamiAMostrar: 60
 aleatori: true

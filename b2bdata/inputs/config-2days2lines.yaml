@@ -28,7 +28,6 @@ costLimit: 200
 discriminateLines: true
 pruneRedundant: false
 descartaNoPrometedores: true
-ignoreOptionalAbsences: true
 deixaEsmorzar: true
 maxNingusPerTurn: 2
 maxNingusPerTurnInEdition: 2

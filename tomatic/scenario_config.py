@@ -269,6 +269,3 @@ class Config:
         downloadFestivities(self.data)
         downloadBusy(self.data)
         downloadVacations(self.data)
-
-    def set_ignore_optionals(self, ignore = False):
-        self.data.ignoreOptionalAbsences = ignore

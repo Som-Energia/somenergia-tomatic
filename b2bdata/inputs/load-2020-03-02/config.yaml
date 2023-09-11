@@ -27,7 +27,6 @@ maxOverload: 1
 clusterize: false
 discriminateLines: true
 pruneRedundant: true
-ignoreOptionalAbsences: true
 mostraCami: false
 maximCamiAMostrar: 60
 aleatori: true

@@ -20,7 +20,6 @@ adjustLines: false # True to adapt the size of the timetable to the available lo
 clusterize: true # True if people is pre-asigned to specific lines
 discriminateLines: true # True to consider a different line ordering a different solution
 pruneRedundant: false # Activate to prune line ordering other than the sorted names one
-ignoreOptionalAbsences: true # False to enforce optional absences not to be optional
 mostraCami: false   # show the trail while it search for a solution
 maximCamiAMostrar: 60   # max level to show the trail for
 aleatori: true   # True to randomize order to choose persons (recommended unless you want deterministic testing)

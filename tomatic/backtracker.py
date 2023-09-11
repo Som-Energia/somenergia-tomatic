@@ -266,7 +266,7 @@ class Backtracker(object):
                 filename,
                 monday = self.config.monday,
                 errorHandler = errorHandler,
-                justRequired = self.config.ignoreOptionalAbsences,
+                justRequired = True,
             )
         return table
 
