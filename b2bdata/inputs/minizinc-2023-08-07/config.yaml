@@ -1,0 +1,67 @@
+baseUrl: http://localhost:4555
+personsfile: persons.yaml
+monitoringFile: taula.html
+minizincSolvers:
+  - chuffed
+  - coin-bc
+nTelefons: 8
+diesCerca:
+  - dx
+  - dj
+  - dv
+  - dl
+  - dm
+diesVisualitzacio:
+  - dl
+  - dm
+  - dx
+  - dj
+  - dv
+hours:
+  - 09:00
+  - '10:15'
+  - '11:30'
+  - '12:45'
+  - '14:00'
+computeShifts: true
+maxOverload: 0
+adjustLines: true
+clusterize: true
+discriminateLines: false
+pruneRedundant: false
+ignoreOptionalAbsences: false
+mostraCami: false
+maximCamiAMostrar: 60
+aleatori: true
+stopPenalty: 0
+backtrackDepth: 10000000000
+maxNodesToPersevere: 10000
+costLimit: 200
+descartaNoPrometedores: true
+deixaEsmorzar: true
+maxNingusPerTurn: 10
+maxNingusPerTurnInEdition: 2
+noVolenEsmorzar:
+  - david
+  - ningu
+maximPerTaula: 7
+maximsT1PerDia: 4
+maximHoresDiariesGeneral: 2
+maximHoresDiaries:
+  ningu: 10
+costHoresDiscontinues: 40
+costHoresConcentrades: 1
+costTaulaSorollosa: 5
+costHoraNoDesitjada: 10
+costTornBuit: 10
+maxPhoningInGroup:
+  infern: 2
+  casademont: 4
+minIdleInGroup:
+  it: 4
+randomColors: false
+forced: {}
+threshold_hits: 21
+callinfoPath: callinfo
+nNingusMinizinc: 2
+forcedTimeTable: forced-turns.yaml

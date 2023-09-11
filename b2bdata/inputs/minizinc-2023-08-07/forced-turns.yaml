@@ -1,0 +1,385 @@
+week: '2030-06-10'
+days:
+  - dl
+  - dm
+  - dx
+  - dj
+  - dv
+hours:
+  - 09:00
+  - '10:15'
+  - '11:30'
+  - '12:45'
+  - '14:00'
+turns:
+  - L1
+  - L2
+  - L3
+  - L4
+  - L5
+timetable:
+  dl:
+    - - mar
+      - vic
+      - mariona
+      - marta
+      - aram
+    - - yolanda
+      - monicag
+      - olga
+      - cire
+      - lidia
+    - - nuria
+      - nuriapuigvert
+      - joanb
+      - carol
+      - tania
+    - - sergiv
+      - claran
+      - gemma
+      - montser
+      - erika
+  dm:
+    - - monicag
+      - manel
+      - marc
+      - lidia
+      - tanias
+    - - erika
+      - mar
+      - olga
+      - sergivazqu
+      - mariabouza
+    - - herminia
+      - sergivazqu
+      - pere
+      - carmen
+      - martafarre
+    - - joanb
+      - carol
+      - tania
+      - gemma
+      - bernat
+  dx:
+    - - marc
+      - judit
+      - nuriapuigvert
+      - berta
+      - andrea
+    - - albert
+      - gabriel
+      - maria
+      - erola
+      - eloi
+    - - albert
+      - gabriel
+      - maria
+      - nuria
+      - bernat
+    - - mariona
+      - aram
+      - carme
+      - yolanda
+      - marcm
+  dj:
+    - - judith
+      - judit
+      - meritxello
+      - annab
+      - berta
+    - - annap
+      - anaperez
+      - herminia
+      - merce
+      - cesc
+    - - joanagomis
+      - joel
+      - martafarre
+      - carmen
+      - vane
+    - - carme
+      - montser
+      - pere
+      - martac
+      - marcm
+  dv:
+    - - yaiza
+      - judith
+      - manel
+      - claran
+      - meritxello
+    - - erola
+      - eloi
+      - meritxell
+      - yaiza
+      - annap
+    - - andrea
+      - davidb
+      - joel
+      - cesc
+      - sergiv
+    - - vic
+      - marta
+      - meritxell
+      - davidb
+      - vane
+colors:
+  marc: fbe8bc
+  eduard: d8b9c5
+  pere: ff8800
+  david: ffb500
+  carles: c9d659
+  marta: eb9481
+  monica: 7fada0
+  yaiza: ffffff
+  erola: 876dd8
+  manel: '000000'
+  tania: 59062d
+  judit: e781e8
+  silvia: 8097b8
+  victor: ff3233
+  judith: 00ff00
+  lucia: 9f24c2
+  sergi: 8cf2df
+  vic: 164aff
+  mariona: '813400'
+  gabriel: ffff00
+  maite: 007877
+  ningu: ffffff
+  joanb: 8af47d
+  maria: 00594d
+  carol: 6f9500
+  undefined: ddeeff
+  albert: f4f4f4
+  annarodon: 009e7d
+  olga: ddeeff
+  mar: 00ffff
+  vane: bd00ff
+  eloi: b2c3d4
+  annab: c1f3d7
+  vero: ff0048
+  jordi: 2756ff
+  xavi: ddeeff
+  joana: c9ec80
+  rogerlf: 00517d
+  gemma: a6ba8c
+  aram: 614d02
+  nuria: 00662a
+  carme: 0000ff
+  merce: f5447f
+  albertg: fcdc05
+  adria: b68f2f
+  monicag: f44c3b
+  otilia: 96b0ff
+  alex: ce6108
+  javi: 79eeff
+  herminia: ddbdf1
+  cire: 994a00
+  cesc: 6fff1e
+  berta: 50a65c
+  yolanda: ddeeff
+  joel: 00a28a
+  polmonso: 85bb67
+  oriolcampo: ddeeff
+  israel: ddeeff
+  reservaa: aaff88
+  reservab: aaff88
+  reservac: aa9c88
+  reservad: aa6488
+  reservae: 40ff88
+  reservaf: aaffd1
+  reservag: aaff88
+  martac: ffff5d
+  marcm: 0033aa
+  bernat: ff0000
+  davidb: 4cbbe2
+  sergiv: ff5a00
+  andrea: e77d00
+  carmen: 76b485
+  mariana: a7f9ff
+  sule: ddeeff
+  sergivazqu: ffb24c
+  meritxell: dd673f
+  lidia: bf75c5
+  martafarre: c7ff3c
+  melania: ddeeff
+  meritxello: 75f6cf
+  annaserra: 5b1591
+  claran: 41ffff
+  montser: ffff9b
+  erika: ff6b4c
+  annap: 00d49d
+  nuriapuigvert: 2277c4
+  jairo: ddeeff
+  jaume: ddeeff
+  naiara: ddeeff
+  joanagomis: 72001d
+  anaperez: d8d7ff
+  joansarola: ddeeff
+  annaoller: ddeeff
+  tanias: ddeeff
+  juditj: ddeeff
+  mariabouza: ddeeff
+  javicalzado: ddeeff
+  tomatic: c68fb0
+extensions:
+  albertg: '100'
+  manel: '122'
+  marta: '128'
+  monica: '129'
+  erola: '112'
+  yaiza: '133'
+  eduard: '183'
+  marc: '145'
+  judit: '157'
+  tania: '134'
+  carles: '146'
+  pere: '143'
+  david: '153'
+  silvia: '131'
+  judith: '142'
+  victor: '156'
+  lucia: '141'
+  vic: '136'
+  sergi: '109'
+  maite: '147'
+  gabriel: '148'
+  mariona: '101'
+  joanb: '116'
+  maria: '121'
+  carol: '123'
+  albert: '137'
+  annarodon: '165'
+  olga: '113'
+  mar: '126'
+  vane: '125'
+  eloi: '111'
+  annab: '140'
+  vero: '149'
+  jordi: '184'
+  xavi: '155'
+  joana: '152'
+  rogerlf: '127'
+  gemma: '120'
+  aram: '144'
+  cesc: '115'
+  nuria: '135'
+  carme: '110'
+  merce: '124'
+  adria: '105'
+  monicag: '119'
+  otilia: '104'
+  javi: '168'
+  herminia: '108'
+  cire: '103'
+  berta: '107'
+  yolanda: '118'
+  joel: '132'
+  polmonso: '151'
+  israel: '159'
+  andrea: '158'
+  sergiv: '160'
+  davidb: '161'
+  bernat: '162'
+  marcm: '163'
+  martac: '164'
+  carmen: '166'
+  mariana: '167'
+  reservaa: '169'
+  reservab: '170'
+  reservac: '171'
+  reservad: '172'
+  reservae: '173'
+  reservaf: '174'
+  reservag: '175'
+  sule: '176'
+  sergivazqu: '179'
+  oriolcampo: '180'
+  meritxell: '181'
+  alex: '182'
+  lidia: '185'
+  martafarre: '186'
+  melania: '187'
+  meritxello: '188'
+  annaserra: '189'
+  claran: '190'
+  montser: '192'
+  erika: '193'
+  annap: '194'
+  nuriapuigvert: '191'
+  jairo: '195'
+  jaume: '196'
+  naiara: '197'
+  joanagomis: '114'
+  anaperez: '117'
+  joansarola: '198'
+  annaoller: '102'
+  tanias: '199'
+  juditj: '177'
+  mariabouza: '200'
+  javicalzado: '178'
+names:
+  tomatic: Tomàtic
+  silvia: Sílvia
+  monica: Mònica
+  tania: Tània
+  victor: VíctorNA
+  lucia: Lucía
+  joanb: Joan B
+  ningu: '-'
+  carol: Càrol
+  annarodon: Anna R
+  annab: Anna B
+  jordi: JordiP
+  xavi: XaviDolz
+  david: David G.
+  rogerlf: RogerLF
+  merce: Mercè
+  adria: Adrià
+  monicag: Mònica G
+  albertg: Albert GS
+  albert: Albert M
+  otilia: Otilia
+  nuria: Núria
+  herminia: Hermi
+  polmonso: Pol
+  cesc: Cesc
+  oriolcampo: Oriol Campo
+  israel: Israel del Pino
+  reservaa: Escoltes
+  reservab: Escoltes2
+  reservac: Factura
+  reservad: Cobraments
+  reservae: Contractes
+  reservaf: Coord.Comer
+  reservag: Nuria Iglesias
+  martac: Marta C
+  marcm: Marc M
+  bernat: Bernat
+  davidb: David B
+  sergiv: SergiVilar
+  andrea: Andrea
+  carmen: Carmen H
+  sergivazqu: Sergi Va
+  meritxell: Txell
+  lidia: Lídia
+  martafarre: Marta Farré
+  melania: Melania Galán
+  meritxello: Txell O
+  annaserra: Anna Serra
+  claran: Clara Nualart
+  montser: Montse Ribas
+  erika: 'Erika '
+  annap: Anna Parera
+  nuriapuigvert: Núria P
+  joanagomis: Joana Gomis
+  anaperez: Ana PML
+  joansarola: Joan Sarola
+  tanias: Tània Sànchez
+  juditj: Judit Julià
+  mariabouza: Maria Bouza
+overload: []
+penalties: []
+cost: 11
+log:
+  - '2023-06-16 09:38:33.352290: nobody ha pujat 2030-06-10 '

@@ -1,4 +1,4 @@
-datapath: "b2bdata" # Point it to the directory containing your reference data
+datapath: 'b2bdata' # Point it to the directory containing your reference data
 testcases:
     load-and-schedule-2-days-2-lines:
         command: |
@@ -172,3 +172,27 @@ testcases:
         - b2bdata/inputs/load-and-schedule-2-days/graella-telefons-2022-07-11.yaml
         - b2bdata/inputs/load-and-schedule-2-days/status.yaml
 
+    minizinc-2023-08-07-many-holidays:
+        command: |
+            cd b2bdata/inputs/minizinc-2023-08-07/ ;
+            tomatic_scheduler.py 2023-08-07 \
+                --scheduler minizinc \
+                --keep \
+                --config-file config.yaml \
+                --personsfile persons.yaml \
+                --overload overload.yaml \
+                --deterministic \
+                --lines 10 \
+                --compute-shifts \
+                2>&1 | tee console.log && \
+                sed -i '/timeOfLastSolution/d' status.yaml && \
+                ls
+
+        outputs:
+        - b2bdata/inputs/minizinc-2023-08-07/console.log
+        - b2bdata/inputs/minizinc-2023-08-07/overload.yaml
+        - b2bdata/inputs/minizinc-2023-08-07/ponderatedideal-2023-08-07.yaml
+        - b2bdata/inputs/minizinc-2023-08-07/carrega-2023-08-07.yaml
+        - b2bdata/inputs/minizinc-2023-08-07/graella-telefons-2023-08-07.html
+        - b2bdata/inputs/minizinc-2023-08-07/graella-telefons-2023-08-07.yaml
+        - b2bdata/inputs/minizinc-2023-08-07/status.yaml
