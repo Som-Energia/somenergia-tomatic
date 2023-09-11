@@ -26,6 +26,8 @@
     - Not downloading leaves from google drive anymore
     - Removed drive related code and dependencies
 - Upgrade notes:
+    - dependencies updated: somutils, tomato-cooker
+        - run `pip install -e .`
     - removed cli options
         - `--certificate`
         - `--drive-file`
