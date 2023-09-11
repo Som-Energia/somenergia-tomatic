@@ -221,6 +221,26 @@ def laborableWeekDays(monday, holidays=None):
 		if monday + datetime.timedelta(days=i) not in holidays
 		]
 
+def busyIterator(files, monday, days=None, errorHandler=None):
+	"""Iterates (day, ihour, person, optional, reason) 
+	for every busy interpreted from files relevant to
+	mondays week and days
+	"""
+	if days is None:
+		days = laborableWeekDays(monday)
+	for filename in files:
+		with open(filename) as thefile:
+			allentries = parseBusy(thefile, errorHandler)
+			thisweekentries = onWeek(monday, allentries)
+			for entry in thisweekentries:
+				for ihour, isBusy in enumerate(entry.turns):
+					if isBusy!='1': continue
+					weekdays = [entry.weekday] if entry.weekday else days
+					for day in weekdays:
+						if day not in days: continue
+						yield day, ihour, entry.person, entry.optional, entry.reason
+
+
 class BusyTable(object):
 	"""Fast lookup table of whether someone is busy at some turn"""
 	def __init__(self, days, nhours, persons):
@@ -261,17 +281,12 @@ class BusyTable(object):
 		)
 
 	def load(self, filename, monday, errorHandler=None, justOptional=False, justRequired=False):
-		with open(filename) as thefile:
-			allentries = parseBusy(thefile, errorHandler)
-			thisweekentries = onWeek(monday, allentries)
-			for entry in thisweekentries:
-				if justOptional and not entry.optional: continue
-				if justRequired and entry.optional: continue
-				for hora, isBusy in enumerate(entry.turns):
-					if isBusy!='1': continue
-					weekdays = [entry.weekday] if entry.weekday else self._days
-					for dia in weekdays:
-						self.setBusy(dia, hora, entry.person, entry.reason)
+		for day, ihour, person, optional, reason in busyIterator(
+			[filename], monday, days=self._days, errorHandler=errorHandler,
+		):
+			if justOptional and not optional: continue
+			if justRequired and optional: continue
+			self.setBusy(day, ihour, person, reason)
 
 	def showDay(self, day, person):
 		return ''.join(
