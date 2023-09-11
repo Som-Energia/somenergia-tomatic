@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.4.0 2023-09-12
 
 - Using a rewritten Minizinc model
     - More flexible to find solutions in complicated scenarios
