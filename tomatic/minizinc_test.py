@@ -5,254 +5,323 @@ from unittest.mock import patch
 
 from yamlns import namespace as ns
 
-from .minizinc import Menu
-from .minizinc import solve_problem
+from .minizinc import Minizinc
 from .busy import weekdays as fullWeekdays
 from pathlib import Path
 
 
-# TODO: real fixture ?
-def fixture():
-    return ns(
-        monday=datetime.datetime(2023, 3, 27),
+def fixture(**overrides):
+    result = ns(ns(
+        monday=datetime.date(2023, 3, 27),
+        deterministic=True,
+        minizincSolvers=['chuffed', 'coin-bc'],
         finalLoad=ns(
             goku=4,
             vegeta=4,
             krilin=4,
         ),
+        maximHoresDiariesGeneral=2,
         nTelefons=2,
         hours=['8:00', '9:00'],
-        nNingusMinizinc=0,
-        maximHoresDiariesGeneral=2,
-        busyTable={
-            ('dl', 0, 'goku'): 'Fight Freezer',
-            ('dm', 0, 'goku'): False,
-            ('dx', 0, 'goku'): False,
-            ('dj', 0, 'goku'): False,
-            ('dv', 0, 'goku'): 'Train',
-            ('dl', 0, 'vegeta'): False,
-            ('dm', 0, 'vegeta'): 'Date with Bulma',
-            ('dx', 0, 'vegeta'): False,
-            ('dj', 0, 'vegeta'): False,
-            ('dv', 0, 'vegeta'): False,
-            ('dl', 0, 'krilin'): False,
-            ('dm', 0, 'krilin'): False,
-            ('dx', 0, 'krilin'): 'Explote',
-            ('dj', 0, 'krilin'): 'Resurect',
-            ('dv', 0, 'krilin'): False,
-        },
+        busyFiles=['indisponibilitats.conf'],
+        overloadfile='overload.yaml',
+        names=[],
         colors=[],
         extensions=[],
-        names=[],
-    )
+    ), **overrides)
+    return result
 
 
-def make_minizinc_ns_result(timetable, cost):
-    return ns(
-        week='2023-03-27 00:00:00',
-        days=['dl', 'dm', 'dx', 'dj', 'dv'],
-        hours=['8:00', '9:00'],
-        turns=['L1', 'L2'],
-        timetable=timetable,
-        colors=[],
-        extensions=[],
-        names=[],
-        overload={},
-        penalties=[],
-        cost=cost,
-        log=[]
-    )
+from somutils.testutils import sandbox_dir
 
-
-class Menu_Test(unittest.TestCase):
+class Minizinc_Test(unittest.TestCase):
     from somutils.testutils import assertNsEqual
+    from somutils.testutils import enterContext
 
     def setUp(self):
-        self.todelete=[]
+        self.sandbox = self.enterContext(sandbox_dir())
         self.holidaysfile = Path('holidays.conf')
-        self.oldholidays = None
-        if self.holidaysfile.exists():
-            self.oldholidays = self.holidaysfile.read_text(encoding='utf8')
         self.holidaysfile.write_text(
             "2020-12-24\tNadal\n"
             "2020-12-25\tNadal\n"
             "2020-12-26\tNadal\n"
+            "2023-09-12\tFake holiday\n"
             "",
             encoding='utf8',
         )
-
-    def tearDown(self):
-        for filename in self.todelete:
-            os.remove(filename)
-        if self.oldholidays is None:
-            self.holidaysfile.unlink()
-        else:
-            self.holidaysfile.write_text(
-                self.oldholidays, encoding='utf8')
+        self.overload = Path('overload.yaml')
+        self.overload.write_text("{}")
+        Path('indisponibilitats.conf').write_text(
+            '+goku dl 1000 # Fight Freezer\n'
+            '+goku dv 1000 # Train\n'
+            '+vegeta dm 1000 # Date with Bulma\n'
+            '+krilin dx 1000 # Explode\n'
+            '+krilin dj 1000 # Resurect\n'
+            'goku dj 1000 # Sleepy\n'
+            'krilin dm 1000 # Eating\n'
+            'arale dj 1000 # Ignored Dr Slump\n'
+            'goku dj 0100 # Ignored hour\n'
+        )
 
     def test_create_menu_instance(self):
         # Given a config with all the needed paramenters
-        # when we initialize a Menu
+        # when we initialize a Minizinc
         config = fixture()
-        menu = Menu(config)
-        # then we have an instance of Menu
-        self.assertIsInstance(menu, Menu)
+        minizinc = Minizinc(config)
+        # then we have an instance of Minizinc
+        self.assertIsInstance(minizinc, Minizinc)
 
     def test_shuffle_persons(self):
         # Given a config with all the needed parameters
-        # When we get a menu
+        # When we get a minizinc
         config = fixture()
-        menu = Menu(config)
+        minizinc = Minizinc(config)
         given_persons = list(config.finalLoad.keys())
-        shuffled_persons = menu.names
-        # then we have the persons shuffled
-        self.assertEqual(len(shuffled_persons), len(given_persons))
-        for person in given_persons:
-            self.assertIn(person, shuffled_persons)
-        # and the turns well saved
-        for i, torns in enumerate(menu.nTorns):
-            name = menu.names[i]
-            full_load = config.finalLoad[name]
-            self.assertEqual(full_load, torns)
+        shuffled_persons = minizinc.problem.names
+        # then we have the persons shuffled with ningu added
+        self.assertEqual(
+            set(shuffled_persons),
+            set(given_persons).union({'ningu'}),
+        )
+        # and the turns well saved with ningu added
+        self.assertNsEqual(
+            ns(
+                config.finalLoad,
+                ningu=0
+            ),
+            ns(zip(
+                minizinc.problem.names,
+                minizinc.problem.maxLoad,
+            )),
+        )
+
 
     def test_indisponibilities(self):
         # Given a config with all the needed parameters
-        # When we get a menu
+        # When we get a minizinc
         config = fixture()
-        menu = Menu(config)
+        minizinc = Minizinc(config)
         # then we have the indisponibilities well formatted
-        indisponibilities = {  # indisponibilities per person
-            'goku': [{1}, set(), set(), set(), {1}],
-            'vegeta': [set(), {1}, set(), set(), set()],
-            'krilin': [set(), set(), {1}, {1}, set()],
-        }
-        expected_indisponibilities = []
-        for name in menu.names:  # to sort considering the shuffle result
-            expected_indisponibilities.extend(
-                indisponibilities[name]
-            )
-        self.assertEqual(expected_indisponibilities, menu.indisponibilitats)
+        self.assertNsEqual(minizinc.busyReasons, """
+            [dl, 0, goku]: Fight Freezer
+            [dv, 0, goku]: Train
+            [dm, 0, vegeta]: Date with Bulma
+            [dx, 0, krilin]: Explode
+            [dj, 0, krilin]: Resurect
+        """)
+        self.assertEqual(minizinc.problem.busy, [
+            [{'goku'}],
+            [{'vegeta'}],
+            [{'krilin'}],
+            [{'krilin'}],
+            [{'goku'}],
+        ])
+
+    def test_undesired(self):
+        # Given a config with all the needed parameters
+        # When we get a minizinc
+        config = fixture()
+        minizinc = Minizinc(config)
+        # then we have the undesired well formatted
+        self.assertNsEqual(minizinc.undesiredReasons, """
+            [dj, 0, goku]: Sleepy
+            [dm, 0, krilin]: Eating
+        """)
+        self.assertEqual(minizinc.problem.undesired, [
+            [set()],
+            [{'krilin'}],
+            [set()],
+            [{'goku'}],
+            [set()],
+        ])
+
+    def test_indisponibilities_with_holidays(self):
+        config = fixture(
+            monday=datetime.date(2023, 9, 11),
+            # faked holiday on 2023-09-12, dm
+        )
+        minizinc = Minizinc(config)
+        # busy does not includes busy in holiday
+        self.assertNsEqual(minizinc.busyReasons, """
+            [dl, 0, goku]: Fight Freezer
+            [dv, 0, goku]: Train
+            # this one is removed
+            #[dm, 0, vegeta]: Date with Bulma
+            [dx, 0, krilin]: Explode
+            [dj, 0, krilin]: Resurect
+        """)
+        self.assertEqual(minizinc.problem.busy, [
+            [{'goku'}],
+            #[{'vegeta'}], # this one is removed
+            [{'krilin'}],
+            [{'krilin'}],
+            [{'goku'}],
+        ])
+
+    def test_undesired(self):
+        # Given a config with all the needed parameters
+        # When we get a minizinc
+        config = fixture()
+        minizinc = Minizinc(config)
+        # then we have the undesired well formatted
+        self.assertNsEqual(minizinc.undesiredReasons, """
+            [dj, 0, goku]: Sleepy
+            [dm, 0, krilin]: Eating
+        """)
+        self.assertEqual(minizinc.problem.undesired, [
+            [set()],
+            [{'krilin'}],
+            [set()],
+            [{'goku'}],
+            [set()],
+        ])
+
+    def test_undesired_withHolidays(self):
+        config = fixture(
+            monday=datetime.date(2023, 9, 11),
+            # faked holiday on 2023-09-12, dm
+        )
+        minizinc = Minizinc(config)
+        # then we have the undesired well formatted
+        self.assertNsEqual(minizinc.undesiredReasons, """
+            [dj, 0, goku]: Sleepy
+        """)
+        self.assertEqual(minizinc.problem.undesired, [
+            [set()],
+            [set()],
+            [{'goku'}],
+            [set()],
+        ])
 
     def test_forcedTurns_whenMissing(self):
         # Given a config with all the needed parameters
-        # When we get a menu
+        # When we get a minizinc
         nDays = 5 # week with no festivities
         config = fixture()
-        menu = Menu(config)
+        minizinc = Minizinc(config)
 
-        self.assertEqual(menu.forcedTurns, [
-            set()
-            for _ in range(len(config.finalLoad) * nDays)
+        self.assertEqual(minizinc.problem.forced, [
+            [set()],
+            [set()],
+            [set()],
+            [set()],
+            [set()],
         ])
 
     def test_forcedTurns_withAForcedTurn(self):
         # Given a config with all the needed parameters
-        # When we get a menu
-        nDays = 5 # week with no festivities
+        # When we get a minizinc
         day = 'dm'
-        iday = fullWeekdays.index(day)
-        person = 'goku'
         hour = 1
-        line = 3
+        line = 3 # ignored, just different from existing
+        person = 'goku'
         config = fixture()
         config.forced = {
             (day, hour-1 , line): person
         }
-        menu = Menu(config)
-        expectation = [
-            set()
-            for idx in range(len(config.finalLoad) * nDays)
-        ]
-        iperson = menu.names.index(person)
-        expectation[iday + nDays*iperson] = {hour}
+        minizinc = Minizinc(config)
+        self.assertEqual(minizinc.problem.forced, [
+            [set()],
+            [{'goku'}],
+            [set()],
+            [set()],
+            [set()],
+        ])
 
-        self.assertEqual(menu.forcedTurns, expectation)
-
-    @patch("tomatic.minizinc.laborableWeekDays")
-    def test_forcedTurns_withAForcedTurn_inAFestivity_ignored(self, mocked_laborableWeekDays):
-        mocked_laborableWeekDays.return_value = ['dl', 'dx', 'dj', 'dv'] # dm removed
+    def test_forcedTurns_withAForcedTurn_inAFestivity_ignored(self):
         # Given a config with all the needed parameters
-        # When we get a menu
-        nDays = 4 # week with a festivity
+        # When we get a minizinc
         day = 'dm'
-        iday = fullWeekdays.index(day)
-        person = 'goku'
         hour = 1
-        line = 3
-        config = fixture()
+        line = 3 # ignored, just different from existing
+        person = 'goku'
+        config = fixture(
+            monday=datetime.date(2023,9,11),
+            # faked holiday on 2023-09-12, dm
+        )
         config.forced = {
             (day, hour-1 , line): person
         }
-        menu = Menu(config)
+        minizinc = Minizinc(config)
         expectation = [
-            set()
-            for idx in range(len(config.finalLoad) * nDays)
+            [set()],
+            [set()],
+            [set()],
+            [set()],
         ]
-        self.assertEqual(menu.forcedTurns, expectation)
+        self.assertEqual(minizinc.problem.forced, expectation)
 
     def test_forcedTurns_withAMissingPerson(self):
         # Given a config with all the needed parameters
-        # When we get a menu
-        nDays = 5 # week with no festivities
+        # When we get a minizinc
         day = 'dm'
-        iday = fullWeekdays.index(day)
-        person = 'mortadelo' # Not in Dragon Ball
         hour = 1
-        line = 3
+        line = 3 # ignored, just different from existing
+        person = 'mortadelo' # Not in Dragon Ball
         config = fixture()
         config.forced = {
             (day, hour-1 , line): person
         }
-        menu = Menu(config)
+        minizinc = Minizinc(config)
         expectation = [
-            set()
-            for idx in range(len(config.finalLoad) * nDays)
+            [set()],
+            [set()],
+            [set()],
+            [set()],
+            [set()],
         ]
-        self.assertEqual(menu.forcedTurns, expectation)
+        self.assertEqual(minizinc.problem.forced, expectation)
 
-    @patch("tomatic.minizinc.laborableWeekDays")
-    def test_indisponibilities_with_holidays(self, mocked_laborableWeekDays):
-        mocked_laborableWeekDays.return_value = ['dl', 'dm', 'dx', 'dj']
-        # Given a config with a monday of a week with holidays (friday)
-        config = fixture()
-        config.monday = datetime.date(2023, 4, 3)
-        # When we get a menu
-        menu = Menu(config)
-        # then we have the indisponibilities without the holiday
-        indisponibilities = {  # indisponibilities per person
-            'goku': [{1}, set(), set(), set()],
-            'vegeta': [set(), {1}, set(), set()],
-            'krilin': [set(), set(), {1}, {1}],
-        }
-        expected_indisponibilities = []
-        for name in menu.names:  # to sort considering the shuffle result
-            expected_indisponibilities.extend(
-                indisponibilities[name]
-            )
-        self.assertEqual(expected_indisponibilities, menu.indisponibilitats)
+    def solution(self, **override):
+        return ns(solution=ns(ns(
+            emptySlots=[],
+            unforced=[],
+            undesiredPenalties=[],
+            concentratedLoad=[],
+            discontinuousPenalties=[],
+            farDiscontinuousPenalties=[],
+            marathonPenalties=[],
+            noBrunchPenalties=[],
+            cost=10,
+        ), **override))
+
+    def scheduling(self, timetable, cost, **overrides):
+        return ns(ns(
+            week='2023-03-27',
+            days=['dl', 'dm', 'dx', 'dj', 'dv'],
+            hours=['8:00', '9:00'],
+            turns=['L1', 'L2'],
+            timetable=timetable,
+            colors=[],
+            extensions=[],
+            names=[],
+            overload={},
+            penalties=[],
+            cost=cost,
+            log=[]
+        ), **overrides)
+
+
 
     def test_translate(self):
         # Given a solution and a config
         config = fixture()
-        menu = Menu(config)
-        solution = ns(
-            solution=ns(
-                ocupacioSlot=[
-                    [{'krilin', 'vegeta'}],  # dl
-                    [{'krilin', 'goku'}],  # dm
-                    [{'goku', 'vegeta'}],  # dx
-                    [{'goku', 'vegeta'}],  # dj
-                    [{'krilin', 'vegeta'}],  # dv
-                ],
-                totalTorns=10
-            )
+        minizinc = Minizinc(config)
+        solution = self.solution(
+            timetable=[
+                [{'krilin', 'vegeta'}],  # dl
+                [{'krilin', 'goku'}],  # dm
+                [{'goku', 'vegeta'}],  # dx
+                [{'goku', 'vegeta'}],  # dj
+                [{'krilin', 'vegeta'}],  # dv
+            ],
         )
 
-        # When we call the menu translate method
-        result = menu.translate(solution, config)
+        # When we call the minizinc translate method
+        result = minizinc.translateSolution(solution)
 
         # Then we get the result as the expected namespace
-        expected = make_minizinc_ns_result(
+        self.assertNsEqual(result, self.scheduling(
             timetable={
                 'dl': [['krilin', 'vegeta']],
                 'dm': [['goku', 'krilin']],
@@ -261,32 +330,91 @@ class Menu_Test(unittest.TestCase):
                 'dv': [['krilin', 'vegeta']],
             },
             cost=10
-        )
-        self.assertNsEqual(expected, result)
+        ))
 
-
-    def test_translate_with_ningus(self):
+    def test_translate__manyHours_singleLine(self):
         # Given a solution and a config
-        config = fixture()
-        menu = Menu(config)
-        solution = ns(
-            solution=ns(
-                ocupacioSlot=[
-                    [{'krilin'}],  # dl
-                    [{'krilin', 'goku'}],  # dm
-                    [{'goku', 'vegeta'}],  # dx
-                    [{'goku'}],  # dj
-                    [{'krilin', 'vegeta'}],  # dv
-                ],
-                totalTorns=10
-            )
+        config = fixture(
+            nTelefons=1,
+            hours=['9:00','10:00','11:00'],
+        )
+        minizinc = Minizinc(config)
+        solution = self.solution(
+            timetable=[
+                [{'krilin'},{'vegeta'}],  # dl
+                [{'krilin'},{'goku'}],  # dm
+                [{'goku'},{'vegeta'}],  # dx
+                [{'goku'},{'vegeta'}],  # dj
+                [{'krilin'},{'vegeta'}],  # dv
+            ],
         )
 
-        # When we call the menu translate method
-        result = menu.translate(solution, config)
+        # When we call the minizinc translate method
+        result = minizinc.translateSolution(solution)
 
         # Then we get the result as the expected namespace
-        expected = make_minizinc_ns_result(
+        self.assertNsEqual(result, self.scheduling(
+            hours=['9:00','10:00','11:00'],
+            timetable={
+                'dl': [['krilin'],['vegeta']],
+                'dm': [['krilin'],['goku']],
+                'dx': [['goku'],['vegeta']],
+                'dj': [['goku'],['vegeta']],
+                'dv': [['krilin'],['vegeta']],
+            },
+            cost=10,
+            turns=['L1'],
+        ))
+
+    def test_translate__nobodyMovedEnd(self):
+        # Given a solution and a config
+        config = fixture()
+        minizinc = Minizinc(config)
+        solution = self.solution(
+            timetable=[
+                [{'krilin', 'vegeta'}],  # dl
+                [{'ningu', 'goku'}],  # dm
+                [{'goku', 'vegeta'}],  # dx
+                [{'ningu', 'vegeta'}],  # dj
+                [{'krilin', 'vegeta'}],  # dv
+            ],
+        )
+
+        # When we call the minizinc translate method
+        result = minizinc.translateSolution(solution)
+
+        # Then we get the result as the expected namespace
+        self.assertNsEqual(result, self.scheduling(
+            timetable={
+                'dl': [['krilin', 'vegeta']],
+                'dm': [['goku', 'ningu']], # this one
+                'dx': [['goku', 'vegeta']],
+                'dj': [['vegeta', 'ningu']], # this one
+                'dv': [['krilin', 'vegeta']],
+            },
+            cost=10
+        ))
+
+
+    def test_translate__holesFilesWithNobody(self):
+        # Given a solution and a config
+        config = fixture()
+        minizinc = Minizinc(config)
+        solution = self.solution(
+            timetable=[
+                [{'krilin'}],  # dl
+                [{'krilin', 'goku'}],  # dm
+                [{'goku', 'vegeta'}],  # dx
+                [{'goku'}],  # dj
+                [{'krilin', 'vegeta'}],  # dv
+            ],
+        )
+
+        # When we call the minizinc translate method
+        result = minizinc.translateSolution(solution)
+
+        # Filled with nobody
+        self.assertNsEqual(result, self.scheduling(
             timetable={
                 'dl': [['krilin', 'ningu']],
                 'dm': [['goku', 'krilin']],
@@ -295,83 +423,140 @@ class Menu_Test(unittest.TestCase):
                 'dv': [['krilin', 'vegeta']]
             },
             cost=10
-        )
-        self.assertNsEqual(expected, result)
+        ))
 
-
-    def test_translate_with_holidays(self):
+    def test_translate__festivitiesFilledIn(self):
         # Given a solution and a config with one holiday
-        config = fixture()
-        menu = Menu(config)
-        menu.laborable_days = ['dl', 'dm', 'dx', 'dv']
-        solution = ns(
-            solution=ns(
-                ocupacioSlot=[
-                    [{'krilin'}],  # dl
-                    [{'krilin', 'goku'}],  # dm
-                    [{'goku', 'vegeta'}],  # dx
-                    [{'goku'}],  # dv
-                ],
-                totalTorns=8
-            )
+        config = fixture(
+            monday=datetime.date(2023,9,11),
+            # faked holiday on 2023-09-12, dm
+        )
+        minizinc = Minizinc(config)
+        minizinc.laborable_days = ['dl', 'dx', 'dj', 'dv']
+        solution = self.solution(
+            timetable=[
+                [{'krilin'}],  # dl
+                [{'krilin', 'goku'}],  # dx
+                [{'goku', 'vegeta'}],  # dj
+                [{'goku'}],  # dv
+            ],
         )
 
-        # When we call the menu translate method
-        result = menu.translate(solution, config)
+        # When we call the minizinc translate method
+        result = minizinc.translateSolution(solution)
 
         # Then we get the result as the expected namespace
-        expected = make_minizinc_ns_result(
+        self.assertNsEqual(result, self.scheduling(
+            week='2023-09-11',
             timetable={
                 'dl': [['krilin', 'ningu']],
-                'dm': [['goku', 'krilin']],
-                'dx': [['goku', 'vegeta']],
-                'dj': [['festiu', 'festiu']],
+                'dm': [['festiu', 'festiu']], # this changes
+                'dx': [['goku', 'krilin']],
+                'dj': [['goku', 'vegeta']],
                 'dv': [['goku', 'ningu']]
             },
-            cost=8
+            cost=10
+        ))
+
+    def assertPenalties(self, penalties, **overrides):
+        # Given a solution and a config
+        config = fixture(
+            nTelefons=1,
+            hours=['9:00','10:00','11:00'],
         )
-        self.assertNsEqual(expected, result)
-
-
-class Minizinc_Test(unittest.TestCase):
-
-    def setUp(self):
-        self.todelete=[]
-        self.holidaysfile = Path('holidays.conf')
-        self.oldholidays = None
-        if self.holidaysfile.exists():
-            self.oldholidays = self.holidaysfile.read_text(encoding='utf8')
-        self.holidaysfile.write_text(
-            "2020-12-24\tNadal\n"
-            "2020-12-25\tNadal\n"
-            "2020-12-26\tNadal\n"
-            "",
-            encoding='utf8',
+        minizinc = Minizinc(config)
+        solution = self.solution(
+            timetable=[
+                [{'krilin'},{'vegeta'}],  # dl
+                [{'krilin'},{'goku'}],  # dm
+                [{'goku'},{'vegeta'}],  # dx
+                [{'goku'},{'vegeta'}],  # dj
+                [{'krilin'},{'vegeta'}],  # dv
+            ],
+            **overrides
         )
 
-    def tearDown(self):
-        for filename in self.todelete:
-            os.remove(filename)
-        if self.oldholidays is None:
-            self.holidaysfile.unlink()
-        else:
-            self.holidaysfile.write_text(
-                self.oldholidays, encoding='utf8')
+        # When we call the minizinc translate method
+        result = minizinc.translateSolution(solution)
 
-    def test_solve_problem_ok(self):
-        # Given well formatted config
-        config = fixture()
-        # When we call the solve problem method
-        solution = solve_problem(config, ['chuffed', 'coin-bc'])
-        # Then we have a solution
-        self.assertNotEqual(False, solution)
-        # self.assertEqual({}, solution)
+        # Then we get the result as the expected namespace
+        self.assertNsEqual(result, self.scheduling(
+            hours=['9:00','10:00','11:00'],
+            timetable={
+                'dl': [['krilin'],['vegeta']],
+                'dm': [['krilin'],['goku']],
+                'dx': [['goku'],['vegeta']],
+                'dj': [['goku'],['vegeta']],
+                'dv': [['krilin'],['vegeta']],
+            },
+            cost=10,
+            turns=['L1'],
+            penalties=penalties,
+        ))
 
-    def test_solve_problem_ko(self):
-        # Given well formatted config but no solution
-        config = fixture()
-        config.finalLoad.goku = 1
-        # When we call the solve problem method
-        solution = solve_problem(config, ['chuffed', 'coin-bc'])
-        # Then we do not have a solution
-        self.assertFalse(solution)
+
+    def test_translate__penalties_emptySlots(self):
+        self.assertPenalties(
+            emptySlots=[('dm', 1, 3)],
+            penalties = [
+                (900, '3 forats a dm 9:00 '),
+            ],
+        )
+
+    def test_translate__penalties_undesired(self):
+        self.assertPenalties(
+            undesiredPenalties=[('dj', 1, 'goku')],
+            penalties = [
+                (5, 'goku dj 9:00 no li va be per: Sleepy'),
+            ],
+        )
+
+    def test_translate__penalties_unforced(self):
+        self.assertPenalties(
+            unforced=[('dl', 1, 'goku')],
+            penalties = [
+                (50, 'dl 9:00 Torn fix no col·locat de goku'),
+            ],
+        )
+    def test_translate__penalties_concentrated(self):
+        n = 3
+        self.assertPenalties(
+            concentratedLoad=[('dm', 'goku', 3)],
+            penalties = [
+                (n*(n-1)*10, 'goku dm té 3 hores el mateix dia'),
+            ],
+        )
+
+    def test_translate__penalties_discontinuous(self):
+        self.assertPenalties(
+            discontinuousPenalties=[('dl', 'krilin')],
+            penalties = [
+                (30, 'krilin dl té torns intercalats'),
+            ],
+        )
+    def test_translate__penalties_farDiscontinuous(self):
+        self.assertPenalties(
+            farDiscontinuousPenalties=[('dl', 'krilin')],
+            marathonPenalties=[],
+            noBrunchPenalties=[],
+            penalties = [
+                (20, 'krilin dl té torns intercalats (als extrems)'),
+            ],
+        )
+
+    def test_translate__penalties_noBrunch(self):
+        self.assertPenalties(
+            noBrunchPenalties=[('dl', 'krilin')],
+            penalties = [
+                (10, 'krilin dl no pot esmorzar'),
+            ],
+        )
+
+    def test_translate__penalties_marathon(self):
+        self.assertPenalties(
+            marathonPenalties=[('dl', 'krilin')],
+            penalties = [
+                (40, 'krilin dl té 3 hores sense descans'),
+            ],
+        )
+
