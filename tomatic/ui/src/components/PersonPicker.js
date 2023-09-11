@@ -8,27 +8,24 @@ function PersonPicker(props) {
 
   var extensions = Tomatic.persons().extensions || {}
 
-  console.log('extensions', extensions)
-  const CellItem = styled.span`
-    label: name;
+  const CellItem = styled.div`
     cursor: pointer;
     text-align: center;
     padding: 0.5em;
-    width: 8em;
+    width: 10em;
     margin: 0.3em;
     :hover {
-      background: #bcb;
+      opacity: 70%;
     }
   `
-  const CellItemNingu = styled.span`
-    label: name;
+  const CellItemNingu = styled.div`
     cursor: pointer;
     text-align: center;
-    padding: 0.5em 3em 0.5em 3em;
-    width: 8em;
+    padding: 0.5em 1em 0.5em 1em;
+    width: 10em;
     margin: 0.3em;
     :hover {
-      background: #bcb;
+      opacity: 70%;
     }
   `
 
@@ -42,17 +39,23 @@ function PersonPicker(props) {
           {Tomatic.formatName(name)}
         </CellItemNingu>
       )
-    } else {
-      return (
-        <CellItem className={'extension ' + name} onClick={() => onPick(name)}>
-          {Tomatic.formatName(name)}
-        </CellItem>
-      )
     }
+    return (
+      <CellItem
+        key={name}
+        className={'extension ' + name}
+        onClick={() => onPick(name)}
+      >
+        {Tomatic.formatName(name)}
+      </CellItem>
+    )
   }
-
   return (
-    <Grid style={{ margin: 1 }} container spacing={{ xs: 4, md: 4 }}>
+    <Grid
+      style={{ width: '100%', margin: 1, justifyContent: 'center' }}
+      container
+      spacing={{ xs: 4, md: 4 }}
+    >
       {Object.keys(extensions)
         .sort()
         .map((name) => pickCell(name))}

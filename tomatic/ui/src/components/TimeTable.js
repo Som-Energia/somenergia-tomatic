@@ -36,7 +36,11 @@ function TimeTable(props) {
   function cell(day, houri, turni) {
     var name = getCell(day, houri, turni)
     return (
-      <td className={name} onClick={() => handleClick(day, houri, turni, name)}>
+      <td
+        key={day + houri + turni}
+        className={name}
+        onClick={() => handleClick(day, houri, turni, name)}
+      >
         {Tomatic.formatName(name)}
         <div className="tooltip">{Tomatic.formatExtension(name)}</div>
       </td>
@@ -52,8 +56,8 @@ function TimeTable(props) {
           {grid.log
             .slice(0, -1)
             .reverse()
-            .map((change) => (
-              <li>{change}</li>
+            .map((change, i) => (
+              <li key={i}>{change}</li>
             ))}
         </ul>
       </div>
@@ -66,8 +70,8 @@ function TimeTable(props) {
         <h5>Penalitzacions ({grid.cost || 0} punts)</h5>
         <ul className="penalties">
           {grid.penalties ? [] : <li>'La graella no te penalitzacions'</li>}
-          {(grid.penalties || []).map((penalty) => (
-            <li>{penalty[0] + ': ' + penalty[1]}</li>
+          {(grid.penalties || []).map((penalty, i) => (
+            <li key={i}>{penalty[0] + ': ' + penalty[1]}</li>
           ))}
         </ul>
       </div>
@@ -84,8 +88,8 @@ function TimeTable(props) {
           ) : (
             <li>'La graella no te sobrecarregues apuntades'</li>
           )}
-          {Object.keys(grid.overload || {}).map((person) => (
-            <li>{person + ': ' + grid.overload[person]}</li>
+          {Object.keys(grid.overload || {}).map((person, i) => (
+            <li key={i}>{person + ': ' + grid.overload[person]}</li>
           ))}
         </ul>
       </div>
@@ -142,13 +146,13 @@ function TimeTable(props) {
       ) : null}
       <div className="layout center-center wrap">
         {(grid?.days || []).map((day) => (
-          <div className="graella">
+          <div key={day} className="graella">
             <table>
               <thead>
                 <tr>
                   <th>{Tomatic.weekday(day)}</th>
                   {grid?.turns.map((turn) => (
-                    <td>{turn}</td>
+                    <td key={turn}>{turn}</td>
                   ))}
                 </tr>
               </thead>
