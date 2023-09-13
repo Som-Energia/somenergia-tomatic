@@ -222,6 +222,8 @@ class Storage(object):
         import ics.utils
         calendar = ics.Calendar()
         calendar.extra.append(ics.utils.ContentLine(name="NAME", value="Atenció telèfon {}".format(persons.name(person))))
+        calendar.extra.append(ics.utils.ContentLine(name="X-WR-CALNAME", value="Atenció telèfon {}".format(persons.name(person))))
+        calendar.extra.append(ics.utils.ContentLine(name="X-PUBLISHED-TTL", value="PT1H"))
         for week in self.list():
             data = self.load(week)
             times = data.hours
