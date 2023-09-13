@@ -25,7 +25,7 @@ Per això les línies vermelles son les mínimes:
     - Es pondera la **càrrega ideal** de cada persona, pels dies que no està de **vacances o festius**
     - Es limita al que li deixen fer les altres **indisponibilitats no opcionals**
     - Es treuen o afegeixen torns de forma repartida per ajustar-se a la càrrega objectiu.
-	 - Actualment està desactivat afegir-ne, pero podem treue'n si sobren
+	- Actualment està desactivat afegir-ne, pero podem treue'n si sobren
 	- (Ara desactivat) Es fa compensant els desequilibris històrics (deute negatiu i positiu de torns) o, si no, generant-ne de nou
 
 ## Penalitzacions (aka gripaus)
