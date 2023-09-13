@@ -1,26 +1,34 @@
 # Restriccions i penalitzacións de les graelles
 
 Actualitzat a la versio del minizinc de 2023-09-14.
-A diferència del backtracker, no es tan convenient tenir 
 
-**Restricció (aka línies vermelles):** Fa que una graella no sigui viable.
+Hi ha dos tipus de regles:
 
-- **Persones indivisibles:** A cada torn una persona només pot estar un cop (natural pero cal dir-li a l'ordinador)
+- **Restricció (aka línies vermelles):** Fa que una graella no sigui viable.
+- **Penalitzacio (aka gripau):** Situació a evitar puntuada amb un cost, la suma dels quals el cuiner interntarà minimitzar.
+
+## Restriccions (aka línies vermelles)
+
+A diferència del backtracker, on era bo tenir moltes restriccions per acotar la cerca,
+al minizinc, no es necessari i ens interessa més que les setmanes complicades
+trobin alguna solució.
+Per això les línies vermelles son les mínimes:
+
+- **No clonar persones:** A cada torn una persona només pot estar un cop (de sentit comú, pero cal dir-li a l'ordinador)
 	- excepció: els 'ningus' que son forats i pot haver més d'un a un torn
 - **Festius sagrats:** Ningú atén telèfon en festiu (tambe cal dir-ho)
 - **Estic Fora:** S'han de respectar les indisponibilitats no opcionals
 	- vacances, baixes indicades a l'odoo
 	- reunions, viatges, conciliació indicades al Tomatic
 - **Carrega màxima diàra:** ara està configurada a 2 per tothom
-- **Càrrega màxima setmanal:** es determina per cada persona un [pas anterior](logicaCompensacioHores.md)
-	- Partint de la **carrega ideal**
-	- Ponderada als **dias hàbils** (vacances, festius)
-	- Modulada per la **disponibilitat** (indisponibilitas no opcionals)
-	- Ajustant equitativament amunt i avall per arribar a la càrrega objectiu
-		- Compensant primer deutes positius i negatius d'anteriors setmanes (actualment desactivat)
-		- Actualment tenim un limit de zero per ajustar cap amunt
+- **Càrrega màxima setmanal:** es determina per cada persona un [pas anterior](logicaCompensacioHores.md):
+    - Es pondera la **càrrega ideal** de cada persona, pels dies que no està de **vacances o festius**
+    - Es limita al que li deixen fer les altres **indisponibilitats no opcionals**
+    - (Ara desactivat) Es compensen els desequilibris històrics (deute negatiu i positiu de torns)
+    - Es treuen o afegeixen torns de forma repartida per ajustar-se a la càrrega objectiu.
+	 - Actualment està desactivat afegir-ne, pero podem treue'n si sobren
 
-**Penalitzacio (aka gripau):** Situació a evitar
+## Penalitzacions (aka gripaus)
 
 De més gran a més petit
 
@@ -34,11 +42,11 @@ De més gran a més petit
 
 - **Torns fixes no respectats:**
   Es un gripau prou gran perque si algu diu que vol fer torns
-  que generen gripaus més petits, encara i així es respecti.
+  que generen gripaus dels més petits, encara i així es respecti.
 
 - **Dia sobrecarregat:** Quants torns diaris tè la persona.
-  Igual que els forats, penalitza més tindre els torns concentrats
-  en un dia que tenir-los repartits.
+  Igual que els forats, s'aplica cost quadràtic
+  per penalitzar més tindre els torns concentrats en un dia que tenir-los repartits.
 
 - **Patrons diàris xungos:** Penalitzen per ordre:
     - **Marato:** (.xxx o xxx.) tres torns seguits sense descans (ara no es dona perque tenim el limit diari a 2 torns)
