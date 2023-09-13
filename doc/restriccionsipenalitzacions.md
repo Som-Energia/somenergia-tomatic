@@ -1,4 +1,56 @@
-# Restriccions i penalitzacións de l'arbre de cerca
+# Restriccions i penalitzacións de les graelles
+
+Actualitzat a la versio del minizinc de 2023-09-14.
+A diferència del backtracker, no es tan convenient tenir 
+
+**Restricció (aka línies vermelles):** Fa que una graella no sigui viable.
+
+- **Persones indivisibles:** A cada torn una persona només pot estar un cop (natural pero cal dir-li a l'ordinador)
+	- excepció: els 'ningus' que son forats i pot haver més d'un a un torn
+- **Festius sagrats:** Ningú atén telèfon en festiu (tambe cal dir-ho)
+- **Estic Fora:** S'han de respectar les indisponibilitats no opcionals
+	- vacances, baixes indicades a l'odoo
+	- reunions, viatges, conciliació indicades al Tomatic
+- **Carrega màxima diàra:** ara està configurada a 2 per tothom
+- **Càrrega màxima setmanal:** es determina per cada persona un [pas anterior](logicaCompensacioHores.md)
+	- Partint de la **carrega ideal**
+	- Ponderada als **dias hàbils** (vacances, festius)
+	- Modulada per la **disponibilitat** (indisponibilitas no opcionals)
+	- Ajustant equitativament amunt i avall per arribar a la càrrega objectiu
+		- Compensant primer deutes positius i negatius d'anteriors setmanes (actualment desactivat)
+		- Actualment tenim un limit de zero per ajustar cap amunt
+
+**Penalitzacio (aka gripau):** Situació a evitar
+
+De més gran a més petit
+
+- **Forats:** Tenir celles a la graella sense ningú assignat.
+  Prioritza omplir-ho tot.
+  Que sigui un gripau, i no una linia vermella, permet solucions incomplertes.
+  Penalitzem més quan els forats estan concentrats en un torn,
+  (sumem els quadrats dels forats de cada torn)
+  d'aquesta manera obtenim solucións amb els forats
+  repartits el millor possible entre els torns.
+
+- **Torns fixes no respectats:**
+  Es un gripau prou gran perque si algu diu que vol fer torns
+  que generen gripaus més petits, encara i així es respecti.
+
+- **Dia sobrecarregat:** Quants torns diaris tè la persona.
+  Igual que els forats, penalitza més tindre els torns concentrats
+  en un dia que tenir-los repartits.
+
+- **Patrons diàris xungos:** Penalitzen per ordre:
+    - **Marato:** (.xxx o xxx.) tres torns seguits sense descans (ara no es dona perque tenim el limit diari a 2 torns)
+    - **Discontinu:** (.x.x o x.x.) dos torns amb una hora lliure en mig, trenca focus dos cops
+    - **Discontinu llunya:** (x..x) torn a l'inici i al final del matí (trenca focus, pero no tant)
+    - **No Esmorçar:** (.xx.) Els dos torns d'en mig, POL ens reserva un per esmorçar
+
+- **Indisponibilitats opcionals:**
+  Només es consideren si no trenquen tots els gripaus grans.
+
+
+# Antics criteris (Backtracker)
 
 **Restricció:** Fa que una graella no sigui viable.
 
