@@ -22,11 +22,11 @@ Per això les línies vermelles son les mínimes:
 	- reunions, viatges, conciliació indicades al Tomatic
 - **Carrega màxima diàra:** ara està configurada a 2 per tothom
 - **Càrrega màxima setmanal:** es determina per cada persona un [pas anterior](logicaCompensacioHores.md):
-    - Es pondera la **càrrega ideal** de cada persona, pels dies que no està de **vacances o festius**
-    - Es limita al que li deixen fer les altres **indisponibilitats no opcionals**
-    - Es treuen o afegeixen torns de forma repartida per ajustar-se a la càrrega objectiu.
-	- Actualment està desactivat afegir-ne, pero podem treue'n si sobren
-	- (Ara desactivat) Es fa compensant els desequilibris històrics (deute negatiu i positiu de torns) o, si no, generant-ne de nou
+	- Es pondera la **càrrega ideal** de cada persona, pels dies que no està de **vacances o festius**
+	- Es limita al que li deixen fer les altres **indisponibilitats no opcionals**
+	- Es treuen o afegeixen torns de forma repartida per ajustar-se a la càrrega objectiu.
+		- Actualment està desactivat afegir-ne, pero podem treue'n si sobren
+		- (Ara desactivat) Es fa compensant els desequilibris històrics (deute negatiu i positiu de torns) o, si no, generant-ne de nou
 
 ## Penalitzacions (aka gripaus)
 
@@ -56,6 +56,17 @@ De més gran a més petit
 
 - **Indisponibilitats opcionals:**
   Només es consideren si no trenquen tots els gripaus grans.
+
+
+## Criteris antics que encara podria tenir sentit recuperar
+
+- Crosstalk: Evitar cacofonies quan hi ha persones fent telèfon a la vegada en una mateixa taula de l'oficina (hi ha el paràmetre 'taula' per definir-ho)
+- Minim de lliures per grup: Definir a un grup de persona un nombre mínim de persones sense fer telefon
+- Máxim fent telefon per grup: El mateix pero formulat al contrari. Son útils les dos quan tenim nombre variable de membres.
+
+## Criteris implementables
+
+- Indisponibilitats de grup
 
 
 # Antics criteris (Backtracker)

@@ -20,6 +20,7 @@ src="images/tomatic-teacher.png" align='right'
 - [Definir la meva taula](#definir-la-meva-taula) (Vídeo)
 - [Estat de la centraleta](#estat-de-la-centraleta) (Vídeo)
 - [Informació de trucada entrant](#informació-de-trucada-entrant)  (Vídeo)
+- [Veure els torns al Google Calendar](#veure-els-torns-al-google-calendar)
 
 I pròximament
 
@@ -264,6 +265,42 @@ Quan no hem acabat de treballar amb una trucada i ens pot arribar una altra
 podem fer servir el botó del _cadenat_, per que no salti la cerca de la següent trucada,
 i el boto amb la _fletxeta sortint de la caixa_ per obrir una nova pestanya
 de Tomàtic sense bloquejar per rebre les noves.
+
+
+## Veure els torns al Google Calendar
+
+Una cosa molt pràctica és tenir els torns integrats al Google Calendar.
+D'aquesta manera, podem planificar reunions tenint en compte els torns de telèfon.
+
+- Primer de tot, troba el teu id de Tomàtic.
+  Si edites el teu perfil, és el primer camp que surt.
+  Normalment el teu nom en minúscules amb alguna lletra dels cognoms.
+- Llavors ves al teu Google Calendar i clicka a aquest signe més:
+  <img align="right" clear="right" src="images/gcalendar-01-addcalendar.png"/>
+- Escull l'opció "Desde una URL"
+  <img align="right" clear="right" src="images/gcalendar-02-fromurl.png"/>
+- I aquí copies aquesta url: `https://tomatic.somenergia.coop/api/calendar/personid`
+  però canviant `personid` pel teu identificador.
+  <img align="right" clear="right" src="images/gcalendar-03-copyurl.png"/>
+- I ja està, veurás que a la dreta surt un calendari nou, i els teus torns de telèfon barrejats amb els teus esdeveniments.
+  <img align="right" clear="right" src="images/gcalendar-04-result.png"/>
+
+Ves amb compte:
+
+- Google Calendar triga un dia en sincronitzar el calendari.
+  Si feu canvis, no els veuràs inmediatament reflexats.
+
+- Quan els teus companys crein una reunió, per defecte
+  el torns no sortiran com a ocupats.
+
+- Quan feu reunions aquest calendari no surt d'entrada als
+  calendaris que veuen els companys quan creen una
+
+
+
+
+
+
 
 
 
