@@ -1,7 +1,5 @@
 import asyncio
-from tomato_cooker.grill import GrillTomatoCooker
-from tomato_cooker.models import TomaticProblem
-from tomato_cooker.models.cost_based.cost_based import TimetableScenario
+from tomato_cooker.models import TimetableProblem
 from consolemsg import step, error, success
 from yamlns import namespace as ns
 import random
@@ -15,13 +13,7 @@ class Minizinc:
 
     NOBODY = 'ningu'
     FESTIVITY = 'festiu'
-    NORMAL_WEEKDAY = {
-        'dl': 0,
-        'dm': 1,
-        'dx': 2,
-        'dj': 3,
-        'dv': 4,
-    }
+    NORMAL_WEEKDAYS = 'dl dm dx dj dv'.split()
 
     def __init__(self, config):
         self.config = config
@@ -39,7 +31,7 @@ class Minizinc:
                 random.shuffle(persons)
         finalLoad = [config.finalLoad.get(p,0) for p in persons]
 
-        self.problem = TimetableScenario(
+        self.problem = TimetableProblem(
             names = persons,
             Nobodies = [self.NOBODY],
             maxLoad = finalLoad,
@@ -85,89 +77,87 @@ class Minizinc:
             self.problem.solve(deterministic=self.config.deterministic)
         )
 
-    def translateSolution(self, mzresult):
-        print("Solucio:\n")
-        print(mzresult) # Prints Minizinc output
-        alldays = list(self.NORMAL_WEEKDAY.keys())
+    def _solutionTimetable(self, solution):
         timetable = {
             day: [
                 [
                     self.NOBODY if day in self.days else self.FESTIVITY
                     for _ in range(self.problem.nLines)
                 ] for _ in range(self.problem.nHours)
-            ] for day in alldays
+            ] for day in self.NORMAL_WEEKDAYS
         }
 
-        for day, hours in zip(self.days, mzresult.solution.timetable):
+        for day, hours in zip(self.days, solution.timetable):
             for hour_i, hour in enumerate(hours):
                 for line_i, person in enumerate(sorted(hour, key=lambda x: 'zzz' if x==self.NOBODY else x )):
                     timetable[day][hour_i][line_i] = person
+        return timetable
 
-        penalties = [
-            (
+    def _solutionPenalties(self, solution):
+        penaltyProcessors = dict(
+            emptySlots = lambda day, hour, blanks: (
                 self.problem.penaltyEmpty*blanks*blanks,
                 f"{blanks} forats a {day} {self.config.hours[hour-1]} ",
-            )
-            for day, hour, blanks in mzresult.solution.emptySlots
-        ] + [
-            (
+            ),
+            unforced = lambda day, hour, person: (
                 self.problem.penaltyUnforced,
                 f"{day} {self.config.hours[hour-1]} "
                 f"Torn fix no col·locat de {person}",
-            )
-            for day, hour, person in mzresult.solution.unforced
-        ] + [
-            (
+            ),
+            undesiredPenalties = lambda day, hour, person: (
                 self.problem.penaltyUndesiredHours,
                 f"{person} {day} {self.config.hours[hour-1]} "
                 f"no li va be per: "
                 f"{self.undesiredReasons[(day,hour-1,person)]}",
-            )
-            for day, hour, person in mzresult.solution.undesiredPenalties
-        ] + [
-            (
+            ),
+            concentratedLoad = lambda day, person, nhours: (
                 self.problem.penaltyMultipleHours*nhours*(nhours-1),
                 f"{person} {day} té {nhours} hores el mateix dia",
-            )
-            for day, person, nhours in mzresult.solution.concentratedLoad
-        ] + [
-            (
+            ),
+            discontinuousPenalties = lambda day, person: (
                 self.problem.penaltyDiscontinuousHours,
                 f"{person} {day} té torns intercalats",
-            )
-            for day, person in mzresult.solution.discontinuousPenalties
-        ] + [
-            (
+            ),
+            farDiscontinuousPenalties = lambda day, person: (
                 self.problem.penaltyFarDiscontinuousHours,
                 f"{person} {day} té torns intercalats (als extrems)",
-            )
-            for day, person in mzresult.solution.farDiscontinuousPenalties
-        ] + [
-            (
+            ),
+            marathonPenalties = lambda day, person: (
                 self.problem.penaltyMarathon,
                 f"{person} {day} té 3 hores sense descans",
-            )
-            for day, person in mzresult.solution.marathonPenalties
-        ] + [
-            (
+            ),
+            noBrunchPenalties = lambda day, person: (
                 self.problem.penaltyNoBrunch,
                 f"{person} {day} no pot esmorzar"
-            )
-            for day, person in mzresult.solution.noBrunchPenalties
+            ),
+        )
+
+        return [
+            processor(*penalty)
+            for kind, processor in penaltyProcessors.items()
+            for penalty in getattr(solution, kind)
         ]
+
+
+    def translateSolution(self, mzresult):
+        # Print Minizinc output
+        print("Solucio:\n")
+        print(mzresult)
+
+        solution = mzresult.solution
 
         result = ns(
             week=f'{self.config.monday}',
-            days=alldays,
+            days=self.NORMAL_WEEKDAYS,
             hours=self.config.hours,
             turns=[ f"L{line+1}" for line in range(self.config.nTelefons) ],
-            timetable=timetable,
+            timetable=self._solutionTimetable(solution),
             colors=self.config.colors,
             extensions=self.config.extensions,
             names=self.config.names,
             overload = self.overload,
-            penalties = penalties,
-            cost = mzresult.solution.cost,
+            penalties = self._solutionPenalties(solution),
+            cost = solution.cost,
             log=[], # Starts empty
         )
         return result
