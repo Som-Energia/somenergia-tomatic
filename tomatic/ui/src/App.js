@@ -7,6 +7,7 @@ import KumatoProvider from './containers/KumatoProvider'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
 import PersonsTable from './components/PersonsTable.js'
 import TimeTablePage from './components/TimeTablePage'
+import DialogProvider from './components/DialogProvider'
 
 import {
   MithrilCallinfoPage,
@@ -95,7 +96,9 @@ function App() {
     <div id="tomatic" className="main">
       <AuthProvider>
         <KumatoProvider>
-          <RouterProvider router={router} />
+          <DialogProvider>
+            <RouterProvider router={router} />
+          </DialogProvider>
         </KumatoProvider>
       </AuthProvider>
     </div>

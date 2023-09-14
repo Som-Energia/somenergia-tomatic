@@ -17,12 +17,17 @@ import IconSettings from '@mui/icons-material/Settings'
 import IconEventBusy from '@mui/icons-material/EventBusy'
 import IconLogout from '@mui/icons-material/Logout'
 import IconKumato from '@mui/icons-material/SettingsBrightness'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import Tomatic from '../services/tomatic'
 import Auth from '../services/auth'
 import { contrast } from '../mithril/components/colorutils'
 import AuthContext from '../contexts/AuthContext'
 import editAvailabilities from '../mithril/components/busyeditor'
 import editPerson from '../mithril/components/editperson'
+import { useDialog } from './DialogProvider'
+import { CopyCalendarDialog } from './CopyCalendarDialog'
+
+var openCalendarDialog = () => {}
 
 const menuProfile = [
   {
@@ -37,6 +42,13 @@ const menuProfile = [
     icon: <IconEventBusy />,
     onclick: () => {
       editAvailabilities(Auth.username())
+    },
+  },
+  {
+    text: 'Calendari',
+    icon: <CalendarMonthIcon />,
+    onclick: () => {
+      openCalendarDialog(Auth.username())
     },
   },
   {
@@ -62,6 +74,14 @@ function ProfileButton() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
   }
+
+  const [openDialog, closeDialog] = useDialog()
+
+  openCalendarDialog = React.useCallback((username) => {
+    openDialog({
+      children: <CopyCalendarDialog {...{ closeDialog, username }} />,
+    })
+  })
 
   return (
     <Box sx={{ flexGrow: 0 }}>
