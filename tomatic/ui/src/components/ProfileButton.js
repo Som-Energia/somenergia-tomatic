@@ -81,7 +81,7 @@ function ProfileButton() {
     openDialog({
       children: <CopyCalendarDialog {...{ closeDialog, username }} />,
     })
-  })
+  }, [closeDialog])
 
   return (
     <Box sx={{ flexGrow: 0 }}>

@@ -9,6 +9,7 @@ import Fab from '@mui/material/Fab'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import Tooltip from '@mui/material/Tooltip'
+import { useDialog } from './DialogProvider'
 
 function TimeTable(props) {
   const {
@@ -23,14 +24,22 @@ function TimeTable(props) {
 
   const [dialogIsOpen, setDialogIsOpen] = useState(false)
   const [cellData, setCellData] = useState({})
+  const [openDialog, closeDialog] = useDialog()
 
-  const openDialog = () => setDialogIsOpen(true)
-
-  const closeDialog = () => setDialogIsOpen(false)
+  const handleChange = (name, data) => {
+    setCell(data.day, data.hour, data.turn, name)
+    closeDialog()
+  }
 
   const handleClick = (day, houri, turni, name) => {
-    setCellData({ day: day, hour: houri, turn: turni, name: name })
-    openDialog()
+    const cellData = { day: day, hour: houri, turn: turni, name: name }
+    setCellData(cellData)
+    openDialog({
+      children: (
+        <EditDialog onClose={closeDialog} data={cellData} handleChange={handleChange}></EditDialog>
+      ),
+      maxWidth: 'md',
+    })
   }
 
   function cell(day, houri, turni) {
@@ -96,11 +105,6 @@ function TimeTable(props) {
     )
   }
 
-  const handleChange = (name, data) => {
-    setCell(data.day, data.hour, data.turn, name)
-    closeDialog()
-  }
-
   function AddTurn() {
     addColumn()
   }
@@ -112,14 +116,6 @@ function TimeTable(props) {
   return (
     <>
       <PersonStyles />
-      {dialogIsOpen ? (
-        <EditDialog
-          open={dialogIsOpen}
-          data={cellData}
-          handleChange={handleChange}
-          onClose={closeDialog}
-        ></EditDialog>
-      ) : null}
       {addColumn && removeColumn ? (
         <div>
           <Tooltip title="Afegir una línia">
