@@ -9,7 +9,7 @@
 
 import React from 'react'
 import Dialog from '@mui/material/Dialog'
-import Slide from '@mui/material/Slide'
+import Grow from '@mui/material/Grow'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useTheme } from '@mui/material/styles'
 
@@ -18,7 +18,7 @@ const no_function = () => {}
 const DialogContext = React.createContext([no_function, no_function])
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />
+  return <Grow direction="up" ref={ref} {...props} />
 })
 
 function DialogContainer(props) {
