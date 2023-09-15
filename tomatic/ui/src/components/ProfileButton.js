@@ -45,7 +45,7 @@ const menuProfile = [
     },
   },
   {
-    text: 'Calendari',
+    text: 'Exporta calendari',
     icon: <CalendarMonthIcon />,
     onclick: () => {
       openCalendarDialog(Auth.username())

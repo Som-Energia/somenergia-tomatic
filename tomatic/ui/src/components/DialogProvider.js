@@ -9,16 +9,31 @@
 
 import React from 'react'
 import Dialog from '@mui/material/Dialog'
+import Slide from '@mui/material/Slide'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { useTheme } from '@mui/material/styles'
 
 const no_function = () => {}
 
 const DialogContext = React.createContext([no_function, no_function])
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />
+})
+
 function DialogContainer(props) {
-  const { children, open, onClose, onKill, ...extraprops } = props
+  const { children, open, onClose, onKill } = props
+  const theme = useTheme()
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
-    <Dialog open={open} onClose={onClose} onExited={onKill} {...extraprops}>
+    <Dialog
+      TransitionComponent={Transition}
+      fullScreen={fullScreen}
+      open={open}
+      onClose={onClose}
+      onExited={onKill}
+    >
       {children}
     </Dialog>
   )
@@ -30,11 +45,14 @@ export default function DialogProvider({ children }) {
     const dialog = { ...option, open: true }
     setDialogs((dialogs) => [...dialogs, dialog])
   }
+
   const closeDialog = () => {
     setDialogs((dialogs) => {
       const latestDialog = dialogs.pop()
       if (!latestDialog) return dialogs
       if (latestDialog.onClose) latestDialog.onClose()
+      return [...dialogs]
+      // TODO:
       return [...dialogs].concat({ ...latestDialog, open: false })
     })
   }
