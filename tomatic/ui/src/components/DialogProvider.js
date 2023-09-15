@@ -22,7 +22,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 })
 
 function DialogContainer(props) {
-  const { children, open, onClose, onKill } = props
+  const { children, open, onClose, onKill, ...extraprops } = props
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -33,6 +33,8 @@ function DialogContainer(props) {
       open={open}
       onClose={onClose}
       onExited={onKill}
+      scroll="paper"
+      {...extraprops}
     >
       {children}
     </Dialog>
