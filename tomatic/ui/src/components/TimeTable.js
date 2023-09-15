@@ -4,7 +4,7 @@ import Tomatic from '../services/tomatic'
 import PersonStyles from './PersonStyles'
 import customStyle from '../mithril/style.styl'
 
-import EditDialog from './EditDialog'
+import CellEditDialog from './CellEditDialog'
 import Fab from '@mui/material/Fab'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
@@ -36,7 +36,7 @@ function TimeTable(props) {
     setCellData(cellData)
     openDialog({
       children: (
-        <EditDialog onClose={closeDialog} data={cellData} handleChange={handleChange}></EditDialog>
+        <CellEditDialog onClose={closeDialog} data={cellData} handleChange={handleChange}></CellEditDialog>
       ),
       maxWidth: 'md',
     })
