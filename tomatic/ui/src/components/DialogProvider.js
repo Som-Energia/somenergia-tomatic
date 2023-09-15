@@ -18,13 +18,13 @@ const no_function = () => {}
 const DialogContext = React.createContext([no_function, no_function])
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Grow direction="up" ref={ref} {...props} />
+  return <Grow ref={ref} {...props} />
 })
 
 function DialogContainer(props) {
-  const { children, open, onClose, onKill, ...extraprops } = props
+  const { children, open, onClose, onKill, fullScreenBelow='md', ...extraprops } = props
   const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
+  const fullScreen = useMediaQuery(theme.breakpoints.down(fullScreenBelow))
 
   return (
     <Dialog
@@ -32,7 +32,9 @@ function DialogContainer(props) {
       fullScreen={fullScreen}
       open={open}
       onClose={onClose}
-      onExited={onKill}
+      TransitionProps={{
+        onExited: onKill,
+      }}
       scroll="paper"
       {...extraprops}
     >
@@ -53,8 +55,6 @@ export default function DialogProvider({ children }) {
       const latestDialog = dialogs.pop()
       if (!latestDialog) return dialogs
       if (latestDialog.onClose) latestDialog.onClose()
-      return [...dialogs]
-      // TODO:
       return [...dialogs].concat({ ...latestDialog, open: false })
     })
   }
