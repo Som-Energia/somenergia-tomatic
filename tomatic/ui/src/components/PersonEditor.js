@@ -75,6 +75,7 @@ const defaultData = {
   name: '',
   email: '',
   erpuser: '',
+  idealload: '',
   table: -1,
   extension: '',
   color: 'aaaaff',
@@ -217,11 +218,6 @@ export default function PersonEditor(props) {
           }
           inputProps={{ pattern: '^[a-zA-Z]{3,10}$' }}
         />
-        {/*
-          onInput={(ev) =>
-            (ev.target.value = inputFilter_numbers(ev.target.value))
-          }
-        */}
         <TextField
           {...fieldOptions('idealload')}
           {...commonFieldOptions}
