@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.4.1 2023-09-15
+
+- Dialog to copy the calendar uri to import it into GCalendar
+- Calendars with name and TTL (time to reload)
+- Fix: proper React person picker layout
+- DialogProvider to launch dialogs imperatively
+
 ## 5.4.0 2023-09-12
 
 - Using a rewritten Minizinc model
