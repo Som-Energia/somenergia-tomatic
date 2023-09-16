@@ -128,7 +128,7 @@ module.exports = (function () {
       m('.busca-info-title.layout.horizontal', [
         typeOfSearch(autofiltertype(CallInfo.search)),
         m(TextField, {
-          className: 'txtf-phone flex',
+          className: 'search-query flex',
           placeholder: 'Cerca',
           value: CallInfo.search,
           onChange: function (state) {
