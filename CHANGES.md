@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Callinfo: Auto search field detection
+
 ## 5.4.1 2023-09-15
 
 - Dialog to copy the calendar uri to import it into GCalendar
