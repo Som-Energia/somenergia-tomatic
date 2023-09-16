@@ -29,7 +29,7 @@ from yamlns import namespace as ns
 from consolemsg import error, step, warn, u
 
 from . import __version__ as version
-from .callinfo import CallInfo
+from . import callinfo
 from .callregistry import CallRegistry
 from . import schedulestorage
 from . import schedulestorageforcedturns
@@ -398,13 +398,13 @@ def yamlinfoerror(code, message, *args, **kwds):
 
 @app.get('/api/info/{field}/{value}')
 @yamlerrors
-def getInfoPersonBy(field, value, user = Depends(validatedUser)):
+def getInfoPersonBy(field: callinfo.SearchField, value: str, user = Depends(validatedUser)):
     decoded_value = urllib.parse.unquote(value)
     data = None
     with erp() as O:
-        callinfo = CallInfo(O)
+        info = callinfo.CallInfo(O)
         try:
-            data = callinfo.getByField(field, decoded_value, shallow=True)
+            data = info.getByField(field, decoded_value, shallow=True)
         except ValueError:
             return yamlinfoerror('error_getBy'+field.title(),
                 "Getting information searching {}='{}'.", field, value)
@@ -426,7 +426,7 @@ def getInfoPersonBy(field, value, user = Depends(validatedUser)):
 async def getContractDetails(request: Request, user = Depends(validatedUser)):
     params = ns.loads(await request.body())
     with erp() as O:
-        info = CallInfo(O)
+        info = callinfo.CallInfo(O)
         data = info.contractDetails(params.contracts)
 
     result = ns(

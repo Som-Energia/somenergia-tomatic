@@ -1,8 +1,25 @@
 # -*- coding: utf-8 -*-
 
 from yamlns import namespace as ns
+from enum import Enum, auto
 
 ENERGETICA_PARTNER_ID = 38039
+
+
+class AutoEnum(str, Enum):
+    @staticmethod
+    def _generate_next_value_(name, start, count, last_values):
+        return name
+
+class SearchField(AutoEnum):
+    phone = auto()
+    name = auto()
+    nif = auto()
+    soci = auto()
+    email = auto()
+    contract = auto()
+    cups = auto()
+    all = auto()
 
 class CallInfo(object):
 
@@ -511,7 +528,7 @@ class CallInfo(object):
         return self.getByPartnersId(partner_ids, shallow)
 
     #TODO: untested
-    def getByField(self, field, data, shallow=False):
+    def getByField(self, field: SearchField, data: str, shallow: bool=False):
         function = dict(
             phone = self.getByPhone,
             name = self.getByName,
