@@ -60,6 +60,7 @@ class CallInfo(object):
             ])
 
     def partnerByAddressId(self, address_ids):
+        address_ids = list(set(address_ids))
         if not address_ids: return []
         return [
             address[0]
