@@ -470,25 +470,25 @@ class CallInfo(object):
 
     def getByEmail(self, email, shallow=False):
         email_ids = self.addressByEmail(email)
-        email_p_ids = self.partnerByAddressId(email_ids)
-        return self.getByPartnersId(email_p_ids, shallow)
+        partner_ids = self.partnerByAddressId(email_ids)
+        return self.getByPartnersId(partner_ids, shallow)
 
     def getBySoci(self, soci, shallow=False):
-        soci_p_ids = self.partnerBySoci(soci)
-        return self.getByPartnersId(soci_p_ids, shallow)
+        partner_ids = self.partnerBySoci(soci)
+        return self.getByPartnersId(partner_ids, shallow)
 
     def getByDni(self, dni, shallow=False):
-        dni_p_ids = self.partnerByDni(dni)
-        return self.getByPartnersId(dni_p_ids, shallow)
+        partner_ids = self.partnerByDni(dni)
+        return self.getByPartnersId(partner_ids, shallow)
 
     def getByName(self, name, shallow=False):
-        name_p_ids = self.partnerByName(name)
-        return self.getByPartnersId(name_p_ids, shallow)
+        partner_ids = self.partnerByName(name)
+        return self.getByPartnersId(partner_ids, shallow)
 
     # TODO: Test
     def getByContract(self, number, shallow=False):
-        name_p_ids = self.partnerByContract(number)
-        return self.getByPartnersId(name_p_ids, shallow)
+        partner_ids = self.partnerByContract(number)
+        return self.getByPartnersId(partner_ids, shallow)
 
     # TODO: Test
     def getByCups(self, number, shallow=False):
