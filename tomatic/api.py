@@ -444,11 +444,15 @@ async def callingPhone(phone: str, extension: str):
 async def callingPhonePost(phone: str = Form(...), ext: str = Form(...)):
     return await notifyIncommingCall(phone, ext)
 
+def cleanupPhone(phone):
+    phone = re.sub('[^0-9]', '', phone) # remove non digits
+    phone = re.sub(r'^?0?0?34','', phone) # remove prefixes
+    return phone
+
 async def notifyIncommingCall(phone: str, extension: str):
     time = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
     user = persons.byExtension(extension)
-    phone = phone.replace('+','').replace('-','').replace(' ','')
-    phone = re.sub(r'^[+]?0?0?34','', phone)
+    phone = cleanupPhone(phone)
     CallRegistry().annotateCall(ns(
         user = user,
         date = time,
