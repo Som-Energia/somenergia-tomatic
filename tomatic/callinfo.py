@@ -529,13 +529,13 @@ class CallInfo(object):
         return function(data, shallow)
 
     def getByPartnersId(self, partners_id, shallow=False):
-        clean_partners_ids = list(set(partners_id))
-        if self.results_limit and len(clean_partners_ids) > self.results_limit:
-            return ns(partners='Masses resultats')
-        if len(clean_partners_ids) == 0:
+        if not partners_ids:
             return ns(partners=None)
+        partners_ids = list(set(partners_id))
+        if self.results_limit and len(partners_ids) > self.results_limit:
+            return ns(partners='Masses resultats')
         result = ns()
-        result.update(self.partnersInfo(clean_partners_ids, shallow))
+        result.update(self.partnersInfo(partners_ids, shallow))
         return result
 
     #TODO: untested
