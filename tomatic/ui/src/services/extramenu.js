@@ -21,12 +21,14 @@ const menuOptions = function () {
       route: '/ForcedTurns',
     },
     {
-      icon: '📊',
-      title: 'Estadístiques de trucades',
-      action: function () {
-        const url = scriptLauncherBase + '/runner/statshistory'
-        window.open(url, '_blank')
-      },
+      icon: '🦸‍♀️',
+      title: "Administració d'usuàries",
+      route: '/Administration',
+    },
+    {
+      icon: '🗓️',
+      title: 'Graelles (Versió React 🧪)',
+      route: '/Grid',
     },
     {
       icon: '📢',
@@ -37,18 +39,19 @@ const menuOptions = function () {
       },
     },
     {
-      icon: '🔄',
-      title: 'Restableix el torn a la cua',
+      icon: '📊',
+      title: 'Estadístiques de trucades',
       action: function () {
-        const url = scriptLauncherBase + '/runner/reloadqueue'
+        const url = scriptLauncherBase + '/runner/statshistory'
         window.open(url, '_blank')
       },
     },
     {
-      icon: '🏷️',
-      title: 'Anotacions: Actualitza categories',
+      icon: '🔄',
+      title: 'Restableix els torns a la cua',
       action: function () {
-        CallInfoPage.settingsDialog()
+        const url = scriptLauncherBase + '/runner/reloadqueue'
+        window.open(url, '_blank')
       },
     },
     {
@@ -60,21 +63,18 @@ const menuOptions = function () {
       },
     },
     {
+      icon: '🏷️',
+      title: 'Anotacions: Actualitza categories',
+      action: function () {
+        CallInfoPage.settingsDialog()
+      },
+    },
+    {
       icon: '😎',
       title: 'Kumato mode',
       action: function () {
         Tomatic.toggleKumato()
       },
-    },
-    {
-      icon: '🦸‍♀️',
-      title: "Administració d'usuàries",
-      route: '/Administration',
-    },
-    {
-      icon: '🗓️',
-      title: 'React Grid',
-      route: '/Grid',
     },
     {
       icon: '🛟',
