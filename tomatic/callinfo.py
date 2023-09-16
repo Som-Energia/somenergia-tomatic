@@ -151,10 +151,10 @@ class CallInfo(object):
             )
         ]
 
-    def partnersInfo(self, partners_ids, shallow=False):
+    def partnersInfo(self, partner_ids, shallow=False):
         no_partners = []
         result = ns(partners=[])
-        partners_data = self.O.ResPartner.read(partners_ids, [
+        partners_data = self.O.ResPartner.read(partner_ids, [
             'city',
             'www_email',
             'www_provincia',
@@ -466,8 +466,8 @@ class CallInfo(object):
 
     def getByPhone(self, phone, shallow=False):
         address_ids = self.addressByPhone(phone)
-        partners_ids = self.partnerByAddressId(address_ids)
-        return self.getByPartnersId(partners_ids, shallow)
+        partner_ids = self.partnerByAddressId(address_ids)
+        return self.getByPartnersId(partner_ids, shallow)
 
     def getByEmail(self, email, shallow=False):
         email_ids = self.addressByEmail(email)
@@ -498,17 +498,17 @@ class CallInfo(object):
 
     # TODO: Test
     def getByAny(self, data, shallow=False):
-        address_ids = set()
+        address_ids = []
         address_ids += self.addressByEmail(data)
         address_ids += self.addressByPhone(data)
-        partner_ids = set()
+        partner_ids = []
         partner_ids += self.partnerByAddressId(address_ids)
         partner_ids += self.partnerByDni(data)
         partner_ids += self.partnerBySoci(data)
         partner_ids += self.partnerByName(data)
         partner_ids += self.partnerByContract(data)
         partner_ids += self.partnerByCups(data)
-        return self.getByPartnersId(list(partner_id), shallow)
+        return self.getByPartnersId(partner_ids, shallow)
 
     #TODO: untested
     def getByField(self, field, data, shallow=False):
@@ -528,14 +528,14 @@ class CallInfo(object):
 
         return function(data, shallow)
 
-    def getByPartnersId(self, partners_id, shallow=False):
-        if not partners_ids:
+    def getByPartnersId(self, partner_ids, shallow=False):
+        if not partner_ids:
             return ns(partners=None)
-        partners_ids = list(set(partners_id))
-        if self.results_limit and len(partners_ids) > self.results_limit:
+        partner_ids = list(set(partner_ids))
+        if self.results_limit and len(partner_ids) > self.results_limit:
             return ns(partners='Masses resultats')
         result = ns()
-        result.update(self.partnersInfo(partners_ids, shallow))
+        result.update(self.partnersInfo(partner_ids, shallow))
         return result
 
     #TODO: untested
