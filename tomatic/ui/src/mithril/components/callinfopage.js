@@ -312,6 +312,8 @@ module.exports = (function () {
                 ? m('.searching', "No s'ha trobat cap resultat.")
                 : CallInfo.searchStatus() === 'SEARCHING'
                 ? m('.searching', m(Spinner, { show: 'true' }))
+                : CallInfo.searchStatus() === 'ERROR'
+                ? m('.searching', "S'ha produït un error en la cerca.")
                 : CallInfo.searchStatus() === 'TOOMANYRESULTS'
                 ? m(
                     '.searching',

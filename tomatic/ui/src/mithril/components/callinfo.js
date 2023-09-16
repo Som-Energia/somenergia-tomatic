@@ -2,6 +2,7 @@ module.exports = (function () {
   // This module controls the state regarding the callinfo page
   var api = require('../../services/api').default
   var Auth = require('../../services/auth')
+  var Tomatic = require('../../services/tomatic')
   const autofiltertype = require('../../services/autofiltertype').default
 
   var websock = null
@@ -206,6 +207,9 @@ module.exports = (function () {
     if (CallInfo.searchResults[1] === 'toomuch') {
       return 'TOOMANYRESULTS'
     }
+    if (CallInfo.searchResults[1] === 'error') {
+      return 'ERROR'
+    }
     return 'SUCCESS'
   }
 
@@ -252,8 +256,14 @@ module.exports = (function () {
   var retrieveInfo = function () {
     CallInfo.searchResults = { 1: 'empty' } // Searching...
     const trimmedValue = CallInfo.search.trim()
-    const searchField = CallInfo.search_by || autofiltertype(trimmedValue) || 'all'
+    const searchField =
+      CallInfo.search_by || autofiltertype(trimmedValue) || 'all'
     const encodedValue = encodeURIComponent(trimmedValue)
+    function exitWithError(msg) {
+        Tomatic.error(msg)
+        CallInfo.searchResults = {1: "error"}
+    }
+
     api
       .request({
         url: '/api/info/' + searchField + '/' + encodedValue,
@@ -265,10 +275,14 @@ module.exports = (function () {
             CallInfo.searchResults = { 1: 'toomuch' }
             return
           }
-          if (response.info.message !== 'ok') {
-            console.debug('Error al obtenir les dades: ', response.info.message)
+          if (response.info.message === 'no_info') {
             CallInfo.searchResults = {}
             return
+          }
+          if (response.info.message !== 'ok') {
+            return exitWithError(
+              'Error al obtenir les dades: ' + response.info.message,
+            )
           }
 
           CallInfo.searchResults = response.info.info
@@ -295,11 +309,9 @@ module.exports = (function () {
                   var number = formatContractNumber(contract.number)
                   var retrieved = response.info.info[number]
                   if (retrieved === undefined) {
-                    console.error(
-                      'No extended contract info for contract',
-                      number,
+                    return exitWithError(
+                      'No extended contract info for contract' + number,
                     )
-                    return
                   }
                   contract.invoices = retrieved.invoices
                   contract.lectures_comptadors = retrieved.lectures_comptadors
@@ -309,7 +321,7 @@ module.exports = (function () {
             })
         },
         function (error) {
-          console.debug('Info GET apicall failed: ', error)
+          return exitWithError('Info GET apicall failed: ' + error)
         },
       )
   }
