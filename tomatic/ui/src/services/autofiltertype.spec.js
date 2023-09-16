@@ -37,13 +37,10 @@ describe('autofiltertype detects which kind of searc we are doing', () => {
     expect(autofiltertype('Pepito')).toBe('name')
   })
   it('has cups structure, a cups', () => {
-    expect(autofiltertype('ES12341234123456789012JY')).toBe('cups')
+    expect(autofiltertype('ES1234123456789012JY')).toBe('cups')
   })
   it('has cups structure lowercase, a cups', () => {
-    expect(autofiltertype('es12341234123456789012jy')).toBe('cups')
-  })
-  it('has cups structure with meter point, a cups', () => {
-    expect(autofiltertype('ES12341234123456789012JY0F')).toBe('cups')
+    expect(autofiltertype('es1234123456789012jy')).toBe('cups')
   })
 })
 

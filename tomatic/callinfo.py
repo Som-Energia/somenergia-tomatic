@@ -71,7 +71,16 @@ class CallInfo(object):
     def partnerByContract(self, contract_number):
         contract_ids = self.O.GiscedataPolissa.search([
             ('name', '=', contract_number),
-        ])
+        ], 0,0,False, {'active_test': False})
+        return self.partnersByContractIds(contract_ids)
+
+    def partnerByCups(self, cups):
+        contract_ids = self.O.GiscedataPolissa.search([
+            ('cups.name', 'ilike', cups[:20]),
+        ], 0,0,False, {'active_test': False})
+        return self.partnersByContractIds(contract_ids)
+
+    def partnersByContractIds(self, contract_ids):
         if not contract_ids: return []
         contracts = self.O.GiscedataPolissa.read(contract_ids, [
             'name',
@@ -482,6 +491,11 @@ class CallInfo(object):
         return self.getByPartnersId(name_p_ids, shallow)
 
     # TODO: Test
+    def getByCups(self, number, shallow=False):
+        partner_ids = self.partnerByCups(number)
+        return self.getByPartnersId(partner_ids, shallow)
+
+    # TODO: Test
     def getByAny(self, data, shallow=False):
         partner_ids = set()
         partner_ids += self.addressByPhone(data)
@@ -492,6 +506,7 @@ class CallInfo(object):
         partner_ids += self.partnerByDni(data)
         partner_ids += self.partnerByName(data)
         partner_ids += self.partnerByContract(data)
+        partner_ids += self.partnerByCups(data)
         return self.getByPartnersId(list(partner_id), shallow)
 
     #TODO: untested
@@ -503,6 +518,7 @@ class CallInfo(object):
             soci = self.getBySoci,
             email = self.getByEmail,
             contract = self.getByContract,
+            cups = self.getByCups,
             all = self.getByAny,
         ).get(field)
 

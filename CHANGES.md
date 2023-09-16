@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Callinfo: Auto search field detection
+- Callinfo: Search by CUPS
 
 ## 5.4.1 2023-09-15
 
