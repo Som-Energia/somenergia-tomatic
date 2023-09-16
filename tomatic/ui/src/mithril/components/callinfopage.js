@@ -126,7 +126,7 @@ module.exports = (function () {
     }
     return m('', { className: 'busca-info' }, [
       m('.busca-info-title.layout.horizontal', [
-        typeOfSearch(autofiltertype(CallInfo.search)),
+        typeOfSearch(autofiltertype(CallInfo.search.trim())),
         m(TextField, {
           className: 'search-query flex',
           placeholder: 'Cerca',
