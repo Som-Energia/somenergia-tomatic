@@ -497,13 +497,13 @@ class CallInfo(object):
 
     # TODO: Test
     def getByAny(self, data, shallow=False):
+        address_ids = set()
+        address_ids += self.addressByEmail(data)
+        address_ids += self.addressByPhone(data)
         partner_ids = set()
-        partner_ids += self.addressByPhone(data)
         partner_ids += self.partnerByAddressId(address_ids)
-        partner_ids += self.addressByEmail(data)
-        partner_ids += self.partnerByAddressId(email_ids)
-        partner_ids += self.partnerBySoci(data)
         partner_ids += self.partnerByDni(data)
+        partner_ids += self.partnerBySoci(data)
         partner_ids += self.partnerByName(data)
         partner_ids += self.partnerByContract(data)
         partner_ids += self.partnerByCups(data)
