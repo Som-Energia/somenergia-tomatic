@@ -1,6 +1,5 @@
 var CallInfoPage = require('../mithril/components/callinfopage')
 var Tomatic = require('../services/tomatic')
-const { redirect, useNavigate } = require('react-router-dom')
 
 const scriptLauncherBase =
   window.location.protocol + '//' + window.location.hostname + ':5000'
