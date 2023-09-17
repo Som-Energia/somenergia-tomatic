@@ -118,14 +118,20 @@ module.exports = (function () {
               {
                 href: ovhijackurl + dni,
                 target: '_blank',
-                title: 'Entrar a la Oficina Virtual amb aquest usuari',
+                title: 'Entrar a la Oficina Virtual emulant ser aquesta usuaria',
               },
               'Segrest Oficina Virtual',
             ),
             ')',
           ]),
         ),
-        m('', m('.label', 'Ha obert OV? '), partner.ov ? 'Sí' : 'No'),
+        m(
+          '',
+          m('i.fa.fa-desktop', { 'aria-label': 'Oficina Virtual' }),
+          ' ',
+          m('.label', ' Ha obert OV? '),
+          markedErrorIfMissing(partner.ov && 'Sí', 'No'),
+        ),
       ]),
     ])
   }
