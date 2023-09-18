@@ -525,10 +525,12 @@ class ScheduleStorage_Test(unittest.TestCase):
           - - second
         """))
         calendar = self.storage.personIcs('first')
-        nchars=290
+        nchars=320
         self.assertEqual(''.join(calendar)[:nchars],
             'BEGIN:VCALENDAR\r\n'
             'NAME:Atenció telèfon First\r\n'
+            'X-WR-CALNAME:Atenció telèfon First\r\n'
+            'X-PUBLISHED-TTL:PT1H\r\n'
             'VERSION:2.0\r\n'
             'PRODID:ics.py - http://git.io/lLljaA\r\n'
             'BEGIN:VEVENT\r\n'
