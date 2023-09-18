@@ -277,13 +277,13 @@ Al menú de perfil, seleccioneu l'opcio "Exporta Calendari".
 
 <img src="images/gcalendar-00A-menu-export-calendar.png"/>
 
-<img align="right" clear="right" src="images/gcalendar-00B-dialog-export-calendar.png"/>
-
 Us sortirà un diàleg amb una adreça i instruccions.
 Copieu l'adreça clickant a la icona.
 
 En alguns navegadors antics podria no funcionar.
 En aquest cas seleccioneu l'adreça que apareix i copieu-la normalment.
+
+<img src="images/gcalendar-00B-dialog-export-calendar.png"/>
 
 A l'esquerra hi ha la llista de calendaris.
 Si no apareix clickeu a l'icona a dalt a l'esquerra ![Sandwich Icon](images/sandwich-icon.svg)
