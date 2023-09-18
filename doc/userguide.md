@@ -273,23 +273,26 @@ Per planificar la vostra setmana, és molt pràctic poder
 veure els vostres torns de telèfon dintre del Google Calendar.
 Com ferho?
 
-<img align="right" clear="right" src="images/gcalendar-00-profilemenu.png"/>
+<img align="right" clear="right" src="images/gcalendar-00A-menu-export-calendar.png"/>
 
 Al menú de perfil, seleccioneu l'opcio "Exporta Calendari".
 
-<img align="right" clear="right" src="images/gcalendar-00-profilemenu.png"/>
+<img align="right" clear="right" src="images/gcalendar-00B-dialog-export-calendar.png"/>
 
 Us sortirà un diàleg amb una adreça i instruccions.
 Copieu l'adreça clickant a la icona.
-En alguns navegadors antics pot no funcionar.
-En aquest cas seleccioneu l'adreça i copieu-la normalment.
 
-<img align="right" clear="right" src="images/gcalendar-01-addcalendar.png"/>
+En alguns navegadors antics podria no funcionar.
+En aquest cas seleccioneu l'adreça que apareix i copieu-la normalment.
+
+<img align="right" clear="right" src="images/gcalendar-00C-panel-menu.png"/>
 
 A l'esquerra hi ha la llista de calendaris.
 Si no apareix clickeu a l'icona a dalt a l'esquerra ![Sandwich Icon](images/sandwich-icon.svg)
 
-Hi ha un apartat que posa "Altres Calendaris", clicka al signe "+".
+<img align="right" clear="right" src="images/gcalendar-01-addcalendar.png"/>
+
+Hi ha un apartat que posa "Altres Calendaris", clicka al signe "+" per afegir-ne un.
 
 <img align="right" clear="right" src="images/gcalendar-02-fromurl.png"/>
 
