@@ -3,7 +3,6 @@ module.exports = (function () {
   var jsyaml = require('js-yaml')
   var contrast = require('./colorutils').contrast
 
-  var Dialog = require('polythene-mithril-dialog').Dialog
   var Button = require('polythene-mithril-button').Button
   var List = require('polythene-mithril-list').List
   var Ripple = require('polythene-mithril-ripple').Ripple

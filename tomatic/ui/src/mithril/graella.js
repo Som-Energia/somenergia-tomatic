@@ -19,7 +19,6 @@ var LoginPage = require('./components/loginpage')
 var CallInfoPage = require('./components/callinfopage')
 var PbxPage = require('./components/pbxpage').default
 var PersonStyles = require('./components/personstyles').default
-var Doc = require('./components/doc').default
 var extraMenuOptions = require('../services/extramenu').default
 
 var css = require('polythene-css')
