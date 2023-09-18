@@ -273,9 +273,9 @@ Per planificar la vostra setmana, és molt pràctic poder
 veure els vostres torns de telèfon dintre del Google Calendar.
 Com ferho?
 
-<img align="right" clear="right" src="images/gcalendar-00A-menu-export-calendar.png"/>
-
 Al menú de perfil, seleccioneu l'opcio "Exporta Calendari".
+
+<img src="images/gcalendar-00A-menu-export-calendar.png"/>
 
 <img align="right" clear="right" src="images/gcalendar-00B-dialog-export-calendar.png"/>
 
@@ -285,26 +285,28 @@ Copieu l'adreça clickant a la icona.
 En alguns navegadors antics podria no funcionar.
 En aquest cas seleccioneu l'adreça que apareix i copieu-la normalment.
 
-<img align="right" clear="right" src="images/gcalendar-00C-panel-menu.png"/>
-
 A l'esquerra hi ha la llista de calendaris.
 Si no apareix clickeu a l'icona a dalt a l'esquerra ![Sandwich Icon](images/sandwich-icon.svg)
 
-<img align="right" clear="right" src="images/gcalendar-01-addcalendar.png"/>
+<img src="images/gcalendar-00C-panel-menu.png"/>
 
 Hi ha un apartat que posa "Altres Calendaris", clicka al signe "+" per afegir-ne un.
 
-<img align="right" clear="right" src="images/gcalendar-02-fromurl.png"/>
+<img src="images/gcalendar-01-addcalendar.png"/>
 
-Escull l'opció "Desde una URL"
+Et surt aquest menú, escull l'opció "Desde una URL"
 
-<img align="right" clear="right" src="images/gcalendar-03-copyurl.png"/>
+<img src="images/gcalendar-02-fromurl.png"/>
 
 Enganxes la url que has copiat en el Tomàtic
 
-<img align="right" clear="right" src="images/gcalendar-04-result.png"/>
+<img src="images/gcalendar-03-copyurl.png"/>
+
 
 I ja està, veurás que a la dreta surt un calendari nou, i els teus torns de telèfon barrejats amb els teus esdeveniments.
+
+<img src="images/gcalendar-04-result.png"/>
+
 
 Ves amb compte:
 
