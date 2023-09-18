@@ -269,11 +269,11 @@ de Tomàtic sense bloquejar per rebre les noves.
 
 ## Veure els torns al Google Calendar
 
-Per planificar la vostra setmana, és molt pràctic poder
+Per planificar la vostra setmana, va molt bé poder
 veure els vostres torns de telèfon dintre del Google Calendar.
-Com ferho?
+Com fer-ho?
 
-Al menú de perfil, seleccioneu l'opcio "Exporta Calendari".
+Al menú que surt de les vostres inicials al Tomàtic, seleccioneu l'opcio "Exporta Calendari".
 
 <img src="images/gcalendar-00A-menu-export-calendar.png"/>
 
@@ -281,11 +281,12 @@ Us sortirà un diàleg amb una adreça i instruccions.
 Copieu l'adreça clickant a la icona.
 
 En alguns navegadors antics podria no funcionar.
-En aquest cas seleccioneu l'adreça que apareix i copieu-la normalment.
+Si es el vostre cas, cap problema, seleccioneu l'adreça que apareix i copieu-la normalment.
 
 <img src="images/gcalendar-00B-dialog-export-calendar.png"/>
 
-A l'esquerra hi ha la llista de calendaris.
+En el Google Calendar,
+a l'esquerra hi ha un panel amb la llista de calendaris.
 Si no apareix clickeu a l'icona a dalt a l'esquerra ![Sandwich Icon](images/sandwich-icon.svg)
 
 <img src="images/gcalendar-00C-panel-menu.png"/>
@@ -294,11 +295,11 @@ Hi ha un apartat que posa "Altres Calendaris", clicka al signe "+" per afegir-ne
 
 <img src="images/gcalendar-01-addcalendar.png"/>
 
-Et surt aquest menú, escull l'opció "Desde una URL"
+Et surt aquest menú, escull l'opció "A partir d'un URL"
 
 <img src="images/gcalendar-02-fromurl.png"/>
 
-Enganxes la url que has copiat en el Tomàtic
+Enganxes la url que has copiat en el Tomàtic, i clickes al botó.
 
 <img src="images/gcalendar-03-copyurl.png"/>
 
@@ -315,9 +316,8 @@ Ves amb compte:
 
 - Quan els teus companys crein una reunió, per defecte
   el torns no sortiran com a ocupats.
+  (Estem cercant solucions a aixó com ara tenir calendaris per grups/equips)
 
-- Quan feu reunions aquest calendari no surt d'entrada als
-  calendaris que veuen els companys quan creen una
 
 
 
