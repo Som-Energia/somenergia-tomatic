@@ -40,16 +40,18 @@ module.exports = (function () {
   }
 
   var typeOfSearch = function (fieldguess) {
+    const fields = {
+      phone: 'Telèfon',
+        name: 'Cognoms/Nom',
+        nif: 'NIF',
+        soci: 'Número Soci',
+        email: 'Email',
+        contract: 'Contracte',
+        all: 'Tot',
+    }
     const options = [
-        ['', 'Auto' + (fieldguess?` (${fieldguess})`: '')],
-        ['phone', 'Telèfon'],
-        ['name', 'Cognoms/Nom'],
-        ['nif', 'NIF'],
-        ['soci', 'Número Soci'],
-        ['email', 'Email'],
-        ['contract', 'Contracte'],
-        ['all', 'Tot'],
-    ]
+      ['', 'Auto' + (fieldguess?` (${fieldguess})`: '')],
+    ] + Object.keys().map(function(key) {return [key, fields[key]]})
     return m(
       'select.select-search#search-by',
       {
