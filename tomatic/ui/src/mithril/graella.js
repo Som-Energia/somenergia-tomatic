@@ -1,28 +1,27 @@
 'use strict'
-import m from 'mithril';
+import m from 'mithril'
+import stream from 'mithril/stream'
+import { Snackbar } from 'polythene-mithril-snackbar'
+import { Dialog } from 'polythene-mithril-dialog'
+import { Tabs } from 'polythene-mithril-tabs'
+import iconMenu from 'mmsvg/google/msvg/navigation/menu'
+import iconMore from 'mmsvg/google/msvg/navigation/more-vert'
+import Tomatic from '../services/tomatic'
+import Login from './components/login'
+import PersonsPage from './components/personspage'
+import TimeTablePage from './components/timetablepage'
+import MenuButton from './components/menubutton'
+import LoginPage from './components/loginpage'
+import CallInfoPage from './components/callinfopage'
+import PbxPage from './components/pbxpage'
+import PersonStyles from './components/personstyles'
+import extraMenuOptions from '../services/extramenu'
+import { addTypography, addLayoutStyles } from 'polythene-css'
+import customStyle from './style.styl'
+m.prop = stream
 
-import m.prop from 'mithril/stream'
-
-import { Snackbar } from 'polythene-mithril-snackbar';
-import { Dialog } from 'polythene-mithril-dialog';
-import { Tabs } from 'polythene-mithril-tabs';
-import iconMenu from 'mmsvg/google/msvg/navigation/menu';
-import iconMore from 'mmsvg/google/msvg/navigation/more-vert';
-import Tomatic from '../services/tomatic';
-import Login from './components/login';
-import PersonsPage from './components/personspage';
-import TimeTablePage from './components/timetablepage';
-import MenuButton from './components/menubutton';
-import LoginPage from './components/loginpage';
-import CallInfoPage from './components/callinfopage';
-import PbxPage from './components/pbxpage';
-import PersonStyles from './components/personstyles';
-import extraMenuOptions from '../services/extramenu';
-import css from 'polythene-css';
-import customStyle from './style.styl';
-
-css.addLayoutStyles()
-css.addTypography()
+addLayoutStyles()
+addTypography()
 
 const SnackbarLogger = function () {
   return {
@@ -133,4 +132,4 @@ window.onload = function () {
     },
   })
 }
-// vim: noet ts=4 sw=4
+// vim: et ts=2 sw=2
