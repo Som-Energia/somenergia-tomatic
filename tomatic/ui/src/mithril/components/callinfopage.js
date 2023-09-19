@@ -40,14 +40,7 @@ module.exports = (function () {
   }
 
   var typeOfSearch = function () {
-    return m(
-      'select.select-search#search-by',
-      {
-        onchange: function (ev) {
-          CallInfo.search_by = ev.target.value
-        },
-      },
-      [
+    const options = [
         ['phone', 'Telèfon'],
         ['name', 'Cognoms/Nom'],
         ['nif', 'NIF'],
@@ -55,7 +48,15 @@ module.exports = (function () {
         ['email', 'Email'],
         ['contract', 'Contracte'],
         ['all', 'Tot'],
-      ].map(function (item) {
+    ]
+    return m(
+      'select.select-search#search-by',
+      {
+        onchange: function (ev) {
+          CallInfo.search_by = ev.target.value
+        },
+      },
+      options.map(function (item) {
         const name = item[0]
         const text = item[1]
         return m(
