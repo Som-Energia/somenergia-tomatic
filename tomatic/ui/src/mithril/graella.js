@@ -1,28 +1,25 @@
 'use strict'
-var m = require('mithril')
+import m from 'mithril';
 
-m.prop = require('mithril/stream')
+import m.prop from 'mithril/stream'
 
-var Snackbar = require('polythene-mithril-snackbar').Snackbar
-var Dialog = require('polythene-mithril-dialog').Dialog
-var Tabs = require('polythene-mithril-tabs').Tabs
-
-var iconMenu = require('mmsvg/google/msvg/navigation/menu')
-var iconMore = require('mmsvg/google/msvg/navigation/more-vert')
-
-var Tomatic = require('../services/tomatic')
-var Login = require('./components/login')
-var PersonsPage = require('./components/personspage').default
-var TimeTablePage = require('./components/timetablepage')
-var MenuButton = require('./components/menubutton')
-var LoginPage = require('./components/loginpage')
-var CallInfoPage = require('./components/callinfopage')
-var PbxPage = require('./components/pbxpage').default
-var PersonStyles = require('./components/personstyles').default
-var extraMenuOptions = require('../services/extramenu').default
-
-var css = require('polythene-css')
-var customStyle = require('./style.styl')
+import { Snackbar } from 'polythene-mithril-snackbar';
+import { Dialog } from 'polythene-mithril-dialog';
+import { Tabs } from 'polythene-mithril-tabs';
+import iconMenu from 'mmsvg/google/msvg/navigation/menu';
+import iconMore from 'mmsvg/google/msvg/navigation/more-vert';
+import Tomatic from '../services/tomatic';
+import Login from './components/login';
+import PersonsPage from './components/personspage';
+import TimeTablePage from './components/timetablepage';
+import MenuButton from './components/menubutton';
+import LoginPage from './components/loginpage';
+import CallInfoPage from './components/callinfopage';
+import PbxPage from './components/pbxpage';
+import PersonStyles from './components/personstyles';
+import extraMenuOptions from '../services/extramenu';
+import css from 'polythene-css';
+import customStyle from './style.styl';
 
 css.addLayoutStyles()
 css.addTypography()
