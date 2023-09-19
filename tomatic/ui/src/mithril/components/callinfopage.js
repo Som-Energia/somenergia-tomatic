@@ -15,6 +15,7 @@ module.exports = (function () {
   var ContractInfo = require('./contract')
   var PartnerInfo = require('./partnerinfo')
   var Questionnaire = require('./questionnaire')
+  const autofiltertype = require('../../services/autofiltertype').default
 
   var CallInfoPage = {}
 
@@ -123,7 +124,7 @@ module.exports = (function () {
     }
     return m('', { className: 'busca-info' }, [
       m('.busca-info-title.layout.horizontal', [
-        typeOfSearch(),
+        typeOfSearch(autofiltertype(CallInfo.search)),
         m(TextField, {
           className: 'txtf-phone flex',
           placeholder: 'Cerca',
