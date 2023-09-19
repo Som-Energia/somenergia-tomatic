@@ -50,7 +50,7 @@ module.exports = (function () {
         all: 'Tot',
     }
     const options = [
-      ['', 'Auto' + (fieldguess?` (${fieldguess})`: '')],
+      ['', 'Auto' + (fieldguess?` (${fields[fieldguess]})`: '')],
     ] + Object.keys().map(function(key) {return [key, fields[key]]})
     return m(
       'select.select-search#search-by',
