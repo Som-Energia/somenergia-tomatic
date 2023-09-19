@@ -39,8 +39,9 @@ module.exports = (function () {
     return m('.icon-refresh', [m('i.fas.fa-redo-alt')])
   }
 
-  var typeOfSearch = function () {
+  var typeOfSearch = function (fieldguess) {
     const options = [
+        ['', 'Auto' + (fieldguess?` (${fieldguess})`: '')],
         ['phone', 'Telèfon'],
         ['name', 'Cognoms/Nom'],
         ['nif', 'NIF'],
@@ -56,9 +57,9 @@ module.exports = (function () {
           CallInfo.search_by = ev.target.value
         },
       },
-      options.map(function (item) {
-        const name = item[0]
-        const text = item[1]
+      options.map(function (option) {
+        const name = option[0]
+        const text = option[1]
         return m(
           'option',
           {
