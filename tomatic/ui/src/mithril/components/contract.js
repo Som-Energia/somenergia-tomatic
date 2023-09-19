@@ -1,4 +1,3 @@
-module.exports = (function () {
   var m = require('mithril')
 
   var Spinner =
@@ -420,6 +419,5 @@ module.exports = (function () {
     return m('.contracts', contractCard(partner))
   }
 
-  return ContractInfo
-})()
+module.exports = ContractInfo
 // vim: et sw=2 ts=2

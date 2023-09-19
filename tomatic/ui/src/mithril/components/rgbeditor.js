@@ -1,4 +1,3 @@
-module.exports = (function () {
   var color = require('./colorutils.js')
   var m = require('mithril')
 
@@ -65,6 +64,6 @@ module.exports = (function () {
       ),
     ])
   }
-  return RgbEditor
-})()
-// vim: noet sw=4 ts=4
+module.exports = RgbEditor
+
+// vim: et sw=2 ts=2

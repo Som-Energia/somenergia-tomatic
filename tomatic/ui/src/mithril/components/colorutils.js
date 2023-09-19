@@ -42,3 +42,5 @@ module.exports = {
   hex2triplet: hex2triplet,
   contrast: contrast,
 }
+
+// vim: ts=2 sw=2 et

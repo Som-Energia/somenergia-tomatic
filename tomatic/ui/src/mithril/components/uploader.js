@@ -1,4 +1,3 @@
-export default (function () {
   var m = require('mithril')
   var css = require('@emotion/css').css
   var RaisedButton = require('polythene-mithril-raised-button').RaisedButton
@@ -59,7 +58,6 @@ export default (function () {
       )
     },
   }
-  return Uploader
-})()
+module.exports = Uploader
 
-// vim: noet ts=4 sw=4
+// vim: et ts=2 sw=2

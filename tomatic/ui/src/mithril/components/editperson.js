@@ -1,9 +1,6 @@
-'use strict'
-
 // Persons
 // Displays the list of persons
 
-module.exports = (function () {
   var m = require('mithril')
   var Dialog = require('polythene-mithril-dialog').Dialog
   var TextField = require('polythene-mithril-textfield').TextField
@@ -230,6 +227,6 @@ module.exports = (function () {
     )
   }
 
-  return editPerson
-})()
-// vim: noet sw=4 ts=4
+module.exports =  editPerson
+
+// vim: et sw=2 ts=2

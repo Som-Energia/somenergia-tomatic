@@ -1,4 +1,3 @@
-module.exports = (function () {
   var m = require('mithril')
   var styleCallinfo = require('./callinfo_style.styl')
   var Ripple = require('polythene-mithril-ripple').Ripple
@@ -335,6 +334,6 @@ module.exports = (function () {
     ])
   }
 
-  return CallInfoPage
-})()
+module.exports = CallInfoPage
+
 // vim: ts=2 sw=2 et

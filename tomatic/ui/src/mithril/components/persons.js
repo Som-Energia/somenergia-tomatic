@@ -1,9 +1,6 @@
-'use strict'
-
 // Persons
 // Displays the list of persons
 
-module.exports = (function () {
   var m = require('mithril')
   var IconButton = require('polythene-mithril-icon-button').IconButton
   var iconDate = require('mmsvg/google/msvg/action/date-range')
@@ -70,6 +67,5 @@ module.exports = (function () {
     ]
   }
 
-  return Persons
-})()
-// vim: noet sw=4 ts=4
+module.exports = Persons
+// vim: et sw=2 ts=2

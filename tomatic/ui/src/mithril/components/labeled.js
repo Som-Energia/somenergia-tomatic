@@ -1,6 +1,5 @@
 // Wrapps an form input with a label that gets primary color on focus
 
-module.exports = (function () {
   var m = require('mithril')
 
   var Labeled = {
@@ -20,6 +19,6 @@ module.exports = (function () {
     },
   }
 
-  return Labeled
-})()
-// vim: noet ts=4 sw=4
+module.exports = Labeled
+
+// vim: et ts=2 sw=2

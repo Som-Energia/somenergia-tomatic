@@ -1,4 +1,3 @@
-module.exports = (function () {
   var m = require('mithril')
 
   var Ripple = require('polythene-mithril-ripple').Ripple
@@ -189,6 +188,5 @@ module.exports = (function () {
     return m('.main-info-card', [partnerCard(info.partners)])
   }
 
-  return PartnerInfo
-})()
+module.exports = PartnerInfo
 // vim: ts=2 sw=2 et

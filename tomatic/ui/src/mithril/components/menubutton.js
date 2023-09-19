@@ -1,5 +1,4 @@
 // MenuButton
-module.exports = (function () {
   var m = require('mithril')
   var IconButton = require('polythene-mithril-icon-button').IconButton
   var ListTile = require('polythene-mithril-list-tile').ListTile
@@ -76,6 +75,5 @@ module.exports = (function () {
     },
   }
 
-  return MenuButton
-})()
-// vim: noet sw=4 ts=4
+module.exports = MenuButton
+// vim: et sw=2 ts=2

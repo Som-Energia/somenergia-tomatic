@@ -1,9 +1,6 @@
-'use strict'
-
 // Queue Monitor
 // Monitors and controls the PBX queue status
 
-module.exports = (function () {
   var m = require('mithril')
   var Dialog = require('polythene-mithril-dialog').Dialog
   var Button = require('polythene-mithril-button').Button
@@ -91,6 +88,6 @@ module.exports = (function () {
     },
   }
 
-  return QueueMonitor
-})()
-// vim: noet ts=4 sw=4
+module.exports = QueueMonitor
+
+// vim: et ts=2 sw=2

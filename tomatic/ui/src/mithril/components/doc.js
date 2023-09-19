@@ -14,6 +14,6 @@ var Doc = function (message) {
   })
 }
 
-export default Doc
+module.exports = Doc
 
-// vim: noet ts=4 sw=4
+// vim: et ts=2 sw=2

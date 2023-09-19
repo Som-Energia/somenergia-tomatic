@@ -14,4 +14,6 @@ const PersonsPage = {
     ])
   },
 }
-export default PersonsPage
+module.exports = PersonsPage
+
+// vim: et ts=2 sw=2

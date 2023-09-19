@@ -1,6 +1,5 @@
 /// Cal Registry Form
 
-module.exports = (function () {
   var m = require('mithril')
 
   var Ripple = require('polythene-mithril-ripple').Ripple
@@ -349,6 +348,6 @@ module.exports = (function () {
     )
   }
 
-  return Questionnaire
-})()
+module.exports = Questionnaire
+
 // vim: ts=2 sw=2 et

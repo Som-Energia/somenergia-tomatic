@@ -1,5 +1,3 @@
-'use strict'
-module.exports = (function () {
   var m = require('mithril')
 
   m.prop = require('mithril/stream')
@@ -59,7 +57,6 @@ module.exports = (function () {
     },
   }
 
-  return Select
-})()
+module.exports = Select
 
-// vim: noet ts=4 sw=4
+// vim: et ts=2 sw=2

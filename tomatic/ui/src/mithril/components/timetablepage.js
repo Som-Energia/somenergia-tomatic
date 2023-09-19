@@ -1,6 +1,5 @@
 // TimeTablePage
 // Page to browse timetables for each week
-module.exports = (function () {
   var m = require('mithril')
   var Dialog = require('polythene-mithril-dialog').Dialog
   var Button = require('polythene-mithril-button').Button
@@ -201,6 +200,5 @@ module.exports = (function () {
     },
   }
 
-  return TimeTablePage
-})()
-// vim: noet sw=4 ts=4
+module.exports = TimeTablePage
+// vim: et sw=2 ts=2

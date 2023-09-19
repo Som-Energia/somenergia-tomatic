@@ -1,5 +1,4 @@
 // Busy list editor
-module.exports = (function () {
   var m = require('mithril')
   var Dialog = require('polythene-mithril-dialog').Dialog
   var Button = require('polythene-mithril-button').Button
@@ -295,6 +294,6 @@ module.exports = (function () {
     })
   }
 
-  return editAvailabilities
-})()
-// vim: noet sw=4 ts=4
+module.exports = editAvailabilities
+
+// vim: et sw=2 ts=2

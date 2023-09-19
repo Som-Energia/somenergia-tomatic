@@ -1,4 +1,3 @@
-module.exports = (function () {
   // This module controls the state regarding the callinfo page
   var api = require('../../services/api').default
   var Auth = require('../../services/auth')
@@ -504,7 +503,6 @@ module.exports = (function () {
   Auth.onUserChanged.push(CallInfo.getLogPerson)
   connectWebSocket()
 
-  return CallInfo
-})()
+module.exports = CallInfo
 
 // vim: et ts=2 sw=2

@@ -1,4 +1,3 @@
-module.exports = (function () {
   var m = require('mithril')
   var jsyaml = require('js-yaml')
   var contrast = require('./colorutils').contrast
@@ -64,7 +63,6 @@ module.exports = (function () {
     ])
   }
 
-  return Login
-})()
+module.exports = Login
 
-// vim: et ts=4 sw=4
+// vim: et ts=2 sw=2

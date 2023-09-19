@@ -1,6 +1,4 @@
-'use strict'
 
-export default (function () {
   var css = require('@emotion/css').css
   var m = require('mithril')
   var Tomatic = require('../../services/tomatic')
@@ -67,6 +65,6 @@ export default (function () {
     },
   }
 
-  return WeekPicker
-})()
-// vim: noet sw=4 ts=4
+module.exports = WeekPicker
+
+// vim: et sw=2 ts=2

@@ -1,5 +1,3 @@
-'use strict'
-
 // PersonPicker
 // Displays a list of persons as colored boxes
 // to choose one by clicking on them.
@@ -7,7 +5,6 @@
 // - onpick: callback to be called on pick
 // - nobodyPickable: bool 'nobody' is an option or not
 
-module.exports = (function () {
   var m = require('mithril')
   var Tomatic = require('../../services/tomatic')
 
@@ -41,6 +38,6 @@ module.exports = (function () {
     },
   }
 
-  return PersonPicker
-})()
-// vim: noet sw=4 ts=4
+module.exports = PersonPicker
+
+// vim: et sw=2 ts=2

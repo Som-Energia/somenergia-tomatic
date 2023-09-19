@@ -1,4 +1,3 @@
-module.exports = (function () {
   var m = require('mithril')
   var Button = require('polythene-mithril-button').Button
   var Card = require('polythene-mithril-card').Card
@@ -66,7 +65,6 @@ module.exports = (function () {
     },
   }
 
-  return LoginPage
-})()
+module.exports = LoginPage
 
-// vim: et ts=4 sw=4
+// vim: et ts=2 sw=2
