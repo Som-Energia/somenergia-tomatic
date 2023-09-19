@@ -43,8 +43,8 @@ module.exports = (function () {
     return m(
       'select.select-search#search-by',
       {
-        onchange: function () {
-          CallInfo.search_by = document.getElementById('search-by').value
+        onchange: function (ev) {
+          CallInfo.search_by = ev.target.value
         },
       },
       [
