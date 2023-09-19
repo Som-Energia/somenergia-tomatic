@@ -42,12 +42,13 @@ module.exports = (function () {
   var typeOfSearch = function (fieldguess) {
     const fields = {
       phone: 'Telèfon',
-        name: 'Cognoms/Nom',
-        nif: 'NIF',
-        soci: 'Número Soci',
-        email: 'Email',
-        contract: 'Contracte',
-        all: 'Tot',
+      name: 'Cognoms/Nom',
+      nif: 'NIF',
+      soci: 'Número Soci',
+      email: 'Email',
+      contract: 'Contracte',
+      cups: 'CUPS',
+      all: 'Tot',
     }
     const options = [
       ['', 'Auto' + (fieldguess?` (${fields[fieldguess]})`: '')],
