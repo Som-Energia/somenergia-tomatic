@@ -2,13 +2,14 @@ module.exports = (function () {
   // This module controls the state regarding the callinfo page
   var api = require('../../services/api').default
   var Auth = require('../../services/auth')
+  const autofiltertype = require('../../services/autofiltertype').default
 
   var websock = null
   var CallInfo = {}
   CallInfo.categories = [] // Call categories
   CallInfo.sections = [] // Teams to assign a call
   CallInfo.search = '' // Search value
-  CallInfo.search_by = 'phone' // Search criteria
+  CallInfo.search_by = '' // Search criteria
   CallInfo.searchResults = {} // Retrieved search data
   CallInfo.currentPerson = 0 // Selected person from search data
   CallInfo.currentContract = 0 // Selected contract selected person
@@ -250,10 +251,12 @@ module.exports = (function () {
 
   var retrieveInfo = function () {
     CallInfo.searchResults = { 1: 'empty' } // Searching...
-    var encodedValue = encodeURIComponent(CallInfo.search.trim())
+    const trimmedValue = CallInfo.search.trim()
+    const searchField = CallInfo.search_by || autofiltertype(trimmedValue) || 'all'
+    const encodedValue = encodeURIComponent(trimmedValue)
     api
       .request({
-        url: '/api/info/' + CallInfo.search_by + '/' + encodedValue,
+        url: '/api/info/' + searchField + '/' + encodedValue,
       })
       .then(
         function (response) {
