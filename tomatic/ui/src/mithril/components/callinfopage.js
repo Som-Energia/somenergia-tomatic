@@ -15,6 +15,7 @@ module.exports = (function () {
   var ContractInfo = require('./contract')
   var PartnerInfo = require('./partnerinfo')
   var Questionnaire = require('./questionnaire')
+  var Select = require('./select')
   const autofiltertype = require('../../services/autofiltertype').default
 
   var CallInfoPage = {}
@@ -50,28 +51,24 @@ module.exports = (function () {
       cups: 'CUPS',
       all: 'Tot',
     }
-    const options = [
-      ['', 'Auto' + (fieldguess?` (${fields[fieldguess]})`: '')],
-    ] + Object.keys().map(function(key) {return [key, fields[key]]})
+
+    const options = Object.assign(
+      {'': 'Auto' + (fieldguess?` (${fields[fieldguess]})`: '')},
+      fields,
+    )
+
     return m(
-      'select.select-search#search-by',
+      Select,
       {
-        onchange: function (ev) {
+        className: 'select-search flex',
+        label: 'Criteri',
+        required: true,
+        onChange: function (ev) {
           CallInfo.search_by = ev.target.value
         },
+        value: CallInfo.search_by,
+        options: options,
       },
-      options.map(function (option) {
-        const name = option[0]
-        const text = option[1]
-        return m(
-          'option',
-          {
-            value: name,
-            selected: CallInfo.search_by === name,
-          },
-          text,
-        )
-      }),
     )
   }
 
@@ -133,6 +130,7 @@ module.exports = (function () {
         m(TextField, {
           className: 'search-query flex',
           placeholder: 'Cerca',
+          floatingLabel: true,
           value: CallInfo.search,
           onChange: function (state) {
             CallInfo.search = state.value
@@ -147,6 +145,7 @@ module.exports = (function () {
         m(IconButton, {
           className: 'btn-search',
           icon: searchIcon(),
+          compact: true,
           events: {
             onclick: function () {
               CallInfo.searchCustomer()
