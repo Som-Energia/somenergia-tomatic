@@ -1,21 +1,20 @@
-var m = require('mithril')
-var styleCallinfo = require('./callinfo_style.styl')
-var Ripple = require('polythene-mithril-ripple').Ripple
-var Dialog = require('polythene-mithril-dialog').Dialog
-var Button = require('polythene-mithril-button').Button
-var IconButton = require('polythene-mithril-icon-button').IconButton
-var TextField = require('polythene-mithril-textfield').TextField
-var Card = require('polythene-mithril-card').Card
-var ListTile = require('polythene-mithril-list-tile').ListTile
-var List = require('polythene-mithril-list').List
-var Spinner =
-  require('polythene-mithril-material-design-spinner').MaterialDesignSpinner
-var CallInfo = require('./callinfo')
-var ContractInfo = require('./contract')
-var PartnerInfo = require('./partnerinfo')
-var Questionnaire = require('./questionnaire')
-var Select = require('./select')
-const autofiltertype = require('../../services/autofiltertype').default
+import m from 'mithril'
+import styleCallinfo from './callinfo_style.styl'
+import { Ripple } from 'polythene-mithril-ripple'
+import { Dialog } from 'polythene-mithril-dialog'
+import { Button } from 'polythene-mithril-button'
+import { IconButton } from 'polythene-mithril-icon-button'
+import { TextField } from 'polythene-mithril-textfield'
+import { Card } from 'polythene-mithril-card'
+import { ListTile } from 'polythene-mithril-list-tile'
+import { List } from 'polythene-mithril-list'
+import { MaterialDesignSpinner as Spinner } from 'polythene-mithril-material-design-spinner'
+import CallInfo from './callinfo'
+import ContractInfo from './contract'
+import PartnerInfo from './partnerinfo'
+import Questionnaire from './questionnaire'
+import Select from './select'
+import autofiltertype from '../../services/autofiltertype'
 
 var CallInfoPage = {}
 
@@ -331,6 +330,6 @@ CallInfoPage.view = function () {
   ])
 }
 
-module.exports = CallInfoPage
+export default CallInfoPage
 
 // vim: ts=2 sw=2 et

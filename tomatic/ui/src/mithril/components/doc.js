@@ -1,5 +1,5 @@
-var m = require('mithril')
-var Card = require('polythene-mithril-card').Card
+import m from 'mithril'
+import { Card } from 'polythene-mithril-card'
 
 var Doc = function (message) {
   return m(Card, {
@@ -14,6 +14,6 @@ var Doc = function (message) {
   })
 }
 
-module.exports = Doc
+export default Doc
 
 // vim: et ts=2 sw=2

@@ -1,11 +1,12 @@
 // MenuButton
-var m = require('mithril')
-var IconButton = require('polythene-mithril-icon-button').IconButton
-var ListTile = require('polythene-mithril-list-tile').ListTile
-var List = require('polythene-mithril-list').List
-var Shadow = require('polythene-mithril-shadow').Shadow
-var Menu = require('polythene-mithril-menu').Menu
-var iconMore = require('mmsvg/google/msvg/navigation/more-vert')
+import m from 'mithril'
+
+import { IconButton } from 'polythene-mithril-icon-button'
+import { ListTile } from 'polythene-mithril-list-tile'
+import { List } from 'polythene-mithril-list'
+import { Shadow } from 'polythene-mithril-shadow'
+import { Menu } from 'polythene-mithril-menu'
+import iconMore from 'mmsvg/google/msvg/navigation/more-vert'
 
 const MenuContent = function (options) {
   return m(List, {
@@ -75,5 +76,5 @@ const MenuButton = {
   },
 }
 
-module.exports = MenuButton
+export default MenuButton
 // vim: et sw=2 ts=2

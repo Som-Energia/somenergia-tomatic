@@ -1,14 +1,11 @@
-var m = require('mithril')
-
-var Spinner =
-  require('polythene-mithril-material-design-spinner').MaterialDesignSpinner
-var Ripple = require('polythene-mithril-ripple').Ripple
-var Card = require('polythene-mithril-card').Card
-var Button = require('polythene-mithril-button').Button
-var IconButton = require('polythene-mithril-icon-button').IconButton
-var Tabs = require('polythene-mithril-tabs').Tabs
-
-var CallInfo = require('./callinfo')
+import m from 'mithril'
+import { MaterialDesignSpinner as Spinner } from 'polythene-mithril-material-design-spinner'
+import { Ripple } from 'polythene-mithril-ripple'
+import { Card } from 'polythene-mithril-card'
+import { Button } from 'polythene-mithril-button'
+import { IconButton } from 'polythene-mithril-icon-button'
+import { Tabs } from 'polythene-mithril-tabs'
+import CallInfo from './callinfo'
 
 var ContractInfo = {}
 
@@ -407,5 +404,5 @@ ContractInfo.mainPanel = function (info) {
   return m('.contracts', contractCard(partner))
 }
 
-module.exports = ContractInfo
+export default ContractInfo
 // vim: et sw=2 ts=2

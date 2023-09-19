@@ -1,14 +1,12 @@
-var m = require('mithril')
-var jsyaml = require('js-yaml')
-var contrast = require('./colorutils').contrast
-
-var Button = require('polythene-mithril-button').Button
-var List = require('polythene-mithril-list').List
-var Ripple = require('polythene-mithril-ripple').Ripple
-
-var styleLogin = require('./callinfo_style.styl')
-var Tomatic = require('../../services/tomatic')
-var Auth = require('../../services/auth')
+import m from 'mithril'
+import jsyaml from 'js-yaml'
+import { contrast } from './colorutils'
+import { Button } from 'polythene-mithril-button'
+import { List } from 'polythene-mithril-list'
+import { Ripple } from 'polythene-mithril-ripple'
+import styleLogin from './callinfo_style.styl'
+import Tomatic from '../../services/tomatic'
+import Auth from '../../services/auth'
 
 var Login = {}
 
@@ -63,6 +61,6 @@ Login.identification = function () {
   ])
 }
 
-module.exports = Login
+export default Login
 
 // vim: et ts=2 sw=2

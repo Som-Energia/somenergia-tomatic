@@ -1,7 +1,7 @@
-var m = require('mithril')
-var css = require('@emotion/css').css
-var RaisedButton = require('polythene-mithril-raised-button').RaisedButton
-var api = require('../../services/api').default
+import m from 'mithril'
+import { css } from '@emotion/css'
+import { RaisedButton } from 'polythene-mithril-raised-button'
+import api from '../../services/api'
 
 const uploaderStyle = css`
   label: uploader;
@@ -58,6 +58,7 @@ var Uploader = {
     )
   },
 }
-module.exports = Uploader
+
+export default Uploader
 
 // vim: et ts=2 sw=2

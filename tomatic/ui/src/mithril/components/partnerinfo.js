@@ -1,11 +1,9 @@
-var m = require('mithril')
-
-var Ripple = require('polythene-mithril-ripple').Ripple
-var Card = require('polythene-mithril-card').Card
-var Button = require('polythene-mithril-button').Button
-var Tabs = require('polythene-mithril-tabs').Tabs
-
-var CallInfo = require('./callinfo')
+import m from 'mithril'
+import { Ripple } from 'polythene-mithril-ripple'
+import { Card } from 'polythene-mithril-card'
+import { Button } from 'polythene-mithril-button'
+import { Tabs } from 'polythene-mithril-tabs'
+import CallInfo from './callinfo'
 
 var PartnerInfo = {}
 
@@ -188,5 +186,5 @@ PartnerInfo.allInfo = function (info) {
   return m('.main-info-card', [partnerCard(info.partners)])
 }
 
-module.exports = PartnerInfo
+export default PartnerInfo
 // vim: ts=2 sw=2 et

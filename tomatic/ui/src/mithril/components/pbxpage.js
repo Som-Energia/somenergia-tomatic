@@ -1,6 +1,6 @@
-var m = require('mithril')
-var QueueMonitor = require('./queuemonitor')
-var Doc = require('./doc').default
+import m from 'mithril'
+import QueueMonitor from './queuemonitor'
+import Doc from './doc'
 
 const PbxPage = {
   view: function () {
@@ -18,6 +18,6 @@ const PbxPage = {
   },
 }
 
-module.exports = PbxPage
+export default PbxPage
 
 // vim: et ts=2 sw=2

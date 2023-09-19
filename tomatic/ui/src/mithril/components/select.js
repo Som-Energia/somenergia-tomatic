@@ -1,4 +1,4 @@
-var m = require('mithril')
+import m from 'mithril'
 
 m.prop = require('mithril/stream')
 
@@ -57,6 +57,6 @@ var Select = {
   },
 }
 
-module.exports = Select
+export default Select
 
 // vim: et ts=2 sw=2

@@ -1,13 +1,14 @@
 // Persons
 // Displays the list of persons
 
-var m = require('mithril')
-var IconButton = require('polythene-mithril-icon-button').IconButton
-var iconDate = require('mmsvg/google/msvg/action/date-range')
-var iconEdit = require('mmsvg/google/msvg/editor/mode-edit')
-var Tomatic = require('../../services/tomatic')
-var editAvailabilities = require('./busyeditor')
-var editPerson = require('./editperson')
+import m from 'mithril'
+
+import { IconButton } from 'polythene-mithril-icon-button'
+import iconDate from 'mmsvg/google/msvg/action/date-range'
+import iconEdit from 'mmsvg/google/msvg/editor/mode-edit'
+import Tomatic from '../../services/tomatic'
+import editAvailabilities from './busyeditor'
+import editPerson from './editperson'
 
 var Persons = function (extensions) {
   return [
@@ -67,5 +68,5 @@ var Persons = function (extensions) {
   ]
 }
 
-module.exports = Persons
+export default Persons
 // vim: et sw=2 ts=2

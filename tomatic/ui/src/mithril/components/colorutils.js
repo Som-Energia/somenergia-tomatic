@@ -36,11 +36,16 @@ function luminance(hex, lum) {
     }),
   )
 }
-module.exports = {
-  luminance: luminance,
-  triplet2hex: triplet2hex,
-  hex2triplet: hex2triplet,
-  contrast: contrast,
+
+export { luminance, triplet2hex, hex2triplet, contrast }
+
+const color = {
+  luminance,
+  triplet2hex,
+  hex2triplet,
+  contrast,
 }
+
+export default color
 
 // vim: ts=2 sw=2 et

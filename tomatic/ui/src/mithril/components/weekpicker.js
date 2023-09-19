@@ -1,6 +1,6 @@
-var css = require('@emotion/css').css
-var m = require('mithril')
-var Tomatic = require('../../services/tomatic')
+import { css } from '@emotion/css'
+import m from 'mithril'
+import Tomatic from '../../services/tomatic'
 
 const styles = {
   weeks: css`
@@ -64,6 +64,6 @@ var WeekPicker = {
   },
 }
 
-module.exports = WeekPicker
+export default WeekPicker
 
 // vim: et sw=2 ts=2

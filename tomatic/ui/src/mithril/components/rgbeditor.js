@@ -1,7 +1,6 @@
-var color = require('./colorutils.js')
-var m = require('mithril')
-
-var Slider = require('polythene-mithril-slider').Slider
+import color from './colorutils.js'
+import m from 'mithril'
+import { Slider } from 'polythene-mithril-slider'
 
 var RgbEditor = {}
 RgbEditor.oninit = function (vnode) {
@@ -64,6 +63,7 @@ RgbEditor.view = function (vnode) {
     ),
   ])
 }
-module.exports = RgbEditor
+
+export default RgbEditor
 
 // vim: et sw=2 ts=2

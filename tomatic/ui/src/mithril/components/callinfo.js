@@ -1,8 +1,9 @@
 // This module controls the state regarding the callinfo page
-var api = require('../../services/api').default
-var Auth = require('../../services/auth')
-var Tomatic = require('../../services/tomatic')
-const autofiltertype = require('../../services/autofiltertype').default
+import api from '../../services/api'
+
+import Auth from '../../services/auth'
+import Tomatic from '../../services/tomatic'
+import autofiltertype from '../../services/autofiltertype'
 
 var websock = null
 var CallInfo = {}
@@ -500,6 +501,6 @@ Auth.onUserChanged.push(CallInfo.changeUser)
 Auth.onUserChanged.push(CallInfo.getLogPerson)
 connectWebSocket()
 
-module.exports = CallInfo
+export default CallInfo
 
 // vim: et ts=2 sw=2

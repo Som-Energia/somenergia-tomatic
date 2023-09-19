@@ -1,7 +1,7 @@
-var m = require('mithril')
-var Tomatic = require('../../services/tomatic')
-var luminance = require('../components/colorutils').luminance
-var contrast = require('../components/colorutils').contrast
+import m from 'mithril'
+import Tomatic from '../../services/tomatic'
+import { luminance } from '../components/colorutils'
+import { contrast } from '../components/colorutils'
 
 const PersonStyles = function () {
   var persons = Tomatic.persons()
@@ -29,6 +29,6 @@ const PersonStyles = function () {
   )
 }
 
-module.exports = PersonStyles
+export default PersonStyles
 
 // vim: et ts=2 sw=2

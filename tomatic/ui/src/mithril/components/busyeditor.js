@@ -1,19 +1,20 @@
 // Busy list editor
-var m = require('mithril')
-var Dialog = require('polythene-mithril-dialog').Dialog
-var Button = require('polythene-mithril-button').Button
-var List = require('polythene-mithril-list').List
-var ListTile = require('polythene-mithril-list-tile').ListTile
-var TextField = require('polythene-mithril-textfield').TextField
-var RadioGroup = require('polythene-mithril-radio-group').RadioGroup
-var RadioButton = require('polythene-mithril-radio-button').RadioButton
-var IconButton = require('polythene-mithril-icon-button').IconButton
-var Checkbox = require('polythene-mithril-checkbox').Checkbox
-var Select = require('./select')
-var Labeled = require('./labeled')
-var Tomatic = require('../../services/tomatic')
-var iconPlus = require('mmsvg/templarian/msvg/plus')
-var iconDelete = require('mmsvg/google/msvg/action/delete')
+import m from 'mithril'
+
+import { Dialog } from 'polythene-mithril-dialog'
+import { Button } from 'polythene-mithril-button'
+import { List } from 'polythene-mithril-list'
+import { ListTile } from 'polythene-mithril-list-tile'
+import { TextField } from 'polythene-mithril-textfield'
+import { RadioGroup } from 'polythene-mithril-radio-group'
+import { RadioButton } from 'polythene-mithril-radio-button'
+import { IconButton } from 'polythene-mithril-icon-button'
+import { Checkbox } from 'polythene-mithril-checkbox'
+import Select from './select'
+import Labeled from './labeled'
+import Tomatic from '../../services/tomatic'
+import iconPlus from 'mmsvg/templarian/msvg/plus'
+import iconDelete from 'mmsvg/google/msvg/action/delete'
 
 function nextMonday(date) {
   var d = date || new Date()
@@ -294,6 +295,6 @@ var editAvailabilities = function (name) {
   })
 }
 
-module.exports = editAvailabilities
+export default editAvailabilities
 
 // vim: et sw=2 ts=2

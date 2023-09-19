@@ -1,7 +1,7 @@
-var m = require('mithril')
-var Doc = require('./doc').default
-var Persons = require('./persons')
-var Tomatic = require('../../services/tomatic')
+import m from 'mithril'
+import Doc from './doc'
+import Persons from './persons'
+import Tomatic from '../../services/tomatic'
 
 const PersonsPage = {
   view: function () {
@@ -14,6 +14,7 @@ const PersonsPage = {
     ])
   },
 }
-module.exports = PersonsPage
+
+export default PersonsPage
 
 // vim: et ts=2 sw=2

@@ -1,6 +1,6 @@
 // Wrapps an form input with a label that gets primary color on focus
 
-var m = require('mithril')
+import m from 'mithril'
 
 var Labeled = {
   view: function (vnode) {
@@ -19,6 +19,6 @@ var Labeled = {
   },
 }
 
-module.exports = Labeled
+export default Labeled
 
 // vim: et ts=2 sw=2

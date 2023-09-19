@@ -1,13 +1,14 @@
 // Persons
 // Displays the list of persons
 
-var m = require('mithril')
-var Dialog = require('polythene-mithril-dialog').Dialog
-var TextField = require('polythene-mithril-textfield').TextField
-var Button = require('polythene-mithril-button').Button
-var Tomatic = require('../../services/tomatic')
-var Select = require('./select')
-var RgbEditor = require('./rgbeditor')
+import m from 'mithril'
+
+import { Dialog } from 'polythene-mithril-dialog'
+import { TextField } from 'polythene-mithril-textfield'
+import { Button } from 'polythene-mithril-button'
+import Tomatic from '../../services/tomatic'
+import Select from './select'
+import RgbEditor from './rgbeditor'
 
 var PersonEditor = {}
 PersonEditor.oncreate = function (vnode) {
@@ -227,6 +228,6 @@ var editPerson = function (name) {
   )
 }
 
-module.exports = editPerson
+export default editPerson
 
 // vim: et sw=2 ts=2

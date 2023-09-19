@@ -1,9 +1,9 @@
-var m = require('mithril')
-var Button = require('polythene-mithril-button').Button
-var Card = require('polythene-mithril-card').Card
-var Auth = require('../../services/auth')
-require('./loginpage.styl')
-var tomaticAvatar = require('../../images/tomatic-avatar.png')
+import m from 'mithril'
+import { Button } from 'polythene-mithril-button'
+import { Card } from 'polythene-mithril-card'
+import Auth from '../../services/auth'
+import './loginpage.styl'
+import tomaticAvatar from '../../images/tomatic-avatar.png'
 
 var SimpleCard = function (args) {
   console.log(args)
@@ -65,6 +65,6 @@ var LoginPage = {
   },
 }
 
-module.exports = LoginPage
+export default LoginPage
 
 // vim: et ts=2 sw=2

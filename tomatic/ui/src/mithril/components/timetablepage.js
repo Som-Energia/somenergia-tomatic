@@ -1,14 +1,15 @@
 // TimeTablePage
 // Page to browse timetables for each week
-var m = require('mithril')
-var Dialog = require('polythene-mithril-dialog').Dialog
-var Button = require('polythene-mithril-button').Button
-var Ripple = require('polythene-mithril-ripple').Ripple
-var Tomatic = require('../../services/tomatic')
-var Auth = require('../../services/auth')
-var WeekPicker = require('./weekpicker').default
-var Uploader = require('./uploader').default
-var PersonPicker = require('./personpicker')
+import m from 'mithril'
+
+import { Dialog } from 'polythene-mithril-dialog'
+import { Button } from 'polythene-mithril-button'
+import { Ripple } from 'polythene-mithril-ripple'
+import Tomatic from '../../services/tomatic'
+import Auth from '../../services/auth'
+import WeekPicker from './weekpicker'
+import Uploader from './uploader'
+import PersonPicker from './personpicker'
 
 var TimeTable = function (grid) {
   var editCell = function (day, houri, turni) {
@@ -198,5 +199,5 @@ var TimeTablePage = {
   },
 }
 
-module.exports = TimeTablePage
+export default TimeTablePage
 // vim: et sw=2 ts=2

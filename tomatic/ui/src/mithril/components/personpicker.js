@@ -5,8 +5,9 @@
 // - onpick: callback to be called on pick
 // - nobodyPickable: bool 'nobody' is an option or not
 
-var m = require('mithril')
-var Tomatic = require('../../services/tomatic')
+import m from 'mithril'
+
+import Tomatic from '../../services/tomatic'
 
 var PersonPicker = {
   oninit: function (vnode) {
@@ -38,6 +39,6 @@ var PersonPicker = {
   },
 }
 
-module.exports = PersonPicker
+export default PersonPicker
 
 // vim: et sw=2 ts=2

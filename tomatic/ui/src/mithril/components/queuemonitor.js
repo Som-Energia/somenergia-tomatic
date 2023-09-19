@@ -1,11 +1,12 @@
 // Queue Monitor
 // Monitors and controls the PBX queue status
 
-var m = require('mithril')
-var Dialog = require('polythene-mithril-dialog').Dialog
-var Button = require('polythene-mithril-button').Button
-var Tomatic = require('../../services/tomatic')
-var PersonPicker = require('./personpicker')
+import m from 'mithril'
+
+import { Dialog } from 'polythene-mithril-dialog'
+import { Button } from 'polythene-mithril-button'
+import Tomatic from '../../services/tomatic'
+import PersonPicker from './personpicker'
 
 var QueueMonitor = {
   oninit: function (vnode) {
@@ -88,6 +89,6 @@ var QueueMonitor = {
   },
 }
 
-module.exports = QueueMonitor
+export default QueueMonitor
 
 // vim: et ts=2 sw=2

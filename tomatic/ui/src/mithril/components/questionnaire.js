@@ -1,18 +1,18 @@
 /// Cal Registry Form
 
-var m = require('mithril')
+import m from 'mithril'
 
-var Ripple = require('polythene-mithril-ripple').Ripple
-var Dialog = require('polythene-mithril-dialog').Dialog
-var Button = require('polythene-mithril-button').Button
-var ButtonGroup = require('polythene-mithril-button-group').ButtonGroup
-var IconButton = require('polythene-mithril-icon-button').IconButton
-var TextField = require('polythene-mithril-textfield').TextField
-var ListTile = require('polythene-mithril-list-tile').ListTile
-var List = require('polythene-mithril-list').List
-var RadioGroup = require('polythene-mithril-radio-group').RadioGroup
-var CallInfo = require('./callinfo')
-var Auth = require('../../services/auth')
+import { Ripple } from 'polythene-mithril-ripple'
+import { Dialog } from 'polythene-mithril-dialog'
+import { Button } from 'polythene-mithril-button'
+import { ButtonGroup } from 'polythene-mithril-button-group'
+import { IconButton } from 'polythene-mithril-icon-button'
+import { TextField } from 'polythene-mithril-textfield'
+import { ListTile } from 'polythene-mithril-list-tile'
+import { List } from 'polythene-mithril-list'
+import { RadioGroup } from 'polythene-mithril-radio-group'
+import CallInfo from './callinfo'
+import Auth from '../../services/auth'
 
 var Questionnaire = {}
 
@@ -348,6 +348,6 @@ Questionnaire.openCaseAnnotationDialog = function () {
   )
 }
 
-module.exports = Questionnaire
+export default Questionnaire
 
 // vim: ts=2 sw=2 et
