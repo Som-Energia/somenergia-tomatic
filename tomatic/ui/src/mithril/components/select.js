@@ -14,21 +14,23 @@ module.exports = (function () {
       }
     },
     view: function (vnode) {
+      const { label, required, onChange, options, ...remaining} = vnode.attrs
       return m(
         '.pe-textfield.pe-textfield--floating-label' +
           '.pe-textfield--hide-clear.pe-textfield--dirty' +
           (vnode.state.hasFocus ? '.pe-textfield--focused' : '') +
-          (vnode.attrs.required !== undefined ? '.pe-textfield--required' : ''),
+          (required !== undefined ? '.pe-textfield--required' : ''),
+		  remaining,
         [
           m('.pe-textfield__input-area', [
-            m('label.pe-textfield__label', vnode.attrs.label),
+            m('label.pe-textfield__label', label),
             m(
               'select.pe-textfield__input',
               {
                 value: vnode.state.value(),
                 onchange: function (ev) {
                   vnode.state.value(ev.target.value)
-                  vnode.attrs.onChange(ev)
+                  onChange(ev)
                 },
                 onfocus: function (ev) {
                   vnode.state.setFocus(true)
@@ -37,13 +39,13 @@ module.exports = (function () {
                   vnode.state.setFocus(false)
                 },
               },
-              Object.keys(vnode.attrs.options).map(function (value) {
+              Object.keys(options).map(function (value) {
                 return m(
                   'option',
                   {
                     value: value,
                   },
-                  vnode.attrs.options[value],
+                  options[value],
                 )
               }),
             ),
