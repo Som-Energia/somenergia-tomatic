@@ -51,10 +51,10 @@ const fields = {
 
 const validators = {
   id: (value) => {
-    if (value === undefined) return true
+    if (!value) return "L'identificador és requisit"
     if (value.length < 3) return 'Identificador massa curt'
-    if (!value.match('^[a-z]{3,10}$'))
-      return "L'identificador només pot tenir minúscules sense espais"
+    if (!value.match(/^[a-z]{3,10}$/))
+      return "L'identificador nomes pot tenir lletres minuscules"
     return false
   },
   email: (value) => {
@@ -66,7 +66,7 @@ const validators = {
   erpuser: (value) => {
     if (value === undefined) return false
     if (value.length === 0) return false
-    if (!value.match('^[a-zA-Z]{3,10}$'))
+    if (!value.match(/^[a-zA-Z]{3,10}$/))
       return "El nom d'usuari ERP és invàlid"
     return false
   },
