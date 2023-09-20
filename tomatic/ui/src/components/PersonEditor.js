@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
@@ -49,6 +49,35 @@ const fields = {
   },
 }
 
+const validators = {
+  id: (value) => {
+    if (value === undefined) return true
+    if (value.length < 3) return 'Identificador massa curt'
+    if (!value.match('^[a-z]{3,10}$'))
+      return "L'identificador només pot tenir minúscules sense espais"
+    return false
+  },
+  email: (value) => {
+    if (value === undefined) return false
+    if (value === '') return false
+    if (!value.includes('@')) return 'Ha de ser una adreça de correu vàlida'
+    return false
+  },
+  erpuser: (value) => {
+    if (value === undefined) return false
+    if (value.length === 0) return false
+    if (!value.match('^[a-zA-Z]{3,10}$'))
+      return "El nom d'usuari ERP és invàlid"
+    return false
+  },
+  idealload: (value) => {
+    if (value === undefined) return false
+    if (value === '') return false
+    if (isNaN(parseInt(value))) return 'Ha de ser un número'
+    return false
+  },
+}
+
 function inputFilter_ID(value) {
   return value
     .toLowerCase()
@@ -84,65 +113,32 @@ const defaultData = {
 
 export default function PersonEditor(props) {
   const { open, onClose, onSave, person, tables, allGroups } = props
-  const [data, setData] = useState(defaultData)
-  const [errors, setErrors] = useState({
-    id: false,
-    name: false,
-    email: false,
-    erpuser: false,
-    table: false,
-    extension: false,
-    color: false,
-    groups: false,
-  })
-  function setCheckedData(person) {
-    setData(person)
-    if (!person) return
+  const [data, setData] = React.useState(defaultData)
+  const [errors, setErrors] = React.useState(() =>
+    Object.fromEntries(Object.keys(fields).map(k=>[k, false]))
+  )
+
+  // Sets the errors for new data
+  function resetData(person) {
+    const newData = {
+      ...defaultData,
+      ...(person || {}),
+    }
+    setData(newData)
     setErrors({
       ...errors,
       ...Object.fromEntries(
         Object.keys(validators).map((key) => {
           const validator = validators[key]
-          return [key, validator(person[key])]
+          return [key, validator(newData[key])]
         }),
       ),
     })
   }
 
-  useEffect(() => {
-    setCheckedData(
-      person === undefined ? defaultData : person === {} ? defaultData : person,
-    )
+  React.useEffect(() => {
+    resetData(person)
   }, [person])
-
-  const validators = {
-    id: (value) => {
-      if (!value) return "L'identificador és requisit"
-      if (value.length < 3) return "L'identificador és massa curt"
-      if (!value.match(/[a-z]{3,10}/))
-        return "L'identificador nomes pot tenir lletres minuscules"
-      return false
-    },
-    email: (value) => {
-      if (value === undefined) return false
-      if (value === '') return false
-      if (!value.includes('@')) return 'Ha de ser una adreça de correu vàlida'
-      return false
-    },
-    erpuser: (value) => {
-      if (value === undefined) return false
-      if (value.length === 0) return false
-      if (!value.match('^[a-zA-Z]{3,10}$'))
-        return "El nom d'usuari ERP és invàlid"
-      return false
-    },
-    idealload: (value) => {
-      if (value === undefined) return false
-      if (value === '') return false
-      if (isNaN(parseInt(value))) return 'Ha de ser un número'
-      return false
-    },
-  }
 
   function updater(field) {
     return (ev) => {
@@ -162,7 +158,8 @@ export default function PersonEditor(props) {
     return {
       id: field,
       label: fields[field].label,
-      helperText: errors[field] || fields[field].help,
+      helperText:
+        typeof errors[field] === 'string' ? errors[field] : fields[field].help,
       error: !!errors[field],
       value: data[field] === undefined ? defaultData[field] : data[field],
       onChange: updater(field),

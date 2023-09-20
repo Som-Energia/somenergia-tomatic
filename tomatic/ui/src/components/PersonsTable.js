@@ -203,7 +203,7 @@ function PersonsTable() {
     setGroups(availableGroups(rows))
   }
 
-  React.useEffect(handlePersonsUpdated, [Tomatic.persons()])
+  //React.useEffect(handlePersonsUpdated, [Tomatic.persons()])
 
   function handleStartAddingPerson() {
     setEditingPerson({})
