@@ -1,10 +1,8 @@
 import m from 'mithril'
-import jsyaml from 'js-yaml'
 import { contrast } from './colorutils'
 import { Button } from 'polythene-mithril-button'
-import { List } from 'polythene-mithril-list'
 import { Ripple } from 'polythene-mithril-ripple'
-import styleLogin from './callinfo_style.styl'
+import './callinfo_style.styl'
 import Tomatic from '../../services/tomatic'
 import Auth from '../../services/auth'
 

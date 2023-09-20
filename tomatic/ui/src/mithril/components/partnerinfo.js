@@ -1,7 +1,5 @@
 import m from 'mithril'
-import { Ripple } from 'polythene-mithril-ripple'
 import { Card } from 'polythene-mithril-card'
-import { Button } from 'polythene-mithril-button'
 import { Tabs } from 'polythene-mithril-tabs'
 import CallInfo from './callinfo'
 
@@ -145,7 +143,7 @@ function buttons(partners) {
   return partners.map(function (partner, index) {
     return {
       label: nameFromFullName(partner.name),
-      selected: index == CallInfo.currentPerson,
+      selected: index === CallInfo.currentPerson,
     }
   })
 }

@@ -1,9 +1,6 @@
 import m from 'mithril'
 import { MaterialDesignSpinner as Spinner } from 'polythene-mithril-material-design-spinner'
-import { Ripple } from 'polythene-mithril-ripple'
 import { Card } from 'polythene-mithril-card'
-import { Button } from 'polythene-mithril-button'
-import { IconButton } from 'polythene-mithril-icon-button'
 import { Tabs } from 'polythene-mithril-tabs'
 import CallInfo from './callinfo'
 
@@ -17,7 +14,7 @@ function formatContractNumber(number) {
 
 function formatInterval(contract) {
   var hasStart = contract.start_date !== false
-  var hasEnd = contract.end_date != ''
+  var hasEnd = contract.end_date !== ''
   if (!hasStart) {
     return 'No especificat'
   }
@@ -95,7 +92,7 @@ var contractFields = function (contract, partner) {
     m(
       '.contract-info-item',
       m('.label', 'Estat pendent: '),
-      contract.pending_state != '' ? contract.pending_state : 'Esborrany',
+      contract.pending_state ? contract.pending_state : 'Esborrany',
     ),
     m('br'),
     extraInfo(contract),
@@ -125,15 +122,15 @@ ContractInfo.detailsPanel = function () {
           tabs: [
             {
               label: 'ATR',
-              selected: currentTab == 'atr',
+              selected: currentTab === 'atr',
             },
             {
               label: 'Factures',
-              selected: currentTab == 'invoices',
+              selected: currentTab === 'invoices',
             },
             {
               label: 'Lectures',
-              selected: currentTab == 'readings',
+              selected: currentTab === 'readings',
             },
           ],
           onChange: function (ev) {
@@ -151,9 +148,9 @@ ContractInfo.detailsPanel = function () {
             text: {
               content: m('', [
                 m('.contract-info-box', [
-                  currentTab == 'atr' && [atrCases(contract.atr_cases)],
-                  currentTab == 'invoices' && [lastInvoices(contract.invoices)],
-                  currentTab == 'readings' && [
+                  currentTab === 'atr' && [atrCases(contract.atr_cases)],
+                  currentTab === 'invoices' && [lastInvoices(contract.invoices)],
+                  currentTab === 'readings' && [
                     meterReadings(contract.lectures_comptadors),
                   ],
                 ]),
@@ -199,7 +196,7 @@ var atrCases = function (cases) {
           m('td', atr_case.step),
           m(
             'td',
-            m(atr_case.state != 'done' ? '.alert-case' : '', atr_case.state),
+            m(atr_case.state !== 'done' ? '.alert-case' : '', atr_case.state),
           ),
           m(
             'td',
@@ -354,7 +351,7 @@ var buttons = function (contracts) {
         'span' + (contract.end_date ? '.inactive-contract' : ''),
         contract.number,
       ),
-      selected: index == CallInfo.currentContract,
+      selected: index === CallInfo.currentContract,
     }
   })
 }

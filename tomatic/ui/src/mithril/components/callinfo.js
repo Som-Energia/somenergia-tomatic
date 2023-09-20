@@ -80,7 +80,7 @@ CallInfo.annotationIsClaim = function () {
   return CallInfo.call.category.isclaim
 }
 
-CallInfo.saveCallLog = function (claim) {
+CallInfo.saveCallLog = function () {
   CallInfo.savingAnnotation = true
   var partner = CallInfo.selectedPartner()
   var contract = CallInfo.selectedContract()
@@ -148,8 +148,8 @@ function formatContractNumber(number) {
 }
 
 function fixContractNumbers(info) {
-  info.partners.map(function (partner) {
-    partner.contracts.map(function (contract) {
+  info.partners.forEach(function (partner) {
+    partner.contracts.forEach(function (contract) {
       contract.number = formatContractNumber(contract.number)
     })
   })
@@ -166,8 +166,8 @@ function fixContractNumbersInDetails(response) {
 
 function contractNumbers(info) {
   var result = {}
-  info.partners.map(function (partner) {
-    partner.contracts.map(function (contract) {
+  info.partners.forEach(function (partner) {
+    partner.contracts.forEach(function (contract) {
       result[contract.number] = contract
     })
   })
@@ -177,7 +177,7 @@ function contractNumbers(info) {
 CallInfo.filteredCategories = function (filter, isclaim) {
   var lowerFilter = filter.toLowerCase()
   return CallInfo.categories.filter(function (category) {
-    if (isclaim != category.isclaim) {
+    if (isclaim !== category.isclaim) {
       return false
     }
     if (category.description.toLowerCase().includes(lowerFilter)) {
@@ -301,8 +301,8 @@ var retrieveInfo = function () {
           })
           .then(fixContractNumbersInDetails)
           .then(function (response) {
-            context.partners.map(function (partner) {
-              partner.contracts.map(function (contract) {
+            context.partners.forEach(function (partner) {
+              partner.contracts.forEach(function (contract) {
                 var number = formatContractNumber(contract.number)
                 var retrieved = response.info.info[number]
                 if (retrieved === undefined) {
@@ -343,7 +343,7 @@ CallInfo.getCategories = function () {
         console.debug('Categories GET Response: ', response)
 
         CallInfo.categories = response.categories
-        CallInfo.categories.map(function (category) {
+        CallInfo.categories.forEach(function (category) {
           var section = category.section
           if (section === null) {
             section = CallInfo.noSection

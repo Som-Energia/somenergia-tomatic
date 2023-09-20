@@ -9,14 +9,13 @@ import m from 'mithril'
 import { Dialog } from 'polythene-mithril-dialog'
 import * as css from 'polythene-css'
 import PersonStyles from '../mithril/components/personstyles'
-import customStyle from '../mithril/style.styl'
+import '../mithril/style.styl'
 import Tomatic from '../services/tomatic'
 
 Tomatic.onKumatoChanged.push(() => m.redraw())
 
 css.addLayoutStyles()
 css.addTypography()
-console.log('customStyle', customStyle)
 const MithrilStyler = (mithrilComponent) => {
   return {
     view: (vnode) => {

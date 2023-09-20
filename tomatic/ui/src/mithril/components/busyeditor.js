@@ -7,7 +7,6 @@ import { List } from 'polythene-mithril-list'
 import { ListTile } from 'polythene-mithril-list-tile'
 import { TextField } from 'polythene-mithril-textfield'
 import { RadioGroup } from 'polythene-mithril-radio-group'
-import { RadioButton } from 'polythene-mithril-radio-button'
 import { IconButton } from 'polythene-mithril-icon-button'
 import { Checkbox } from 'polythene-mithril-checkbox'
 import Select from './select'
@@ -132,7 +131,7 @@ var BusyEntryEditor = {
           name: 'optional',
           id: 'optional',
           onChange: function (state) {
-            busy.optional = state.value == 'y'
+            busy.optional = state.value === 'y'
           },
           className: 'layout.pe-textfield__input',
           all: {

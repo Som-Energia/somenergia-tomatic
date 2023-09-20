@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Tomatic from '../services/tomatic'
 
 import PersonStyles from './PersonStyles'
-import customStyle from '../mithril/style.styl'
+import '../mithril/style.styl'
 
 import CellEditDialog from './CellEditDialog'
 import Fab from '@mui/material/Fab'
@@ -22,8 +22,6 @@ function TimeTable(props) {
     showOverloads,
   } = props
 
-  const [dialogIsOpen, setDialogIsOpen] = useState(false)
-  const [cellData, setCellData] = useState({})
   const [openDialog, closeDialog] = useDialog()
 
   const handleChange = (name, data) => {
@@ -33,7 +31,6 @@ function TimeTable(props) {
 
   const handleClick = (day, houri, turni, name) => {
     const cellData = { day: day, hour: houri, turn: turni, name: name }
-    setCellData(cellData)
     openDialog({
       children: (
         <CellEditDialog onClose={closeDialog} data={cellData} handleChange={handleChange}></CellEditDialog>

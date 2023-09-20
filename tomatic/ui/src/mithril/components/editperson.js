@@ -182,7 +182,7 @@ var editPerson = function (name) {
     return Math.max.apply(null, values)
   }
   function range(n) {
-    if (n == 0) return Array()
+    if (n === 0) return []
     return Array.apply(null, Array(n)).map(function (_, i) {
       return i
     })
@@ -191,7 +191,7 @@ var editPerson = function (name) {
   var data = getDataFromTomatic(name)
   data.tables = {}
   var tablesToFill = range(maxValue(Tomatic.persons().tables) + 2)
-  tablesToFill.map(function (n) {
+  tablesToFill.forEach(function (n) {
     data.tables[n] = taulaLabel(n)
   })
   Dialog.show(

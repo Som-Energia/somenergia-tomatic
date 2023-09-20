@@ -56,13 +56,13 @@ function WeekPicker() {
       {weeks.map((element) => {
         if (element === currentWeek) {
           return (
-            <CurrentItem onClick={() => handleClick(element)}>
+            <CurrentItem key={element} onClick={() => handleClick(element)}>
               {'Setmana del ' + element}
             </CurrentItem>
           )
         }
         return (
-          <ListItem onClick={() => handleClick(element)}>
+          <ListItem key={element} onClick={() => handleClick(element)}>
             {'Setmana del ' + element}
           </ListItem>
         )

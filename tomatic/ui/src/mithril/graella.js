@@ -1,4 +1,3 @@
-'use strict'
 import m from 'mithril'
 import stream from 'mithril/stream'
 import { Snackbar } from 'polythene-mithril-snackbar'
@@ -17,7 +16,7 @@ import PbxPage from './components/pbxpage'
 import PersonStyles from './components/personstyles'
 import extraMenuOptions from '../services/extramenu'
 import { addTypography, addLayoutStyles } from 'polythene-css'
-import customStyle from './style.styl'
+import './style.styl'
 m.prop = stream
 
 addLayoutStyles()

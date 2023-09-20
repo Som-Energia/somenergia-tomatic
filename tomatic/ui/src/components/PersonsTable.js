@@ -5,9 +5,9 @@ import Chip from '@mui/material/Chip'
 import { contrast } from '../colorutils'
 import EditIcon from '@mui/icons-material/Edit'
 import EventBusyIcon from '@mui/icons-material/EventBusy'
-import DeleteIcon from '@mui/icons-material/Delete'
-import GroupAddIcon from '@mui/icons-material/GroupAdd'
-import GroupRemoveIcon from '@mui/icons-material/GroupRemove'
+//import DeleteIcon from '@mui/icons-material/Delete'
+//import GroupAddIcon from '@mui/icons-material/GroupAdd'
+//import GroupRemoveIcon from '@mui/icons-material/GroupRemove'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import Tomatic from '../services/tomatic'
 import editAvailabilities from '../mithril/components/busyeditor'
@@ -197,7 +197,6 @@ function PersonsTable() {
 
   handlePersonsUpdated = () => {
     const persons = Tomatic.persons()
-    console.log('Redrawing persons', persons)
     const rows = compileData(persons)
     setRows(rows)
     setTables(availableTables(rows))
@@ -216,12 +215,10 @@ function PersonsTable() {
     setEditingPerson(undefined)
   }
   function handleSavePerson(id, data) {
-    console.log(id, data)
     Tomatic.setPersonDataReact(id, data)
     setEditingPerson(undefined)
   }
   function handleStartBusyEditor(person) {
-    console.log(person)
     editAvailabilities(person.id)
   }
 

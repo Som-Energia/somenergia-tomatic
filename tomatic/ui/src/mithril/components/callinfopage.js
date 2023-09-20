@@ -1,5 +1,5 @@
 import m from 'mithril'
-import styleCallinfo from './callinfo_style.styl'
+import './callinfo_style.styl'
 import { Ripple } from 'polythene-mithril-ripple'
 import { Dialog } from 'polythene-mithril-dialog'
 import { Button } from 'polythene-mithril-button'
@@ -180,7 +180,6 @@ var responsesMessage = function (info) {
 }
 
 var attendedCallList = function () {
-  var aux = []
   if (CallInfo.callLog.length === 0) {
     return m(
       '.attended-calls-list',
