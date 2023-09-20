@@ -7,6 +7,7 @@ const List = styled.ul`
   display: inline-block;
   width: 100%;
   padding: 0px;
+  margin-top: 0;
 `
 
 const ListItem = styled.li`
@@ -22,20 +23,22 @@ const ListItem = styled.li`
   }
 `
 const CurrentItem = styled.li`
-	label: current;
-	text-align: center;
-	font-weight: bold;
-	list-style-type:none;
-	background: #7a7;
-	:hover { /* week:hover would be stronger 
-		background: #7a7;
-	}
-	:before {
-		content: "►";
-	}
-	:after {
-		content: "◄";
-	}
+  label: current;
+  text-align: center;
+  font-weight: bold;
+  list-style-type:none;
+  background: #7a7;
+  :hover {
+    background: #7a7;
+  }
+  :before {
+    content: "►";
+    margin-inline: .5rem;
+  }
+  :after {
+    margin-inline: .5rem;
+    content: "◄";
+  }
 `
 
 function WeekPicker() {
