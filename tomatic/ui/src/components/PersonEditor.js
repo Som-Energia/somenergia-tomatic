@@ -18,6 +18,13 @@ const fields = {
   id: {
     label: 'Identificador',
     help: 'Identificador que es fa servir internament.',
+    validator: (value) => {
+      if (!value) return "L'identificador és requisit"
+      if (value.length < 3) return 'Identificador massa curt'
+      if (!value.match(/^[a-z]{3,10}$/))
+        return "L'identificador nomes pot tenir lletres minuscules"
+      return false
+    },
   },
   name: {
     label: 'Nom mostrat',
@@ -26,14 +33,33 @@ const fields = {
   email: {
     label: 'Adreça de correu',
     help: 'Correu oficial que tens a Som Energia.',
+    validator: (value) => {
+      if (value === undefined) return false
+      if (value === '') return false
+      if (!value.includes('@')) return 'Ha de ser una adreça de correu vàlida'
+      return false
+    },
   },
   erpuser: {
     label: 'Usuari ERP',
     help: "Usuari amb el que entres a l'erp.",
+    validator: (value) => {
+      if (value === undefined) return false
+      if (value.length === 0) return false
+      if (!value.match(/^[a-zA-Z]{3,10}$/))
+        return "El nom d'usuari ERP és invàlid"
+      return false
+    },
   },
   idealload: {
     label: 'Càrrega de torns',
     help: 'Torns que farà normalment en una setmana de 5 dies laborals. En blanc si no fa atenció.',
+    validator: (value) => {
+      if (value === undefined) return false
+      if (value === '') return false
+      if (isNaN(parseInt(value))) return 'Ha de ser un número'
+      return false
+    },
   },
   extension: {
     label: 'Extensió',
@@ -46,35 +72,6 @@ const fields = {
   color: {
     label: 'Color',
     help: 'Color personal',
-  },
-}
-
-const validators = {
-  id: (value) => {
-    if (!value) return "L'identificador és requisit"
-    if (value.length < 3) return 'Identificador massa curt'
-    if (!value.match(/^[a-z]{3,10}$/))
-      return "L'identificador nomes pot tenir lletres minuscules"
-    return false
-  },
-  email: (value) => {
-    if (value === undefined) return false
-    if (value === '') return false
-    if (!value.includes('@')) return 'Ha de ser una adreça de correu vàlida'
-    return false
-  },
-  erpuser: (value) => {
-    if (value === undefined) return false
-    if (value.length === 0) return false
-    if (!value.match(/^[a-zA-Z]{3,10}$/))
-      return "El nom d'usuari ERP és invàlid"
-    return false
-  },
-  idealload: (value) => {
-    if (value === undefined) return false
-    if (value === '') return false
-    if (isNaN(parseInt(value))) return 'Ha de ser un número'
-    return false
   },
 }
 
@@ -128,8 +125,9 @@ export default function PersonEditor(props) {
     setErrors({
       ...errors,
       ...Object.fromEntries(
-        Object.keys(validators).map((key) => {
-          const validator = validators[key]
+        Object.keys(fields).map((key) => {
+          const validator = fields[key].validator
+          if (!validator) return [key, false]
           return [key, validator(newData[key])]
         }),
       ),
@@ -143,7 +141,7 @@ export default function PersonEditor(props) {
   function updater(field) {
     return (ev) => {
       const newvalue = ev.target.value
-      const validator = validators[field]
+      const validator = fields[field]?.validator
       if (validator !== undefined) {
         const validationError = validator(newvalue, data)
         setErrors({
