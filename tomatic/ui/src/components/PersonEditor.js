@@ -278,10 +278,13 @@ export default function PersonEditor(props) {
       </DialogContent>
       <DialogActions>
         {Object.values(errors).some((x) => x) ? (
-          <Alert severity="error" sx={{ height: '55%' }}>
-            {'Hi ha camps incorrectes'}
+          <Alert severity="error">{'Hi ha camps incorrectes'}</Alert>
+        ) : (
+          // Placeholder
+          <Alert severity="success" sx={{ opacity: 0 }}>
+            {'Tots els camps son correctes'}
           </Alert>
-        ) : null}
+        )}
         <div style={{ flex: 1 }}></div>
         <Button onClick={onClose}>Cancel</Button>
         <Button
