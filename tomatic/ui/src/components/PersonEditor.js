@@ -109,9 +109,9 @@ const fields = {
 }
 
 const defaultData = Object.fromEntries(
-  Object.keys(fields).map((field)=>{
-    return [ field, field?.default ?? '']
-  })
+  Object.keys(fields).map((field) => {
+    return [field, fields[field]?.default ?? '']
+  }),
 )
 
 
