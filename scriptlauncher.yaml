@@ -3,7 +3,8 @@ tomatic_equip:
   scripts:
 
     says:
-      script: SOME_SRC/somenergia-tomatic/runhere tomatic_says.py  -c "{qui}" {quelcom}
+      script: SOME_SRC/somenergia-tomatic/runhere tomatic_says.py  {quelcom}
+      #script: SOME_SRC/somenergia-tomatic/runhere tomatic_says.py  -c "{qui}" {quelcom}
       title: Tomàtic diu
       description: |
         Digues quelcom com si fossis en Tomàtic.
@@ -13,9 +14,9 @@ tomatic_equip:
         Adreça-ho a una conversa posant el seu titol complert, o l'id de hangouts (molts digits i lletres).
         Tomatic no pot parlar a les converses on no està convidat.
       parameters:
-        qui:
-          description: Destinatari
-          default: ''
+        #qui:
+        #  description: Destinatari
+        #  default: ''
         quelcom:
           description: Text enviat
           default: Hola Supers!
