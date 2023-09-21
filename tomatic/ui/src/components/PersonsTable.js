@@ -14,6 +14,7 @@ import editAvailabilities from '../mithril/components/busyeditor'
 import MithrilWrapper from '../containers/MithrilWrapper'
 import MithrilStyler from '../containers/MithrilStyler'
 import { Dialog as MithrilDialog } from 'polythene-mithril-dialog'
+import { useDialog } from './DialogProvider'
 
 function compileData(personData) {
   const result = {}
@@ -193,7 +194,7 @@ function PersonsTable() {
   const [rows, setRows] = React.useState([])
   const [tables, setTables] = React.useState([])
   const [groups, setGroups] = React.useState([])
-  const [editingPerson, setEditingPerson] = React.useState(undefined)
+  const [openDialog, closeDialog] = useDialog()
 
   handlePersonsUpdated = () => {
     const persons = Tomatic.persons()
@@ -205,19 +206,24 @@ function PersonsTable() {
 
   //React.useEffect(handlePersonsUpdated, [Tomatic.persons()])
 
-  function handleStartAddingPerson() {
-    setEditingPerson({})
+  function editPerson(person) {
+    openDialog({
+      children: (
+        <PersonEditor
+          onClose={closeDialog}
+          onSave={(id, data)=>{
+            Tomatic.setPersonDataReact(id, data)
+            closeDialog()
+          }}
+          disableEscapeKeyDown={false}
+          person={person}
+          allGroups={groups}
+          tables={tables}
+        />
+      ),
+    })
   }
-  function handleStartEditingPerson(person) {
-    setEditingPerson(person)
-  }
-  function handleEndEditingPerson() {
-    setEditingPerson(undefined)
-  }
-  function handleSavePerson(id, data) {
-    Tomatic.setPersonDataReact(id, data)
-    setEditingPerson(undefined)
-  }
+
   function handleStartBusyEditor(person) {
     editAvailabilities(person.id)
   }
@@ -226,7 +232,7 @@ function PersonsTable() {
     {
       title: 'Add Person',
       icon: <PersonAddIcon />,
-      handler: handleStartAddingPerson,
+      handler: editPerson,
     },
   ]
   const selectionActions = [
@@ -251,7 +257,7 @@ function PersonsTable() {
     {
       title: 'Edit',
       icon: <EditIcon fontSize="inherit" />,
-      handler: handleStartEditingPerson,
+      handler: editPerson,
     },
     {
       title: 'Indisponibilitats',
@@ -272,15 +278,6 @@ function PersonsTable() {
         selectionActions={selectionActions}
         itemActions={itemActions}
       ></TableEditor>
-      <PersonEditor
-        open={editingPerson !== undefined}
-        onClose={handleEndEditingPerson}
-        onSave={handleSavePerson}
-        disableEscapeKeyDown={false}
-        person={editingPerson}
-        allGroups={groups}
-        tables={tables}
-      />
       <MithrilWrapper component={MithrilStyler(MithrilDialog)} />
     </>
   )

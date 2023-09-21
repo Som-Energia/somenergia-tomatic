@@ -178,13 +178,13 @@ export default function PersonEditor(props) {
     variant: 'standard',
     margin: 'dense',
   }
+
   const isNew = person?.id === undefined
+
   return (
-    <Dialog
-      open={open}
+    <div
       aria-labelledby="person-editor-title"
       aria-describedby="person-editor-description"
-      onClose={onClose}
     >
       <DialogTitle id="person-editor-title">
         {isNew
@@ -289,6 +289,6 @@ export default function PersonEditor(props) {
           {'Desar'}
         </Button>
       </DialogActions>
-    </Dialog>
+    </div>
   )
 }
