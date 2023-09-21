@@ -14,6 +14,27 @@ import InputLabel from '@mui/material/InputLabel'
 import Alert from '@mui/material/Alert'
 import { MuiColorInput } from 'mui-color-input'
 
+function inputFilter_ID(value) {
+  return value
+    .toLowerCase()
+    .replace(/[óòôö]/g, 'o')
+    .replace(/[àáâä]/g, 'a')
+    .replace(/[íìîï]/g, 'i')
+    .replace(/[úûûü]/g, 'u')
+    .replace(/[éèêë]/g, 'e')
+    .replace(/[ç]/g, 'c')
+    .replace(/[ñ]/g, 'n')
+    .replace(/[^a-z]/g, '')
+    .slice(0, 10)
+}
+function inputFilter_onlyDigits(value) {
+  return value.replace(/[^0-9]/g, '')
+}
+
+function inputFilter_erpuser(value) {
+  return value.replace(/[^A-Za-z]/g, '')
+}
+
 const fields = {
   id: {
     label: 'Identificador',
@@ -25,6 +46,7 @@ const fields = {
         return "L'identificador nomes pot tenir lletres minuscules"
       return false
     },
+    inputFilter: inputFilter_ID,
   },
   name: {
     label: 'Nom mostrat',
@@ -50,6 +72,7 @@ const fields = {
         return "El nom d'usuari ERP és invàlid"
       return false
     },
+    inputFilter: inputFilter_erpuser,
   },
   idealload: {
     label: 'Càrrega de torns',
@@ -64,49 +87,31 @@ const fields = {
   extension: {
     label: 'Extensió',
     help: 'Extensió de telèfon assignada a la centraleta.',
+    inputFilter: inputFilter_onlyDigits,
   },
   table: {
     label: 'Taula',
     help: 'Posem a la gent propera a la mateixa taula per evitar torns amb cacofonies',
+    default: -1,
   },
   color: {
     label: 'Color',
     help: 'Color personal',
+    default: 'aaaaff',
+  },
+  groups: {
+    label: 'Groups',
+    help: 'Grups als que pertany la persona',
+    default: [],
   },
 }
 
-function inputFilter_ID(value) {
-  return value
-    .toLowerCase()
-    .replace(/[óòôö]/g, 'o')
-    .replace(/[àáâä]/g, 'a')
-    .replace(/[íìîï]/g, 'i')
-    .replace(/[úûûü]/g, 'u')
-    .replace(/[éèêë]/g, 'e')
-    .replace(/[ç]/g, 'c')
-    .replace(/[ñ]/g, 'n')
-    .replace(/[^a-z]/g, '')
-    .slice(0, 10)
-}
-function inputFilter_numbers(value) {
-  return value.replace(/[^0-9]/g, '')
-}
+const defaultData = Object.fromEntries(
+  Object.keys(fields).map((field)=>{
+    return [ field, field?.default ?? '']
+  })
+)
 
-function inputFilter_erpuser(value) {
-  return value.replace(/[^A-Za-z]/g, '')
-}
-
-const defaultData = {
-  id: '',
-  name: '',
-  email: '',
-  erpuser: '',
-  idealload: '',
-  table: -1,
-  extension: '',
-  color: 'aaaaff',
-  groups: [],
-}
 
 export default function PersonEditor(props) {
   const { open, onClose, onSave, person, tables, allGroups } = props
@@ -161,6 +166,8 @@ export default function PersonEditor(props) {
       error: !!errors[field],
       value: data[field] === undefined ? defaultData[field] : data[field],
       onChange: updater(field),
+      onInput: fields[field].inputFilter !== undefined ? (ev) =>
+        fields[field].inputFilter(ev.target.value) : undefined
     }
   }
 
@@ -189,9 +196,6 @@ export default function PersonEditor(props) {
           disabled={!isNew}
           autoFocus={isNew}
           required
-          onInput={(ev) => {
-            ev.target.value = inputFilter_ID(ev.target.value)
-          }}
           {...commonFieldOptions}
         />
         <TextField
@@ -208,9 +212,6 @@ export default function PersonEditor(props) {
         <TextField
           {...fieldOptions('erpuser')}
           {...commonFieldOptions}
-          onInput={(ev) =>
-            (ev.target.value = inputFilter_erpuser(ev.target.value))
-          }
           inputProps={{ pattern: '^[a-zA-Z]{3,10}$' }}
         />
         <TextField
@@ -220,9 +221,6 @@ export default function PersonEditor(props) {
         />
         <TextField
           {...fieldOptions('extension')}
-          onInput={(ev) =>
-            (ev.target.value = inputFilter_numbers(ev.target.value))
-          }
           inputProps={{ pattern: '^[0-9]{4}$' }}
           {...commonFieldOptions}
         />
@@ -264,10 +262,10 @@ export default function PersonEditor(props) {
           freeSolo
           options={allGroups}
           getOptionLabel={(option) => option}
-          value={data.groups || []}
+          value={data.groups ?? fields['groups'].default}
           onChange={(ev, newvalue) => setData({ ...data, groups: newvalue })}
           renderInput={(params) => (
-            <TextField {...params} label="Group" {...commonFieldOptions} />
+            <TextField {...params} label={fields['groups'].label} {...commonFieldOptions} />
           )}
         />
       </DialogContent>
