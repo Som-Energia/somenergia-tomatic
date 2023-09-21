@@ -114,12 +114,11 @@ const defaultData = Object.fromEntries(
   }),
 )
 
-
 export default function PersonEditor(props) {
   const { open, onClose, onSave, person, tables, allGroups } = props
   const [data, setData] = React.useState(defaultData)
   const [errors, setErrors] = React.useState(() =>
-    Object.fromEntries(Object.keys(fields).map(k=>[k, false]))
+    Object.fromEntries(Object.keys(fields).map((k) => [k, false])),
   )
 
   // Sets the errors for new data
@@ -168,8 +167,10 @@ export default function PersonEditor(props) {
       error: !!errors[field],
       value: data[field] === undefined ? defaultData[field] : data[field],
       onChange: updater(field),
-      onInput: fields[field].inputFilter !== undefined ? (ev) =>
-        fields[field].inputFilter(ev.target.value) : undefined
+      onInput:
+        fields[field].inputFilter !== undefined
+          ? (ev) => fields[field].inputFilter(ev.target.value)
+          : undefined,
     }
   }
 
@@ -267,7 +268,11 @@ export default function PersonEditor(props) {
           value={data.groups ?? fields['groups'].default}
           onChange={(ev, newvalue) => setData({ ...data, groups: newvalue })}
           renderInput={(params) => (
-            <TextField {...params} label={fields['groups'].label} {...commonFieldOptions} />
+            <TextField
+              {...params}
+              label={fields['groups'].label}
+              {...commonFieldOptions}
+            />
           )}
         />
       </DialogContent>
