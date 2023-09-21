@@ -78,10 +78,12 @@ const fields = {
     label: 'Càrrega de torns',
     help: 'Torns que farà normalment en una setmana de 5 dies laborals. En blanc si no fa atenció.',
     validator: (value) => {
-      if (value === undefined) return false
-      if (value === '') return false
+      if (value === undefined) return false // Ok no turns
+      if (value === '') return false // Ok no turns
       if (isNaN(parseInt(value))) return 'Ha de ser un número'
-      return false
+      if (parseInt(value) < 0) return 'Ha de ser un número positiu'
+      if (parseInt(value) > 10) return 'Ningú pot fer més de 10 torns setmanals'
+      return false // Ok a valid number
     },
   },
   extension: {

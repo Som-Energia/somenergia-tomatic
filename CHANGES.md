@@ -4,6 +4,10 @@
 
 - Callinfo: Auto search field detection
 - Callinfo: Search by CUPS
+- PersonEditor: Fix: Id validation 
+- PersonEditor: Fix: Group field did'nt save
+- PersonEditor: Abstracted more field attributes
+- PersonEditor: Uses DialogProvider
 
 ## 5.4.1 2023-09-15
 
