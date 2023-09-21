@@ -8,6 +8,7 @@
 - PersonEditor: Fix: Group field did'nt save
 - PersonEditor: Abstracted more field attributes
 - PersonEditor: Uses DialogProvider
+- tomatic_says: fix: script failed, now has no channel parameter but it works
 
 ## 5.4.1 2023-09-15
 
