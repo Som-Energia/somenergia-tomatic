@@ -1,3 +1,4 @@
+// PersonsTable: A table to browse and edit Persons info
 import React from 'react'
 import TableEditor from './TableEditor'
 import PersonEditor from './PersonEditor'
@@ -16,6 +17,7 @@ import MithrilStyler from '../containers/MithrilStyler'
 import { Dialog as MithrilDialog } from 'polythene-mithril-dialog'
 import { useDialog } from './DialogProvider'
 
+// Translates Tomatic structures to TableEditor compatible ones
 function compileData(personData) {
   const result = {}
   if (personData === undefined) return {}

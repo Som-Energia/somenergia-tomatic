@@ -1,3 +1,8 @@
+// TableEditor: A full featured opinionated table component.
+// Unlike Mui Table which provides the elements to build it,
+// this one already has all the components inside and just
+// requires to define and provide the data to adapt to.
+
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import Box from '@mui/material/Box'
