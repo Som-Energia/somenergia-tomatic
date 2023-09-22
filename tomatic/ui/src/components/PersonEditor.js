@@ -114,7 +114,7 @@ const defaultData = Object.fromEntries(
 )
 
 export default function PersonEditor(props) {
-  const { open, onClose, onSave, person, tables, allGroups } = props
+  const { onClose, onSave, person, tables, allGroups } = props
   const [data, setData] = React.useState(defaultData)
   const [errors, setErrors] = React.useState(() =>
     Object.fromEntries(Object.keys(fields).map((k) => [k, false])),
