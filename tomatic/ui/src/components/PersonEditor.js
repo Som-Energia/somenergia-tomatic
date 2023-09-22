@@ -38,6 +38,7 @@ const fields = {
   id: {
     label: 'Identificador',
     help: 'Identificador que es fa servir internament.',
+    pattern: '[a-z]{3,10}$',
     validator: (value) => {
       if (!value) return "L'identificador és requisit"
       if (value.length < 3) return 'Identificador massa curt'
@@ -64,6 +65,7 @@ const fields = {
   erpuser: {
     label: 'Usuari ERP',
     help: "Usuari amb el que entres a l'erp.",
+    pattern: '^[a-zA-Z]{3,10}$',
     validator: (value) => {
       if (value === undefined) return false
       if (value.length === 0) return false
@@ -76,6 +78,7 @@ const fields = {
   idealload: {
     label: 'Càrrega de torns',
     help: 'Torns que farà normalment en una setmana de 5 dies laborals. En blanc si no fa atenció.',
+    pattern: '^[0-9]{0,2}$',
     validator: (value) => {
       if (value === undefined) return false // Ok no turns
       if (value === '') return false // Ok no turns
@@ -88,6 +91,7 @@ const fields = {
   extension: {
     label: 'Extensió',
     help: 'Extensió de telèfon assignada a la centraleta.',
+    pattern: '^[0-9]{4}$',
     inputFilter: inputFilter_onlyDigits,
   },
   table: {
@@ -158,18 +162,21 @@ export default function PersonEditor(props) {
     }
   }
   const fieldOptions = (field) => {
+    const fieldErrors = errors[field]
+    const fieldParams = fields[field]
     return {
       id: field,
-      label: fields[field].label,
+      label: fieldParams.label,
       helperText:
-        typeof errors[field] === 'string' ? errors[field] : fields[field].help,
-      error: !!errors[field],
+        typeof fieldErrors === 'string' ? fieldErrors : fieldParams.help,
+      error: !!fieldErrors,
       value: data[field] === undefined ? defaultData[field] : data[field],
       onChange: updater(field),
       onInput:
-        fields[field].inputFilter !== undefined
-          ? (ev) => fields[field].inputFilter(ev.target.value)
+        fieldParams.inputFilter !== undefined
+          ? (ev) => fieldParams.inputFilter(ev.target.value)
           : undefined,
+      inputProps: fieldParams.pattern?{ pattern: fieldParams.pattern }:undefined,
     }
   }
 
@@ -193,11 +200,10 @@ export default function PersonEditor(props) {
       </DialogTitle>
       <DialogContent>
         <TextField
-          {...fieldOptions('id')}
-          inputProps={{ pattern: '[a-z]{3,10}$' }}
           disabled={!isNew}
           autoFocus={isNew}
           required
+          {...fieldOptions('id')}
           {...commonFieldOptions}
         />
         <TextField
@@ -214,16 +220,13 @@ export default function PersonEditor(props) {
         <TextField
           {...fieldOptions('erpuser')}
           {...commonFieldOptions}
-          inputProps={{ pattern: '^[a-zA-Z]{3,10}$' }}
         />
         <TextField
           {...fieldOptions('idealload')}
           {...commonFieldOptions}
-          inputProps={{ pattern: '^[0-9]{0,2}$' }}
         />
         <TextField
           {...fieldOptions('extension')}
-          inputProps={{ pattern: '^[0-9]{4}$' }}
           {...commonFieldOptions}
         />
         <FormControl {...commonFieldOptions}>
