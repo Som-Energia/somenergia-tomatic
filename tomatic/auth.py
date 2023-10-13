@@ -139,7 +139,6 @@ def validatedUser(token: str = Depends(oauth2_scheme)):
             exp = expiration_timestamp(),
         )
     try:
-        utcnow = datetime.datetime.now(datetime.timezone.utc)
         payload = jwt.decode(
             token,
             config('tomatic.jwt.secret_key'),
