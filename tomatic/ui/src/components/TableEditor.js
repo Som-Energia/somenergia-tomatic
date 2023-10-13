@@ -208,6 +208,7 @@ EnhancedTableHead.propTypes = {
 function EnhancedTableToolbar(props) {
   const {
     title,
+    selected,
     numSelected,
     onSearchEdited,
     search,
@@ -267,6 +268,7 @@ function EnhancedTableToolbar(props) {
         actions={
           numSelected > 0 && selectionActions ? selectionActions : actions
         }
+        context={selected}
       />
     </Toolbar>
   )
@@ -276,6 +278,7 @@ EnhancedTableToolbar.propTypes = {
   title: PropTypes.string.isRequired,
   numSelected: PropTypes.number.isRequired,
   search: PropTypes.string,
+  selected: PropTypes.arrayOf(PropTypes.string),
   onSearchEdited: PropTypes.func,
   actions: ActionsType,
   selectionActions: ActionsType,
@@ -355,6 +358,7 @@ export default function TableEditor(props) {
         <EnhancedTableToolbar
           title={title}
           numSelected={selected.length}
+          selected={selected}
           search={search}
           onSearchEdited={(ev) => {
             setSearch(ev.target.value)

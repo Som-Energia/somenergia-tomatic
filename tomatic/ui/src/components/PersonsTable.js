@@ -3,10 +3,14 @@ import React from 'react'
 import TableEditor from './TableEditor'
 import PersonEditor from './PersonEditor'
 import Chip from '@mui/material/Chip'
+import DialogContent from '@mui/material/DialogContent'
+import Button from '@mui/material/Button'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogActions from '@mui/material/DialogActions'
 import { contrast } from '../colorutils'
 import EditIcon from '@mui/icons-material/Edit'
 import EventBusyIcon from '@mui/icons-material/EventBusy'
-//import DeleteIcon from '@mui/icons-material/Delete'
+import DeleteIcon from '@mui/icons-material/Delete'
 //import GroupAddIcon from '@mui/icons-material/GroupAdd'
 //import GroupRemoveIcon from '@mui/icons-material/GroupRemove'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
@@ -207,7 +211,26 @@ function PersonsTable() {
   }
 
   //React.useEffect(handlePersonsUpdated, [Tomatic.persons()])
-
+  
+  function deletePersons(persons) {
+    openDialog({
+      children: (<>
+        <DialogContent>
+          <DialogTitle>Estas segur que vols eliminar els usuaris? {persons}</DialogTitle>
+        </DialogContent>
+        <DialogActions>
+        <Button onClick={()=>{
+            closeDialog()
+          }}>{"Ui, no! Espera, espera!"}</Button>
+          <Button onClick={()=>{
+            persons.forEach( (person) => Tomatic.deletePerson(person))
+            closeDialog()
+          }}>{"Clar que si, fora"}</Button>
+        </DialogActions>
+    </>)
+    })
+  }
+  
   function editPerson(person) {
     openDialog({
       children: (
@@ -248,11 +271,12 @@ function PersonsTable() {
       title: 'Remove from Grou',
       icon: <GroupRemoveIcon />,
     },
-    {
+    */
+      {
       title: 'Remove Person',
       icon: <DeleteIcon />,
+      handler: deletePersons,
     },
-    */
   ]
 
   const itemActions = [

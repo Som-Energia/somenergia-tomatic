@@ -313,6 +313,25 @@ module.exports = (function () {
         },
       )
   }
+  
+  Tomatic.deletePerson = function (id) {
+    api
+      .request({
+        method: 'DELETE',
+        url: '/api/person/' + id,
+      })
+      .then(
+        function (data) {
+          Tomatic.requestPersons()
+        },
+        function (error) {
+          console.log(error)
+          Tomatic.error(
+            'Problemes esborrant la persona: ' + (error.error || 'Inexperat'),
+          )
+        },
+      )
+  }
 
   Tomatic.setPersonDataReact = function (id, data) {
     if (id === undefined) {
