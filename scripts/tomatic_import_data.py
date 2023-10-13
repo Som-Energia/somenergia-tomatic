@@ -12,6 +12,7 @@ class Data(str, Enum):
     oneshot = 'oneshot'
     holidays = 'holidays'
     fixedturns = 'fixedturns'
+    persons = 'persons'
     all = 'all'
 
 available_data = [
@@ -25,6 +26,8 @@ available_data = [
         'forced-turns.yaml', 'data'),
     ({Data.all, Data.timetables},
         'graelles', '.'),
+    ({Data.all, Data.persons},
+        'persons.yaml', '.'),
 ]
 
 def main(

@@ -30,6 +30,7 @@ setup(
         'scripts/tomatic_calls.py',
         'scripts/tomatic_dailyreport.py',
         'scripts/tomatic_extensions.py',
+        'scripts/tomatic_import_data.py',
         'scripts/tomatic_mergeshifts.py',
         'scripts/tomatic_resetshiftcredit.sh',
         'scripts/tomatic_retrieve.py',
@@ -81,6 +82,7 @@ setup(
         'backports.zoneinfo; python_version < "3.9"', # Py3.8 support for Py3.9 zoneinfo
         'pandas',
         'matplotlib',
+        'typer',
     #],
     #tests_require=[
         'pytest-cov',
