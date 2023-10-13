@@ -497,5 +497,54 @@ class Persons_Test(unittest.TestCase):
             groups: {}
             idealloads: {}
         """)
+
+    def test_delete_person__havingASingleAttribute(self):
+        persons.persons('p.yaml')
+        persons.update('someone', ns(
+            email = 'someone@nowhere.com',
+        ))
+        persons.update('someother', ns(
+            email = 'someother@nowhere.com',
+        ))
+
+        persons.delete('someone')
+        self.assertNsEqual(ns.load('p.yaml'), """\
+            names: {}
+            erpusers: {}
+            extensions: {}
+            tables: {}
+            colors: {}
+            emails:
+                someother: someother@nowhere.com
+            groups: {}
+            idealloads: {}
+        """)
+
+
+    def test_delete_person_onlySimpleAttributes(self):
+        persons.persons('p.yaml')
+        persons.update('someone', ns(
+            extension = '666',
+            name = "Mengano Bartolo",
+            erpuser = "Mengano",
+            table = -1,
+            color = '#fe0',
+            email = 'mengano@nowhere.com',
+            idealloads = 1,
+        ))
+
+        persons.delete('someone')
+        self.assertNsEqual(ns.load('p.yaml'), """\
+            names: {}
+            erpusers: {}
+            extensions: {}
+            tables: {}
+            colors: {}
+            emails: {}
+            groups: {}
+            idealloads: {}
+        """)
+
+
         
 # vim: et ts=4 sw=4

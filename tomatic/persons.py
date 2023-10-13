@@ -130,7 +130,18 @@ def update(key, data):
 def delete(key):
     result = persons()
     'Deletes key from person'
-    if key in result.emails: del result.emails[key]
+    simpleAttributes = [
+        'names',
+        'extensions',
+        'tables',
+        'colors',
+        'emails',
+        'erpusers',
+        'idealloads',
+    ]
+    for attribute in simpleAttributes:
+        if key in result[attribute]:
+            del result[attribute][key]
     result.dump(persons.path)
 
 # vim: et ts=4 sw=4
