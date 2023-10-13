@@ -142,6 +142,13 @@ def delete(key):
     for attribute in simpleAttributes:
         if key in result[attribute]:
             del result[attribute][key]
+    groups = list(result.groups)
+    for group in groups:
+        if key not in result.groups[group]: continue
+        result.groups[group].remove(key)
+        if result.groups[group]: continue
+        del result.groups[group]
+
     result.dump(persons.path)
 
 # vim: et ts=4 sw=4

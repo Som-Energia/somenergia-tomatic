@@ -545,6 +545,73 @@ class Persons_Test(unittest.TestCase):
             idealloads: {}
         """)
 
+    def test_delete_lastMemberOfGroup_deletesGroup(self):
+        # [groupA(person_a)] -(delete person_a)-> []
+        Path('p.yaml').write_text(u"""\
+            groups:
+              mygroup:
+              - someone
+            """)
+        persons.persons('p.yaml')
+        persons.delete('someone')
+        self.assertNsEqual(persons.persons(), """\
+            names: {}
+            erpusers: {}
+            extensions: {}
+            tables: {}
+            colors: {}
+            emails: {}
+            groups: {}
+            idealloads: {}
+        """)
+
+    def test_delete_alienGroupsAreNotChanged(self):
+        # [groupA(person_a), groupB(person_b)] -(delete person_a)-> [groupB(person_b)]
+        Path('p.yaml').write_text(u"""\
+            groups:
+              groupA:
+              - person_a
+              groupB:
+              - person_b
+            """)
+        persons.persons('p.yaml')
+        persons.delete('person_a')
+        self.assertNsEqual(persons.persons(), """\
+            names: {}
+            erpusers: {}
+            extensions: {}
+            tables: {}
+            colors: {}
+            emails: {}
+            groups:
+              groupB:
+              - person_b
+            idealloads: {}
+        """)
+
+    def test_delete_otherPeopleOnTheGroupIsKept(self):
+        # [groupA(person_a,person_b)] -(delete person_a)-> [groupA(person_b)]
+        Path('p.yaml').write_text(u"""\
+            groups:
+              groupA:
+              - person_a
+              - person_b
+            """)
+        persons.persons('p.yaml')
+        persons.delete('person_a')
+        self.assertNsEqual(persons.persons(), """\
+            names: {}
+            erpusers: {}
+            extensions: {}
+            tables: {}
+            colors: {}
+            emails: {}
+            groups:
+              groupA:
+              - person_b
+            idealloads: {}
+        """)
+
 
         
 # vim: et ts=4 sw=4
