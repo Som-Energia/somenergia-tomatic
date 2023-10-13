@@ -2,6 +2,10 @@
 
 ## Backlog
 
+- [ ] Commit Makefile
+- [ ] Makefile: Target to deploy in server
+- [ ] Api test: remove p.yaml in teardown
+- [ ] Delete persons: protect some users (ningu and admins)
 - [ ] Initial setup
      - [ ] Option --fake is not working in debug mode since FastAPI migration.
            Because of that tomatic.pbx.pbxirontec.Irontec.BackendError unless you have it configured
