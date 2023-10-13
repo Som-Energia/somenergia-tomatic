@@ -3,6 +3,7 @@ import React from 'react'
 import TableEditor from './TableEditor'
 import PersonEditor from './PersonEditor'
 import Chip from '@mui/material/Chip'
+import Box from '@mui/material/Box'
 import DialogContent from '@mui/material/DialogContent'
 import Button from '@mui/material/Button'
 import DialogTitle from '@mui/material/DialogTitle'
@@ -211,32 +212,55 @@ function PersonsTable() {
   }
 
   //React.useEffect(handlePersonsUpdated, [Tomatic.persons()])
-  
+
   function deletePersons(persons) {
     openDialog({
-      children: (<>
-        <DialogContent>
-          <DialogTitle>Estas segur que vols eliminar els usuaris? {persons}</DialogTitle>
-        </DialogContent>
-        <DialogActions>
-        <Button onClick={()=>{
-            closeDialog()
-          }}>{"Ui, no! Espera, espera!"}</Button>
-          <Button onClick={()=>{
-            persons.forEach( (person) => Tomatic.deletePerson(person))
-            closeDialog()
-          }}>{"Clar que si, fora"}</Button>
-        </DialogActions>
-    </>)
+      children: (
+        <>
+          <DialogTitle>
+            {'Estas segur que vols eliminar els usuaris?'}
+          </DialogTitle>
+          <DialogContent sx={{ width: '100%', display: 'flex', flex: 'row wrap', contentAlign: 'center' }}>
+            {persons.map((person) => (
+              <Box
+                className={person}
+                key={person}
+                sx={{ width: '10rem', p: 1.2, m: 1, textAlign: 'center' }}
+              >
+                {person}
+              </Box>
+            ))}
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                closeDialog()
+              }}
+            >
+              {'Ui, NO! Espera! espera!'}
+            </Button>
+            <Button
+              color='error'
+              variant='contained'
+              onClick={() => {
+                persons.forEach((person) => Tomatic.deletePerson(person))
+                closeDialog()
+              }}
+            >
+              {'Clar que sí, fora!'}
+            </Button>
+          </DialogActions>
+        </>
+      ),
     })
   }
-  
+
   function editPerson(person) {
     openDialog({
       children: (
         <PersonEditor
           onClose={closeDialog}
-          onSave={(id, data)=>{
+          onSave={(id, data) => {
             Tomatic.setPersonDataReact(id, data)
             closeDialog()
           }}
@@ -272,7 +296,7 @@ function PersonsTable() {
       icon: <GroupRemoveIcon />,
     },
     */
-      {
+    {
       title: 'Remove Person',
       icon: <DeleteIcon />,
       handler: deletePersons,
