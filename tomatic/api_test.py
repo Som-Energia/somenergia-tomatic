@@ -5,11 +5,13 @@ import unittest
 from datetime import datetime
 from mock import patch
 import json
+from pathlib import Path
 
 from yamlns import namespace as ns
 from . import api
 from fastapi.testclient import TestClient
 from .auth import validatedUser
+from . import persons
 
 
 def setNow(year,month,day,hour,minute):
@@ -51,6 +53,52 @@ class Api_Test(unittest.TestCase):
             turns=['L1', 'L2'],
             timetable=ns(time_table)
         )
+
+    def test_persons_delete_whenNotAdmin(self):
+        persons.persons("p.yaml")
+        Path('p.yaml').write_text(u"""\
+            emails:
+              vic: me@here.coop
+              superwoman: kara.danvers@kripton.space
+            groups:
+              admin:
+              - superwoman
+            """)
+        response = self.client.delete(
+            '/api/person/superwoman',
+        )
+        self.assertResponseEqual(response, """
+            detail: Admin role required
+        """, 401)
+
+    def test_persons_delete_whenAdmin(self):
+        persons.persons("p.yaml")
+        Path('p.yaml').write_text(u"""\
+            emails:
+              vic: me@here.coop
+              kara: kara.danvers@kripton.space
+            groups:
+              admin:
+              - vic
+            """)
+        response = self.client.delete(
+            '/api/person/kara',
+        )
+        self.assertResponseEqual(response, """
+            persons:
+                colors: {}
+                erpusers: {}
+                extensions: {}
+                idealloads: {}
+                names: {}
+                tables: {}
+                emails:
+                    vic: me@here.coop
+                    # kara was removed
+                groups:
+                    admin:
+                    - vic
+        """, 200)
 
     @patch("tomatic.api.schedulestorage.Storage.load")
     @patch("tomatic.api.schedulestorage.Storage.save")

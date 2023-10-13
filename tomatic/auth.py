@@ -117,7 +117,7 @@ def auth_error(message):
     error(message)
     return HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Invalid authentication credentials",
+        detail=message or "Invalid authentication credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
 
@@ -154,4 +154,9 @@ def validatedUser(token: str = Depends(oauth2_scheme)):
 
     return ns(payload)
 
-
+def adminUser(user: ns = Depends(validatedUser)):
+    username = persons.byEmail(user['email'])
+    groups = persons.persons().get('groups',{})
+    if username not in groups.get('admin', {}):
+        raise auth_error("Admin role required")
+    return user

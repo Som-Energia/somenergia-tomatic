@@ -74,7 +74,7 @@ def thisweek():
     return format(now().date() - timedelta(days=now().weekday()))
 
 from .planner_api import api as Planner
-from .auth import router as Auth, validatedUser
+from .auth import router as Auth, validatedUser, adminUser
 from fastapi.websockets import WebSocket
 
 app = FastAPI()
@@ -346,6 +346,12 @@ def personInfo():
 async def setPersonInfo(person, request: Request, user = Depends(validatedUser)):
     data = ns.loads(await request.body())
     persons.update(person, data)
+    return yamlfy(persons=persons.persons())
+
+@app.delete('/api/person/{person}')
+@ayamlerrors
+async def deletePerson(person, user = Depends(adminUser)):
+    persons.delete(person)
     return yamlfy(persons=persons.persons())
 
 @app.get('/api/busy/{person}')
