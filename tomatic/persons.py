@@ -127,5 +127,10 @@ def update(key, data):
         }
     result.dump(persons.path)
 
+def delete(key):
+    result = persons()
+    'Deletes key from person'
+    if key in result.emails: del result.emails[key]
+    result.dump(persons.path)
 
 # vim: et ts=4 sw=4
