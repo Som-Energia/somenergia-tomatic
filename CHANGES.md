@@ -12,6 +12,8 @@
 - tomatic_says: fix: script failed, now has no channel parameter but it works
 - Fix: scriptlaucher: missing stats scripts section
 - Fix: wrong url in turn-change chat message
+- Timetable (React): adjusted styles to match Mithril version
+- Mithril code uses es6 format
 
 ## 5.4.1 2023-09-15
 
