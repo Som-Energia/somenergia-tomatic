@@ -118,7 +118,7 @@ tomatic_graelles:
           description: Dilluns de la setmana, en format AAAA-MM-DD
           type: DATE
 
-tomatic_stats:
+tomatic_pbx:
   description: Tomàtic (Centraleta)
   scripts:
 
