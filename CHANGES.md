@@ -4,11 +4,14 @@
 
 - Callinfo: Auto search field detection
 - Callinfo: Search by CUPS
+- PersonEditor: Delete users
 - PersonEditor: Fix: Id validation 
 - PersonEditor: Fix: Group field did'nt save
 - PersonEditor: Abstracted more field attributes
 - PersonEditor: Uses DialogProvider
 - tomatic_says: fix: script failed, now has no channel parameter but it works
+- Fix: scriptlaucher: missing stats scripts section
+- Fix: wrong url in turn-change chat message
 
 ## 5.4.1 2023-09-15
 
