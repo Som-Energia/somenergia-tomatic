@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- License changed to Affero 3+
 - Callinfo: Auto search field detection
 - Callinfo: Search by CUPS
 - PersonEditor: Delete users
