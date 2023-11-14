@@ -452,7 +452,7 @@ async def callingPhonePost(phone: str = Form(...), ext: str = Form(...)):
 
 def cleanupPhone(phone):
     phone = re.sub('[^0-9]', '', phone) # remove non digits
-    phone = re.sub(r'^?0?0?34','', phone) # remove prefixes
+    phone = re.sub(r'^0?0?34','', phone) # remove prefixes
     return phone
 
 async def notifyIncommingCall(phone: str, extension: str):
