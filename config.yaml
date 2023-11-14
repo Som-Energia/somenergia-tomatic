@@ -1,4 +1,4 @@
-baseUrl: http://tomatic.somenergia.lan
+baseUrl: https://tomatic.somenergia.coop
 personsfile: persons.yaml
 monitoringFile: taula.html
 #hangoutChannel: 'UgwbNDnElaQHezX-qXN4AaABAQ' # it
