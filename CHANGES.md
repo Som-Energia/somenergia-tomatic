@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.4.2 2023-11-14
 
 - License changed to Affero 3+
 - Callinfo: Auto search field detection
@@ -11,6 +11,7 @@
 - PersonEditor: Abstracted more field attributes
 - PersonEditor: Uses DialogProvider
 - tomatic_says: fix: script failed, now has no channel parameter but it works
+- New script `tomatic_import` to import production data to develop
 - Fix: scriptlaucher: missing stats scripts section
 - Fix: wrong url in turn-change chat message
 - Timetable (React): adjusted styles to match Mithril version
