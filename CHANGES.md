@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.4.3 2023-11-14
+
+- Fix: Callinfo: crash on incomming number cleanup
+
 ## 5.4.2 2023-11-14
 
 - License changed to Affero 3+
