@@ -1,7 +1,6 @@
 tomatic_equip:
   description: Tomàtic (Equip)
   scripts:
-
     says:
       script: SOME_SRC/somenergia-tomatic/runhere tomatic_says.py  {quelcom}
       #script: SOME_SRC/somenergia-tomatic/runhere tomatic_says.py  -c "{qui}" {quelcom}
@@ -24,7 +23,6 @@ tomatic_equip:
 tomatic_stats:
   description: Tomàtic (Stats)
   scripts:
-
     statshistory:
       script: cp SOME_SRC/somenergia-tomatic/stats.csv {output}
       title: Centraleta - Serie histórica d'estadístiques
@@ -32,23 +30,44 @@ tomatic_stats:
         Retorna les estadístiques de la centraleta que s'envien cada dia
         en un CSV amb una fila per dia.
       parameters:
-
         output:
           type: FILEDOWN
           extension: csv
           filename: centraleta-historic-estadistiques.csv
 
     weekcallprofile:
-      script: ./runhere tomatic_stats.py {output}
+      script: ./runhere tomatic_stats.py week-profile {output}
       title: Centraleta - Perfil típic setmanal de trucades
       description: >
         Retorna una gràfica amb la distribució estadística
-        de trucades a cada hora de cada dia de la setmana
+        de trucades entrants a cada hora de cada dia de la setmana
       parameters:
         output:
           type: FILEDOWN
           extension: pdf
           filename: centraleta-perfil-horari-setmanal.pdf
+
+    usage_stats:
+      script: ./runhere tomatic_stats.py usage {output} --from {from_date} --to {to_date}
+      title: Centraleta - Estadístiques d'ús del tomatic
+      description: >
+        Retorna estadístiques setmanals de l'ús de cada persona
+        de certes funcionalitats monitoritzades del tomatic.
+        De moment, només es monitoritza l'us del callinfo contant
+        els clicks a les pestanyes dels resultats de la cerca.
+      parameters:
+        from_date:
+          description: Primera data inclosa
+          type: DATE
+          default: 2022-05-01
+        to_date:
+          description: Darrera data inclosa
+          type: DATE
+          default:
+        output:
+          type: FILEDOWN
+          extension: pdf
+          filename: centraleta-usage-{from_date}-{to_date}.pdf
 
     downloadstats:
       script: tar cvfz {output} stats
@@ -78,7 +97,6 @@ tomatic_stats:
 tomatic_graelles:
   description: Tomàtic (Graelles)
   scripts:
-
     forgivedebts:
       title: Graelles - Condonar deutes de torns
       description: >
@@ -121,7 +139,6 @@ tomatic_graelles:
 tomatic_pbx:
   description: Tomàtic (Centraleta)
   scripts:
-
     queuestatus:
       script: SOME_SRC/somenergia-tomatic/runhere tomatic_rtqueue.py status
       title: Centraleta - Estat de la centraleta
@@ -151,10 +168,9 @@ tomatic_pbx:
 tomatic_old:
   description: Tomàtic (Historics)
   scripts:
-
     carregues:
       script: SOME_SRC/somenergia-tomatic/runhere tomatic_shiftload.py {monday} --clusterize --lines {numberOfLines} --summary {summary} --forgive
-      # --weekshifts {load} 
+      # --weekshifts {load}
       title: Graelles - Generació de càrregues setmanals [Obsolet]
       description: >
         _Obsolet_, això ara es fa des del planificador de graelles al mateix temps que la graella
@@ -201,6 +217,5 @@ tomatic_old:
       description: >
         _Obsolet_ Funcionava amb la centraleta de Areavoip.
         Un llistat bastan cru de totes les trucades del dia
-
 
 # vim: et ts=2 sw=2
