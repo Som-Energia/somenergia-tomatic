@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.5.0 2023-11-23
+
+- New script to download usage stats
+
 ## 5.4.3 2023-11-14
 
 - Fix: Callinfo: crash on incomming number cleanup
@@ -10,7 +14,7 @@
 - Callinfo: Auto search field detection
 - Callinfo: Search by CUPS
 - PersonEditor: Delete users
-- PersonEditor: Fix: Id validation 
+- PersonEditor: Fix: Id validation
 - PersonEditor: Fix: Group field did'nt save
 - PersonEditor: Abstracted more field attributes
 - PersonEditor: Uses DialogProvider
@@ -791,5 +795,4 @@ Post new provider fixes
 ## 2.1.0  2018-02-07
 
 - First tagged release
-
 
