@@ -66,8 +66,8 @@ tomatic_stats:
           default:
         output:
           type: FILEDOWN
-          extension: pdf
-          filename: centraleta-usage-{from_date}-{to_date}.pdf
+          extension: csv
+          filename: centraleta-usage-{from_date}-{to_date}.csv
 
     downloadstats:
       script: tar cvfz {output} stats
