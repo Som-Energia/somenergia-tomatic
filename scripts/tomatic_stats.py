@@ -93,20 +93,25 @@ def usage(output, events, from_, to):
     input = statsDir / 'usagelog.log'
     to = to or datetime.datetime.now()
 
+    availableEvents = set()
     result = ns()
     with input.open() as f:
         f = csv.reader(f, delimiter='\t')
         for timestamp, event, person in f:
-            if events and event not in events:
-                warn("filtered by event")
+            availableEvents.add(event)
+            if events and all(e not in event for e in events):
+                #warn("filtered by event")
                 continue
             if from_ and timestamp < str(from_):
-                warn("filtered by from")
+                #warn("filtered by from")
                 continue
             if to and timestamp > str(to):
-                warn("filtered by to")
+                #warn("filtered by to")
                 continue
             result[person] = result.get(person, 0) + 1
+
+    if not result:
+        fail(f"El filtre ({', '.join(events)}) no coincideix amb cap dels esdeveniments disponibles: {', '.join(availableEvents)}")
 
     content = ''.join(
         f"{person}\t{count}\n"

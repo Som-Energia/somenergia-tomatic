@@ -48,7 +48,7 @@ tomatic_stats:
           filename: centraleta-perfil-horari-setmanal.pdf
 
     usage_stats:
-      script: ./runhere tomatic_stats.py usage {output} --from {from_date} --to {to_date}
+      script: ./runhere tomatic_stats.py usage {output} --from {from_date} --to {to_date} --event {event}
       title: Centraleta - Estadístiques d'ús del tomatic
       description: >
         Retorna estadístiques setmanals de l'ús de cada persona
@@ -63,7 +63,9 @@ tomatic_stats:
         to_date:
           description: Darrera data inclosa
           type: DATE
-          default:
+        event:
+          description: Patro per filtrar els esdeveniments. Posa basura per veure els disponibles.
+          default: callinfo
         output:
           type: FILEDOWN
           extension: csv
