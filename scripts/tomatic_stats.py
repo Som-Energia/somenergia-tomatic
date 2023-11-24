@@ -94,14 +94,16 @@ def usage(output, events, from_, to):
     to = to or datetime.datetime.now()
 
     availableEvents = set()
+    matchingEvents = set()
     result = ns()
     with input.open() as f:
         f = csv.reader(f, delimiter='\t')
         for timestamp, event, person in f:
             availableEvents.add(event)
-            if events and all(e not in event for e in events):
+            if events and not any(e in event for e in events):
                 #warn("filtered by event")
                 continue
+            matchingEvents.add(event)
             if from_ and timestamp < str(from_):
                 #warn("filtered by from")
                 continue
@@ -112,6 +114,9 @@ def usage(output, events, from_, to):
 
     if not result:
         fail(f"El filtre ({', '.join(events)}) no coincideix amb cap dels esdeveniments disponibles: {', '.join(availableEvents)}")
+
+    step(f"Captured events {matchingEvents}")
+    warn(f"Filtered events {availableEvents - matchingEvents}")
 
     content = ''.join(
         f"{person}\t{count}\n"
