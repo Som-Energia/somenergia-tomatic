@@ -514,6 +514,7 @@ def updateClaimTypes(user = Depends(validatedUser)):
 
 @app.get('/api/calendar/{person}')
 def icalendar(person):
+    log_user_event(person, "calendarRefresh")
     calendar = schedules.personIcs(person)
     from fastapi.responses import StreamingResponse
     return StreamingResponse(
