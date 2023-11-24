@@ -136,7 +136,7 @@ ContractInfo.detailsPanel = function () {
           onChange: function (ev) {
             CallInfo.activeDetailedView = detailedViews[ev.index]
             if (ev.index) {
-              CallInfo.notifyUsage('changeDetails')
+              CallInfo.notifyUsage('callinfoChangeDetails')
             }
           },
         }),
@@ -371,7 +371,7 @@ var contractCard = function (partner) {
         onChange: function (ev) {
           CallInfo.selectContract(ev.index)
           if (ev.index) {
-            CallInfo.notifyUsage('changeContract')
+            CallInfo.notifyUsage('callinfoChangeContract')
           }
         },
       }),

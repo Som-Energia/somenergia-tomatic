@@ -162,7 +162,7 @@ var partnerCard = function (partners) {
         onChange: function (ev) {
           CallInfo.selectPartner(ev.index)
           if (ev.index) {
-            CallInfo.notifyUsage('changePartner')
+            CallInfo.notifyUsage('callinfoChangePartner')
           }
         },
       }),
