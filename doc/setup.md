@@ -79,6 +79,12 @@ sudo chmod 755 crontab
 sudo ln -s $pwd/crontab /etc/cron.d/tomatic
 ```
 
+### Configuring the change of shift message
+
+Every shift change tomatic sends a chat.
+To customize that message you can create a plain text file as
+`data/turn-change-message.txt`
+
 ### Setting up Google OAuth2 login
 
 - Go to https://console.cloud.google.com/apis/credentials
