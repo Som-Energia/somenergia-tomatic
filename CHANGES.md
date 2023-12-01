@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.5.1 2023-12-01
+
+- Chat message for every shift change can be configured
+- Upgrade notes:
+    - To change default shift change message create
+      a plain text file data/turn-change-message.txt configuration file
+
 ## 5.5.0 2023-11-23
 
 - New script to download usage stats
