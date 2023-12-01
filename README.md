@@ -20,7 +20,7 @@ src="doc/images/tomatic.jpg" align='right'
 - [Developing](doc/development.md): Developing Tomàtic
 - [TODO.md](TODO.md): Pending task list
 - [CHANGES.md](CHANGES.md): Version history and change log
-- [doc](docs) Further documentation (Including project requirements, glossary and designs)
+- [doc](doc) Further documentation (Including project requirements, glossary and designs)
 
 
 ## Features
