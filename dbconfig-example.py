@@ -6,8 +6,8 @@ from yamlns import namespace as ns
 
 tomatic=ns(
     # local timetable storage directory
-    storagepath='/home/vokimon/somenergia/somenergia-tomatic/graelles',
-    forcedturnspath='/home/vokimon/somenergia/somenergia-tomatic/data',
+    storagepath='graelles',
+    forcedturnspath='data',
     # mail to report issues
     supportmail='support@mycompany.com',
     # auth configuration
