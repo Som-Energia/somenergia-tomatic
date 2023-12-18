@@ -15,9 +15,23 @@ git clone https://github.com/Som-Energia/somenergia-tomatic.git
 cd somenergia-tomatic
 npm install
 npm run build # instead of 'deploy' for development mode assets
+python --version # before create the .venv make sure the python version is 3.9.4
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .
+```
+
+#### Using Makefile
+
+It is also possible to install front and back dependencies and start the project using make:
+
+```bash
+make ui-deps # to install ui dependencies
+make api-deps # to install the backend dependencies, remember to fix python version to 3.9.4
+
+# and then to run the project
+make ui-dev
+make api-dev
 ```
 
 ### Production Setup
