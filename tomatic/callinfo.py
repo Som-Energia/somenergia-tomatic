@@ -163,7 +163,7 @@ class CallInfo(object):
                     + (8 if x['titular'][0] == partner_id else 0)
                     + (4 if x['administradora'] and x['administradora'][0]== partner_id else 0)
                     + (2 if x['pagador'][0] == partner_id else 0)
-                    + (1 if x['soci'][0] == partner_id else 0)
+                    + (1 if x['soci'] and x['soci'][0] == partner_id else 0)
                 )
             )
         ]
@@ -207,6 +207,7 @@ class CallInfo(object):
                     partner_data.id
                 ))
                 print(e)
+                raise
         result.partners.extend(no_partners)
         return result
 
