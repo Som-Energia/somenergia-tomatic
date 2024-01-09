@@ -27,7 +27,7 @@ It is also possible to install front and back dependencies and start the project
 
 ```bash
 make ui-deps # to install ui dependencies
-make api-deps # to install the backend dependencies, remember to fix python version to 3.9.4
+make api-deps # to install the backend dependencies
 
 # and then to run the project
 make ui-dev
