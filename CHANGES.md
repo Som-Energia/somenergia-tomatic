@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.5.2 2024-01-09
+
+- Fix validation name in SetPersonData of api/person
+- Get contract info even if has no member associate
+- Added make setup commands
+
 ## 5.5.1 2023-12-01
 
 - Chat message for every shift change can be configured
