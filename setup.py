@@ -16,6 +16,7 @@ setup(
     long_description_content_type = 'text/markdown',
     license = 'GNU Affero General Public License v3 or later (GPLv3+)',
     packages=find_packages(exclude=['*[tT]est*']),
+    python_requires='>=3.9.4',
     scripts=[
         'scripts/areavoip_callapi.py',
         'scripts/areavoip_dumpstats.sh',
@@ -79,7 +80,6 @@ setup(
         'python-jose[cryptography]', # auth
         'charset-normalizer<3', # request and httpio complains once 3.x is out
         'httplib2', # Google chat code
-        'backports.zoneinfo; python_version < "3.9"', # Py3.8 support for Py3.9 zoneinfo
         'pandas',
         'matplotlib',
         'typer',
