@@ -408,11 +408,7 @@ module.exports = (function () {
       var value = data[key]
       switch (key) {
         case 'formatName':
-          delete Tomatic.persons().names[name]
-          var formatName = Tomatic.formatName(name)
-          if (formatName !== value) {
-            postdata.name = value
-          }
+          postdata.name = value
           break
         case 'extension':
           postdata.extension = value
