@@ -32,10 +32,10 @@ class CallInfo(object):
         self._anonymize = anonymize
         self.invoices_limit = invoices_limit
         self.meter_readings_limit = meter_readings_limit
+        self.config = ns.load('config.yaml')
 
         if not self.results_limit:
-            config = ns.load('config.yaml')
-            self.results_limit = config.threshold_hits
+            self.results_limit = self.config.threshold_hits
 
         if not self.invoices_limit:
             self.invoices_limit = 12
