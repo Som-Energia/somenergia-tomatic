@@ -64,3 +64,4 @@ forced: # Forced timetable slots, mapping "[day, time, line]: person". pe. "[dx,
 threshold_hits: 21
 callinfoPath: callinfo
 nNingusMinizinc: 2
+partner_category_id: 69

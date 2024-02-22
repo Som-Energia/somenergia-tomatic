@@ -117,7 +117,6 @@ class CallInfo(object):
         return list(result)
 
     def partnerInfo(self, partner_data):
-        partner_category_id = 8
         result = ns(
             id_soci=self.anonymize(partner_data.ref) if partner_data.ref else "",
             lang=partner_data.lang,
@@ -135,7 +134,7 @@ class CallInfo(object):
                 ([self.anonymize(partner_data.www_mobile)] if partner_data.www_mobile else [])
             ),
             comment=partner_data.comment or '',
-            unsubscribed=partner_category_id not in partner_data.category_id,
+            unsubscribed=self.config.partner_category_id not in partner_data.category_id,
         )
         return result
 
