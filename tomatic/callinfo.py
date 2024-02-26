@@ -134,7 +134,7 @@ class CallInfo(object):
                 ([self.anonymize(partner_data.www_mobile)] if partner_data.www_mobile else [])
             ),
             comment=partner_data.comment or '',
-            unsubscribed=self.config.partner_category_id not in partner_data.category_id,
+            is_member=self.config.partner_category_id in partner_data.category_id,
         )
         return result
 
