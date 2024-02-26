@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Callinfo: Identify if partner still member
+
 ## 5.5.2 2024-01-09
 
 - Fix validation name in SetPersonData of api/person

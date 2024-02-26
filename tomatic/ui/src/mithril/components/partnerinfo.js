@@ -33,7 +33,9 @@ var infoPartner = function () {
           ' - ',
           m('i.fa.fa-id-badge', { 'aria-label': 'Codi Socia' }),
           ' ',
-          markedErrorIfMissing(partner.id_soci, 'No codi socia'),
+          partner.is_member ?
+            markedErrorIfMissing(partner.id_soci, 'No codi socia') :
+            m('del', partner.id_soci),
         ]),
       ),
       m('', m('.label', partner.name)),
@@ -101,6 +103,11 @@ var infoPartner = function () {
     m(
       '.partner-info-item',
       partner.energetica ? m('.label-energetica', "Soci d'Energetica.") : '',
+    ),
+    m(
+      '.partner-info-item',
+      partner.is_member ||
+      m('', m('i.fa.fa-eject'), ' ', m('span.red', 'Sòcia de baixa')),
     ),
     m('.partner-info-item', [
       m(
