@@ -28,6 +28,9 @@
     "test": "BUILD_PATH=tomatic/dist react-app-rewired test",
     "eject": "react-scripts eject"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "config-overrides-path": "tomatic/ui/config-overrides.js",
   "repository": {
     "type": "git",
