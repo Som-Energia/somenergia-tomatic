@@ -125,8 +125,9 @@ function TimeTable(props) {
               color="primary"
               aria-label="add"
               position="TopRight"
+              onClick={AddTurn}
             >
-              <AddIcon onClick={AddTurn} />
+              <AddIcon />
             </Fab>
           </Tooltip>
           <Tooltip title="Esborrar última línia">
@@ -135,8 +136,9 @@ function TimeTable(props) {
               color="primary"
               aria-label="remove"
               position="TopRight"
+              onClick={RemoveTurn}
             >
-              <RemoveIcon onClick={RemoveTurn} />
+              <RemoveIcon />
             </Fab>
           </Tooltip>
         </div>
