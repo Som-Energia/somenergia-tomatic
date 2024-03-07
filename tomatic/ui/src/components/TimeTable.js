@@ -149,7 +149,7 @@ function TimeTable(props) {
                 <tr>
                   <th>{Tomatic.weekday(day)}</th>
                   {grid?.turns.map((turn) => (
-                    <td key={turn}>{turn}</td>
+                    <th key={turn}>{turn}</th>
                   ))}
                 </tr>
               </thead>
