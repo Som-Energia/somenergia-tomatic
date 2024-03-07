@@ -32,6 +32,8 @@ api-deps:
 api-test:
 	.venv/bin/pytest
 
+ui-style:
+	./node_modules/.bin/prettier -w tomatic/ui
 
 
 define HELP
