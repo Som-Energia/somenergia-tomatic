@@ -2,8 +2,9 @@
 
 ## unreleased
 
-- Nicer handling of api calls when not authenticated
 - Using React based timetable page as default
+- Fix: Nicer handling of api calls when not authenticated
+- Fix: Button for adding lines not always works
 
 ## 5.5.3 2024-03-12
 
