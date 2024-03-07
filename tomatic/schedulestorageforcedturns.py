@@ -47,7 +47,7 @@ class Storage(object):
     def createEmptyFile(self):
         emptytimetable = {}
         emptytimetable['days'] = 'dl dm dx dj dv'.split(' ')
-        emptytimetable['turns'] = ['T1']
+        emptytimetable['turns'] = ['L1']
         emptytimetable['hours'] = ['09:00','10:15','11:30','12:45','14:00']
         emptytimetable['timetable'] = {'dl': [[None]], 'dm': [[None]], 'dx': [[None]], 'dj': [[None]], 'dv': [[None]]}
         timetable = ns(**emptytimetable)
@@ -90,7 +90,7 @@ class Storage(object):
     def addColumn(self):
         timetable = self.load()
         numberOfTurns = len(timetable.turns) + 1
-        timetable.turns.append('T'+ str(numberOfTurns))
+        timetable.turns.append('L'+ str(numberOfTurns))
         for day in timetable.timetable:
             for hour in timetable.timetable[day]:
                 hour.append(None)
