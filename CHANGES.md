@@ -1,5 +1,10 @@
 # Changelog
 
+## unreleased
+
+- Nicer handling of api calls when not authenticated
+- Using React based timetable page as default
+
 ## 5.5.3 2024-03-12
 
 - Callinfo: Fix: hijack link for the new OV
