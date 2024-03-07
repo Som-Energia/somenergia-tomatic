@@ -32,9 +32,12 @@ var api = {
       .catch(function (error) {
         debugApi &&
           console.log(options.method || 'GET', options.url, 'Error', error)
-        if (error.code !== 401) throw error
         // Unauthorized
-        Auth.logout()
+        if (error.code === 401) {
+          Auth.logout()
+          return undefined
+        }
+        throw error
       })
   },
 
