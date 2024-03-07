@@ -149,7 +149,9 @@ ContractInfo.detailsPanel = function () {
               content: m('', [
                 m('.contract-info-box', [
                   currentTab === 'atr' && [atrCases(contract.atr_cases)],
-                  currentTab === 'invoices' && [lastInvoices(contract.invoices)],
+                  currentTab === 'invoices' && [
+                    lastInvoices(contract.invoices),
+                  ],
                   currentTab === 'readings' && [
                     meterReadings(contract.lectures_comptadors),
                   ],

@@ -176,7 +176,9 @@ export default function PersonEditor(props) {
         fieldParams.inputFilter !== undefined
           ? (ev) => fieldParams.inputFilter(ev.target.value)
           : undefined,
-      inputProps: fieldParams.pattern?{ pattern: fieldParams.pattern }:undefined,
+      inputProps: fieldParams.pattern
+        ? { pattern: fieldParams.pattern }
+        : undefined,
     }
   }
 
@@ -217,18 +219,9 @@ export default function PersonEditor(props) {
           {...fieldOptions('email')}
           {...commonFieldOptions}
         />
-        <TextField
-          {...fieldOptions('erpuser')}
-          {...commonFieldOptions}
-        />
-        <TextField
-          {...fieldOptions('idealload')}
-          {...commonFieldOptions}
-        />
-        <TextField
-          {...fieldOptions('extension')}
-          {...commonFieldOptions}
-        />
+        <TextField {...fieldOptions('erpuser')} {...commonFieldOptions} />
+        <TextField {...fieldOptions('idealload')} {...commonFieldOptions} />
+        <TextField {...fieldOptions('extension')} {...commonFieldOptions} />
         <FormControl {...commonFieldOptions}>
           <InputLabel id="table-label">{fields.table.label}</InputLabel>
           <Select

@@ -220,7 +220,14 @@ function PersonsTable() {
           <DialogTitle>
             {'Estas segur que vols eliminar els usuaris?'}
           </DialogTitle>
-          <DialogContent sx={{ width: '100%', display: 'flex', flex: 'row wrap', contentAlign: 'center' }}>
+          <DialogContent
+            sx={{
+              width: '100%',
+              display: 'flex',
+              flex: 'row wrap',
+              contentAlign: 'center',
+            }}
+          >
             {persons.map((person) => (
               <Box
                 className={person}
@@ -240,8 +247,8 @@ function PersonsTable() {
               {'Ui, NO! Espera! espera!'}
             </Button>
             <Button
-              color='error'
-              variant='contained'
+              color="error"
+              variant="contained"
               onClick={() => {
                 persons.forEach((person) => Tomatic.deletePerson(person))
                 closeDialog()
