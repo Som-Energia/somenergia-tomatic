@@ -106,14 +106,6 @@ function TimeTable(props) {
     )
   }
 
-  function AddTurn() {
-    addColumn()
-  }
-
-  function RemoveTurn() {
-    removeColumn()
-  }
-
   return (
     <>
       <PersonStyles />
@@ -125,7 +117,7 @@ function TimeTable(props) {
               color="primary"
               aria-label="add"
               position="TopRight"
-              onClick={AddTurn}
+              onClick={addColumn}
             >
               <AddIcon />
             </Fab>
@@ -136,7 +128,7 @@ function TimeTable(props) {
               color="primary"
               aria-label="remove"
               position="TopRight"
-              onClick={RemoveTurn}
+              onClick={removeColumn}
             >
               <RemoveIcon />
             </Fab>
