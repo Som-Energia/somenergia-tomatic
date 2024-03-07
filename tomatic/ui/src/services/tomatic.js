@@ -479,8 +479,10 @@ module.exports = (function () {
             Tomatic.requestGrid(current)
           }
         }
+        Tomatic.onWeeksUpdated.forEach((callback) => callback())
       })
   }
+  Tomatic.onWeeksUpdated = []
 
   Tomatic.log = function (message) {
     console.log('log: ', message)

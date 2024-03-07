@@ -38,7 +38,7 @@ function TimeTablePage() {
           },
         }}
       >
-        <WeekPicker></WeekPicker>
+        <WeekPicker />
         <TimeTable
           grid={grid}
           setCell={setCell}
