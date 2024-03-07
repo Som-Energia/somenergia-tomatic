@@ -313,7 +313,7 @@ module.exports = (function () {
         },
       )
   }
-  
+
   Tomatic.deletePerson = function (id) {
     api
       .request({

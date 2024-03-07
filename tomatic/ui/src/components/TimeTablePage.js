@@ -29,7 +29,7 @@ function TimeTablePage() {
     <>
       <Box
         sx={{
-          p:0,
+          p: 0,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',

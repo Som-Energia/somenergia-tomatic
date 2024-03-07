@@ -33,7 +33,11 @@ function TimeTable(props) {
     const cellData = { day: day, hour: houri, turn: turni, name: name }
     openDialog({
       children: (
-        <CellEditDialog onClose={closeDialog} data={cellData} handleChange={handleChange}></CellEditDialog>
+        <CellEditDialog
+          onClose={closeDialog}
+          data={cellData}
+          handleChange={handleChange}
+        ></CellEditDialog>
       ),
       maxWidth: 'md',
     })

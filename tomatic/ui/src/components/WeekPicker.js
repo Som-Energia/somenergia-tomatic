@@ -26,18 +26,18 @@ const CurrentItem = styled.li`
   label: current;
   text-align: center;
   font-weight: bold;
-  list-style-type:none;
+  list-style-type: none;
   background: #7a7;
   :hover {
     background: #7a7;
   }
   :before {
-    content: "►";
-    margin-inline: .5rem;
+    content: '►';
+    margin-inline: 0.5rem;
   }
   :after {
-    margin-inline: .5rem;
-    content: "◄";
+    margin-inline: 0.5rem;
+    content: '◄';
   }
 `
 

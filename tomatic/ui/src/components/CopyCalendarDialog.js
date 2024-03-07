@@ -31,7 +31,11 @@ export function CopyCalendarDialog({ closeDialog, username }) {
           </li>
           <li>
             Al{' '}
-            <Link sx={{color: 'primary'}} href="https://calendar.google.com" target="_blank">
+            <Link
+              sx={{ color: 'primary' }}
+              href="https://calendar.google.com"
+              target="_blank"
+            >
               Google Calendar
             </Link>
             , clicka el signe + de l'apartat "Altres calendaris"

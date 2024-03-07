@@ -77,11 +77,14 @@ function ProfileButton() {
 
   const [openDialog, closeDialog] = useDialog()
 
-  openCalendarDialog = React.useCallback((username) => {
-    openDialog({
-      children: <CopyCalendarDialog {...{ closeDialog, username }} />,
-    })
-  }, [openDialog, closeDialog])
+  openCalendarDialog = React.useCallback(
+    (username) => {
+      openDialog({
+        children: <CopyCalendarDialog {...{ closeDialog, username }} />,
+      })
+    },
+    [openDialog, closeDialog],
+  )
 
   return (
     <Box sx={{ flexGrow: 0 }}>

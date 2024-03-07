@@ -43,4 +43,3 @@ describe('autofiltertype detects which kind of searc we are doing', () => {
     expect(autofiltertype('es1234123456789012jy')).toBe('cups')
   })
 })
-
