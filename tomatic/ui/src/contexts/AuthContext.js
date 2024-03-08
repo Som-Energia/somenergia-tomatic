@@ -3,7 +3,7 @@ import Auth from '../services/auth'
 import Tomatic from '../services/tomatic'
 
 var updateUser = null
-Auth.onUserChanged.push(() => updateUser && updateUser())
+Auth.onUserChanged.subscribe(() => updateUser && updateUser())
 Tomatic.persons.subscribe(() => updateUser && updateUser())
 
 function refreshedAuthUser() {

@@ -509,12 +509,12 @@ CallInfo.emulateCall = function (phone, extension) {
 CallInfo.getCategories()
 CallInfo.getLogPerson()
 
-Auth.onLogin.push(CallInfo.sendIdentification)
-Auth.onLogin.push(CallInfo.getLogPerson)
-Auth.onLogout.push(CallInfo.sendIdentification)
-Auth.onLogout.push(CallInfo.getLogPerson)
-Auth.onUserChanged.push(CallInfo.changeUser)
-Auth.onUserChanged.push(CallInfo.getLogPerson)
+Auth.onLogin.subscribe(CallInfo.sendIdentification)
+Auth.onLogin.subscribe(CallInfo.getLogPerson)
+Auth.onLogout.subscribe(CallInfo.sendIdentification)
+Auth.onLogout.subscribe(CallInfo.getLogPerson)
+Auth.onUserChanged.subscribe(CallInfo.changeUser)
+Auth.onUserChanged.subscribe(CallInfo.getLogPerson)
 connectWebSocket()
 
 export default CallInfo
