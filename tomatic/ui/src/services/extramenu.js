@@ -25,11 +25,6 @@ const menuOptions = function () {
       route: '/Administration',
     },
     {
-      icon: '🗓️',
-      title: 'Graelles (Versió React 🧪)',
-      route: '/Grid',
-    },
-    {
       icon: '📢',
       title: 'En Tomàtic diu...',
       action: function () {
