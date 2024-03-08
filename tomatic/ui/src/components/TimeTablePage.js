@@ -3,9 +3,13 @@ import Tomatic from '../services/tomatic'
 import TimeTable from './TimeTable'
 import Box from '@mui/material/Box'
 import WeekPicker from './WeekPicker'
+import MithrilWrapper from '../containers/MithrilWrapper'
+import MithrilStyler from '../containers/MithrilStyler'
+import { Dialog as MithrilDialog } from 'polythene-mithril-dialog'
 
 var onGridUpdated = null
 Tomatic.onGridUpdated.push(() => onGridUpdated && onGridUpdated())
+
 
 function TimeTablePage() {
   const [grid, setGrid] = useState()
@@ -44,6 +48,7 @@ function TimeTablePage() {
           showOverloads={true}
         ></TimeTable>
       </Box>
+      <MithrilWrapper component={MithrilStyler(MithrilDialog)} />
     </>
   )
 }
