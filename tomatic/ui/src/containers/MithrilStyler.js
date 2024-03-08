@@ -12,7 +12,7 @@ import PersonStyles from '../mithril/components/personstyles'
 import '../mithril/style.styl'
 import Tomatic from '../services/tomatic'
 
-Tomatic.onKumatoChanged.push(() => m.redraw())
+Tomatic.isKumatoMode.subscribe(() => m.redraw())
 
 css.addLayoutStyles()
 css.addTypography()

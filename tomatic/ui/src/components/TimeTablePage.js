@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Tomatic from '../services/tomatic'
 import TimeTable from './TimeTable'
 import Box from '@mui/material/Box'
@@ -6,19 +6,11 @@ import WeekPicker from './WeekPicker'
 import MithrilWrapper from '../containers/MithrilWrapper'
 import MithrilStyler from '../containers/MithrilStyler'
 import { Dialog as MithrilDialog } from 'polythene-mithril-dialog'
-
-var onGridUpdated = null
-Tomatic.onGridUpdated.push(() => onGridUpdated && onGridUpdated())
+import { useSubscriptable } from '../services/subscriptable'
 
 
 function TimeTablePage() {
-  const [grid, setGrid] = useState()
-
-  onGridUpdated = () => {
-    setGrid(Tomatic.grid())
-  }
-
-  useEffect(onGridUpdated, [Tomatic.grid()])
+  const grid = useSubscriptable(Tomatic.grid)
 
   const setCell = (day, houri, turni, name) => {
     Tomatic.editCell(day, houri, turni, name)

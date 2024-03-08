@@ -2,6 +2,7 @@
 import m from 'mithril'
 import prop from 'mithril/stream'
 import api from './api'
+import subscriptable from './subscriptable'
 m.prop = prop
 
 const Tomatic = {
@@ -18,8 +19,7 @@ Tomatic.addLogger = function (logger) {
   this.loggers.push(logger)
 }
 Tomatic.queue = m.prop([])
-Tomatic.persons = m.prop({})
-Tomatic.onPersonsUpdated = []
+Tomatic.persons = subscriptable(m.prop({}))
 Tomatic.init = function () {
   this.checkVersionPeriodically()
   this.requestWeeks()
@@ -66,20 +66,19 @@ Tomatic.checkVersion = function () {
     })
 }
 
-Tomatic.onKumatoChanged = []
 Tomatic.initKumato = function () {
   // Dark interface
   Tomatic._kumato = JSON.parse(localStorage.getItem('kumato', false))
-  Tomatic.onKumatoChanged.forEach((callback) => callback())
+  Tomatic.isKumatoMode.notify()
 }
 Tomatic.toggleKumato = function () {
   Tomatic._kumato = !Tomatic._kumato
   localStorage.kumato = Tomatic._kumato
-  Tomatic.onKumatoChanged.forEach((callback) => callback())
+  Tomatic.isKumatoMode.notify()
 }
-Tomatic.isKumatoMode = function () {
+Tomatic.isKumatoMode = subscriptable(function () {
   return Tomatic._kumato
-}
+})
 
 Tomatic.requestPersons = function () {
   return api
@@ -89,7 +88,7 @@ Tomatic.requestPersons = function () {
     .then(function (response) {
       if (response.persons !== undefined) {
         Tomatic.persons(response.persons)
-        Tomatic.onPersonsUpdated.forEach((callback) => callback())
+        Tomatic.persons.notify()
       }
     })
 }
@@ -137,8 +136,7 @@ Tomatic.weekdays = {
 }
 
 /* Forced Turns */
-Tomatic.forcedTurns = m.prop({})
-Tomatic.onForcedTurnsUpdated = []
+Tomatic.forcedTurns = subscriptable(m.prop({}))
 Tomatic.requestForcedTurns = function () {
   api
     .request({
@@ -152,7 +150,7 @@ Tomatic.requestForcedTurns = function () {
       delete data.extensions
       delete data.tables // TODO: This one was never added
       Tomatic.forcedTurns(data)
-      Tomatic.onForcedTurnsUpdated.forEach((callback) => callback())
+      Tomatic.forcedTurns.notify()
     })
 }
 Tomatic.forcedTurnCell = function (day, houri, turni) {
@@ -215,8 +213,7 @@ Tomatic.forcedTurnsRemoveColumn = function () {
     )
 }
 
-Tomatic.grid = m.prop({})
-Tomatic.onGridUpdated = []
+Tomatic.grid = subscriptable(m.prop({}))
 Tomatic.requestGrid = function (week) {
   api
     .request({
@@ -230,7 +227,7 @@ Tomatic.requestGrid = function (week) {
       delete data.tables // TODO: This one was never added
       Tomatic.currentWeek(week)
       Tomatic.grid(data)
-      Tomatic.onGridUpdated.forEach((callback) => callback())
+      Tomatic.grid.notify()
     })
 }
 Tomatic.weekday = function (short, alternative) {
@@ -448,7 +445,7 @@ Tomatic.setPersonData = function (name, data) {
     )
 }
 
-Tomatic.weeks = m.prop([])
+Tomatic.weeks = subscriptable(m.prop([]))
 Tomatic.currentWeek = m.prop(undefined)
 Tomatic.requestWeeks = function () {
   api
@@ -473,10 +470,9 @@ Tomatic.requestWeeks = function () {
           Tomatic.requestGrid(current)
         }
       }
-      Tomatic.onWeeksUpdated.forEach((callback) => callback())
+      Tomatic.weeks.notify()
     })
 }
-Tomatic.onWeeksUpdated = []
 
 Tomatic.log = function (message) {
   console.log('log: ', message)

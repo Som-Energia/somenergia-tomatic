@@ -4,8 +4,7 @@ import Tomatic from '../services/tomatic'
 
 var updateUser = null
 Auth.onUserChanged.push(() => updateUser && updateUser())
-Tomatic.onPersonsUpdated.push(() => updateUser && updateUser())
-Tomatic.onForcedTurnsUpdated.push(() => updateUser && updateUser())
+Tomatic.persons.subscribe(() => updateUser && updateUser())
 
 function refreshedAuthUser() {
   const userid = Auth.username()
