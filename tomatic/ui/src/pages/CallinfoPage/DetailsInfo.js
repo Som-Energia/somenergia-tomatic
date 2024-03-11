@@ -1,7 +1,5 @@
 import React from 'react'
 import Box from '@mui/material/Box'
-import CircularProgress from '@mui/material/CircularProgress'
-import m from '../../services/hyperscript'
 import TabbedCard from './TabbedCard'
 import AtrCases from './AtrCases'
 import Invoices from './Invoices'
@@ -11,7 +9,6 @@ import { useSubscriptable } from '../../services/subscriptable'
 
 export default function DetailsInfo() {
   const [activeView, setActiveView] = React.useState(0)
-  const views = ['atr', 'invoices', 'readings']
   const contract = useSubscriptable(CallInfo.selectedContract)
   useSubscriptable(CallInfo.results)
 

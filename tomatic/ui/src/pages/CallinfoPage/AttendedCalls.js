@@ -101,12 +101,12 @@ function FormatedCall({ info }) {
 
 function CallEntry({ item, disabled }) {
   const currentCall = useSubscriptable(CallInfo.currentCall)
+  const isSelected = item.date == currentCall
   const solved = item.reason !== ''
   const itemClicked = function (ev) {
     if (item.reason !== '') return
     CallInfo.toggleLog(item.date, item.phone)
   }
-  const isSelected = CallInfo.isLogSelected(item.date)
   return (
     <ListItem
       key={item.date}
