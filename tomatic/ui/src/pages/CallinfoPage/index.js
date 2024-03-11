@@ -1,11 +1,12 @@
 import React from 'react'
+import CircularProgress from '@mui/material/CircularProgress'
 import CallInfo from '../../mithril/components/callinfo'
 import AttendedCalls from './AttendedCalls'
 import CustomerSearch from './CustomerSearch'
 import {useSubscriptable} from '../../services/subscriptable'
 
 function Spinner() {
-  return <>Spinner</>
+  return <><CircularProgress/></>
 }
 function PartnerInfo() {
   return <>Partner Info</>
