@@ -49,7 +49,7 @@ function TypeOfSearch({ fieldguess }) {
 }
 
 export default function CustomerSearch() {
-  const {field, text} = useSubscriptable(CallInfo.search_query)
+  const {text} = useSubscriptable(CallInfo.search_query)
   const fieldGuess = autofiltertype(text.trim())
   function handleSearch() {
     CallInfo.searchCustomer()
