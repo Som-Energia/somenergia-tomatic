@@ -98,6 +98,7 @@ function PartnerContent() {
               <a
                 href={helpscouturl + email}
                 target="_blank"
+                rel="noreferrer"
                 title="Cerca correus al Helpscout"
               >
                 Helpscout
