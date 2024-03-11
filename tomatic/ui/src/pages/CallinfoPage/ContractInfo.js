@@ -150,9 +150,7 @@ export default function ContractInfo(
     return <NoContracts />
   }
   const contracts = partner.contracts
-  console.log('ContractInfo', { currentContract })
   function handleClick(value) {
-    console.log('ContractInfo.handleClick', { value })
     setCurrentContract && setCurrentContract(value)
     CallInfo.selectContract(value)
     CallInfo.notifyUsage('callinfoChangeContract')

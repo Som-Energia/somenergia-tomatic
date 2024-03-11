@@ -20,6 +20,7 @@ export default function CallinfoPage() {
   const results = useSubscriptable(CallInfo.results)
   const [currentPartner, setCurrentPartner] = React.useState(0)
   const [currentContract, setCurrentContract] = React.useState(0)
+  console.log("CallinfoPage", {currentContract})
   return (
     <div className="callinfo">
       <div className="all-info-call layout horizontal">
