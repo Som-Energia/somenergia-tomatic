@@ -9,6 +9,7 @@ import ListSubheader from '@mui/material/ListSubheader'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import IconButton from '@mui/material/IconButton'
+import CircularProgress from '@mui/material/CircularProgress'
 import CallInfo from '../../mithril/components/callinfo'
 import Auth from '../../services/auth'
 import { useSubscriptable } from '../../services/subscriptable'
@@ -19,9 +20,7 @@ function CallLockButton() {
     <IconButton
       className="btn-lock"
       title={
-        autoRefresh
-          ? 'Actualitza el cas automàticament'
-          : 'Fixa el cas actual'
+        autoRefresh ? 'Actualitza el cas automàticament' : 'Fixa el cas actual'
       }
       onClick={() => {
         CallInfo.autoRefresh.toggle()
@@ -100,9 +99,46 @@ function FormatedCall({ info }) {
   )
 }
 
+function CallEntry({ item, disabled }) {
+  const currentCall = useSubscriptable(CallInfo.currentCall)
+  const solved = item.reason !== ''
+  const itemClicked = function (ev) {
+    if (item.reason !== '') return
+    CallInfo.toggleLog(item.date, item.phone)
+  }
+  const isSelected = CallInfo.isLogSelected(item.date)
+  return (
+    <ListItem
+      key={item.date}
+      className={'registres' + (isSelected ? ' selected' : '')}
+      selected={isSelected}
+      disabled={disabled || solved}
+      onClick={itemClicked}
+      button
+    >
+      <ListItemText
+        primary={<FormatedCall info={item} />}
+        secondary={
+          <div
+            style={{
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+            }}
+          >
+            {item.reason}
+          </div>
+        }
+        title={item.reason}
+      />
+    </ListItem>
+  )
+}
+
 function AttendedCallList() {
   const autoRefresh = useSubscriptable(CallInfo.autoRefresh)
-  if (CallInfo.callLog.length === 0) {
+  const personCalls = useSubscriptable(CallInfo.personCalls)
+  if (personCalls.length === 0) {
     return (
       <Box className="attended-calls-list">
         <List dense={true}>
@@ -111,19 +147,27 @@ function AttendedCallList() {
       </Box>
     )
   }
+  if (personCalls[0] === 'lookingfor')
+    return (
+      <Stack
+        sx={{
+          height: '20rem',
+          width: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <CircularProgress />
+      </Stack>
+    )
   var currentDate = new Date().toLocaleDateString()
   return (
     <Box className="attended-calls-list">
       <List dense={true}>
-        {CallInfo.callLog
+        {personCalls
           .slice(0)
           .reverse()
           .map(function (item, index) {
-            var isSelected = CallInfo.isLogSelected(item.date)
-            var itemClicked = function (ev) {
-              if (item.reason !== '') return
-              CallInfo.toggleLog(item.date, item.phone)
-            }
             var needsDate = false
             var itemDate = new Date(item.date).toLocaleDateString()
             var itemWeekDay = new Date(item.date).toLocaleDateString(
@@ -136,41 +180,21 @@ function AttendedCallList() {
               currentDate = itemDate
               needsDate = true
             }
-            var solved = item.reason !== ''
             return (
               <>
                 {needsDate && (
                   <ListSubheader
                     className="registres dateseparator"
-                    key={itemWeekDay + ' ' + itemDate}
+                    key={itemDate}
                   >
                     {itemWeekDay + ' ' + itemDate}
                   </ListSubheader>
                 )}
-                <ListItem
+                <CallEntry
                   key={item.date}
-                  className={'registres' + (isSelected ? ' selected' : '')}
+                  item={item}
                   disabled={!autoRefresh}
-                  hoverable={!solved}
-                  onClick={itemClicked}
-                  button
-                >
-                  <ListItemText
-                    primary={<FormatedCall info={item} />}
-                    secondary={
-                      <div
-                        style={{
-                          whiteSpace: 'nowrap',
-                          textOverflow: 'ellipsis',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        {item.reason}
-                      </div>
-                    }
-                    title={item.reason}
-                  />
-                </ListItem>
+                />
               </>
             )
           })}
@@ -184,7 +208,7 @@ export default function AttendedCalls({ data }) {
       <CardHeader
         title={'Trucades ateses'}
         action={
-          <Stack direction="horizontal">
+          <Stack direction="row">
             <CallLockButton />
             <NewTabButton />
             <AnnotationButton />

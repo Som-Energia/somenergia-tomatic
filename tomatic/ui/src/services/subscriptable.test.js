@@ -34,7 +34,7 @@ describe('subscriptable', () => {
   })
   it('supports functions as targets', () => {
     let ncalls = 0
-    const object = subscriptable(()=>{})
+    const object = subscriptable(() => {})
     function subscriber() {
       ncalls++
     }
@@ -55,6 +55,6 @@ describe('subscriptable', () => {
     }
     const unsubscribe = object.subscribe(subscriber)
     object.notify('param1', 'param2')
-    expect(parameters).toStrictEqual(['param1','param2'])
+    expect(parameters).toStrictEqual(['param1', 'param2'])
   })
 })

@@ -14,7 +14,6 @@ CallInfo.search_by = '' // Search criteria
 CallInfo.searchResults = {} // Retrieved search data
 CallInfo.currentPerson = 0 // Selected person from search data
 CallInfo.currentContract = 0 // Selected contract selected person
-CallInfo.callLog = [] // User call registry
 CallInfo.updatingCategories = false // Whether we are still loading crm categoies
 
 CallInfo._autoRefresh = true // whether we are auto searching on incomming calls
@@ -23,7 +22,7 @@ CallInfo.autoRefresh = subscriptable((...args) => {
   CallInfo._autoRefresh = !!args[0]
   CallInfo.autoRefresh.notify()
 })
-CallInfo.autoRefresh.toggle = ()=> {
+CallInfo.autoRefresh.toggle = () => {
   CallInfo.autoRefresh(!CallInfo.autoRefresh())
 }
 
@@ -33,6 +32,9 @@ CallInfo.call = {
   category: '', // annotated category for the call
   notes: '', // annotated comments for the call
 }
+CallInfo.currentCall = subscriptable(() => {
+  return CallInfo.call.date
+})
 
 CallInfo.savingAnnotation = false
 CallInfo.annotation = {}
@@ -133,7 +135,7 @@ CallInfo.resetSearch = function () {
 
 CallInfo.changeUser = function (newUser) {
   CallInfo.deselectLog()
-  CallInfo.callLog = []
+  CallInfo.personCalls([])
   CallInfo.autoRefresh(true)
 }
 
@@ -399,13 +401,20 @@ CallInfo.updateCategories = function () {
     )
 }
 
+CallInfo.callLog = [] // User call registry
+CallInfo.personCalls = subscriptable((...args) => {
+  if (args.length === 0) return CallInfo.callLog
+  CallInfo.callLog = args[0]
+  CallInfo.personCalls.notify()
+})
+
 CallInfo.retrievePersonCalls = function () {
-  CallInfo.callLog = []
   var username = Auth.username()
   if (username === -1 || username === '') {
+    CallInfo.personCalls([])
     return 0
   }
-  CallInfo.callLog.push('lookingfor')
+  CallInfo.personCalls(['lookingfor'])
   api
     .request({
       url: '/api/personlog/' + username,
@@ -418,13 +427,13 @@ CallInfo.retrievePersonCalls = function () {
             'Error al obtenir trucades ateses.',
             response.info.message,
           )
-          CallInfo.callLog = []
+          CallInfo.personCalls([])
         } else {
-          CallInfo.callLog = response.info.info
+          CallInfo.personCalls(response.info.info)
         }
       },
       function (error) {
-        CallInfo.callLog = []
+        CallInfo.personCalls([])
         console.debug('Info GET apicall failed: ', error)
       },
     )
@@ -441,6 +450,7 @@ CallInfo.selectLog = function (date, phone) {
   CallInfo.call.phone = phone
   CallInfo.search = phone
   CallInfo.search_by = 'phone'
+  CallInfo.currentCall.notify()
   retrieveInfo()
 }
 
@@ -450,6 +460,7 @@ CallInfo.deselectLog = function () {
   CallInfo.call.date = ''
   CallInfo.call.phone = ''
   CallInfo.search = ''
+  CallInfo.currentCall.notify()
 }
 
 CallInfo.toggleLog = function (date, phone) {
