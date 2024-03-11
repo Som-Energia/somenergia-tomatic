@@ -1,12 +1,8 @@
 import React from 'react'
-import Paper from '@mui/material/Paper'
 import Box from '@mui/material/Box'
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
 import CallInfo from '../../mithril/components/callinfo'
-import {useSubscriptable} from '../../services/subscriptable'
+import TabbedCard from './TabbedCard'
+import { useSubscriptable } from '../../services/subscriptable'
 
 function formatContractNumber(number) {
   var result = number + ''
@@ -50,7 +46,7 @@ function Info() {
     ['N', contract.is_notifier, 'Notificada: Si en rep notificacions'],
   ]
   return (
-    <>
+    <Box className="contract-info-box">
       <InfoLine>
         <Box>
           <Box className="label-right">{from_til}</Box>
@@ -124,7 +120,7 @@ function Info() {
           //TODO extraInfo(contract),
         ]
       }
-    </>
+    </Box>
   )
 }
 
@@ -145,8 +141,7 @@ export default function ContractInfo(
 ) {
   const partner = useSubscriptable(CallInfo.selectedPartner)
   const contract = useSubscriptable(CallInfo.selectedContract)
-  if (contract === null)
-  {
+  if (contract === null) {
     return <NoContracts />
   }
   const contracts = partner.contracts
@@ -157,50 +152,17 @@ export default function ContractInfo(
   }
   return (
     <Box className="contracts">
-      <Box
-        className="partner-card"
-        sx={{
-          maxWidth: '465px',
-          minWidth: '200px',
-        }}
-      >
-        <Box className="partner-tabs">
-          <Tabs
-            variant="scrollable"
-            scrollButtons="auto"
-            value={CallInfo.currentContract}
-            onChange={(ev, value) => handleClick(value)}
-          >
-            {contracts.map((contract, i) => {
-              return (
-                <Tab
-                  key={contract.number}
-                  label={
-                    <span
-                      className={contract.end_date ? 'inactive-contract' : ''}
-                    >
-                      {contract.number}
-                    </span>
-                  }
-                  sx={{
-                    '&.Mui-selected': {
-                      color: '#555',
-                      bgcolor: '#ABD0AB',
-                    },
-                  }}
-                />
-              )
-            })}
-          </Tabs>
-        </Box>
-        <Card className="card-info">
-          <CardContent>
-            <Box className="contract-info-box">
-              <Info />
-            </Box>
-          </CardContent>
-        </Card>
-      </Box>
+      <TabbedCard
+        value={CallInfo.currentContract}
+        handleClick={handleClick}
+        elements={contracts}
+        label={(contract) => (
+          <span className={contract.end_date ? 'inactive-contract' : ''}>
+            {contract.number}
+          </span>
+        )}
+        Inner={Info}
+      />
     </Box>
   )
 }

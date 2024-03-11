@@ -1,11 +1,8 @@
 import React from 'react'
 import Box from '@mui/material/Box'
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
 import CallInfo from '../../mithril/components/callinfo'
-import {useSubscriptable} from '../../services/subscriptable'
+import TabbedCard from './TabbedCard'
+import { useSubscriptable } from '../../services/subscriptable'
 
 function nameFromFullName(name) {
   var parts = name.split(',')
@@ -41,7 +38,7 @@ function Info() {
     return value || <span className="red">{message}</span>
   }
   return (
-    <>
+    <Box className="partner-info">
       <InfoLine>
         <Box>
           <Box>
@@ -138,7 +135,7 @@ function Info() {
           {markedErrorIfMissing(partner.ov && 'Sí', 'No')}
         </Box>
       </InfoLine>
-    </>
+    </Box>
   )
 }
 
@@ -155,45 +152,13 @@ export default function PartnerInfo({
   const partners = data.partners
   return (
     <Box className="main-info-card">
-      <Box
-        className="partner-card"
-        sx={{
-          maxWidth: '465px',
-          minWidth: '200px',
-        }}
-      >
-        <Box className="partner-tabs">
-          <Tabs
-            variant="scrollable"
-            scrollButtons="auto"
-            dense
-            value={currentPartner}
-            onChange={(ev, value) => handleClick(value)}
-          >
-            {partners.map((partner, i) => {
-              return (
-                <Tab
-                  key={partner.id}
-                  label={nameFromFullName(partner.name)}
-                  sx={{
-                    '&.Mui-selected': {
-                      color: '#555',
-                      bgcolor: '#ABD0AB',
-                    },
-                  }}
-                />
-              )
-            })}
-          </Tabs>
-        </Box>
-        <Card className="card-info">
-          <CardContent>
-            <Box className="partner-info">
-              <Info />
-            </Box>
-          </CardContent>
-        </Card>
-      </Box>
+      <TabbedCard
+        value={currentPartner}
+        handleClick={handleClick}
+        elements={partners}
+        label={(partner) => nameFromFullName(partner.name)}
+        Inner={Info}
+      />
     </Box>
   )
 }
