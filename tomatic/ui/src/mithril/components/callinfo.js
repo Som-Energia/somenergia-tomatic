@@ -9,8 +9,6 @@ var websock = null
 var CallInfo = {}
 CallInfo.categories = [] // Call categories
 CallInfo.sections = [] // Teams to assign a call
-CallInfo.currentPerson = 0 // Selected person from search data
-CallInfo.currentContract = 0 // Selected contract selected person
 CallInfo.updatingCategories = false // Whether we are still loading crm categoies
 
 CallInfo._autoRefresh = true // whether we are auto searching on incomming calls
@@ -142,8 +140,7 @@ CallInfo.results = subscriptable((...args)=>{
 
 // Nicely clears search results
 CallInfo.resetSearch = function () {
-  CallInfo.currentPerson = 0
-  CallInfo.currentContract = 0
+  CallInfo.selectPartner(0)
   CallInfo.results({})
 }
 
@@ -236,7 +233,10 @@ CallInfo.searchStatus = function () {
   return 'SUCCESS'
 }
 
-CallInfo.selectedPartner = function () {
+CallInfo.currentPerson = 0 // Selected person from search data
+CallInfo.currentContract = 0 // Selected contract selected person
+
+CallInfo.selectedPartner = subscriptable(function () {
   if (!CallInfo.results()) {
     return null
   }
@@ -251,9 +251,9 @@ CallInfo.selectedPartner = function () {
     return null
   }
   return partner
-}
+})
 
-CallInfo.selectedContract = function () {
+CallInfo.selectedContract = subscriptable(function () {
   var partner = CallInfo.selectedPartner()
   if (partner === null) {
     return null
@@ -265,15 +265,18 @@ CallInfo.selectedContract = function () {
     return null
   }
   return partner.contracts[CallInfo.currentContract]
-}
+})
 
 CallInfo.selectContract = function (idx) {
   CallInfo.currentContract = idx
+  CallInfo.selectedContract.notify()
 }
 
 CallInfo.selectPartner = function (idx) {
   CallInfo.currentPerson = idx
   CallInfo.currentContract = 0
+  CallInfo.selectedPartner.notify()
+  CallInfo.selectedContract.notify()
 }
 
 var retrieveInfo = function () {
@@ -547,6 +550,7 @@ CallInfo.emulateCall = function (phone, extension) {
 CallInfo.getCategories()
 CallInfo.retrievePersonCalls()
 
+// TODO: Put some order here
 Auth.onLogin.subscribe(CallInfo.sendIdentification)
 Auth.onLogin.subscribe(CallInfo.retrievePersonCalls)
 Auth.onLogout.subscribe(CallInfo.sendIdentification)

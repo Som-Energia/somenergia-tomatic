@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CallInfo from '../../mithril/components/callinfo'
+import {useSubscriptable} from '../../services/subscriptable'
 
 function nameFromFullName(name) {
   var parts = name.split(',')
@@ -29,7 +30,7 @@ function Info() {
     eu_ES: 'Euskara',
     gl_ES: 'Galego',
   }
-  const partner = CallInfo.selectedPartner()
+  const partner = useSubscriptable(CallInfo.selectedPartner)
   // TODO: Move urls to an external configuration
   const helpscouturl = 'https://secure.helpscout.net/search/?query='
   const ovhijackurl = 'https://oficinavirtual.somenergia.coop/hijack/username/'

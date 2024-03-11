@@ -5,15 +5,13 @@ import CallInfo from '../../mithril/components/callinfo'
 import AttendedCalls from './AttendedCalls'
 import CustomerSearch from './CustomerSearch'
 import PartnerInfo from './PartnerInfo'
+import ContractInfo from './ContractInfo'
 import { useSubscriptable } from '../../services/subscriptable'
 
 function Spinner() {
   return <CircularProgress />
 }
 
-function ContractInfo() {
-  return <Paper>Contract Info</Paper>
-}
 function DetailsInfo() {
   return <Paper>Details Info</Paper>
 }
@@ -54,7 +52,15 @@ export default function CallinfoPage() {
                       data={results}
                       {...{ currentPartner, setCurrentPartner }}
                     />
-                    <ContractInfo data={results} />
+                    <ContractInfo
+                      data={results}
+                      {...{
+                        currentPartner,
+                        setCurrentPartner,
+                        currentContract,
+                        setCurrentContract,
+                      }}
+                    />
                   </div>
                   <DetailsInfo data={results} />
                 </div>
