@@ -16,7 +16,7 @@ export default function m(...args) {
   }
   const type = args[0].split('.')[0] || 'div'
   const attributes = Object.assign({}, ...args.slice(1).filter(isobject))
-  const classes = (attributes.className??''=.split(' ')
+  const classes = (attributes.className??'').split(' ')
   classes.concat(args[0].split('.').slice(1))
   attributes.className = classes.join(' ')
   const children = args.slice(1).filter((x) => !isobject(x))

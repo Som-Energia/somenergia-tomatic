@@ -12,15 +12,15 @@ function nameFromFullName(name) {
   return parts[1]
 }
 
-function Fa({ icon, ...rest }) {
-  return <i className={icon.split('.').join(' ')} {...rest} />
+function Fa({ icon, ariaLabel, ...rest }) {
+  return <i className={icon.split('.').join(' ')} ariaLabel={ariaLabel} {...rest} />
 }
 
 function InfoLine({ ...rest }) {
   return <Box className="partner-info-item" {...rest} />
 }
 
-function Info() {
+function PartnerContent() {
   const languages = {
     ca_ES: 'Català',
     es_ES: 'Castellano',
@@ -86,9 +86,9 @@ function Info() {
             'Sense idioma preferent',
           )}
         </Box>
-        {emails.map(function (email) {
+        {emails.map(function (email, i) {
           return (
-            <Box className="partner-info-item">
+            <Box className="partner-info-item" key={i}>
               <Fa icon="fa.fa-envelope" ariaLabel="Email" /> {email} (
               <a
                 href={helpscouturl + email}
@@ -156,7 +156,7 @@ export default function PartnerInfo({
         currentTab={currentPartner}
         onTabChanged={onTabChanged}
         labels={partners.map((partner) => nameFromFullName(partner.name))}
-        Inner={Info}
+        Inner={PartnerContent}
       />
     </Box>
   )

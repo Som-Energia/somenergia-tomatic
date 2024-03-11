@@ -81,7 +81,7 @@ function Info() {
       <InfoLine>
         {Object.keys(contract.power).map(function (key, index) {
           return (
-            <Box>
+            <Box key={index}>
               <Box className="label">{`${key}: `}</Box>
               {contract.power[key] + ' kW'}
             </Box>
@@ -103,6 +103,7 @@ function Info() {
               <Box
                 className={'contract-role' + (active ? ' active' : '')}
                 title={title}
+                key={rol.letter}
               >
                 {letter}
               </Box>
