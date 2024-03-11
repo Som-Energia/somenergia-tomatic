@@ -6,14 +6,11 @@ import AttendedCalls from './AttendedCalls'
 import CustomerSearch from './CustomerSearch'
 import PartnerInfo from './PartnerInfo'
 import ContractInfo from './ContractInfo'
+import DetailsInfo from './DetailsInfo'
 import { useSubscriptable } from '../../services/subscriptable'
 
 function Spinner() {
   return <CircularProgress />
-}
-
-function DetailsInfo() {
-  return <Paper>Details Info</Paper>
 }
 
 export default function CallinfoPage() {
