@@ -17,7 +17,7 @@ export default function ContractAlarms({ contract }) {
   return (
     <Card className="extra-info">
       {alarms.map(([active, className, message]) => (
-        <Box className={className}>{message}</Box>
+        <Box key={className} className={className}>{message}</Box>
       ))}
     </Card>
   )
