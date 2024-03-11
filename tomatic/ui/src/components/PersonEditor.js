@@ -141,7 +141,7 @@ export default function PersonEditor(props) {
         }),
       ),
     })
-  }, [person])
+  }, [errors])
 
   React.useEffect(() => {
     resetData(person)

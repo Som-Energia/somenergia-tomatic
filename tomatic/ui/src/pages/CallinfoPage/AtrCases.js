@@ -5,7 +5,6 @@ import CallInfo from '../../mithril/components/callinfo'
 import { useSubscriptable } from '../../services/subscriptable'
 
 export default function AtrCases() {
-  const contract = useSubscriptable(CallInfo.selectedContract)
   const cases = useSubscriptable(CallInfo.contractDetails).atr_cases
   if (cases === null) {
     return (

@@ -5,7 +5,6 @@ import CallInfo from '../../mithril/components/callinfo'
 import { useSubscriptable } from '../../services/subscriptable'
 
 export default function Invoices() {
-  const contract = useSubscriptable(CallInfo.selectedContract)
   const invoices = useSubscriptable(
     CallInfo.contractDetails,
   ).invoices
