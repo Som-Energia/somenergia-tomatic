@@ -255,8 +255,10 @@ CallInfo.selectedPartner = subscriptable(function () {
 
 
 CallInfo.contractDetails = subscriptable(function() {
+  const contract = CallInfo.selectedContract()
   return {
-    atr_cases: CallInfo.selectedContract()?.atr_cases ?? null,
+    atr_cases: contract?.atr_cases ?? null,
+    lectures_comptadors: contract?.lectures_comptadors ?? null,
   }
 })
 

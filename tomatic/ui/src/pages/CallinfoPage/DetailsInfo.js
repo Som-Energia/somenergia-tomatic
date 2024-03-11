@@ -4,6 +4,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import m from '../../services/hyperscript'
 import TabbedCard from './TabbedCard'
 import AtrCases from './AtrCases'
+import Meterings from './Meterings'
 import CallInfo from '../../mithril/components/callinfo'
 import { useSubscriptable } from '../../services/subscriptable'
 
@@ -30,7 +31,7 @@ export default function DetailsInfo() {
         <Box className="contract-info-box">
           {activeView === 0 && <AtrCases />}
           {/* activeView === 1 && <Invoices invoices={contract.invoices} /> */}
-          {/* activeView === 2 && <Meterings meterings={contract.lectures_comptadors} /> */}
+          { activeView === 2 && <Meterings /> }
         </Box>
       </TabbedCard>
     </Box>

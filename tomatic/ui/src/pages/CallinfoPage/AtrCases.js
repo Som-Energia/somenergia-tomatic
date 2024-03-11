@@ -44,7 +44,7 @@ export default function AtrCases() {
               <tr key={i}>
                 <td>
                   {
-                    // Not the time
+                    // Date not time
                     atr_case.date.slice(0, 10)
                   }
                 </td>
