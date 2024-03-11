@@ -51,6 +51,9 @@ function TypeOfSearch({ fieldguess }) {
 export default function CustomerSearch() {
   const {field, text} = useSubscriptable(CallInfo.search_query)
   const fieldGuess = autofiltertype(text.trim())
+  function handleSearch() {
+    CallInfo.searchCustomer()
+  }
   return (
     <div className="busca-info">
       <div className="busca-info-title layout horizontal">
@@ -62,12 +65,15 @@ export default function CustomerSearch() {
           label={'Cercador'}
           value={text}
           onChange={(ev) => CallInfo.search_query({text: ev.target.value})}
+          onKeyDown={(ev)=>{
+            if (ev.key === 'Enter') handleSearch()
+          }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
                   aria-label="Submit Search"
-                  onClick={() => CallInfo.searchCustomer()}
+                  onClick={handleSearch}
                   variant="standard"
                   edge="end"
                 >
