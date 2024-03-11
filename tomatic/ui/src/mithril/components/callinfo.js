@@ -253,6 +253,13 @@ CallInfo.selectedPartner = subscriptable(function () {
   return partner
 })
 
+
+CallInfo.contractDetails = subscriptable(function() {
+  return {
+    atr_cases: CallInfo.selectedContract()?.atr_cases ?? null,
+  }
+})
+
 CallInfo.selectedContract = subscriptable(function () {
   var partner = CallInfo.selectedPartner()
   if (partner === null) {
@@ -343,9 +350,9 @@ var retrieveInfo = function () {
                 contract.invoices = retrieved.invoices
                 contract.lectures_comptadors = retrieved.lectures_comptadors
                 contract.atr_cases = retrieved.atr_cases
-                CallInfo.results.notify()
               })
             })
+            CallInfo.contractDetails.notify()
           })
       },
       function (error) {

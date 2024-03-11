@@ -43,7 +43,8 @@ export default function TabbedCard({
       </Box>
       <Card className="card-info">
         <CardContent>
-          <Inner />
+          {Inner && <Inner />}
+          {children}
         </CardContent>
       </Card>
     </Box>

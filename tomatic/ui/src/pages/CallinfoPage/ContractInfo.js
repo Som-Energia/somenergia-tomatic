@@ -26,7 +26,7 @@ function InfoLine({ ...rest }) {
   return <Box className="contract-info-item" {...rest} />
 }
 
-function Info() {
+function ContractContent() {
   const contract = useSubscriptable(CallInfo.selectedContract)
   const s_num = formatContractNumber(contract.number)
   const from_til = formatInterval(contract)
@@ -161,7 +161,7 @@ export default function ContractInfo(
             {contract.number}
           </span>
         ))}
-        Inner={Info}
+        Inner={ContractContent}
       />
     </Box>
   )
