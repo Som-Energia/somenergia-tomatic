@@ -28,9 +28,9 @@ function CallLockButton() {
     >
       <div className="icon-lock">
         {autoRefresh ? (
-          <div className="i fas fa-lock-open" />
+          <i className="fas fa-lock-open" />
         ) : (
-          <div className="i fas fa-lock" />
+          <i className="fas fa-lock" />
         )}
       </div>
     </IconButton>
@@ -46,7 +46,7 @@ function NewTabButton() {
       }}
     >
       <div className="icon-new-tab">
-        <div className="i fas fa-external-link-alt" />
+        <i className="fas fa-external-link-alt" />
       </div>
     </IconButton>
   )
@@ -61,7 +61,7 @@ function AnnotationButton() {
       disabled={CallInfo.savingAnnotation || Auth.username() === ''}
     >
       <div className="icon-clipboard">
-        <div className="i far fa-clipboard" />
+        <i className="far fa-clipboard" />
       </div>
     </IconButton>
   )
@@ -70,7 +70,7 @@ function AnnotationButton() {
 function FormatedCall({ info }) {
   var time = new Date(info.date).toLocaleTimeString()
   return (
-    <Box>
+    <>
       <span className="time">{time}</span>
       &nbsp;
       <span className="phone">
@@ -95,7 +95,7 @@ function FormatedCall({ info }) {
       ) : (
         ''
       )}
-    </Box>
+    </>
   )
 }
 
@@ -119,15 +119,16 @@ function CallEntry({ item, disabled }) {
       <ListItemText
         primary={<FormatedCall info={item} />}
         secondary={
-          <div
+          <span
             style={{
+              display: 'block',
               whiteSpace: 'nowrap',
               textOverflow: 'ellipsis',
               overflow: 'hidden',
             }}
           >
             {item.reason}
-          </div>
+          </span>
         }
         title={item.reason}
       />
@@ -181,21 +182,19 @@ function AttendedCallList() {
               needsDate = true
             }
             return (
-              <>
+              <React.Fragment key={item.date}>
                 {needsDate && (
                   <ListSubheader
                     className="registres dateseparator"
-                    key={itemDate}
                   >
                     {itemWeekDay + ' ' + itemDate}
                   </ListSubheader>
                 )}
                 <CallEntry
-                  key={item.date}
                   item={item}
                   disabled={!autoRefresh}
                 />
-              </>
+              </React.Fragment>
             )
           })}
       </List>

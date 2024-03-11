@@ -29,9 +29,7 @@ CallInfo._search_query = {
 }
 CallInfo.search_query = subscriptable((...args)=>{
   if (args.length===0) return CallInfo._search_query
-  console.log({args})
   CallInfo._search_query = {...CallInfo._search_query, ...args[0]}
-  console.log(CallInfo._search_query)
   CallInfo.search_query.notify()
 })
 
