@@ -120,11 +120,12 @@ Tomatic.restoreLine = function (line) {
   Tomatic.requestQueue('/resume/' + line)
 }
 
+const queueRefreshPeriodSeconds = 2 * 60 // TODO: config param
 Tomatic.queueTimer = 0
 Tomatic.updateQueuePeriodically = function () {
   console.log('Refreshing queue')
   clearTimeout(Tomatic.queueTimer)
-  Tomatic.queueTimer = setTimeout(Tomatic.updateQueuePeriodically, 10 * 1000)
+  Tomatic.queueTimer = setTimeout(Tomatic.updateQueuePeriodically, queueRefreshPeriodSeconds * 1000)
   Tomatic.requestQueue()
 }
 

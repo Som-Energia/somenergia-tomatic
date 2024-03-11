@@ -259,6 +259,7 @@ CallInfo.contractDetails = subscriptable(function() {
   return {
     atr_cases: contract?.atr_cases ?? null,
     lectures_comptadors: contract?.lectures_comptadors ?? null,
+    invoices: contract?.invoices ?? null,
   }
 })
 
@@ -279,6 +280,7 @@ CallInfo.selectedContract = subscriptable(function () {
 CallInfo.selectContract = function (idx) {
   CallInfo.currentContract = idx
   CallInfo.selectedContract.notify()
+  CallInfo.contractDetails.notify()
 }
 
 CallInfo.selectPartner = function (idx) {
@@ -286,6 +288,7 @@ CallInfo.selectPartner = function (idx) {
   CallInfo.currentContract = 0
   CallInfo.selectedPartner.notify()
   CallInfo.selectedContract.notify()
+  CallInfo.contractDetails.notify()
 }
 
 var retrieveInfo = function () {
