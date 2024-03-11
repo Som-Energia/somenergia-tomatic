@@ -8,19 +8,6 @@ import CardContent from '@mui/material/CardContent'
 import CallInfo from '../../mithril/components/callinfo'
 import {useSubscriptable} from '../../services/subscriptable'
 
-function m(...args) {
-  function isobject(x) {
-    return typeof x === 'object' && !x['$$typeof']
-  }
-  const type = args[0].split('.')[0] || 'div'
-  const attributes = Object.assign({}, ...args.slice(1).filter(isobject))
-  attributes.className = attributes.className ?? ''
-  attributes.className += ' ' + args[0].split('.').slice(1).join(' ')
-  const children = args.slice(1).filter((x) => !isobject(x))
-  console.log({ args, type, attributes, children })
-  return React.createElement(type, attributes, ...children)
-}
-
 function formatContractNumber(number) {
   var result = number + ''
   while (result.length < 7) result = '0' + result
