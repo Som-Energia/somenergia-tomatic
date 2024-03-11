@@ -145,7 +145,7 @@ export default function ContractInfo(
     return <NoContracts />
   }
   const contracts = partner.contracts
-  function handleClick(value) {
+  function onTabChanged(value) {
     setCurrentContract && setCurrentContract(value)
     CallInfo.selectContract(value)
     CallInfo.notifyUsage('callinfoChangeContract')
@@ -153,14 +153,13 @@ export default function ContractInfo(
   return (
     <Box className="contracts">
       <TabbedCard
-        value={CallInfo.currentContract}
-        handleClick={handleClick}
-        elements={contracts}
-        label={(contract) => (
+        currentTab={CallInfo.currentContract}
+        onTabChanged={onTabChanged}
+        labels={contracts.map((contract) => (
           <span className={contract.end_date ? 'inactive-contract' : ''}>
             {contract.number}
           </span>
-        )}
+        ))}
         Inner={Info}
       />
     </Box>

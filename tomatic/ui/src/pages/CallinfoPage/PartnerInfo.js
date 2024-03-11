@@ -144,7 +144,7 @@ export default function PartnerInfo({
   currentPartner,
   setCurrentPartner,
 }) {
-  function handleClick(value) {
+  function onTabChanged(value) {
     setCurrentPartner(value)
     CallInfo.selectPartner(value)
     CallInfo.notifyUsage('callinfoChangePartner')
@@ -153,10 +153,9 @@ export default function PartnerInfo({
   return (
     <Box className="main-info-card">
       <TabbedCard
-        value={currentPartner}
-        handleClick={handleClick}
-        elements={partners}
-        label={(partner) => nameFromFullName(partner.name)}
+        currentTab={currentPartner}
+        onTabChanged={onTabChanged}
+        labels={partners.map((partner) => nameFromFullName(partner.name))}
         Inner={Info}
       />
     </Box>

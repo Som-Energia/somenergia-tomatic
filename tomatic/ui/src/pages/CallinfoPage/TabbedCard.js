@@ -5,11 +5,10 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 
 export default function TabbedCard({
-  value,
-  handleClick,
-  label,
+  currentTab,
+  onTabChanged,
   Inner,
-  elements,
+  labels,
 }) {
   return (
     <Box
@@ -23,14 +22,14 @@ export default function TabbedCard({
         <Tabs
           variant="scrollable"
           scrollButtons="auto"
-          value={value}
-          onChange={(ev, value) => handleClick(value)}
+          value={currentTab}
+          onChange={(ev, value) => onTabChanged(value)}
         >
-          {elements.map((element, i) => {
+          {labels.map((label, i) => {
             return (
               <Tab
                 key={i}
-                label={label(element,i)}
+                label={label}
                 sx={{
                   '&.Mui-selected': {
                     color: '#555',
