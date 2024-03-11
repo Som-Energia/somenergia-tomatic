@@ -96,14 +96,12 @@ function ContractContent() {
         <Box className="label-right">
           {'Rols: '}
           {roles.map(function (rol) {
-            var letter = rol[0]
-            var active = rol[1]
-            var title = rol[2]
+            const [letter, active, title] = rol
             return (
               <Box
                 className={'contract-role' + (active ? ' active' : '')}
                 title={title}
-                key={rol.letter}
+                key={letter}
               >
                 {letter}
               </Box>
