@@ -75,7 +75,6 @@ export default function CustomerSearch() {
                   aria-label="Submit Search"
                   onClick={handleSearch}
                   variant="standard"
-                  edge="end"
                 >
                   <div className="icon-search">
                     <i className="fas fa-search" />
