@@ -9,12 +9,12 @@ export default function TabbedCard({
   onTabChanged,
   Inner,
   labels,
+  children,
 }) {
   return (
     <Box
       className="partner-card"
       sx={{
-        maxWidth: '465px',
         minWidth: '200px',
       }}
     >
@@ -24,6 +24,9 @@ export default function TabbedCard({
           scrollButtons="auto"
           value={currentTab}
           onChange={(ev, value) => onTabChanged(value)}
+          sx={{
+            maxWidth: '465px',
+          }}
         >
           {labels.map((label, i) => {
             return (
