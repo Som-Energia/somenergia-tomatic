@@ -1,7 +1,7 @@
 // This module controls the state regarding the callinfo page
 import api from '../../services/api'
-
 import Auth from '../../services/auth'
+import subscriptable from '../../services/subscriptable'
 import Tomatic from '../../services/tomatic'
 import autofiltertype from '../../services/autofiltertype'
 
@@ -16,7 +16,17 @@ CallInfo.currentPerson = 0 // Selected person from search data
 CallInfo.currentContract = 0 // Selected contract selected person
 CallInfo.callLog = [] // User call registry
 CallInfo.updatingCategories = false // Whether we are still loading crm categoies
-CallInfo.autoRefresh = true // whether we are auto searching on incomming calls
+
+CallInfo._autoRefresh = true // whether we are auto searching on incomming calls
+CallInfo.autoRefresh = subscriptable((...args) => {
+  if (args.length === 0) return CallInfo._autoRefresh
+  CallInfo._autoRefresh = !!args[0]
+  CallInfo.autoRefresh.notify()
+})
+CallInfo.autoRefresh.toggle = ()=> {
+  CallInfo.autoRefresh(!CallInfo.autoRefresh())
+}
+
 CallInfo.call = {
   phone: '', // phone of the currently selected call registry
   date: '', // isodate of the last unbinded search or the currently selected call registry
@@ -124,11 +134,11 @@ CallInfo.resetSearch = function () {
 CallInfo.changeUser = function (newUser) {
   CallInfo.deselectLog()
   CallInfo.callLog = []
-  CallInfo.autoRefresh = true
+  CallInfo.autoRefresh(true)
 }
 
 CallInfo.callReceived = function (date, phone) {
-  if (!CallInfo.autoRefresh) {
+  if (!CallInfo.autoRefresh()) {
     return
   }
   CallInfo.selectLog(date, phone)

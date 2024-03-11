@@ -108,7 +108,7 @@ function ResponsiveAppBar({ children }) {
   }
 
   return (
-    <Box sx={{ displah: 'flex' }}>
+    <Box id="tomatic" className={'main variant-' + Tomatic.variant}>
       <CssBaseline />
       <AppBar
         position="sticky"
@@ -348,6 +348,7 @@ function ResponsiveAppBar({ children }) {
         }}
       />
       <Box
+        className={Tomatic.isKumatoMode() ? 'pe-dark-tone' : ''}
         component="main"
         sx={{
           flexGrow: 1,

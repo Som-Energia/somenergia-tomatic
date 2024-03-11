@@ -80,6 +80,7 @@ Tomatic.isKumatoMode = subscriptable(function () {
   return Tomatic._kumato
 })
 
+// Persons management
 Tomatic.requestPersons = function () {
   return api
     .request({
