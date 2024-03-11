@@ -11,13 +11,14 @@ function PartnerInfo() {
   return <>Partner Info</>
 }
 function ContractInfo() {
-  return <>Partner Info</>
+  return <>Contract Info</>
 }
 function DetailsInfo() {
   return <>Details Info</>
 }
 
 export default function CallinfoPage() {
+  const results = useSubscriptable(CallInfo.results)
   return (
     <div className="callinfo">
       <div className="all-info-call layout horizontal">
@@ -46,10 +47,10 @@ export default function CallinfoPage() {
               ) : (
                 <div className="plane-info">
                   <div className="layout vertical flex">
-                    <PartnerInfo data={CallInfo.searchResults} />
-                    <ContractInfo data={CallInfo.searchResults} />
+                    <PartnerInfo data={results} />
+                    <ContractInfo data={results} />
                   </div>
-                  <DetailsInfo data={CallInfo.searchResults} />
+                  <DetailsInfo data={results} />
                 </div>
               )}
             </div>

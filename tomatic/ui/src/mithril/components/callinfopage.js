@@ -317,10 +317,10 @@ CallInfoPage.view = function () {
                 )
               : m('.plane-info', [
                   m('.layout.vertical.flex', [
-                    PartnerInfo.allInfo(CallInfo.searchResults),
-                    ContractInfo.mainPanel(CallInfo.searchResults),
+                    PartnerInfo.allInfo(CallInfo.results()),
+                    ContractInfo.mainPanel(CallInfo.results()),
                   ]),
-                  ContractInfo.detailsPanel(CallInfo.searchResults),
+                  ContractInfo.detailsPanel(CallInfo.results()),
                 ]),
           ),
         ]),

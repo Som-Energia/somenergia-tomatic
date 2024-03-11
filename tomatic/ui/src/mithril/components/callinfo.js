@@ -9,7 +9,6 @@ var websock = null
 var CallInfo = {}
 CallInfo.categories = [] // Call categories
 CallInfo.sections = [] // Teams to assign a call
-CallInfo.searchResults = {} // Retrieved search data
 CallInfo.currentPerson = 0 // Selected person from search data
 CallInfo.currentContract = 0 // Selected contract selected person
 CallInfo.updatingCategories = false // Whether we are still loading crm categoies
@@ -35,8 +34,6 @@ CallInfo.search_query = subscriptable((...args)=>{
   console.log(CallInfo._search_query)
   CallInfo.search_query.notify()
 })
-
-CallInfo.searchResults = {} // Retrieved search data
 
 CallInfo.call = {
   phone: '', // phone of the currently selected call registry
@@ -138,11 +135,18 @@ CallInfo.clearAnnotation = function () {
   CallInfo.savingAnnotation = false
 }
 
+CallInfo._results = {} // Retrieved search data
+CallInfo.results = subscriptable((...args)=>{
+  if (args.length===0) return CallInfo._results
+  CallInfo._results = args[0]
+  CallInfo.results.notify()
+})
+
 // Nicely clears search results
 CallInfo.resetSearch = function () {
   CallInfo.currentPerson = 0
   CallInfo.currentContract = 0
-  CallInfo.searchResults = {}
+  CallInfo.results({})
 }
 
 CallInfo.changeUser = function (newUser) {
@@ -219,32 +223,32 @@ function isEmpty(obj) {
 }
 
 CallInfo.searchStatus = function () {
-  if (isEmpty(CallInfo.searchResults)) {
+  if (isEmpty(CallInfo.results())) {
     return 'ZERORESULTS'
   }
-  if (CallInfo.searchResults[1] === 'empty') {
+  if (CallInfo.results()[1] === 'empty') {
     return 'SEARCHING'
   }
-  if (CallInfo.searchResults[1] === 'toomuch') {
+  if (CallInfo.results()[1] === 'toomuch') {
     return 'TOOMANYRESULTS'
   }
-  if (CallInfo.searchResults[1] === 'error') {
+  if (CallInfo.results()[1] === 'error') {
     return 'ERROR'
   }
   return 'SUCCESS'
 }
 
 CallInfo.selectedPartner = function () {
-  if (!CallInfo.searchResults) {
+  if (!CallInfo.results()) {
     return null
   }
-  if (!CallInfo.searchResults.partners) {
+  if (!CallInfo.results().partners) {
     return null
   }
-  if (CallInfo.searchResults.partners.length === 0) {
+  if (CallInfo.results().partners.length === 0) {
     return null
   }
-  var partner = CallInfo.searchResults.partners[CallInfo.currentPerson]
+  var partner = CallInfo.results().partners[CallInfo.currentPerson]
   if (partner === undefined) {
     return null
   }
@@ -275,7 +279,7 @@ CallInfo.selectPartner = function (idx) {
 }
 
 var retrieveInfo = function () {
-  CallInfo.searchResults = { 1: 'empty' } // Searching...
+  CallInfo.results({ 1: 'empty' }) // Searching...
   const searchValue = CallInfo.search_query().text.trim()
   let searchField = CallInfo.search_query().field
   if (searchField === 'auto') 
@@ -283,7 +287,7 @@ var retrieveInfo = function () {
   const encodedValue = encodeURIComponent(searchValue)
   function exitWithError(msg) {
     Tomatic.error(msg)
-    CallInfo.searchResults = { 1: 'error' }
+    CallInfo.results({ 1: 'error' })
   }
 
   api
@@ -294,11 +298,11 @@ var retrieveInfo = function () {
       function (response) {
         console.debug('Info GET Response: ', response)
         if (response.info.message === 'response_too_long') {
-          CallInfo.searchResults = { 1: 'toomuch' }
+          CallInfo.results({ 1: 'toomuch' })
           return
         }
         if (response.info.message === 'no_info') {
-          CallInfo.searchResults = {}
+          CallInfo.results({})
           return
         }
         if (response.info.message !== 'ok') {
@@ -306,16 +310,16 @@ var retrieveInfo = function () {
             'Error al obtenir les dades: ' + response.info.message,
           )
         }
-
-        CallInfo.searchResults = response.info.info
-        fixContractNumbers(response.info.info)
+        const results = response.info.info
+        fixContractNumbers(results)
+        CallInfo.results(results)
         if (CallInfo.call.date === '') {
           // TODO: If selection is none
           CallInfo.call.date = new Date().toISOString()
         }
         // Keep the context, just in case a second query is started
-        // and CallInfo.searchResults is overwritten
-        var context = CallInfo.searchResults
+        // and CallInfo.results() is overwritten
+        var context = CallInfo.results()
         api
           .request({
             method: 'POST',
@@ -338,6 +342,7 @@ var retrieveInfo = function () {
                 contract.invoices = retrieved.invoices
                 contract.lectures_comptadors = retrieved.lectures_comptadors
                 contract.atr_cases = retrieved.atr_cases
+                CallInfo.results.notify()
               })
             })
           })
