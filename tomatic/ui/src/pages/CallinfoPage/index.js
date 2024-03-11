@@ -1,25 +1,27 @@
 import React from 'react'
 import CircularProgress from '@mui/material/CircularProgress'
+import Paper from '@mui/material/Paper'
 import CallInfo from '../../mithril/components/callinfo'
 import AttendedCalls from './AttendedCalls'
 import CustomerSearch from './CustomerSearch'
-import {useSubscriptable} from '../../services/subscriptable'
+import PartnerInfo from './PartnerInfo'
+import { useSubscriptable } from '../../services/subscriptable'
 
 function Spinner() {
-  return <><CircularProgress/></>
+  return <CircularProgress />
 }
-function PartnerInfo() {
-  return <>Partner Info</>
-}
+
 function ContractInfo() {
-  return <>Contract Info</>
+  return <Paper>Contract Info</Paper>
 }
 function DetailsInfo() {
-  return <>Details Info</>
+  return <Paper>Details Info</Paper>
 }
 
 export default function CallinfoPage() {
   const results = useSubscriptable(CallInfo.results)
+  const [currentPartner, setCurrentPartner] = React.useState(0)
+  const [currentContract, setCurrentContract] = React.useState(0)
   return (
     <div className="callinfo">
       <div className="all-info-call layout horizontal">
@@ -48,7 +50,10 @@ export default function CallinfoPage() {
               ) : (
                 <div className="plane-info">
                   <div className="layout vertical flex">
-                    <PartnerInfo data={results} />
+                    <PartnerInfo
+                      data={results}
+                      {...{ currentPartner, setCurrentPartner }}
+                    />
                     <ContractInfo data={results} />
                   </div>
                   <DetailsInfo data={results} />
