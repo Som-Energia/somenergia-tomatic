@@ -1,3 +1,4 @@
+import React from 'react'
 /**
 Emulates mithril hyperscript funtionality in React.
 Useful to quickly port mithril code but not fully reliable.
