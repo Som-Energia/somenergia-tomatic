@@ -28,7 +28,6 @@ body
                   margin: auto
                   margin-top: 50px
                   display: flex
-                  flex: column
                   font-size: 30px
                   justify-content: space-evenly
                   align-content: center
@@ -171,9 +170,9 @@ body
           cursor: pointer
         .contract-role.active
           background: green
+        table
+          width: 100%
         table, th, td
-          min-width: -webkit-fill-available
-          width: -moz-available
           margin-top: 8px
           border: 1px solid #f0c573
           border-collapse: collapse
@@ -322,7 +321,6 @@ body
         bottom: auto
         left: auto
         right: 0
-        max-width: auto
         width: 400%
         white-space: pre-wrap;
     .tooltiptext.partner-comment::after
@@ -332,7 +330,7 @@ body
         top: auto
         right: 14% /* arrow displaced from center*/
         left: auto
-        margin-top: -var(--tooltip-arrow-size)
+        margin-top: calc( -1 * var(--tooltip-arrow-size) )
         border-width: var(--tooltip-arrow-size)
         border-style: solid
         border-color: transparent
