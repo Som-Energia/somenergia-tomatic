@@ -12,8 +12,8 @@ function nameFromFullName(name) {
   return parts[1]
 }
 
-function Fa({ icon, ariaLabel, ...rest }) {
-  return <i className={icon.split('.').join(' ')} ariaLabel={ariaLabel} {...rest} />
+function IconLabel({icon, label}) {
+  return <i className={icon.split('.').join(' ')} aria-label={label} />
 }
 
 function InfoLine({ ...rest }) {
@@ -43,10 +43,10 @@ function PartnerContent() {
         <Box>
           <Box>
             <Box className="label-right">
-              <Fa icon="fa.fa-id-card" ariaLabel="NIF" />{' '}
+              <IconLabel icon="fa.fa-id-card" label="NIF" />{' '}
               {markedErrorIfMissing(dni, 'Sense NIF')}
               {' - '}
-              <Fa icon="fa.fa-id-badge" ariaLabel="Codi Socia" />{' '}
+              <IconLabel icon="fa.fa-id-badge" label="Codi Socia" />{' '}
               {partner.is_member || partner.id_soci[0] !== 'S' ? (
                 markedErrorIfMissing(partner.id_soci, 'No codi socia')
               ) : (
@@ -60,18 +60,18 @@ function PartnerContent() {
         </Box>
       </InfoLine>
       <InfoLine>
-        <Fa icon="fa.fa-map-marker" ariaLabel="Adreça" />{' '}
+        <IconLabel icon="fa.fa-map-marker" label="Adreça" />{' '}
         {markedErrorIfMissing(partner.address, 'Sense adreça')}
       </InfoLine>
       <InfoLine>
         {partner.comment && (
           <Box className="label-right tooltip">
-            <Fa icon="fa.fa-comment" ariaLabel="Té anotacions" />
+            <IconLabel icon="fa.fa-comment" label="Té anotacions" />
             {' Té anotacions '}
             <Box className="tooltiptext partner-comment">{partner.comment}</Box>
           </Box>
         )}
-        <Fa icon="fa.fa-city" ariaLabel="Municipi i Província" />{' '}
+        <IconLabel icon="fa.fa-city" label="Municipi i Província" />{' '}
         {markedErrorIfMissing(partner.city, 'Sense municipi')}
         {' ('}
         {markedErrorIfMissing(partner.postalcode, 'Sense codi postal')}
@@ -80,7 +80,7 @@ function PartnerContent() {
       </InfoLine>
       <InfoLine>
         <Box className="label-right">
-          <Fa icon="fa.fa-grin-tongue" ariaLabel="Idioma" />{' '}
+          <IconLabel icon="fa.fa-grin-tongue" label="Idioma" />{' '}
           {markedErrorIfMissing(
             languages[partner.lang] || partner.lang,
             'Sense idioma preferent',
@@ -89,7 +89,7 @@ function PartnerContent() {
         {emails.map(function (email, i) {
           return (
             <Box className="partner-info-item" key={i}>
-              <Fa icon="fa.fa-envelope" ariaLabel="Email" /> {email} (
+              <IconLabel icon="fa.fa-envelope" label="Email" /> {email} (
               <a
                 href={helpscouturl + email}
                 target="_blank"
@@ -103,7 +103,7 @@ function PartnerContent() {
         })}
       </InfoLine>
       <InfoLine>
-        <Fa icon="fa.fa-phone" /> {partner.phones.join(' - ')}
+        <IconLabel icon="fa.fa-phone" /> {partner.phones.join(' - ')}
       </InfoLine>
       {partner.energetica ? (
         <InfoLine>
@@ -112,13 +112,13 @@ function PartnerContent() {
       ) : null}
       {!partner.is_member ? (
         <Box>
-          <Fa icon="fa.fa-eject" />{' '}
+          <IconLabel icon="fa.fa-eject" />{' '}
           <span className="red">{'Sòcia de baixa'}</span>
         </Box>
       ) : null}
       <InfoLine>
         <Box className="label-right">
-          <Fa icon="fa.fa-user-secret" ariaLabel="Segresta" />
+          <IconLabel icon="fa.fa-user-secret" label="Segresta" />
           {' ('}
           <a
             href={ovhijackurl + dni}
@@ -130,7 +130,7 @@ function PartnerContent() {
           )
         </Box>
         <Box>
-          <Fa icon="fa.fa-desktop" ariaLabel="Oficina Virtual" />{' '}
+          <IconLabel icon="fa.fa-desktop" label="Oficina Virtual" />{' '}
           <Box className="label">{' Ha obert OV? '}</Box>
           {markedErrorIfMissing(partner.ov && 'Sí', 'No')}
         </Box>

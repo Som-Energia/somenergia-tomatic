@@ -115,9 +115,7 @@ function ContractContent() {
       </InfoLine>
       <br />
       {
-        [
           //TODO extraInfo(contract),
-        ]
       }
     </Box>
   )
