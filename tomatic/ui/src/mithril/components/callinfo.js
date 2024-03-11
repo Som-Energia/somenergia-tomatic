@@ -399,7 +399,7 @@ CallInfo.updateCategories = function () {
     )
 }
 
-CallInfo.getLogPerson = function () {
+CallInfo.retrievePersonCalls = function () {
   CallInfo.callLog = []
   var username = Auth.username()
   if (username === -1 || username === '') {
@@ -493,11 +493,11 @@ CallInfo.onMessageReceived = function (event) {
     var phone = message[1]
     var date = message[2] + ':' + message[3] + ':' + message[4]
     CallInfo.callReceived(date, phone)
-    CallInfo.getLogPerson()
+    CallInfo.retrievePersonCalls()
     return
   }
   if (type_of_message === 'REFRESH') {
-    CallInfo.getLogPerson()
+    CallInfo.retrievePersonCalls()
     return
   }
   console.debug('Message received from WebSockets and type not recognized.')
@@ -517,14 +517,14 @@ CallInfo.emulateCall = function (phone, extension) {
 }
 
 CallInfo.getCategories()
-CallInfo.getLogPerson()
+CallInfo.retrievePersonCalls()
 
 Auth.onLogin.subscribe(CallInfo.sendIdentification)
-Auth.onLogin.subscribe(CallInfo.getLogPerson)
+Auth.onLogin.subscribe(CallInfo.retrievePersonCalls)
 Auth.onLogout.subscribe(CallInfo.sendIdentification)
-Auth.onLogout.subscribe(CallInfo.getLogPerson)
+Auth.onLogout.subscribe(CallInfo.retrievePersonCalls)
 Auth.onUserChanged.subscribe(CallInfo.changeUser)
-Auth.onUserChanged.subscribe(CallInfo.getLogPerson)
+Auth.onUserChanged.subscribe(CallInfo.retrievePersonCalls)
 connectWebSocket()
 
 export default CallInfo
