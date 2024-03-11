@@ -12,6 +12,11 @@ function nameFromFullName(name) {
   return parts[1]
 }
 
+function zeropad(value, num) {
+  if (!value) return value
+  return(value+"").padStart(num, '0')
+}
+
 function IconLabel({icon, label}) {
   return <i className={icon.split('.').join(' ')} aria-label={label} />
 }
@@ -74,7 +79,7 @@ function PartnerContent() {
         <IconLabel icon="fa.fa-city" label="Municipi i Província" />{' '}
         {markedErrorIfMissing(partner.city, 'Sense municipi')}
         {' ('}
-        {markedErrorIfMissing(partner.postalcode, 'Sense codi postal')}
+        {markedErrorIfMissing(zeropad(partner.postalcode, 5), 'Sense codi postal')}
         {') '}
         {markedErrorIfMissing(partner.state, 'Sense província')}
       </InfoLine>
