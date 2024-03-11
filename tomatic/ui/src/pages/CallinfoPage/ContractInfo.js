@@ -2,6 +2,7 @@ import React from 'react'
 import Box from '@mui/material/Box'
 import CallInfo from '../../mithril/components/callinfo'
 import TabbedCard from './TabbedCard'
+import ContractAlarms from './ContractAlarms'
 import { useSubscriptable } from '../../services/subscriptable'
 
 function formatContractNumber(number) {
@@ -114,9 +115,7 @@ function ContractContent() {
         {contract.pending_state ? contract.pending_state : 'Esborrany'}
       </InfoLine>
       <br />
-      {
-          //TODO extraInfo(contract),
-      }
+      <ContractAlarms contract={contract}/>
     </Box>
   )
 }
