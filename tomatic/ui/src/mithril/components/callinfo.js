@@ -9,8 +9,6 @@ var websock = null
 var CallInfo = {}
 CallInfo.categories = [] // Call categories
 CallInfo.sections = [] // Teams to assign a call
-CallInfo.search = '' // Search value
-CallInfo.search_by = '' // Search criteria
 CallInfo.searchResults = {} // Retrieved search data
 CallInfo.currentPerson = 0 // Selected person from search data
 CallInfo.currentContract = 0 // Selected contract selected person
@@ -25,6 +23,20 @@ CallInfo.autoRefresh = subscriptable((...args) => {
 CallInfo.autoRefresh.toggle = () => {
   CallInfo.autoRefresh(!CallInfo.autoRefresh())
 }
+
+CallInfo._search_query = {
+  text: '',
+  field: 'auto',
+}
+CallInfo.search_query = subscriptable((...args)=>{
+  if (args.length===0) return CallInfo._search_query
+  console.log({args})
+  CallInfo._search_query = {...CallInfo._search_query, ...args[0]}
+  console.log(CallInfo._search_query)
+  CallInfo.search_query.notify()
+})
+
+CallInfo.searchResults = {} // Retrieved search data
 
 CallInfo.call = {
   phone: '', // phone of the currently selected call registry
@@ -264,10 +276,11 @@ CallInfo.selectPartner = function (idx) {
 
 var retrieveInfo = function () {
   CallInfo.searchResults = { 1: 'empty' } // Searching...
-  const trimmedValue = CallInfo.search.trim()
-  const searchField =
-    CallInfo.search_by || autofiltertype(trimmedValue) || 'all'
-  const encodedValue = encodeURIComponent(trimmedValue)
+  const searchValue = CallInfo.search_query().text.trim()
+  let searchField = CallInfo.search_query().field
+  if (searchField === 'auto') 
+    searchField = autofiltertype(searchValue) || 'all'
+  const encodedValue = encodeURIComponent(searchValue)
   function exitWithError(msg) {
     Tomatic.error(msg)
     CallInfo.searchResults = { 1: 'error' }
@@ -448,8 +461,10 @@ CallInfo.selectLog = function (date, phone) {
   CallInfo.resetSearch()
   CallInfo.call.date = date
   CallInfo.call.phone = phone
-  CallInfo.search = phone
-  CallInfo.search_by = 'phone'
+  CallInfo.search_query({
+    text: phone,
+    field: 'phone',
+  })
   CallInfo.currentCall.notify()
   retrieveInfo()
 }
@@ -459,7 +474,7 @@ CallInfo.deselectLog = function () {
   CallInfo.resetSearch()
   CallInfo.call.date = ''
   CallInfo.call.phone = ''
-  CallInfo.search = ''
+  CallInfo.search_query({text: ''})
   CallInfo.currentCall.notify()
 }
 
@@ -477,9 +492,8 @@ CallInfo.searchCustomer = function () {
   CallInfo.clearAnnotation()
   CallInfo.resetSearch()
   // end of clear
-  if (CallInfo.search !== 0 && CallInfo.search !== '') {
-    retrieveInfo()
-  }
+  if (CallInfo.search_query().text === '') return
+  retrieveInfo()
 }
 
 var connectWebSocket = function () {

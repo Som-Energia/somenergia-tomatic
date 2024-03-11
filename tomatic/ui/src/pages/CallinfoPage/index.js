@@ -1,10 +1,9 @@
 import React from 'react'
 import CallInfo from '../../mithril/components/callinfo'
 import AttendedCalls from './AttendedCalls'
+import CustomerSearch from './CustomerSearch'
+import {useSubscriptable} from '../../services/subscriptable'
 
-function CustomerSearch() {
-  return <>Customer Search</>
-}
 function Spinner() {
   return <>Spinner</>
 }
@@ -14,8 +13,8 @@ function PartnerInfo() {
 function ContractInfo() {
   return <>Partner Info</>
 }
-function DetailedInfo() {
-  return <>Partner Info</>
+function DetailsInfo() {
+  return <>Details Info</>
 }
 
 export default function CallinfoPage() {
@@ -50,7 +49,7 @@ export default function CallinfoPage() {
                     <PartnerInfo data={CallInfo.searchResults} />
                     <ContractInfo data={CallInfo.searchResults} />
                   </div>
-                  <DetailedInfo data={CallInfo.searchResults} />
+                  <DetailsInfo data={CallInfo.searchResults} />
                 </div>
               )}
             </div>

@@ -51,7 +51,7 @@ var typeOfSearch = function (fieldguess) {
   }
 
   const options = Object.assign(
-    { '': 'Auto' + (fieldguess ? ` (${fields[fieldguess]})` : '') },
+    { 'auto': 'Auto' + (fieldguess ? ` (${fields[fieldguess]})` : '') },
     fields,
   )
 
@@ -60,9 +60,9 @@ var typeOfSearch = function (fieldguess) {
     label: 'Criteri',
     required: true,
     onChange: function (ev) {
-      CallInfo.search_by = ev.target.value
+      CallInfo.search_query({field: ev.target.value})
     },
-    value: CallInfo.search_by,
+    value: CallInfo.search_query().field,
     options: options,
   })
 }
@@ -121,14 +121,14 @@ var customerSearch = function () {
   }
   return m('', { className: 'busca-info' }, [
     m('.busca-info-title.layout.horizontal', [
-      typeOfSearch(autofiltertype(CallInfo.search.trim())),
+      typeOfSearch(autofiltertype(CallInfo.search_query().text.trim())),
       m(TextField, {
         className: 'search-query flex',
         placeholder: 'Cerca',
         floatingLabel: true,
-        value: CallInfo.search,
+        value: CallInfo.search_query().text,
         onChange: function (state) {
-          CallInfo.search = state.value
+          CallInfo.search_query({text: state.value})
         },
         events: {
           onkeypress: function (event) {
