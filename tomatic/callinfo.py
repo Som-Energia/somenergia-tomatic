@@ -110,10 +110,14 @@ class CallInfo(object):
         result = set()
         for contract in contracts:
             contract = ns(contract)
-            result.add(contract.titular[0])
-            result.add(contract.pagador[0])
-            result.add(contract.soci[0])
-            result.add(self.getPartnerId(contract.direccio_notificacio[0]))
+            if contract.titular:
+                result.add(contract.titular[0])
+            if contract.pagador:
+                result.add(contract.pagador[0])
+            if contract.soci:
+                result.add(contract.soci[0])
+            if contract.direccio_notificacio:
+                result.add(self.getPartnerId(contract.direccio_notificacio[0]))
         return list(result)
 
     def partnerInfo(self, partner_data):
