@@ -35,7 +35,7 @@ function PartnerContent() {
   const partner = useSubscriptable(CallInfo.selectedPartner)
   // TODO: Move urls to an external configuration
   const helpscouturl = 'https://secure.helpscout.net/search/?query='
-  const ovhijackurl = 'https://oficinavirtual.somenergia.coop/hijack/username/'
+  const ovhijackurl = 'https://oficinavirtual.somenergia.coop/et/auth/user/?q='
   const emails = partner.email.split(',')
   const dni =
     partner.dni.slice(0, 2) === 'ES' ? partner.dni.slice(2) : partner.dni
