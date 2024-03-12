@@ -6,6 +6,7 @@
 - Fix: Nicer handling of api calls when not authenticated
 - Fix: Button for adding lines not always works
 - New Makefile targets for styling and b2b tests
+- A menu option to emulate an incoming call for testing purposes
 
 ## 5.5.3 2024-03-12
 
