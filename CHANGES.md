@@ -2,6 +2,8 @@
 
 ## unreleased
 
+- Callinfo page migrated to React
+- New tipification dialog (still non-functional)
 - Using React based timetable page as default
 - Fix: Nicer handling of api calls when not authenticated
 - Fix: Button for adding lines not always works
