@@ -8,7 +8,6 @@ export default function Invoices() {
   const invoices = useSubscriptable(
     CallInfo.contractDetails,
   ).invoices
-  console.log("Invoices render")
   if (invoices === null) {
     return (
       <Box className="factures">
@@ -32,7 +31,7 @@ export default function Invoices() {
     <Box className="factures">
       {invoices.map(function (invoice, i) {
         return (
-          <Box className="factura-info-item">
+          <Box className="factura-info-item" key={i}>
             <Box>
               <Box className="label-right">
                 {invoice.initial_date + ' ⇨ ' + invoice.final_date}
