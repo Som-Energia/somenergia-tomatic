@@ -7,7 +7,6 @@ import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Card from '@mui/material/Card'
 import TextField from '@mui/material/TextField'
-import Autocomplete from '@mui/material/Autocomplete'
 import CallInfo from '../../mithril/components/callinfo'
 import TypificationChooser from './TypificationChooser'
 import { useSubscriptable } from '../../services/subscriptable'
@@ -38,41 +37,39 @@ export default function TypificationDialog() {
   function handleClose() {}
   const isValid = !!comment && typification.length !== 0
 
-  console.log({typification})
-
   return (
     <>
       <DialogTitle>{'Tipificant trucada'}</DialogTitle>
       <DialogContent>
         <Stack gap={2}>
-        <Card
-          className="final-motius"
-          sx={{
-            p: 1,
-          }}
-        >
-          <Box>
-            <strong>Trucada:</strong> {phoneNumber} <strong>el dia</strong>{' '}
-            {day} <strong>a les</strong> {time}
-          </Box>
-          <Box>
-            <strong>De:</strong> {person}
-          </Box>
-          <Box>
-            <strong>Referent al contracte:</strong> {contractInfo}
-          </Box>
-        </Card>
-        <TypificationChooser {...{typification, setTypification}}/>
-        <TextField
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          label={'Comentaris'}
-          multiline
-          variant="standard"
-          fullWidth
-          rows={4}
-        />
-    </Stack>
+          <Card
+            className="final-motius"
+            sx={{
+              p: 1,
+            }}
+          >
+            <Box>
+              <strong>Trucada:</strong> {phoneNumber} <strong>el dia</strong>{' '}
+              {day} <strong>a les</strong> {time}
+            </Box>
+            <Box>
+              <strong>De:</strong> {person}
+            </Box>
+            <Box>
+              <strong>Referent al contracte:</strong> {contractInfo}
+            </Box>
+          </Card>
+          <TypificationChooser {...{ typification, setTypification }} />
+          <TextField
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            label={'Comentaris'}
+            multiline
+            variant="standard"
+            fullWidth
+            rows={4}
+          />
+        </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>{'Cancel·la'}</Button>
