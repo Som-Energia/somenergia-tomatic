@@ -12,7 +12,9 @@ import IconButton from '@mui/material/IconButton'
 import CircularProgress from '@mui/material/CircularProgress'
 import CallInfo from '../../mithril/components/callinfo'
 import Auth from '../../services/auth'
+import { useDialog } from '../../components/DialogProvider'
 import { useSubscriptable } from '../../services/subscriptable'
+import TypificationDialog from './TypificationDialog'
 
 function CallLockButton() {
   const autoRefresh = useSubscriptable(CallInfo.autoRefresh)
@@ -52,11 +54,21 @@ function NewTabButton() {
   )
 }
 function AnnotationButton() {
+  const [openDialog, closeDialog] = useDialog()
+
   return (
     <IconButton
       title={'Anota la trucada fent servir aquest contracte'}
       onClick={() => {
-        //Questionnaire.openCaseAnnotationDialog()
+        const oldAutoRefresh = CallInfo.autoRefresh()
+        CallInfo.autoRefresh(false)
+        function onClose() {
+          CallInfo.autoRefresh(oldAutoRefresh)
+          closeDialog()
+        }
+        openDialog({
+          children: <TypificationDialog />,
+        })
       }}
       disabled={CallInfo.savingAnnotation || Auth.username() === ''}
     >
@@ -184,16 +196,11 @@ function AttendedCallList() {
             return (
               <React.Fragment key={item.date}>
                 {needsDate && (
-                  <ListSubheader
-                    className="registres dateseparator"
-                  >
+                  <ListSubheader className="registres dateseparator">
                     {itemWeekDay + ' ' + itemDate}
                   </ListSubheader>
                 )}
-                <CallEntry
-                  item={item}
-                  disabled={!autoRefresh}
-                />
+                <CallEntry item={item} disabled={!autoRefresh} />
               </React.Fragment>
             )
           })}
