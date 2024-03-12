@@ -10,10 +10,12 @@ import TextField from '@mui/material/TextField'
 import CallInfo from '../../mithril/components/callinfo'
 import TypificationChooser from './TypificationChooser'
 import { useSubscriptable } from '../../services/subscriptable'
+import AuthContext from '../../contexts/AuthContext'
 
 export default function TypificationDialog({onClose}) {
   const [comment, setComment] = React.useState('')
   const [typification, setTypification] = React.useState([])
+  const {userid, fullname} = React.useContext(AuthContext)
   const partner = CallInfo.selectedPartner()
   const contract = CallInfo.selectedContract()
   const phoneNumber = CallInfo.call.phone || 'Entrada manual'
@@ -36,6 +38,7 @@ export default function TypificationDialog({onClose}) {
   function submit() {
     // TODO: actually submit
     console.log("Emulating submission:", {
+      user: userid,
       partner: partner?.dni,
       contract: contract?.number,
       calldate: timestamp,
@@ -67,6 +70,9 @@ export default function TypificationDialog({onClose}) {
             </Box>
             <Box>
               <strong>Referent al contracte:</strong> {contractInfo}
+            </Box>
+            <Box>
+              <strong>Atésa per:</strong> {fullname}
             </Box>
           </Card>
           <TypificationChooser {...{ typification, setTypification }} />
