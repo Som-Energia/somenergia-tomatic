@@ -15,7 +15,7 @@ var infoPartner = function () {
   var partner = CallInfo.selectedPartner()
   // TODO: Move urls to an external configuration
   var helpscouturl = 'https://secure.helpscout.net/search/?query='
-  var ovhijackurl = 'https://oficinavirtual.somenergia.coop/hijack/username/'
+  var ovhijackurl = 'https://oficinavirtual.somenergia.coop/et/auth/user/?q='
   var emails = partner.email.split(',')
   var dni =
     partner.dni.slice(0, 2) === 'ES' ? partner.dni.slice(2) : partner.dni

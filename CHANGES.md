@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Callinfo: Fix: hijack link for the new OV
 - Callinfo: Identify if partner still member
 
 ## 5.5.2 2024-01-09
