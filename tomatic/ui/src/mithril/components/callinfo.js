@@ -492,6 +492,20 @@ CallInfo.onMessageReceived = function (event) {
   }
   console.debug('Message received from WebSockets and type not recognized.')
 }
+CallInfo.emulateCall = function (phone, extension) {
+  api
+    .request({
+      url: '/api/info/ringring',
+      params: {
+        extension: extension,
+        phone: phone,
+      },
+    })
+    .then(function (response) {
+      console.log(`Call emulated from ${phone} to ${extension}`)
+    })
+}
+
 CallInfo.getCategories()
 CallInfo.getLogPerson()
 
