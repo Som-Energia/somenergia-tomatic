@@ -2,6 +2,7 @@ import React from 'react'
 import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
 
+// TODO: use category from api
 const categories = [
   {
     label: 'Serveis de Comercialització - Estat instal·lacions',

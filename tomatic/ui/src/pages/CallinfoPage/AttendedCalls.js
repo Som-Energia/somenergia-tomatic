@@ -67,7 +67,7 @@ function AnnotationButton() {
           closeDialog()
         }
         openDialog({
-          children: <TypificationDialog />,
+          children: <TypificationDialog onClose={onClose} />,
         })
       }}
       disabled={CallInfo.savingAnnotation || Auth.username() === ''}

@@ -11,13 +11,11 @@ import CallInfo from '../../mithril/components/callinfo'
 import TypificationChooser from './TypificationChooser'
 import { useSubscriptable } from '../../services/subscriptable'
 
-export default function TypificationDialog() {
+export default function TypificationDialog({onClose}) {
   const [comment, setComment] = React.useState('')
   const [typification, setTypification] = React.useState([])
-  const currentCall = useSubscriptable(CallInfo.currentCall)
   const partner = CallInfo.selectedPartner()
   const contract = CallInfo.selectedContract()
-
   const phoneNumber = CallInfo.call.phone || 'Entrada manual'
   const timestamp =
     CallInfo.call.date === '' ? new Date().toISOString() : CallInfo.call.date
@@ -34,7 +32,19 @@ export default function TypificationDialog() {
       ? contract.number + ' - ' + contract.cups_adress
       : ' Cap contracte especificat'
 
-  function handleClose() {}
+  function handleClose() {onClose()}
+  function submit() {
+    // TODO: actually submit
+    console.log("Emulating submission:", {
+      partner: partner?.dni,
+      contract: contract?.number,
+      calldate: timestamp,
+      callphone: phoneNumber,
+      typification: typification.map((t)=>t.key),
+      comment: comment,
+    })
+    onClose()
+  }
   const isValid = !!comment && typification.length !== 0
 
   return (
@@ -73,7 +83,7 @@ export default function TypificationDialog() {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>{'Cancel·la'}</Button>
-        <Button variant="contained" disabled={!isValid} onClick={handleClose}>
+        <Button variant="contained" disabled={!isValid} onClick={submit}>
           {'Envia tipificacíó'}
         </Button>
       </DialogActions>
