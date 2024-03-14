@@ -10,6 +10,7 @@ import { Dialog as MithrilDialog } from 'polythene-mithril-dialog'
 var onGridUpdated = null
 Tomatic.onGridUpdated.push(() => onGridUpdated && onGridUpdated())
 
+
 function TimeTablePage() {
   const [grid, setGrid] = useState()
 
@@ -38,7 +39,7 @@ function TimeTablePage() {
           },
         }}
       >
-        <WeekPicker></WeekPicker>
+        <WeekPicker />
         <TimeTable
           grid={grid}
           setCell={setCell}

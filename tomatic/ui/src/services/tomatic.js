@@ -102,7 +102,7 @@ module.exports = (function () {
         url: '/api/queue' + (suffix || ''),
       })
       .then(function (response) {
-        if (response.currentQueue !== undefined) {
+        if (response?.currentQueue !== undefined) {
           Tomatic.queue(response.currentQueue)
         }
       })
@@ -145,6 +145,7 @@ module.exports = (function () {
         url: '/api/forcedturns',
       })
       .then(function (data) {
+        if (!data) return
         data.days = data.days || 'dl dm dx dj dv'.split(' ')
         delete data.colors
         delete data.names
@@ -461,6 +462,7 @@ module.exports = (function () {
         url: '/api/graella/list',
       })
       .then(function (newWeeklist) {
+        if (!newWeeklist) return
         var weeks = newWeeklist.weeks.sort().reverse()
         Tomatic.weeks(weeks)
         if (Tomatic.currentWeek() === undefined) {
@@ -477,8 +479,10 @@ module.exports = (function () {
             Tomatic.requestGrid(current)
           }
         }
+        Tomatic.onWeeksUpdated.forEach((callback) => callback())
       })
   }
+  Tomatic.onWeeksUpdated = []
 
   Tomatic.log = function (message) {
     console.log('log: ', message)
@@ -599,4 +603,4 @@ module.exports = (function () {
   return Tomatic
 })()
 
-// vim: noet ts=4 sw=4
+// vim: et ts=2 sw=2

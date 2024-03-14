@@ -8,7 +8,6 @@ import iconMore from 'mmsvg/google/msvg/navigation/more-vert'
 import Tomatic from '../services/tomatic'
 import Login from './components/login'
 import PersonsPage from './components/personspage'
-import TimeTablePage from './components/timetablepage'
 import MenuButton from './components/menubutton'
 import LoginPage from './components/loginpage'
 import CallInfoPage from './components/callinfopage'
@@ -114,9 +113,6 @@ window.onload = function () {
   //m.redraw.strategy('diff');
   var element = document.getElementById('tomatic')
   m.route(element, '/Graelles', {
-    '/Graelles': {
-      render: () => m(TomaticApp, m(TimeTablePage)),
-    },
     '/Centraleta': {
       render: () => m(TomaticApp, m(PbxPage)),
     },

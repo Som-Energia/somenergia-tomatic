@@ -11,7 +11,6 @@ import DialogProvider from './components/DialogProvider'
 
 import {
   MithrilCallinfoPage,
-  MithrilTimeTablePage,
   MithrilQueueMonitor,
   MithrilPersonsPage,
 } from './components/MithrilPages'
@@ -25,7 +24,7 @@ const router = createHashRouter(
       path: '/',
       element: (
         <AppFrame>
-          <MithrilTimeTablePage />
+          <TimeTablePage />
         </AppFrame>
       ),
     },
@@ -55,14 +54,6 @@ const router = createHashRouter(
     },
     {
       path: '/Graelles',
-      element: (
-        <AppFrame>
-          <MithrilTimeTablePage />
-        </AppFrame>
-      ),
-    },
-    {
-      path: '/Grid',
       element: (
         <AppFrame>
           <TimeTablePage />

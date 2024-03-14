@@ -40,17 +40,16 @@ const CurrentItem = styled.li`
     content: '◄';
   }
 `
+var onWeeksUpdated = null
+Tomatic.onWeeksUpdated.push(() => onWeeksUpdated && onWeeksUpdated())
 
 function WeekPicker() {
-  const [weeks, setWeeks] = useState([])
-  const [currentWeek, setCurrentWeek] = useState(Tomatic.currentWeek())
+  const [weeks, setWeeks] = useState(Tomatic.weeks())
 
-  useEffect(() => {
-    setWeeks(Tomatic.weeks())
-  }, [])
+  onWeeksUpdated = () => setWeeks(Tomatic.weeks())
 
+  const currentWeek = Tomatic.currentWeek()
   const handleClick = (week) => {
-    setCurrentWeek(week)
     Tomatic.requestGrid(week)
   }
 

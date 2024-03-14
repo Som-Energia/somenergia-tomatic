@@ -342,6 +342,8 @@ CallInfo.getCategories = function () {
       function (response) {
         console.debug('Categories GET Response: ', response)
 
+        if (!response) return
+
         CallInfo.categories = response.categories
         CallInfo.categories.forEach(function (category) {
           var section = category.section

@@ -73,7 +73,7 @@ class Auth_Test(unittest.TestCase):
             user = validatedUser(token)
 
         self.assertEqual(format(ctx.exception.detail),
-            "Invalid authentication credentials")
+            "Token decoding failed: Signature has expired.")
 
     def test_token_noUsername(self):
         payload = ns.loads("""
@@ -84,7 +84,7 @@ class Auth_Test(unittest.TestCase):
             user = validatedUser(token)
 
         self.assertEqual(format(ctx.exception.detail),
-            "Invalid authentication credentials")
+            "Payload failed")
 
         # TODO: assert logged: Payload failed
 

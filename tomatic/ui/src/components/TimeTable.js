@@ -106,14 +106,6 @@ function TimeTable(props) {
     )
   }
 
-  function AddTurn() {
-    addColumn()
-  }
-
-  function RemoveTurn() {
-    removeColumn()
-  }
-
   return (
     <>
       <PersonStyles />
@@ -125,8 +117,9 @@ function TimeTable(props) {
               color="primary"
               aria-label="add"
               position="TopRight"
+              onClick={addColumn}
             >
-              <AddIcon onClick={AddTurn} />
+              <AddIcon />
             </Fab>
           </Tooltip>
           <Tooltip title="Esborrar última línia">
@@ -135,8 +128,9 @@ function TimeTable(props) {
               color="primary"
               aria-label="remove"
               position="TopRight"
+              onClick={removeColumn}
             >
-              <RemoveIcon onClick={RemoveTurn} />
+              <RemoveIcon />
             </Fab>
           </Tooltip>
         </div>
@@ -149,7 +143,7 @@ function TimeTable(props) {
                 <tr>
                   <th>{Tomatic.weekday(day)}</th>
                   {grid?.turns.map((turn) => (
-                    <td key={turn}>{turn}</td>
+                    <th key={turn}>{turn}</th>
                   ))}
                 </tr>
               </thead>

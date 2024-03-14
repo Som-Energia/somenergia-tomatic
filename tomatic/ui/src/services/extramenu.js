@@ -25,11 +25,6 @@ const menuOptions = function () {
       route: '/Administration',
     },
     {
-      icon: '🗓️',
-      title: 'Graelles (Versió React 🧪)',
-      route: '/Grid',
-    },
-    {
       icon: '📢',
       title: 'En Tomàtic diu...',
       action: function () {
@@ -89,4 +84,4 @@ const menuOptions = function () {
 }
 export default menuOptions
 
-// vim: noet ts=4 sw=4
+// vim: et ts=2 sw=2

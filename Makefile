@@ -32,6 +32,11 @@ api-deps:
 api-test:
 	.venv/bin/pytest
 
+b2b-test: 
+	.venv/bin/back2back back2back.yaml
+
+ui-style:
+	./node_modules/.bin/prettier -w tomatic/ui
 
 
 define HELP

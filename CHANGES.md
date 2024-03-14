@@ -1,9 +1,16 @@
 # Changelog
 
+## unreleased
+
+- Using React based timetable page as default
+- Fix: Nicer handling of api calls when not authenticated
+- Fix: Button for adding lines not always works
+- New Makefile targets for styling and b2b tests
+
 ## 5.5.3 2024-03-12
 
-- Callinfo: Fix: hijack link for the new OV
-- Callinfo: Identify if partner still member
+- Fix: Callinfo: hijack link for the new OV
+- Callinfo: Warn when a partner with S code is not member anymore
 
 ## 5.5.2 2024-01-09
 

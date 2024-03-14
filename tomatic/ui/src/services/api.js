@@ -32,9 +32,12 @@ var api = {
       .catch(function (error) {
         debugApi &&
           console.log(options.method || 'GET', options.url, 'Error', error)
-        if (error.code !== 401) throw error
         // Unauthorized
-        Auth.logout()
+        if (error.code === 401) {
+          Auth.logout()
+          return undefined
+        }
+        throw error
       })
   },
 
@@ -42,6 +45,7 @@ var api = {
     return jsyaml.load(responseText)
   },
 }
+// vim: et ts=2 sw=2
 
 export default api
-// vim: noet ts=4 sw=4
+// vim: et ts=2 sw=2
