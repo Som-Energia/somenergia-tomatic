@@ -18,33 +18,22 @@ export default function TabbedCard({
         minWidth: '200px',
       }}
     >
-      <Box className="partner-tabs">
-        <Tabs
-          variant="scrollable"
-          scrollButtons="auto"
-          value={currentTab}
-          onChange={(ev, value) => onTabChanged(value)}
-          sx={{
-            maxWidth: '465px',
-          }}
-        >
-          {labels.map((label, i) => {
-            return (
-              <Tab
-                key={i}
-                label={label}
-                sx={{
-                  '&.Mui-selected': {
-                    color: '#555',
-                    bgcolor: '#ABD0AB',
-                  },
-                }}
-              />
-            )
-          })}
-        </Tabs>
-      </Box>
       <Card className="card-info">
+        <Box className="partner-tabs">
+          <Tabs
+            variant="scrollable"
+            scrollButtons="auto"
+            value={currentTab}
+            onChange={(ev, value) => onTabChanged(value)}
+            sx={{
+              maxWidth: '465px',
+            }}
+          >
+            {labels.map((label, i) => {
+              return <Tab key={i} label={label} />
+            })}
+          </Tabs>
+        </Box>
         <CardContent>
           {Inner && <Inner />}
           {children}

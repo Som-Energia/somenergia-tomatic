@@ -128,13 +128,17 @@ body
 
       .partner-card
           .partner-tabs
-              background-color: #8FBC8F
+              .pe-tabs
+                  background-color: #8FBC8F
+                  color: black
+                  border-radius: 5px 5px 0 0
               .pe-tabs__row
                   max-width: 465px
                   min-width: 200px
-                  min-height: 70px
+                  overflow-y: hidden
                   .pe-button--selected
                       background-color: #ABD0AB
+                      color: black
               .pe-tabs__indicator
                   background-color: transparent
               .pe-tabs__scroll-button-start
@@ -143,9 +147,6 @@ body
                   right: 0
                   position: absolute
                   color: #98FB98
-          .card-part-header
-            margin-top: 3ex
-            font-weight: bold
 
       .contract-info-box
         width: 100%
