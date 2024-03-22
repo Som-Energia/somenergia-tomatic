@@ -2,11 +2,16 @@
 
 ## unreleased
 
+- Callinfo page migrated to React
+- New tipification dialog (still non-functional)
 - Using React based timetable page as default
 - Fix: Nicer handling of api calls when not authenticated
 - Fix: Button for adding lines not always works
 - New Makefile targets for styling and b2b tests
+- New Makefile targets to deploy
 - A menu option to emulate an incoming call for testing purposes
+- Upgrade notes:
+    - Node version 20 required
 
 ## 5.5.3 2024-03-12
 

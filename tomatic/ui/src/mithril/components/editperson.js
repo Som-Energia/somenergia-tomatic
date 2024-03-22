@@ -14,10 +14,13 @@ var PersonEditor = {}
 PersonEditor.oncreate = function (vnode) {
   // Focus on the first enabled input
   // Note: if done without the setTimeout, styles are not applied
+  // TODO: Failing but obsolete, don't invest in fixing
+  /*
   setTimeout(function () {
     vnode.dom.querySelector('input:enabled').focus()
     m.redraw()
   }, 0)
+  */
 }
 PersonEditor.view = function (vnode) {
   vnode.state.name = vnode.attrs.name

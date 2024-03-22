@@ -1,7 +1,7 @@
 // This module controls the state regarding the callinfo page
 import api from '../../services/api'
-
 import Auth from '../../services/auth'
+import subscriptable from '../../services/subscriptable'
 import Tomatic from '../../services/tomatic'
 import autofiltertype from '../../services/autofiltertype'
 
@@ -9,20 +9,37 @@ var websock = null
 var CallInfo = {}
 CallInfo.categories = [] // Call categories
 CallInfo.sections = [] // Teams to assign a call
-CallInfo.search = '' // Search value
-CallInfo.search_by = '' // Search criteria
-CallInfo.searchResults = {} // Retrieved search data
-CallInfo.currentPerson = 0 // Selected person from search data
-CallInfo.currentContract = 0 // Selected contract selected person
-CallInfo.callLog = [] // User call registry
 CallInfo.updatingCategories = false // Whether we are still loading crm categoies
-CallInfo.autoRefresh = true // whether we are auto searching on incomming calls
+
+CallInfo._autoRefresh = true // whether we are auto searching on incomming calls
+CallInfo.autoRefresh = subscriptable((...args) => {
+  if (args.length === 0) return CallInfo._autoRefresh
+  CallInfo._autoRefresh = !!args[0]
+  CallInfo.autoRefresh.notify()
+})
+CallInfo.autoRefresh.toggle = () => {
+  CallInfo.autoRefresh(!CallInfo.autoRefresh())
+}
+
+CallInfo._search_query = {
+  text: '',
+  field: 'auto',
+}
+CallInfo.search_query = subscriptable((...args)=>{
+  if (args.length===0) return CallInfo._search_query
+  CallInfo._search_query = {...CallInfo._search_query, ...args[0]}
+  CallInfo.search_query.notify()
+})
+
 CallInfo.call = {
   phone: '', // phone of the currently selected call registry
   date: '', // isodate of the last unbinded search or the currently selected call registry
   category: '', // annotated category for the call
   notes: '', // annotated comments for the call
 }
+CallInfo.currentCall = subscriptable(() => {
+  return CallInfo.call.date
+})
 
 CallInfo.savingAnnotation = false
 CallInfo.annotation = {}
@@ -114,21 +131,27 @@ CallInfo.clearAnnotation = function () {
   CallInfo.savingAnnotation = false
 }
 
+CallInfo._results = {} // Retrieved search data
+CallInfo.results = subscriptable((...args)=>{
+  if (args.length===0) return CallInfo._results
+  CallInfo._results = args[0]
+  CallInfo.results.notify()
+})
+
 // Nicely clears search results
 CallInfo.resetSearch = function () {
-  CallInfo.currentPerson = 0
-  CallInfo.currentContract = 0
-  CallInfo.searchResults = {}
+  CallInfo.selectPartner(0)
+  CallInfo.results({})
 }
 
 CallInfo.changeUser = function (newUser) {
   CallInfo.deselectLog()
-  CallInfo.callLog = []
-  CallInfo.autoRefresh = true
+  CallInfo.personCalls([])
+  CallInfo.autoRefresh(true)
 }
 
 CallInfo.callReceived = function (date, phone) {
-  if (!CallInfo.autoRefresh) {
+  if (!CallInfo.autoRefresh()) {
     return
   }
   CallInfo.selectLog(date, phone)
@@ -195,39 +218,52 @@ function isEmpty(obj) {
 }
 
 CallInfo.searchStatus = function () {
-  if (isEmpty(CallInfo.searchResults)) {
+  if (isEmpty(CallInfo.results())) {
     return 'ZERORESULTS'
   }
-  if (CallInfo.searchResults[1] === 'empty') {
+  if (CallInfo.results()[1] === 'empty') {
     return 'SEARCHING'
   }
-  if (CallInfo.searchResults[1] === 'toomuch') {
+  if (CallInfo.results()[1] === 'toomuch') {
     return 'TOOMANYRESULTS'
   }
-  if (CallInfo.searchResults[1] === 'error') {
+  if (CallInfo.results()[1] === 'error') {
     return 'ERROR'
   }
   return 'SUCCESS'
 }
 
-CallInfo.selectedPartner = function () {
-  if (!CallInfo.searchResults) {
+CallInfo.currentPerson = 0 // Selected person from search data
+CallInfo.currentContract = 0 // Selected contract selected person
+
+CallInfo.selectedPartner = subscriptable(function () {
+  if (!CallInfo.results()) {
     return null
   }
-  if (!CallInfo.searchResults.partners) {
+  if (!CallInfo.results().partners) {
     return null
   }
-  if (CallInfo.searchResults.partners.length === 0) {
+  if (CallInfo.results().partners.length === 0) {
     return null
   }
-  var partner = CallInfo.searchResults.partners[CallInfo.currentPerson]
+  var partner = CallInfo.results().partners[CallInfo.currentPerson]
   if (partner === undefined) {
     return null
   }
   return partner
-}
+})
 
-CallInfo.selectedContract = function () {
+
+CallInfo.contractDetails = subscriptable(function() {
+  const contract = CallInfo.selectedContract()
+  return {
+    atr_cases: contract?.atr_cases ?? null,
+    lectures_comptadors: contract?.lectures_comptadors ?? null,
+    invoices: contract?.invoices ?? null,
+  }
+})
+
+CallInfo.selectedContract = subscriptable(function () {
   var partner = CallInfo.selectedPartner()
   if (partner === null) {
     return null
@@ -239,26 +275,32 @@ CallInfo.selectedContract = function () {
     return null
   }
   return partner.contracts[CallInfo.currentContract]
-}
+})
 
 CallInfo.selectContract = function (idx) {
   CallInfo.currentContract = idx
+  CallInfo.selectedContract.notify()
+  CallInfo.contractDetails.notify()
 }
 
 CallInfo.selectPartner = function (idx) {
   CallInfo.currentPerson = idx
   CallInfo.currentContract = 0
+  CallInfo.selectedPartner.notify()
+  CallInfo.selectedContract.notify()
+  CallInfo.contractDetails.notify()
 }
 
 var retrieveInfo = function () {
-  CallInfo.searchResults = { 1: 'empty' } // Searching...
-  const trimmedValue = CallInfo.search.trim()
-  const searchField =
-    CallInfo.search_by || autofiltertype(trimmedValue) || 'all'
-  const encodedValue = encodeURIComponent(trimmedValue)
+  CallInfo.results({ 1: 'empty' }) // Searching...
+  const searchValue = CallInfo.search_query().text.trim()
+  let searchField = CallInfo.search_query().field
+  if (searchField === 'auto') 
+    searchField = autofiltertype(searchValue) || 'all'
+  const encodedValue = encodeURIComponent(searchValue)
   function exitWithError(msg) {
     Tomatic.error(msg)
-    CallInfo.searchResults = { 1: 'error' }
+    CallInfo.results({ 1: 'error' })
   }
 
   api
@@ -269,11 +311,11 @@ var retrieveInfo = function () {
       function (response) {
         console.debug('Info GET Response: ', response)
         if (response.info.message === 'response_too_long') {
-          CallInfo.searchResults = { 1: 'toomuch' }
+          CallInfo.results({ 1: 'toomuch' })
           return
         }
         if (response.info.message === 'no_info') {
-          CallInfo.searchResults = {}
+          CallInfo.results({})
           return
         }
         if (response.info.message !== 'ok') {
@@ -281,16 +323,16 @@ var retrieveInfo = function () {
             'Error al obtenir les dades: ' + response.info.message,
           )
         }
-
-        CallInfo.searchResults = response.info.info
-        fixContractNumbers(response.info.info)
+        const results = response.info.info
+        fixContractNumbers(results)
+        CallInfo.results(results)
         if (CallInfo.call.date === '') {
           // TODO: If selection is none
           CallInfo.call.date = new Date().toISOString()
         }
         // Keep the context, just in case a second query is started
-        // and CallInfo.searchResults is overwritten
-        var context = CallInfo.searchResults
+        // and CallInfo.results() is overwritten
+        var context = CallInfo.results()
         api
           .request({
             method: 'POST',
@@ -315,6 +357,7 @@ var retrieveInfo = function () {
                 contract.atr_cases = retrieved.atr_cases
               })
             })
+            CallInfo.contractDetails.notify()
           })
       },
       function (error) {
@@ -389,13 +432,20 @@ CallInfo.updateCategories = function () {
     )
 }
 
-CallInfo.getLogPerson = function () {
-  CallInfo.callLog = []
+CallInfo.callLog = [] // User call registry
+CallInfo.personCalls = subscriptable((...args) => {
+  if (args.length === 0) return CallInfo.callLog
+  CallInfo.callLog = args[0]
+  CallInfo.personCalls.notify()
+})
+
+CallInfo.retrievePersonCalls = function () {
   var username = Auth.username()
   if (username === -1 || username === '') {
+    CallInfo.personCalls([])
     return 0
   }
-  CallInfo.callLog.push('lookingfor')
+  CallInfo.personCalls(['lookingfor'])
   api
     .request({
       url: '/api/personlog/' + username,
@@ -408,13 +458,13 @@ CallInfo.getLogPerson = function () {
             'Error al obtenir trucades ateses.',
             response.info.message,
           )
-          CallInfo.callLog = []
+          CallInfo.personCalls([])
         } else {
-          CallInfo.callLog = response.info.info
+          CallInfo.personCalls(response.info.info)
         }
       },
       function (error) {
-        CallInfo.callLog = []
+        CallInfo.personCalls([])
         console.debug('Info GET apicall failed: ', error)
       },
     )
@@ -429,8 +479,11 @@ CallInfo.selectLog = function (date, phone) {
   CallInfo.resetSearch()
   CallInfo.call.date = date
   CallInfo.call.phone = phone
-  CallInfo.search = phone
-  CallInfo.search_by = 'phone'
+  CallInfo.search_query({
+    text: phone,
+    field: 'phone',
+  })
+  CallInfo.currentCall.notify()
   retrieveInfo()
 }
 
@@ -439,7 +492,8 @@ CallInfo.deselectLog = function () {
   CallInfo.resetSearch()
   CallInfo.call.date = ''
   CallInfo.call.phone = ''
-  CallInfo.search = ''
+  CallInfo.search_query({text: ''})
+  CallInfo.currentCall.notify()
 }
 
 CallInfo.toggleLog = function (date, phone) {
@@ -456,9 +510,8 @@ CallInfo.searchCustomer = function () {
   CallInfo.clearAnnotation()
   CallInfo.resetSearch()
   // end of clear
-  if (CallInfo.search !== 0 && CallInfo.search !== '') {
-    retrieveInfo()
-  }
+  if (CallInfo.search_query().text === '') return
+  retrieveInfo()
 }
 
 var connectWebSocket = function () {
@@ -483,11 +536,11 @@ CallInfo.onMessageReceived = function (event) {
     var phone = message[1]
     var date = message[2] + ':' + message[3] + ':' + message[4]
     CallInfo.callReceived(date, phone)
-    CallInfo.getLogPerson()
+    CallInfo.retrievePersonCalls()
     return
   }
   if (type_of_message === 'REFRESH') {
-    CallInfo.getLogPerson()
+    CallInfo.retrievePersonCalls()
     return
   }
   console.debug('Message received from WebSockets and type not recognized.')
@@ -507,14 +560,15 @@ CallInfo.emulateCall = function (phone, extension) {
 }
 
 CallInfo.getCategories()
-CallInfo.getLogPerson()
+CallInfo.retrievePersonCalls()
 
-Auth.onLogin.push(CallInfo.sendIdentification)
-Auth.onLogin.push(CallInfo.getLogPerson)
-Auth.onLogout.push(CallInfo.sendIdentification)
-Auth.onLogout.push(CallInfo.getLogPerson)
-Auth.onUserChanged.push(CallInfo.changeUser)
-Auth.onUserChanged.push(CallInfo.getLogPerson)
+// TODO: Put some order here
+Auth.onLogin.subscribe(CallInfo.sendIdentification)
+Auth.onLogin.subscribe(CallInfo.retrievePersonCalls)
+Auth.onLogout.subscribe(CallInfo.sendIdentification)
+Auth.onLogout.subscribe(CallInfo.retrievePersonCalls)
+Auth.onUserChanged.subscribe(CallInfo.changeUser)
+Auth.onUserChanged.subscribe(CallInfo.retrievePersonCalls)
 connectWebSocket()
 
 export default CallInfo

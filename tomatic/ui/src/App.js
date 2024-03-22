@@ -8,6 +8,8 @@ import { createHashRouter, RouterProvider } from 'react-router-dom'
 import PersonsTable from './components/PersonsTable.js'
 import TimeTablePage from './components/TimeTablePage'
 import DialogProvider from './components/DialogProvider'
+import ComponentTestPage from './pages/ComponentTestPage'
+import CallinfoPage from './pages/CallinfoPage'
 
 import {
   MithrilCallinfoPage,
@@ -25,6 +27,14 @@ const router = createHashRouter(
       element: (
         <AppFrame>
           <TimeTablePage />
+        </AppFrame>
+      ),
+    },
+    {
+      path: '/Test',
+      element: (
+        <AppFrame>
+          <ComponentTestPage />
         </AppFrame>
       ),
     },
@@ -69,10 +79,18 @@ const router = createHashRouter(
       ),
     },
     {
-      path: '/Trucada',
+      path: '/TrucadaOld',
       element: (
         <AppFrame>
           <MithrilCallinfoPage />
+        </AppFrame>
+      ),
+    },
+    {
+      path: '/Trucada',
+      element: (
+        <AppFrame>
+          <CallinfoPage />
         </AppFrame>
       ),
     },

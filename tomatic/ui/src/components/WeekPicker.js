@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import Tomatic from '../services/tomatic'
+import React from 'react'
 import styled from '@emotion/styled'
+import Tomatic from '../services/tomatic'
+import { useSubscriptable } from '../services/subscriptable'
 
 const List = styled.ul`
   label: weeks;
@@ -40,14 +41,8 @@ const CurrentItem = styled.li`
     content: '◄';
   }
 `
-var onWeeksUpdated = null
-Tomatic.onWeeksUpdated.push(() => onWeeksUpdated && onWeeksUpdated())
-
 function WeekPicker() {
-  const [weeks, setWeeks] = useState(Tomatic.weeks())
-
-  onWeeksUpdated = () => setWeeks(Tomatic.weeks())
-
+  const weeks = useSubscriptable(Tomatic.weeks)
   const currentWeek = Tomatic.currentWeek()
   const handleClick = (week) => {
     Tomatic.requestGrid(week)

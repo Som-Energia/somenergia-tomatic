@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Tomatic from '../services/tomatic'
 import TimeTable from './TimeTable'
 import Doc from './Doc'
@@ -7,20 +7,10 @@ import Box from '@mui/material/Box'
 import MithrilWrapper from '../containers/MithrilWrapper'
 import MithrilStyler from '../containers/MithrilStyler'
 import { Dialog as MithrilDialog } from 'polythene-mithril-dialog'
-
-var onForcedTurnsUpdated = null
-Tomatic.onForcedTurnsUpdated.push(
-  () => onForcedTurnsUpdated && onForcedTurnsUpdated(),
-)
+import { useSubscriptable } from '../services/subscriptable'
 
 function ForcedTurns() {
-  const [grid, setGrid] = useState()
-
-  onForcedTurnsUpdated = () => {
-    setGrid(Tomatic.forcedTurns())
-  }
-
-  useEffect(onForcedTurnsUpdated, [Tomatic.forcedTurns()])
+  const grid = useSubscriptable(Tomatic.forcedTurns)
 
   const setCell = (day, houri, turni, name) => {
     Tomatic.editForcedTurn(day, houri, turni, name)

@@ -7,6 +7,9 @@ deps: ui-deps api-deps
 
 test: api-test ui-test-once
 
+deploy: deps ui-build
+
+
 ui-build:
 	npm run build
 

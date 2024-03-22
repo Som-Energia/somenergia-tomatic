@@ -1,4 +1,5 @@
 module.exports = (function () {
+  var subscriptable = require('./subscriptable').default
   var parseJwt = require('./utils').parseJwt
 
   const Auth = {}
@@ -37,29 +38,23 @@ module.exports = (function () {
       console.log('Detected login change', previousLogin, '->', user)
       previousLogin = user
       Auth.login()
-      Auth.onUserChanged.forEach(function (callback) {
-        callback()
-      })
+      Auth.onUserChanged.notify()
     }
     Auth.loginWatchTimer = setTimeout(Auth.watchLoginChanges, 500)
   }
 
-  Auth.onLogout = []
-  Auth.onLogin = []
-  Auth.onUserChanged = []
+  Auth.onLogout = subscriptable({})
+  Auth.onLogin = subscriptable({})
+  Auth.onUserChanged = subscriptable({})
 
   Auth.logout = function () {
     Auth.clearToken()
-    Auth.onLogout.forEach(function (callback) {
-      callback()
-    })
+    Auth.onLogout.notify()
   }
 
   // TODO: Call this!
   Auth.login = function () {
-    Auth.onLogin.forEach(function (callback) {
-      callback()
-    })
+    Auth.onLogin.notify()
   }
 
   Auth.username = function () {

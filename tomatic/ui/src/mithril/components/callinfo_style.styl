@@ -28,7 +28,6 @@ body
                   margin: auto
                   margin-top: 50px
                   display: flex
-                  flex: column
                   font-size: 30px
                   justify-content: space-evenly
                   align-content: center
@@ -74,6 +73,9 @@ body
           .registres.selected
               background: #cdcdff
           .registres.dateseparator
+              background: #e2e5e2
+              color: #888
+              text-align: center
               .pe-list-tile__title
                   background: #e2e5e2
                   color: #888
@@ -126,13 +128,17 @@ body
 
       .partner-card
           .partner-tabs
-              background-color: #8FBC8F
+              .pe-tabs
+                  background-color: #8FBC8F
+                  color: black
+                  border-radius: 5px 5px 0 0
               .pe-tabs__row
                   max-width: 465px
                   min-width: 200px
-                  min-height: 70px
+                  overflow-y: hidden
                   .pe-button--selected
                       background-color: #ABD0AB
+                      color: black
               .pe-tabs__indicator
                   background-color: transparent
               .pe-tabs__scroll-button-start
@@ -141,9 +147,6 @@ body
                   right: 0
                   position: absolute
                   color: #98FB98
-          .card-part-header
-            margin-top: 3ex
-            font-weight: bold
 
       .contract-info-box
         width: 100%
@@ -168,9 +171,9 @@ body
           cursor: pointer
         .contract-role.active
           background: green
+        table
+          width: 100%
         table, th, td
-          min-width: -webkit-fill-available
-          width: -moz-available
           margin-top: 8px
           border: 1px solid #f0c573
           border-collapse: collapse
@@ -257,15 +260,15 @@ body
           min-width: 700px
 
   .icon-exit
-      font-size: 25px
-      color: #E1232C
+    font-size: 25px
+    color: #E1232C
 
   .icon-lock
-      font-size: 16px
+    font-size: 16px
 
   .icon-new-tab
-      font-size: 16px
-      color: #228B22
+    font-size: 16px
+    color: #228B22
 
   .icon-clipboard
     font-size: 22px
@@ -319,7 +322,6 @@ body
         bottom: auto
         left: auto
         right: 0
-        max-width: auto
         width: 400%
         white-space: pre-wrap;
     .tooltiptext.partner-comment::after
@@ -329,7 +331,7 @@ body
         top: auto
         right: 14% /* arrow displaced from center*/
         left: auto
-        margin-top: -var(--tooltip-arrow-size)
+        margin-top: calc( -1 * var(--tooltip-arrow-size) )
         border-width: var(--tooltip-arrow-size)
         border-style: solid
         border-color: transparent
@@ -355,11 +357,7 @@ body
       .filter
         width: 100%
         margin-left: 10px
-        .textfield-filter
-            no_width: 445px
     .motius
-      no-display: inline-block
-      no-width: 530px
       height: 40vh
       overflow-y: auto
       .pe-list.pe-list--compact
@@ -372,7 +370,6 @@ body
           color: gray
       .llista-motius-selected
         font-size: 14px
-        nobackground-color: #e6ffe6
         background-color: #2a6a2a
         color: white
       .llista-motius-unselected
@@ -380,7 +377,6 @@ body
         color: black
         background-color: #eee
     .filter
-      no-margin-left: 10px
       .textfield-filter
         flex: 1
 

@@ -19,6 +19,7 @@ import Tomatic from '../services/tomatic'
 import editAvailabilities from '../mithril/components/busyeditor'
 import MithrilWrapper from '../containers/MithrilWrapper'
 import MithrilStyler from '../containers/MithrilStyler'
+import { useSubscriptable } from '../services/subscriptable'
 import { Dialog as MithrilDialog } from 'polythene-mithril-dialog'
 import { useDialog } from './DialogProvider'
 
@@ -191,27 +192,12 @@ function camelize(text) {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
-var handlePersonsUpdated = null
-
-Tomatic.onPersonsUpdated.push(
-  () => handlePersonsUpdated && handlePersonsUpdated(),
-)
-
 function PersonsTable() {
-  const [rows, setRows] = React.useState([])
-  const [tables, setTables] = React.useState([])
-  const [groups, setGroups] = React.useState([])
   const [openDialog, closeDialog] = useDialog()
-
-  handlePersonsUpdated = () => {
-    const persons = Tomatic.persons()
-    const rows = compileData(persons)
-    setRows(rows)
-    setTables(availableTables(rows))
-    setGroups(availableGroups(rows))
-  }
-
-  //React.useEffect(handlePersonsUpdated, [Tomatic.persons()])
+  const persons = useSubscriptable(Tomatic.persons)
+  const rows = React.useMemo(() => {return compileData(persons)}, [persons])
+  const tables = React.useMemo(() => availableTables(rows), [rows])
+  const groups = React.useMemo(() => availableGroups(rows), [rows])
 
   function deletePersons(persons) {
     openDialog({

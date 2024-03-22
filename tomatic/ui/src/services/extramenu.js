@@ -1,5 +1,5 @@
 var CallInfoPage = require('../mithril/components/callinfopage')
-var Tomatic = require('../services/tomatic')
+var Tomatic = require('../services/tomatic').default
 
 const scriptLauncherBase =
   window.location.protocol + '//' + window.location.hostname + ':5000'

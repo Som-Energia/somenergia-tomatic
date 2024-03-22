@@ -12,7 +12,7 @@ var exitIcon = function () {
   return m('.icon-exit', [m('i.fa.fa-sign-out-alt')])
 }
 
-Auth.onLogout.push(() => m.route.set('/Login'))
+Auth.onLogout.subscribe(() => m.route.set('/Login'))
 
 Login.identification = function () {
   var nom = "IDENTIFICA'T"

@@ -125,7 +125,7 @@ export default function PersonEditor(props) {
   )
 
   // Sets the errors for new data
-  function resetData(person) {
+  const resetData = React.useCallback((person) =>{
     const newData = {
       ...defaultData,
       ...(person || {}),
@@ -141,11 +141,11 @@ export default function PersonEditor(props) {
         }),
       ),
     })
-  }
+  }, [errors])
 
   React.useEffect(() => {
     resetData(person)
-  }, [person])
+  }, [person, resetData])
 
   function updater(field) {
     return (ev) => {
