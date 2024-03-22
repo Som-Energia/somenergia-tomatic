@@ -8,16 +8,16 @@ VatNumber = Annotated[
     pydantic.AfterValidator(stdnum.eu.vat.validate),
 ]   
 
-
 class Category(
     pydantic.BaseModel,
-    extra=pydantic.Extra.allow, # to allow description_ln
+    extra='allow', # to allow description_ln
 ):
     id: int
-    description: str
+    name: str
     code: str
-    keywords: str
-    color: Color
+    keywords: list[str] = []
+    color: Optional[Color] = None
+    enabled: bool = True
 
 class Categories(pydantic.BaseModel):
     categories: list[Category]
@@ -43,14 +43,59 @@ class NewCall(pydantic.BaseModel):
     category_ids: list[int] = []
     comments: str = ""
 
-class LoggedCall(NewCall):
+class Call(NewCall):
     id: int
 
 class CallLog(pydantic.BaseModel):
-    calls: list[LoggedCall]
+    operator_calls: list[Call]
 
 
 class CreateCallResponse(CallLog):
-    created_id: int
+    odoo_id: int
+
+
+
+def main():
+    from yamlns import ns
+    import datetime
+    import dbconfig as configdb
+    import erppeek
+    erp = erppeek.Client(**configdb.tomatic.holidaysodoo)
+
+    # TODO: odoo should return the categories key when not filtering
+    # TODO: The optional parameter cannot be passed keyword
+    categories = Categories(**erp.CrmPhonecall.get_phonecall_categories(True))
+    print(ns(categories.model_dump(mode='json')).dump())
+
+    # TODO: null caller_erp_id shoulbe None, not False
+    # TODO: null contract_erp_id shoulbe None, not ''
+
+    response = ( #CreateCallResponse(**
+        erp.CrmPhonecall.create_call_and_get_operator_calls(
+            NewCall(
+                operator='operadora01',
+                pbx_call_id='pbx_id',
+                call_timestamp=datetime.datetime.now(tz=datetime.timezone.utc),
+            ).model_dump(mode='json'),
+            True
+        )
+    )
+    print(ns(response).dump())
+
+    response = ( #CreateCallResponse(**
+        erp.CrmPhonecall.update_call_and_get_operator_calls(
+            Call(
+                id=3, # TODO: odoo expects odoo_id, let's make them equal
+                operator='operadora01',
+                pbx_call_id='pbx_id',
+                call_timestamp=datetime.datetime.now(tz=datetime.timezone.utc),
+            ).model_dump(mode='json')
+        )
+    )
+    print(ns(response).dump())
+
+
+if __name__ == '__main__':
+    main()
 
 
