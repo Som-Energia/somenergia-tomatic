@@ -36,6 +36,7 @@
 - A menu option to emulate an incoming call for testing purposes
 - Upgrade notes:
     - Node version 20 required
+    - Added new Python dependencies
 
 ## 5.5.3 2024-03-12
 

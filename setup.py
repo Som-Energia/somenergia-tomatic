@@ -83,6 +83,8 @@ setup(
         'pandas',
         'matplotlib',
         'typer',
+        'pydantic-extra-types',
+        'python-stdnum',
     #],
     #tests_require=[
         'pytest-cov',
