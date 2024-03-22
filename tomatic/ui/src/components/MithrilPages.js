@@ -22,8 +22,4 @@ function MithrilPersonsPage() {
   return <MithrilWrapper component={MithrilStyler(PersonsPage)} />
 }
 
-export {
-  MithrilCallinfoPage,
-  MithrilQueueMonitor,
-  MithrilPersonsPage,
-}
+export { MithrilCallinfoPage, MithrilQueueMonitor, MithrilPersonsPage }

@@ -115,7 +115,7 @@ function ContractContent() {
         {contract.pending_state ? contract.pending_state : 'Esborrany'}
       </InfoLine>
       <br />
-      <ContractAlarms contract={contract}/>
+      <ContractAlarms contract={contract} />
     </Box>
   )
 }

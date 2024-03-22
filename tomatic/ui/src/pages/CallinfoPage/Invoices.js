@@ -5,9 +5,7 @@ import CallInfo from '../../mithril/components/callinfo'
 import { useSubscriptable } from '../../services/subscriptable'
 
 export default function Invoices() {
-  const invoices = useSubscriptable(
-    CallInfo.contractDetails,
-  ).invoices
+  const invoices = useSubscriptable(CallInfo.contractDetails).invoices
   if (invoices === null) {
     return (
       <Box className="factures">

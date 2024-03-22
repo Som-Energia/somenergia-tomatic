@@ -10,8 +10,10 @@ import Tomatic from '../services/tomatic'
 import CallInfo from '../mithril/components/callinfo'
 
 export default function EmulateCallDialog({ closeDialog }) {
-  const {userid} = React.useContext(AuthContext)
-  const [extension, setExtension] = React.useState(()=>Tomatic.persons().extensions[userid])
+  const { userid } = React.useContext(AuthContext)
+  const [extension, setExtension] = React.useState(
+    () => Tomatic.persons().extensions[userid],
+  )
   const [phoneNumber, setPhoneNumber] = React.useState('')
 
   const isValid = /^\d{3}$/.test(extension) && /^\d{9}$/.test(phoneNumber)

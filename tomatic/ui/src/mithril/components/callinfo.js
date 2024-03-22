@@ -25,9 +25,9 @@ CallInfo._search_query = {
   text: '',
   field: 'auto',
 }
-CallInfo.search_query = subscriptable((...args)=>{
-  if (args.length===0) return CallInfo._search_query
-  CallInfo._search_query = {...CallInfo._search_query, ...args[0]}
+CallInfo.search_query = subscriptable((...args) => {
+  if (args.length === 0) return CallInfo._search_query
+  CallInfo._search_query = { ...CallInfo._search_query, ...args[0] }
   CallInfo.search_query.notify()
 })
 
@@ -132,8 +132,8 @@ CallInfo.clearAnnotation = function () {
 }
 
 CallInfo._results = {} // Retrieved search data
-CallInfo.results = subscriptable((...args)=>{
-  if (args.length===0) return CallInfo._results
+CallInfo.results = subscriptable((...args) => {
+  if (args.length === 0) return CallInfo._results
   CallInfo._results = args[0]
   CallInfo.results.notify()
 })
@@ -253,8 +253,7 @@ CallInfo.selectedPartner = subscriptable(function () {
   return partner
 })
 
-
-CallInfo.contractDetails = subscriptable(function() {
+CallInfo.contractDetails = subscriptable(function () {
   const contract = CallInfo.selectedContract()
   return {
     atr_cases: contract?.atr_cases ?? null,
@@ -295,8 +294,7 @@ var retrieveInfo = function () {
   CallInfo.results({ 1: 'empty' }) // Searching...
   const searchValue = CallInfo.search_query().text.trim()
   let searchField = CallInfo.search_query().field
-  if (searchField === 'auto') 
-    searchField = autofiltertype(searchValue) || 'all'
+  if (searchField === 'auto') searchField = autofiltertype(searchValue) || 'all'
   const encodedValue = encodeURIComponent(searchValue)
   function exitWithError(msg) {
     Tomatic.error(msg)
@@ -492,7 +490,7 @@ CallInfo.deselectLog = function () {
   CallInfo.resetSearch()
   CallInfo.call.date = ''
   CallInfo.call.phone = ''
-  CallInfo.search_query({text: ''})
+  CallInfo.search_query({ text: '' })
   CallInfo.currentCall.notify()
 }
 

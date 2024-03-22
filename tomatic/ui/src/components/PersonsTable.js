@@ -195,7 +195,9 @@ function camelize(text) {
 function PersonsTable() {
   const [openDialog, closeDialog] = useDialog()
   const persons = useSubscriptable(Tomatic.persons)
-  const rows = React.useMemo(() => {return compileData(persons)}, [persons])
+  const rows = React.useMemo(() => {
+    return compileData(persons)
+  }, [persons])
   const tables = React.useMemo(() => availableTables(rows), [rows])
   const groups = React.useMemo(() => availableGroups(rows), [rows])
 

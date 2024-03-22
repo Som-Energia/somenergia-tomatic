@@ -27,9 +27,9 @@ export default function DetailsInfo() {
         labels={['ATR', 'Factures', 'Lectures']}
       >
         <Box className="contract-info-box">
-          { activeView === 0 && <AtrCases />}
-          { activeView === 1 && <Invoices /> }
-          { activeView === 2 && <Meterings /> }
+          {activeView === 0 && <AtrCases />}
+          {activeView === 1 && <Invoices />}
+          {activeView === 2 && <Meterings />}
         </Box>
       </TabbedCard>
     </Box>

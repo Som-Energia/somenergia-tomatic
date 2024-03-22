@@ -36,12 +36,12 @@ function DialogContainer(props) {
   return (
     <Dialog
       TransitionComponent={Transition}
-      fullScreen={fullScreen}
-      open={open}
-      onClose={onClose}
       TransitionProps={{
         onExited: onKill,
       }}
+      open={open}
+      onClose={onClose}
+      fullScreen={fullScreen}
       scroll="paper"
       {...extraprops}
     >

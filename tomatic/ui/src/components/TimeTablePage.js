@@ -8,7 +8,6 @@ import MithrilStyler from '../containers/MithrilStyler'
 import { Dialog as MithrilDialog } from 'polythene-mithril-dialog'
 import { useSubscriptable } from '../services/subscriptable'
 
-
 function TimeTablePage() {
   const grid = useSubscriptable(Tomatic.grid)
 

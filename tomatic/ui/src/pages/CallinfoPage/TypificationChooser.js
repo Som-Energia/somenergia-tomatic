@@ -51,9 +51,7 @@ export default function TypificationChooser({ typification, setTypification }) {
           label={'Tipificació'}
           variant="standard"
           fullWidth
-          helperText={
-            'Desplega per veure les opcions o escriu per filtrar-les'
-          }
+          helperText={'Desplega per veure les opcions o escriu per filtrar-les'}
         />
       )}
     />

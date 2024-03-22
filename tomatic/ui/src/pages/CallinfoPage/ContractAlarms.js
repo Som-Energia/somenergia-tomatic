@@ -11,13 +11,15 @@ export default function ContractAlarms({ contract }) {
     [contract.has_debt, 'label-alert', 'Té deute: ' + contract.has_debt],
   ].filter(([active, className, message]) => active)
 
-  if (alarms.length===0) {
+  if (alarms.length === 0) {
     return <Card className="extra-info">{'No hi ha informació extra.'}</Card>
   }
   return (
     <Card className="extra-info">
       {alarms.map(([active, className, message]) => (
-        <Box key={className} className={className}>{message}</Box>
+        <Box key={className} className={className}>
+          {message}
+        </Box>
       ))}
     </Card>
   )

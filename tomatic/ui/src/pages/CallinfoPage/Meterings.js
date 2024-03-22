@@ -5,7 +5,9 @@ import CallInfo from '../../mithril/components/callinfo'
 import { useSubscriptable } from '../../services/subscriptable'
 
 export default function Meterings() {
-  const readings = useSubscriptable(CallInfo.contractDetails).lectures_comptadors
+  const readings = useSubscriptable(
+    CallInfo.contractDetails,
+  ).lectures_comptadors
   if (readings === null) {
     return (
       <Box className="meter-readings">

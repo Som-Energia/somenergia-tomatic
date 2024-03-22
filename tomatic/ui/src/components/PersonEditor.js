@@ -125,23 +125,26 @@ export default function PersonEditor(props) {
   )
 
   // Sets the errors for new data
-  const resetData = React.useCallback((person) =>{
-    const newData = {
-      ...defaultData,
-      ...(person || {}),
-    }
-    setData(newData)
-    setErrors({
-      ...errors,
-      ...Object.fromEntries(
-        Object.keys(fields).map((key) => {
-          const validator = fields[key].validator
-          if (!validator) return [key, false]
-          return [key, validator(newData[key])]
-        }),
-      ),
-    })
-  }, [errors])
+  const resetData = React.useCallback(
+    (person) => {
+      const newData = {
+        ...defaultData,
+        ...(person || {}),
+      }
+      setData(newData)
+      setErrors({
+        ...errors,
+        ...Object.fromEntries(
+          Object.keys(fields).map((key) => {
+            const validator = fields[key].validator
+            if (!validator) return [key, false]
+            return [key, validator(newData[key])]
+          }),
+        ),
+      })
+    },
+    [errors],
+  )
 
   React.useEffect(() => {
     resetData(person)

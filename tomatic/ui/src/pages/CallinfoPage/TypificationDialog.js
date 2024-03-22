@@ -12,10 +12,10 @@ import TypificationChooser from './TypificationChooser'
 import { useSubscriptable } from '../../services/subscriptable'
 import AuthContext from '../../contexts/AuthContext'
 
-export default function TypificationDialog({onClose}) {
+export default function TypificationDialog({ onClose }) {
   const [comment, setComment] = React.useState('')
   const [typification, setTypification] = React.useState([])
-  const {userid, fullname} = React.useContext(AuthContext)
+  const { userid, fullname } = React.useContext(AuthContext)
   const partner = CallInfo.selectedPartner()
   const contract = CallInfo.selectedContract()
   const phoneNumber = CallInfo.call.phone || 'Entrada manual'
@@ -34,16 +34,18 @@ export default function TypificationDialog({onClose}) {
       ? contract.number + ' - ' + contract.cups_adress
       : ' Cap contracte especificat'
 
-  function handleClose() {onClose()}
+  function handleClose() {
+    onClose()
+  }
   function submit() {
     // TODO: actually submit
-    console.log("Emulating submission:", {
+    console.log('Emulating submission:', {
       user: userid,
       partner: partner?.dni,
       contract: contract?.number,
       calldate: timestamp,
       callphone: phoneNumber,
-      typification: typification.map((t)=>t.key),
+      typification: typification.map((t) => t.key),
       comment: comment,
     })
     onClose()
