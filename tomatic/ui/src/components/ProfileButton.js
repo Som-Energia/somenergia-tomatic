@@ -26,8 +26,10 @@ import editAvailabilities from '../mithril/components/busyeditor'
 import editPerson from '../mithril/components/editperson'
 import { useDialog } from './DialogProvider'
 import { CopyCalendarDialog } from './CopyCalendarDialog'
+import EmulateCallDialog from './EmulateCallDialog'
 
 var openCalendarDialog = () => {}
+var openCallEmulationDialog = () => {}
 
 const menuProfile = [
   {
@@ -55,6 +57,13 @@ const menuProfile = [
     text: 'Kumato mode',
     icon: <IconKumato />,
     onclick: Tomatic.toggleKumato,
+  },
+  {
+    text: 'Emula trucada entrant',
+    icon: '🤙',
+    onclick: () => {
+      openCallEmulationDialog()
+    },
   },
   {
     text: 'Logout',
@@ -85,6 +94,12 @@ function ProfileButton() {
     },
     [openDialog, closeDialog],
   )
+
+  openCallEmulationDialog = React.useCallback(() => {
+    openDialog({
+      children: <EmulateCallDialog {...{ closeDialog }} />,
+    })
+  }, [openDialog, closeDialog])
 
   return (
     <Box sx={{ flexGrow: 0 }}>
