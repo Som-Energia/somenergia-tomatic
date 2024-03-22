@@ -1,6 +1,6 @@
 # Changelog
 
-## unreleased
+## 5.6.0 2024-03-22
 
 - Callinfo page migrated to React
 - New tipification dialog (still non-functional)

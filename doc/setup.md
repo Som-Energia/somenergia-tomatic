@@ -29,7 +29,7 @@ It is also possible to install front and back dependencies and start the project
 make ui-deps # to install ui dependencies
 make api-deps # to install the backend dependencies
 
-# and then to run the project
+# and then to run the project, in different terminals, as both should be kept running
 make ui-dev
 make api-dev
 ```
@@ -42,6 +42,7 @@ make api-dev
 sudo apt-get update; sudo apt-get install --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev git nodejs npm
 sudo mkdir -p /opt/www/somenergia-tomatic
 sudo mkdir -p /var/log/somenergia/
+# TODO: install node 20 using either n or nvm
 sudo chown tomatic:tomatic /opt/www/somenergia-tomatic
 sudo su tomatic # the user that will run it
 
