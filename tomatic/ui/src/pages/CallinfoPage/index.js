@@ -1,6 +1,6 @@
 import React from 'react'
 import CircularProgress from '@mui/material/CircularProgress'
-import CallInfo from '../../mithril/components/callinfo'
+import CallInfo from '../../contexts/callinfo'
 import AttendedCalls from './AttendedCalls'
 import CustomerSearch from './CustomerSearch'
 import PartnerInfo from './PartnerInfo'

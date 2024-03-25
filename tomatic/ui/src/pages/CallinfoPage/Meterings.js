@@ -1,7 +1,7 @@
 import React from 'react'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
-import CallInfo from '../../mithril/components/callinfo'
+import CallInfo from '../../contexts/callinfo'
 import { useSubscriptable } from '../../services/subscriptable'
 
 export default function Meterings() {

@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField'
 import Stack from '@mui/material/Stack'
 import AuthContext from '../contexts/AuthContext'
 import Tomatic from '../services/tomatic'
-import CallInfo from '../mithril/components/callinfo'
+import CallInfo from '../contexts/callinfo'
 
 export default function EmulateCallDialog({ closeDialog }) {
   const { userid } = React.useContext(AuthContext)

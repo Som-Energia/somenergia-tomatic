@@ -4,7 +4,7 @@ import TabbedCard from './TabbedCard'
 import AtrCases from './AtrCases'
 import Invoices from './Invoices'
 import Meterings from './Meterings'
-import CallInfo from '../../mithril/components/callinfo'
+import CallInfo from '../../contexts/callinfo'
 import { useSubscriptable } from '../../services/subscriptable'
 
 export default function DetailsInfo() {

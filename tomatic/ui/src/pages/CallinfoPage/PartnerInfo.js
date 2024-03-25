@@ -1,6 +1,6 @@
 import React from 'react'
 import Box from '@mui/material/Box'
-import CallInfo from '../../mithril/components/callinfo'
+import CallInfo from '../../contexts/callinfo'
 import TabbedCard from './TabbedCard'
 import { useSubscriptable } from '../../services/subscriptable'
 
