@@ -1,9 +1,9 @@
 // This module controls the state regarding the callinfo page
-import api from '../../services/api'
-import Auth from '../../services/auth'
-import subscriptable from '../../services/subscriptable'
-import Tomatic from '../../services/tomatic'
-import autofiltertype from '../../services/autofiltertype'
+import api from '../services/api'
+import Auth from '../services/auth'
+import subscriptable from '../services/subscriptable'
+import Tomatic from '../services/tomatic'
+import autofiltertype from '../services/autofiltertype'
 
 var websock = null
 var CallInfo = {}
