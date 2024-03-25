@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- mithril callinfo files cleaned
+
 ## 5.6.0 2024-03-22
 
 - Callinfo page migrated to React
