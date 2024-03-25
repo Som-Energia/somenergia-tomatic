@@ -12,7 +12,6 @@ import ComponentTestPage from './pages/ComponentTestPage'
 import CallinfoPage from './pages/CallinfoPage'
 
 import {
-  MithrilCallinfoPage,
   MithrilQueueMonitor,
   MithrilPersonsPage,
 } from './components/MithrilPages'
@@ -75,14 +74,6 @@ const router = createHashRouter(
       element: (
         <AppFrame>
           <MithrilQueueMonitor />
-        </AppFrame>
-      ),
-    },
-    {
-      path: '/TrucadaOld',
-      element: (
-        <AppFrame>
-          <MithrilCallinfoPage />
         </AppFrame>
       ),
     },

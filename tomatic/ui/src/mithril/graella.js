@@ -10,7 +10,6 @@ import Login from './components/login'
 import PersonsPage from './components/personspage'
 import MenuButton from './components/menubutton'
 import LoginPage from './components/loginpage'
-import CallInfoPage from './components/callinfopage'
 import PbxPage from './components/pbxpage'
 import PersonStyles from './components/personstyles'
 import extraMenuOptions from '../services/extramenu'
@@ -118,9 +117,6 @@ window.onload = function () {
     },
     '/Persones': {
       render: () => m(TomaticApp, m(PersonsPage)),
-    },
-    '/Trucada': {
-      render: () => m(TomaticApp, m(CallInfoPage)),
     },
     '/Login': {
       render: () => m(TomaticApp, m(LoginPage)),

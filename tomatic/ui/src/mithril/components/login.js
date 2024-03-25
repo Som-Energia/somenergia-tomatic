@@ -2,7 +2,6 @@ import m from 'mithril'
 import { contrast } from './colorutils'
 import { Button } from 'polythene-mithril-button'
 import { Ripple } from 'polythene-mithril-ripple'
-import './callinfo_style.styl'
 import Tomatic from '../../services/tomatic'
 import Auth from '../../services/auth'
 
