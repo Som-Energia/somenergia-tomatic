@@ -57,11 +57,11 @@ export default function DialogProvider({ children }) {
     setDialogs((dialogs) => [...dialogs, dialog])
   }
 
-  const closeDialog = () => {
+  const closeDialog = (...args) => {
     setDialogs((dialogs) => {
       const latestDialog = dialogs.pop()
       if (!latestDialog) return dialogs
-      if (latestDialog.onClose) latestDialog.onClose()
+      if (latestDialog.onClose) latestDialog.onClose(...args)
       return [...dialogs].concat({ ...latestDialog, open: false })
     })
   }
