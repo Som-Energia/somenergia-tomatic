@@ -89,6 +89,13 @@ function TurnsEditor({
   label,
 }) {
   const hours = Tomatic.grid().hours
+  function update(index, checked) {
+    onChange(
+      value.substr(0, index) +
+        (checked ? '1' : '0') +
+        value.substr(index + 1),
+    )
+  }
   return (
     <FormControl variant={variant}>
       <FormLabel id={name + '-label'} variant={variant}>
@@ -99,18 +106,9 @@ function TurnsEditor({
           <FormControlLabel
             key={i}
             label={`${hours[i]} - ${hours[i + 1]}`}
-            control={
-              <Checkbox
-                checked={active === '1'}
-                onChange={(ev) =>
-                  onChange(
-                    value.substr(0, i) +
-                      (ev.target.checked ? '1' : '0') +
-                      value.substr(i + 1),
-                  )
-                }
-              />
-            }
+            control={<Checkbox />}
+            checked={active === '1'}
+            onChange={(ev) => update(i, ev.target.checked)}
           />
         )
       })}
@@ -119,9 +117,11 @@ function TurnsEditor({
   )
 }
 
-function BusyEntryEditor({ entry, setEntry, onApply, onClose }) {
+function BusyEntryDialog({ entry, setEntry, onApply, onClose }) {
   if (!entry) return
   const days = ['', 'dl', 'dm', 'dx', 'dj', 'dv']
+  const hours = Tomatic.grid().hours
+  const noTurn = '0'.repeat(hours.length-1)
   function update(value) {
     setEntry({ ...entry, ...value })
   }
@@ -199,7 +199,7 @@ function BusyEntryEditor({ entry, setEntry, onApply, onClose }) {
         </Stack>
         {!entry.reason ? (
           <Alert severity="error">{'Cal posar un motiu'}</Alert>
-        ) : entry.turns === '0000' ? (
+        ) : entry.turns === noTurn ? (
           <Alert severity="warning">
             {'Sense marcar hores no tindra efecte'}
           </Alert>
@@ -237,12 +237,14 @@ function BusyList({ title, entries, setEntries, isOneShot }) {
   const [onApply, setOnApply] = React.useState(undefined)
 
   function addEntry() {
+    const hours = Tomatic.grid().hours
+    const noTurn = '0'.repeat(hours.length-1)
     const newEntry = {
       weekday: isOneShot ? undefined : '',
       date: isOneShot ? nextMonday() : undefined,
       reason: '',
       optional: true,
-      turns: '0000',
+      turns: noTurn,
     }
 
     setEntryToEdit(newEntry)
@@ -271,7 +273,7 @@ function BusyList({ title, entries, setEntries, isOneShot }) {
         maxWidth: '25rem',
       }}
     >
-      <BusyEntryEditor
+      <BusyEntryDialog
         entry={entryToEdit}
         setEntry={setEntryToEdit}
         onApply={onApply}
