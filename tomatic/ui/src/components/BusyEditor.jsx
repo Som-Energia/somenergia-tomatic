@@ -16,17 +16,17 @@ import RadioGroup from '@mui/material/RadioGroup'
 import Radio from '@mui/material/Radio'
 import MenuItem from '@mui/material/MenuItem'
 import Alert from '@mui/material/Alert'
+import Typography from '@mui/material/Typography'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction'
 import ListSubheader from '@mui/material/ListSubheader'
 import IconButton from '@mui/material/IconButton'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { useTheme } from '@mui/material/styles'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { useDialog } from './DialogProvider'
 import Tomatic from '../services/tomatic'
 
 function RadioField({
@@ -61,11 +61,10 @@ function RadioField({
 
 function TurnsDisplay({ turns }) {
   return (
-    <span
-      style={{
+    <Typography
+      sx={{
         color: '#a44',
         fontSize: '150%',
-        marginInline: 'auto',
       }}
     >
       {Array.from(turns).map(function (e, i) {
@@ -75,7 +74,7 @@ function TurnsDisplay({ turns }) {
           </React.Fragment>
         )
       })}
-    </span>
+    </Typography>
   )
 }
 
@@ -91,9 +90,7 @@ function TurnsEditor({
   const hours = Tomatic.grid().hours
   function update(index, checked) {
     onChange(
-      value.substr(0, index) +
-        (checked ? '1' : '0') +
-        value.substr(index + 1),
+      value.substr(0, index) + (checked ? '1' : '0') + value.substr(index + 1),
     )
   }
   return (
@@ -118,17 +115,26 @@ function TurnsEditor({
 }
 
 function BusyEntryDialog({ entry, setEntry, onApply, onClose }) {
+  const theme = useTheme()
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
   if (!entry) return
   const days = ['', 'dl', 'dm', 'dx', 'dj', 'dv']
   const hours = Tomatic.grid().hours
-  const noTurn = '0'.repeat(hours.length-1)
+  const noTurn = '0'.repeat(hours.length - 1)
   function update(value) {
     setEntry({ ...entry, ...value })
   }
+  function handleClose() {
+    onClose && onClose()
+  }
+  function handleApply() {
+    onApply && onApply(entry)
+    onClose && onClose()
+  }
   return (
-    <Dialog open>
+    <Dialog open fullScreen={fullScreen} scroll="paper" onClose={handleClose}>
       <DialogTitle>{'Edita indisponibilitat'}</DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ minWidth: '40rem' }}>
         <Stack gap={2} marginTop={1}>
           <TextField
             autoFocus
@@ -197,6 +203,8 @@ function BusyEntryDialog({ entry, setEntry, onApply, onClose }) {
             helperText={'Marca les hores en que no estaràs disponible'}
           />
         </Stack>
+      </DialogContent>
+      <DialogActions>
         {!entry.reason ? (
           <Alert severity="error">{'Cal posar un motiu'}</Alert>
         ) : entry.turns === noTurn ? (
@@ -204,20 +212,18 @@ function BusyEntryDialog({ entry, setEntry, onApply, onClose }) {
             {'Sense marcar hores no tindra efecte'}
           </Alert>
         ) : !entry.optional ? (
-          <Alert severity="warning">{'Segur que no es opcional?'}</Alert>
+          <Alert severity="warning">
+            {'Segur que no la pots fer opcional?'}
+          </Alert>
         ) : (
           <Alert sx={{ opacity: 0 }}>{'Tot ok'}</Alert>
         )}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => onClose && onClose()}>{'Cancel·la'}</Button>
+        <div style={{ flex: 1 }}></div>
+        <Button onClick={handleClose}>{'Cancel·la'}</Button>
         <Button
           variant="contained"
           disabled={!entry.reason}
-          onClick={() => {
-            onApply && onApply(entry)
-            onClose && onClose()
-          }}
+          onClick={handleApply}
         >
           {'Desa'}
         </Button>
@@ -238,7 +244,7 @@ function BusyList({ title, entries, setEntries, isOneShot }) {
 
   function addEntry() {
     const hours = Tomatic.grid().hours
-    const noTurn = '0'.repeat(hours.length-1)
+    const noTurn = '0'.repeat(hours.length - 1)
     const newEntry = {
       weekday: isOneShot ? undefined : '',
       date: isOneShot ? nextMonday() : undefined,
@@ -271,6 +277,8 @@ function BusyList({ title, entries, setEntries, isOneShot }) {
     <List
       sx={{
         maxWidth: '25rem',
+        minWidth: '20rem',
+        flex: 1,
       }}
     >
       <BusyEntryDialog
@@ -322,12 +330,17 @@ function BusyList({ title, entries, setEntries, isOneShot }) {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Stack direction="row" gap={3}>
-                  <div>{day}</div>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  gap={1}
+                  mr={3}
+                >
+                  <Typography>{day}</Typography>
                   <TurnsDisplay turns={entry.turns} />
                 </Stack>
               }
-              secondary={entry.reason || '--'}
+              secondary={<Typography variant="body2" noWrap>{entry.reason || '--'}</Typography>}
             ></ListItemText>
           </ListItem>
         )
@@ -336,10 +349,16 @@ function BusyList({ title, entries, setEntries, isOneShot }) {
   )
 }
 
-export default function BusyEditor({ name, data, setData }) {
+/// BusyEditor source agnostic
+export default function BusyEditor({ data, setData }) {
   return (
-    <>
-      <h5>{`Indisponibilitats de ${name}`}</h5>
+    <Stack
+      gap={1}
+      direction="row"
+      flexWrap="wrap"
+      justifyContent="space-evenly"
+      alignItems="top"
+    >
       <BusyList
         title={'Setmanals'}
         entries={data.weekly}
@@ -351,6 +370,49 @@ export default function BusyEditor({ name, data, setData }) {
         setEntries={(entries) => setData({ ...data, oneshot: entries })}
         isOneShot
       />
-    </>
+    </Stack>
+  )
+}
+
+/// Busy editor taking data from Tomatic
+export function TomaticBusyEditor({ person }) {
+  const [data, setData] = React.useState({ oneshot: [], weekly: [] })
+
+  function updateData(newData) {
+    setData(newData)
+    Tomatic.sendBusyData(person, newData)
+  }
+
+  React.useEffect(() => {
+    Tomatic.retrieveBusyData(person, (data) => {
+      setData(data)
+    })
+  }, [person])
+  return <BusyEditor data={data} setData={updateData} />
+}
+
+// A dialog to edit Busy info. Opens whenever person is set.
+export function BusyDialog({ person, setPerson }) {
+  const theme = useTheme()
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
+
+  function handleClose() {
+    setPerson(null)
+  }
+
+  if (!person) return
+  const fullName = Tomatic.formatName(person)
+  return (
+    <Dialog open fullScreen={fullScreen} scroll="paper" onClose={handleClose}>
+      <DialogTitle>{`Edita indisponibilitat - ${fullName}`}</DialogTitle>
+      <DialogContent>
+        <Paper>
+          <TomaticBusyEditor person={person} />
+        </Paper>
+      </DialogContent>
+      <DialogActions>
+        <Button variant="contained" onClick={handleClose}>{'Tanca'}</Button>
+      </DialogActions>
+    </Dialog>
   )
 }

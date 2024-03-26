@@ -16,11 +16,8 @@ import DeleteIcon from '@mui/icons-material/Delete'
 //import GroupRemoveIcon from '@mui/icons-material/GroupRemove'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import Tomatic from '../services/tomatic'
-import editAvailabilities from '../mithril/components/busyeditor'
-import MithrilWrapper from '../containers/MithrilWrapper'
-import MithrilStyler from '../containers/MithrilStyler'
+import { BusyDialog } from './BusyEditor'
 import { useSubscriptable } from '../services/subscriptable'
-import { Dialog as MithrilDialog } from 'polythene-mithril-dialog'
 import { useDialog } from './DialogProvider'
 
 // Translates Tomatic structures to TableEditor compatible ones
@@ -194,6 +191,7 @@ function camelize(text) {
 
 function PersonsTable() {
   const [openDialog, closeDialog] = useDialog()
+  const [personToEditBusy, setPersonToEditBusy] = React.useState(null)
   const persons = useSubscriptable(Tomatic.persons)
   const rows = React.useMemo(() => {
     return compileData(persons)
@@ -269,7 +267,7 @@ function PersonsTable() {
   }
 
   function handleStartBusyEditor(person) {
-    editAvailabilities(person.id)
+    setPersonToEditBusy(person.id)
   }
 
   const actions = [
@@ -287,7 +285,7 @@ function PersonsTable() {
       icon: <GroupAddIcon />,
     },
     {
-      title: 'Remove from Grou',
+      title: 'Remove from Group',
       icon: <GroupRemoveIcon />,
     },
     */
@@ -323,7 +321,7 @@ function PersonsTable() {
         selectionActions={selectionActions}
         itemActions={itemActions}
       ></TableEditor>
-      <MithrilWrapper component={MithrilStyler(MithrilDialog)} />
+      <BusyDialog person={personToEditBusy} setPerson={setPersonToEditBusy} />
     </>
   )
 }

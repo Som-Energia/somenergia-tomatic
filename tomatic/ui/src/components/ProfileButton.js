@@ -22,57 +22,17 @@ import Tomatic from '../services/tomatic'
 import Auth from '../services/auth'
 import { contrast } from '../mithril/components/colorutils'
 import AuthContext from '../contexts/AuthContext'
-import editAvailabilities from '../mithril/components/busyeditor'
 import editPerson from '../mithril/components/editperson'
 import { useDialog } from './DialogProvider'
 import { CopyCalendarDialog } from './CopyCalendarDialog'
 import EmulateCallDialog from './EmulateCallDialog'
+import { useNavigate } from 'react-router-dom'
 
 var openCalendarDialog = () => {}
 var openCallEmulationDialog = () => {}
 
-const menuProfile = [
-  {
-    text: 'Perfil',
-    icon: <IconSettings />,
-    onclick: () => {
-      editPerson(Auth.username())
-    },
-  },
-  {
-    text: 'Indisponibilitats',
-    icon: <IconEventBusy />,
-    onclick: () => {
-      editAvailabilities(Auth.username())
-    },
-  },
-  {
-    text: 'Exporta calendari',
-    icon: <CalendarMonthIcon />,
-    onclick: () => {
-      openCalendarDialog(Auth.username())
-    },
-  },
-  {
-    text: 'Kumato mode',
-    icon: <IconKumato />,
-    onclick: Tomatic.toggleKumato,
-  },
-  {
-    text: 'Emula trucada entrant',
-    icon: '🤙',
-    onclick: () => {
-      openCallEmulationDialog()
-    },
-  },
-  {
-    text: 'Logout',
-    icon: <IconLogout />,
-    onclick: Auth.logout,
-  },
-]
-
 function ProfileButton() {
+  const navigate = useNavigate()
   const { userid, fullname, initials, color, avatar } =
     React.useContext(AuthContext)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
@@ -83,6 +43,51 @@ function ProfileButton() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
   }
+
+  function openBusyPage(person) {
+    navigate(`/Indisponibilitats/${person}`)
+  }
+
+  const menuProfile = [
+    {
+      text: 'Perfil',
+      icon: <IconSettings />,
+      onclick: () => {
+        editPerson(Auth.username())
+      },
+    },
+    {
+      text: 'Indisponibilitats',
+      icon: <IconEventBusy />,
+      onclick: () => {
+        openBusyPage(Auth.username())
+      },
+    },
+    {
+      text: 'Exporta calendari',
+      icon: <CalendarMonthIcon />,
+      onclick: () => {
+        openCalendarDialog(Auth.username())
+      },
+    },
+    {
+      text: 'Kumato mode',
+      icon: <IconKumato />,
+      onclick: Tomatic.toggleKumato,
+    },
+    {
+      text: 'Emula trucada entrant',
+      icon: '🤙',
+      onclick: () => {
+        openCallEmulationDialog()
+      },
+    },
+    {
+      text: 'Logout',
+      icon: <IconLogout />,
+      onclick: Auth.logout,
+    },
+  ]
 
   const [openDialog, closeDialog] = useDialog()
 
