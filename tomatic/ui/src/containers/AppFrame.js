@@ -27,6 +27,10 @@ import LoginRequired from '../containers/LoginRequired'
 import { Link, useNavigate } from 'react-router-dom'
 import extraMenuOptions from '../services/extramenu'
 import Tomatic from '../services/tomatic'
+import MithrilWrapper from '../containers/MithrilWrapper'
+import MithrilStyler from '../containers/MithrilStyler'
+import { Dialog as MithrilDialog } from 'polythene-mithril-dialog'
+
 
 const pages = [
   {
@@ -359,6 +363,7 @@ function ResponsiveAppBar({ children }) {
         }}
       >
         <LoginRequired>{children}</LoginRequired>
+        <MithrilWrapper component={MithrilStyler(MithrilDialog)} />
       </Box>
       <SnackbarLogger />
     </Box>

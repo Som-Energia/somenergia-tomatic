@@ -4,9 +4,6 @@ import TimeTable from './TimeTable'
 import Doc from './Doc'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
-import MithrilWrapper from '../containers/MithrilWrapper'
-import MithrilStyler from '../containers/MithrilStyler'
-import { Dialog as MithrilDialog } from 'polythene-mithril-dialog'
 import { useSubscriptable } from '../services/subscriptable'
 
 function ForcedTurns() {
@@ -49,7 +46,6 @@ function ForcedTurns() {
           removeColumn={removeColumn}
         ></TimeTable>
       </Box>
-      <MithrilWrapper component={MithrilStyler(MithrilDialog)} />
     </>
   )
 }
