@@ -93,6 +93,7 @@
   <dia:layer name="Fons" visible="true" connectable="false"/>
   <dia:layer name="Fons" visible="true" connectable="false"/>
   <dia:layer name="Fons" visible="true" connectable="false"/>
+  <dia:layer name="Fons" visible="true" connectable="false"/>
   <dia:layer name="Fons" visible="true" connectable="true" active="true">
     <dia:object type="UML - Node" version="0" id="O0">
       <dia:attribute name="obj_pos">
@@ -815,6 +816,32 @@
       </dia:attribute>
       <dia:attribute name="fill_colour">
         <dia:color val="#ffffffff"/>
+      </dia:attribute>
+    </dia:object>
+    <dia:object type="Standard - Image" version="0" id="O14">
+      <dia:attribute name="obj_pos">
+        <dia:point val="44.3,10.4"/>
+      </dia:attribute>
+      <dia:attribute name="obj_bb">
+        <dia:rectangle val="44.3,10.4;49.3,15.4"/>
+      </dia:attribute>
+      <dia:attribute name="elem_corner">
+        <dia:point val="44.3,10.4"/>
+      </dia:attribute>
+      <dia:attribute name="elem_width">
+        <dia:real val="5"/>
+      </dia:attribute>
+      <dia:attribute name="elem_height">
+        <dia:real val="5"/>
+      </dia:attribute>
+      <dia:attribute name="draw_border">
+        <dia:boolean val="false"/>
+      </dia:attribute>
+      <dia:attribute name="keep_aspect">
+        <dia:boolean val="true"/>
+      </dia:attribute>
+      <dia:attribute name="file">
+        <dia:string>#../tomatic/ui/public/tomatic-logo.svg#</dia:string>
       </dia:attribute>
     </dia:object>
   </dia:layer>
