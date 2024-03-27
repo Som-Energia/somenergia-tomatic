@@ -3,6 +3,8 @@
 ## Unreleased
 
 - mithril callinfo files cleaned
+- Busy editor migrated to React
+- Only admins can edit others profile
 
 ## 5.6.0 2024-03-22
 
