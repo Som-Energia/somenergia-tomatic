@@ -206,19 +206,19 @@ def retireOldTimeTable(user = Depends(validatedUser)):
 
 @app.get('/api/forcedturns')
 @yamlerrors
-def graellaTornsFixesYaml(user = Depends(validatedUser)):
+async def graellaTornsFixesYaml(user = Depends(validatedUser)):
     timetable = forcedTurns.load()
     return yamlfy(**timetable)
 
 @app.patch('/api/forcedturns/{day}/{houri}/{turni}/{name}')
 @yamlerrors
-async def editSlot(day, houri: int, turni: int, name, request: Request, user = Depends(validatedUser)):
+async def editFixedSlot(day, houri: int, turni: int, name, request: Request, user = Depends(validatedUser)):
     user=user['username']
     try:
         forcedTurns.editSlot(day, houri, turni, name, user)
     except schedulestorageforcedturns.BadEdit as e:
         raise ApiError(str(e))
-    return graellaTornsFixesYaml()
+    return await graellaTornsFixesYaml()
 
 @app.patch('/api/forcedturns/addColumn')
 @yamlerrors
@@ -227,16 +227,16 @@ async def addColumn():
         forcedTurns.addColumn()
     except schedulestorageforcedturns.BadEdit as e:
         raise ApiError(str(e))
-    return graellaTornsFixesYaml()
+    return await graellaTornsFixesYaml()
 
 @app.patch('/api/forcedturns/removeColumn')
 @yamlerrors
-async def addColumn():
+async def removeColumn():
     try:
         forcedTurns.removeColumn()
     except schedulestorageforcedturns.BadEdit as e:
         raise ApiError(str(e))
-    return graellaTornsFixesYaml()
+    return await graellaTornsFixesYaml()
 
 @app.get('/api/graella-{week}.yaml')
 @app.get('/api/graella/{week}')
@@ -255,7 +255,7 @@ async def editSlot(week, day, houri: int, turni: int, name, request: Request, us
         schedules.editSlot(week, day, houri, turni, name, user)
     except schedulestorage.BadEdit as e:
         raise ApiError(str(e))
-    return graellaYaml(week)
+    return await graellaYaml(week)
 
 
 def cachedQueueStatus(force=False):
