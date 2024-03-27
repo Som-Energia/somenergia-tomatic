@@ -305,13 +305,17 @@ function BusyList({ title, entries, setEntries, isOneShot }) {
       </ListSubheader>
       {entries === undefined ? (
         <>
-          <ListItem sx={{justifyContent: 'center'}}>
+          <ListItem sx={{ justifyContent: 'center' }}>
             <CircularProgress />
           </ListItem>
-          <ListItem sx={{justifyContent: 'center'}}>{'Obtenint dades...'}</ListItem>
+          <ListItem sx={{ justifyContent: 'center' }}>
+            {'Obtenint dades...'}
+          </ListItem>
         </>
       ) : entries.length === 0 ? (
-        <ListItem sx={{justifyContent: 'center'}}>{"No n'heu establert cap"}</ListItem>
+        <ListItem sx={{ justifyContent: 'center' }}>
+          {"No n'heu establert cap"}
+        </ListItem>
       ) : null}
       {entries &&
         entries.map((entry, index) => (
