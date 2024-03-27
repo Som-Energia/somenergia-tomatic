@@ -12,8 +12,6 @@ import FormHelperText from '@mui/material/FormHelperText'
 import FormLabel from '@mui/material/FormLabel'
 import FormControl from '@mui/material/FormControl'
 import FormControlLabel from '@mui/material/FormControlLabel'
-import RadioGroup from '@mui/material/RadioGroup'
-import Radio from '@mui/material/Radio'
 import MenuItem from '@mui/material/MenuItem'
 import Alert from '@mui/material/Alert'
 import Typography from '@mui/material/Typography'
@@ -28,37 +26,8 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import { useTheme } from '@mui/material/styles'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
+import RadioField from '../../components/RadioField'
 import Tomatic from '../../services/tomatic'
-
-function RadioField({
-  name,
-  variant = 'outlined',
-  value,
-  onChange,
-  options,
-  helperText,
-  label,
-}) {
-  return (
-    <FormControl variant={variant}>
-      <FormLabel id={name + '-label'} variant={variant}>
-        {label}
-      </FormLabel>
-      <RadioGroup
-        row
-        aria-labelledby={name + '-label'}
-        name={name}
-        value={value}
-        onChange={onChange}
-      >
-        {options.map((option, i) => (
-          <FormControlLabel control={<Radio />} key={i} {...option} />
-        ))}
-      </RadioGroup>
-      <FormHelperText id={name + '-helper'}>{helperText}</FormHelperText>
-    </FormControl>
-  )
-}
 
 function TurnsDisplay({ turns }) {
   return (
