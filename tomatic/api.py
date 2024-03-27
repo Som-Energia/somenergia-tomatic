@@ -9,6 +9,7 @@ from fastapi import (
     File,
     UploadFile,
     Depends,
+    HTTPException,
 )
 from fastapi.responses import (
     FileResponse,
@@ -75,7 +76,7 @@ def thisweek():
     return format(now().date() - timedelta(days=now().weekday()))
 
 from .planner_api import api as Planner
-from .auth import router as Auth, validatedUser, adminUser
+from .auth import router as Auth, validatedUser, userInGroup
 from fastapi.websockets import WebSocket
 
 app = FastAPI()
@@ -90,9 +91,14 @@ app.add_middleware(
 app.include_router(Planner, prefix='/api/planner')
 app.include_router(Auth, prefix='/api/auth')
 
-
-
 class ApiError(Exception): pass
+
+def requireAdmin(user, message="Only admins can perform this operation"):
+    if not userInGroup(user, 'admin'):
+        raise HTTPException(
+            status_code=403,
+            detail=message,
+        )
 
 def yamlfy(status=200, data=[], **kwd):
     output = ns(data, **kwd)
@@ -114,6 +120,8 @@ async def yamlerrors(f,*args,**kwd):
             error=format(e),
             status=400,
             )
+    except HTTPException:
+        raise
     except Exception as e:
         error("UnexpectedError: {}", e)
         import traceback
@@ -330,13 +338,14 @@ def personInfo():
 async def setPersonInfo(person, request: Request, user = Depends(validatedUser)):
     data = ns.loads(await request.body())
     if person != user.username:
-        adminUser(user)
+        requireAdmin(user)
     persons.update(person, data)
     return yamlfy(persons=persons.persons())
 
 @app.delete('/api/person/{person}')
 @yamlerrors
-async def deletePerson(person, user = Depends(adminUser)):
+async def deletePerson(person, user = Depends(validatedUser)):
+    requireAdmin(user)
     persons.delete(person)
     return yamlfy(persons=persons.persons())
 
