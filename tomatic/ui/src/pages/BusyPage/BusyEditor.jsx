@@ -365,7 +365,7 @@ export default function BusyEditor({ data, setData }) {
 
 /// Busy editor taking data from Tomatic
 export function TomaticBusyEditor({ person }) {
-  const [data, setData] = React.useState({ oneshot: [], weekly: [] })
+  const [data, setData] = React.useState(null)
 
   function updateData(newData) {
     setData(newData)
@@ -373,6 +373,7 @@ export function TomaticBusyEditor({ person }) {
   }
 
   React.useEffect(() => {
+    setData(null)
     Tomatic.retrieveBusyData(person, (data) => {
       setData(data)
     })
