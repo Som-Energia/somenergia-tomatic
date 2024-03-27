@@ -23,6 +23,7 @@ import os
 from datetime import datetime, timedelta, timezone
 import urllib.parse
 import decorator
+import inspect
 import erppeek
 from pathlib import Path
 from yamlns import namespace as ns
@@ -101,29 +102,12 @@ def yamlfy(status=200, data=[], **kwd):
     )
 
 @decorator.decorator
-async def ayamlerrors(f,*args,**kwd):
+async def yamlerrors(f,*args,**kwd):
     try:
-        return await f(*args,**kwd)
-    except ApiError as e:
-        error("ApiError: {}", e)
-        return yamlfy(
-            error=format(e),
-            status=400,
-            )
-    except Exception as e:
-        error("UnexpectedError: {}", e)
-        import traceback
-        error(''.join(traceback.format_exc()))
-        return yamlfy(
-            error=format(e),
-            status=500,
-            )
-
-
-@decorator.decorator
-def yamlerrors(f,*args,**kwd):
-    try:
-        return f(*args,**kwd)
+        result = f(*args,**kwd)
+        if inspect.isawaitable(f):
+            return await result
+        return result
     except ApiError as e:
         error("ApiError: {}", e)
         return yamlfy(
@@ -184,7 +168,7 @@ def log_user_event(user, event):
         logfile.write(logline)
 
 @app.post('/api/logger/{event}')
-@ayamlerrors
+@yamlerrors
 async def logger(request: Request, event: str):
     log = ns.loads(await request.body())
     user = log.get('user', 'anonymous')
@@ -219,7 +203,7 @@ def graellaTornsFixesYaml(user = Depends(validatedUser)):
     return yamlfy(**timetable)
 
 @app.patch('/api/forcedturns/{day}/{houri}/{turni}/{name}')
-@ayamlerrors
+@yamlerrors
 async def editSlot(day, houri: int, turni: int, name, request: Request, user = Depends(validatedUser)):
     user=user['username']
     try:
@@ -229,7 +213,7 @@ async def editSlot(day, houri: int, turni: int, name, request: Request, user = D
     return graellaTornsFixesYaml()
 
 @app.patch('/api/forcedturns/addColumn')
-@ayamlerrors
+@yamlerrors
 async def addColumn():
     try:
         forcedTurns.addColumn()
@@ -238,7 +222,7 @@ async def addColumn():
     return graellaTornsFixesYaml()
 
 @app.patch('/api/forcedturns/removeColumn')
-@ayamlerrors
+@yamlerrors
 async def addColumn():
     try:
         forcedTurns.removeColumn()
@@ -255,7 +239,7 @@ def graellaYaml(week, user = Depends(validatedUser)):
     return yamlfy(**schedule)
 
 @app.patch('/api/graella/{week}/{day}/{houri}/{turni}/{name}')
-@ayamlerrors
+@yamlerrors
 async def editSlot(week, day, houri: int, turni: int, name, request: Request, user = Depends(validatedUser)):
     #user = (await request.body()).decode('utf8').split('"')[1]
     user=user['username']
@@ -342,7 +326,7 @@ def personInfo():
     return yamlfy(persons=result)
 
 @app.post('/api/person/{person}')
-@ayamlerrors
+@yamlerrors
 async def setPersonInfo(person, request: Request, user = Depends(validatedUser)):
     data = ns.loads(await request.body())
     if person != user.username:
@@ -351,7 +335,7 @@ async def setPersonInfo(person, request: Request, user = Depends(validatedUser))
     return yamlfy(persons=persons.persons())
 
 @app.delete('/api/person/{person}')
-@ayamlerrors
+@yamlerrors
 async def deletePerson(person, user = Depends(adminUser)):
     persons.delete(person)
     return yamlfy(persons=persons.persons())
@@ -363,7 +347,7 @@ def busy(person, user = Depends(validatedUser)):
     return yamlfy(**busy.busy(person))
 
 @app.post('/api/busy/{person}')
-@ayamlerrors
+@yamlerrors
 async def busy_post(person, request: Request, user = Depends(validatedUser)):
     from . import busy
     data = ns.loads(await request.body())
