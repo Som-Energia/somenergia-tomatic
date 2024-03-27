@@ -3,11 +3,18 @@
 This page explains topics relevant just to developers
 hacking Tomàtic.
 
+- [Context](#context)
 - [Autoreload setup](#autoreload-mode)
 - [Release process](#release-process)
 - [Upgrading servers](#upgrading-servers)
 - [Code map](#code-map)
 - [Files](#files)
+
+## Context
+
+See [Context diagram and explication](tomatic-context.md)
+to get a summary of the persons and systems
+Tomatic interacts with.
 
 ## Setup
 

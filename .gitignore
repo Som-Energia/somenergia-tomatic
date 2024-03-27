@@ -19,7 +19,6 @@ package-lock.json
 dbconfig.py
 cover
 .venv
-
 .eggs
 
 # Byte-compiled / optimized / DLL files
@@ -76,6 +75,7 @@ docs/_build/
 target/
 
 # temps
+*.autosave
 *.sw?
 *~
 #credentials
