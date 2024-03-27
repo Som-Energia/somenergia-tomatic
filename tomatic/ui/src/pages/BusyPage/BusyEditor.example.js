@@ -14,6 +14,9 @@ export default function Example() {
       <h6>Local data BusyEditor</h6>
       <BusyEditor name={'mengano'} {...{ data, setData }} />
       <pre>{JSON.stringify(data, true, ' ')}</pre>
+      <Button toggle onClick={()=>{
+        setData(data?null:{oneshot: [], weekly: []})
+      }}>{"Emulate loading"}</Button>
       </Paper>
       <Paper>
         <h6>API based BusyEditor</h6>

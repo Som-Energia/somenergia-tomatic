@@ -22,6 +22,7 @@ import ListItem from '@mui/material/ListItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import ListSubheader from '@mui/material/ListSubheader'
+import CircularProgress from '@mui/material/CircularProgress'
 import IconButton from '@mui/material/IconButton'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useTheme } from '@mui/material/styles'
@@ -238,6 +239,50 @@ function nextMonday(date) {
   return d.toISOString().substr(0, 10)
 }
 
+function BusyListItem({ entry, onRemove, onEdit }) {
+  var day = entry.date || Tomatic.weekday(entry.weekday, 'Tots els dies')
+  return (
+    <ListItem
+      button
+      dense
+      secondaryAction={
+        <IconButton
+          aria-label={'Esborra'}
+          onClick={(ev) => {
+            onRemove()
+            ev.stopPropagation()
+          }}
+        >
+          <DeleteIcon />
+        </IconButton>
+      }
+      onClick={onEdit}
+    >
+      <ListItemIcon
+        style={{
+          transform: 'rotate(-45deg)',
+          fontSize: '80%',
+        }}
+      >
+        {entry.optional ? 'Opcional' : ''}
+      </ListItemIcon>
+      <ListItemText
+        primary={
+          <Stack direction="row" justifyContent="space-between" gap={1} mr={3}>
+            <Typography>{day}</Typography>
+            <TurnsDisplay turns={entry.turns} />
+          </Stack>
+        }
+        secondary={
+          <Typography variant="body2" noWrap>
+            {entry.reason || '--'}
+          </Typography>
+        }
+      ></ListItemText>
+    </ListItem>
+  )
+}
+
 function BusyList({ title, entries, setEntries, isOneShot }) {
   const [entryToEdit, setEntryToEdit] = React.useState(undefined)
   const [onApply, setOnApply] = React.useState(undefined)
@@ -292,6 +337,7 @@ function BusyList({ title, entries, setEntries, isOneShot }) {
           {title}
           <div>
             <IconButton
+              disabled={!entries}
               aria-label={'Afegeix nova indisponibilitat'}
               onClick={addEntry}
             >
@@ -300,51 +346,25 @@ function BusyList({ title, entries, setEntries, isOneShot }) {
           </div>
         </Stack>
       </ListSubheader>
-      {entries.map((entry, index) => {
-        var day = entry.date || Tomatic.weekday(entry.weekday, 'Tots els dies')
-        return (
-          <ListItem
-            key={index}
-            button
-            dense
-            secondaryAction={
-              <IconButton
-                aria-label={'Esborra'}
-                onClick={(ev) => {
-                  removeEntry(index)
-                  ev.stopPropagation()
-                }}
-              >
-                <DeleteIcon />
-              </IconButton>
-            }
-            onClick={() => editEntry(index)}
-          >
-            <ListItemIcon
-              style={{
-                transform: 'rotate(-45deg)',
-                fontSize: '80%',
-              }}
-            >
-              {entry.optional ? 'Opcional' : ''}
-            </ListItemIcon>
-            <ListItemText
-              primary={
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  gap={1}
-                  mr={3}
-                >
-                  <Typography>{day}</Typography>
-                  <TurnsDisplay turns={entry.turns} />
-                </Stack>
-              }
-              secondary={<Typography variant="body2" noWrap>{entry.reason || '--'}</Typography>}
-            ></ListItemText>
+      {entries === undefined ? (
+        <>
+          <ListItem sx={{justifyContent: 'center'}}>
+            <CircularProgress />
           </ListItem>
-        )
-      })}
+          <ListItem sx={{justifyContent: 'center'}}>{'Obtenint dades...'}</ListItem>
+        </>
+      ) : entries.length === 0 ? (
+        <ListItem sx={{justifyContent: 'center'}}>{"No n'heu establert cap"}</ListItem>
+      ) : null}
+      {entries &&
+        entries.map((entry, index) => (
+          <BusyListItem
+            key={index}
+            entry={entry}
+            onRemove={() => removeEntry(index)}
+            onEdit={() => editEntry(index)}
+          />
+        ))}
     </List>
   )
 }
@@ -361,12 +381,12 @@ export default function BusyEditor({ data, setData }) {
     >
       <BusyList
         title={'Setmanals'}
-        entries={data.weekly}
+        entries={data?.weekly}
         setEntries={(entries) => setData({ ...data, weekly: entries })}
       />
       <BusyList
         title={'Puntuals'}
-        entries={data.oneshot}
+        entries={data?.oneshot}
         setEntries={(entries) => setData({ ...data, oneshot: entries })}
         isOneShot
       />
@@ -411,7 +431,9 @@ export function BusyDialog({ person, setPerson }) {
         </Paper>
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" onClick={handleClose}>{'Tanca'}</Button>
+        <Button variant="contained" onClick={handleClose}>
+          {'Tanca'}
+        </Button>
       </DialogActions>
     </Dialog>
   )
