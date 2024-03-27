@@ -12,7 +12,7 @@ hacking Tomàtic.
 
 ## Context
 
-See [Context diagram and explication](tomatic-context.md)
+See [Context diagram and explication](architecture-context.md)
 to get a summary of the persons and systems
 Tomatic interacts with.
 

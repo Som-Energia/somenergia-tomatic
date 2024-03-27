@@ -3,7 +3,7 @@
 This document summarizes Tomatic interactions
 with other entities (persons and systems).
 
-![](tomatic-context.svg)
+![](architecture-context.svg)
 
 ## Persons
 
