@@ -51,7 +51,9 @@ Interactions:
 
 - Tomatic will register new calls as received by the PBX
 - Tomatic will register typifications on calls as the agents make them
-- Coordinators will query the call registry to extract insights
+- Tomatic will obtain typification categories defined in the Call Registry
+- Coordinators will define typifications categories in the Call Registry
+- Coordinators will analyse typified calls in the Call Registry to extract insights
 
 ## Front Office (Oficina Virtual Comer)
 
