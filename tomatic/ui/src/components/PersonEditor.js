@@ -143,12 +143,12 @@ export default function PersonEditor(props) {
         ),
       })
     },
-    [errors],
+    [],
   )
 
   React.useEffect(() => {
     resetData(person)
-  }, [person, resetData])
+  }, [person])
 
   function updater(field) {
     return (ev) => {

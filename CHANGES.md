@@ -2,9 +2,13 @@
 
 ## Unreleased
 
+- Only admins can edit others profile
 - mithril callinfo files cleaned
 - Busy editor migrated to React
-- Only admins can edit others profile
+- Fix: PersonEditor looped forever in reset
+- Upgrade notes:
+    - Because admin group is now required to edit others profile ensure
+      that certain users belong to this group.
 
 ## 5.6.0 2024-03-22
 
