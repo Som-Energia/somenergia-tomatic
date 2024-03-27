@@ -19,17 +19,17 @@ The PBX is a system managing incomming calls and distributing them to the agents
 
 Interactions:
 
-- Tomatic will update the database of agents and their extensions to the PBX
-- Tomatic will setup in the PBX the extensions (agents) attending lines in a given moment (the public attention queue)
-- Tomatic will pause and resume people on the queue at request
-- Tomatic will ask the PBX about statistical information (calls received/lost, timings...)
+- Tomatic will setup on the PBX the list of agents and their extensions
+- Tomatic will setup on the PBX the agents attending lines in a given shift (public attention queue)
+- Tomatic will pause, resume or add agents to the queue at agent/coordinator request
 - Tomatic will ask the PBX on the current status of the queue (line status, waiting lines...)
 - PBX will notify Tomatic of incomming calls as they arrive
-- [NIY] PBX will notify Tomatic noticeable realtime events (agents not responding...)
+- TODO: PBX will notify Tomatic noticeable realtime events (agents not responding...)
+- Tomatic will ask the PBX about statistical information (calls received/lost, timings...)
 
 ## Softphones (Linphone)
 
-Operators use the Softphones to receive calls from the PBX.
+Agents use Softphones in their computers to receive calls from the PBX.
 
 Interactions:
 
@@ -40,7 +40,7 @@ Interactions:
 The ERP holds transactional information and performs the bussiness logic.
 
 - Tomatic will ask bussiness information related to an incomming phone or to an specific query from the agent.
-- [NIY] Tomatic will redirect the user to the ERP web frontend to start business operative
+- TODO: Tomatic will redirect the user to the ERP web frontend to start business operative
 
 
 ## Call registry (Odoo)
@@ -60,17 +60,18 @@ The front office is a web application where customers can operate unattended.
 Interactions:
 
 - Tomatic will redirect agents to the OV using a hijacked user to help customers to spot problems
-- [NIY] Tomatic will ask the OV for the later operations a customer has made
+- TODO: Tomatic will ask the OV for the later operations a customer has made
 
 ## Human Resources System (Odoo Laboral)
 
-Human resources system stores information on the people working at Somenergia.
+Human resources system stores information on the people working at company.
 It holds information such as personal Vacations, common Holidays,
-Leaves, Teams...
+ongoing Leaves, Teams...
 
 Interactions:
 
-- Tomatic will aks the HRS for such information in order to plan attention timetables.
+- Tomatic will ask the HRS for holidays/vacations/leaves in order to plan attention timetables.
+- Tomatic will ask the HRS for teams/groups to apply role restrictions, topic routing...
 
 ## Internal Messaging (Google Chat)
 
@@ -81,7 +82,6 @@ Allowing broadcast team and personal messages.
 	- Shift changes announcements
 	- Daily stats
 	- Offline agents
-	- [NIY] Improcedent behaviours
 	- Custom messages from coordinators
 - Tomatic will send personal message to the agents
 	- Shift changes
@@ -93,7 +93,7 @@ The mailbox system enables coordinated team response to incomming email.
 Interactions:
 
 - Tomatic can redirect the user to a search of emails related with a given customer
-- [NIY] Tomatic can show a list of email comunications with a given customer
+- TODO: Tomatic can retrieve from the mailbox system a list of email comunications related to given customer
 
 ## Authentiation server (Google Auth)
 
@@ -106,8 +106,4 @@ Interaction:
 - Callinfo will redirect user to the Auth server for them to autheticate themselves.
 
 
-
------
-
-[NIY]:() Not yet implemented
 
