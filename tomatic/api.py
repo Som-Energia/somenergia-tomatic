@@ -105,7 +105,7 @@ def yamlfy(status=200, data=[], **kwd):
 async def yamlerrors(f,*args,**kwd):
     try:
         result = f(*args,**kwd)
-        if inspect.isawaitable(f):
+        if inspect.isawaitable(result):
             return await result
         return result
     except ApiError as e:
