@@ -20,7 +20,7 @@ import appBackground_tomatic from '../images/tomatic_bg.jpg'
 import appBackground_pebrotic from '../images/pebrotic.jpg'
 import appBackground_ketchup from '../images/ketchup.png'
 import appLogo from '../images/tomatic-logo-24.png'
-import SnackbarLogger from '../components/SnackbarLogger'
+import SnackbarMessages from '../components/SnackbarMessages'
 import NavigationDrawer, { drawerWidth } from '../components/NavigationDrawer'
 import ProfileButton from '../components/ProfileButton'
 import LoginRequired from '../containers/LoginRequired'
@@ -365,7 +365,7 @@ function ResponsiveAppBar({ children }) {
         <LoginRequired>{children}</LoginRequired>
         <MithrilWrapper component={MithrilStyler(MithrilDialog)} />
       </Box>
-      <SnackbarLogger />
+      <SnackbarMessages />
     </Box>
   )
 }

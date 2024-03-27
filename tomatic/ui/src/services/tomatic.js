@@ -2,6 +2,7 @@
 import m from 'mithril'
 import prop from 'mithril/stream'
 import api from './api'
+import messages from './messages'
 import subscriptable from './subscriptable'
 m.prop = prop
 
@@ -14,10 +15,6 @@ const Tomatic = {
 
 Tomatic.variant = 'tomatic'
 
-Tomatic.loggers = []
-Tomatic.addLogger = function (logger) {
-  this.loggers.push(logger)
-}
 Tomatic.queue = m.prop([])
 Tomatic.persons = subscriptable(m.prop({}))
 Tomatic.init = function () {
@@ -480,17 +477,11 @@ Tomatic.requestWeeks = function () {
 }
 
 Tomatic.log = function (message) {
-  console.log('log: ', message)
-  Tomatic.loggers.forEach((logger) => {
-    logger.log(message)
-  })
+  messages.log(message)
 }
 
 Tomatic.error = function (message) {
-  console.log('error: ', message)
-  Tomatic.loggers.forEach((logger) => {
-    logger.error(message)
-  })
+  messages.error(message)
 }
 
 Tomatic.sendBusyData = function (name, data) {

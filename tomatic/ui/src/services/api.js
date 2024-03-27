@@ -1,6 +1,7 @@
 import m from 'mithril'
 import jsyaml from 'js-yaml'
 import Auth from './auth'
+import messages from './messages'
 
 const debugApi = false
 //const apiPrefix = 'http://localhost:4555'
