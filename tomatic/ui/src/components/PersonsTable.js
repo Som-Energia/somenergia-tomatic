@@ -16,7 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 //import GroupRemoveIcon from '@mui/icons-material/GroupRemove'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import Tomatic from '../services/tomatic'
-import { BusyDialog } from '../pages/BusyPage/BusyEditor'
+import BusyDialog from '../pages/BusyPage/BusyDialog'
 import { useSubscriptable } from '../services/subscriptable'
 import { useDialog } from './DialogProvider'
 

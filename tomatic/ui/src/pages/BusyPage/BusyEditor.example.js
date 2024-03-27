@@ -3,7 +3,8 @@ import Container from '@mui/material/Container'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
 import BusyEditor from './BusyEditor'
-import { BusyDialog, TomaticBusyEditor } from './BusyEditor'
+import { TomaticBusyEditor } from './BusyEditor'
+import BusyDialog from './BusyDialog'
 
 export default function Example() {
   const [data, setData] = React.useState({ oneshot: [], weekly: [] })
