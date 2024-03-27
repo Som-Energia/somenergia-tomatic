@@ -4,14 +4,9 @@ import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
-import Checkbox from '@mui/material/Checkbox'
 import Stack from '@mui/material/Stack'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
-import FormHelperText from '@mui/material/FormHelperText'
-import FormLabel from '@mui/material/FormLabel'
-import FormControl from '@mui/material/FormControl'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import MenuItem from '@mui/material/MenuItem'
 import Alert from '@mui/material/Alert'
 import Typography from '@mui/material/Typography'
@@ -27,6 +22,7 @@ import { useTheme } from '@mui/material/styles'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import RadioField from '../../components/RadioField'
+import MultiCheckField from '../../components/MultiCheckField'
 import Tomatic from '../../services/tomatic'
 
 function TurnsDisplay({ turns }) {
@@ -48,39 +44,31 @@ function TurnsDisplay({ turns }) {
   )
 }
 
-function TurnsEditor({
-  name,
-  variant = 'outlined',
-  value,
-  onChange,
-  options,
-  helperText,
-  label,
-}) {
+function TurnsEditor({ value, onChange, helperText, label }) {
   const hours = Tomatic.grid().hours
+  const options = Array.from(value).map((value, i) => {
+    return {
+      label: `${hours[i]} - ${hours[i + 1]}`,
+    }
+  })
+  const translatedValues = Array.from(value).map(
+    (value) => value === '1'
+  )
   function update(index, checked) {
     onChange(
       value.substr(0, index) + (checked ? '1' : '0') + value.substr(index + 1),
     )
   }
   return (
-    <FormControl variant={variant}>
-      <FormLabel id={name + '-label'} variant={variant}>
-        {label}
-      </FormLabel>
-      {Array.from(value).map(function (active, i) {
-        return (
-          <FormControlLabel
-            key={i}
-            label={`${hours[i]} - ${hours[i + 1]}`}
-            control={<Checkbox />}
-            checked={active === '1'}
-            onChange={(ev) => update(i, ev.target.checked)}
-          />
-        )
-      })}
-      <FormHelperText id={name + '-helper'}>{helperText}</FormHelperText>
-    </FormControl>
+    <MultiCheckField
+      name={'turns'}
+      row={false}
+      helperText={helperText}
+      label={label}
+      value={translatedValues}
+      onChange={update}
+      options={options}
+    />
   )
 }
 
