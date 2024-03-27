@@ -345,6 +345,8 @@ def personInfo():
 @ayamlerrors
 async def setPersonInfo(person, request: Request, user = Depends(validatedUser)):
     data = ns.loads(await request.body())
+    if person != user.username:
+        adminUser(user)
     persons.update(person, data)
     return yamlfy(persons=persons.persons())
 
