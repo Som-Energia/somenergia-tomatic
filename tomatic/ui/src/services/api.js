@@ -33,6 +33,11 @@ var api = {
       .catch(function (error) {
         debugApi &&
           console.log(options.method || 'GET', options.url, 'Error', error)
+        // Forbidden
+        if (error.code === 403) {
+          messages.error("Operació no permesa")
+          return undefined
+        }
         // Unauthorized
         if (error.code === 401) {
           Auth.logout()
