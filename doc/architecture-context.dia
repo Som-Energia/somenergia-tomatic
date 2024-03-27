@@ -91,6 +91,8 @@
   <dia:layer name="Fons" visible="true" connectable="false"/>
   <dia:layer name="Fons" visible="true" connectable="false"/>
   <dia:layer name="Fons" visible="true" connectable="false"/>
+  <dia:layer name="Fons" visible="true" connectable="false"/>
+  <dia:layer name="Fons" visible="true" connectable="false"/>
   <dia:layer name="Fons" visible="true" connectable="true" active="true">
     <dia:object type="UML - Node" version="0" id="O0">
       <dia:attribute name="obj_pos">
@@ -167,7 +169,7 @@
         <dia:composite type="text">
           <dia:attribute name="string">
             <dia:string>#Business Logic
-(ERP)#</dia:string>
+(Gisce ERP)#</dia:string>
           </dia:attribute>
           <dia:attribute name="font">
             <dia:font family="sans" style="0" name="Helvetica"/>
@@ -219,7 +221,7 @@
         <dia:composite type="text">
           <dia:attribute name="string">
             <dia:string>#Call Registry
-(Odoo)#</dia:string>
+(Odoo Callinfo)#</dia:string>
           </dia:attribute>
           <dia:attribute name="font">
             <dia:font family="sans" style="0" name="Helvetica"/>
@@ -477,7 +479,7 @@
       <dia:attribute name="name">
         <dia:composite type="text">
           <dia:attribute name="string">
-            <dia:string>#Email Database
+            <dia:string>#Mailbox System
 (HelpScout)#</dia:string>
           </dia:attribute>
           <dia:attribute name="font">
@@ -530,7 +532,7 @@
         <dia:composite type="text">
           <dia:attribute name="string">
             <dia:string>#Human Resources
-(Odoo)#</dia:string>
+(Odoo Laboral)#</dia:string>
           </dia:attribute>
           <dia:attribute name="font">
             <dia:font family="sans" style="0" name="Helvetica"/>
@@ -707,7 +709,7 @@
         <dia:real val="0.10000000000000001"/>
       </dia:attribute>
       <dia:attribute name="line_colour">
-        <dia:color val="#ff9000ff"/>
+        <dia:color val="#ffd500ff"/>
       </dia:attribute>
       <dia:attribute name="fill_colour">
         <dia:color val="#f6fda3ff"/>
@@ -758,7 +760,7 @@
         <dia:real val="0.10000000000000001"/>
       </dia:attribute>
       <dia:attribute name="line_colour">
-        <dia:color val="#000000ff"/>
+        <dia:color val="#c82a8fff"/>
       </dia:attribute>
       <dia:attribute name="fill_colour">
         <dia:color val="#ffffffff"/>
