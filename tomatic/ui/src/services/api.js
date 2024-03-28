@@ -10,6 +10,7 @@ const apiPrefix = ''
 var api = {
   request: function (options) {
     options = { ...options }
+    const {context} = options
     options.config = function (xhr) {
       xhr.setRequestHeader('Authorization', 'Bearer ' + Auth.token())
     }
@@ -35,7 +36,7 @@ var api = {
           console.log(options.method || 'GET', options.url, 'Error', error)
         // Forbidden
         if (error.code === 403) {
-          messages.error("Operació no permesa")
+          messages.error("Operació no permesa", {context})
           return undefined
         }
         // Unauthorized

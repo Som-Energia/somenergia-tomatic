@@ -365,7 +365,7 @@ function ResponsiveAppBar({ children }) {
         <LoginRequired>{children}</LoginRequired>
         <MithrilWrapper component={MithrilStyler(MithrilDialog)} />
       </Box>
-      <SnackbarMessages />
+      <SnackbarMessages variant="filled"/>
     </Box>
   )
 }

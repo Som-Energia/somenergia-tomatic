@@ -2,7 +2,7 @@
 import api from '../services/api'
 import Auth from '../services/auth'
 import subscriptable from '../services/subscriptable'
-import Tomatic from '../services/tomatic'
+import messages from '../services/messages'
 import autofiltertype from '../services/autofiltertype'
 
 var websock = null
@@ -297,7 +297,7 @@ var retrieveInfo = function () {
   if (searchField === 'auto') searchField = autofiltertype(searchValue) || 'all'
   const encodedValue = encodeURIComponent(searchValue)
   function exitWithError(msg) {
-    Tomatic.error(msg)
+    messages.error(msg)
     CallInfo.results({ 1: 'error' })
   }
 

@@ -38,8 +38,10 @@ Tomatic.checkVersionPeriodically = function () {
 }
 
 Tomatic.checkVersion = function () {
+  const context = `Obtenint la versió del servidor`
   api
     .request({
+      context,
       url: '/api/version',
     })
     .then(function (response) {
@@ -54,7 +56,7 @@ Tomatic.checkVersion = function () {
         '.',
         'Reloading in 10s...',
       )
-      Tomatic.error(
+      messages.error(
         'Detectada nova versió en el servidor. Recarregant pàgina en 10 segons.',
       )
       setTimeout(function () {
@@ -120,7 +122,6 @@ Tomatic.restoreLine = function (line) {
 const queueRefreshPeriodSeconds = 2 * 60 // TODO: config param
 Tomatic.queueTimer = 0
 Tomatic.updateQueuePeriodically = function () {
-  console.log('Refreshing queue')
   clearTimeout(Tomatic.queueTimer)
   Tomatic.queueTimer = setTimeout(
     Tomatic.updateQueuePeriodically,
@@ -164,10 +165,10 @@ Tomatic.forcedTurnCell = function (day, houri, turni) {
 }
 
 Tomatic.editForcedTurn = function (day, houri, turni, name) {
-  // Direct edition, just for debug purposes
-  //Tomatic.grid().timetable[day][houri][turni] = name;
+  const context = `Editant el torn forçat ${day} ${houri} ${turni} ${name}`
   api
     .request({
+      context,
       method: 'PATCH',
       url: '/api/forcedturns/' + [day, houri, turni, name].join('/'),
     })
@@ -176,14 +177,13 @@ Tomatic.editForcedTurn = function (day, houri, turni, name) {
         Tomatic.requestForcedTurns()
       },
       function (error) {
-        Tomatic.error(
-          'Problemes editant els torns fixos: ' + (error || 'Inexperat'),
-        )
+        messages.error(error?.message || 'Error Inexperat', { context })
       },
     )
 }
 
 Tomatic.forcedTurnsAddColumn = function () {
+  const context = `Afegint línia als torns fixos`
   api
     .request({
       method: 'PATCH',
@@ -194,12 +194,13 @@ Tomatic.forcedTurnsAddColumn = function () {
         Tomatic.requestForcedTurns()
       },
       function (error) {
-        Tomatic.error('Problemes editant la graella: ' + (error || 'Inexperat'))
+        messages.error(error?.message || 'Error Inexperat', { context })
       },
     )
 }
 
 Tomatic.forcedTurnsRemoveColumn = function () {
+  const context = `Eliminant linia als torns fixos`
   api
     .request({
       method: 'PATCH',
@@ -210,7 +211,7 @@ Tomatic.forcedTurnsRemoveColumn = function () {
         Tomatic.requestForcedTurns()
       },
       function (error) {
-        Tomatic.error('Problemes editant la graella: ' + (error || 'Inexperat'))
+        messages.error(error?.message || 'Error Inexperat', { context })
       },
     )
 }
@@ -290,6 +291,7 @@ Tomatic.cell = function (day, houri, turni) {
 Tomatic.editCell = function (day, houri, turni, name, myname) {
   // Direct edition, just for debug purposes
   //Tomatic.grid().timetable[day][houri][turni] = name;
+  const context = `Editant la graella`
   api
     .request({
       method: 'PATCH',
@@ -303,14 +305,16 @@ Tomatic.editCell = function (day, houri, turni, name, myname) {
         Tomatic.requestGrid(Tomatic.grid().week)
       },
       function (error) {
-        Tomatic.error('Problemes editant la graella: ' + (error || 'Inexperat'))
+        messages.error(error || 'Error inexperat', { context })
       },
     )
 }
 
 Tomatic.deletePerson = function (id) {
+  const context = `Esborrant la usuaria '${id}'`
   api
     .request({
+      context,
       method: 'DELETE',
       url: '/api/person/' + id,
     })
@@ -319,15 +323,13 @@ Tomatic.deletePerson = function (id) {
         Tomatic.requestPersons()
       },
       function (error) {
-        console.log(error)
-        Tomatic.error(
-          'Problemes esborrant la persona: ' + (error.error || 'Inexperat'),
-        )
+        messages.error(error?.message || 'Error Inexperat', { context })
       },
     )
 }
 
 Tomatic.setPersonDataReact = function (id, data) {
+  const context = `Actualitzant dades de la usuaria ${id}`
   if (id === undefined) {
     id = data.id
   }
@@ -369,13 +371,14 @@ Tomatic.setPersonDataReact = function (id, data) {
         // ignore
         break
       default:
-        console.log('Unexpected person parameter', key)
+        messages.warn(`Unexpected person parameter '${key}'`, {context})
         break
     }
   }
   console.log('posting', postdata)
   api
     .request({
+      context,
       method: 'POST',
       url: '/api/person/' + id,
       body: postdata,
@@ -385,14 +388,12 @@ Tomatic.setPersonDataReact = function (id, data) {
         Tomatic.requestPersons()
       },
       function (error) {
-        console.log(error)
-        Tomatic.error(
-          'Problemes editant la persona: ' + (error.error || 'Inexperat'),
-        )
+        messages.error(error?.message || 'Error Inexperat', { context })
       },
     )
 }
 Tomatic.setPersonData = function (name, data) {
+  const context = `Actualitzant dades de la usuaria ${name}`
   if (name === undefined) {
     name = data.name
   }
@@ -423,13 +424,13 @@ Tomatic.setPersonData = function (name, data) {
         postdata.idealload = value
         break
       default:
-        console.log('Unexpected person parameter', key)
+        messages.warn(`Unexpected person parameter '${key}'`, {context})
         break
     }
   }
-  console.log('posting', postdata)
   api
     .request({
+      context,
       method: 'POST',
       url: '/api/person/' + name,
       body: postdata,
@@ -439,10 +440,7 @@ Tomatic.setPersonData = function (name, data) {
         Tomatic.requestPersons()
       },
       function (error) {
-        console.log(error)
-        Tomatic.error(
-          'Problemes editant la persona: ' + (error.error || 'Inexperat'),
-        )
+        messages.error(error?.message || 'Error Inexperat', { context })
       },
     )
 }
@@ -485,56 +483,43 @@ Tomatic.error = function (message) {
 }
 
 Tomatic.sendBusyData = function (name, data) {
-  console.log('updating', name, '/api/busy/' + name)
+  const context = `Actualitzant indisponibilitats per ${name}`
   api
     .request({
+      context,
       method: 'POST',
       url: '/api/busy/' + name,
       body: data,
     })
     .then(
       function (response) {
-        console.debug('Busy POST Response: ', response)
         if (response.result === 'ok') {
           return
         }
-        console.debug('apicall failed:', response.error)
-        Tomatic.error(
-          'Problemes desant les indisponibilitats: ' + response.message,
-        )
+        messages.error(response.message, { context })
       },
       function (error) {
-        console.debug('Busy POST apicall failed:', error)
-        Tomatic.error(
-          'Problemes desant les indisponibilitats: ' + (error || 'Inexperat'),
-        )
+        messages.error(error?.message || 'Error Inexperat', { context })
       },
     )
 }
 
 Tomatic.retrieveBusyData = function (name, callback) {
-  console.log('retrieving', name, '/api/busy/' + name)
+  const context = `Obtenint indisponibilitats per ${name}`
   api
     .request({
+      context,
       url: '/api/busy/' + name,
     })
     .then(
       function (response) {
-        console.debug('Busy GET Response: ', response)
         callback(response)
-        if (response.errors && response.errors.lenght) {
-          Tomatic.error(
-            'Problemes carregant a les indisponibilitats:\n' +
-              response.errors.join('\n'),
-          )
+        if (response.errors && response.errors.length) {
+          messages.error(response.errors.join('\n'), { context })
         }
       },
       function (error) {
-        console.debug('Busy GET apicall failed:', error)
-        Tomatic.error(
-          'Problemes carregant a les indisponibilitats: ' +
-            (error || 'Inexperat'),
-        )
+        messages.error(error.message || 'Error Inexperat', { context })
       },
     )
 }
