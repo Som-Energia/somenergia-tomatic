@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { styled } from '@mui/material/styles'
 import MuiAppBar from '@mui/material/AppBar'
-import CssBaseline from '@mui/material/CssBaseline'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
@@ -27,9 +26,6 @@ import LoginRequired from '../containers/LoginRequired'
 import { Link, useNavigate } from 'react-router-dom'
 import extraMenuOptions from '../services/extramenu'
 import Tomatic from '../services/tomatic'
-import MithrilWrapper from '../containers/MithrilWrapper'
-import MithrilStyler from '../containers/MithrilStyler'
-import { Dialog as MithrilDialog } from 'polythene-mithril-dialog'
 
 
 const pages = [
@@ -113,7 +109,6 @@ function ResponsiveAppBar({ children }) {
 
   return (
     <Box id="tomatic" className={'main variant-' + Tomatic.variant}>
-      <CssBaseline />
       <AppBar
         position="sticky"
         sx={{
@@ -363,7 +358,6 @@ function ResponsiveAppBar({ children }) {
         }}
       >
         <LoginRequired>{children}</LoginRequired>
-        <MithrilWrapper component={MithrilStyler(MithrilDialog)} />
       </Box>
       <SnackbarMessages variant="filled"/>
     </Box>

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import './App.css'
 import AppFrame from './containers/AppFrame.js'
 import Tomatic from './services/tomatic'
 import { AuthProvider } from './contexts/AuthContext'
@@ -14,6 +13,14 @@ import ForcedTurns from './components/ForcedTurns'
 import BusyPage from './pages/BusyPage'
 import PbxPage from './pages/PbxPage'
 import PersonsPage from './pages/PersonsPage'
+// TODO: Cleanup styles, some inherited from polythene
+import * as css from 'polythene-css'
+import CssBaseline from '@mui/material/CssBaseline'
+import PersonStyles from './components/PersonStyles'
+import './App.css'
+import './containers/style.styl'
+css.addLayoutStyles()
+css.addTypography()
 
 Tomatic.init()
 
@@ -76,6 +83,8 @@ const router = createHashRouter(
 function App() {
   return (
     <div id="tomatic" className="main">
+      <CssBaseline />
+      <PersonStyles />
       <AuthProvider>
         <KumatoProvider>
           <DialogProvider>

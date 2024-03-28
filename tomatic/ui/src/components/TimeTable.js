@@ -1,9 +1,6 @@
 import React from 'react'
 import Tomatic from '../services/tomatic'
 
-import PersonStyles from './PersonStyles'
-import '../containers/style.styl'
-
 import CellEditDialog from './CellEditDialog'
 import Fab from '@mui/material/Fab'
 import AddIcon from '@mui/icons-material/Add'
@@ -108,7 +105,6 @@ function TimeTable(props) {
 
   return (
     <>
-      <PersonStyles />
       {addColumn && removeColumn ? (
         <div>
           <Tooltip title="Afegir una línia">
