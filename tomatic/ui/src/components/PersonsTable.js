@@ -89,6 +89,7 @@ const columns = [
     numeric: true,
     disablePadding: false,
     label: 'Taula',
+    view: (row) => row.table === -1 ? '-' : row.table,
   },
   {
     id: 'groups',
