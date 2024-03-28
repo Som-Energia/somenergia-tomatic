@@ -2,14 +2,6 @@ const path = require('path')
 const paths = require('react-scripts/config/paths')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const rewireStylus = require('react-app-rewire-stylus-modules')
-const multipleEntry = require('react-app-rewire-multiple-entry')([
-  {
-    entry: 'tomatic/ui/src/mithril/graella.js',
-    template: 'tomatic/ui/src/mithril/tomatic.html',
-    outPath: '/mithril.html',
-    favicon: 'tomatic/ui/public/favicon.ico',
-  },
-])
 
 module.exports = {
   webpack: function (config, env) {
@@ -29,8 +21,6 @@ module.exports = {
       test: /\.styl$/,
       use: [MiniCssExtractPlugin.loader, 'css-loader', 'stylus-loader'],
     })
-    // Add our entries
-    multipleEntry.addMultiEntry(config)
     // Plugins per stylus
     config.plugins.push(
       new MiniCssExtractPlugin({
@@ -53,7 +43,7 @@ module.exports = {
     paths.appSrc = path.resolve(__dirname, 'src')
     paths.appPublic = path.resolve(__dirname, 'public')
     paths.appHtml = path.resolve(__dirname, 'public/index.html')
-    paths.appIndexJs = path.resolve(__dirname, 'src/admin.js')
+    paths.appIndexJs = path.resolve(__dirname, 'src/index.js')
     return paths
   },
 }

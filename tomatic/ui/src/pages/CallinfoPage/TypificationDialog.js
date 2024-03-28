@@ -9,7 +9,6 @@ import Card from '@mui/material/Card'
 import TextField from '@mui/material/TextField'
 import CallInfo from '../../contexts/callinfo'
 import TypificationChooser from './TypificationChooser'
-import { useSubscriptable } from '../../services/subscriptable'
 import AuthContext from '../../contexts/AuthContext'
 
 export default function TypificationDialog({ onClose }) {
