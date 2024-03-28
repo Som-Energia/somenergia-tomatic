@@ -10,14 +10,12 @@ import TimeTablePage from './components/TimeTablePage'
 import DialogProvider from './components/DialogProvider'
 import ComponentTestPage from './pages/ComponentTestPage'
 import CallinfoPage from './pages/CallinfoPage'
+import ForcedTurns from './components/ForcedTurns'
 import BusyPage from './pages/BusyPage'
 import PbxPage from './pages/PbxPage'
-
 import {
-  MithrilQueueMonitor,
   MithrilPersonsPage,
 } from './components/MithrilPages'
-import ForcedTurns from './components/ForcedTurns'
 
 Tomatic.init()
 
@@ -60,10 +58,6 @@ const router = createHashRouter(
         {
           path: 'Graelles',
           Component: TimeTablePage,
-        },
-        {
-          path: 'Centraleta/Old',
-          Component: MithrilQueueMonitor,
         },
         {
           path: 'Centraleta',

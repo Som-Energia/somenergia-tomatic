@@ -5,10 +5,9 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
 import PersonPicker from '../../components/PersonPicker'
-import Tomatic from '../../services/tomatic'
-import m from '../../services/hyperscript'
 import { useDialog } from '../../components/DialogProvider'
 import { useSubscriptable } from '../../services/subscriptable'
+import Tomatic from '../../services/tomatic'
 
 export default function QueueMonitor() {
   const [openDialog, closeDialog] = useDialog()

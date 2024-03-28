@@ -10,7 +10,6 @@ import Login from './components/login'
 import PersonsPage from './components/personspage'
 import MenuButton from './components/menubutton'
 import LoginPage from './components/loginpage'
-import PbxPage from './components/pbxpage'
 import PersonStyles from './components/personstyles'
 import extraMenuOptions from '../services/extramenu'
 import { addTypography, addLayoutStyles } from 'polythene-css'
@@ -112,9 +111,6 @@ window.onload = function () {
   //m.redraw.strategy('diff');
   var element = document.getElementById('tomatic')
   m.route(element, '/Graelles', {
-    '/Centraleta': {
-      render: () => m(TomaticApp, m(PbxPage)),
-    },
     '/Persones': {
       render: () => m(TomaticApp, m(PersonsPage)),
     },
