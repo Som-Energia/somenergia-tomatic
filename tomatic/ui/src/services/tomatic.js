@@ -281,6 +281,77 @@ Tomatic.peopleInTable = function (table) {
   })
   return result
 }
+Tomatic.tableOptions = function () {
+  function range(end) {
+    if (end < 1) return []
+    return [...Array(end).keys()]
+  }
+  const tables = Tomatic.persons().tables || {}
+  const tableMembers = Object.keys(tables).reduce((d, name) => {
+    const personTable = tables[name]
+    if (personTable === -1) return d
+    if (d[personTable] === undefined) {
+      d[personTable] = []
+    }
+    d[personTable].push(name)
+    return d
+  }, {})
+
+  const result = [[-1, 'Sense taula']]
+  const nTables = Math.max(...Object.keys(tableMembers))
+  for (const i in range(nTables + 1)) {
+    if (tableMembers[i] === undefined) {
+      result.push([i, `Taula ${i} amb ningú`])
+    } else {
+      const people = tableMembers[i].map(Tomatic.formatName).join(', ')
+      result.push([i, `Taula ${i} amb ` + people])
+    }
+  }
+  return result
+}
+
+Tomatic.allGroups = function () {
+  const groups = Tomatic.persons().groups || {}
+  return Object.keys(groups)
+}
+Tomatic.groups = function (name) {
+  const groups = Tomatic.persons().groups || {}
+  return Object.keys(groups).filter((g) => groups[g].includes(name))
+}
+
+Tomatic.personFields = function (name) {
+  const persons = Tomatic.persons()
+  return {
+    id: name,
+    name: Tomatic.formatName(name),
+    color: persons.colors[name],
+    extension: persons.extensions[name],
+    email: persons.emails[name],
+    erpuser: persons.erpusers[name],
+    idealload: persons.idealloads[name],
+    table: Tomatic.table(name),
+    groups: Tomatic.groups(name),
+  }
+}
+
+Tomatic.allPeople = function() {
+  const persons = Tomatic.persons()
+  return Array.from(new Set([
+      ...Object.keys(persons.names||{}),
+      ...Object.keys(persons.colors||{}),
+      ...Object.keys(persons.extensions||{}),
+      ...Object.keys(persons.emails||{}),
+      ...Object.keys(persons.erpusers||{}),
+      ...Object.keys(persons.idealloads||{}),
+      ...Object.keys(persons.tables||{}),
+  ]))
+}
+
+Tomatic.allPeopleData = function() {
+  const allNames = Tomatic.allPeople()
+  return allNames.map((name)=>Tomatic.personFields(name))
+}
+
 Tomatic.cell = function (day, houri, turni) {
   try {
     return Tomatic.grid().timetable[day][houri][turni]
@@ -371,7 +442,7 @@ Tomatic.setPersonDataReact = function (id, data) {
         // ignore
         break
       default:
-        messages.warn(`Unexpected person parameter '${key}'`, {context})
+        messages.warn(`Unexpected person parameter '${key}'`, { context })
         break
     }
   }
@@ -423,8 +494,13 @@ Tomatic.setPersonData = function (name, data) {
       case 'idealload':
         postdata.idealload = value
         break
+      case 'name':
+      case 'tables':
+      case 'newone':
+        console.log({ data, key })
+        break
       default:
-        messages.warn(`Unexpected person parameter '${key}'`, {context})
+        messages.warn(`Unexpected person parameter '${key}'`, { context })
         break
     }
   }

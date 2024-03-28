@@ -23,6 +23,7 @@ import Auth from '../services/auth'
 import { contrast } from '../mithril/components/colorutils'
 import AuthContext from '../contexts/AuthContext'
 import editPerson from '../mithril/components/editperson'
+import PersonEditor from './PersonEditor'
 import { useDialog } from './DialogProvider'
 import { CopyCalendarDialog } from './CopyCalendarDialog'
 import EmulateCallDialog from './EmulateCallDialog'
@@ -47,13 +48,14 @@ function ProfileButton() {
   function openBusyPage(person) {
     navigate(`/Indisponibilitats/${person}`)
   }
+  let openPersonEditorDialog
 
   const menuProfile = [
     {
       text: 'Perfil',
       icon: <IconSettings />,
       onclick: () => {
-        editPerson(Auth.username())
+        openPersonEditorDialog()
       },
     },
     {
@@ -103,6 +105,23 @@ function ProfileButton() {
   openCallEmulationDialog = React.useCallback(() => {
     openDialog({
       children: <EmulateCallDialog {...{ closeDialog }} />,
+    })
+  }, [openDialog, closeDialog])
+
+  openPersonEditorDialog = React.useCallback(() => {
+    openDialog({
+      children: (
+        <PersonEditor
+          onClose={closeDialog}
+          onSave={(id, data) => {
+            Tomatic.setPersonDataReact(id, data)
+            closeDialog()
+          }}
+          person={Tomatic.personFields(Auth.username())}
+          allGroups={Tomatic.allGroups()}
+          tables={Tomatic.tableOptions()}
+        />
+      ),
     })
   }, [openDialog, closeDialog])
 
