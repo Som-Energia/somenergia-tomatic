@@ -301,7 +301,7 @@ export default function TableEditor(props) {
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(defaultPageSize)
   const [search, setSearch] = React.useState('')
-
+  const lowerCaseSearch = search.toLowerCase()
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
@@ -385,12 +385,12 @@ export default function TableEditor(props) {
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
                 .filter((row) => {
-                  if (!search) return true
+                  if (!lowerCaseSearch) return true
                   for (const i in columns) {
                     const column = columns[i]
                     if (!column.searchable) continue
-                    const fieldContent = row[column.id] + ''
-                    if (fieldContent.includes(search)) return true
+                    const fieldContent = (row[column.id] + '').toLowerCase()
+                    if (fieldContent.includes(lowerCaseSearch)) return true
                   }
                   return false
                 })
