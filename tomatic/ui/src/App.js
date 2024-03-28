@@ -14,9 +14,6 @@ import ForcedTurns from './components/ForcedTurns'
 import BusyPage from './pages/BusyPage'
 import PbxPage from './pages/PbxPage'
 import PersonsPage from './pages/PersonsPage'
-import {
-  MithrilPersonsPage,
-} from './components/MithrilPages'
 
 Tomatic.init()
 
@@ -51,10 +48,6 @@ const router = createHashRouter(
         {
           path: 'Indisponibilitats/:person',
           Component: BusyPage,
-        },
-        {
-          path: 'Persones/Old',
-          Component: MithrilPersonsPage,
         },
         {
           path: 'Persones',

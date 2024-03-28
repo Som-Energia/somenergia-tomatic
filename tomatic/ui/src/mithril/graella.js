@@ -7,7 +7,6 @@ import iconMenu from 'mmsvg/google/msvg/navigation/menu'
 import iconMore from 'mmsvg/google/msvg/navigation/more-vert'
 import Tomatic from '../services/tomatic'
 import Login from './components/login'
-import PersonsPage from './components/personspage'
 import MenuButton from './components/menubutton'
 import LoginPage from './components/loginpage'
 import PersonStyles from './components/personstyles'
@@ -111,9 +110,6 @@ window.onload = function () {
   //m.redraw.strategy('diff');
   var element = document.getElementById('tomatic')
   m.route(element, '/Graelles', {
-    '/Persones': {
-      render: () => m(TomaticApp, m(PersonsPage)),
-    },
     '/Login': {
       render: () => m(TomaticApp, m(LoginPage)),
     },
