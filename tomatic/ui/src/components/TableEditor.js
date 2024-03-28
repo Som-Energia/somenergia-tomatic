@@ -352,6 +352,10 @@ export default function TableEditor(props) {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
 
+  const pageBounds =
+    rowsPerPage === -1
+      ? [0, rows.length]
+      : [page * rowsPerPage, page * rowsPerPage + rowsPerPage]
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
@@ -394,7 +398,7 @@ export default function TableEditor(props) {
                   }
                   return false
                 })
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .slice(...pageBounds)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.id)
                   const labelId = `enhanced-table-checkbox-${index}`
