@@ -1,4 +1,5 @@
 import subscriptable from './subscriptable'
+import { prop } from './subscriptable'
 
 describe('subscriptable', () => {
   it('is called when notified', () => {
@@ -56,5 +57,33 @@ describe('subscriptable', () => {
     const unsubscribe = object.subscribe(subscriber)
     object.notify('param1', 'param2')
     expect(parameters).toStrictEqual(['param1', 'param2'])
+  })
+})
+
+describe('prop, subscriptable properties', () => {
+  it('is set to the initial value', () => {
+    const property = prop('value')
+    expect(property()).toStrictEqual('value')
+  })
+  it('mutates after setter', () => {
+    const property = prop('value')
+    property('other')
+    expect(property()).toStrictEqual('other')
+  })
+  it('is subscriptable', () => {
+    const property = prop('value')
+    let called = false
+    property.subscribe(() => (called = true))
+    expect(called).toBe(false)
+    property.notify()
+    expect(called).toBe(true)
+  })
+  it('notifies on set', () => {
+    const property = prop('value')
+    let called = false
+    property.subscribe(() => (called = property()))
+    expect(called).toBe(false)
+    property('newvalue')
+    expect(called).toBe('newvalue')
   })
 })

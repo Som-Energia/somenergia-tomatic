@@ -41,3 +41,19 @@ export function useSubscriptable(target, ...args) {
   }, [target, args])
   return getter
 }
+
+export function prop(initialValue) {
+  let value = initialValue
+  function accessor(...args) {
+    if (!args.length) return value
+    value = args[0]
+    accessor.notify()
+  }
+  accessor.use = function useProp() {
+    return useSubscriptable(accessor)
+  }
+  subscriptable(accessor)
+  return accessor
+}
+
+
