@@ -117,42 +117,36 @@ const defaultData = Object.fromEntries(
   }),
 )
 
+const errorReset = Object.fromEntries(
+  Object.keys(fields).map((k) => [k, false]),
+)
+
 export default function PersonEditor(props) {
   const { onClose, onSave, person, tables, allGroups } = props
   const [data, setData] = React.useState(defaultData)
-  const [errors, setErrors] = React.useState(() =>
-    Object.fromEntries(Object.keys(fields).map((k) => [k, false])),
-  )
+  const [errors, setErrors] = React.useState(errorReset)
 
   function updateField(field, value) {
-    setData({...data, [field]: value})
+    setData({ ...data, [field]: value })
   }
-
-  // Sets the errors for new data
-  const resetData = React.useCallback(
-    (person) => {
-      const newData = {
-        ...defaultData,
-        ...(person || {}),
-      }
-      setData(newData)
-      setErrors({
-        ...errors,
-        ...Object.fromEntries(
-          Object.keys(fields).map((key) => {
-            const validator = fields[key].validator
-            if (!validator) return [key, false]
-            return [key, validator(newData[key])]
-          }),
-        ),
-      })
-    },
-    [],
-  )
 
   // Reset internal data as the person passed by parameter changes
   React.useEffect(() => {
-    resetData(person)
+    const newData = {
+      ...defaultData,
+      ...(person || {}),
+    }
+    setData(newData)
+    setErrors({
+      ...errorReset,
+      ...Object.fromEntries(
+        Object.keys(fields).map((key) => {
+          const validator = fields[key].validator
+          if (!validator) return [key, false]
+          return [key, validator(newData[key])]
+        }),
+      ),
+    })
   }, [person])
 
   function updater(field) {
