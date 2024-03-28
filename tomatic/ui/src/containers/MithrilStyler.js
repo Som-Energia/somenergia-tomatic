@@ -9,7 +9,7 @@ import m from 'mithril'
 import { Dialog } from 'polythene-mithril-dialog'
 import * as css from 'polythene-css'
 import PersonStyles from '../mithril/components/personstyles'
-import '../mithril/style.styl'
+import './style.styl'
 import Tomatic from '../services/tomatic'
 
 Tomatic.isKumatoMode.subscribe(() => m.redraw())

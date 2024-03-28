@@ -2,7 +2,7 @@ import React from 'react'
 import Tomatic from '../services/tomatic'
 
 import PersonStyles from './PersonStyles'
-import '../mithril/style.styl'
+import '../containers/style.styl'
 
 import CellEditDialog from './CellEditDialog'
 import Fab from '@mui/material/Fab'
