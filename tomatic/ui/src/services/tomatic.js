@@ -15,7 +15,7 @@ const Tomatic = {
 
 Tomatic.variant = 'tomatic'
 
-Tomatic.queue = m.prop([])
+Tomatic.queue = subscriptable(m.prop([]))
 Tomatic.persons = subscriptable(m.prop({}))
 Tomatic.init = function () {
   this.checkVersionPeriodically()
@@ -103,6 +103,7 @@ Tomatic.requestQueue = function (suffix) {
     .then(function (response) {
       if (response?.currentQueue !== undefined) {
         Tomatic.queue(response.currentQueue)
+        Tomatic.queue.notify()
       }
     })
 }

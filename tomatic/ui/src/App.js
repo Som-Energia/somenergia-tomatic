@@ -11,6 +11,7 @@ import DialogProvider from './components/DialogProvider'
 import ComponentTestPage from './pages/ComponentTestPage'
 import CallinfoPage from './pages/CallinfoPage'
 import BusyPage from './pages/BusyPage'
+import PbxPage from './pages/PbxPage'
 
 import {
   MithrilQueueMonitor,
@@ -61,8 +62,12 @@ const router = createHashRouter(
           Component: TimeTablePage,
         },
         {
-          path: 'Centraleta',
+          path: 'Centraleta/Old',
           Component: MithrilQueueMonitor,
+        },
+        {
+          path: 'Centraleta',
+          Component: PbxPage,
         },
         {
           path: 'Trucada',
