@@ -29,11 +29,9 @@ import { CopyCalendarDialog } from './CopyCalendarDialog'
 import EmulateCallDialog from './EmulateCallDialog'
 import { useNavigate } from 'react-router-dom'
 
-var openCalendarDialog = () => {}
-var openCallEmulationDialog = () => {}
-
 function ProfileButton() {
   const navigate = useNavigate()
+  const [openDialog, closeDialog] = useDialog()
   const { userid, fullname, initials, color, avatar } =
     React.useContext(AuthContext)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
@@ -48,7 +46,35 @@ function ProfileButton() {
   function openBusyPage(person) {
     navigate(`/Indisponibilitats/${person}`)
   }
-  let openPersonEditorDialog
+
+  function openCalendarDialog(username) {
+    openDialog({
+      children: <CopyCalendarDialog {...{ closeDialog, username }} />,
+    })
+  }
+
+  function openCallEmulationDialog() {
+    openDialog({
+      children: <EmulateCallDialog {...{ closeDialog }} />,
+    })
+  }
+
+  function openPersonEditorDialog() {
+    openDialog({
+      children: (
+        <PersonEditor
+          onClose={closeDialog}
+          onSave={(id, data) => {
+            Tomatic.setPersonDataReact(id, data)
+            closeDialog()
+          }}
+          person={Tomatic.personFields(Auth.username())}
+          allGroups={Tomatic.allGroups()}
+          tables={Tomatic.tableOptions()}
+        />
+      ),
+    })
+  }
 
   const menuProfile = [
     {
@@ -90,40 +116,6 @@ function ProfileButton() {
       onclick: Auth.logout,
     },
   ]
-
-  const [openDialog, closeDialog] = useDialog()
-
-  openCalendarDialog = React.useCallback(
-    (username) => {
-      openDialog({
-        children: <CopyCalendarDialog {...{ closeDialog, username }} />,
-      })
-    },
-    [openDialog, closeDialog],
-  )
-
-  openCallEmulationDialog = React.useCallback(() => {
-    openDialog({
-      children: <EmulateCallDialog {...{ closeDialog }} />,
-    })
-  }, [openDialog, closeDialog])
-
-  openPersonEditorDialog = React.useCallback(() => {
-    openDialog({
-      children: (
-        <PersonEditor
-          onClose={closeDialog}
-          onSave={(id, data) => {
-            Tomatic.setPersonDataReact(id, data)
-            closeDialog()
-          }}
-          person={Tomatic.personFields(Auth.username())}
-          allGroups={Tomatic.allGroups()}
-          tables={Tomatic.tableOptions()}
-        />
-      ),
-    })
-  }, [openDialog, closeDialog])
 
   return (
     <Box sx={{ flexGrow: 0 }}>
