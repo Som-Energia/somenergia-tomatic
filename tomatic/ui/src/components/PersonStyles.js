@@ -1,9 +1,10 @@
 import React from 'react'
 import Tomatic from '../services/tomatic'
 import {luminance, contrast} from '../services/colorutils'
+import { useSubscriptable } from '../services/subscriptable'
 
 function PersonStyles() {
-  var persons = Tomatic.persons()
+  var persons = useSubscriptable(Tomatic.persons)
   return (
     <style
       dangerouslySetInnerHTML={{
