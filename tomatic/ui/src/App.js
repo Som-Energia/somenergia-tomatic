@@ -13,6 +13,7 @@ import CallinfoPage from './pages/CallinfoPage'
 import ForcedTurns from './components/ForcedTurns'
 import BusyPage from './pages/BusyPage'
 import PbxPage from './pages/PbxPage'
+import PersonsPage from './pages/PersonsPage'
 import {
   MithrilPersonsPage,
 } from './components/MithrilPages'
@@ -52,8 +53,12 @@ const router = createHashRouter(
           Component: BusyPage,
         },
         {
-          path: 'Persones',
+          path: 'Persones/Old',
           Component: MithrilPersonsPage,
+        },
+        {
+          path: 'Persones',
+          Component: PersonsPage,
         },
         {
           path: 'Graelles',
