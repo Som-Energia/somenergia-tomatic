@@ -36,9 +36,5 @@ function luminance(hex, lum) {
     }),
   )
 }
-module.exports = {
-  luminance: luminance,
-  triplet2hex: triplet2hex,
-  hex2triplet: hex2triplet,
-  contrast: contrast,
-}
+
+export { luminance, triplet2hex, hex2triplet, contrast }

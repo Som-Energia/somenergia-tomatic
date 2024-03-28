@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { contrast } from './colorutils'
+import { contrast } from '../../services/colorutils'
 import { Button } from 'polythene-mithril-button'
 import { Ripple } from 'polythene-mithril-ripple'
 import Tomatic from '../../services/tomatic'

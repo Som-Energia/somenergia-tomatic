@@ -1,6 +1,6 @@
-import color from './colorutils.js'
-import m from 'mithril'
 import { Slider } from 'polythene-mithril-slider'
+import m from 'mithril'
+import {contrast, hex2triplet, triplet2hex} from '../../services/colorutils'
 
 var RgbEditor = {}
 RgbEditor.oninit = function (vnode) {
@@ -13,13 +13,13 @@ RgbEditor.oninit = function (vnode) {
     vnode.attrs.onFocusChanged && vnode.attrs.onFocusChanged(hasFocus)
   }
   state.setRgb = function () {
-    var components = color.hex2triplet(vnode.attrs.value)
+    var components = hex2triplet(vnode.attrs.value)
     this.red(components[0])
     this.green(components[1])
     this.blue(components[2])
   }
   state.edited = function () {
-    var result = color.triplet2hex([this.red(), this.green(), this.blue()])
+    var result = triplet2hex([this.red(), this.green(), this.blue()])
     vnode.attrs.value = result
     vnode.attrs.onChange({ value: result })
   }
@@ -33,7 +33,7 @@ RgbEditor.view = function (vnode) {
       {
         style: {
           'background-color': '#' + vnode.attrs.value,
-          color: color.contrast(vnode.attrs.value),
+          color: contrast(vnode.attrs.value),
         },
       },
       vnode.attrs.value,

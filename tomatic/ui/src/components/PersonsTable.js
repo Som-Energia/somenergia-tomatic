@@ -8,7 +8,6 @@ import DialogContent from '@mui/material/DialogContent'
 import Button from '@mui/material/Button'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogActions from '@mui/material/DialogActions'
-import { contrast } from '../colorutils'
 import EditIcon from '@mui/icons-material/Edit'
 import EventBusyIcon from '@mui/icons-material/EventBusy'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -19,6 +18,7 @@ import Tomatic from '../services/tomatic'
 import BusyDialog from '../pages/BusyPage/BusyDialog'
 import { useSubscriptable } from '../services/subscriptable'
 import { useDialog } from './DialogProvider'
+import { contrast } from '../services/colorutils'
 
 function formatName(row) {
   if (row.name) return row.name
@@ -238,7 +238,6 @@ function PersonsTable() {
         actions={actions}
         selectionActions={selectionActions}
         itemActions={itemActions}
-        defaultPageSize={-1}
         pageSizes={[-1]}
       ></TableEditor>
       <BusyDialog person={personToEditBusy} setPerson={setPersonToEditBusy} />

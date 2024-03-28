@@ -1,7 +1,6 @@
 import m from 'mithril'
 import Tomatic from '../../services/tomatic'
-import { luminance } from '../components/colorutils'
-import { contrast } from '../components/colorutils'
+import { luminance, contrast } from '../../services/colorutils'
 
 const PersonStyles = function () {
   var persons = Tomatic.persons()

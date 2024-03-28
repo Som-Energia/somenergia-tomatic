@@ -1,7 +1,6 @@
 import React from 'react'
 import Tomatic from '../services/tomatic'
-import luminance from './colorutils'
-import contrast from './colorutils'
+import {luminance, contrast} from '../services/colorutils'
 
 function PersonStyles() {
   var persons = Tomatic.persons()
@@ -11,8 +10,8 @@ function PersonStyles() {
         __html: Object.keys(persons.colors || {})
           .map((name) => {
             var color = '#' + persons.colors[name]
-            var darker = '#' + luminance.luminance(color, -0.3)
-            var linecolor = contrast.contrast(persons.colors[name])
+            var darker = '#' + luminance(color, -0.3)
+            var linecolor = contrast(persons.colors[name])
             return (
               `.${name}, .graella .${name} {\n` +
               `  background-color: ${color};\n` +
