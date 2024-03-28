@@ -113,9 +113,10 @@ function PersonsTable() {
   const [openDialog, closeDialog] = useDialog()
   const [personToEditBusy, setPersonToEditBusy] = React.useState(null)
   const persons = useSubscriptable(Tomatic.persons)
-  const rows = React.useMemo(() => Tomatic.allPeopleData(), [persons])
-  const tables = React.useMemo(() => Tomatic.tableOptions(), [persons])
-  const groups = React.useMemo(() => Tomatic.allGroups(), [persons])
+  // All three need to update on persons. Use && to silence the linter
+  const rows = React.useMemo(() => persons && Tomatic.allPeopleData(), [persons])
+  const tables = React.useMemo(() => persons && Tomatic.tableOptions(), [persons])
+  const groups = React.useMemo(() => persons && Tomatic.allGroups(), [persons])
 
   function deletePersons(persons) {
     openDialog({
