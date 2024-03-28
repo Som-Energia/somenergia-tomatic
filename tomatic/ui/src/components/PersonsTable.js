@@ -231,13 +231,14 @@ function PersonsTable() {
     <>
       <TableEditor
         title={'Persones'}
-        defaultPageSize={12}
-        pageSizes={[12, 18, 25]}
+        defaultPageSize={-1}
         columns={columns}
         rows={rows}
         actions={actions}
         selectionActions={selectionActions}
         itemActions={itemActions}
+        defaultPageSize={-1}
+        pageSizes={[-1]}
       ></TableEditor>
       <BusyDialog person={personToEditBusy} setPerson={setPersonToEditBusy} />
     </>

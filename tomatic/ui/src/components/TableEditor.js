@@ -366,7 +366,7 @@ export default function TableEditor(props) {
           actions={actions}
           selectionActions={selectionActions}
         />
-        <TableContainer>
+        <TableContainer sx={{ maxHeight: '75vh' }}>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
