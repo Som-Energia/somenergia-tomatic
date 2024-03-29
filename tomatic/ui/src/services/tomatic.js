@@ -3,6 +3,7 @@ import m from 'mithril'
 import prop from 'mithril/stream'
 import api from './api'
 import messages from './messages'
+import { preferedWeek } from './dateutils'
 import subscriptable from './subscriptable'
 import {prop as reactiveProp} from './subscriptable'
 m.prop = prop
@@ -477,6 +478,10 @@ Tomatic.forcedTurnsRemoveColumn = function () {
 
 Tomatic.grid = reactiveProp({})
 Tomatic.requestGrid = function (week) {
+  if (week === undefined) {
+    Tomatic.grid({})
+    return
+  }
   api
     .request({
       url: '/api/graella-' + week + '.yaml',
@@ -488,7 +493,6 @@ Tomatic.requestGrid = function (week) {
       delete data.names
       delete data.extensions
       delete data.tables // TODO: This one was never added
-      Tomatic.currentWeek(week)
       Tomatic.grid(data)
     })
 }
@@ -532,7 +536,7 @@ Tomatic.editCell = function (day, houri, turni, name, myname) {
     })
     .then(
       function (data) {
-        Tomatic.requestGrid(Tomatic.grid().week)
+        Tomatic.requestGrid(Tomatic.currentWeek())
       },
       function (error) {
         messages.error(error || 'Error inexperat', { context })
@@ -541,7 +545,10 @@ Tomatic.editCell = function (day, houri, turni, name, myname) {
 }
 
 Tomatic.weeks = reactiveProp([])
-Tomatic.currentWeek = m.prop(undefined)
+Tomatic.currentWeek = reactiveProp(undefined)
+Tomatic.currentWeek.subscribe(() => {
+  Tomatic.requestGrid(Tomatic.currentWeek())
+})
 Tomatic.requestWeeks = function () {
   api
     .request({
@@ -551,20 +558,7 @@ Tomatic.requestWeeks = function () {
       if (!newWeeklist) return
       var weeks = newWeeklist.weeks.sort().reverse()
       Tomatic.weeks(weeks)
-      if (Tomatic.currentWeek() === undefined) {
-        var expirationms = 1000 * 60 * 60 * (24 * 4 + 18)
-        var oldestWeek = new Date(new Date().getTime() - expirationms)
-        var current = undefined
-        for (var i in weeks) {
-          if (current !== undefined && new Date(weeks[i]) < oldestWeek) {
-            break
-          }
-          current = weeks[i]
-        }
-        if (current !== undefined) {
-          Tomatic.requestGrid(current)
-        }
-      }
+      Tomatic.currentWeek(preferedWeek(weeks))
     })
 }
 

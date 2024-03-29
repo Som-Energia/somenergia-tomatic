@@ -42,25 +42,15 @@ const CurrentItem = styled.li`
 `
 function WeekPicker() {
   const weeks = Tomatic.weeks.use()
-  const currentWeek = Tomatic.currentWeek()
-  const handleClick = (week) => {
-    Tomatic.requestGrid(week)
-  }
-
+  const currentWeek = Tomatic.currentWeek.use()
   return (
     <List>
-      {weeks.map((element) => {
-        if (element === currentWeek) {
-          return (
-            <CurrentItem key={element} onClick={() => handleClick(element)}>
-              {'Setmana del ' + element}
-            </CurrentItem>
-          )
-        }
+      {weeks.map((week) => {
+        const Item = week === currentWeek ? CurrentItem : ListItem
         return (
-          <ListItem key={element} onClick={() => handleClick(element)}>
-            {'Setmana del ' + element}
-          </ListItem>
+          <Item key={week} onClick={() => Tomatic.currentWeek(week)}>
+            {'Setmana del ' + week}
+          </Item>
         )
       })}
     </List>
