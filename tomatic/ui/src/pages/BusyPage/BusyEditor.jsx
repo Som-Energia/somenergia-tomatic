@@ -1,5 +1,7 @@
 import React from 'react'
 import Stack from '@mui/material/Stack'
+import Box from '@mui/material/Box'
+import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
@@ -18,7 +20,7 @@ function TurnsDisplay({ turns }) {
     <Typography
       sx={{
         color: 'secondary.main',
-        fontSize: '150%',
+        fontSize: '120%',
       }}
     >
       {Array.from(turns).map(function (e, i) {
@@ -44,6 +46,7 @@ function BusyListItem({ entry, onRemove, onEdit }) {
     <ListItem
       button
       dense
+      disableGutters
       secondaryAction={
         <IconButton
           aria-label={'Esborra'}
@@ -123,6 +126,7 @@ function BusyList({ title, entries, setEntries, isOneShot }) {
         minWidth: '20rem',
         flex: 1,
       }}
+      disablePadding
     >
       <BusyEntryDialog
         entry={entryToEdit}

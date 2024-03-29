@@ -20,9 +20,7 @@ export default function BusyDialog({ person, setPerson }) {
     <Dialog open onClose={handleClose}>
       <DialogTitle>{`Edita indisponibilitat - ${fullName}`}</DialogTitle>
       <DialogContent>
-        <Paper>
-          <TomaticBusyEditor person={person} />
-        </Paper>
+        <TomaticBusyEditor person={person} />
       </DialogContent>
       <DialogActions>
         <Button variant="contained" onClick={handleClose}>
