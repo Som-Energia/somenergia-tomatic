@@ -13,7 +13,7 @@ const Tomatic = {
 }
 
 Tomatic.init = function () {
-  console.log("Initialization Tomatic")
+  console.log('Initialization Tomatic')
   this.checkVersionPeriodically()
   this.initKumato()
   this.updateQueuePeriodically()
@@ -192,22 +192,24 @@ Tomatic.personFields = function (name) {
   }
 }
 
-Tomatic.allPeople = function() {
+Tomatic.allPeople = function () {
   const persons = Tomatic.persons()
-  return Array.from(new Set([
-      ...Object.keys(persons.names||{}),
-      ...Object.keys(persons.colors||{}),
-      ...Object.keys(persons.extensions||{}),
-      ...Object.keys(persons.emails||{}),
-      ...Object.keys(persons.erpusers||{}),
-      ...Object.keys(persons.idealloads||{}),
-      ...Object.keys(persons.tables||{}),
-  ]))
+  return Array.from(
+    new Set([
+      ...Object.keys(persons.names || {}),
+      ...Object.keys(persons.colors || {}),
+      ...Object.keys(persons.extensions || {}),
+      ...Object.keys(persons.emails || {}),
+      ...Object.keys(persons.erpusers || {}),
+      ...Object.keys(persons.idealloads || {}),
+      ...Object.keys(persons.tables || {}),
+    ]),
+  )
 }
 
-Tomatic.allPeopleData = function() {
+Tomatic.allPeopleData = function () {
   const allNames = Tomatic.allPeople()
-  return allNames.map((name)=>Tomatic.personFields(name))
+  return allNames.map((name) => Tomatic.personFields(name))
 }
 
 Tomatic.deletePerson = function (id) {
@@ -507,7 +509,7 @@ Tomatic.weekday = function (short, alternative) {
 }
 
 // TODO: Make it independent of grid
-Tomatic.hourLabel = function(i) {
+Tomatic.hourLabel = function (i) {
   const { hours } = Tomatic.grid()
   return `${hours[i]} - ${hours[i + 1]}`
 }
