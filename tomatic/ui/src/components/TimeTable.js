@@ -31,8 +31,8 @@ function TimeTable(props) {
     openDialog({
       children: (
         <CellEditDialog
+          cell={cellData}
           onClose={closeDialog}
-          data={cellData}
           handleChange={handleChange}
         ></CellEditDialog>
       ),

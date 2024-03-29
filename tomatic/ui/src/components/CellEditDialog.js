@@ -11,10 +11,10 @@ import styled from '@emotion/styled'
 import Tomatic from '../services/tomatic'
 
 export default function CellEditDialog(props) {
-  const { onClose, data, handleChange } = props
+  const { cell, onClose, handleChange } = props
 
   const setPerson = (name) => {
-    handleChange(name, data)
+    handleChange(name, cell)
   }
   const CellItem = styled.span`
     text-align: center;
@@ -27,12 +27,12 @@ export default function CellEditDialog(props) {
       <div>{/* Hack to avoid removing the margin of the first content*/}</div>
       <DialogContent>
         <DialogContentText>
-          {`${Tomatic.weekday(data.day)} a les ` +
-            `${Tomatic.grid().hours[data.hour]}, ` +
-            `línia ${data.turn + 1}, ` +
+          {`${Tomatic.weekday(cell.day)} a les ` +
+            `${Tomatic.grid().hours[cell.hour]}, ` +
+            `línia ${cell.turn + 1}, ` +
             'la feia '}
-          <CellItem className={'extension ' + data.name}>
-            {Tomatic.formatName(data.name)}
+          <CellItem className={'extension ' + cell.name}>
+            {Tomatic.formatName(cell.name)}
           </CellItem>
           {'. Qui ho ha de fer?'}
         </DialogContentText>
