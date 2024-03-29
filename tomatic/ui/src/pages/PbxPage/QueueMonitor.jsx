@@ -38,6 +38,7 @@ export default function QueueMonitor() {
       {queue.map((line) => {
         return (
           <Box
+            key={line.key}
             className={[
               'queueitem',
               line.key,
