@@ -120,11 +120,14 @@ Tomatic.restoreLine = function (line) {
   Tomatic.requestQueue('/resume/' + line)
 }
 
-const queueRefreshPeriodSeconds = 2 * 60 // TODO: config param
-Tomatic.queueTimer = 0
+const queueRefreshPeriodSeconds = 5 //2 * 60 // TODO: config param
+// Use window to have a true shared value.
+// Avoids duppes on hot module reload.
+window.tomaticQueueTimer = 0
+
 Tomatic.updateQueuePeriodically = function () {
-  clearTimeout(Tomatic.queueTimer)
-  Tomatic.queueTimer = setTimeout(
+  clearTimeout(window.tomaticQueueTimer)
+  window.tomaticQueueTimer = setTimeout(
     Tomatic.updateQueuePeriodically,
     queueRefreshPeriodSeconds * 1000,
   )
