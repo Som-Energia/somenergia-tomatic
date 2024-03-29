@@ -3,12 +3,12 @@ import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
-import Paper from '@mui/material/Paper'
 import Box from '@mui/material/Box'
 import Popover from '@mui/material/Popover'
 import Dialog from '../../components/ResponsiveDialog'
 import Tomatic from '../../services/tomatic'
-import { TomaticBusyEditor, BusyNotes } from './BusyEditor'
+import { TomaticBusyEditor } from './BusyEditor'
+import BusyNotes from './BusyNotes'
 
 // A dialog to edit Busy info. Opens whenever person is set.
 export default function BusyDialog({ person, setPerson }) {

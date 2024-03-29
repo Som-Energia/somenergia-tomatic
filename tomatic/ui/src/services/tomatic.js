@@ -363,7 +363,7 @@ Tomatic.requestQueue = function (suffix) {
       url: '/api/queue' + (suffix || ''),
     })
     .then(function (response) {
-      Tomatic.queue(response.currentQueue || [])
+      Tomatic.queue(response?.currentQueue || [])
     })
 }
 
