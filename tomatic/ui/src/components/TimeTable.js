@@ -147,7 +147,7 @@ function TimeTable(props) {
                 {grid?.hours.slice(0, -1).map((hour, houri) => (
                   <tr key={hour}>
                     <th className="separator">
-                      {grid?.hours[houri] + '-' + grid?.hours[houri + 1]}
+                      {Tomatic.hourLabel(houri)}
                     </th>
                     {grid.turns.map((turn, turni) => cell(day, houri, turni))}
                   </tr>

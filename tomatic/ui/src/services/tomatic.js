@@ -505,6 +505,12 @@ Tomatic.weekday = function (short, alternative) {
   return Tomatic.weekdays[short] || alternative || '??'
 }
 
+// TODO: Make it independent of grid
+Tomatic.hourLabel = function(i) {
+  const { hours } = Tomatic.grid()
+  return `${hours[i]} - ${hours[i + 1]}`
+}
+
 Tomatic.cell = function (day, houri, turni) {
   try {
     return Tomatic.grid().timetable[day][houri][turni]

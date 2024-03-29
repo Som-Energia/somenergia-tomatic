@@ -28,7 +28,7 @@ export default function CellEditDialog(props) {
       <DialogContent>
         <DialogContentText>
           {`${Tomatic.weekday(cell.day)} a les ` +
-            `${Tomatic.grid().hours[cell.hour]}, ` +
+            `${Tomatic.hourLabel(cell.hour)}, ` +
             `línia ${cell.turn + 1}, ` +
             'la feia '}
           <CellItem className={'extension ' + cell.name}>

@@ -13,10 +13,9 @@ import Dialog from '../../components/ResponsiveDialog'
 import Tomatic from '../../services/tomatic'
 
 function TurnsEditor({ value, onChange, helperText, label }) {
-  const hours = Tomatic.grid().hours
   const options = Array.from(value).map((value, i) => {
     return {
-      label: `${hours[i]} - ${hours[i + 1]}`,
+      label: Tomatic.hourLabel(i),
     }
   })
   const translatedValues = Array.from(value).map((value) => value === '1')
