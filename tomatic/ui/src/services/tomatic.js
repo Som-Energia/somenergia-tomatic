@@ -134,9 +134,10 @@ Tomatic.updateQueuePeriodically = function () {
   Tomatic.requestQueue()
 }
 
+///////////////////////
+// Forced turns
 
-/* Forced Turns */
-Tomatic.forcedTurns = subscriptable(m.prop({}))
+Tomatic.forcedTurns = reactiveProp({})
 Tomatic.requestForcedTurns = function () {
   api
     .request({
@@ -150,7 +151,6 @@ Tomatic.requestForcedTurns = function () {
       delete data.extensions
       delete data.tables // TODO: This one was never added
       Tomatic.forcedTurns(data)
-      Tomatic.forcedTurns.notify()
     })
 }
 Tomatic.forcedTurnCell = function (day, houri, turni) {

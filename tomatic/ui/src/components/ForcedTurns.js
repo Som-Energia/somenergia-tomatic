@@ -4,10 +4,9 @@ import TimeTable from './TimeTable'
 import Doc from './Doc'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
-import { useSubscriptable } from '../services/subscriptable'
 
 function ForcedTurns() {
-  const grid = useSubscriptable(Tomatic.forcedTurns)
+  const grid = Tomatic.forcedTurns.use()
 
   const setCell = (day, houri, turni, name) => {
     Tomatic.editForcedTurn(day, houri, turni, name)
