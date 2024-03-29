@@ -12,7 +12,7 @@ import Tomatic from '../../services/tomatic'
 export default function Persons() {
   const [openDialog, closeDialog] = useDialog()
   const [personToEditBusy, setPersonToEditBusy] = React.useState()
-  const { extensions } = useSubscriptable(Tomatic.persons)
+  const { extensions } = Tomatic.persons.use()
   function editPerson(name) {
     openDialog({
       children: (
@@ -41,7 +41,7 @@ export default function Persons() {
           <Box className={`extension ${name}`}>
             {Tomatic.formatName(name)}
             <br />
-            {Tomatic.persons().extensions[name] || <>&nbsp;</>}
+            {extensions[name] || <>&nbsp;</>}
             <Box className="tooltip">
               <IconButton className="colored" onClick={() => editBusy(name)}>
                 <EventBusyIcon />

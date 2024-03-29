@@ -113,7 +113,7 @@ function camelize(text) {
 function PersonsTable() {
   const [openDialog, closeDialog] = useDialog()
   const [personToEditBusy, setPersonToEditBusy] = React.useState(null)
-  const persons = useSubscriptable(Tomatic.persons)
+  const persons = Tomatic.persons.use()
   // All three need to update on persons. Use && to silence the linter
   const rows = React.useMemo(() => persons && Tomatic.allPeopleData(), [persons])
   const tables = React.useMemo(() => persons && Tomatic.tableOptions(), [persons])

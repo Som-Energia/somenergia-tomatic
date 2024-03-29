@@ -4,7 +4,7 @@ import {luminance, contrast} from '../services/colorutils'
 import { useSubscriptable } from '../services/subscriptable'
 
 function PersonStyles() {
-  var persons = useSubscriptable(Tomatic.persons)
+  var persons = Tomatic.persons.use()
   return (
     <style
       dangerouslySetInnerHTML={{

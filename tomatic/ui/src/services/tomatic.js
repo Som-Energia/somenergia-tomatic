@@ -83,7 +83,7 @@ Tomatic.isKumatoMode = subscriptable(function () {
 
 // Persons management
 
-Tomatic.persons = subscriptable(m.prop({}))
+Tomatic.persons = reactiveProp({})
 Tomatic.requestPersons = function () {
   return api
     .request({
