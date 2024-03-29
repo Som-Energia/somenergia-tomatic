@@ -17,7 +17,7 @@ function TurnsDisplay({ turns }) {
   return (
     <Typography
       sx={{
-        color: '#a44',
+        color: 'secondary.main',
         fontSize: '150%',
       }}
     >
@@ -68,7 +68,7 @@ function BusyListItem({ entry, onRemove, onEdit }) {
       <ListItemText
         primary={
           <Stack direction="row" justifyContent="space-between" gap={1} mr={3}>
-            <Typography>{day}</Typography>
+            <Typography color="primary">{day}</Typography>
             <TurnsDisplay turns={entry.turns} />
           </Stack>
         }
