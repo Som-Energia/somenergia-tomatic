@@ -38,7 +38,7 @@ export default function Persons() {
       {Object.keys(extensions || {})
         .sort()
         .map((name) => (
-          <Box className={`extension ${name}`}>
+          <Box key={name} className={`extension ${name}`}>
             {Tomatic.formatName(name)}
             <br />
             {extensions[name] || <>&nbsp;</>}

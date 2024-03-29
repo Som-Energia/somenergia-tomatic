@@ -46,7 +46,6 @@ function BusyListItem({ entry, onRemove, onEdit }) {
     <ListItem
       button
       dense
-      disableGutters
       secondaryAction={
         <IconButton
           aria-label={'Esborra'}
@@ -175,6 +174,28 @@ function BusyList({ title, entries, setEntries, isOneShot }) {
   )
 }
 
+export function BusyNotes() {
+  const notes = [
+    "Les indisponibilitat serveixen per evitar que ens assignin torn d'atenció a certes hores.",
+    "Són una eina per cuidar-nos. Sigueu generoses amb les companyes que hauran d'omplir el forat que deixeu.",
+    "No cal apuntar vacances, baixes i festius. S'agafen de l'Odoo",
+    'Apunteu: reunions, desplaçaments, conciliacions, treball concentrat, horaris atìpics...',
+    "Marqueu-les com a 'Opcional' sempre que sigui possible.",
+    "Aneu eliminant les que ja no tinguin sentit",
+    'Tenen efecte en el moment de generar la graella. Si ja està generada, caldria demanar un canvi amb les companyes,',
+  ]
+  return (
+    <Paper sx={{ p: 1 }}>
+      <h6>{"Consideracions quan demanem indisponibilitats"}</h6>
+      <ul>
+        {notes.map((n, i) => (
+          <li key={i}>{n}</li>
+        ))}
+      </ul>
+    </Paper>
+  )
+}
+
 /// BusyEditor source agnostic
 export default function BusyEditor({ data, setData }) {
   return (
@@ -217,4 +238,3 @@ export function TomaticBusyEditor({ person }) {
   }, [person])
   return <BusyEditor data={data} setData={updateData} />
 }
-
