@@ -11,7 +11,7 @@ import Tomatic from '../../services/tomatic'
 
 export default function QueueMonitor() {
   const [openDialog, closeDialog] = useDialog()
-  const queue = useSubscriptable(Tomatic.queue)
+  const queue = Tomatic.queue.use()
   function addAgent() {
     openDialog({
       children: (

@@ -4,6 +4,7 @@ import prop from 'mithril/stream'
 import api from './api'
 import messages from './messages'
 import subscriptable from './subscriptable'
+import {prop as reactiveProp} from './subscriptable'
 m.prop = prop
 
 const Tomatic = {
@@ -15,14 +16,14 @@ const Tomatic = {
 
 Tomatic.variant = 'tomatic'
 
-Tomatic.queue = subscriptable(m.prop([]))
 Tomatic.persons = subscriptable(m.prop({}))
 Tomatic.init = function () {
+  console.log("Initialization Tomatic")
   this.checkVersionPeriodically()
-  this.requestWeeks()
-  this.updateQueuePeriodically()
-  this.requestPersons()
   this.initKumato()
+  this.updateQueuePeriodically()
+  this.requestWeeks()
+  this.requestPersons()
   this.requestForcedTurns()
 }
 
@@ -95,16 +96,15 @@ Tomatic.requestPersons = function () {
 
 // Line management
 
+Tomatic.queue = reactiveProp([])
+//Tomatic.queue.subscribe(()=>console.debug("Updated queue: ", Tomatic.queue()))
 Tomatic.requestQueue = function (suffix) {
   api
     .request({
       url: '/api/queue' + (suffix || ''),
     })
     .then(function (response) {
-      if (response?.currentQueue !== undefined) {
-        Tomatic.queue(response.currentQueue)
-        Tomatic.queue.notify()
-      }
+      Tomatic.queue(response.currentQueue || [])
     })
 }
 
