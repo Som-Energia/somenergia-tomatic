@@ -557,14 +557,6 @@ Tomatic.requestWeeks = function () {
     })
 }
 
-Tomatic.log = function (message) {
-  messages.log(message)
-}
-
-Tomatic.error = function (message) {
-  messages.error(message)
-}
-
 Tomatic.sendBusyData = function (name, data) {
   const context = `Actualitzant indisponibilitats per ${name}`
   api
