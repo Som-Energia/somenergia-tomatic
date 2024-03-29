@@ -14,9 +14,6 @@ const Tomatic = {
   },
 }
 
-Tomatic.variant = 'tomatic'
-
-Tomatic.persons = subscriptable(m.prop({}))
 Tomatic.init = function () {
   console.log("Initialization Tomatic")
   this.checkVersionPeriodically()
@@ -27,6 +24,9 @@ Tomatic.init = function () {
   this.requestForcedTurns()
 }
 
+// Server version
+
+Tomatic.variant = 'tomatic'
 Tomatic.versionTimer = 0
 Tomatic.checkVersionPeriodically = function () {
   console.log('Checking version')
@@ -66,8 +66,9 @@ Tomatic.checkVersion = function () {
     })
 }
 
+// Kumato mode (Dark Interface)
+
 Tomatic.initKumato = function () {
-  // Dark interface
   Tomatic._kumato = JSON.parse(localStorage.getItem('kumato', false))
   Tomatic.isKumatoMode.notify()
 }
@@ -81,6 +82,8 @@ Tomatic.isKumatoMode = subscriptable(function () {
 })
 
 // Persons management
+
+Tomatic.persons = subscriptable(m.prop({}))
 Tomatic.requestPersons = function () {
   return api
     .request({
@@ -89,158 +92,8 @@ Tomatic.requestPersons = function () {
     .then(function (response) {
       if (response.persons !== undefined) {
         Tomatic.persons(response.persons)
-        Tomatic.persons.notify()
       }
     })
-}
-
-// Line management
-
-Tomatic.queue = reactiveProp([])
-//Tomatic.queue.subscribe(()=>console.debug("Updated queue: ", Tomatic.queue()))
-Tomatic.requestQueue = function (suffix) {
-  api
-    .request({
-      url: '/api/queue' + (suffix || ''),
-    })
-    .then(function (response) {
-      Tomatic.queue(response.currentQueue || [])
-    })
-}
-
-Tomatic.addLine = function (line) {
-  Tomatic.requestQueue('/add/' + line)
-}
-
-Tomatic.pauseLine = function (line) {
-  Tomatic.requestQueue('/pause/' + line)
-}
-
-Tomatic.restoreLine = function (line) {
-  Tomatic.requestQueue('/resume/' + line)
-}
-
-const queueRefreshPeriodSeconds = 5 //2 * 60 // TODO: config param
-// Use window to have a true shared value.
-// Avoids duppes on hot module reload.
-window.tomaticQueueTimer = 0
-
-Tomatic.updateQueuePeriodically = function () {
-  clearTimeout(window.tomaticQueueTimer)
-  window.tomaticQueueTimer = setTimeout(
-    Tomatic.updateQueuePeriodically,
-    queueRefreshPeriodSeconds * 1000,
-  )
-  Tomatic.requestQueue()
-}
-
-///////////////////////
-// Forced turns
-
-Tomatic.forcedTurns = reactiveProp({})
-Tomatic.requestForcedTurns = function () {
-  api
-    .request({
-      url: '/api/forcedturns',
-    })
-    .then(function (data) {
-      if (!data) return
-      data.days = data.days || 'dl dm dx dj dv'.split(' ')
-      delete data.colors
-      delete data.names
-      delete data.extensions
-      delete data.tables // TODO: This one was never added
-      Tomatic.forcedTurns(data)
-    })
-}
-Tomatic.forcedTurnCell = function (day, houri, turni) {
-  try {
-    return Tomatic.forcedTurns().timetable[day][houri][turni]
-  } catch (err) {
-    return undefined
-  }
-}
-
-Tomatic.editForcedTurn = function (day, houri, turni, name) {
-  const context = `Editant el torn forçat ${day} ${houri} ${turni} ${name}`
-  api
-    .request({
-      context,
-      method: 'PATCH',
-      url: '/api/forcedturns/' + [day, houri, turni, name].join('/'),
-    })
-    .then(
-      function (data) {
-        Tomatic.requestForcedTurns()
-      },
-      function (error) {
-        messages.error(error?.message || 'Error Inexperat', { context })
-      },
-    )
-}
-
-Tomatic.forcedTurnsAddColumn = function () {
-  const context = `Afegint línia als torns fixos`
-  api
-    .request({
-      method: 'PATCH',
-      url: '/api/forcedturns/addColumn',
-    })
-    .then(
-      function (data) {
-        Tomatic.requestForcedTurns()
-      },
-      function (error) {
-        messages.error(error?.message || 'Error Inexperat', { context })
-      },
-    )
-}
-
-Tomatic.forcedTurnsRemoveColumn = function () {
-  const context = `Eliminant linia als torns fixos`
-  api
-    .request({
-      method: 'PATCH',
-      url: '/api/forcedturns/removeColumn',
-    })
-    .then(
-      function (data) {
-        Tomatic.requestForcedTurns()
-      },
-      function (error) {
-        messages.error(error?.message || 'Error Inexperat', { context })
-      },
-    )
-}
-
-Tomatic.grid = subscriptable(m.prop({}))
-Tomatic.requestGrid = function (week) {
-  api
-    .request({
-      url: '/api/graella-' + week + '.yaml',
-    })
-    .then(function (data) {
-      data.days = data.days || 'dl dm dx dj dv'.split(' ')
-      delete data.colors
-      delete data.names
-      delete data.extensions
-      delete data.tables // TODO: This one was never added
-      Tomatic.currentWeek(week)
-      Tomatic.grid(data)
-      Tomatic.grid.notify()
-    })
-}
-
-Tomatic.weekdays = {
-  dl: 'Dilluns',
-  dm: 'Dimarts',
-  dx: 'Dimecres',
-  dj: 'Dijous',
-  dv: 'Divendres',
-}
-
-Tomatic.weekday = function (short, alternative) {
-  return Tomatic.weekdays[short] || alternative || '??'
 }
 
 Tomatic.personColor = function (name) {
@@ -357,35 +210,6 @@ Tomatic.allPeople = function() {
 Tomatic.allPeopleData = function() {
   const allNames = Tomatic.allPeople()
   return allNames.map((name)=>Tomatic.personFields(name))
-}
-
-Tomatic.cell = function (day, houri, turni) {
-  try {
-    return Tomatic.grid().timetable[day][houri][turni]
-  } catch (err) {
-    return undefined
-  }
-}
-Tomatic.editCell = function (day, houri, turni, name, myname) {
-  // Direct edition, just for debug purposes
-  //Tomatic.grid().timetable[day][houri][turni] = name;
-  const context = `Editant la graella`
-  api
-    .request({
-      method: 'PATCH',
-      url:
-        '/api/graella/' +
-        [Tomatic.grid().week, day, houri, turni, name].join('/'),
-      body: myname,
-    })
-    .then(
-      function (data) {
-        Tomatic.requestGrid(Tomatic.grid().week)
-      },
-      function (error) {
-        messages.error(error || 'Error inexperat', { context })
-      },
-    )
 }
 
 Tomatic.deletePerson = function (id) {
@@ -528,6 +352,188 @@ Tomatic.setPersonData = function (name, data) {
     )
 }
 
+//////////////////////
+// Line management
+
+Tomatic.queue = reactiveProp([])
+//Tomatic.queue.subscribe(()=>console.debug("Updated queue: ", Tomatic.queue()))
+Tomatic.requestQueue = function (suffix) {
+  api
+    .request({
+      url: '/api/queue' + (suffix || ''),
+    })
+    .then(function (response) {
+      Tomatic.queue(response.currentQueue || [])
+    })
+}
+
+Tomatic.addLine = function (line) {
+  Tomatic.requestQueue('/add/' + line)
+}
+
+Tomatic.pauseLine = function (line) {
+  Tomatic.requestQueue('/pause/' + line)
+}
+
+Tomatic.restoreLine = function (line) {
+  Tomatic.requestQueue('/resume/' + line)
+}
+
+const queueRefreshPeriodSeconds = 5 //2 * 60 // TODO: config param
+// Use window to have a true shared value.
+// Avoids duppes on hot module reload.
+window.tomaticQueueTimer = 0
+
+Tomatic.updateQueuePeriodically = function () {
+  clearTimeout(window.tomaticQueueTimer)
+  window.tomaticQueueTimer = setTimeout(
+    Tomatic.updateQueuePeriodically,
+    queueRefreshPeriodSeconds * 1000,
+  )
+  Tomatic.requestQueue()
+}
+
+///////////////////////
+// Forced turns
+
+Tomatic.forcedTurns = reactiveProp({})
+Tomatic.requestForcedTurns = function () {
+  api
+    .request({
+      url: '/api/forcedturns',
+    })
+    .then(function (data) {
+      if (!data) return
+      data.days = data.days || 'dl dm dx dj dv'.split(' ')
+      delete data.colors
+      delete data.names
+      delete data.extensions
+      delete data.tables // TODO: This one was never added
+      Tomatic.forcedTurns(data)
+    })
+}
+Tomatic.forcedTurnCell = function (day, houri, turni) {
+  try {
+    return Tomatic.forcedTurns().timetable[day][houri][turni]
+  } catch (err) {
+    return undefined
+  }
+}
+
+Tomatic.editForcedTurn = function (day, houri, turni, name) {
+  const context = `Editant el torn forçat ${day} ${houri} ${turni} ${name}`
+  api
+    .request({
+      context,
+      method: 'PATCH',
+      url: '/api/forcedturns/' + [day, houri, turni, name].join('/'),
+    })
+    .then(
+      function (data) {
+        Tomatic.requestForcedTurns()
+      },
+      function (error) {
+        messages.error(error?.message || 'Error Inexperat', { context })
+      },
+    )
+}
+
+Tomatic.forcedTurnsAddColumn = function () {
+  const context = `Afegint línia als torns fixos`
+  api
+    .request({
+      method: 'PATCH',
+      url: '/api/forcedturns/addColumn',
+    })
+    .then(
+      function (data) {
+        Tomatic.requestForcedTurns()
+      },
+      function (error) {
+        messages.error(error?.message || 'Error Inexperat', { context })
+      },
+    )
+}
+
+Tomatic.forcedTurnsRemoveColumn = function () {
+  const context = `Eliminant linia als torns fixos`
+  api
+    .request({
+      method: 'PATCH',
+      url: '/api/forcedturns/removeColumn',
+    })
+    .then(
+      function (data) {
+        Tomatic.requestForcedTurns()
+      },
+      function (error) {
+        messages.error(error?.message || 'Error Inexperat', { context })
+      },
+    )
+}
+
+////////////////
+// Timetable
+
+Tomatic.grid = subscriptable(m.prop({}))
+Tomatic.requestGrid = function (week) {
+  api
+    .request({
+      url: '/api/graella-' + week + '.yaml',
+    })
+    .then(function (data) {
+      data.days = data.days || 'dl dm dx dj dv'.split(' ')
+      delete data.colors
+      delete data.names
+      delete data.extensions
+      delete data.tables // TODO: This one was never added
+      Tomatic.currentWeek(week)
+      Tomatic.grid(data)
+      Tomatic.grid.notify()
+    })
+}
+
+Tomatic.weekdays = {
+  dl: 'Dilluns',
+  dm: 'Dimarts',
+  dx: 'Dimecres',
+  dj: 'Dijous',
+  dv: 'Divendres',
+}
+
+Tomatic.weekday = function (short, alternative) {
+  return Tomatic.weekdays[short] || alternative || '??'
+}
+
+Tomatic.cell = function (day, houri, turni) {
+  try {
+    return Tomatic.grid().timetable[day][houri][turni]
+  } catch (err) {
+    return undefined
+  }
+}
+Tomatic.editCell = function (day, houri, turni, name, myname) {
+  // Direct edition, just for debug purposes
+  //Tomatic.grid().timetable[day][houri][turni] = name;
+  const context = `Editant la graella`
+  api
+    .request({
+      method: 'PATCH',
+      url:
+        '/api/graella/' +
+        [Tomatic.grid().week, day, houri, turni, name].join('/'),
+      body: myname,
+    })
+    .then(
+      function (data) {
+        Tomatic.requestGrid(Tomatic.grid().week)
+      },
+      function (error) {
+        messages.error(error || 'Error inexperat', { context })
+      },
+    )
+}
+
 Tomatic.weeks = subscriptable(m.prop([]))
 Tomatic.currentWeek = m.prop(undefined)
 Tomatic.requestWeeks = function () {
@@ -556,6 +562,9 @@ Tomatic.requestWeeks = function () {
       Tomatic.weeks.notify()
     })
 }
+
+///////////////////////
+// Busy
 
 Tomatic.sendBusyData = function (name, data) {
   const context = `Actualitzant indisponibilitats per ${name}`
