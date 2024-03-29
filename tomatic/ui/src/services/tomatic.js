@@ -540,7 +540,7 @@ Tomatic.editCell = function (day, houri, turni, name, myname) {
     )
 }
 
-Tomatic.weeks = subscriptable(m.prop([]))
+Tomatic.weeks = reactiveProp([])
 Tomatic.currentWeek = m.prop(undefined)
 Tomatic.requestWeeks = function () {
   api
@@ -565,7 +565,6 @@ Tomatic.requestWeeks = function () {
           Tomatic.requestGrid(current)
         }
       }
-      Tomatic.weeks.notify()
     })
 }
 
