@@ -40,8 +40,7 @@ function TurnsEditor({ value, onChange, helperText, label }) {
 export default function BusyEntryDialog({ entry, setEntry, onApply, onClose }) {
   if (!entry) return
   const days = ['', 'dl', 'dm', 'dx', 'dj', 'dv']
-  const hours = Tomatic.grid().hours
-  const noTurn = '0'.repeat(hours.length - 1)
+
   function update(value) {
     setEntry({ ...entry, ...value })
   }
@@ -128,7 +127,7 @@ export default function BusyEntryDialog({ entry, setEntry, onApply, onClose }) {
       <DialogActions>
         {!entry.reason ? (
           <Alert severity="error">{'Cal posar un motiu'}</Alert>
-        ) : entry.turns === noTurn ? (
+        ) : !entry.turns.includes('1') ? (
           <Alert severity="warning">
             {'Sense marcar hores no tindra efecte'}
           </Alert>

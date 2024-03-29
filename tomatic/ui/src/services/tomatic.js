@@ -475,7 +475,7 @@ Tomatic.forcedTurnsRemoveColumn = function () {
 ////////////////
 // Timetable
 
-Tomatic.grid = subscriptable(m.prop({}))
+Tomatic.grid = reactiveProp({})
 Tomatic.requestGrid = function (week) {
   api
     .request({
@@ -483,13 +483,13 @@ Tomatic.requestGrid = function (week) {
     })
     .then(function (data) {
       data.days = data.days || 'dl dm dx dj dv'.split(' ')
+      // TODO: Delete on API
       delete data.colors
       delete data.names
       delete data.extensions
       delete data.tables // TODO: This one was never added
       Tomatic.currentWeek(week)
       Tomatic.grid(data)
-      Tomatic.grid.notify()
     })
 }
 

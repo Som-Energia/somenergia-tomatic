@@ -13,7 +13,7 @@ import ForcedTurns from './components/ForcedTurns'
 import BusyPage from './pages/BusyPage'
 import PbxPage from './pages/PbxPage'
 import PersonsPage from './pages/PersonsPage'
-// TODO: Cleanup styles, some inherited from polythene
+// TODO: Cleanup styles, some even inherited from polythene
 import * as css from 'polythene-css'
 import CssBaseline from '@mui/material/CssBaseline'
 import PersonStyles from './components/PersonStyles'

@@ -87,8 +87,7 @@ function BusyList({ title, entries, setEntries, isOneShot }) {
   const [onApply, setOnApply] = React.useState(undefined)
 
   function addEntry() {
-    const hours = Tomatic.grid().hours
-    const noTurn = '0'.repeat(hours.length - 1)
+    const noTurn = '0'.repeat(Tomatic.grid().hours.length - 1)
     const newEntry = {
       weekday: isOneShot ? undefined : '',
       date: isOneShot ? nextMonday() : undefined,

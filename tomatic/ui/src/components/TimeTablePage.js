@@ -3,10 +3,9 @@ import Tomatic from '../services/tomatic'
 import TimeTable from './TimeTable'
 import Box from '@mui/material/Box'
 import WeekPicker from './WeekPicker'
-import { useSubscriptable } from '../services/subscriptable'
 
 function TimeTablePage() {
-  const grid = useSubscriptable(Tomatic.grid)
+  const grid = Tomatic.grid.use()
 
   const setCell = (day, houri, turni, name) => {
     Tomatic.editCell(day, houri, turni, name)
