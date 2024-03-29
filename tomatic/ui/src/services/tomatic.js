@@ -1,12 +1,9 @@
 // Tomatic application model component
-import m from 'mithril'
-import prop from 'mithril/stream'
 import api from './api'
 import messages from './messages'
 import { preferedWeek } from './dateutils'
 import subscriptable from './subscriptable'
-import {prop as reactiveProp} from './subscriptable'
-m.prop = prop
+import { prop as reactiveProp } from './subscriptable'
 
 const Tomatic = {
   packageinfo: {
