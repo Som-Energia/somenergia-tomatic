@@ -134,13 +134,6 @@ Tomatic.updateQueuePeriodically = function () {
   Tomatic.requestQueue()
 }
 
-Tomatic.weekdays = {
-  dl: 'Dilluns',
-  dm: 'Dimarts',
-  dx: 'Dimecres',
-  dj: 'Dijous',
-  dv: 'Divendres',
-}
 
 /* Forced Turns */
 Tomatic.forcedTurns = subscriptable(m.prop({}))
@@ -237,9 +230,19 @@ Tomatic.requestGrid = function (week) {
       Tomatic.grid.notify()
     })
 }
+
+Tomatic.weekdays = {
+  dl: 'Dilluns',
+  dm: 'Dimarts',
+  dx: 'Dimecres',
+  dj: 'Dijous',
+  dv: 'Divendres',
+}
+
 Tomatic.weekday = function (short, alternative) {
   return Tomatic.weekdays[short] || alternative || '??'
 }
+
 Tomatic.personColor = function (name) {
   if (!Tomatic.persons().colors) {
     return '#aaaaaa'
