@@ -2,6 +2,7 @@ import React from 'react'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import CallInfo from '../../contexts/callinfo'
+import Solo from '../../components/Solo'
 import { useSubscriptable } from '../../services/subscriptable'
 
 export default function AtrCases() {
@@ -10,21 +11,15 @@ export default function AtrCases() {
   const cases = contract?.atr_cases ?? null
   if (isLoading) {
     return (
-      <Box className="atr-cases">
-        <Box className="loading  layout vertical center">
-          {'Carregant casos ATR...'}
-          <CircularProgress />
-        </Box>
-      </Box>
+      <Solo className="atr-cases">
+        {'Carregant casos ATR...'}
+        <CircularProgress />
+      </Solo>
     )
   }
   if (cases.length === 0) {
     return (
-      <Box className="atr-cases">
-        <Box className="loading  layout vertical center">
-          {'No hi ha casos ATR disponibles.'}
-        </Box>
-      </Box>
+      <Solo className="atr-cases">{'No hi ha casos ATR disponibles.'}</Solo>
     )
   }
   return (

@@ -19,7 +19,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import PersonStyles from './components/PersonStyles'
 import './App.css'
 import './containers/style.styl'
-css.addLayoutStyles()
+//css.addLayoutStyles()
 css.addTypography()
 
 Tomatic.init()

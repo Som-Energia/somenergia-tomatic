@@ -3,6 +3,7 @@ import Tomatic from '../services/tomatic'
 
 import CellEditDialog from './CellEditDialog'
 import Fab from '@mui/material/Fab'
+import Stack from '@mui/material/Stack'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import Tooltip from '@mui/material/Tooltip'
@@ -131,7 +132,12 @@ function TimeTable(props) {
           </Tooltip>
         </div>
       ) : null}
-      <div className="layout center-center wrap">
+      <Stack
+        direction="row"
+        flexWrap="wrap"
+        justifyContent="center"
+        alignItems="center"
+      >
         {(grid?.days || []).map((day) => (
           <div key={day} className="graella">
             <table>
@@ -146,9 +152,7 @@ function TimeTable(props) {
               <tbody>
                 {grid?.hours.slice(0, -1).map((hour, houri) => (
                   <tr key={hour}>
-                    <th className="separator">
-                      {Tomatic.hourLabel(houri)}
-                    </th>
+                    <th className="separator">{Tomatic.hourLabel(houri)}</th>
                     {grid.turns.map((turn, turni) => cell(day, houri, turni))}
                   </tr>
                 ))}
@@ -156,12 +160,17 @@ function TimeTable(props) {
             </table>
           </div>
         ))}
-      </div>
-      <div className="layout.around-justified.wrap">
+      </Stack>
+      <Stack
+        direction="row"
+        flexWrap="wrap"
+        justifyContent="space-arround"
+        sx={{ '& > *': { flex: 1 } }}
+      >
         {grid?.log ? Changelog(grid) : []}
         {grid?.penalties && showPenalties ? Penalties(grid) : []}
         {grid?.overload && showOverloads ? Overloads(grid) : []}
-      </div>
+      </Stack>
     </>
   )
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import Stack from '@mui/material/Stack'
 import CircularProgress from '@mui/material/CircularProgress'
 import CallInfo from '../../contexts/callinfo'
 import AttendedCalls from './AttendedCalls'
@@ -16,11 +17,10 @@ export default function CallinfoPage() {
   const results = CallInfo.results.use()
   return (
     <div className="callinfo">
-      <div className="all-info-call layout horizontal">
+      <Stack className="all-info-call" direction="row">
         <AttendedCalls />
-
-        <div className="layout horizontal flex">
-          <div className="layout vertical flex">
+        <Stack direction="row" flex={1}>
+          <Stack direction="column" flex={1}>
             <CustomerSearch />
             <div className="plane-info">
               {CallInfo.searchStatus() === 'ZERORESULTS' ? (
@@ -41,17 +41,17 @@ export default function CallinfoPage() {
                 </div>
               ) : (
                 <div className="plane-info">
-                  <div className="layout vertical flex">
+                  <Stack direction="column" flex={1}>
                     <PartnerInfo />
                     <ContractInfo />
-                  </div>
+                  </Stack>
                   <DetailsInfo data={results} />
                 </div>
               )}
             </div>
-          </div>
-        </div>
-      </div>
+          </Stack>
+        </Stack>
+      </Stack>
     </div>
   )
 }

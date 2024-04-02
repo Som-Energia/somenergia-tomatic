@@ -14,7 +14,7 @@ export default function DetailsInfo() {
   if (contract === null) return null
 
   return (
-    <Box className={'contract-details flex'}>
+    <Box className={'contract-details'} flex={1}>
       <TabbedCard
         currentTab={activeView}
         onTabChanged={(value) => {
