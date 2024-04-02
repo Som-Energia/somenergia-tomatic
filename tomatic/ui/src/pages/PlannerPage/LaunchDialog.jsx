@@ -8,8 +8,7 @@ import Dialog from '../../components/ResponsiveDialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
-import api from '../../services/api'
-import messages from '../../services/messages'
+import planner from './planner'
 
 function nextMonday() {
   // TODO: Review and test
@@ -26,27 +25,19 @@ export default function LaunchDialog({ open, onClose, updateExecutions }) {
   const [monday, setMonday] = React.useState(nextMonday())
 
   function launchTask() {
-    const context = 'Llençant graella'
-    api
-      .request({
-        context,
-        url: `/api/planner/api/run`,
-        method: 'POST',
-        params: {
-          nlines: nLines,
-          search_days: searchDays.join(","),
-          description,
-          monday,
-        },
-      })
-      .then((result) => {
-        updateExecutions()
-        messages.success('ok', { context })
-        onClose()
-      })
+    const params = {
+      nlines: nLines,
+      search_days: searchDays.join(','),
+      description,
+      monday,
+    }
+    planner.launch(params).then((result) => {
+      updateExecutions()
+    })
+    onClose()
   }
   return (
-    <Dialog open={open} onClose={onClose} >
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>{'Llença la graella'}</DialogTitle>
       <DialogContent>
         <Stack mt={2} gap={2} span={1} flex={2}>
