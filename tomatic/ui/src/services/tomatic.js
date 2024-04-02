@@ -15,7 +15,6 @@ const Tomatic = {
 Tomatic.init = function () {
   console.log('Initialization Tomatic')
   this.checkVersionPeriodically()
-  this.updateQueuePeriodically()
   this.requestWeeks()
   this.requestPersons()
   this.requestForcedTurns()
@@ -382,20 +381,6 @@ Tomatic.pauseLine = function (line) {
 
 Tomatic.restoreLine = function (line) {
   Tomatic.requestQueue('/resume/' + line)
-}
-
-const queueRefreshPeriodSeconds = 5 //2 * 60 // TODO: config param
-// Use window to have a true shared value.
-// Avoids duppes on hot module reload.
-window.tomaticQueueTimer = 0
-
-Tomatic.updateQueuePeriodically = function () {
-  clearTimeout(window.tomaticQueueTimer)
-  window.tomaticQueueTimer = setTimeout(
-    Tomatic.updateQueuePeriodically,
-    queueRefreshPeriodSeconds * 1000,
-  )
-  Tomatic.requestQueue()
 }
 
 ///////////////////////

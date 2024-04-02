@@ -8,9 +8,12 @@ import PersonPicker from '../../components/PersonPicker'
 import { useDialog } from '../../components/DialogProvider'
 import Tomatic from '../../services/tomatic'
 
+const queueRefreshPeriodSeconds = 5 //2 * 60 // TODO: config param
+
 export default function QueueMonitor() {
   const [openDialog, closeDialog] = useDialog()
   const queue = Tomatic.queue.use()
+
   function addAgent() {
     openDialog({
       children: (
@@ -31,6 +34,14 @@ export default function QueueMonitor() {
       ),
     })
   }
+
+  React.useEffect(() => {
+    Tomatic.requestQueue()
+    const interval = setInterval(() => {
+      Tomatic.requestQueue()
+    }, 1000 * queueRefreshPeriodSeconds)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <Box className="queueeditor">
