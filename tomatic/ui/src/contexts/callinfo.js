@@ -426,12 +426,7 @@ CallInfo.updateCategories = function () {
     )
 }
 
-CallInfo.callLog = [] // User call registry
-CallInfo.personCalls = subscriptable((...args) => {
-  if (args.length === 0) return CallInfo.callLog
-  CallInfo.callLog = args[0]
-  CallInfo.personCalls.notify()
-})
+CallInfo.personCalls = reactiveProp([]) // User call registry
 
 CallInfo.retrievePersonCalls = function () {
   var username = Auth.username()
@@ -439,7 +434,7 @@ CallInfo.retrievePersonCalls = function () {
     CallInfo.personCalls([])
     return 0
   }
-  CallInfo.personCalls(['lookingfor'])
+  CallInfo.personCalls(undefined) // Loading
   api
     .request({
       url: '/api/personlog/' + username,

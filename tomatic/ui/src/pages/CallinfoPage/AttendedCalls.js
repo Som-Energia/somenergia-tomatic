@@ -149,17 +149,8 @@ function CallEntry({ item, disabled }) {
 }
 
 function AttendedCallList() {
-  const personCalls = useSubscriptable(CallInfo.personCalls)
-  if (personCalls.length === 0) {
-    return (
-      <Box className="attended-calls-list">
-        <List dense={true}>
-          <ListItem className="registres">{'Cap trucada al registre'}</ListItem>
-        </List>
-      </Box>
-    )
-  }
-  if (personCalls[0] === 'lookingfor')
+  const personCalls = CallInfo.personCalls.use()
+  if (personCalls===undefined)
     return (
       <Stack
         sx={{
@@ -172,6 +163,15 @@ function AttendedCallList() {
         <CircularProgress />
       </Stack>
     )
+  if (personCalls.length === 0) {
+    return (
+      <Box className="attended-calls-list">
+        <List dense={true}>
+          <ListItem className="registres">{'Cap trucada al registre'}</ListItem>
+        </List>
+      </Box>
+    )
+  }
   var currentDate = new Date().toLocaleDateString()
   return (
     <Box className="attended-calls-list">
