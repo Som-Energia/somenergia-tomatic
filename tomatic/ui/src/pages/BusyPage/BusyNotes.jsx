@@ -3,15 +3,17 @@ import { MuiMarkdown } from 'mui-markdown'
 import Paper from '@mui/material/Paper'
 
 const text=`
-##### Consideracions quan demanem indisponibilitats
+Marcar indisponibilitats evita que ens assignin torns a hores que no podem, o no que ens van bé, de fer.
 
-- Les indisponibilitat serveixen per evitar que ens assignin torn d'atenció a certes hores.
-- Són una eina per cuidar-nos. Sigueu generoses amb les companyes que hauran d'omplir el forat que deixeu.
-- No cal apuntar vacances, baixes i festius. S'agafen de l'Odoo
-- Apunteu: reunions, desplaçaments, conciliacions, treball concentrat, horaris atìpics...
-- Marqueu-les com a 'Opcional' sempre que sigui possible
-- Aneu eliminant les que ja no tinguin sentit
-- Tenen efecte en el moment de generar la graella. Si ja està generada, caldria demanar un canvi amb les companyes
+- Marqueu reunions, desplaçaments, conciliacions, treball concentrat, horaris atípics...
+- No cal anotar vacances, baixes i festius, que ja són a l'Odoo.
+- **Són una eina auto-gestionada per cuidar-nos**. Cuidem també a les companyes que hauran de cobrir el nostre forat.
+- Marqueu-les com a 'Opcional' sempre que sigui possible.
+    - Ens permet cobrir el torn si no hi ha ningú més disponible.
+- Aneu eliminant les que deixin de tindre sentit:
+    - Reunions de GTTs finalitzats, o d'equips on ja no hi som, portar al cole fills que ja van a la uni...
+- Indicar un motiu entenedor també ens ajuda a detectar aquests casos.
+- S'apliquen al moment de generar la graella. Si ja està generada, auto-gestioneu un canvi amb una companya.
 `
 
 export default function BusyNotes() {

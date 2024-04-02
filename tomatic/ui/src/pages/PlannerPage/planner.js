@@ -57,7 +57,7 @@ const planner = {
   stop: (task) => taskCommand(task, 'stop', 'Parant la graella'),
   kill: (task) => taskCommand(task, 'kill', 'Matant la graela'),
   remove: (task) => taskCommand(task, 'remove', 'Esborrant la graela'),
-  upload: (task) => taskCommand(task, 'upload', 'Puja la graella'),
+  upload: (task) => taskCommand(task, 'upload', 'Pujant la graella'),
 }
 
 export default planner
