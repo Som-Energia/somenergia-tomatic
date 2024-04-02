@@ -467,6 +467,7 @@ Tomatic.forcedTurnsRemoveColumn = function () {
 
 Tomatic.grid = reactiveProp({})
 Tomatic.requestGrid = function (week) {
+  const context = `Recuperant la graella ${week}` 
   if (week === undefined) {
     Tomatic.grid({})
     return
@@ -475,15 +476,20 @@ Tomatic.requestGrid = function (week) {
     .request({
       url: '/api/graella-' + week + '.yaml',
     })
-    .then(function (data) {
-      data.days = data.days || 'dl dm dx dj dv'.split(' ')
-      // TODO: Delete on API
-      delete data.colors
-      delete data.names
-      delete data.extensions
-      delete data.tables // TODO: This one was never added
-      Tomatic.grid(data)
-    })
+    .then(
+      function (data) {
+        data.days = data.days || 'dl dm dx dj dv'.split(' ')
+        // TODO: Delete on API
+        delete data.colors
+        delete data.names
+        delete data.extensions
+        delete data.tables // TODO: This one was never added
+        Tomatic.grid(data)
+      },
+      function (error) {
+        messages.error(error || 'Error inexperat', { context })
+      },
+    )
 }
 
 Tomatic.weekdays = {
