@@ -17,7 +17,6 @@ import PersonsPage from './pages/PersonsPage'
 import * as css from 'polythene-css'
 import CssBaseline from '@mui/material/CssBaseline'
 import PersonStyles from './components/PersonStyles'
-import './App.css'
 import './containers/style.styl'
 //css.addLayoutStyles()
 css.addTypography()
