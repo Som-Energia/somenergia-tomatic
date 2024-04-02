@@ -13,6 +13,7 @@ import ForcedTurns from './components/ForcedTurns'
 import BusyPage from './pages/BusyPage'
 import PbxPage from './pages/PbxPage'
 import PersonsPage from './pages/PersonsPage'
+import PlannerPage from './pages/PlannerPage'
 // TODO: Cleanup styles, some even inherited from polythene
 import * as css from 'polythene-css'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -70,6 +71,10 @@ const router = createHashRouter(
         {
           path: 'Trucada',
           Component: CallinfoPage,
+        },
+        {
+          path: 'planner',
+          Component: PlannerPage,
         },
       ],
     },
