@@ -56,7 +56,7 @@ const variantBackground = {
 const variantTitle = {
   tomatic: 'Tomàtic - Som Energia',
   pebrotic: 'Pebròtic - Som Energia',
-  ketchup: 'Tomàtic Ketchup - Som Energia',
+  ketchup: 'Ketchup - Som Energia',
 }
 
 const AppBar = styled(MuiAppBar, {
@@ -83,6 +83,7 @@ const AppBar = styled(MuiAppBar, {
 }))
 
 function ResponsiveAppBar({ children }) {
+  const isKumatoMode = Tomatic.isKumatoMode.use()
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [drawerOpen, setDrawerOpen] = React.useState(false)
   const navigate = useNavigate()
@@ -347,7 +348,7 @@ function ResponsiveAppBar({ children }) {
         }}
       />
       <Box
-        className={Tomatic.isKumatoMode() ? 'pe-dark-theme' : ''}
+        className={isKumatoMode ? 'kumato-mode' : ''}
         component="main"
         sx={{
           flexGrow: 1,

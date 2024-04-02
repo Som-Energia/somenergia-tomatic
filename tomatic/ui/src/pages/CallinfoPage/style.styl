@@ -1,3 +1,15 @@
+body:has(.kumato-mode)
+  --call-list-background: #242424
+  --call-list-color: white
+  --call-list-time: orange
+  --call-list-phone: #a8f
+  --call-list-partner: #e55
+  --call-list-contract: #6f7
+
+  main
+    a:link, a:visited
+      color: #7df
+
 body
   .callinfo
       .all-info-call
@@ -52,24 +64,27 @@ body
           .registres
               font-size: 14px
 
+
       .attended-calls-list
-          background-color: #EEEEEE
-          color: black
+          background-color: var(--call-list-background, #EEEEEE)
+          color: var(--call-list-color, black)
+          color: green
           height: calc(100vh - 215px)
           overflow-y: auto
           .time
-              color: Coral
+              color: var(--call-list-time, Coral)
           .phone
-              color: RebeccaPurple
+              color: var(--call-list-phone, RebeccaPurple)
           .partner
-              color: Maroon
+              color: var(--call-list-partner, Maroon)
           .contract
-              color: green
+              color: var(--call-list-contract, green)
           .pending
               color: red
           .registres
               font-size: 14px
               color: dimgrey
+              color: yellow
           .registres.selected
               background: #cdcdff
           .registres.dateseparator
@@ -92,18 +107,6 @@ body
                   display: inline-block
               .btn-search
                   align-self: end
-
-      select
-          padding: 8px 20px
-          margin-right: 10px
-          border: 1px solid #ccc
-          border-radius: 6px
-          background-color: snow
-          color: black
-          box-sizing: border-box
-          option
-              background-color: white
-              color: black
 
       .partner-info
           margin-top: 10px
@@ -213,6 +216,7 @@ body
     position: relative
     display: inline-block
     cursor: pointer
+    overflow: visible
     .tooltiptext
         cursor: auto
         line-height: 1.4em;
@@ -299,22 +303,6 @@ body
       vertical-align: top
     .alert-case
       color: red
-
-body #tomatic .pe-dark-theme
-
-  .callinfo
-    .all-info-call
-        .card-attended-calls
-          .attended-calls-list
-            background: #242424
-
-  a:link, a:visited
-    color: #7df
-
-  select
-    background-color: #222
-    border-color: black
-    color: white
 
 .inactive-contract
   text-decoration: line-through

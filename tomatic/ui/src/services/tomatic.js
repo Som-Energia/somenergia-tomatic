@@ -15,7 +15,6 @@ const Tomatic = {
 Tomatic.init = function () {
   console.log('Initialization Tomatic')
   this.checkVersionPeriodically()
-  this.initKumato()
   this.updateQueuePeriodically()
   this.requestWeeks()
   this.requestPersons()
@@ -66,18 +65,20 @@ Tomatic.checkVersion = function () {
 
 // Kumato mode (Dark Interface)
 
-Tomatic.initKumato = function () {
-  Tomatic._kumato = JSON.parse(localStorage.getItem('kumato', false))
-  Tomatic.isKumatoMode.notify()
+function browserPrefersDarkMode() {
+  if (!window.matchMedia) return false
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
 }
-Tomatic.toggleKumato = function () {
-  Tomatic._kumato = !Tomatic._kumato
-  localStorage.kumato = Tomatic._kumato
-  Tomatic.isKumatoMode.notify()
-}
-Tomatic.isKumatoMode = subscriptable(function () {
-  return Tomatic._kumato
+Tomatic.isKumatoMode = reactiveProp(
+  JSON.parse(localStorage.getItem('kumato', 'null')) ??
+    browserPrefersDarkMode(),
+)
+Tomatic.isKumatoMode.subscribe(() => {
+  localStorage.kumato = Tomatic.isKumatoMode()
 })
+Tomatic.toggleKumato = function () {
+  Tomatic.isKumatoMode(!Tomatic.isKumatoMode())
+}
 
 // Persons management
 

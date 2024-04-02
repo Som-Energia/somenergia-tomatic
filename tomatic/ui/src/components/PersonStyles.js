@@ -19,7 +19,7 @@ function PersonStyles() {
               `  border-width: 20pt;\n` +
               `  color: ${linecolor};\n` +
               `}\n` +
-              `.pe-dark-theme .${name}, .pe-dark-theme .graella .${name} {\n` +
+              `.kumato-mode .${name}, .kumato-mode .graella .${name} {\n` +
               `  background-color: ${darker};\n` +
               `  border-color: ${color};\n` +
               `  border-width: 2pt;\n` +

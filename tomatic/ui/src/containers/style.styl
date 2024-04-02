@@ -1,5 +1,4 @@
 body, html, #tomatic {
-	height: 100%;
 	margin: 0;
 	padding: 0;
 }
@@ -8,7 +7,7 @@ body {
 	background-color: #eee;
 	min-height: max(100%, 80vh);
 }
-body .pe-dark-theme {
+body:has(.kumato-mode) {
 	color: #bbb;
 	background-color: #373721;
 }
@@ -77,7 +76,7 @@ body .pe-dark-theme {
 	transition: all 0.5s;
 }
 .queueitem.paused,
-.pe-dark-theme .queueitem.paused
+.kumato-mode .queueitem.paused
 {
 	color: red;
 	text-decoration: line-through;
@@ -103,7 +102,7 @@ body .pe-dark-theme {
 	transform: translate(-1px, -1px);
 }
 .queueitem.disconnected,
-.pe-dark-theme .queueitem.disconnected
+.kumato-mode .queueitem.disconnected
 {
 	transform: rotate(180deg);
 	border-color: red;
@@ -118,7 +117,7 @@ body .pe-dark-theme {
 	color: #aae;
 	background-color: #ddf;
 }
-.pe-dark-theme .queueitem.add {
+.kumato-mode .queueitem.add {
 	color: inherit;
 	border-color: inherit;
 	background-color: #545;

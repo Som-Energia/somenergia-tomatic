@@ -175,8 +175,8 @@ function ProfileButton() {
               <MenuItem
                 key={i}
                 onClick={() => {
-                  handleCloseUserMenu()
                   option.onclick && option.onclick()
+                  handleCloseUserMenu()
                 }}
               >
                 <ListItemIcon>{option.icon}</ListItemIcon>
