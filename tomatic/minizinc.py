@@ -191,7 +191,7 @@ def main(args):
         totalCells=totalCells,
         completedCells=completedCells,
         solutionCost=solution.cost,
-        timeOfLastSolution=f'{datetime.datetime.now()}',
+        timeOfLastSolution=f'{datetime.datetime.utcnow()}',
         unfilledCell='Complete' if totalCells == completedCells else 'Partial',
         busyReasons={},
         penalties=solution.penalties,
