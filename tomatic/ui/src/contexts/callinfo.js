@@ -2,6 +2,7 @@
 import api from '../services/api'
 import Auth from '../services/auth'
 import subscriptable from '../services/subscriptable'
+import { prop as reactiveProp } from '../services/subscriptable'
 import messages from '../services/messages'
 import autofiltertype from '../services/autofiltertype'
 
@@ -11,12 +12,7 @@ CallInfo.categories = [] // Call categories
 CallInfo.sections = [] // Teams to assign a call
 CallInfo.updatingCategories = false // Whether we are still loading crm categoies
 
-CallInfo._autoRefresh = true // whether we are auto searching on incomming calls
-CallInfo.autoRefresh = subscriptable((...args) => {
-  if (args.length === 0) return CallInfo._autoRefresh
-  CallInfo._autoRefresh = !!args[0]
-  CallInfo.autoRefresh.notify()
-})
+CallInfo.autoRefresh = reactiveProp(true)
 CallInfo.autoRefresh.toggle = () => {
   CallInfo.autoRefresh(!CallInfo.autoRefresh())
 }

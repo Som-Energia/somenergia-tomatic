@@ -17,7 +17,7 @@ import { useSubscriptable } from '../../services/subscriptable'
 import TypificationDialog from './TypificationDialog'
 
 function CallLockButton() {
-  const autoRefresh = useSubscriptable(CallInfo.autoRefresh)
+  const autoRefresh = CallInfo.autoRefresh.use()
   return (
     <IconButton
       className="btn-lock"
@@ -149,7 +149,6 @@ function CallEntry({ item, disabled }) {
 }
 
 function AttendedCallList() {
-  const autoRefresh = useSubscriptable(CallInfo.autoRefresh)
   const personCalls = useSubscriptable(CallInfo.personCalls)
   if (personCalls.length === 0) {
     return (
@@ -200,7 +199,7 @@ function AttendedCallList() {
                     {itemWeekDay + ' ' + itemDate}
                   </ListSubheader>
                 )}
-                <CallEntry item={item} disabled={!autoRefresh} />
+                <CallEntry item={item} />
               </React.Fragment>
             )
           })}
