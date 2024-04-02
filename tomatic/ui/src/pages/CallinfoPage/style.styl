@@ -76,10 +76,6 @@ body
               background: #e2e5e2
               color: #888
               text-align: center
-              .pe-list-tile__title
-                  background: #e2e5e2
-                  color: #888
-                  text-align: center
 
       .busca-info
           margin: 10px
@@ -125,28 +121,6 @@ body
                   font-weight: bold
                   margin-right: 5px
                   color: green
-
-      .partner-card
-          .partner-tabs
-              .pe-tabs
-                  background-color: #8FBC8F
-                  color: black
-                  border-radius: 5px 5px 0 0
-              .pe-tabs__row
-                  max-width: 465px
-                  min-width: 200px
-                  overflow-y: hidden
-                  .pe-button--selected
-                      background-color: #ABD0AB
-                      color: black
-              .pe-tabs__indicator
-                  background-color: transparent
-              .pe-tabs__scroll-button-start
-                  color: #98FB98
-              .pe-tabs__scroll-button-end
-                  right: 0
-                  position: absolute
-                  color: #98FB98
 
       .contract-info-box
         width: 100%
@@ -217,25 +191,6 @@ body
   .contract-details
     margin: 10px
 
-  .grid-cell-editor
-      .pe-dialog-pane
-          max-width: 60vw
-
-  .dialog-login
-      .pe-dialog-pane__content
-          max-width: 750px
-          min-width: 700px
-          text-align: center
-          .list-users
-              .btn-list
-                  margin: 2px
-
-      .pe-dialog__content
-          min-width: 700px
-
-      .pe-dialog-pane
-          min-width: 700px
-
   .icon-exit
     font-size: 25px
     color: #E1232C
@@ -250,18 +205,6 @@ body
   .icon-clipboard
     font-size: 22px
     color: #228B22
-
-  .pe-button--disabled
-    .icon-clipboard
-       color: #bbbbbb
-
-  .dialog-settings
-    .pe-button
-      min-width: fit-content
-      margin-right: 10px
-      .icon-refresh
-        font-size: 20px
-        display: inline
 
   .tooltip
     --tooltip-arrow-size: 5px
@@ -317,46 +260,6 @@ body
   .tooltip:hover .tooltiptext
     visibility: visible
 
-  .card-annotate-case
-    .pe-dialog__content
-      min-width: 50%
-      .pe-dialog-pane__content
-        min-width: 100%
-      .pe-dialog-pane
-        max-width: none
-
-    .reason-filter
-      display: flex
-      align-items: baseline
-      .motiu
-        font-weight: bold
-        margin-top: 5px
-      .filter
-        width: 100%
-        margin-left: 10px
-    .motius
-      height: 40vh
-      overflow-y: auto
-      .pe-list.pe-list--compact
-        .pe-list-tile.pe-list-tile--compact
-          .pe-list-tile__content
-            padding-top: 4px
-            padding-bottom: 4px
-      .pe-list-tile--disabled
-        .pe-list-tile__title
-          color: gray
-      .llista-motius-selected
-        font-size: 14px
-        background-color: #2a6a2a
-        color: white
-      .llista-motius-unselected
-        font-size: 14px
-        color: black
-        background-color: #eee
-    .filter
-      .textfield-filter
-        flex: 1
-
   .factures
     margin-top: 8px;
     overflow-y: auto
@@ -410,16 +313,6 @@ body #tomatic .pe-dark-theme
 
   a:link, a:visited
     color: #7df
-
-  .card-annotate-case
-    .motius
-      .pe-list
-        .pe-list-tile.llista-motius-unselected
-          background-color: #333
-          color: white
-        .pe-list-tile.llista-motius-selected
-          background-color: #3a3
-          color: black
 
   select
     background-color: #222
