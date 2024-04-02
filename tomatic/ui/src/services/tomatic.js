@@ -67,9 +67,19 @@ function browserPrefersDarkMode() {
   if (!window.matchMedia) return false
   return window.matchMedia('(prefers-color-scheme: dark)').matches
 }
+function savedPreferDarkMode() {
+  const jsonValue = localStorage.getItem('kumato', 'null')
+  try {
+    return JSON.parse(jsonValue)
+  }
+  catch(error) {
+    console.log(jsonValue)
+    messages.error(error+'', {context: "Loading kumato mode from local storage"})
+    return null
+  }
+}
 Tomatic.isKumatoMode = reactiveProp(
-  JSON.parse(localStorage.getItem('kumato', 'null')) ??
-    browserPrefersDarkMode(),
+  savedPreferDarkMode() ?? browserPrefersDarkMode()
 )
 Tomatic.isKumatoMode.subscribe(() => {
   localStorage.kumato = Tomatic.isKumatoMode()
