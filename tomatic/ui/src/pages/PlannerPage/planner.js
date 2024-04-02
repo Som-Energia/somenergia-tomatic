@@ -3,7 +3,7 @@ import messages from '../../services/messages'
 
 function launch(params) {
   const context = 'Llençant una graella'
-  api
+  return api
     .request({
       context,
       url: `/api/planner/api/run`,
@@ -21,6 +21,4 @@ function launch(params) {
     )
 }
 
-const planner = { launch }
-
-export default planner
+export default { launch }
