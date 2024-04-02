@@ -18,7 +18,7 @@ function humanDuration(milliseconds) {
 }
 
 function BusyReasons({ task }) {
-  if (!task.busyReasons) return
+  if (!task.busyReasons.length) return
   return (
     <div className="tooltip">
       <h6>Indisponibilitats de {task.unfilledCell}</h6>
