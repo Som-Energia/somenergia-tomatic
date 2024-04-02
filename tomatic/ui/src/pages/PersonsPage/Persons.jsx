@@ -6,7 +6,6 @@ import EditIcon from '@mui/icons-material/Edit'
 import PersonEditor from '../../components/PersonEditor'
 import BusyDialog from '../BusyPage/BusyDialog'
 import { useDialog } from '../../components/DialogProvider'
-import { useSubscriptable } from '../../services/subscriptable'
 import Tomatic from '../../services/tomatic'
 
 export default function Persons() {
