@@ -2,10 +2,15 @@ import React from 'react'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
-import api from '../../services/api'
-import messages from '../../services/messages'
+import planner from './planner'
 import LaunchDialog from './LaunchDialog'
 import SkateboardingIcon from '@mui/icons-material/Skateboarding'
+import DeleteIcon from '@mui/icons-material/Delete'
+import PublishIcon from '@mui/icons-material/Publish'
+import StopIcon from '@mui/icons-material/StopCircle'
+import KillIcon from '@mui/icons-material/Dangerous'
+
+const refreshSeconds = 2
 
 function humanDuration(milliseconds) {
   const seconds = Math.floor(milliseconds / 1000)
@@ -68,34 +73,34 @@ function TaskInfo({ task, updateExecutions }) {
   const solutionCost = task.solutionCost || '--'
   const unfilledCell = task.unfilledCell || '??'
 
-  function taskCommand(command, context) {
-    api
-      .request({
-        context,
-        url: `/api/planner/api/${command}/${task.name}`,
-      })
-      .then((result) => {
-        updateExecutions()
-        messages.success('ok', { context })
-      })
-  }
   const actions = [
-    [isRunning, 'Para', 'stop', 'Parant la graela'],
-    [isRunning, 'Mata', 'kill', 'Matant la graela'],
-    [isStopped, 'Esborra', 'remove', 'Esborrant la graela'],
-    [isComplete, 'Publica', 'upload', 'Puja la graella'],
+    [isRunning, 'Para', planner.stop, StopIcon],
+    [isRunning, 'Mata', planner.kill, KillIcon],
+    [isStopped, 'Esborra', planner.remove, DeleteIcon],
+    [isComplete, 'Publica', planner.upload, PublishIcon],
   ]
+  function runTaskCommand(command) {
+    command(task).then((result) => updateExecutions())
+  }
   return (
     <tr key={task.name}>
       <td>{startTime}</td>
       <td>
-        <a href={`/api/planner/status/${task.name}`} rel="noreferrer" target="_blank">
+        <a
+          href={`/api/planner/status/${task.name}`}
+          rel="noreferrer"
+          target="_blank"
+        >
           {task.name}
         </a>
       </td>
       <td>{task.state}</td>
       <td>
-        <a href={`/api/planner/solution/${task.name}`} rel="noreferrer" target="_blank">
+        <a
+          href={`/api/planner/solution/${task.name}`}
+          rel="noreferrer"
+          target="_blank"
+        >
           {completedCells}/{totalCells}
         </a>
       </td>
@@ -107,11 +112,12 @@ function TaskInfo({ task, updateExecutions }) {
       </td>
       <td>{timeSinceLastSolution}</td>
       <td>
-        {actions.map(([isEnabled, label, command, context]) => {
+        {actions.map(([isEnabled, label, command, Icon]) => {
           if (!isEnabled) return null
           return (
             <Button
-              onClick={() => taskCommand(command, context)}
+              startIcon={<Icon />}
+              onClick={() => runTaskCommand(command)}
               size="small"
               key={command}
             >
@@ -132,22 +138,14 @@ export default function PlannerPage() {
     setOpen(false)
   }
   function updateList() {
-    const context = `Obtenint llistat d'execucions de graelles`
-    api
-      .request({
-        context,
-        url: '/api/planner/api/list',
-      })
-      .then((result) => {
-        setExecutions(result.tasks)
-      })
+    planner.list().then(setExecutions)
   }
 
   React.useEffect(() => {
     updateList()
     const interval = setInterval(() => {
       updateList()
-    }, 1 * 1000)
+    }, refreshSeconds * 1000)
 
     return () => clearInterval(interval)
   }, [])
@@ -162,18 +160,30 @@ export default function PlannerPage() {
           width: '20em',
           background: '#ffa',
           color: 'black',
-          border: '1px solid grey',
+          border: '1px solid #aaa',
           padding: '1ex',
           zIndex: 1000,
         },
+        '.tooltip h6': {
+          m: 0,
+          mb: 2,
+          p: 0,
+        },
         'td:hover .tooltip': { visibility: 'visible' },
+        'tbody tr:hover': { backgroundColor: '#7771' },
       }}
     >
       <Stack direction="row" justifyContent="end" alignItems="center">
-        <h4>Llençador de graelles</h4>
+        <h4>Planificador de graelles</h4>
         <Box flex={1} />
         <Box>
-          <Button onClick={() => setOpen(true)} startIcon={<SkateboardingIcon/>}>{'Petri-llença una Graella'}</Button>
+          <Button
+            variant="contained"
+            onClick={() => setOpen(true)}
+            startIcon={<SkateboardingIcon />}
+          >
+            {'Petri-llença una Graella'}
+          </Button>
           <LaunchDialog
             open={open}
             onClose={closeLauncher}
