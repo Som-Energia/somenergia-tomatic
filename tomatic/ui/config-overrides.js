@@ -12,7 +12,15 @@ module.exports = {
     config.context = path.resolve(__dirname)
 
     // Loader for yaml
-    config.module.rules.push({
+    // Hack to exclude yaml from the asset/resource catchall rule
+    config.module.rules[1].oneOf
+      .filter((x) => x.test === undefined)
+      .map((v) => {
+        console.debug('RULE\n', v)
+        v.exclude.push(/\.yaml/)
+        console.debug('RULE\n', v)
+      })
+    config.module.rules.unshift({
       test: /\.yaml$/,
       loader: 'yaml-loader',
     })
