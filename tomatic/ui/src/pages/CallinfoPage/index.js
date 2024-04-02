@@ -17,7 +17,7 @@ export default function CallinfoPage() {
   const results = CallInfo.results.use()
   return (
     <div className="callinfo">
-      <Stack className="all-info-call" direction="row">
+      <Stack className="callinfo-top">
         <AttendedCalls />
         <Stack direction="row" flex={1}>
           <Stack direction="column" flex={1}>
