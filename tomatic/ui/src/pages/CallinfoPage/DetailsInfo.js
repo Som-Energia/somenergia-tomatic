@@ -10,7 +10,6 @@ import { useSubscriptable } from '../../services/subscriptable'
 export default function DetailsInfo() {
   const [activeView, setActiveView] = React.useState(0)
   const contract = useSubscriptable(CallInfo.selectedContract)
-  useSubscriptable(CallInfo.results)
 
   if (contract === null) return null
 

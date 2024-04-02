@@ -127,12 +127,8 @@ CallInfo.clearAnnotation = function () {
   CallInfo.savingAnnotation = false
 }
 
-CallInfo._results = {} // Retrieved search data
-CallInfo.results = subscriptable((...args) => {
-  if (args.length === 0) return CallInfo._results
-  CallInfo._results = args[0]
-  CallInfo.results.notify()
-})
+// Retrieved search data
+CallInfo.results = reactiveProp({})
 
 // Nicely clears search results
 CallInfo.resetSearch = function () {

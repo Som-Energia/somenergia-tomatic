@@ -14,7 +14,7 @@ function Spinner() {
 }
 
 export default function CallinfoPage() {
-  const results = useSubscriptable(CallInfo.results)
+  const results = CallInfo.results.use()
   const [currentPartner, setCurrentPartner] = React.useState(0)
   const [currentContract, setCurrentContract] = React.useState(0)
   return (
