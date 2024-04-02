@@ -52,9 +52,9 @@ export default function BusyEntryDialog({ entry, setEntry, onApply, onClose }) {
     onClose && onClose()
   }
   return (
-    <Dialog open onClose={handleClose}>
+    <Dialog open maxWidth="md" onClose={handleClose}>
       <DialogTitle>{'Edita indisponibilitat'}</DialogTitle>
-      <DialogContent sx={{ minWidth: '40rem' }}>
+      <DialogContent>
         <Stack gap={2} marginTop={1}>
           <TextField
             autoFocus
@@ -136,7 +136,8 @@ export default function BusyEntryDialog({ entry, setEntry, onApply, onClose }) {
             {'Segur que no la pots fer opcional?'}
           </Alert>
         ) : (
-          <Alert sx={{ opacity: 0 }}>{'Tot ok'}</Alert>
+          // Place holder, takes space, do not show
+          <Alert sx={{ opacity: 0 }}>{'Tots els camps son correctes'}</Alert>
         )}
         <div style={{ flex: 1 }}></div>
         <Button onClick={handleClose}>{'Cancel·la'}</Button>
