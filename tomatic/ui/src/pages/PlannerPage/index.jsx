@@ -1,9 +1,11 @@
 import React from 'react'
 import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import api from '../../services/api'
 import messages from '../../services/messages'
 import LaunchDialog from './LaunchDialog'
+import SkateboardingIcon from '@mui/icons-material/Skateboarding'
 
 function humanDuration(milliseconds) {
   const seconds = Math.floor(milliseconds / 1000)
@@ -158,24 +160,29 @@ export default function PlannerPage() {
         '.tooltip': {
           visibility: 'hidden',
           position: 'absolute',
-          cursor: 'link',
+          cursor: 'text',
           width: '20em',
           background: '#ffa',
+          color: 'black',
           border: '1px solid grey',
           padding: '1ex',
+          zIndex: 1000,
         },
         'td:hover .tooltip': { visibility: 'visible' },
       }}
     >
-      <LaunchDialog
-        open={open}
-        onClose={closeLauncher}
-        updateExecutions={updateList}
-      />
-      <Box>
-        <a href="/api/planner/clear">Clear</a>
-      </Box>
-      <Button onClick={() => setOpen(true)}>{'Llença una Graella'}</Button>
+      <Stack direction="row" justifyContent="end" alignItems="center">
+        <h4>Llençador de graelles</h4>
+        <Box flex={1} />
+        <Box>
+          <Button onClick={() => setOpen(true)} startIcon={<SkateboardingIcon/>}>{'Petri-llença una Graella'}</Button>
+          <LaunchDialog
+            open={open}
+            onClose={closeLauncher}
+            updateExecutions={updateList}
+          />
+        </Box>
+      </Stack>
       <table width="100%">
         <thead>
           <tr>
