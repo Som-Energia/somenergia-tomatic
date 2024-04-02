@@ -8,10 +8,7 @@ const menuOptions = function () {
     {
       icon: '🕜',
       title: 'Planificador de Graelles',
-      action: function () {
-        const url = '/api/planner/'
-        window.open(url, '_blank')
-      },
+      route: '/planner',
     },
     {
       icon: '📌',
