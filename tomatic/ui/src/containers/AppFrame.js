@@ -347,7 +347,7 @@ function ResponsiveAppBar({ children }) {
         }}
       />
       <Box
-        className={Tomatic.isKumatoMode() ? 'pe-dark-tone' : ''}
+        className={Tomatic.isKumatoMode() ? 'pe-dark-theme' : ''}
         component="main"
         sx={{
           flexGrow: 1,

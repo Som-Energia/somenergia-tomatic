@@ -148,7 +148,7 @@ function PartnerContent() {
   )
 }
 
-export default function PartnerInfo({}) {
+export default function PartnerInfo() {
   const { partners } = CallInfo.results.use()
   // TODO: Ignored, just needed to get update when index change
   const partner = useSubscriptable(CallInfo.selectedPartner)
