@@ -491,6 +491,7 @@ Tomatic.requestGrid = function (week) {
     })
     .then(
       function (data) {
+        if (!data) Tomatic.grid(undefined)
         data.days = data.days || 'dl dm dx dj dv'.split(' ')
         // TODO: Delete on API
         delete data.colors
@@ -500,7 +501,7 @@ Tomatic.requestGrid = function (week) {
         Tomatic.grid(data)
       },
       function (error) {
-        messages.error(error || 'Error inexperat', { context })
+        messages.error(error+'' || 'Error inexperat', { context })
       },
     )
 }
