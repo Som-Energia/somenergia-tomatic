@@ -1,15 +1,16 @@
-body {
-	color: #511;
-	background-color: #eee;
-}
-body .pe-dark-theme {
-	color: #bbb;
-	background-color: #242;
-}
 body, html, #tomatic {
 	height: 100%;
 	margin: 0;
 	padding: 0;
+}
+body {
+	color: #511;
+	background-color: #eee;
+	min-height: max(100%, 80vh);
+}
+body .pe-dark-theme {
+	color: #bbb;
+	background-color: #373721;
 }
 
 #tomatic.main.main.main { // to overwrite defaut styles
@@ -73,7 +74,7 @@ body, html, #tomatic {
 	border: 2pt solid;
 	margin: 2pt;
 	cursor: pointer;
-	transition: all 1s;
+	transition: all 0.5s;
 }
 .queueitem.paused,
 .pe-dark-theme .queueitem.paused
@@ -82,6 +83,7 @@ body, html, #tomatic {
 	text-decoration: line-through;
 	background-color: #fee;
 	border-color: #aaa;
+
 }
 @keyframes ringing {
 	from { transform: rotate(-2deg); }
@@ -119,7 +121,7 @@ body, html, #tomatic {
 .pe-dark-theme .queueitem.add {
 	color: inherit;
 	border-color: inherit;
-	background-color: #454;
+	background-color: #545;
 }
 .extensions .extension.add:hover,
 .queueitem.add:hover {
@@ -168,56 +170,9 @@ dialog .extension:hover {
 .overloads {
 	text-align: left;
 }
-.codes {
-	text-align: left;
-}
-
-#snackbar {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    margin: 0 auto;
-}
-
-.busylist {
-    .turns {
-        font-size: 120%;
-        color: #a44;
-        float: right;
-    }
-    .optionallabel {
-        transform: rotate(-45deg);
-        font-size: 90%;
-        padding: 0;
-        margin: 0;
-    }
-}
-
-/* TODO: use polythene classes */
-
-.button_logout_callinfo {
-    color: #9a0000;
-    position: absolute;
-    right: 0;
-    margin-right: 50px;
-}
-
 
 } // End of overwrite
 
-
-#tomatic.main.main.main {
-  .variant-pebrotic {
-    .tmt-header {
-      background-image: url(../images/pebrotic.jpg)
-    }
-  }
-  .variant-ketchup {
-    .tmt-header {
-      background-image: url(../images/ketchup.png)
-    }
-  }
-}
 
 .red {
 	color: var(--color-red, #f11)
