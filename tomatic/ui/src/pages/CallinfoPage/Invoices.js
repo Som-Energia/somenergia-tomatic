@@ -5,8 +5,10 @@ import CallInfo from '../../contexts/callinfo'
 import { useSubscriptable } from '../../services/subscriptable'
 
 export default function Invoices() {
-  const invoices = useSubscriptable(CallInfo.contractDetails).invoices
-  if (invoices === null) {
+  const isLoading = CallInfo.loadingDetails.use()
+  const contract = useSubscriptable(CallInfo.selectedContract)
+  const invoices = contract?.invoices ?? null
+  if (isLoading) {
     return (
       <Box className="factures">
         <Box className="loading  layout vertical center">

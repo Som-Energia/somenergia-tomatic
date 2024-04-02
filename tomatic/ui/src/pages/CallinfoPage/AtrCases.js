@@ -5,8 +5,10 @@ import CallInfo from '../../contexts/callinfo'
 import { useSubscriptable } from '../../services/subscriptable'
 
 export default function AtrCases() {
-  const cases = useSubscriptable(CallInfo.contractDetails).atr_cases
-  if (cases === null) {
+  const isLoading = CallInfo.loadingDetails.use()
+  const contract = useSubscriptable(CallInfo.selectedContract)
+  const cases = contract?.atr_cases ?? null
+  if (isLoading) {
     return (
       <Box className="atr-cases">
         <Box className="loading  layout vertical center">

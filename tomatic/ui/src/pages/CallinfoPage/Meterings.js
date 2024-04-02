@@ -5,10 +5,10 @@ import CallInfo from '../../contexts/callinfo'
 import { useSubscriptable } from '../../services/subscriptable'
 
 export default function Meterings() {
-  const readings = useSubscriptable(
-    CallInfo.contractDetails,
-  ).lectures_comptadors
-  if (readings === null) {
+  const isLoading = CallInfo.loadingDetails.use()
+  const contract = useSubscriptable(CallInfo.selectedContract)
+  const readings = contract?.lectures_comptadors ?? null
+  if (isLoading) {
     return (
       <Box className="meter-readings">
         <Box className="loading  layout vertical center">

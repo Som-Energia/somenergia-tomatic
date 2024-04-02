@@ -153,8 +153,9 @@ export default function PartnerInfo({
   currentPartner,
   setCurrentPartner,
 }) {
+  const partner = useSubscriptable(CallInfo.selectedPartner)
   function onTabChanged(value) {
-    setCurrentPartner(value)
+    setCurrentPartner && setCurrentPartner(value)
     CallInfo.selectPartner(value)
     CallInfo.notifyUsage('callinfoChangePartner')
   }
@@ -162,7 +163,7 @@ export default function PartnerInfo({
   return (
     <Box className="main-info-card">
       <TabbedCard
-        currentTab={currentPartner}
+        currentTab={CallInfo.currentPerson}
         onTabChanged={onTabChanged}
         labels={partners.map((partner) => nameFromFullName(partner.name))}
         Inner={PartnerContent}

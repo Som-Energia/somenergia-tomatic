@@ -88,9 +88,6 @@ CallInfo.clearAnnotation = function () {
   CallInfo.savingAnnotation = false
 }
 
-// Retrieved search data
-CallInfo.results = reactiveProp({})
-
 // Nicely clears search results
 CallInfo.resetSearch = function () {
   CallInfo.selectPartner(0)
@@ -184,15 +181,6 @@ CallInfo.selectedPartner = subscriptable(function () {
   return partner
 })
 
-CallInfo.contractDetails = subscriptable(function () {
-  const contract = CallInfo.selectedContract()
-  return {
-    atr_cases: contract?.atr_cases ?? null,
-    lectures_comptadors: contract?.lectures_comptadors ?? null,
-    invoices: contract?.invoices ?? null,
-  }
-})
-
 CallInfo.selectedContract = subscriptable(function () {
   var partner = CallInfo.selectedPartner()
   if (partner === null) {
@@ -210,7 +198,6 @@ CallInfo.selectedContract = subscriptable(function () {
 CallInfo.selectContract = function (idx) {
   CallInfo.currentContract = idx
   CallInfo.selectedContract.notify()
-  CallInfo.contractDetails.notify()
 }
 
 CallInfo.selectPartner = function (idx) {
@@ -218,8 +205,11 @@ CallInfo.selectPartner = function (idx) {
   CallInfo.currentContract = 0
   CallInfo.selectedPartner.notify()
   CallInfo.selectedContract.notify()
-  CallInfo.contractDetails.notify()
 }
+
+// Retrieved search data
+CallInfo.results = reactiveProp({})
+CallInfo.loadingDetails = reactiveProp(false)
 
 var retrieveInfo = function () {
   CallInfo.results({ 1: 'empty' }) // Searching...
@@ -262,6 +252,7 @@ var retrieveInfo = function () {
         // Keep the context, just in case a second query is started
         // and CallInfo.results() is overwritten
         var context = CallInfo.results()
+        CallInfo.loadingDetails(true)
         api
           .request({
             method: 'POST',
@@ -286,7 +277,7 @@ var retrieveInfo = function () {
                 contract.atr_cases = retrieved.atr_cases
               })
             })
-            CallInfo.contractDetails.notify()
+            CallInfo.loadingDetails(false)
           })
       },
       function (error) {
@@ -294,6 +285,7 @@ var retrieveInfo = function () {
       },
     )
 }
+
 
 CallInfo.notifyUsage = function (event) {
   api.request({
