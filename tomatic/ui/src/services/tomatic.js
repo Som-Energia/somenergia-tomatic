@@ -361,12 +361,16 @@ Tomatic.setPersonData = function (name, data) {
 Tomatic.queue = reactiveProp([])
 //Tomatic.queue.subscribe(() => console.debug('Updated queue: ', Tomatic.queue()))
 Tomatic.requestQueue = function (suffix) {
+  const context = "Actualitzant l'estat de la cua"
   api
     .request({
       url: '/api/queue' + (suffix || ''),
     })
     .then(function (response) {
       Tomatic.queue(response?.currentQueue || [])
+    })
+    .catch((error) => {
+      messages.error( ''+error, { context })
     })
 }
 
