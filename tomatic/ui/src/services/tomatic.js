@@ -173,6 +173,10 @@ Tomatic.allGroups = function () {
   const groups = Tomatic.persons().groups || {}
   return Object.keys(groups)
 }
+Tomatic.belongsToGroup = function(name, group) {
+  const groups = Tomatic.persons().groups || {}
+  return (groups[group] ?? []).includes(name)
+}
 Tomatic.groups = function (name) {
   const groups = Tomatic.persons().groups || {}
   return Object.keys(groups).filter((g) => groups[g].includes(name))
