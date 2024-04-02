@@ -82,46 +82,47 @@ function TaskInfo({ task, updateExecutions }) {
       })
   }
   const actions = [
-    [isRunning, 'Mata', 'kill', 'Matant la graela'],
     [isRunning, 'Para', 'stop', 'Parant la graela'],
+    [isRunning, 'Mata', 'kill', 'Matant la graela'],
     [isStopped, 'Esborra', 'remove', 'Esborrant la graela'],
     [isComplete, 'Publica', 'upload', 'Puja la graella'],
   ]
   return (
-    <>
-      <tr>
-        <td>{startTime}</td>
-        <td>
-          <a href={`/api/planner/status/${task.name}`} target="_blank">{task.name}</a>
-        </td>
-        <td>{task.state}</td>
-        <td>
-          <a href={`/api/planner/solution/${task.name}`} target="_blank">
-            {completedCells}/{totalCells}
-          </a>
-        </td>
-        <td>
-          {unfilledCell} <BusyReasons task={task} />
-        </td>
-        <td>
-          {solutionCost} <Penalties task={task} />
-        </td>
-        <td>{timeSinceLastSolution}</td>
-        <td>
-          {actions.map(([isEnabled, label, command, context]) => {
-            if (!isEnabled) return
-            return (
-              <Button
-                onClick={() => taskCommand(command, context)}
-                size="small"
-              >
-                {label}
-              </Button>
-            )
-          })}
-        </td>
-      </tr>
-    </>
+    <tr key={task.name}>
+      <td>{startTime}</td>
+      <td>
+        <a href={`/api/planner/status/${task.name}`} rel="noreferrer" target="_blank">
+          {task.name}
+        </a>
+      </td>
+      <td>{task.state}</td>
+      <td>
+        <a href={`/api/planner/solution/${task.name}`} rel="noreferrer" target="_blank">
+          {completedCells}/{totalCells}
+        </a>
+      </td>
+      <td>
+        {unfilledCell} <BusyReasons task={task} />
+      </td>
+      <td>
+        {solutionCost} <Penalties task={task} />
+      </td>
+      <td>{timeSinceLastSolution}</td>
+      <td>
+        {actions.map(([isEnabled, label, command, context]) => {
+          if (!isEnabled) return null
+          return (
+            <Button
+              onClick={() => taskCommand(command, context)}
+              size="small"
+              key={command}
+            >
+              {label}
+            </Button>
+          )
+        })}
+      </td>
+    </tr>
   )
 }
 
