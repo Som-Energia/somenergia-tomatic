@@ -6,7 +6,6 @@ import CustomerSearch from './CustomerSearch'
 import PartnerInfo from './PartnerInfo'
 import ContractInfo from './ContractInfo'
 import DetailsInfo from './DetailsInfo'
-import { useSubscriptable } from '../../services/subscriptable'
 import './style.styl'
 
 function Spinner() {

@@ -5,11 +5,10 @@ import subscriptable from '../services/subscriptable'
 import { prop as reactiveProp } from '../services/subscriptable'
 import messages from '../services/messages'
 import autofiltertype from '../services/autofiltertype'
+import dummy_categories from '../data/categories.yaml'
 
 var websock = null
 var CallInfo = {}
-CallInfo.categories = [] // Call categories
-CallInfo.updatingCategories = false // Whether we are still loading crm categoies
 
 CallInfo.autoRefresh = reactiveProp(true)
 CallInfo.autoRefresh.toggle = () => {
@@ -37,30 +36,6 @@ CallInfo.currentCall = subscriptable(() => {
 })
 
 CallInfo.savingAnnotation = false
-CallInfo.annotation = {}
-
-CallInfo.resetAnnotation = function () {
-  var tag = CallInfo.reasonTag()
-  CallInfo.annotation = {
-    resolution: 'unsolved',
-    tag: tag,
-  }
-}
-
-CallInfo.noSection = 'ASSIGNAR USUARI'
-CallInfo.helpdeskSection = 'CONSULTA'
-CallInfo.hasNoSection = function () {
-  return CallInfo.annotation.tag === CallInfo.noSection
-}
-CallInfo.reasonTag = function () {
-  var category = CallInfo.call.category.description
-  if (!category) return ''
-  var matches = category.match(/\[(.*?)\]/)
-  if (matches) {
-    return matches[1].trim()
-  }
-  return ''
-}
 
 var postAnnotation = function (annotation) {
   api
@@ -88,10 +63,6 @@ var postAnnotation = function (annotation) {
     )
 }
 
-CallInfo.annotationIsClaim = function () {
-  return CallInfo.call.category.isclaim
-}
-
 CallInfo.saveCallLog = function () {
   CallInfo.savingAnnotation = true
   var partner = CallInfo.selectedPartner()
@@ -100,23 +71,14 @@ CallInfo.saveCallLog = function () {
   var partner_code = partner !== null ? partner.id_soci : ''
   var contract_number = contract !== null ? contract.number : ''
   var isodate = CallInfo.call.date || new Date().toISOString()
-  var isClaim = CallInfo.annotationIsClaim()
-  var claim = CallInfo.annotation
   postAnnotation({
     user: user,
     date: isodate,
     phone: CallInfo.call.phone,
     partner: partner_code,
     contract: contract_number,
-    // TODO: Uses structure instead of fragile string to parse
     reason: CallInfo.call.category.description,
     notes: CallInfo.call.notes,
-    claimsection: !isClaim
-      ? ''
-      : claim.tag
-      ? claim.tag
-      : CallInfo.helpdeskSection,
-    resolution: isClaim ? claim.resolution : '',
   })
 }
 
@@ -180,22 +142,6 @@ function contractNumbers(info) {
     })
   })
   return Object.keys(result)
-}
-
-CallInfo.filteredCategories = function (filter, isclaim) {
-  var lowerFilter = filter.toLowerCase()
-  return CallInfo.categories.filter(function (category) {
-    if (isclaim !== category.isclaim) {
-      return false
-    }
-    if (category.description.toLowerCase().includes(lowerFilter)) {
-      return true
-    }
-    if (category.keywords.toLowerCase().includes(lowerFilter)) {
-      return true
-    }
-    return false
-  })
 }
 
 function isEmpty(obj) {
@@ -359,7 +305,10 @@ CallInfo.notifyUsage = function (event) {
   })
 }
 
-CallInfo.getCategories = function () {
+// Call categories
+
+CallInfo.categories = reactiveProp([])
+CallInfo.retrieveCategories = function () {
   api
     .request({
       url: '/api/call/categories',
@@ -369,19 +318,9 @@ CallInfo.getCategories = function () {
         console.debug('Categories GET Response: ', response)
 
         if (!response) return
-
-        CallInfo.categories = response.categories
-        CallInfo.categories.forEach(function (category) {
-          var section = category.section
-          if (section === null) {
-            section = CallInfo.noSection
-          }
-          if (section === 'HelpDesk') {
-            section = CallInfo.helpdeskSection
-          }
-          category.description =
-            '[' + section + '] ' + category.code + '. ' + category.name
-        })
+        // TODO: Take them from the API
+        //CallInfo.categories(response.categories)
+        CallInfo.categories(dummy_categories.categories)
       },
       function (error) {
         console.debug('Info GET apicall failed: ', error)
@@ -389,6 +328,7 @@ CallInfo.getCategories = function () {
     )
 }
 
+CallInfo.updatingCategories = false // Whether we are still loading crm categoies
 CallInfo.updateCategories = function () {
   CallInfo.updatingCategories = true
   api
@@ -405,7 +345,7 @@ CallInfo.updateCategories = function () {
           )
         } else {
           CallInfo.updatingCategories = false
-          CallInfo.getCategories()
+          CallInfo.retrieveCategories()
         }
       },
       function (error) {
@@ -536,7 +476,7 @@ CallInfo.emulateCall = function (phone, extension) {
     })
 }
 
-CallInfo.getCategories()
+CallInfo.retrieveCategories()
 CallInfo.retrievePersonCalls()
 
 // TODO: Put some order here
