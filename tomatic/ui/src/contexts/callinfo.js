@@ -9,7 +9,6 @@ import autofiltertype from '../services/autofiltertype'
 var websock = null
 var CallInfo = {}
 CallInfo.categories = [] // Call categories
-CallInfo.sections = [] // Teams to assign a call
 CallInfo.updatingCategories = false // Whether we are still loading crm categoies
 
 CallInfo.autoRefresh = reactiveProp(true)
@@ -147,12 +146,6 @@ CallInfo.callReceived = function (date, phone) {
     return
   }
   CallInfo.selectLog(date, phone)
-}
-
-CallInfo.selectableSections = function () {
-  return CallInfo.sections.map(function (section) {
-    return section.name
-  })
 }
 
 function formatContractNumber(number) {
@@ -389,7 +382,6 @@ CallInfo.getCategories = function () {
           category.description =
             '[' + section + '] ' + category.code + '. ' + category.name
         })
-        CallInfo.sections = response.sections
       },
       function (error) {
         console.debug('Info GET apicall failed: ', error)
