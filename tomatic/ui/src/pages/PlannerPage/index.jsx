@@ -5,9 +5,16 @@ import api from '../../services/api'
 import messages from '../../services/messages'
 import LaunchDialog from './LaunchDialog'
 
-function humanDuration(seconds) {
-  // TODO: Implement this properly
-  return `${seconds} segons`
+function humanDuration(milliseconds) {
+  const seconds = Math.floor(milliseconds / 1000)
+  if (seconds < 1) return 'res'
+  const minutes = Math.floor(seconds / 60)
+  if (minutes < 1) return `${seconds % 60} s`
+  const hours = Math.floor(minutes / 60)
+  if (hours < 1 || true) return `${minutes % 60} m ${seconds % 60} s`
+  const days = Math.floor(minutes / 24)
+  if (days < 1 || true) return `${hours % 24} h ${minutes % 60} m`
+  return `${days} dies ${hours % 24} h`
 }
 
 function BusyReasons({ task }) {
@@ -53,7 +60,7 @@ function TaskInfo({ task, updateExecutions }) {
   const now = new Date()
   const startTime = task.startTime.toISOString()
   const timeSinceLastSolution = task.timeOfLastSolution
-    ? `fa ${humanDuration((now - task.timeOfLastSolution).seconds)}`
+    ? `fa ${humanDuration(now - task.timeOfLastSolution)}`
     : '--'
   const completedCells = task.completedCells || '--'
   const totalCells = task.totalCells || '--'
