@@ -124,9 +124,9 @@ function CallEntry({ item, disabled }) {
       key={item.date}
       className={'registres' + (isSelected ? ' selected' : '')}
       selected={isSelected}
-      disabled={disabled || solved}
-      onClick={itemClicked}
-      button
+      disabled={disabled}
+      onClick={solved ? undefined : itemClicked}
+      button={!solved}
     >
       <ListItemText
         primary={<FormatedCall info={item} />}
@@ -150,7 +150,7 @@ function CallEntry({ item, disabled }) {
 
 function AttendedCallList() {
   const personCalls = CallInfo.personCalls.use()
-  if (personCalls===undefined)
+  if (personCalls === undefined)
     return (
       <Stack
         sx={{
