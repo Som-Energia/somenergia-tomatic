@@ -24,6 +24,7 @@ import { contrast } from '../services/colorutils'
 import AuthContext from '../contexts/AuthContext'
 import PersonEditor from './PersonEditor'
 import { useDialog } from './DialogProvider'
+import BusyDialog from '../pages/BusyPage/BusyDialog'
 import { CopyCalendarDialog } from './CopyCalendarDialog'
 import EmulateCallDialog from './EmulateCallDialog'
 import { useNavigate } from 'react-router-dom'
@@ -34,6 +35,7 @@ function ProfileButton() {
   const { userid, fullname, initials, color, avatar } =
     React.useContext(AuthContext)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
+  const [personToEditBusy, setPersonToEditBusy] = React.useState(false)
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget)
@@ -43,7 +45,8 @@ function ProfileButton() {
   }
 
   function openBusyPage(person) {
-    navigate(`/Indisponibilitats/${person}`)
+    //navigate(`/Indisponibilitats/${person}`)
+    setPersonToEditBusy(person)
   }
 
   function openCalendarDialog(username) {
@@ -118,6 +121,7 @@ function ProfileButton() {
 
   return (
     <Box sx={{ flexGrow: 0 }}>
+      <BusyDialog person={personToEditBusy} setPerson={setPersonToEditBusy} />
       {userid ? (
         <>
           <Tooltip title={'Perfil'}>
