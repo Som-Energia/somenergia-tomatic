@@ -14,8 +14,6 @@ function Spinner() {
 
 export default function CallinfoPage() {
   const results = CallInfo.results.use()
-  const [currentPartner, setCurrentPartner] = React.useState(0)
-  const [currentContract, setCurrentContract] = React.useState(0)
   return (
     <div className="callinfo">
       <div className="all-info-call layout horizontal">
@@ -44,19 +42,8 @@ export default function CallinfoPage() {
               ) : (
                 <div className="plane-info">
                   <div className="layout vertical flex">
-                    <PartnerInfo
-                      data={results}
-                      {...{ currentPartner, setCurrentPartner }}
-                    />
-                    <ContractInfo
-                      data={results}
-                      {...{
-                        currentPartner,
-                        setCurrentPartner,
-                        currentContract,
-                        setCurrentContract,
-                      }}
-                    />
+                    <PartnerInfo />
+                    <ContractInfo />
                   </div>
                   <DetailsInfo data={results} />
                 </div>

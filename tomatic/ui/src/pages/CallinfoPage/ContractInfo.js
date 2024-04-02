@@ -128,21 +128,14 @@ function NoContracts() {
   )
 }
 
-export default function ContractInfo(
-  data,
-  currentPartner,
-  setCurrentPartner,
-  currentContract,
-  setCurrentContract,
-) {
-  const partner = useSubscriptable(CallInfo.selectedPartner)
+export default function ContractInfo() {
+  const { contracts } = useSubscriptable(CallInfo.selectedPartner)
+  // TODO: Ignored, just needed to get update when index change
   const contract = useSubscriptable(CallInfo.selectedContract)
   if (contract === null) {
     return <NoContracts />
   }
-  const contracts = partner.contracts
   function onTabChanged(value) {
-    setCurrentContract && setCurrentContract(value)
     CallInfo.selectContract(value)
     CallInfo.notifyUsage('callinfoChangeContract')
   }

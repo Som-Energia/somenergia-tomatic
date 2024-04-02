@@ -148,18 +148,16 @@ function PartnerContent() {
   )
 }
 
-export default function PartnerInfo({
-  data,
-  currentPartner,
-  setCurrentPartner,
-}) {
+export default function PartnerInfo({}) {
+  const { partners } = CallInfo.results.use()
+  // TODO: Ignored, just needed to get update when index change
   const partner = useSubscriptable(CallInfo.selectedPartner)
+  if (!partner) return
+
   function onTabChanged(value) {
-    setCurrentPartner && setCurrentPartner(value)
     CallInfo.selectPartner(value)
     CallInfo.notifyUsage('callinfoChangePartner')
   }
-  const partners = data.partners
   return (
     <Box className="main-info-card">
       <TabbedCard
