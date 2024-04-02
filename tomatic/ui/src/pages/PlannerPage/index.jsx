@@ -54,7 +54,6 @@ function Penalties({ task }) {
 }
 
 function TaskInfo({ task, updateExecutions }) {
-  console.log({ task })
   const isRunning = task.state === 'Running'
   const isStopped = task.state === 'Stopped'
   const isComplete =
@@ -76,7 +75,6 @@ function TaskInfo({ task, updateExecutions }) {
         url: `/api/planner/api/${command}/${task.name}`,
       })
       .then((result) => {
-        console.log({ result })
         updateExecutions()
         messages.success('ok', { context })
       })
@@ -141,7 +139,6 @@ export default function PlannerPage() {
         url: '/api/planner/api/list',
       })
       .then((result) => {
-        console.log({ result })
         setExecutions(result.tasks)
       })
   }
@@ -150,7 +147,7 @@ export default function PlannerPage() {
     updateList()
     const interval = setInterval(() => {
       updateList()
-    }, 10000)
+    }, 1 * 1000)
 
     return () => clearInterval(interval)
   }, [])

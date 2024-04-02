@@ -2,7 +2,6 @@
 import api from './api'
 import messages from './messages'
 import { preferedWeek } from './dateutils'
-import subscriptable from './subscriptable'
 import { prop as reactiveProp } from './subscriptable'
 
 const Tomatic = {
@@ -172,7 +171,7 @@ Tomatic.allGroups = function () {
   const groups = Tomatic.persons().groups || {}
   return Object.keys(groups)
 }
-Tomatic.belongsToGroup = function(name, group) {
+Tomatic.belongsToGroup = function (name, group) {
   const groups = Tomatic.persons().groups || {}
   return (groups[group] ?? []).includes(name)
 }
@@ -360,7 +359,7 @@ Tomatic.setPersonData = function (name, data) {
 // Line management
 
 Tomatic.queue = reactiveProp([])
-//Tomatic.queue.subscribe(()=>console.debug("Updated queue: ", Tomatic.queue()))
+//Tomatic.queue.subscribe(() => console.debug('Updated queue: ', Tomatic.queue()))
 Tomatic.requestQueue = function (suffix) {
   api
     .request({
@@ -467,7 +466,7 @@ Tomatic.forcedTurnsRemoveColumn = function () {
 
 Tomatic.grid = reactiveProp({})
 Tomatic.requestGrid = function (week) {
-  const context = `Recuperant la graella ${week}` 
+  const context = `Recuperant la graella ${week}`
   if (week === undefined) {
     Tomatic.grid({})
     return

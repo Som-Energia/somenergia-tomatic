@@ -1,5 +1,4 @@
 import React from 'react'
-import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
@@ -16,7 +15,7 @@ function nextMonday() {
   day.setDate(day.getDate() + 7 - day.getDay() + 1)
   return day.toISOString().slice(0, 10)
 }
-const searchDaysOptions = 'dl dm dx dj dv'.split(" ")
+const searchDaysOptions = 'dl dm dx dj dv'.split(' ')
 
 export default function LaunchDialog({ open, onClose, updateExecutions }) {
   const [nLines, setNLines] = React.useState(8)
@@ -64,7 +63,7 @@ export default function LaunchDialog({ open, onClose, updateExecutions }) {
             name="description"
             value={description}
             onChange={(ev) => setDescription(ev.target.value)}
-            helperText={"Per identificar la tasca a la llista de sota."}
+            helperText={'Per identificar la tasca a la llista de sota.'}
           />
           <Autocomplete
             multiple
@@ -80,7 +79,9 @@ export default function LaunchDialog({ open, onClose, updateExecutions }) {
                 label="Dies a omplir primer"
                 name="search_days"
                 type="text"
-                helperText={'Sovint desencallem la graella posant primer els dies més complicats'}
+                helperText={
+                  'Sovint desencallem la graella posant primer els dies més complicats'
+                }
               />
             )}
           />
