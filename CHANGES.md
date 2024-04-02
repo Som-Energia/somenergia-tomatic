@@ -4,8 +4,14 @@
 
 - Only admins can edit others profile
 - mithril callinfo files cleaned
-- Busy editor migrated to React
+- Migrated to React missing pages
+    - PBX page
+    - Persons page (color boxes version)
+    - Busy Editor
+    - Timetable Planner
+- Fix: minizinc planner reported launch times with offset (TZ problem)
 - Fix: PersonEditor looped forever in reset
+- Callinfo state manager uses more stable reactiveProps
 - Upgrade notes:
     - Because admin group is now required to edit others profile ensure
       that certain users belong to this group.
