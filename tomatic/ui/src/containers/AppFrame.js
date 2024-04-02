@@ -351,10 +351,11 @@ function ResponsiveAppBar({ children }) {
         className={isKumatoMode ? 'kumato-mode' : ''}
         component="main"
         sx={{
+          minHeight: "calc(100vh - 70px)",
           flexGrow: 1,
           paddingLeft: {
             xs: 0,
-            md: drawerOpen ? drawerWidth + 'px' : '60px',
+            md: drawerOpen ? drawerWidth + 'px' : 'calc(60px + 4pt)',
           },
         }}
       >
