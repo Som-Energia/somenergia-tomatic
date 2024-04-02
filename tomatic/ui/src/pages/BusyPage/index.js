@@ -3,6 +3,7 @@ import Container from '@mui/material/Container'
 import Card from '@mui/material/Card'
 import { useParams } from 'react-router-dom'
 import { TomaticBusyEditor } from './BusyEditor'
+import BusyNotes from './BusyNotes'
 import Tomatic from '../../services/tomatic'
 
 export default function BusyPage() {
@@ -15,6 +16,9 @@ export default function BusyPage() {
       >{`Indisponibilitats - ${fullName}`}</h2>
       <Card>
         <TomaticBusyEditor person={person} />
+      </Card>
+      <Card>
+        <BusyNotes />
       </Card>
     </Container>
   )
