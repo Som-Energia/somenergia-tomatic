@@ -30,7 +30,6 @@ export default function TomaticSaysDialog({ closeDialog }) {
         <TextField
           sx={{ flex: 1, minWidth: '15rem' }}
           multiline
-          rows={2}
           maxRows={4}
           required
           value={message}
