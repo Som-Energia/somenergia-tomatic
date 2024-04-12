@@ -26,10 +26,8 @@ import PersonEditor from './PersonEditor'
 import { useDialog } from './DialogProvider'
 import BusyDialog from '../pages/BusyPage/BusyDialog'
 import { CopyCalendarDialog } from './CopyCalendarDialog'
-import { useNavigate } from 'react-router-dom'
 
 function ProfileButton() {
-  const navigate = useNavigate()
   const [openDialog, closeDialog] = useDialog()
   const { userid, fullname, initials, color, avatar } =
     React.useContext(AuthContext)
@@ -44,7 +42,6 @@ function ProfileButton() {
   }
 
   function openBusyPage(person) {
-    //navigate(`/Indisponibilitats/${person}`)
     setPersonToEditBusy(person)
   }
 
