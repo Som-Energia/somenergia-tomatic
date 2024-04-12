@@ -3,8 +3,7 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 
-function Doc(props) {
-  const { message } = props
+function Doc({message}) {
   return (
     <Card>
       <CardContent>

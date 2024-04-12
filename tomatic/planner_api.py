@@ -256,6 +256,14 @@ def upload(request: Request, execution):
 
 # Follows the non page based api
 
+@api.get('/api/list')
+@nocache
+def list():
+    return yamlfy(tasks=[
+        task.listInfo()
+        for task in PlannerExecution.list()
+    ])
+
 @api.post('/api/run')
 @nocache
 def run(

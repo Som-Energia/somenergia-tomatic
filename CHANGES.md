@@ -1,5 +1,21 @@
 # Changelog
 
+## Unreleased
+
+- Only admins can edit others profile
+- mithril callinfo files cleaned
+- Migrated to React missing pages
+    - PBX page
+    - Persons page (color boxes version)
+    - Busy Editor
+    - Timetable Planner
+- Fix: minizinc planner reported launch times with offset (TZ problem)
+- Fix: PersonEditor looped forever in reset
+- Callinfo state manager uses more stable reactiveProps
+- Upgrade notes:
+    - Because admin group is now required to edit others profile ensure
+      that certain users belong to this group.
+
 ## 5.6.0 2024-03-22
 
 - Callinfo page migrated to React

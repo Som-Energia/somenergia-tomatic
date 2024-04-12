@@ -1,40 +1,10 @@
 import React from 'react'
 import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
-
-// TODO: use category from api
-const categories = [
-  {
-    label: 'Serveis de Comercialització - Estat instal·lacions',
-    key: 'comer:instal',
-  },
-  {
-    label: 'Serveis de Comercialització - Facturacio - Transversal',
-    key: 'comer:factura-transversal',
-  },
-  {
-    label: 'Serveis de Comercialització - Facturacio - Generation kWh',
-    key: 'comer:factura:generation',
-  },
-  {
-    label: 'Serveis de Comercialització - Facturacio - Auto',
-    key: 'comer:factura:auto',
-  },
-  {
-    label: 'Serveis de Comercialització - Facturacio - Grans Consums',
-    key: 'comer:factura:grans',
-  },
-  {
-    label: 'Serveis de Comercialització - Cobraments - Modificació',
-    key: 'comer:cobraments:modificacions',
-  },
-  {
-    label: 'Serveis de Comercialització - Cobraments - Procediment',
-    key: 'comer:cobraments:procediments',
-  },
-]
+import CallInfo from '../../contexts/callinfo'
 
 export default function TypificationChooser({ typification, setTypification }) {
+  const categories = CallInfo.categories.use()
   return (
     <Autocomplete
       multiple

@@ -68,8 +68,8 @@ class Api_Test(unittest.TestCase):
             '/api/person/superwoman',
         )
         self.assertResponseEqual(response, """
-            detail: Admin role required
-        """, 401)
+            detail: Only admins can perform this operation
+        """, 403)
 
     def test_persons_delete_whenAdmin(self):
         persons.persons("p.yaml")

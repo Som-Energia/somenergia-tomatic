@@ -1,29 +1,24 @@
 import React from 'react'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
-import CallInfo from '../../mithril/components/callinfo'
+import CallInfo from '../../contexts/callinfo'
+import Solo from '../../components/Solo'
 import { useSubscriptable } from '../../services/subscriptable'
 
 export default function Invoices() {
-  const invoices = useSubscriptable(CallInfo.contractDetails).invoices
-  if (invoices === null) {
+  const isLoading = CallInfo.loadingDetails.use()
+  const contract = useSubscriptable(CallInfo.selectedContract)
+  const invoices = contract?.invoices ?? null
+  if (isLoading) {
     return (
-      <Box className="factures">
-        <Box className="loading  layout vertical center">
-          {'Carregant factures...'}
-          <CircularProgress />
-        </Box>
-      </Box>
+      <Solo className="factures">
+        {'Carregant factures...'}
+        <CircularProgress />
+      </Solo>
     )
   }
   if (invoices.length === 0) {
-    return (
-      <Box className="factures">
-        <Box className="loading  layout vertical center">
-          {'No hi ha factures disponibles'}
-        </Box>
-      </Box>
-    )
+    return <Solo className="factures">{'No hi ha factures disponibles'}</Solo>
   }
   return (
     <Box className="factures">

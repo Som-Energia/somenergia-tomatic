@@ -16,7 +16,7 @@
     "mithril": "^2.2.2",
     "mmsvg": "^1.5.3",
     "mui-color-input": "^1.0.5",
-    "polythene-mithril": "^1.7.5",
+    "mui-markdown": "^1.1.13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
@@ -68,7 +68,6 @@
   "devDependencies": {
     "mini-css-extract-plugin": "^2.7.5",
     "prettier": "^2.8.4",
-    "react-app-rewire-multiple-entry": "^2.2.3",
     "react-app-rewire-stylus-modules": "^0.0.2",
     "react-app-rewire-yaml": "^1.1.0",
     "react-app-rewired": "^2.2.1",

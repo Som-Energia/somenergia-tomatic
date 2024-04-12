@@ -1,0 +1,178 @@
+body, html, #tomatic {
+	margin: 0;
+	padding: 0;
+}
+body {
+	color: #511;
+	background-color: #eee;
+	min-height: max(100%, 80vh);
+}
+body:has(.kumato-mode) {
+	color: #bbb;
+	background-color: #373721;
+}
+
+#tomatic.main.main.main { // to overwrite defaut styles
+
+
+.graella td, .graella th {
+	width: 8em;
+	text-align: center;
+}
+.graella th {
+	color: black;
+	background: white;
+}
+.graella td:empty,
+.graella td:hover:empty {
+	border: none;
+	background: none;
+	cursor: inherit;
+}
+.extensions .extension,
+.graella td {
+	position: relative; /* Ripple needs it */
+	padding: 1ex;
+	cursor: pointer;
+}
+.extensions .extension:hover,
+.graella td:hover {
+	opacity: .9;
+}
+.extensions .extension .tooltip,
+.graella td .tooltip {
+	visibility: hidden;
+	display: block;
+	position: absolute;
+	padding: 2px;
+	right: 1pt; /* border */
+	bottom: 70%; /* border */
+	background: inherit;
+	border: inherit;
+	border-radius: 5px;
+}
+.extensions .extension:hover .tooltip,
+.graella td:hover .tooltip {
+	visibility: visible;
+	opacity: 1;
+}
+.graella .separator {
+	background: #ddd;
+	border: none;
+}
+.queueeditor {
+	margin-left: auto;
+	margin-right: auto;
+	text-align:center;
+}
+.queueitem {
+	width: 10em;
+	text-align: center;
+	display: inline-block;
+	padding: 1em;
+	border: 2pt solid;
+	margin: 2pt;
+	cursor: pointer;
+	transition: all 0.5s;
+}
+.queueitem.paused,
+.kumato-mode .queueitem.paused
+{
+	color: red;
+	text-decoration: line-through;
+	background-color: #fee;
+	border-color: #aaa;
+
+}
+@keyframes ringing {
+	from { transform: rotate(-2deg); }
+	to { transform: rotate(2deg); }
+}
+@keyframes incall {
+	from { transform: scale(1); }
+	to { transform: scale(1.001); }
+}
+.queueitem.ringing
+{
+	animation: ringing .1s linear infinite alternate;
+}
+.queueitem.incall
+{
+	box-shadow: 3px 3px 4px #888888;
+	transform: translate(-1px, -1px);
+}
+.queueitem.disconnected,
+.kumato-mode .queueitem.disconnected
+{
+	transform: rotate(180deg);
+	border-color: red;
+}
+.queueitem:hover {
+	opacity: .8;
+}
+.extensions .extension.add,
+.queueitem.add {
+	font-weight: bold;
+	border: 2pt dashed #aae;
+	color: #aae;
+	background-color: #ddf;
+}
+.kumato-mode .queueitem.add {
+	color: inherit;
+	border-color: inherit;
+	background-color: #545;
+}
+.extensions .extension.add:hover,
+.queueitem.add:hover {
+	opacity: 0.8;
+}
+.extensions {
+	width: 90%;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+.extension {
+	display: inline-block;
+	padding: 1ex 0ex;
+	width: 14%;
+	text-align: center;
+	margin: 2pt 2pt;
+	border: 1pt solid black;
+	min-width: 5em;
+	cursor: pointer;
+}
+dialog .extension {
+	color: black;
+	padding-top: 1ex;
+	width: 10%;
+}
+dialog .extension:hover {
+	opacity: .8;
+}
+.graella {
+	vertical-align: top;
+	text-align: center;
+	display: inline-block;
+	margin: 4px;
+}
+.festiu {
+	color: red;
+	border: red 1pt solid;
+}
+.changelog {
+	text-align: left;
+}
+.penalties {
+	text-align: left;
+}
+.overloads {
+	text-align: left;
+}
+
+} // End of overwrite
+
+
+.red {
+	color: var(--color-red, #f11)
+}

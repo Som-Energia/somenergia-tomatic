@@ -1,28 +1,26 @@
 import React from 'react'
+import Stack from '@mui/material/Stack'
 import CircularProgress from '@mui/material/CircularProgress'
-import CallInfo from '../../mithril/components/callinfo'
+import CallInfo from '../../contexts/callinfo'
 import AttendedCalls from './AttendedCalls'
 import CustomerSearch from './CustomerSearch'
 import PartnerInfo from './PartnerInfo'
 import ContractInfo from './ContractInfo'
 import DetailsInfo from './DetailsInfo'
-import { useSubscriptable } from '../../services/subscriptable'
+import './style.styl'
 
 function Spinner() {
   return <CircularProgress />
 }
 
 export default function CallinfoPage() {
-  const results = useSubscriptable(CallInfo.results)
-  const [currentPartner, setCurrentPartner] = React.useState(0)
-  const [currentContract, setCurrentContract] = React.useState(0)
+  const results = CallInfo.results.use()
   return (
     <div className="callinfo">
-      <div className="all-info-call layout horizontal">
+      <Stack className="callinfo-top">
         <AttendedCalls />
-
-        <div className="layout horizontal flex">
-          <div className="layout vertical flex">
+        <Stack direction="row" flex={1}>
+          <Stack direction="column" flex={1}>
             <CustomerSearch />
             <div className="plane-info">
               {CallInfo.searchStatus() === 'ZERORESULTS' ? (
@@ -43,28 +41,17 @@ export default function CallinfoPage() {
                 </div>
               ) : (
                 <div className="plane-info">
-                  <div className="layout vertical flex">
-                    <PartnerInfo
-                      data={results}
-                      {...{ currentPartner, setCurrentPartner }}
-                    />
-                    <ContractInfo
-                      data={results}
-                      {...{
-                        currentPartner,
-                        setCurrentPartner,
-                        currentContract,
-                        setCurrentContract,
-                      }}
-                    />
-                  </div>
+                  <Stack direction="column" flex={1}>
+                    <PartnerInfo />
+                    <ContractInfo />
+                  </Stack>
                   <DetailsInfo data={results} />
                 </div>
               )}
             </div>
-          </div>
-        </div>
-      </div>
+          </Stack>
+        </Stack>
+      </Stack>
     </div>
   )
 }

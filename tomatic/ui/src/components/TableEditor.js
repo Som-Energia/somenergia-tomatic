@@ -301,7 +301,7 @@ export default function TableEditor(props) {
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(defaultPageSize)
   const [search, setSearch] = React.useState('')
-
+  const lowerCaseSearch = search.toLowerCase()
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
@@ -352,6 +352,10 @@ export default function TableEditor(props) {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
 
+  const pageBounds =
+    rowsPerPage === -1
+      ? [0, rows.length]
+      : [page * rowsPerPage, page * rowsPerPage + rowsPerPage]
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
@@ -366,7 +370,7 @@ export default function TableEditor(props) {
           actions={actions}
           selectionActions={selectionActions}
         />
-        <TableContainer>
+        <TableContainer sx={{ maxHeight: '75vh' }}>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
@@ -385,16 +389,16 @@ export default function TableEditor(props) {
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
                 .filter((row) => {
-                  if (!search) return true
+                  if (!lowerCaseSearch) return true
                   for (const i in columns) {
                     const column = columns[i]
                     if (!column.searchable) continue
-                    const fieldContent = row[column.id] + ''
-                    if (fieldContent.includes(search)) return true
+                    const fieldContent = (row[column.id] + '').toLowerCase()
+                    if (fieldContent.includes(lowerCaseSearch)) return true
                   }
                   return false
                 })
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .slice(...pageBounds)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.id)
                   const labelId = `enhanced-table-checkbox-${index}`

@@ -154,9 +154,12 @@ def validatedUser(token: str = Depends(oauth2_scheme)):
 
     return ns(payload)
 
-def adminUser(user: ns = Depends(validatedUser)):
+def userInGroup(user, group):
     username = persons.byEmail(user['email'])
     groups = persons.persons().get('groups',{})
-    if username not in groups.get('admin', {}):
+    return username in groups.get(group, [])
+
+def adminUser(user: ns = Depends(validatedUser)):
+    if not userInGroup(user, 'admin'):
         raise auth_error("Admin role required")
     return user

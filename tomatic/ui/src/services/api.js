@@ -1,6 +1,7 @@
 import m from 'mithril'
 import jsyaml from 'js-yaml'
 import Auth from './auth'
+import messages from './messages'
 
 const debugApi = false
 //const apiPrefix = 'http://localhost:4555'
@@ -9,6 +10,7 @@ const apiPrefix = ''
 var api = {
   request: function (options) {
     options = { ...options }
+    const {context} = options
     options.config = function (xhr) {
       xhr.setRequestHeader('Authorization', 'Bearer ' + Auth.token())
     }
@@ -32,6 +34,11 @@ var api = {
       .catch(function (error) {
         debugApi &&
           console.log(options.method || 'GET', options.url, 'Error', error)
+        // Forbidden
+        if (error.code === 403) {
+          messages.error("Operació no permesa", {context})
+          return undefined
+        }
         // Unauthorized
         if (error.code === 401) {
           Auth.logout()

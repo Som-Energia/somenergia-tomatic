@@ -10,14 +10,14 @@ import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import IconButton from '@mui/material/IconButton'
 import CircularProgress from '@mui/material/CircularProgress'
-import CallInfo from '../../mithril/components/callinfo'
+import CallInfo from '../../contexts/callinfo'
 import Auth from '../../services/auth'
 import { useDialog } from '../../components/DialogProvider'
 import { useSubscriptable } from '../../services/subscriptable'
 import TypificationDialog from './TypificationDialog'
 
 function CallLockButton() {
-  const autoRefresh = useSubscriptable(CallInfo.autoRefresh)
+  const autoRefresh = CallInfo.autoRefresh.use()
   return (
     <IconButton
       className="btn-lock"
@@ -124,9 +124,9 @@ function CallEntry({ item, disabled }) {
       key={item.date}
       className={'registres' + (isSelected ? ' selected' : '')}
       selected={isSelected}
-      disabled={disabled || solved}
-      onClick={itemClicked}
-      button
+      disabled={disabled}
+      onClick={solved ? undefined : itemClicked}
+      button={!solved}
     >
       <ListItemText
         primary={<FormatedCall info={item} />}
@@ -149,18 +149,8 @@ function CallEntry({ item, disabled }) {
 }
 
 function AttendedCallList() {
-  const autoRefresh = useSubscriptable(CallInfo.autoRefresh)
-  const personCalls = useSubscriptable(CallInfo.personCalls)
-  if (personCalls.length === 0) {
-    return (
-      <Box className="attended-calls-list">
-        <List dense={true}>
-          <ListItem className="registres">{'Cap trucada al registre'}</ListItem>
-        </List>
-      </Box>
-    )
-  }
-  if (personCalls[0] === 'lookingfor')
+  const personCalls = CallInfo.personCalls.use()
+  if (personCalls === undefined)
     return (
       <Stack
         sx={{
@@ -173,6 +163,15 @@ function AttendedCallList() {
         <CircularProgress />
       </Stack>
     )
+  if (personCalls.length === 0) {
+    return (
+      <Box className="attended-calls-list">
+        <List dense={true}>
+          <ListItem className="registres">{'Cap trucada al registre'}</ListItem>
+        </List>
+      </Box>
+    )
+  }
   var currentDate = new Date().toLocaleDateString()
   return (
     <Box className="attended-calls-list">
@@ -200,7 +199,7 @@ function AttendedCallList() {
                     {itemWeekDay + ' ' + itemDate}
                   </ListSubheader>
                 )}
-                <CallEntry item={item} disabled={!autoRefresh} />
+                <CallEntry item={item} />
               </React.Fragment>
             )
           })}

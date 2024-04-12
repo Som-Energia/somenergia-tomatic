@@ -1,9 +1,10 @@
 import React from 'react'
+import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import InputAdornment from '@mui/material/InputAdornment'
 import MenuItem from '@mui/material/MenuItem'
-import CallInfo from '../../mithril/components/callinfo'
+import CallInfo from '../../contexts/callinfo'
 import autofiltertype from '../../services/autofiltertype'
 import { useSubscriptable } from '../../services/subscriptable'
 
@@ -25,7 +26,7 @@ function TypeOfSearch({ fieldguess }) {
   )
   return (
     <TextField
-      className="select-search flex"
+      className="select-search"
       label="Criteri"
       select
       size="small"
@@ -56,10 +57,10 @@ export default function CustomerSearch() {
   }
   return (
     <div className="busca-info">
-      <div className="busca-info-title layout horizontal">
+      <Stack direction="row" className="busca-info-title">
         <TypeOfSearch fieldguess={fieldGuess} />
         <TextField
-          className="search-query flex"
+          className="search-query"
           fullWidth
           variant="standard"
           label={'Cercador'}
@@ -68,6 +69,7 @@ export default function CustomerSearch() {
           onKeyDown={(ev) => {
             if (ev.key === 'Enter') handleSearch()
           }}
+          sx={{minWidth: '10rem'}}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -84,7 +86,7 @@ export default function CustomerSearch() {
             ),
           }}
         />
-      </div>
+      </Stack>
     </div>
   )
 }

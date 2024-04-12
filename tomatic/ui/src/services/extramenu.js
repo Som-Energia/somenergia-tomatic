@@ -1,4 +1,3 @@
-var CallInfoPage = require('../mithril/components/callinfopage')
 var Tomatic = require('../services/tomatic').default
 
 const scriptLauncherBase =
@@ -9,10 +8,7 @@ const menuOptions = function () {
     {
       icon: '🕜',
       title: 'Planificador de Graelles',
-      action: function () {
-        const url = '/api/planner/'
-        window.open(url, '_blank')
-      },
+      route: '/planner',
     },
     {
       icon: '📌',
@@ -60,7 +56,7 @@ const menuOptions = function () {
       icon: '🏷️',
       title: 'Anotacions: Actualitza categories',
       action: function () {
-        CallInfoPage.settingsDialog()
+        // TODO: Call the api
       },
     },
     {

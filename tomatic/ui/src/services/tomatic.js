@@ -1,9 +1,8 @@
 // Tomatic application model component
-import m from 'mithril'
-import prop from 'mithril/stream'
 import api from './api'
-import subscriptable from './subscriptable'
-m.prop = prop
+import messages from './messages'
+import { preferedWeek } from './dateutils'
+import { prop as reactiveProp } from './subscriptable'
 
 const Tomatic = {
   packageinfo: {
@@ -12,23 +11,17 @@ const Tomatic = {
   },
 }
 
-Tomatic.variant = 'tomatic'
-
-Tomatic.loggers = []
-Tomatic.addLogger = function (logger) {
-  this.loggers.push(logger)
-}
-Tomatic.queue = m.prop([])
-Tomatic.persons = subscriptable(m.prop({}))
 Tomatic.init = function () {
+  console.log('Initialization Tomatic')
   this.checkVersionPeriodically()
   this.requestWeeks()
-  this.updateQueuePeriodically()
   this.requestPersons()
-  this.initKumato()
   this.requestForcedTurns()
 }
 
+// Server version
+
+Tomatic.variant = 'tomatic'
 Tomatic.versionTimer = 0
 Tomatic.checkVersionPeriodically = function () {
   console.log('Checking version')
@@ -41,8 +34,10 @@ Tomatic.checkVersionPeriodically = function () {
 }
 
 Tomatic.checkVersion = function () {
+  const context = `Obtenint la versió del servidor`
   api
     .request({
+      context,
       url: '/api/version',
     })
     .then(function (response) {
@@ -57,7 +52,7 @@ Tomatic.checkVersion = function () {
         '.',
         'Reloading in 10s...',
       )
-      Tomatic.error(
+      messages.error(
         'Detectada nova versió en el servidor. Recarregant pàgina en 10 segons.',
       )
       setTimeout(function () {
@@ -66,21 +61,36 @@ Tomatic.checkVersion = function () {
     })
 }
 
-Tomatic.initKumato = function () {
-  // Dark interface
-  Tomatic._kumato = JSON.parse(localStorage.getItem('kumato', false))
-  Tomatic.isKumatoMode.notify()
+// Kumato mode (Dark Interface)
+
+function browserPrefersDarkMode() {
+  if (!window.matchMedia) return false
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
 }
-Tomatic.toggleKumato = function () {
-  Tomatic._kumato = !Tomatic._kumato
-  localStorage.kumato = Tomatic._kumato
-  Tomatic.isKumatoMode.notify()
+function savedPreferDarkMode() {
+  const jsonValue = localStorage.getItem('kumato', 'null')
+  try {
+    return JSON.parse(jsonValue)
+  }
+  catch(error) {
+    console.log(jsonValue)
+    messages.error(error+'', {context: "Loading kumato mode from local storage"})
+    return null
+  }
 }
-Tomatic.isKumatoMode = subscriptable(function () {
-  return Tomatic._kumato
+Tomatic.isKumatoMode = reactiveProp(
+  savedPreferDarkMode() ?? browserPrefersDarkMode()
+)
+Tomatic.isKumatoMode.subscribe(() => {
+  localStorage.kumato = Tomatic.isKumatoMode()
 })
+Tomatic.toggleKumato = function () {
+  Tomatic.isKumatoMode(!Tomatic.isKumatoMode())
+}
 
 // Persons management
+
+Tomatic.persons = reactiveProp({})
 Tomatic.requestPersons = function () {
   return api
     .request({
@@ -89,155 +99,10 @@ Tomatic.requestPersons = function () {
     .then(function (response) {
       if (response.persons !== undefined) {
         Tomatic.persons(response.persons)
-        Tomatic.persons.notify()
       }
     })
 }
 
-// Line management
-
-Tomatic.requestQueue = function (suffix) {
-  api
-    .request({
-      url: '/api/queue' + (suffix || ''),
-    })
-    .then(function (response) {
-      if (response?.currentQueue !== undefined) {
-        Tomatic.queue(response.currentQueue)
-      }
-    })
-}
-
-Tomatic.addLine = function (line) {
-  Tomatic.requestQueue('/add/' + line)
-}
-
-Tomatic.pauseLine = function (line) {
-  Tomatic.requestQueue('/pause/' + line)
-}
-
-Tomatic.restoreLine = function (line) {
-  Tomatic.requestQueue('/resume/' + line)
-}
-
-const queueRefreshPeriodSeconds = 2 * 60 // TODO: config param
-Tomatic.queueTimer = 0
-Tomatic.updateQueuePeriodically = function () {
-  console.log('Refreshing queue')
-  clearTimeout(Tomatic.queueTimer)
-  Tomatic.queueTimer = setTimeout(
-    Tomatic.updateQueuePeriodically,
-    queueRefreshPeriodSeconds * 1000,
-  )
-  Tomatic.requestQueue()
-}
-
-Tomatic.weekdays = {
-  dl: 'Dilluns',
-  dm: 'Dimarts',
-  dx: 'Dimecres',
-  dj: 'Dijous',
-  dv: 'Divendres',
-}
-
-/* Forced Turns */
-Tomatic.forcedTurns = subscriptable(m.prop({}))
-Tomatic.requestForcedTurns = function () {
-  api
-    .request({
-      url: '/api/forcedturns',
-    })
-    .then(function (data) {
-      if (!data) return
-      data.days = data.days || 'dl dm dx dj dv'.split(' ')
-      delete data.colors
-      delete data.names
-      delete data.extensions
-      delete data.tables // TODO: This one was never added
-      Tomatic.forcedTurns(data)
-      Tomatic.forcedTurns.notify()
-    })
-}
-Tomatic.forcedTurnCell = function (day, houri, turni) {
-  try {
-    return Tomatic.forcedTurns().timetable[day][houri][turni]
-  } catch (err) {
-    return undefined
-  }
-}
-
-Tomatic.editForcedTurn = function (day, houri, turni, name) {
-  // Direct edition, just for debug purposes
-  //Tomatic.grid().timetable[day][houri][turni] = name;
-  api
-    .request({
-      method: 'PATCH',
-      url: '/api/forcedturns/' + [day, houri, turni, name].join('/'),
-    })
-    .then(
-      function (data) {
-        Tomatic.requestForcedTurns()
-      },
-      function (error) {
-        Tomatic.error(
-          'Problemes editant els torns fixos: ' + (error || 'Inexperat'),
-        )
-      },
-    )
-}
-
-Tomatic.forcedTurnsAddColumn = function () {
-  api
-    .request({
-      method: 'PATCH',
-      url: '/api/forcedturns/addColumn',
-    })
-    .then(
-      function (data) {
-        Tomatic.requestForcedTurns()
-      },
-      function (error) {
-        Tomatic.error('Problemes editant la graella: ' + (error || 'Inexperat'))
-      },
-    )
-}
-
-Tomatic.forcedTurnsRemoveColumn = function () {
-  api
-    .request({
-      method: 'PATCH',
-      url: '/api/forcedturns/removeColumn',
-    })
-    .then(
-      function (data) {
-        Tomatic.requestForcedTurns()
-      },
-      function (error) {
-        Tomatic.error('Problemes editant la graella: ' + (error || 'Inexperat'))
-      },
-    )
-}
-
-Tomatic.grid = subscriptable(m.prop({}))
-Tomatic.requestGrid = function (week) {
-  api
-    .request({
-      url: '/api/graella-' + week + '.yaml',
-    })
-    .then(function (data) {
-      data.days = data.days || 'dl dm dx dj dv'.split(' ')
-      delete data.colors
-      delete data.names
-      delete data.extensions
-      delete data.tables // TODO: This one was never added
-      Tomatic.currentWeek(week)
-      Tomatic.grid(data)
-      Tomatic.grid.notify()
-    })
-}
-Tomatic.weekday = function (short, alternative) {
-  return Tomatic.weekdays[short] || alternative || '??'
-}
 Tomatic.personColor = function (name) {
   if (!Tomatic.persons().colors) {
     return '#aaaaaa'
@@ -283,37 +148,88 @@ Tomatic.peopleInTable = function (table) {
   })
   return result
 }
-Tomatic.cell = function (day, houri, turni) {
-  try {
-    return Tomatic.grid().timetable[day][houri][turni]
-  } catch (err) {
-    return undefined
+Tomatic.tableOptions = function () {
+  function range(end) {
+    if (end < 1) return []
+    return [...Array(end).keys()]
+  }
+  const tables = Tomatic.persons().tables || {}
+  const tableMembers = Object.keys(tables).reduce((d, name) => {
+    const personTable = tables[name]
+    if (personTable === -1) return d
+    if (d[personTable] === undefined) {
+      d[personTable] = []
+    }
+    d[personTable].push(name)
+    return d
+  }, {})
+
+  const result = [[-1, 'Sense taula']]
+  const nTables = Math.max(...Object.keys(tableMembers))
+  for (const i in range(nTables + 1)) {
+    if (tableMembers[i] === undefined) {
+      result.push([i, `Taula ${i} amb ningú`])
+    } else {
+      const people = tableMembers[i].map(Tomatic.formatName).join(', ')
+      result.push([i, `Taula ${i} amb ` + people])
+    }
+  }
+  return result
+}
+
+Tomatic.allGroups = function () {
+  const groups = Tomatic.persons().groups || {}
+  return Object.keys(groups)
+}
+Tomatic.belongsToGroup = function (name, group) {
+  const groups = Tomatic.persons().groups || {}
+  return (groups[group] ?? []).includes(name)
+}
+Tomatic.groups = function (name) {
+  const groups = Tomatic.persons().groups || {}
+  return Object.keys(groups).filter((g) => groups[g].includes(name))
+}
+
+Tomatic.personFields = function (name) {
+  const persons = Tomatic.persons()
+  return {
+    id: name,
+    name: Tomatic.formatName(name),
+    color: persons.colors[name],
+    extension: persons.extensions[name],
+    email: persons.emails[name],
+    erpuser: persons.erpusers[name],
+    idealload: persons.idealloads[name],
+    table: Tomatic.table(name),
+    groups: Tomatic.groups(name),
   }
 }
-Tomatic.editCell = function (day, houri, turni, name, myname) {
-  // Direct edition, just for debug purposes
-  //Tomatic.grid().timetable[day][houri][turni] = name;
-  api
-    .request({
-      method: 'PATCH',
-      url:
-        '/api/graella/' +
-        [Tomatic.grid().week, day, houri, turni, name].join('/'),
-      body: myname,
-    })
-    .then(
-      function (data) {
-        Tomatic.requestGrid(Tomatic.grid().week)
-      },
-      function (error) {
-        Tomatic.error('Problemes editant la graella: ' + (error || 'Inexperat'))
-      },
-    )
+
+Tomatic.allPeople = function () {
+  const persons = Tomatic.persons()
+  return Array.from(
+    new Set([
+      ...Object.keys(persons.names || {}),
+      ...Object.keys(persons.colors || {}),
+      ...Object.keys(persons.extensions || {}),
+      ...Object.keys(persons.emails || {}),
+      ...Object.keys(persons.erpusers || {}),
+      ...Object.keys(persons.idealloads || {}),
+      ...Object.keys(persons.tables || {}),
+    ]),
+  )
+}
+
+Tomatic.allPeopleData = function () {
+  const allNames = Tomatic.allPeople()
+  return allNames.map((name) => Tomatic.personFields(name))
 }
 
 Tomatic.deletePerson = function (id) {
+  const context = `Esborrant la usuaria '${id}'`
   api
     .request({
+      context,
       method: 'DELETE',
       url: '/api/person/' + id,
     })
@@ -322,15 +238,13 @@ Tomatic.deletePerson = function (id) {
         Tomatic.requestPersons()
       },
       function (error) {
-        console.log(error)
-        Tomatic.error(
-          'Problemes esborrant la persona: ' + (error.error || 'Inexperat'),
-        )
+        messages.error(error?.message || 'Error Inexperat', { context })
       },
     )
 }
 
 Tomatic.setPersonDataReact = function (id, data) {
+  const context = `Actualitzant dades de la usuaria ${id}`
   if (id === undefined) {
     id = data.id
   }
@@ -372,13 +286,14 @@ Tomatic.setPersonDataReact = function (id, data) {
         // ignore
         break
       default:
-        console.log('Unexpected person parameter', key)
+        messages.warn(`Unexpected person parameter '${key}'`, { context })
         break
     }
   }
   console.log('posting', postdata)
   api
     .request({
+      context,
       method: 'POST',
       url: '/api/person/' + id,
       body: postdata,
@@ -388,14 +303,12 @@ Tomatic.setPersonDataReact = function (id, data) {
         Tomatic.requestPersons()
       },
       function (error) {
-        console.log(error)
-        Tomatic.error(
-          'Problemes editant la persona: ' + (error.error || 'Inexperat'),
-        )
+        messages.error(error?.message || 'Error Inexperat', { context })
       },
     )
 }
 Tomatic.setPersonData = function (name, data) {
+  const context = `Actualitzant dades de la usuaria ${name}`
   if (name === undefined) {
     name = data.name
   }
@@ -425,14 +338,19 @@ Tomatic.setPersonData = function (name, data) {
       case 'idealload':
         postdata.idealload = value
         break
+      case 'name':
+      case 'tables':
+      case 'newone':
+        console.log({ data, key })
+        break
       default:
-        console.log('Unexpected person parameter', key)
+        messages.warn(`Unexpected person parameter '${key}'`, { context })
         break
     }
   }
-  console.log('posting', postdata)
   api
     .request({
+      context,
       method: 'POST',
       url: '/api/person/' + name,
       body: postdata,
@@ -442,16 +360,204 @@ Tomatic.setPersonData = function (name, data) {
         Tomatic.requestPersons()
       },
       function (error) {
-        console.log(error)
-        Tomatic.error(
-          'Problemes editant la persona: ' + (error.error || 'Inexperat'),
-        )
+        messages.error(error?.message || 'Error Inexperat', { context })
       },
     )
 }
 
-Tomatic.weeks = subscriptable(m.prop([]))
-Tomatic.currentWeek = m.prop(undefined)
+//////////////////////
+// Line management
+
+Tomatic.queue = reactiveProp([])
+//Tomatic.queue.subscribe(() => console.debug('Updated queue: ', Tomatic.queue()))
+Tomatic.requestQueue = function (suffix) {
+  const context = "Actualitzant l'estat de la cua"
+  api
+    .request({
+      url: '/api/queue' + (suffix || ''),
+    })
+    .then(function (response) {
+      Tomatic.queue(response?.currentQueue || [])
+    })
+    .catch((error) => {
+      messages.error( ''+error, { context })
+    })
+}
+
+Tomatic.addLine = function (line) {
+  Tomatic.requestQueue('/add/' + line)
+}
+
+Tomatic.pauseLine = function (line) {
+  Tomatic.requestQueue('/pause/' + line)
+}
+
+Tomatic.restoreLine = function (line) {
+  Tomatic.requestQueue('/resume/' + line)
+}
+
+///////////////////////
+// Forced turns
+
+Tomatic.forcedTurns = reactiveProp({})
+Tomatic.requestForcedTurns = function () {
+  api
+    .request({
+      url: '/api/forcedturns',
+    })
+    .then(function (data) {
+      if (!data) return
+      data.days = data.days || 'dl dm dx dj dv'.split(' ')
+      delete data.colors
+      delete data.names
+      delete data.extensions
+      delete data.tables // TODO: This one was never added
+      Tomatic.forcedTurns(data)
+    })
+}
+Tomatic.forcedTurnCell = function (day, houri, turni) {
+  try {
+    return Tomatic.forcedTurns().timetable[day][houri][turni]
+  } catch (err) {
+    return undefined
+  }
+}
+
+Tomatic.editForcedTurn = function (day, houri, turni, name) {
+  const context = `Editant el torn forçat ${day} ${houri} ${turni} ${name}`
+  api
+    .request({
+      context,
+      method: 'PATCH',
+      url: '/api/forcedturns/' + [day, houri, turni, name].join('/'),
+    })
+    .then(
+      function (data) {
+        Tomatic.requestForcedTurns()
+      },
+      function (error) {
+        messages.error(error?.message || 'Error Inexperat', { context })
+      },
+    )
+}
+
+Tomatic.forcedTurnsAddColumn = function () {
+  const context = `Afegint línia als torns fixos`
+  api
+    .request({
+      method: 'PATCH',
+      url: '/api/forcedturns/addColumn',
+    })
+    .then(
+      function (data) {
+        Tomatic.requestForcedTurns()
+      },
+      function (error) {
+        messages.error(error?.message || 'Error Inexperat', { context })
+      },
+    )
+}
+
+Tomatic.forcedTurnsRemoveColumn = function () {
+  const context = `Eliminant linia als torns fixos`
+  api
+    .request({
+      method: 'PATCH',
+      url: '/api/forcedturns/removeColumn',
+    })
+    .then(
+      function (data) {
+        Tomatic.requestForcedTurns()
+      },
+      function (error) {
+        messages.error(error?.message || 'Error Inexperat', { context })
+      },
+    )
+}
+
+////////////////
+// Timetable
+
+Tomatic.grid = reactiveProp({})
+Tomatic.requestGrid = function (week) {
+  const context = `Recuperant la graella ${week}`
+  if (week === undefined) {
+    Tomatic.grid({})
+    return
+  }
+  api
+    .request({
+      url: '/api/graella-' + week + '.yaml',
+    })
+    .then(
+      function (data) {
+        if (!data) Tomatic.grid(undefined)
+        data.days = data.days || 'dl dm dx dj dv'.split(' ')
+        // TODO: Delete on API
+        delete data.colors
+        delete data.names
+        delete data.extensions
+        delete data.tables // TODO: This one was never added
+        Tomatic.grid(data)
+      },
+      function (error) {
+        messages.error(error+'' || 'Error inexperat', { context })
+      },
+    )
+}
+
+Tomatic.weekdays = {
+  dl: 'Dilluns',
+  dm: 'Dimarts',
+  dx: 'Dimecres',
+  dj: 'Dijous',
+  dv: 'Divendres',
+}
+
+Tomatic.weekday = function (short, alternative) {
+  return Tomatic.weekdays[short] || alternative || '??'
+}
+
+// TODO: Make it independent of grid
+Tomatic.hourLabel = function (i) {
+  const { hours } = Tomatic.grid()
+  return `${hours[i]} - ${hours[i + 1]}`
+}
+
+Tomatic.cell = function (day, houri, turni) {
+  try {
+    return Tomatic.grid().timetable[day][houri][turni]
+  } catch (err) {
+    return undefined
+  }
+}
+Tomatic.editCell = function (day, houri, turni, name, myname) {
+  // Direct edition, just for debug purposes
+  //Tomatic.grid().timetable[day][houri][turni] = name;
+  const context = `Editant la graella`
+  api
+    .request({
+      method: 'PATCH',
+      url:
+        '/api/graella/' +
+        [Tomatic.grid().week, day, houri, turni, name].join('/'),
+      body: myname,
+    })
+    .then(
+      function (data) {
+        Tomatic.requestGrid(Tomatic.currentWeek())
+      },
+      function (error) {
+        messages.error(error || 'Error inexperat', { context })
+      },
+    )
+}
+
+Tomatic.weeks = reactiveProp([])
+Tomatic.currentWeek = reactiveProp(undefined)
+Tomatic.currentWeek.subscribe(() => {
+  Tomatic.requestGrid(Tomatic.currentWeek())
+})
 Tomatic.requestWeeks = function () {
   api
     .request({
@@ -461,89 +567,51 @@ Tomatic.requestWeeks = function () {
       if (!newWeeklist) return
       var weeks = newWeeklist.weeks.sort().reverse()
       Tomatic.weeks(weeks)
-      if (Tomatic.currentWeek() === undefined) {
-        var expirationms = 1000 * 60 * 60 * (24 * 4 + 18)
-        var oldestWeek = new Date(new Date().getTime() - expirationms)
-        var current = undefined
-        for (var i in weeks) {
-          if (current !== undefined && new Date(weeks[i]) < oldestWeek) {
-            break
-          }
-          current = weeks[i]
-        }
-        if (current !== undefined) {
-          Tomatic.requestGrid(current)
-        }
-      }
-      Tomatic.weeks.notify()
+      Tomatic.currentWeek(preferedWeek(weeks))
     })
 }
 
-Tomatic.log = function (message) {
-  console.log('log: ', message)
-  Tomatic.loggers.forEach((logger) => {
-    logger.log(message)
-  })
-}
-
-Tomatic.error = function (message) {
-  console.log('error: ', message)
-  Tomatic.loggers.forEach((logger) => {
-    logger.error(message)
-  })
-}
+///////////////////////
+// Busy
 
 Tomatic.sendBusyData = function (name, data) {
-  console.log('updating', name, '/api/busy/' + name)
+  const context = `Actualitzant indisponibilitats per ${name}`
   api
     .request({
+      context,
       method: 'POST',
       url: '/api/busy/' + name,
       body: data,
     })
     .then(
       function (response) {
-        console.debug('Busy POST Response: ', response)
         if (response.result === 'ok') {
           return
         }
-        console.debug('apicall failed:', response.error)
-        Tomatic.error(
-          'Problemes desant les indisponibilitats: ' + response.message,
-        )
+        messages.error(response.message, { context })
       },
       function (error) {
-        console.debug('Busy POST apicall failed:', error)
-        Tomatic.error(
-          'Problemes desant les indisponibilitats: ' + (error || 'Inexperat'),
-        )
+        messages.error(error?.message || 'Error Inexperat', { context })
       },
     )
 }
 
 Tomatic.retrieveBusyData = function (name, callback) {
-  console.log('retrieving', name, '/api/busy/' + name)
+  const context = `Obtenint indisponibilitats per ${name}`
   api
     .request({
+      context,
       url: '/api/busy/' + name,
     })
     .then(
       function (response) {
-        console.debug('Busy GET Response: ', response)
         callback(response)
-        if (response.errors && response.errors.lenght) {
-          Tomatic.error(
-            'Problemes carregant a les indisponibilitats:\n' +
-              response.errors.join('\n'),
-          )
+        if (response.errors && response.errors.length) {
+          messages.error(response.errors.join('\n'), { context })
         }
       },
       function (error) {
-        console.debug('Busy GET apicall failed:', error)
-        Tomatic.error(
-          'Problemes carregant a les indisponibilitats: ' +
-            (error || 'Inexperat'),
-        )
+        messages.error(error.message || 'Error Inexperat', { context })
       },
     )
 }

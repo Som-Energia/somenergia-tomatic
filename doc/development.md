@@ -147,43 +147,6 @@ What smoke tests you should be doing after an upgrade to check most components s
 
 - `dist` contains the generated javscript bundles that will be served
 - `ui/` javascript code for the user interface
-	- `tomatic.html`: Single page application html
-	- `style.styl`: Global styles (to be componentized)
-	- `graella.js`: js entry point
-	- `components/`
-		- **State handlers:**
-			- `tomatic.js`: Main aplication state manager
-			- `callinfo.js`: Callinfo state manager
-		- **Utilities**
-			- `utils.js`: Cookie parser
-			- `api.js`: Tomatic API interface helper
-			- `colorutils.js`: Color manipulation utils
-		- **Pages:**
-			- `timetablepage.js`: Time table page
-			- `callinfopage.js`: Call info page
-			- `queuemonitor.js`: Queue monitor page
-			- `persons.js`: Persons page
-		- **Components:**
-			- `select.js`
-			- `labeled.js`
-			- `uploader.js`
-			- `menubutton.js`
-			- `rgbeditor.js`
-			- `callinfo_style.styl`
-			- `contract.js`
-			- `login.js`
-			- `personpicker.js`
-			- `questionnaire.js`
-			- `weekpicker.js`: Week selector for timetables
-			- `busyeditor.js`
-			- `partnerinfo.js`
-	- `favicon.ico`: Webapp icon
-	- `autentico-tomatic-exposicion-del-club-super.jpg`: banner for standard flavor
-	- `ketchup.svg`: banner for ketchup flavor
-	- `ketchup.png`: banner for ketchup flavor
-	- `pebrotic.jpg`: banner for pebrotic flavor
-	- `graella-2016-02-02.yaml`: mockup data
-	- `graella-2016-02-02.json`: mockup data
 
 
 ## Timetable Data Files

@@ -1,30 +1,25 @@
 import React from 'react'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
-import CallInfo from '../../mithril/components/callinfo'
+import CallInfo from '../../contexts/callinfo'
+import Solo from '../../components/Solo'
 import { useSubscriptable } from '../../services/subscriptable'
 
 export default function Meterings() {
-  const readings = useSubscriptable(
-    CallInfo.contractDetails,
-  ).lectures_comptadors
-  if (readings === null) {
+  const isLoading = CallInfo.loadingDetails.use()
+  const contract = useSubscriptable(CallInfo.selectedContract)
+  const readings = contract?.lectures_comptadors ?? null
+  if (isLoading) {
     return (
-      <Box className="meter-readings">
-        <Box className="loading  layout vertical center">
-          {'Carregant lectures...'}
-          <CircularProgress />
-        </Box>
-      </Box>
+      <Solo className="meter-readings">
+        {'Carregant lectures...'}
+        <CircularProgress />
+      </Solo>
     )
   }
   if (readings.length === 0) {
     return (
-      <Box className="meter-readings">
-        <Box className="loading  layout vertical center">
-          {'No hi ha lectures disponibles.'}
-        </Box>
-      </Box>
+      <Solo className="meter-readings">{'No hi ha lectures disponibles.'}</Solo>
     )
   }
   return (

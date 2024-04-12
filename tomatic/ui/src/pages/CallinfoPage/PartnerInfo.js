@@ -1,6 +1,6 @@
 import React from 'react'
 import Box from '@mui/material/Box'
-import CallInfo from '../../mithril/components/callinfo'
+import CallInfo from '../../contexts/callinfo'
 import TabbedCard from './TabbedCard'
 import { useSubscriptable } from '../../services/subscriptable'
 
@@ -148,21 +148,20 @@ function PartnerContent() {
   )
 }
 
-export default function PartnerInfo({
-  data,
-  currentPartner,
-  setCurrentPartner,
-}) {
+export default function PartnerInfo() {
+  const { partners } = CallInfo.results.use()
+  // TODO: Ignored, just needed to get update when index change
+  const partner = useSubscriptable(CallInfo.selectedPartner)
+  if (!partner) return
+
   function onTabChanged(value) {
-    setCurrentPartner(value)
     CallInfo.selectPartner(value)
     CallInfo.notifyUsage('callinfoChangePartner')
   }
-  const partners = data.partners
   return (
     <Box className="main-info-card">
       <TabbedCard
-        currentTab={currentPartner}
+        currentTab={CallInfo.currentPerson}
         onTabChanged={onTabChanged}
         labels={partners.map((partner) => nameFromFullName(partner.name))}
         Inner={PartnerContent}

@@ -20,62 +20,22 @@ import IconKumato from '@mui/icons-material/SettingsBrightness'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import Tomatic from '../services/tomatic'
 import Auth from '../services/auth'
-import { contrast } from '../mithril/components/colorutils'
+import { contrast } from '../services/colorutils'
 import AuthContext from '../contexts/AuthContext'
-import editAvailabilities from '../mithril/components/busyeditor'
-import editPerson from '../mithril/components/editperson'
+import PersonEditor from './PersonEditor'
 import { useDialog } from './DialogProvider'
+import BusyDialog from '../pages/BusyPage/BusyDialog'
 import { CopyCalendarDialog } from './CopyCalendarDialog'
 import EmulateCallDialog from './EmulateCallDialog'
-
-var openCalendarDialog = () => {}
-var openCallEmulationDialog = () => {}
-
-const menuProfile = [
-  {
-    text: 'Perfil',
-    icon: <IconSettings />,
-    onclick: () => {
-      editPerson(Auth.username())
-    },
-  },
-  {
-    text: 'Indisponibilitats',
-    icon: <IconEventBusy />,
-    onclick: () => {
-      editAvailabilities(Auth.username())
-    },
-  },
-  {
-    text: 'Exporta calendari',
-    icon: <CalendarMonthIcon />,
-    onclick: () => {
-      openCalendarDialog(Auth.username())
-    },
-  },
-  {
-    text: 'Kumato mode',
-    icon: <IconKumato />,
-    onclick: Tomatic.toggleKumato,
-  },
-  {
-    text: 'Emula trucada entrant',
-    icon: '🤙',
-    onclick: () => {
-      openCallEmulationDialog()
-    },
-  },
-  {
-    text: 'Logout',
-    icon: <IconLogout />,
-    onclick: Auth.logout,
-  },
-]
+import { useNavigate } from 'react-router-dom'
 
 function ProfileButton() {
+  const navigate = useNavigate()
+  const [openDialog, closeDialog] = useDialog()
   const { userid, fullname, initials, color, avatar } =
     React.useContext(AuthContext)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
+  const [personToEditBusy, setPersonToEditBusy] = React.useState(false)
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget)
@@ -84,25 +44,84 @@ function ProfileButton() {
     setAnchorElUser(null)
   }
 
-  const [openDialog, closeDialog] = useDialog()
+  function openBusyPage(person) {
+    //navigate(`/Indisponibilitats/${person}`)
+    setPersonToEditBusy(person)
+  }
 
-  openCalendarDialog = React.useCallback(
-    (username) => {
-      openDialog({
-        children: <CopyCalendarDialog {...{ closeDialog, username }} />,
-      })
-    },
-    [openDialog, closeDialog],
-  )
+  function openCalendarDialog(username) {
+    openDialog({
+      children: <CopyCalendarDialog {...{ closeDialog, username }} />,
+    })
+  }
 
-  openCallEmulationDialog = React.useCallback(() => {
+  function openCallEmulationDialog() {
     openDialog({
       children: <EmulateCallDialog {...{ closeDialog }} />,
     })
-  }, [openDialog, closeDialog])
+  }
+
+  function openPersonEditorDialog() {
+    openDialog({
+      children: (
+        <PersonEditor
+          onClose={closeDialog}
+          onSave={(id, data) => {
+            Tomatic.setPersonDataReact(id, data)
+            closeDialog()
+          }}
+          person={Tomatic.personFields(Auth.username())}
+          allGroups={Tomatic.allGroups()}
+          tables={Tomatic.tableOptions()}
+        />
+      ),
+    })
+  }
+
+  const menuProfile = [
+    {
+      text: 'Perfil',
+      icon: <IconSettings />,
+      onclick: () => {
+        openPersonEditorDialog()
+      },
+    },
+    {
+      text: 'Indisponibilitats',
+      icon: <IconEventBusy />,
+      onclick: () => {
+        openBusyPage(Auth.username())
+      },
+    },
+    {
+      text: 'Exporta calendari',
+      icon: <CalendarMonthIcon />,
+      onclick: () => {
+        openCalendarDialog(Auth.username())
+      },
+    },
+    {
+      text: 'Kumato mode',
+      icon: <IconKumato />,
+      onclick: Tomatic.toggleKumato,
+    },
+    {
+      text: 'Emula trucada entrant',
+      icon: '🤙',
+      onclick: () => {
+        openCallEmulationDialog()
+      },
+    },
+    {
+      text: 'Logout',
+      icon: <IconLogout />,
+      onclick: Auth.logout,
+    },
+  ]
 
   return (
     <Box sx={{ flexGrow: 0 }}>
+      <BusyDialog person={personToEditBusy} setPerson={setPersonToEditBusy} />
       {userid ? (
         <>
           <Tooltip title={'Perfil'}>
@@ -160,8 +179,8 @@ function ProfileButton() {
               <MenuItem
                 key={i}
                 onClick={() => {
-                  handleCloseUserMenu()
                   option.onclick && option.onclick()
+                  handleCloseUserMenu()
                 }}
               >
                 <ListItemIcon>{option.icon}</ListItemIcon>

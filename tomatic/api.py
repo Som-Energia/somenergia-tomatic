@@ -9,6 +9,7 @@ from fastapi import (
     File,
     UploadFile,
     Depends,
+    HTTPException,
 )
 from fastapi.responses import (
     FileResponse,
@@ -23,6 +24,7 @@ import os
 from datetime import datetime, timedelta, timezone
 import urllib.parse
 import decorator
+import inspect
 import erppeek
 from pathlib import Path
 from yamlns import namespace as ns
@@ -74,7 +76,7 @@ def thisweek():
     return format(now().date() - timedelta(days=now().weekday()))
 
 from .planner_api import api as Planner
-from .auth import router as Auth, validatedUser, adminUser
+from .auth import router as Auth, validatedUser, userInGroup
 from fastapi.websockets import WebSocket
 
 app = FastAPI()
@@ -89,9 +91,14 @@ app.add_middleware(
 app.include_router(Planner, prefix='/api/planner')
 app.include_router(Auth, prefix='/api/auth')
 
-
-
 class ApiError(Exception): pass
+
+def requireAdmin(user, message="Only admins can perform this operation"):
+    if not userInGroup(user, 'admin'):
+        raise HTTPException(
+            status_code=403,
+            detail=message,
+        )
 
 def yamlfy(status=200, data=[], **kwd):
     output = ns(data, **kwd)
@@ -101,35 +108,20 @@ def yamlfy(status=200, data=[], **kwd):
     )
 
 @decorator.decorator
-async def ayamlerrors(f,*args,**kwd):
+async def yamlerrors(f,*args,**kwd):
     try:
-        return await f(*args,**kwd)
+        result = f(*args,**kwd)
+        if inspect.isawaitable(result):
+            return await result
+        return result
     except ApiError as e:
         error("ApiError: {}", e)
         return yamlfy(
             error=format(e),
             status=400,
             )
-    except Exception as e:
-        error("UnexpectedError: {}", e)
-        import traceback
-        error(''.join(traceback.format_exc()))
-        return yamlfy(
-            error=format(e),
-            status=500,
-            )
-
-
-@decorator.decorator
-def yamlerrors(f,*args,**kwd):
-    try:
-        return f(*args,**kwd)
-    except ApiError as e:
-        error("ApiError: {}", e)
-        return yamlfy(
-            error=format(e),
-            status=400,
-            )
+    except HTTPException:
+        raise
     except Exception as e:
         error("UnexpectedError: {}", e)
         import traceback
@@ -184,7 +176,7 @@ def log_user_event(user, event):
         logfile.write(logline)
 
 @app.post('/api/logger/{event}')
-@ayamlerrors
+@yamlerrors
 async def logger(request: Request, event: str):
     log = ns.loads(await request.body())
     user = log.get('user', 'anonymous')
@@ -214,37 +206,37 @@ def retireOldTimeTable(user = Depends(validatedUser)):
 
 @app.get('/api/forcedturns')
 @yamlerrors
-def graellaTornsFixesYaml(user = Depends(validatedUser)):
+async def graellaTornsFixesYaml(user = Depends(validatedUser)):
     timetable = forcedTurns.load()
     return yamlfy(**timetable)
 
 @app.patch('/api/forcedturns/{day}/{houri}/{turni}/{name}')
-@ayamlerrors
-async def editSlot(day, houri: int, turni: int, name, request: Request, user = Depends(validatedUser)):
+@yamlerrors
+async def editFixedSlot(day, houri: int, turni: int, name, request: Request, user = Depends(validatedUser)):
     user=user['username']
     try:
         forcedTurns.editSlot(day, houri, turni, name, user)
     except schedulestorageforcedturns.BadEdit as e:
         raise ApiError(str(e))
-    return graellaTornsFixesYaml()
+    return await graellaTornsFixesYaml()
 
 @app.patch('/api/forcedturns/addColumn')
-@ayamlerrors
+@yamlerrors
 async def addColumn():
     try:
         forcedTurns.addColumn()
     except schedulestorageforcedturns.BadEdit as e:
         raise ApiError(str(e))
-    return graellaTornsFixesYaml()
+    return await graellaTornsFixesYaml()
 
 @app.patch('/api/forcedturns/removeColumn')
-@ayamlerrors
-async def addColumn():
+@yamlerrors
+async def removeColumn():
     try:
         forcedTurns.removeColumn()
     except schedulestorageforcedturns.BadEdit as e:
         raise ApiError(str(e))
-    return graellaTornsFixesYaml()
+    return await graellaTornsFixesYaml()
 
 @app.get('/api/graella-{week}.yaml')
 @app.get('/api/graella/{week}')
@@ -255,7 +247,7 @@ def graellaYaml(week, user = Depends(validatedUser)):
     return yamlfy(**schedule)
 
 @app.patch('/api/graella/{week}/{day}/{houri}/{turni}/{name}')
-@ayamlerrors
+@yamlerrors
 async def editSlot(week, day, houri: int, turni: int, name, request: Request, user = Depends(validatedUser)):
     #user = (await request.body()).decode('utf8').split('"')[1]
     user=user['username']
@@ -263,7 +255,7 @@ async def editSlot(week, day, houri: int, turni: int, name, request: Request, us
         schedules.editSlot(week, day, houri, turni, name, user)
     except schedulestorage.BadEdit as e:
         raise ApiError(str(e))
-    return graellaYaml(week)
+    return await graellaYaml(week)
 
 
 def cachedQueueStatus(force=False):
@@ -342,15 +334,18 @@ def personInfo():
     return yamlfy(persons=result)
 
 @app.post('/api/person/{person}')
-@ayamlerrors
+@yamlerrors
 async def setPersonInfo(person, request: Request, user = Depends(validatedUser)):
     data = ns.loads(await request.body())
+    if person != user.username:
+        requireAdmin(user)
     persons.update(person, data)
     return yamlfy(persons=persons.persons())
 
 @app.delete('/api/person/{person}')
-@ayamlerrors
-async def deletePerson(person, user = Depends(adminUser)):
+@yamlerrors
+async def deletePerson(person, user = Depends(validatedUser)):
+    requireAdmin(user)
     persons.delete(person)
     return yamlfy(persons=persons.persons())
 
@@ -361,7 +356,7 @@ def busy(person, user = Depends(validatedUser)):
     return yamlfy(**busy.busy(person))
 
 @app.post('/api/busy/{person}')
-@ayamlerrors
+@yamlerrors
 async def busy_post(person, request: Request, user = Depends(validatedUser)):
     from . import busy
     data = ns.loads(await request.body())

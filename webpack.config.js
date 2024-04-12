@@ -10,7 +10,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var config = {
 	context: path.resolve(__dirname, 'tomatic/ui/'),
 	entry: {
-		main: './graella.js',
+		main: './index.js',
 	},
 	resolve: {
 		fallback: {

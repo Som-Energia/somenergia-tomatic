@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { styled } from '@mui/material/styles'
 import MuiAppBar from '@mui/material/AppBar'
-import CssBaseline from '@mui/material/CssBaseline'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
@@ -20,13 +19,14 @@ import appBackground_tomatic from '../images/tomatic_bg.jpg'
 import appBackground_pebrotic from '../images/pebrotic.jpg'
 import appBackground_ketchup from '../images/ketchup.png'
 import appLogo from '../images/tomatic-logo-24.png'
-import SnackbarLogger from '../components/SnackbarLogger'
+import SnackbarMessages from '../components/SnackbarMessages'
 import NavigationDrawer, { drawerWidth } from '../components/NavigationDrawer'
 import ProfileButton from '../components/ProfileButton'
 import LoginRequired from '../containers/LoginRequired'
 import { Link, useNavigate } from 'react-router-dom'
 import extraMenuOptions from '../services/extramenu'
 import Tomatic from '../services/tomatic'
+
 
 const pages = [
   {
@@ -56,7 +56,7 @@ const variantBackground = {
 const variantTitle = {
   tomatic: 'Tomàtic - Som Energia',
   pebrotic: 'Pebròtic - Som Energia',
-  ketchup: 'Tomàtic Ketchup - Som Energia',
+  ketchup: 'Ketchup - Som Energia',
 }
 
 const AppBar = styled(MuiAppBar, {
@@ -72,7 +72,7 @@ const AppBar = styled(MuiAppBar, {
     marginLeft: drawerWidth,
     paddingLeft: {
       xs: 0,
-      md: drawerOpen ? drawerWidth + 'px' : '60px',
+      md: drawerWidth,
     },
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
@@ -83,6 +83,7 @@ const AppBar = styled(MuiAppBar, {
 }))
 
 function ResponsiveAppBar({ children }) {
+  const isKumatoMode = Tomatic.isKumatoMode.use()
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [drawerOpen, setDrawerOpen] = React.useState(false)
   const navigate = useNavigate()
@@ -109,7 +110,6 @@ function ResponsiveAppBar({ children }) {
 
   return (
     <Box id="tomatic" className={'main variant-' + Tomatic.variant}>
-      <CssBaseline />
       <AppBar
         position="sticky"
         sx={{
@@ -348,19 +348,20 @@ function ResponsiveAppBar({ children }) {
         }}
       />
       <Box
-        className={Tomatic.isKumatoMode() ? 'pe-dark-tone' : ''}
+        className={isKumatoMode ? 'kumato-mode' : ''}
         component="main"
         sx={{
+          minHeight: "calc(100vh - 70px)",
           flexGrow: 1,
           paddingLeft: {
             xs: 0,
-            md: drawerOpen ? drawerWidth + 'px' : '60px',
+            md: drawerOpen ? drawerWidth + 'px' : 'calc(60px + 4pt)',
           },
         }}
       >
         <LoginRequired>{children}</LoginRequired>
       </Box>
-      <SnackbarLogger />
+      <SnackbarMessages variant="filled"/>
     </Box>
   )
 }

@@ -8,7 +8,6 @@ import DialogContent from '@mui/material/DialogContent'
 import Button from '@mui/material/Button'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogActions from '@mui/material/DialogActions'
-import { contrast } from '../colorutils'
 import EditIcon from '@mui/icons-material/Edit'
 import EventBusyIcon from '@mui/icons-material/EventBusy'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -16,85 +15,13 @@ import DeleteIcon from '@mui/icons-material/Delete'
 //import GroupRemoveIcon from '@mui/icons-material/GroupRemove'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import Tomatic from '../services/tomatic'
-import editAvailabilities from '../mithril/components/busyeditor'
-import MithrilWrapper from '../containers/MithrilWrapper'
-import MithrilStyler from '../containers/MithrilStyler'
-import { useSubscriptable } from '../services/subscriptable'
-import { Dialog as MithrilDialog } from 'polythene-mithril-dialog'
+import BusyDialog from '../pages/BusyPage/BusyDialog'
 import { useDialog } from './DialogProvider'
-
-// Translates Tomatic structures to TableEditor compatible ones
-function compileData(personData) {
-  const result = {}
-  if (personData === undefined) return {}
-
-  function joinAttribute(result, attribute) {
-    const attributeValues = personData[attribute + 's'] || {}
-    Object.entries(attributeValues).forEach(([id, v], i) => {
-      if (!result[id]) {
-        result[id] = { id: id }
-      }
-      result[id][attribute] = v
-    })
-  }
-  function joinGroups(result) {
-    Object.entries(personData.groups || {}).forEach(([group, members], i) => {
-      members.forEach((member) => {
-        if (result[member] === undefined) {
-          result[member] = { id: member }
-        }
-        if (result[member].groups === undefined) {
-          result[member].groups = []
-        }
-        result[member].groups.push(group)
-      })
-    })
-  }
-
-  joinAttribute(result, 'name')
-  joinAttribute(result, 'table')
-  joinAttribute(result, 'extension')
-  joinAttribute(result, 'color')
-  joinAttribute(result, 'email')
-  joinAttribute(result, 'erpuser')
-  joinAttribute(result, 'idealload')
-  joinGroups(result)
-
-  return Object.entries(result).map(([id, v]) => {
-    return v
-  })
-}
-
-function range(end) {
-  if (end < 1) return []
-  return [...Array(end).keys()]
-}
+import { contrast } from '../services/colorutils'
 
 function formatName(row) {
   if (row.name) return row.name
   return camelize(row.id)
-}
-
-function availableTables(rows) {
-  const tableMembers = rows.reduce((d, row) => {
-    if (row.table === undefined) return d
-    if (row.table === -1) return d
-    if (d[row.table] === undefined) {
-      d[row.table] = []
-    }
-    d[row.table].push(formatName(row))
-    return d
-  }, {})
-  const result = [[-1, 'Sense taula']]
-  const nTables = Math.max(...Object.keys(tableMembers))
-  for (const i in range(nTables + 1)) {
-    if (tableMembers[i] === undefined) {
-      result.push([i, `Taula ${i} amb ningú`])
-    } else {
-      result.push([i, `Taula ${i} amb ` + tableMembers[i].join(', ')])
-    }
-  }
-  return result
 }
 
 const columns = [
@@ -161,6 +88,7 @@ const columns = [
     numeric: true,
     disablePadding: false,
     label: 'Taula',
+    view: (row) => row.table === -1 ? '-' : row.table,
   },
   {
     id: 'groups',
@@ -176,17 +104,6 @@ const columns = [
   },
 ]
 
-function availableGroups(rows) {
-  return [
-    ...new Set(
-      rows
-        .map((row) => {
-          return row.groups || []
-        })
-        .flat(),
-    ),
-  ]
-}
 function camelize(text) {
   text = text.toLowerCase()
   return text.charAt(0).toUpperCase() + text.slice(1)
@@ -194,12 +111,12 @@ function camelize(text) {
 
 function PersonsTable() {
   const [openDialog, closeDialog] = useDialog()
-  const persons = useSubscriptable(Tomatic.persons)
-  const rows = React.useMemo(() => {
-    return compileData(persons)
-  }, [persons])
-  const tables = React.useMemo(() => availableTables(rows), [rows])
-  const groups = React.useMemo(() => availableGroups(rows), [rows])
+  const [personToEditBusy, setPersonToEditBusy] = React.useState(null)
+  const persons = Tomatic.persons.use()
+  // All three need to update on persons. Use && to silence the linter
+  const rows = React.useMemo(() => persons && Tomatic.allPeopleData(), [persons])
+  const tables = React.useMemo(() => persons && Tomatic.tableOptions(), [persons])
+  const groups = React.useMemo(() => persons && Tomatic.allGroups(), [persons])
 
   function deletePersons(persons) {
     openDialog({
@@ -259,7 +176,6 @@ function PersonsTable() {
             Tomatic.setPersonDataReact(id, data)
             closeDialog()
           }}
-          disableEscapeKeyDown={false}
           person={person}
           allGroups={groups}
           tables={tables}
@@ -269,7 +185,7 @@ function PersonsTable() {
   }
 
   function handleStartBusyEditor(person) {
-    editAvailabilities(person.id)
+    setPersonToEditBusy(person.id)
   }
 
   const actions = [
@@ -287,7 +203,7 @@ function PersonsTable() {
       icon: <GroupAddIcon />,
     },
     {
-      title: 'Remove from Grou',
+      title: 'Remove from Group',
       icon: <GroupRemoveIcon />,
     },
     */
@@ -315,15 +231,15 @@ function PersonsTable() {
     <>
       <TableEditor
         title={'Persones'}
-        defaultPageSize={12}
-        pageSizes={[12, 18, 25]}
+        defaultPageSize={-1}
         columns={columns}
         rows={rows}
         actions={actions}
         selectionActions={selectionActions}
         itemActions={itemActions}
+        pageSizes={[-1]}
       ></TableEditor>
-      <MithrilWrapper component={MithrilStyler(MithrilDialog)} />
+      <BusyDialog person={personToEditBusy} setPerson={setPersonToEditBusy} />
     </>
   )
 }

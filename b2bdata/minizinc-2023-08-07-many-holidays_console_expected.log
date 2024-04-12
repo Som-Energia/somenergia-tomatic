@@ -436,12 +436,12 @@ dl: .... dm: .... dx: .... dj: .... dv: xx.. yaiza
 dl: .x.. dm: .... dx: ...x dj: .... dv: .... yolanda
 
 Horari final
-dl: ..x. dm: ...x dx: .... dj: .... dv: .... adria
+dl: .... dm: ..x. dx: .x.. dj: .... dv: .... adria
 dl: .... dm: .... dx: .xx. dj: .... dv: .... albert
 dl: .... dm: .... dx: .... dj: .... dv: .... albertg
-dl: .x.. dm: ..x. dx: .x.. dj: .x.. dv: ...x anaperez
+dl: .x.. dm: ..x. dx: x... dj: .x.. dv: ..x. anaperez
 dl: .... dm: .... dx: x... dj: .... dv: ..x. andrea
-dl: .... dm: .... dx: x... dj: x... dv: .... annab
+dl: ...x dm: .... dx: .... dj: x... dv: .... annab
 dl: .... dm: .... dx: .... dj: .... dv: .... annap
 dl: .... dm: .... dx: .... dj: .... dv: .... annaserra
 dl: x... dm: .... dx: ...x dj: .... dv: .... aram
@@ -452,11 +452,11 @@ dl: .... dm: .... dx: .... dj: .... dv: .... carme
 dl: .... dm: ..x. dx: .... dj: ..x. dv: .... carmen
 dl: .... dm: .... dx: .... dj: .... dv: .... carol
 dl: .... dm: .... dx: .... dj: .x.. dv: ..x. cesc
-dl: .x.. dm: .x.. dx: .... dj: .... dv: .... cire
+dl: .x.. dm: ...x dx: .... dj: .... dv: .... cire
 dl: .... dm: .... dx: .... dj: .... dv: x... claran
 dl: .... dm: .... dx: .... dj: .... dv: ..xx davidb
 dl: .... dm: .... dx: .... dj: .... dv: .... eduard
-dl: .... dm: ...x dx: .... dj: ..x. dv: .... eloi
+dl: ...x dm: ...x dx: .... dj: .... dv: .... eloi
 dl: ...x dm: .x.. dx: .... dj: .... dv: .... erika
 dl: .... dm: .... dx: .... dj: .... dv: .... erola
 dl: .... dm: .... dx: .... dj: .... dv: .... gabriel
@@ -480,32 +480,32 @@ dl: .... dm: .... dx: .xx. dj: .... dv: .... maria
 dl: .... dm: .... dx: .... dj: .... dv: .... mariabouza
 dl: .... dm: ...x dx: ...x dj: .... dv: .... mariona
 dl: .... dm: .... dx: .... dj: .... dv: .... marta
-dl: .x.. dm: .... dx: .... dj: ...x dv: .... martac
+dl: .... dm: .x.. dx: .... dj: ...x dv: .... martac
 dl: .... dm: ..x. dx: .... dj: ..x. dv: .... martafarre
 dl: .... dm: .... dx: .... dj: .... dv: .... melania
-dl: ...x dm: .... dx: .... dj: .x.. dv: .... merce
-dl: .... dm: .... dx: ..x. dj: .... dv: .x.. meritxell
+dl: .... dm: .x.. dx: .... dj: .x.. dv: .... merce
+dl: .... dm: .... dx: ...x dj: .... dv: ...x meritxell
 dl: .... dm: .... dx: .... dj: x... dv: x... meritxello
 dl: .... dm: .... dx: .... dj: .... dv: .... monica
 dl: .... dm: .... dx: .... dj: .... dv: .... monicag
 dl: ...x dm: .... dx: .... dj: ...x dv: .... montser
-dl: .... dm: x... dx: .... dj: ...x dv: .... ningu
+dl: .... dm: x... dx: x... dj: .... dv: .... ningu
 dl: ..x. dm: .... dx: ..x. dj: .... dv: .... nuria
-dl: .... dm: .... dx: x... dj: .... dv: .... nuriapuigvert
+dl: ..x. dm: .... dx: .... dj: .... dv: .... nuriapuigvert
 dl: .x.. dm: .x.. dx: .... dj: .... dv: .... olga
 dl: .... dm: .... dx: .... dj: .... dv: .... otilia
-dl: ...x dm: x... dx: x... dj: x... dv: .x.. reservac
-dl: .... dm: x... dx: ...x dj: .... dv: .... reservad
-dl: x... dm: ..x. dx: .... dj: .... dv: .x.. reservae
+dl: .x.. dm: x... dx: x... dj: ...x dv: .x.. reservac
+dl: x... dm: x... dx: .... dj: .... dv: .... reservad
+dl: ...x dm: .... dx: ..x. dj: x... dv: .... reservae
 dl: .... dm: ...x dx: .... dj: .... dv: .... reservaf
 dl: .... dm: .... dx: .... dj: .... dv: .... roger
 dl: .... dm: .... dx: .... dj: .... dv: .... rogerlf
 dl: .... dm: .... dx: .... dj: .... dv: .... sergiv
-dl: ...x dm: .... dx: .x.. dj: .... dv: .... sergivazqu
+dl: .... dm: .... dx: .x.. dj: ..x. dv: .... sergivazqu
 dl: .... dm: .... dx: .... dj: .... dv: .... silvia
-dl: ..x. dm: .x.. dx: .... dj: .... dv: .... sule
+dl: ..x. dm: .... dx: .... dj: .... dv: .x.. sule
 dl: ..x. dm: .... dx: .... dj: ...x dv: .... tania
-dl: x... dm: x... dx: .x.. dj: .x.. dv: ..x. tanias
+dl: x... dm: x... dx: .x.. dj: .x.. dv: .x.. tanias
 dl: .... dm: .... dx: .... dj: ..x. dv: ...x vane
 dl: .... dm: .... dx: .... dj: .... dv: .... vero
 dl: x... dm: .... dx: .... dj: .... dv: ...x vic
@@ -513,13 +513,13 @@ dl: .... dm: .... dx: .... dj: .... dv: xx.. yaiza
 dl: .x.. dm: .... dx: ...x dj: .... dv: .... yolanda
 
 Empty slots:
-[(dm, 1, 1), (dj, 4, 1)]
+[(dm, 1, 1), (dx, 1, 1)]
 
 Unplaced Load:
 []
 
 Unforced fixed turns:
-[(dl, 3, nuriapuigvert), (dv, 4, meritxell)]
+[(dx, 1, nuriapuigvert), (dv, 2, meritxell)]
 
 Undesired Penalties:
 []
@@ -540,11 +540,11 @@ No Brunch Penalties:
 [(dx, albert), (dx, maria)]
 
 Solution cost: 420
-[| dl:              {aram, mar, reservae, tanias, vic},       {anaperez, cire, martac, olga, yolanda},                 {adria, joanb, nuria, sule, tania}, {erika, merce, montser, reservac, sergivazqu}
- | dm:      {judit, ningu, reservac, reservad, tanias},                {cire, erika, mar, olga, sule}, {anaperez, carmen, herminia, martafarre, reservae},       {adria, eloi, joanb, mariona, reservaf}
- | dx: {andrea, annab, berta, nuriapuigvert, reservac}, {albert, anaperez, maria, sergivazqu, tanias},          {albert, bernat, maria, meritxell, nuria},     {aram, marcm, mariona, reservad, yolanda}
- | dj:    {annab, berta, judith, meritxello, reservac},     {anaperez, cesc, herminia, merce, tanias},             {carmen, eloi, joel, martafarre, vane},        {marcm, martac, montser, ningu, tania}
- | dv:      {claran, judith, manel, meritxello, yaiza}, {manel, meritxell, reservac, reservae, yaiza},               {andrea, cesc, davidb, joel, tanias},         {anaperez, bernat, davidb, vane, vic}
+[| dl:           {aram, mar, reservad, tanias, vic},  {anaperez, cire, olga, reservac, yolanda},      {joanb, nuria, nuriapuigvert, sule, tania},    {annab, eloi, erika, montser, reservae}
+ | dm:   {judit, ningu, reservac, reservad, tanias},          {erika, mar, martac, merce, olga}, {adria, anaperez, carmen, herminia, martafarre},     {cire, eloi, joanb, mariona, reservaf}
+ | dx:   {anaperez, andrea, berta, ningu, reservac}, {adria, albert, maria, sergivazqu, tanias},        {albert, bernat, maria, nuria, reservae}, {aram, marcm, mariona, meritxell, yolanda}
+ | dj: {annab, berta, judith, meritxello, reservae},  {anaperez, cesc, herminia, merce, tanias},    {carmen, joel, martafarre, sergivazqu, vane},  {marcm, martac, montser, reservac, tania}
+ | dv:   {claran, judith, manel, meritxello, yaiza},     {manel, reservac, sule, tanias, yaiza},          {anaperez, andrea, cesc, davidb, joel},     {bernat, davidb, meritxell, vane, vic}
  |]
 
 [32;1m>> Resultat desat a graella-telefons-2023-08-07.yaml[0m

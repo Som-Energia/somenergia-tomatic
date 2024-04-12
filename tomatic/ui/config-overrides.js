@@ -2,14 +2,6 @@ const path = require('path')
 const paths = require('react-scripts/config/paths')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const rewireStylus = require('react-app-rewire-stylus-modules')
-const multipleEntry = require('react-app-rewire-multiple-entry')([
-  {
-    entry: 'tomatic/ui/src/mithril/graella.js',
-    template: 'tomatic/ui/src/mithril/tomatic.html',
-    outPath: '/mithril.html',
-    favicon: 'tomatic/ui/public/favicon.ico',
-  },
-])
 
 module.exports = {
   webpack: function (config, env) {
@@ -20,7 +12,15 @@ module.exports = {
     config.context = path.resolve(__dirname)
 
     // Loader for yaml
-    config.module.rules.push({
+    // Hack to exclude yaml from the asset/resource catchall rule
+    config.module.rules[1].oneOf
+      .filter((x) => x.test === undefined)
+      .map((v) => {
+        console.debug('RULE\n', v)
+        v.exclude.push(/\.yaml/)
+        console.debug('RULE\n', v)
+      })
+    config.module.rules.unshift({
       test: /\.yaml$/,
       loader: 'yaml-loader',
     })
@@ -29,8 +29,6 @@ module.exports = {
       test: /\.styl$/,
       use: [MiniCssExtractPlugin.loader, 'css-loader', 'stylus-loader'],
     })
-    // Add our entries
-    multipleEntry.addMultiEntry(config)
     // Plugins per stylus
     config.plugins.push(
       new MiniCssExtractPlugin({
@@ -53,7 +51,7 @@ module.exports = {
     paths.appSrc = path.resolve(__dirname, 'src')
     paths.appPublic = path.resolve(__dirname, 'public')
     paths.appHtml = path.resolve(__dirname, 'public/index.html')
-    paths.appIndexJs = path.resolve(__dirname, 'src/admin.js')
+    paths.appIndexJs = path.resolve(__dirname, 'src/index.js')
     return paths
   },
 }

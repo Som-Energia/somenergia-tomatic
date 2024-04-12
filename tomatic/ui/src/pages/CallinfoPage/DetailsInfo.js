@@ -4,18 +4,17 @@ import TabbedCard from './TabbedCard'
 import AtrCases from './AtrCases'
 import Invoices from './Invoices'
 import Meterings from './Meterings'
-import CallInfo from '../../mithril/components/callinfo'
+import CallInfo from '../../contexts/callinfo'
 import { useSubscriptable } from '../../services/subscriptable'
 
 export default function DetailsInfo() {
   const [activeView, setActiveView] = React.useState(0)
   const contract = useSubscriptable(CallInfo.selectedContract)
-  useSubscriptable(CallInfo.results)
 
   if (contract === null) return null
 
   return (
-    <Box className={'contract-details flex'}>
+    <Box className={'contract-details'} flex={1}>
       <TabbedCard
         currentTab={activeView}
         onTabChanged={(value) => {

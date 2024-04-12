@@ -2,6 +2,7 @@ from .execution import Execution, children
 from slugify import slugify
 import uuid
 import datetime
+import sys
 from pathlib import Path
 from consolemsg import step, u
 from yamlns import namespace as ns
@@ -96,6 +97,7 @@ class PlannerExecution(Execution):
         execution.createSandbox()
         step("Running {}...", execution.name)
         process = execution.run([
+            sys.executable,
             str(Path('./scripts/tomatic_scheduler.py').resolve()),
             monday or nextMonday(),
             '--clusterize',
