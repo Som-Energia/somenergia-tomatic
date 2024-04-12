@@ -1,16 +1,17 @@
 # Changelog
 
-## Unreleased
+## 5.7.0 2024-04-12
 
 - Only admins can edit others profile
-- mithril callinfo files cleaned
 - Migrated to React missing pages
     - PBX page
     - Persons page (color boxes version)
     - Busy Editor
     - Timetable Planner
+- Mithril files cleaned up (just api left)
 - Fix: minizinc planner reported launch times with offset (TZ problem)
 - Fix: PersonEditor looped forever in reset
+- Tomatic Says as a dialog
 - Callinfo state manager uses more stable reactiveProps
 - Improved dark mode colors in call log
 - Fonts readability by not using polythene fonts family and size
