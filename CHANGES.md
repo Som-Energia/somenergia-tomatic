@@ -11,8 +11,8 @@
 - Mithril files cleaned up (just api left)
 - Fix: minizinc planner reported launch times with offset (TZ problem)
 - Fix: PersonEditor looped forever in reset
-- Tomatic Says as a dialog
 - Callinfo state manager uses more stable reactiveProps
+- Tomatic Says as a dialog
 - Improved dark mode colors in call log
 - Fonts readability by not using polythene fonts family and size
 - Upgrade notes:

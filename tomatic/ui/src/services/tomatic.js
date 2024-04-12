@@ -677,7 +677,7 @@ Tomatic.says = function (message) {
     .request({
       context,
       method: 'POST',
-      url: '/api/tomatic/says/',
+      url: '/api/tomatic/says',
       body: {message},
     })
     .then(
