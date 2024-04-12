@@ -514,13 +514,21 @@ Tomatic.weekdays = {
   dv: 'Divendres',
 }
 
+const defaultHours = [
+  '09:00',
+  '10:15',
+  '11:30',
+  '12:45',
+  '14:00',
+]
+
 Tomatic.weekday = function (short, alternative) {
   return Tomatic.weekdays[short] || alternative || '??'
 }
 
 // TODO: Make it independent of grid
 Tomatic.hourLabel = function (i) {
-  const { hours } = Tomatic.grid()
+  const { hours = defaultHours } = Tomatic.grid()
   return `${hours[i]} - ${hours[i + 1]}`
 }
 
