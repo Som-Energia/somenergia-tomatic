@@ -12,6 +12,8 @@
 - Fix: minizinc planner reported launch times with offset (TZ problem)
 - Fix: PersonEditor looped forever in reset
 - Callinfo state manager uses more stable reactiveProps
+- Improved dark mode colors in call log
+- Fonts readability by not using polythene fonts family and size
 - Upgrade notes:
     - Because admin group is now required to edit others profile ensure
       that certain users belong to this group.
