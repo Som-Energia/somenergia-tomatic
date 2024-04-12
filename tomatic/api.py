@@ -518,6 +518,23 @@ def icalendar(person):
         media_type = 'text/calendar',
     )
 
+@app.post('/api/tomatic/says')
+@yamlerrors
+async def tomatic_says(
+    request: Request,
+    user = Depends(validatedUser)
+):
+    data = ns.loads(await request.body())
+    from .directmessage.tomatic_webhook import send
+    if not dbconfig.tomatic.get("monitorChatChannel"):
+        return ApiError("No direct channel conrigured")
+    if not data.get('message') :
+        return ApiError("Empty message", 403)
+    send(
+        dbconfig.tomatic.monitorChatChannel,
+        data.message
+    )
+    return yamlfy(result="ok")
 
 
 # vim: ts=4 sw=4 et

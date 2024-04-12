@@ -6,7 +6,6 @@ import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import Menu from '@mui/material/Menu'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
 import Button from '@mui/material/Button'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
@@ -22,9 +21,9 @@ import appLogo from '../images/tomatic-logo-24.png'
 import SnackbarMessages from '../components/SnackbarMessages'
 import NavigationDrawer, { drawerWidth } from '../components/NavigationDrawer'
 import ProfileButton from '../components/ProfileButton'
+import ExtraMenu from '../components/ExtraMenu'
 import LoginRequired from '../containers/LoginRequired'
-import { Link, useNavigate } from 'react-router-dom'
-import extraMenuOptions from '../services/extramenu'
+import { Link } from 'react-router-dom'
 import Tomatic from '../services/tomatic'
 
 
@@ -86,7 +85,6 @@ function ResponsiveAppBar({ children }) {
   const isKumatoMode = Tomatic.isKumatoMode.use()
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [drawerOpen, setDrawerOpen] = React.useState(false)
-  const navigate = useNavigate()
 
   const appBackground =
     variantBackground[Tomatic.variant] || appBackground_tomatic
@@ -97,15 +95,6 @@ function ResponsiveAppBar({ children }) {
   }
   const handleCloseNavMenu = () => {
     setAnchorElNav(null)
-  }
-
-  const [anchorElMenu, setAnchorElMenu] = React.useState(null)
-
-  const handleOpenMenu = (event) => {
-    setAnchorElMenu(event.currentTarget)
-  }
-  const handleCloseMenu = () => {
-    setAnchorElMenu(null)
   }
 
   return (
@@ -289,50 +278,7 @@ function ResponsiveAppBar({ children }) {
             ))}
           </Box>
           <ProfileButton />
-          <Box>
-            <IconButton
-              size="large"
-              aria-label={'Extra functionalities'}
-              aria-controls="menu-extra"
-              aria-haspopup="true"
-              onClick={handleOpenMenu}
-              color="inherit"
-            >
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              id="menu-extra"
-              anchorEl={anchorElMenu}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElMenu)}
-              onClose={handleCloseMenu}
-            >
-              {extraMenuOptions().map((option, i) => (
-                <MenuItem
-                  key={i}
-                  onClick={() => {
-                    handleCloseMenu()
-                    if (option.route) {
-                      navigate(option.route)
-                      return
-                    }
-                    option.action()
-                  }}
-                >
-                  <ListItemIcon>{option.icon}</ListItemIcon>
-                  <Typography textAlign="center">{option.title}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          <ExtraMenu />
         </Toolbar>
       </AppBar>
       <NavigationDrawer

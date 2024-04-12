@@ -26,7 +26,6 @@ import PersonEditor from './PersonEditor'
 import { useDialog } from './DialogProvider'
 import BusyDialog from '../pages/BusyPage/BusyDialog'
 import { CopyCalendarDialog } from './CopyCalendarDialog'
-import EmulateCallDialog from './EmulateCallDialog'
 import { useNavigate } from 'react-router-dom'
 
 function ProfileButton() {
@@ -52,12 +51,6 @@ function ProfileButton() {
   function openCalendarDialog(username) {
     openDialog({
       children: <CopyCalendarDialog {...{ closeDialog, username }} />,
-    })
-  }
-
-  function openCallEmulationDialog() {
-    openDialog({
-      children: <EmulateCallDialog {...{ closeDialog }} />,
     })
   }
 
@@ -104,13 +97,6 @@ function ProfileButton() {
       text: 'Kumato mode',
       icon: <IconKumato />,
       onclick: Tomatic.toggleKumato,
-    },
-    {
-      text: 'Emula trucada entrant',
-      icon: '🤙',
-      onclick: () => {
-        openCallEmulationDialog()
-      },
     },
     {
       text: 'Logout',

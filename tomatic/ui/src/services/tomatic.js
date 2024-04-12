@@ -671,6 +671,29 @@ Tomatic.retrieveBusyDataFake = function (name, callback) {
   }, 1000)
 }
 
+Tomatic.says = function (message) {
+  const context = `Impersonant al Tomatic`
+  api
+    .request({
+      context,
+      method: 'POST',
+      url: '/api/tomatic/says/',
+      body: {message},
+    })
+    .then(
+      function (response) {
+        if (response.result === 'ok') {
+          messages.success("Missatge enviat", { context })
+          return
+        }
+        messages.error(response.message, { context })
+      },
+      function (error) {
+        messages.error(error?.message || 'Error Inexperat', { context })
+      },
+    )
+}
+
 export default Tomatic
 
 // vim: et ts=2 sw=2
