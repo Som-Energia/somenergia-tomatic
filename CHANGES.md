@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.7.1 2024-04-15
+
+- Fix: removed trailing slash in tomatic/says endpoint
+- Corrected help text in BusyNotes
+
 ## 5.7.0 2024-04-12
 
 - Only admins can edit others profile
