@@ -1,6 +1,6 @@
 import unittest
 from .dummy import CallRegistry
-from ..callregistry_models import CallLog
+from .models import CallLog
 from somutils.testutils import temp_path
 from yamlns import ns
 

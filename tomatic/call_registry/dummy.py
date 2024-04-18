@@ -1,4 +1,4 @@
-from ..callregistry_models import CallLog, Call
+from .models import CallLog, Call
 import datetime
 
 class CallRegistry():
