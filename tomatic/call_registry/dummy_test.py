@@ -115,6 +115,12 @@ class DummyTest(unittest.TestCase):
             self.full_call(odoo_id1, self.call_barbara),
         ]))
 
+        response = self.registry.get_calls('carol')
+        self.assertModelEqual(response, ns(operator_calls=[
+            # alice call filltered out
+            # barbara call filltered out
+        ]))
+
     def test__typify_call__modifies_existing_call(self):  self.skipTest("Not yet implemented")
     def test__typify_call__manual_call__creates_a_new_call(self):  self.skipTest("Not yet implemented")
 
