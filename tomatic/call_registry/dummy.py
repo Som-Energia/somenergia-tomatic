@@ -19,8 +19,12 @@ class CallRegistry():
         return CallLog(**ns.load(registry_file))
         
     def add_incoming_call(self, newcall: NewCall):
+        log = self.get_calls(newcall.operator)
+        log.operator_calls.append(
+            Call(
+                id=len(log.operator_calls)+1,
+                 **newcall.model_dump()
+            )
+        )
         registry_file = self.registry_path / 'calls.yaml'
-        updated_log = CallLog(operator_calls=[
-            Call(id=1, **newcall.model_dump())
-        ])
-        ns(updated_log.model_dump()).dump(registry_file)
+        ns(log.model_dump()).dump(registry_file)
