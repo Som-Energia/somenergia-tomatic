@@ -47,6 +47,12 @@ class DummyTest(unittest.TestCase):
         data = ns(data, call_timestamp = call_timestamp)
         return ns(self.default_fields, id=id, **data)
 
+    def register(self, call):
+        response = self.registry.add_incoming_call(
+            NewCall(**call),
+        )
+        return response.odoo_id
+
     def setUp(self):
         self.maxDiff = None
         self.path = self.enterContext(temp_path())
@@ -63,20 +69,16 @@ class DummyTest(unittest.TestCase):
         """)
 
     def test__get_calls__after_adding_one__returns_it(self):
-        response = self.registry.add_incoming_call(
-            NewCall(**self.call_alice1),
-        )
-        odoo_id = response.odoo_id
+        odoo_id = self.register(self.call_alice1)
+
         response = self.registry.get_calls('alice')
+
         self.assertModelEqual(response, ns(operator_calls=[
             self.full_call(odoo_id, self.call_alice1),
         ]))
 
     def test__get_calls__is_persistent_between_instances(self):
-        response = self.registry.add_incoming_call(
-            NewCall(**self.call_alice1),
-        )
-        odoo_id = response.odoo_id
+        odoo_id = self.register(self.call_alice1)
 
         # Using a different CallRegistry
         other_registry = CallRegistry(self.path)
@@ -87,15 +89,8 @@ class DummyTest(unittest.TestCase):
         ]))
 
     def test__get_calls__after_adding_many__returns_them(self):
-        response1 = self.registry.add_incoming_call(
-            NewCall(**self.call_alice1),
-        )
-        odoo_id1 = response1.odoo_id
-
-        response2 = self.registry.add_incoming_call(
-            NewCall(**self.call_alice2),
-        )
-        odoo_id2 = response2.odoo_id
+        odoo_id1 = self.register(self.call_alice1)
+        odoo_id2 = self.register(self.call_alice2)
 
         response = self.registry.get_calls('alice')
         self.assertModelEqual(response, ns(operator_calls=[
@@ -104,15 +99,8 @@ class DummyTest(unittest.TestCase):
         ]))
 
     def test__get_calls__other_operators_calls_not_listed(self):
-        response1 = self.registry.add_incoming_call(
-            NewCall(**self.call_alice1),
-        )
-        odoo_id1 = response1.odoo_id
-
-        response2 = self.registry.add_incoming_call(
-            NewCall(**self.call_barbara),
-        )
-        odoo_id2 = response2.odoo_id
+        odoo_id1 = self.register(self.call_alice1)
+        odoo_id2 = self.register(self.call_barbara)
 
         response = self.registry.get_calls('alice')
         self.assertModelEqual(response, ns(operator_calls=[
