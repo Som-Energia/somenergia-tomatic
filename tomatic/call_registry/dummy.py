@@ -1,4 +1,4 @@
-from .models import CallLog, Call, NewCall
+from .models import CallLog, Call, NewCall, CreateCallResponse
 import datetime
 import pathlib
 from yamlns import ns
@@ -25,13 +25,18 @@ class CallRegistry():
     def get_calls(self, operator: str):
         return self._load_calls(operator)
 
-    def add_incoming_call(self, newcall: NewCall):
+    def add_incoming_call(self, newcall: NewCall) -> CreateCallResponse:
         log = self.get_calls(newcall.operator)
+        odoo_id = len(log.operator_calls) + 1
         log.operator_calls.append(
             Call(
-                id=len(log.operator_calls)+1,
+                id=odoo_id,
                  **newcall.model_dump()
             )
         )
         self._save_calls(newcall.operator, log)
+        return CreateCallResponse(
+            odoo_id = odoo_id,
+            **log.model_dump()
+        )
 

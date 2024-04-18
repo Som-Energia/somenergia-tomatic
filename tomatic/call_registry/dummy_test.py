@@ -24,16 +24,17 @@ class DummyTest(unittest.TestCase):
         """)
 
     def test__get_calls__after_adding_one__returns_it(self):
-        self.registry.add_incoming_call(NewCall(
+        response = self.registry.add_incoming_call(NewCall(
             operator = 'alice',
             call_timestamp = "2020-01-01T00:00:00.000Z",
             pbx_call_id = "2020-01-01T00:00:00.000Z-666555444-edade5",
             phone_number = "666555444",
         ))
+        odoo_id = response.odoo_id
         response = self.registry.get_calls('alice')
-        self.assertModelEqual(response, """
+        self.assertModelEqual(response, f"""
             operator_calls:
-            - id: 1
+            - id: {odoo_id}
               operator: alice
               call_timestamp: 2020-01-01T00:00:00.000Z
               pbx_call_id: 2020-01-01T00:00:00.000Z-666555444-edade5
@@ -75,22 +76,26 @@ class DummyTest(unittest.TestCase):
         """)
 
     def test__get_calls__after_adding_many__returns_them(self):
-        self.registry.add_incoming_call(NewCall(
+        response1 = self.registry.add_incoming_call(NewCall(
             operator = 'alice',
             call_timestamp = "2020-01-01T00:00:00.000Z",
             pbx_call_id = "2020-01-01T00:00:00.000Z-666555444-edade5",
             phone_number = "666555444",
         ))
-        self.registry.add_incoming_call(NewCall(
+        odoo_id1 = response1.odoo_id
+
+        response2 = self.registry.add_incoming_call(NewCall(
             operator = 'alice',
             call_timestamp = "2020-01-02T00:00:00.000Z",
             pbx_call_id = "2020-01-02T00:00:00.000Z-555444333-bababa",
             phone_number = "555444333",
         ))
+        odoo_id2 = response2.odoo_id
+
         response = self.registry.get_calls('alice')
-        self.assertModelEqual(response, """
+        self.assertModelEqual(response, f"""
             operator_calls:
-            - id: 1
+            - id: {odoo_id1}
               operator: alice
               call_timestamp: 2020-01-01T00:00:00.000Z
               pbx_call_id: 2020-01-01T00:00:00.000Z-666555444-edade5
@@ -103,7 +108,7 @@ class DummyTest(unittest.TestCase):
               contract_address: ''
               category_ids: []
               comments: ''
-            - id: 2
+            - id: {odoo_id2}
               operator: alice
               call_timestamp: 2020-01-02T00:00:00.000Z
               pbx_call_id: 2020-01-02T00:00:00.000Z-555444333-bababa
