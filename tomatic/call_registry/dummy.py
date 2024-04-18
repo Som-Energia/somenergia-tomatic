@@ -15,7 +15,10 @@ class CallRegistry():
         self.registry_path.mkdir(exist_ok=True)
 
     def get_calls(self, operator: str):
-        return CallLog(operator_calls=self.calls)
+        registry_file = self.registry_path / 'calls.yaml'
+        if not registry_file.exists():
+            return CallLog(operator_calls=[])
+        return CallLog(**ns.load(registry_file))
         
     def add_incoming_call(self, newcall: NewCall):
         self.calls.append(Call(id=1, **newcall.model_dump()))
