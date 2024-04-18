@@ -18,11 +18,11 @@ class CallRegistry():
             return CallLog(operator_calls=[])
         return CallLog(**ns.load(registry_file))
 
-    def _save_calls(self, operator, log: CallLog):
+    def _save_calls(self, operator, log: CallLog) -> None:
         registry_file = self.registry_path / 'calls.yaml'
         ns(log.model_dump()).dump(registry_file)
 
-    def get_calls(self, operator: str):
+    def get_calls(self, operator: str) -> CallLog:
         return self._load_calls(operator)
 
     def add_incoming_call(self, newcall: NewCall) -> CreateCallResponse:
