@@ -112,7 +112,7 @@ class DummyTest(unittest.TestCase):
         response = self.registry.get_calls('barbara')
         self.assertModelEqual(response, ns(operator_calls=[
             # alice call filltered out
-            self.full_call(odoo_id1, self.call_barbara),
+            self.full_call(odoo_id2, self.call_barbara),
         ]))
 
         response = self.registry.get_calls('carol')
@@ -120,6 +120,14 @@ class DummyTest(unittest.TestCase):
             # alice call filltered out
             # barbara call filltered out
         ]))
+
+    def test__get_calls__ids_are_unique_among_operators(self):
+        # Fixes bug: each operator had their own sequence
+        # so ids were not unique
+        odoo_id1 = self.register(self.call_alice1)
+        odoo_id2 = self.register(self.call_barbara)
+        self.assertNotEqual(odoo_id1, odoo_id2)
+
 
     def test__typify_call__modifies_existing_call(self):  self.skipTest("Not yet implemented")
     def test__typify_call__manual_call__creates_a_new_call(self):  self.skipTest("Not yet implemented")
