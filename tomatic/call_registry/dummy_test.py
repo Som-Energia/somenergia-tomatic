@@ -62,11 +62,12 @@ class DummyTest(unittest.TestCase):
     def assertModelEqual(self, model, expected):
         self.assertNsEqual(model.model_dump(), expected)
 
+
     def test__get_calls__when_no_call_registered__returns_empty(self):
         response = self.registry.get_calls('alice')
-        self.assertModelEqual(response, """
-            operator_calls: []
-        """)
+        self.assertModelEqual(response, ns(operator_calls=[
+            # No calls
+        ]))
 
     def test__get_calls__after_adding_one__returns_it(self):
         odoo_id = self.register(self.call_alice1)
