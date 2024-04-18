@@ -48,6 +48,32 @@ class DummyTest(unittest.TestCase):
               comments: ''
         """)
 
+    def test__get_calls__is_persistent_between_instances(self):
+        self.registry.add_incoming_call(NewCall(
+            operator = 'alice',
+            call_timestamp = "2020-01-01T00:00:00.000Z",
+            pbx_call_id = "2020-01-01T00:00:00.000Z-666555444-edade5",
+            phone_number = "666555444",
+        ))
+        other_registry = CallRegistry(self.path)
+        response = other_registry.get_calls('alice')
+        self.assertModelEqual(response, """
+            operator_calls:
+            - id: 1
+              operator: alice
+              call_timestamp: 2020-01-01T00:00:00.000Z
+              pbx_call_id: 2020-01-01T00:00:00.000Z-666555444-edade5
+              phone_number: "666555444"
+              caller_erp_id: null
+              caller_vat: ''
+              caller_name: ''
+              contract_erp_id: null
+              contract_number: ''
+              contract_address: ''
+              category_ids: []
+              comments: ''
+        """)
+
     def test__get_calls__after_adding_many__returns_them(self):
         self.registry.add_incoming_call(NewCall(
             operator = 'alice',
