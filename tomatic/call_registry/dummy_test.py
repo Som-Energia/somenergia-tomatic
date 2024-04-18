@@ -24,6 +24,13 @@ class DummyTest(unittest.TestCase):
         phone_number = "555444333",
     )
 
+    call_barbara = ns(
+        operator = 'barbara',
+        call_timestamp = "2020-01-03T00:00:00+00:00",
+        pbx_call_id = "2020-01-03T00:00:00+00:00-555444333-bababa",
+        phone_number = "444333222",
+    )
+
     default_fields = ns(
         caller_erp_id = None,
         caller_vat = '',
@@ -96,7 +103,29 @@ class DummyTest(unittest.TestCase):
             self.full_call(odoo_id2, self.call_alice2),
         ]))
 
-    def test__get_calls__other_operators_calls_not_listed(self): self.skipTest("Not yet implemented")
+    def test__get_calls__other_operators_calls_not_listed(self):
+        response1 = self.registry.add_incoming_call(
+            NewCall(**self.call_alice1),
+        )
+        odoo_id1 = response1.odoo_id
+
+        response2 = self.registry.add_incoming_call(
+            NewCall(**self.call_barbara),
+        )
+        odoo_id2 = response2.odoo_id
+
+        response = self.registry.get_calls('alice')
+        self.assertModelEqual(response, ns(operator_calls=[
+            self.full_call(odoo_id1, self.call_alice1),
+            # barbara call filltered out
+        ]))
+
+        response = self.registry.get_calls('barbara')
+        self.assertModelEqual(response, ns(operator_calls=[
+            # alice call filltered out
+            self.full_call(odoo_id1, self.call_barbara),
+        ]))
+
     def test__typify_call__modifies_existing_call(self):  self.skipTest("Not yet implemented")
     def test__typify_call__manual_call__creates_a_new_call(self):  self.skipTest("Not yet implemented")
 
