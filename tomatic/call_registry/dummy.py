@@ -1,6 +1,7 @@
 from .models import CallLog, Call, NewCall
 import datetime
 import pathlib
+from yamlns import ns
 
 class CallRegistry():
     """
@@ -18,3 +19,9 @@ class CallRegistry():
         
     def add_incoming_call(self, newcall: NewCall):
         self.calls.append(Call(id=1, **newcall.model_dump()))
+
+        registry_file = self.registry_path / 'calls.yaml'
+        updated_log = CallLog(operator_calls=[
+            Call(id=1, **newcall.model_dump())
+        ])
+        ns(updated_log.model_dump()).dump(registry_file)
