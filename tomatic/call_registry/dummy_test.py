@@ -53,30 +53,35 @@ class DummyTest(unittest.TestCase):
         )
         return response.odoo_id
 
+    def assertModelEqual(self, model, expected):
+        self.assertNsEqual(model.model_dump(), expected)
+
+    def assertCallList(self, response, expectedCalls):
+        self.assertModelEqual(response, ns(operator_calls=[
+            self.full_call(odoo_id, call)
+            for odoo_id, call in expectedCalls
+        ]))
+
     def setUp(self):
         self.maxDiff = None
         self.path = self.enterContext(temp_path())
         self.registry = CallRegistry(self.path)
         return super().setUp()
 
-    def assertModelEqual(self, model, expected):
-        self.assertNsEqual(model.model_dump(), expected)
-
-
     def test__get_calls__when_no_call_registered__returns_empty(self):
         response = self.registry.get_calls('alice')
-        self.assertModelEqual(response, ns(operator_calls=[
+        self.assertCallList(response, [
             # No calls
-        ]))
+        ])
 
     def test__get_calls__after_adding_one__returns_it(self):
         odoo_id = self.register(self.call_alice1)
 
         response = self.registry.get_calls('alice')
 
-        self.assertModelEqual(response, ns(operator_calls=[
-            self.full_call(odoo_id, self.call_alice1),
-        ]))
+        self.assertCallList(response,[ 
+            (odoo_id, self.call_alice1),
+        ])
 
     def test__get_calls__is_persistent_between_instances(self):
         odoo_id = self.register(self.call_alice1)
@@ -85,41 +90,41 @@ class DummyTest(unittest.TestCase):
         other_registry = CallRegistry(self.path)
         response = other_registry.get_calls('alice')
 
-        self.assertModelEqual(response, ns(operator_calls=[
-            self.full_call(odoo_id, self.call_alice1),
-        ]))
+        self.assertCallList(response, [
+            (odoo_id, self.call_alice1),
+        ])
 
     def test__get_calls__after_adding_many__returns_them(self):
         odoo_id1 = self.register(self.call_alice1)
         odoo_id2 = self.register(self.call_alice2)
 
         response = self.registry.get_calls('alice')
-        self.assertModelEqual(response, ns(operator_calls=[
-            self.full_call(odoo_id1, self.call_alice1),
-            self.full_call(odoo_id2, self.call_alice2),
-        ]))
+        self.assertCallList(response, [
+            (odoo_id1, self.call_alice1),
+            (odoo_id2, self.call_alice2),
+        ])
 
     def test__get_calls__other_operators_calls_not_listed(self):
         odoo_id1 = self.register(self.call_alice1)
         odoo_id2 = self.register(self.call_barbara)
 
         response = self.registry.get_calls('alice')
-        self.assertModelEqual(response, ns(operator_calls=[
-            self.full_call(odoo_id1, self.call_alice1),
+        self.assertCallList(response, [
+            (odoo_id1, self.call_alice1),
             # barbara call filltered out
-        ]))
+        ])
 
         response = self.registry.get_calls('barbara')
-        self.assertModelEqual(response, ns(operator_calls=[
+        self.assertCallList(response, [
             # alice call filltered out
-            self.full_call(odoo_id2, self.call_barbara),
-        ]))
+            (odoo_id2, self.call_barbara),
+        ])
 
         response = self.registry.get_calls('carol')
-        self.assertModelEqual(response, ns(operator_calls=[
+        self.assertCallList(response, [
             # alice call filltered out
             # barbara call filltered out
-        ]))
+        ])
 
     def test__get_calls__ids_are_unique_among_operators(self):
         # Fixes bug: each operator had their own sequence
