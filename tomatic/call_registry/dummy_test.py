@@ -68,6 +68,9 @@ class DummyTest(unittest.TestCase):
         self.registry = CallRegistry(self.path)
         return super().setUp()
 
+    def assertModelEqual(self, model, expected):
+        self.assertNsEqual(model.model_dump(), expected)
+
     def test__get_calls__when_no_call_registered__returns_empty(self):
         response = self.registry.get_calls('alice')
         self.assertCallList(response, [
@@ -133,8 +136,25 @@ class DummyTest(unittest.TestCase):
         odoo_id2 = self.register(self.call_barbara)
         self.assertNotEqual(odoo_id1, odoo_id2)
 
+    def test__typify_call__modifies_existing_call(self):
+        # given a new registered call
+        odoo_id1 = self.register(self.call_alice1)
+        # we choose the call to be modified
+        call_alice1 = self.registry.get_call('alice', odoo_id1)
+        # when we modify the value of a field
+        self.registry.modify_existing_call(
+            call_alice1, ns(comments = 'This is a new comment')
+        )
+        # then when we load the alice calls again
+        response = self.registry.get_calls('alice')
+        # we check in the call if the comment is being modified
+        self.assertModelEqual(response, ns(operator_calls=[
+            self.full_call(
+                odoo_id1, ns(**self.call_alice1, comments = 'This is a new comment')
+            ),
+        ]))
 
-    def test__typify_call__modifies_existing_call(self):  self.skipTest("Not yet implemented")
+
     def test__typify_call__manual_call__creates_a_new_call(self):  self.skipTest("Not yet implemented")
 
 

@@ -41,3 +41,18 @@ class CallRegistry():
             **log.model_dump()
         )
 
+    # TODO: test this
+    def get_call(self, operator: str, id: int):
+        log = self._load_calls(operator)
+        call = list(filter(lambda call: call.id == id, log.operator_calls))
+        return call[0]
+
+    def modify_existing_call(self, call, fields):
+        calls = self.get_calls(call.operator)
+
+        for index, operator_call in enumerate(calls.operator_calls):
+            if operator_call.id == call.id:
+                calls.operator_calls[index] = dict(operator_call, **fields)
+                break
+
+        self._save_calls(call.operator, calls)
