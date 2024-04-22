@@ -5,6 +5,25 @@ import CallInfo from '../../contexts/callinfo'
 
 export default function TypificationChooser({ typification, setTypification }) {
   const categories = CallInfo.categories.use()
+
+  function searchMatches(searchQuery, category) {
+    if (!searchQuery) return true
+    console.log({ searchQuery, category })
+    return searchQuery
+      .toLowerCase()
+      .split(' ')
+      .every((searchWord) => {
+        if (category.name.toLowerCase().includes(searchWord)) return true
+        return category.keywords.some((kw) =>
+          kw.toLowerCase().includes(searchWord),
+        )
+      })
+  }
+  function filterCategories(query, categories) {
+        const loweredSearch = query.toLowerCase()
+        return categories.filter((category) => searchMatches(loweredSearch, category))
+  }
+
   return (
     <Autocomplete
       multiple
@@ -18,6 +37,10 @@ export default function TypificationChooser({ typification, setTypification }) {
       getOptionDisabled={(x) => !x.enabled}
       getOptionKey={(x) => x.code}
       noOptionsText={'Cap categoria coincideix'}
+      filterOptions={(options, state) => {
+        const query = state.inputValue
+        return filterCategories(query, options)
+      }}
       renderInput={(params) => (
         <TextField
           {...params}
