@@ -21,8 +21,10 @@ export default function TypificationChooser({ typification, setTypification }) {
       })
   }
   function filterCategories(query, categories) {
-        const loweredSearch = query.toLowerCase()
-        return categories.filter((category) => searchMatches(loweredSearch, category))
+    const loweredSearch = query.toLowerCase()
+    return categories.filter((category) =>
+      searchMatches(loweredSearch, category),
+    )
   }
 
   return (
@@ -70,27 +72,26 @@ export default function TypificationChooser({ typification, setTypification }) {
       )}
       renderTags={(value, getTagProps) =>
         // Only for the color
-        value.map((option, index) => (
-          <Chip
-            sx={{
-              bgcolor: option.color,
-              color: (theme) =>
-                option.color && theme.palette.getContrastText(option.color),
-              '.MuiChip-deleteIcon': {
+        value.map((option, index) => {
+          const props = getTagProps({ index })
+          return (
+            <Chip
+              {...props}
+              sx={{
+                ...props.sx,
+                bgcolor: option.color,
                 color: (theme) =>
                   option.color && theme.palette.getContrastText(option.color),
-                opacity: 0.9,
-              },
-              '.MuiChip-deleteIcon': {
-                color: (theme) =>
-                  option.color && theme.palette.getContrastText(option.color),
-                opacity: 0.9,
-              },
-            }}
-            label={option.name}
-            {...getTagProps({ index })}
-          />
-        ))
+                '.MuiChip-deleteIcon': {
+                  color: (theme) =>
+                    option.color && theme.palette.getContrastText(option.color),
+                  opacity: 0.9,
+                },
+              }}
+              label={option.name}
+            />
+          )
+        })
       }
     />
   )
