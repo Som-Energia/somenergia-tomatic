@@ -9,7 +9,7 @@ def CallRegistry():
     backend = os.environ.get('TOMATIC_CALL_REGISTRY', 'dummy')
 
     if backend == 'dummy':
-        data_path = os.environ.get('TOMATIC_DATA_PATH', None)
+        data_path = os.environ.get('TOMATIC_DATA_PATH', 'data')
         return dummy.CallRegistry(data_path)
 
     # TODO: Proper exception

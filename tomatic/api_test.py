@@ -225,7 +225,7 @@ class Api_Test(unittest.TestCase):
         calls = registry.get_calls('vic')
         self.assertEqual(len(calls.operator_calls), 1)
 
-    def test__callinfo_categories(self):
+    def test__call_categories(self):
         (self.data_path / "call_registry").mkdir()
         (self.data_path / "call_registry" / "categories.yaml").write_text("""
         categories:
