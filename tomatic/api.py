@@ -521,8 +521,9 @@ async def callAnnotate(request: Request, user = Depends(validatedUser)):
 
 @app.get('/api/call/categories')
 def annotationCategories(user = Depends(validatedUser)):
-    categories = CallRegistry().annotationCategories()
-    return yamlfy(**categories)
+    from .call_registry import CallRegistry as NewCallRegistry
+    categories = NewCallRegistry().categories()
+    return yamlfy(**categories.model_dump())
 
 @app.get('/api/call/categories/update')
 def updateClaimTypes(user = Depends(validatedUser)):

@@ -225,6 +225,28 @@ class Api_Test(unittest.TestCase):
         calls = registry.get_calls('vic')
         self.assertEqual(len(calls.operator_calls), 1)
 
+    def test__callinfo_categories(self):
+        (self.data_path / "call_registry").mkdir()
+        (self.data_path / "call_registry" / "categories.yaml").write_text("""
+        categories:
+        - id: 1
+          name: Category with all fields
+          code: mycategory
+          keywords: ["akeyword"]
+          color: "#eeaaee"
+        """)
+
+        response = self.client.get('/api/call/categories')
+
+        self.assertResponseEqual(response, """
+        categories:
+        - id: 1
+          name: Category with all fields
+          code: mycategory
+          keywords: ["akeyword"]
+          color: "#eeaaee"
+          enabled: true
+        """)
 
 if __name__ == "__main__":
 
