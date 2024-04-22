@@ -1,4 +1,4 @@
-from .models import CallLog, Call, NewCall, CreateCallResponse
+from .models import CallLog, Call, NewCall, CreateCallResponse, Categories
 import datetime
 import pathlib
 import random
@@ -56,3 +56,9 @@ class CallRegistry():
                 break
 
         self._save_calls(call.operator, calls)
+
+    def categories(self) -> Categories:
+        category_file = self.registry_path / f'categories.yaml'
+        if not category_file.exists():
+            return Categories(categories=[])
+        return Categories(**ns.load(category_file))

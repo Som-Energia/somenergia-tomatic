@@ -68,8 +68,53 @@ class DummyTest(unittest.TestCase):
         self.registry = CallRegistry(self.path)
         return super().setUp()
 
-    def assertModelEqual(self, model, expected):
-        self.assertNsEqual(model.model_dump(), expected)
+    # Categories
+
+    def test__categories__when_none_available_empty_list(self):
+        response = self.registry.categories()
+        self.assertModelEqual(response, ns(categories=[
+        ]))
+
+    def test__categories__full_category(self):
+        (self.path / "call_registry" / "categories.yaml").write_text("""
+        categories:
+        - id: 1
+          name: Category with all fields
+          code: mycategory
+          keywords: ["akeyword"]
+          color: "#eeaaee"
+          enabled: false
+        """)
+        response = self.registry.categories()
+        self.assertModelEqual(response, """
+        categories:
+        - id: 1
+          name: Category with all fields
+          code: mycategory
+          keywords: ["akeyword"]
+          color: "#eeaaee"
+          enabled: false
+        """)
+
+    def test__categories__default_fields_are_filled(self):
+        (self.path / "call_registry" / "categories.yaml").write_text("""
+        categories:
+        - id: 1
+          name: Category just with mandatory fields
+          code: mycategory
+        """)
+        response = self.registry.categories()
+        self.assertModelEqual(response, """
+        categories:
+        - id: 1
+          name: Category just with mandatory fields
+          code: mycategory
+          keywords: []
+          color: null
+          enabled: true
+        """)
+
+    # Registering incomming calls
 
     def test__get_calls__when_no_call_registered__returns_empty(self):
         response = self.registry.get_calls('alice')
@@ -135,6 +180,8 @@ class DummyTest(unittest.TestCase):
         odoo_id1 = self.register(self.call_alice1)
         odoo_id2 = self.register(self.call_barbara)
         self.assertNotEqual(odoo_id1, odoo_id2)
+
+    # Call typification
 
     def test__typify_call__modifies_existing_call(self):
         # given a new registered call
