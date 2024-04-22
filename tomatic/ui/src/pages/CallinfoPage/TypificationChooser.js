@@ -51,6 +51,23 @@ export default function TypificationChooser({ typification, setTypification }) {
           helperText={'Desplega per veure les opcions o escriu per filtrar-les'}
         />
       )}
+      renderOption={(props, option, state, ownerSate) => (
+        <Box
+          element={<li />}
+          {...props}
+          sx={{
+            ...props.sx,
+            bgcolor: option.color,
+            color: (theme) =>
+              option.color && theme.palette.getContrastText(option.color),
+            ':hover': {
+              color: 'inherit',
+            },
+          }}
+        >
+          {option.name}
+        </Box>
+      )}
       renderTags={(value, getTagProps) =>
         // Only for the color
         value.map((option, index) => (
