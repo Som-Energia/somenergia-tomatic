@@ -311,8 +311,8 @@ CallInfo.retrieveCategories = function () {
 
         if (!response) return
         // TODO: Take them from the API
-        //CallInfo.categories(response.categories)
-        CallInfo.categories(dummy_categories.categories)
+        CallInfo.categories(response.categories)
+        //CallInfo.categories(dummy_categories.categories)
       },
       function (error) {
         console.debug('Info GET apicall failed: ', error)

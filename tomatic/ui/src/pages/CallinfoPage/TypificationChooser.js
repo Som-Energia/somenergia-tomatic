@@ -12,9 +12,12 @@ export default function TypificationChooser({ typification, setTypification }) {
       filterSelectedOptions
       value={typification}
       onChange={(ev, value) => {
-        console.log({ value })
         setTypification(value)
       }}
+      getOptionLabel={(x) => x.name}
+      getOptionDisabled={(x) => !x.enabled}
+      getOptionKey={(x) => x.code}
+      noOptionsText={'Cap categoria coincideix'}
       renderInput={(params) => (
         <TextField
           {...params}
