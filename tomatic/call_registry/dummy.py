@@ -9,9 +9,9 @@ class CallRegistry():
     Dummy implementation for call registry using local files.
     """
 
-    def __init__(self, path: pathlib.Path):
-        self.registry_path = path/"call_registry"
-        self.registry_path.mkdir(exist_ok=True)
+    def __init__(self, path: pathlib.Path = 'data'):
+        self.registry_path = pathlib.Path(path) / "call_registry"
+        self.registry_path.mkdir(exist_ok=True, parents=True)
 
     def _load_calls(self, operator) -> CallLog:
         registry_file = self.registry_path / f'{operator}.yaml'

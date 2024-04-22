@@ -8,11 +8,13 @@ import json
 from pathlib import Path
 
 from yamlns import namespace as ns
-from . import api
 from fastapi.testclient import TestClient
+from somutils.testutils import temp_path
+from . import api
 from .auth import validatedUser
 from . import persons
-
+from .testutils import environ
+from .call_registry.dummy import CallRegistry
 
 def setNow(year,month,day,hour,minute):
     api.now=lambda:datetime(year,month,day,hour,minute)
@@ -21,9 +23,13 @@ def setNow(year,month,day,hour,minute):
 @patch.dict('os.environ', TOMATIC_AUTH_DUMMY='vic')
 class Api_Test(unittest.TestCase):
     from yamlns.testutils import assertNsEqual
+    from somutils.testutils import enterContext
 
     def setUp(self):
         self.maxDiff = None
+        self.data_path = self.enterContext(temp_path())
+        self.enterContext(environ("TOMATIC_CALL_REGISTRY", 'dummy'))
+        self.enterContext(environ("TOMATIC_DATA_PATH", str(self.data_path)))
         self.client = TestClient(api.app)
         api.app.dependency_overrides[validatedUser] = (
             lambda: dict(username='vic', email='me@here.coop')
@@ -171,6 +177,30 @@ class Api_Test(unittest.TestCase):
         self.assertResponseEqual(response, """
             error: Hi ha masses Ningu en aquest torn
         """, 400)
+
+
+    def test__callinfo_ringring__post(self):
+        Path(self.data_path/'persons.yaml').write_text("""\
+            extensions:
+              vic: "200"
+            """)
+        persons.persons(self.data_path/'persons.yaml')
+
+        response = self.client.post(
+            '/api/info/ringring',
+            data=dict(
+                ext="200",
+                phone="567567567",
+                callid="",
+            )
+        )
+        self.assertResponseEqual(response, """
+            result: ok
+        """)
+
+        registry = CallRegistry(self.data_path)
+        calls = registry.get_calls('vic')
+        self.assertEqual(len(calls.operator_calls), 1)
 
 
 if __name__ == "__main__":

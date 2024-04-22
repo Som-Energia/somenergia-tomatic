@@ -33,6 +33,7 @@ from consolemsg import error, step, warn, u
 from . import __version__ as version
 from . import callinfo
 from .callregistry import CallRegistry
+from .call_registry.models import NewCall
 from . import schedulestorage
 from . import schedulestorageforcedturns
 from .pbx import pbxqueue as pbx
@@ -438,22 +439,33 @@ async def getContractDetails(request: Request, user = Depends(validatedUser)):
 
 
 @app.get('/api/info/ringring')
-async def callingPhone(phone: str, extension: str):
-    return await notifyIncommingCall(phone, extension)
+async def callingPhone(
+    phone: str,
+    extension: str,
+    callid: str = None,
+):
+    return await notifyIncommingCall(phone, extension, callid)
 
 @app.post('/api/info/ringring')
-async def callingPhonePost(phone: str = Form(...), ext: str = Form(...)):
-    return await notifyIncommingCall(phone, ext)
+async def callingPhonePost(
+    phone: str = Form(...),
+    ext: str = Form(...),
+    callid: str = Form(None)
+):
+    return await notifyIncommingCall(phone, ext, callid)
 
 def cleanupPhone(phone):
     phone = re.sub('[^0-9]', '', phone) # remove non digits
     phone = re.sub(r'^0?0?34','', phone) # remove prefixes
     return phone
 
-async def notifyIncommingCall(phone: str, extension: str):
+async def notifyIncommingCall(phone: str, extension: str, callid: str = None):
     time = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
     user = persons.byExtension(extension)
     phone = cleanupPhone(phone)
+    pbx_call_id = callid or f"{time}-{phone}"
+
+    # TODO: cleanup old call registration
     CallRegistry().annotateCall(ns(
         user = user,
         date = time,
@@ -462,6 +474,17 @@ async def notifyIncommingCall(phone: str, extension: str):
         contract = '',
         reason = '',
     ))
+
+    from .call_registry import CallRegistry as NewCallRegistry
+    NewCallRegistry().add_incoming_call(
+        NewCall(
+            operator=user,
+            call_timestamp=time,
+            phone_number=phone,
+            pbx_call_id=pbx_call_id,
+        )
+    )
+
     notifications = backchannel.notifyIncommingCall(user, phone, time)
     if not notifications:
         warn(
