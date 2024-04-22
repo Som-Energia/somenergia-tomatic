@@ -8,15 +8,23 @@ VatNumber = Annotated[
     pydantic.AfterValidator(stdnum.eu.vat.validate),
 ]   
 
+RgbColor = pydantic.constr(
+    pattern="^#([a-fA-F0-9]{3}){1,2}$",
+    to_lower=True,
+    strip_whitespace=True,
+)
+
+
 class Category(
     pydantic.BaseModel,
-    extra='allow', # to allow description_ln
+    # TODO: to allow description_ln, but we should got ride of them
+    extra='allow',
 ):
     id: int
     name: str
     code: str
     keywords: list[str] = []
-    color: Optional[Color] = None
+    color: Optional[RgbColor] = None
     enabled: bool = True
 
 class Categories(pydantic.BaseModel):
