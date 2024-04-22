@@ -202,6 +202,29 @@ class Api_Test(unittest.TestCase):
         calls = registry.get_calls('vic')
         self.assertEqual(len(calls.operator_calls), 1)
 
+    def test__callinfo_ringring__get(self):
+        Path(self.data_path/'persons.yaml').write_text("""\
+            extensions:
+              vic: "200"
+            """)
+        persons.persons(self.data_path/'persons.yaml')
+
+        response = self.client.get(
+            '/api/info/ringring',
+            params=dict( # by query params
+                extension="200", # This name diverges from post
+                phone="567567567",
+                callid="",
+            )
+        )
+        self.assertResponseEqual(response, """
+            result: ok
+        """)
+
+        registry = CallRegistry(self.data_path)
+        calls = registry.get_calls('vic')
+        self.assertEqual(len(calls.operator_calls), 1)
+
 
 if __name__ == "__main__":
 
