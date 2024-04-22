@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+- Odoo based Call Registry for typifications
+- New typification format:
+    - Multiple categories can be applied to a call
+    - Comments are not mandatory
+    - Contract and Person info is stored (erp id, code and description)
+    - Removed all the claim stuff by now
+    - Categories have colors and can be disabled for new calls (but visible in already typified calls)
+- Upgrade notes:
+    - FastAPI version upgraded to avoid warning messages
+    - New envvar `TOMATIC_CALL_REGISTRY` to override call registry backend
+    - New envvar `TOMATIC_DATA_PATH` to override data path (just works for the callregistry)
+
+
 ## 5.7.1 2024-04-15
 
 - Fix: removed trailing slash in tomatic/says endpoint
