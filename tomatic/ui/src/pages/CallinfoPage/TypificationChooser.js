@@ -1,4 +1,5 @@
 import React from 'react'
+import Chip from '@mui/material/Chip'
 import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
 import CallInfo from '../../contexts/callinfo'
@@ -50,6 +51,30 @@ export default function TypificationChooser({ typification, setTypification }) {
           helperText={'Desplega per veure les opcions o escriu per filtrar-les'}
         />
       )}
+      renderTags={(value, getTagProps) =>
+        // Only for the color
+        value.map((option, index) => (
+          <Chip
+            sx={{
+              bgcolor: option.color,
+              color: (theme) =>
+                option.color && theme.palette.getContrastText(option.color),
+              '.MuiChip-deleteIcon': {
+                color: (theme) =>
+                  option.color && theme.palette.getContrastText(option.color),
+                opacity: 0.9,
+              },
+              '.MuiChip-deleteIcon': {
+                color: (theme) =>
+                  option.color && theme.palette.getContrastText(option.color),
+                opacity: 0.9,
+              },
+            }}
+            label={option.name}
+            {...getTagProps({ index })}
+          />
+        ))
+      }
     />
   )
 }
