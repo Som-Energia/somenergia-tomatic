@@ -1,18 +1,15 @@
 from json import dumps
 from httplib2 import Http
 from consolemsg import out
-
+import requests
 
 def send(channel, message):
     """Hangouts Chat incoming webhook quickstart."""
-    bot_message = {'text' : message}
-    message_headers = {'Content-Type': 'application/json; charset=UTF-8'}
-
-    http_obj = Http()
-    
-    http_obj.request(
-        uri=channel,
-        method='POST',
-        headers=message_headers,
-        body=dumps(bot_message),
+    response = requests.post(
+        channel,
+        json = {
+            'text' : message,
+        },
     )
+    print(response.text)
+    response.raise_for_status()
