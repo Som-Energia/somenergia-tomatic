@@ -35,6 +35,10 @@ class Api_Test(unittest.TestCase):
             lambda: dict(username='vic', email='me@here.coop')
         )
 
+    def setupPersons(self, content):
+        persons.persons(self.data_path/'persons.yaml')
+        Path(self.data_path/'persons.yaml').write_text(content)
+
     def tearDown(self):
         del api.app.dependency_overrides[validatedUser]
 
@@ -61,15 +65,14 @@ class Api_Test(unittest.TestCase):
         )
 
     def test_persons_delete_whenNotAdmin(self):
-        persons.persons("p.yaml")
-        Path('p.yaml').write_text(u"""\
+        self.setupPersons(u"""\
             emails:
               vic: me@here.coop
               superwoman: kara.danvers@kripton.space
             groups:
               admin:
               - superwoman
-            """)
+        """)
         response = self.client.delete(
             '/api/person/superwoman',
         )
@@ -78,15 +81,14 @@ class Api_Test(unittest.TestCase):
         """, 403)
 
     def test_persons_delete_whenAdmin(self):
-        persons.persons("p.yaml")
-        Path('p.yaml').write_text(u"""\
+        self.setupPersons("""\
             emails:
               vic: me@here.coop
               kara: kara.danvers@kripton.space
             groups:
               admin:
               - vic
-            """)
+        """)
         response = self.client.delete(
             '/api/person/kara',
         )
@@ -180,11 +182,10 @@ class Api_Test(unittest.TestCase):
 
 
     def test__callinfo_ringring__post(self):
-        Path(self.data_path/'persons.yaml').write_text("""\
+        self.setupPersons("""\
             extensions:
               vic: "200"
-            """)
-        persons.persons(self.data_path/'persons.yaml')
+        """)
 
         response = self.client.post(
             '/api/info/ringring',
@@ -203,11 +204,10 @@ class Api_Test(unittest.TestCase):
         self.assertEqual(len(calls.operator_calls), 1)
 
     def test__callinfo_ringring__get(self):
-        Path(self.data_path/'persons.yaml').write_text("""\
+        self.setupPersons("""\
             extensions:
               vic: "200"
-            """)
-        persons.persons(self.data_path/'persons.yaml')
+        """)
 
         response = self.client.get(
             '/api/info/ringring',
@@ -255,11 +255,10 @@ class Api_Test(unittest.TestCase):
         """)
 
     def test__call_log__with_calls(self):
-        Path(self.data_path/'persons.yaml').write_text("""\
+        self.setupPersons("""\
             extensions:
               vic: "200"
-            """)
-        persons.persons(self.data_path/'persons.yaml')
+        """)
         response = self.client.get(
             '/api/info/ringring',
             params=dict( # by query params
