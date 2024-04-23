@@ -71,7 +71,6 @@ setup(
         'python-multipart', # formdata in fastapi
         'uvicorn[standard]', # server for fastapi (standard for websockets)
         'aiofiles', # Static files for fastapi
-        'hangups',
         'elasticsearch<8', # 8 version is incompatible with irontec server
         'ics<0.8', # icalendar generation. 0.8 changes interface and not yet available in all Pythons
         'itsdangerous', # auth
