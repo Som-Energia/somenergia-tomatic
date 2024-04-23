@@ -1,5 +1,4 @@
 from .models import CallLog, Call, NewCall, UpdatedCallLog, Categories
-import dbconfig as configdb
 import erppeek
 
 """
@@ -42,6 +41,7 @@ Detected issues
 class CallRegistry():
 
     def __init__(self):
+        import dbconfig as configdb
         self.erp = erppeek.Client(**configdb.tomatic.holidaysodoo)
 
     def _fix_categories(self, categories):
