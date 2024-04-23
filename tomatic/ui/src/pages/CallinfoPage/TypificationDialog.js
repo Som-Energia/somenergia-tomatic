@@ -49,7 +49,7 @@ export default function TypificationDialog({ onClose }) {
     })
     onClose()
   }
-  const isValid = !!comment && typification.length !== 0
+  const isValid = typification.length !== 0
 
   return (
     <>
