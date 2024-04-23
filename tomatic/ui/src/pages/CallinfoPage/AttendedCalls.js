@@ -80,29 +80,30 @@ function AnnotationButton() {
 }
 
 function FormatedCall({ info }) {
-  var time = new Date(info.date).toLocaleTimeString()
+  const time = new Date(info.call_timestamp).toLocaleTimeString()
+  const solved = info.category_ids.length !== 0
   return (
     <>
       <span className="time">{time}</span>
       &nbsp;
       <span className="phone">
-        {info.phone ? info.phone : 'Registre Manual'}
+        {info.phone_number ? info.phone_number : 'Registre Manual'}
       </span>
       &nbsp;&nbsp;
-      {info.reason && (
+      {solved && (
         <span className="partner" title="Persona Atesa">
-          {info.partner ? info.partner : 'Sense informació'}
+          {info.caller_vat ? info.caller_vat : 'Sense informació'}
         </span>
       )}
-      {info.reason && info.contract && (
+      {solved && info.contract_number && (
         <>
           &nbsp;
           <span className="contract" title="Contracte">
-            {info.contract}
+            {info.contract_number}
           </span>
         </>
       )}
-      {!info.reason ? (
+      {!solved ? (
         <span className="pending">{"Pendent d'anotar"}</span>
       ) : (
         ''
@@ -113,15 +114,15 @@ function FormatedCall({ info }) {
 
 function CallEntry({ item, disabled }) {
   const currentCall = useSubscriptable(CallInfo.currentCall)
-  const isSelected = item.date === currentCall
-  const solved = item.reason !== ''
+  const isSelected = item.call_timestamp === currentCall
+  const solved = item.category_ids.length !== 0
   const itemClicked = function (ev) {
-    if (item.reason !== '') return
-    CallInfo.toggleLog(item.date, item.phone)
+    if (solved) return
+    CallInfo.toggleLog(item.call_timestamp, item.phone_number)
   }
   return (
     <ListItem
-      key={item.date}
+      key={item.call_timestamp}
       className={'registres' + (isSelected ? ' selected' : '')}
       selected={isSelected}
       disabled={disabled}
@@ -139,10 +140,10 @@ function CallEntry({ item, disabled }) {
               overflow: 'hidden',
             }}
           >
-            {item.reason}
+            {item.category_ids[0]?.name}
           </span>
         }
-        title={item.reason}
+        title={item.comments}
       />
     </ListItem>
   )
@@ -181,8 +182,8 @@ function AttendedCallList() {
           .reverse()
           .map(function (item, index) {
             var needsDate = false
-            var itemDate = new Date(item.date).toLocaleDateString()
-            var itemWeekDay = new Date(item.date).toLocaleDateString(
+            var itemDate = new Date(item.call_timestamp).toLocaleDateString()
+            var itemWeekDay = new Date(item.call_timestamp).toLocaleDateString(
               undefined,
               {
                 weekday: 'long',
@@ -193,7 +194,7 @@ function AttendedCallList() {
               needsDate = true
             }
             return (
-              <React.Fragment key={item.date}>
+              <React.Fragment key={item.call_timestamp}>
                 {needsDate && (
                   <ListSubheader className="registres dateseparator">
                     {itemWeekDay + ' ' + itemDate}

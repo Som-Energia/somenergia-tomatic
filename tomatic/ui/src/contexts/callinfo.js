@@ -357,20 +357,12 @@ CallInfo.retrievePersonCalls = function () {
   CallInfo.personCalls(undefined) // Loading
   api
     .request({
-      url: '/api/personlog/' + username,
+      url: '/api/call/log',
     })
     .then(
       function (response) {
         console.debug('Info GET Response: ', response)
-        if (response.info.message !== 'ok') {
-          console.debug(
-            'Error al obtenir trucades ateses.',
-            response.info.message,
-          )
-          CallInfo.personCalls([])
-        } else {
-          CallInfo.personCalls(response.info.info)
-        }
+        CallInfo.personCalls(response.operator_calls)
       },
       function (error) {
         CallInfo.personCalls([])
