@@ -72,7 +72,8 @@ def main():
 
     # TODO: odoo should return the categories key when not filtering
     # TODO: The optional parameter cannot be passed keyword
-    categories = Categories(**erp.CrmPhonecall.get_phonecall_categories(True))
+    include_disabled = True
+    categories = Categories(**erp.CrmPhonecall.get_phonecall_categories(include_disabled))
     print(ns(categories.model_dump(mode='json')).dump())
 
     # TODO: null caller_erp_id shoulbe None, not False
@@ -85,7 +86,6 @@ def main():
                 pbx_call_id='pbx_id',
                 call_timestamp=datetime.datetime.now(tz=datetime.timezone.utc),
             ).model_dump(mode='json'),
-            True
         )
     )
     print(ns(response).dump())
@@ -93,7 +93,7 @@ def main():
     response = ( #CreateCallResponse(**
         erp.CrmPhonecall.update_call_and_get_operator_calls(
             Call(
-                id=3, # TODO: odoo expects odoo_id, let's make them equal
+                id=1, # TODO: odoo expects odoo_id, let's make them equal
                 operator='operadora01',
                 pbx_call_id='pbx_id',
                 call_timestamp=datetime.datetime.now(tz=datetime.timezone.utc),
@@ -101,6 +101,39 @@ def main():
         )
     )
     print(ns(response).dump())
+
+"""
+Detected issues
+
+- Calls
+    - Missing entry point for just obtaining the call list (no create, no update)
+    - Not sure if we finnally can use the call list returned when updating or creating
+        - Let's keep it, to see if we can still use it but if we don't it eventually, would be optimal to remove it
+    - Missing caller_vat field in the returned call list
+    - call.id vs call.odooo_id
+        - create_call_and_get_operator_calls returns call.id
+        - update_call_and_get_operator_calls expects call.odoo_id
+        - we are using id but could change it
+    - Los ids no seteados tendrian que ser None
+        - caller_erp_id es False
+        - contract_erp_id es ''
+- Categories
+    - name_l1, name_l2...
+        - not in the specs, we do not need or use it
+        - the number layers could be subject to change, so building the attribute name
+        - Because of that if we do not remove it, it is better an array
+        - 'name' already taken so: levels, hierarchy... ??
+        - Anyway no in the spec, forces us to add it or to allow any which is unsafe
+    - category.enabled -> disabled
+        - in the document, 'disabled', odoo dummy 'enabled'
+        - We addapted to 'enabled' but 'disabled' could be more practical
+        - 'disabled' as default is enabled, it could have more igual que en html, cuando no esta present es false
+    - To discuss: is category.code required, already having category.id
+        - One use left for category_code is being a short for display, but too cryptic "SC_FA_GE"
+    - Pointless boolean parameter in get_phonecall_categories
+        - We won't need a listing without disabled entries (disabled means taggable, but still displayable for old entries)
+        - Without defaults and keywords is hard to document what the 'True' means (above we use a temp)
+"""
 
 
 if __name__ == '__main__':
