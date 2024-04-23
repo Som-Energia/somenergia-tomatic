@@ -52,19 +52,16 @@ setup(
         'tomato-cooker>=0.4.0', # api changed
         'yamlns',
         'consolemsg',
-        'parse',
-        'jsmin',
         'py-Asterisk',
         'paramiko',
         'python-slugify',
         'deansi',
         #'ooop==0.2.2-xt',
-        'PyMySQL',
         'click',
         'decorator',
         'requests',
         'ERPpeek',
-        'psutil',
+        'psutil', # execution
         'pony',
         'emili',
         'fastapi',
@@ -77,8 +74,6 @@ setup(
         'authlib<1.0', # auth
         'httpx<1', # auth, 1.0 changes API, incompatible with fastapi 0.95.0 and earlier
         'python-jose[cryptography]', # auth
-        'charset-normalizer<3', # request and httpio complains once 3.x is out
-        'httplib2', # Google chat code
         'pandas',
         'matplotlib',
         'typer',
@@ -89,7 +84,6 @@ setup(
         'pytest',
         'coverage',
         'b2btest',
-        'lxml',
         'erppeek',
         'ERPPeek-WST',
         'mock',

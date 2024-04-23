@@ -41,6 +41,9 @@ b2b-test:
 ui-style:
 	./node_modules/.bin/prettier -w tomatic/ui
 
+clean:
+	rm -rf node_modules .venv tomatic/dist 
+
 
 define HELP
     - make dev-ui\t\tStart frontend for development
