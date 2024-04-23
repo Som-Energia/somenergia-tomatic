@@ -108,6 +108,9 @@ tomatic=ns(
     # How long automated timetable planner launch should
     # wait for a good solution, in minutes
     plannerGraceTime = 2*60,
+    # Call registry backend: dummy (default) or odoo
+    # overrided by env TOMATIC_CALL_REGISTRY
+    callregistry='odoo',
 )
 # Used to send mails
 smtp = ns(

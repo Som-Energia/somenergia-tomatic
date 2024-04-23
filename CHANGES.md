@@ -10,6 +10,7 @@
     - Removed all the claim stuff by now
     - Categories have colors and can be disabled for new calls (but visible in already typified calls)
 - Upgrade notes:
+    - New dbconfig tomatic.callregistry (dummy or odoo)
     - FastAPI version upgraded to avoid warning messages
     - New envvar `TOMATIC_CALL_REGISTRY` to override call registry backend
     - New envvar `TOMATIC_DATA_PATH` to override data path (just works for the callregistry)
