@@ -248,6 +248,13 @@ class Api_Test(unittest.TestCase):
           enabled: true
         """)
 
+    def test__call_log__when_empty(self):
+        response = self.client.get('/api/call/log')
+        self.assertResponseEqual(response, """
+        operator_calls: []
+        """)
+
+
 if __name__ == "__main__":
 
     import sys

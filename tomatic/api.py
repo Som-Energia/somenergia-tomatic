@@ -493,7 +493,7 @@ async def notifyIncommingCall(phone: str, extension: str, callid: str = None):
     await asyncio.gather(*notifications)
     return yamlfy(result='ok')
 
-
+# TODO: delete me, please
 @app.get('/api/personlog')
 @app.get('/api/personlog/{user}')
 def getCallLog(user=None, validatedUser = Depends(validatedUser)):
@@ -505,6 +505,12 @@ def getCallLog(user=None, validatedUser = Depends(validatedUser)):
         )
     )
 
+@app.get('/api/call/log')
+@app.get('/api/call/log/{user}')
+def getCallLog(user=None, validatedUser = Depends(validatedUser)):
+    from .call_registry import CallRegistry as NewCallRegistry
+    calls = NewCallRegistry().get_calls(operator=user or validatedUser)
+    return yamlfy(**calls.model_dump())
 
 @app.post('/api/call/annotate')
 async def callAnnotate(request: Request, user = Depends(validatedUser)):
