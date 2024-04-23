@@ -12,6 +12,12 @@ class CallRegistry():
         self.registry_path = pathlib.Path(path) / "call_registry"
         self.registry_path.mkdir(exist_ok=True, parents=True)
 
+    def categories(self) -> Categories:
+        category_file = self.registry_path / f'categories.yaml'
+        if not category_file.exists():
+            return Categories(categories=[])
+        return Categories(**ns.load(category_file))
+
     def _load_calls(self, operator) -> CallLog:
         registry_file = self.registry_path / f'calls-{operator}.yaml'
         if not registry_file.exists():
@@ -56,8 +62,3 @@ class CallRegistry():
 
         self._save_calls(call.operator, calls)
 
-    def categories(self) -> Categories:
-        category_file = self.registry_path / f'categories.yaml'
-        if not category_file.exists():
-            return Categories(categories=[])
-        return Categories(**ns.load(category_file))
