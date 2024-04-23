@@ -1,5 +1,4 @@
 from json import dumps
-from httplib2 import Http
 from consolemsg import out
 import requests
 
