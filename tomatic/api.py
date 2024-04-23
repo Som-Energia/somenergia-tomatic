@@ -509,7 +509,7 @@ def getCallLog(user=None, validatedUser = Depends(validatedUser)):
 @app.get('/api/call/log/{user}')
 def getCallLog(user=None, validatedUser = Depends(validatedUser)):
     from .call_registry import CallRegistry as NewCallRegistry
-    calls = NewCallRegistry().get_calls(operator=user or validatedUser)
+    calls = NewCallRegistry().get_calls(operator=user or validatedUser.get('username'))
     return yamlfy(**calls.model_dump())
 
 @app.post('/api/call/annotate')

@@ -254,6 +254,44 @@ class Api_Test(unittest.TestCase):
         operator_calls: []
         """)
 
+    def test__call_log__with_calls(self):
+        Path(self.data_path/'persons.yaml').write_text("""\
+            extensions:
+              vic: "200"
+            """)
+        persons.persons(self.data_path/'persons.yaml')
+        response = self.client.get(
+            '/api/info/ringring',
+            params=dict( # by query params
+                extension="200", # This name diverges from post
+                phone="567567567",
+                callid="",
+            )
+        )
+
+        response = self.client.get('/api/call/log')
+
+        data = ns.loads(response.text)
+        calls = data.get("operator_calls", [])
+        id = calls[0].get('id', "ID not informed")
+        call_timestamp = calls[0].get('call_timestamp', "call_timestamp not informed")
+        pbx_call_id = calls[0].get('pbx_call_id', "pbx_call_id not informed")
+        self.assertResponseEqual(response, f"""
+        operator_calls:
+        - call_timestamp: {call_timestamp}
+          caller_erp_id: null
+          caller_name: ''
+          caller_vat: ''
+          category_ids: []
+          comments: ''
+          contract_address: ''
+          contract_erp_id: null
+          contract_number: ''
+          id: {id}
+          operator: vic
+          pbx_call_id: {pbx_call_id}
+          phone_number: '567567567'
+        """)
 
 if __name__ == "__main__":
 
