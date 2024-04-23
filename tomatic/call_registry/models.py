@@ -1,5 +1,4 @@
 import pydantic
-from pydantic_extra_types.color import Color
 from typing import Literal, Annotated, Optional, Union
 import stdnum.eu.vat
 
