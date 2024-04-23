@@ -113,6 +113,7 @@ function FormatedCall({ info }) {
 }
 
 function CallEntry({ item, disabled }) {
+  const categories = CallInfo.categories.use()
   const currentCall = useSubscriptable(CallInfo.currentCall)
   const isSelected = item.call_timestamp === currentCall
   const solved = item.category_ids.length !== 0
@@ -120,6 +121,7 @@ function CallEntry({ item, disabled }) {
     if (solved) return
     CallInfo.toggleLog(item.call_timestamp, item.phone_number)
   }
+  const filtered_categories = categories.filter(({id}) => item.category_ids.includes(id))
   return (
     <ListItem
       key={item.call_timestamp}
@@ -140,7 +142,9 @@ function CallEntry({ item, disabled }) {
               overflow: 'hidden',
             }}
           >
-            {item.category_ids[0]?.name}
+            {filtered_categories.map((category) => (
+                <div>{category.code}</div>
+            ))}
           </span>
         }
         title={item.comments}
