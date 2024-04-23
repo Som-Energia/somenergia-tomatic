@@ -228,30 +228,30 @@ class Api_Test(unittest.TestCase):
     def test__call_categories(self):
         (self.data_path / "call_registry").mkdir()
         (self.data_path / "call_registry" / "categories.yaml").write_text("""
-        categories:
-        - id: 1
-          name: Category with all fields
-          code: mycategory
-          keywords: ["akeyword"]
-          color: "#eeaaee"
+            categories:
+            - id: 1
+              name: Category with all fields
+              code: mycategory
+              keywords: ["akeyword"]
+              color: "#eeaaee"
         """)
 
         response = self.client.get('/api/call/categories')
 
         self.assertResponseEqual(response, """
-        categories:
-        - id: 1
-          name: Category with all fields
-          code: mycategory
-          keywords: ["akeyword"]
-          color: "#eeaaee"
-          enabled: true
+            categories:
+            - id: 1
+              name: Category with all fields
+              code: mycategory
+              keywords: ["akeyword"]
+              color: "#eeaaee"
+              enabled: true
         """)
 
     def test__call_log__when_empty(self):
         response = self.client.get('/api/call/log')
         self.assertResponseEqual(response, """
-        operator_calls: []
+            operator_calls: []
         """)
 
     def test__call_log__with_calls(self):
@@ -276,20 +276,20 @@ class Api_Test(unittest.TestCase):
         call_timestamp = calls[0].get('call_timestamp', "call_timestamp not informed")
         pbx_call_id = calls[0].get('pbx_call_id', "pbx_call_id not informed")
         self.assertResponseEqual(response, f"""
-        operator_calls:
-        - call_timestamp: {call_timestamp}
-          caller_erp_id: null
-          caller_name: ''
-          caller_vat: ''
-          category_ids: []
-          comments: ''
-          contract_address: ''
-          contract_erp_id: null
-          contract_number: ''
-          id: {id}
-          operator: vic
-          pbx_call_id: {pbx_call_id}
-          phone_number: '567567567'
+            operator_calls:
+            - call_timestamp: {call_timestamp}
+              caller_erp_id: null
+              caller_name: ''
+              caller_vat: ''
+              category_ids: []
+              comments: ''
+              contract_address: ''
+              contract_erp_id: null
+              contract_number: ''
+              id: {id}
+              operator: vic
+              pbx_call_id: {pbx_call_id}
+              phone_number: '567567567'
         """)
 
 if __name__ == "__main__":
