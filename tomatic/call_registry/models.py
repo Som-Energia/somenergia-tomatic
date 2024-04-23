@@ -58,7 +58,7 @@ class CallLog(pydantic.BaseModel):
     operator_calls: list[Call] # TODO: rename as calls
 
 
-class CreateCallResponse(CallLog):
+class UpdatedCallLog(CallLog):
     odoo_id: int
 
 
@@ -79,7 +79,7 @@ def main():
     # TODO: null caller_erp_id shoulbe None, not False
     # TODO: null contract_erp_id shoulbe None, not ''
 
-    response = ( #CreateCallResponse(**
+    response = ( #UpdatedCallLog(**
         erp.CrmPhonecall.create_call_and_get_operator_calls(
             NewCall(
                 operator='operadora01',
@@ -90,7 +90,7 @@ def main():
     )
     print(ns(response).dump())
 
-    response = ( #CreateCallResponse(**
+    response = ( #UpdatedCallLog(**
         erp.CrmPhonecall.update_call_and_get_operator_calls(
             Call(
                 id=1, # TODO: odoo expects odoo_id, let's make them equal
@@ -117,6 +117,7 @@ Detected issues
     - Los ids no seteados tendrian que ser None
         - caller_erp_id es False
         - contract_erp_id es ''
+    - Response operator_calls -> calls for the type to be reusable in the future
 - Categories
     - name_l1, name_l2...
         - not in the specs, we do not need or use it

@@ -1,5 +1,4 @@
-from .models import CallLog, Call, NewCall, CreateCallResponse, Categories
-import datetime
+from .models import CallLog, Call, NewCall, UpdatedCallLog, Categories
 import pathlib
 import random
 from yamlns import ns
@@ -26,7 +25,7 @@ class CallRegistry():
     def get_calls(self, operator: str) -> CallLog:
         return self._load_calls(operator)
 
-    def add_incoming_call(self, newcall: NewCall) -> CreateCallResponse:
+    def add_incoming_call(self, newcall: NewCall) -> UpdatedCallLog:
         log = self.get_calls(newcall.operator)
         odoo_id = random.getrandbits(128)
         log.operator_calls.append(
@@ -36,7 +35,7 @@ class CallRegistry():
             )
         )
         self._save_calls(newcall.operator, log)
-        return CreateCallResponse(
+        return UpdatedCallLog(
             odoo_id = odoo_id,
             **log.model_dump()
         )
