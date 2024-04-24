@@ -32,7 +32,7 @@ class CallRegistry():
         return self._load_calls(operator)
 
     def add_incoming_call(self, newcall: NewCall) -> UpdatedCallLog:
-        log = self.get_calls(newcall.operator)
+        log = self._load_calls(newcall.operator)
         odoo_id = random.getrandbits(128)
         log.operator_calls.append(
             Call(
