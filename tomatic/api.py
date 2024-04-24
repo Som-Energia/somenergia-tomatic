@@ -322,17 +322,6 @@ def resume_line(person, user = Depends(validatedUser)):
         currentQueue = cachedQueueStatus(force=True)
     )
 
-@app.get('/api/persons/extension/{extension}')
-@yamlerrors
-def personInfoFromExtension(extension, user = Depends(validatedUser)):
-    allpersons=persons.persons()
-    names = [name for name,ext in allpersons.extensions.items() if ext == extension]
-    if not names:
-        return 'nobody@somenergia.coop'
-    name = names[0]
-    email = allpersons.emails[name]
-    return email
-
 @app.get('/api/persons')
 @yamlerrors
 def person_info():
