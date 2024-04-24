@@ -214,7 +214,31 @@ class DummyTest(unittest.TestCase):
               pbx_call_id: {call.pbx_call_id}
               phone_number: '666555444'
               """)
-    
+
+    def test__modify_existing_call__with_many_calls__changes_the_one_of_matching_id(self):
+        # given a many registered calls for an operator
+        odoo_id1 = self.register(self.call_alice1)
+        odoo_id2 = self.register(self.call_alice2)
+        # we obtain the list of calls
+        calls = self.registry.get_calls('alice').operator_calls
+        # We choose the only call that we have
+        unmodified_call = calls[0]
+        edited_call = calls[1]
+        # We edit the fields
+        edited_call.comments = 'New comment'
+        edited_call.category_ids = [2]
+
+        # when we modify the value of the fields
+        response = self.registry.modify_existing_call(edited_call)
+
+        self.assertModelEqual(response, ns(
+            odoo_id = edited_call.id,
+            operator_calls = [
+                unmodified_call.model_dump(),
+                edited_call.model_dump(),
+            ],
+        ))
+
 
     def _test__typify_call__modifies_existing_call(self):
         # given a new registered call
