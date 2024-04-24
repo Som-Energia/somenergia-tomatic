@@ -15,7 +15,7 @@ import Auth from '../../services/auth'
 import { useDialog } from '../../components/DialogProvider'
 import { useSubscriptable } from '../../services/subscriptable'
 import TypificationDialog from './TypificationDialog'
-import {vat2nif} from '../../services/vat'
+import { vat2nif } from '../../services/vat'
 
 function CallLockButton() {
   const autoRefresh = CallInfo.autoRefresh.use()
@@ -84,49 +84,47 @@ function FormatedCall({ info }) {
   const categories = CallInfo.categories.use()
   const time = new Date(info.call_timestamp).toLocaleTimeString()
   const solved = info.category_ids.length !== 0
-  const filtered_categories = categories.filter(({id}) => info.category_ids.includes(id))
+  const filtered_categories = categories.filter(({ id }) =>
+    info.category_ids.includes(id),
+  )
   return (
     <>
-    <Stack direction="row" justifyContent="space-between" gap={1}>
-      <span className="time">{time}</span>
-      <span className="phone">
-        {info.phone_number ? info.phone_number : 'Registre Manual'}
-      </span>
-      <span>
-        {filtered_categories.map((category) => (
-          <span style={{color: 'gray'}}>{category.code}</span>
-        ))}
-      </span>
-    </Stack>
-    <Stack direction="row" justifyContent="space-between" gap={1}>
-      {solved && (
-        <>
-        <span className="partner">
-          {info.caller_name ? info.caller_name : 'Nom no informat'}
-          </span>
-          <span
-          style={{color: 'gray'}}>{vat2nif(info.caller_vat)}
+      <Stack direction="row" justifyContent="space-between" gap={1}>
+        <span className="time">{time}</span>
+        <span className="phone">
+          {info.phone_number ? info.phone_number : 'Registre Manual'}
         </span>
-        </>
-      )}
+        <span>
+          {filtered_categories.map((category) => (
+            <span style={{ color: 'gray' }}>{category.code}</span>
+          ))}
+        </span>
       </Stack>
-    <Stack direction="row" justifyContent="space-between" gap={1}>
-      {solved && info.contract_number && (
-        <>
-          <span className="contract">
-            {info.contract_address}
+      <Stack direction="row" justifyContent="space-between" gap={1}>
+        {solved && (
+          <>
+            <span
+              className="partner"
+            >
+              {info.caller_name ? info.caller_name : 'Nom no informat'}
             </span>
-           <span
-            style={{color: 'gray'}}>{info.contract_number}
-          </span>
-        </>
-      )}
-    </Stack>
-      {!solved ? (
-        <span className="pending">{"Pendent d'anotar"}</span>
-      ) : (
-        ''
-      )}
+            <span style={{ color: 'gray' }}>{vat2nif(info.caller_vat)}</span>
+          </>
+        )}
+      </Stack>
+      <Stack direction="row" justifyContent="space-between" gap={1}>
+        {solved && info.contract_number && (
+          <>
+            <span
+              className="contract"
+            >
+              {info.contract_address}
+            </span>
+            <span style={{ color: 'gray' }}>{info.contract_number}</span>
+          </>
+        )}
+      </Stack>
+      {!solved ? <span className="pending">{"Pendent d'anotar"}</span> : ''}
     </>
   )
 }
