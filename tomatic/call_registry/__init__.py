@@ -15,7 +15,6 @@ def configured_backend():
     return default_backend
 
 
-# TODO: Use dbconfig to choose type and parameters.
 def CallRegistry():
     backend = configured_backend()
 

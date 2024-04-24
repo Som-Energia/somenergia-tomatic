@@ -8,18 +8,27 @@ Detected issues
 - Errors do not contain stacktrace yet
 - Calls
     - Missing entry point for just obtaining the call list (no create, no update)
+        - OK
     - Not sure if we finnally can use the call list returned when updating or creating
         - Let's keep it, to see if we can still use it but if we don't it eventually, would be optimal to remove it
+        - OK, decission post-posed.
     - Missing caller_vat field in the returned call list
-    - call.id vs call.odooo_id
+        - OK, ho revisen
+    - call.id vs call.odoo_id
         - create_call_and_get_operator_calls returns call.id
         - update_call_and_get_operator_calls expects call.odoo_id
         - we are using id but could change it
+        - OK -> id
+    - Retorned id, odoo_id -> updated_id
+        - Ok
     - Los ids no seteados tendrian que ser None
         - caller_erp_id es False
         - contract_erp_id es ''
+        - OK
     - Response operator_calls -> calls for the type to be reusable in the future
+        - OK
     - All dates as tz informed iso strings (current dummy second call returns a dummy DateTime)
+        - OK dates intercanviades totes en format string iso json amb T i Z
 - Categories
     - name_l1, name_l2...
         - not in the specs, we do not need or use it
@@ -27,15 +36,19 @@ Detected issues
         - Because of that if we do not remove it, it is better an array
         - 'name' already taken so: levels, hierarchy... ??
         - Anyway no in the spec, forces us to add it or to allow any which is unsafe
+        - Ok el treiem
     - category.enabled -> disabled
         - in the document, 'disabled', odoo dummy 'enabled'
         - We addapted to 'enabled' but 'disabled' could be more practical
         - 'disabled' as default is enabled, it could have more igual que en html, cuando no esta present es false
+        - KO no cal adaptar-ho
     - To discuss: is category.code required, already having category.id
         - One use left for category_code is being a short for display, but too cryptic "SC_FA_GE"
+        - PENDENT
     - Pointless boolean parameter in get_phonecall_categories
         - We won't need a listing without disabled entries (disabled means taggable, but still displayable for old entries)
         - Without defaults and keywords is hard to document what the 'True' means (above we use a temp)
+        - OK el treiem
 """
 
 class CallRegistry():
