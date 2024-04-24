@@ -80,29 +80,47 @@ function AnnotationButton() {
 }
 
 function FormatedCall({ info }) {
+  const categories = CallInfo.categories.use()
   const time = new Date(info.call_timestamp).toLocaleTimeString()
   const solved = info.category_ids.length !== 0
+  const filtered_categories = categories.filter(({id}) => info.category_ids.includes(id))
   return (
     <>
+    <Stack direction="row" justifyContent="space-between" gap={1}>
       <span className="time">{time}</span>
-      &nbsp;
       <span className="phone">
         {info.phone_number ? info.phone_number : 'Registre Manual'}
       </span>
-      &nbsp;&nbsp;
+      <span>
+        {filtered_categories.map((category) => (
+          <span style={{color: 'gray'}}>{category.code}</span>
+        ))}
+      </span>
+    </Stack>
+    <Stack direction="row" justifyContent="space-between" gap={1}>
       {solved && (
-        <span className="partner" title="Persona Atesa">
-          {info.caller_vat ? info.caller_vat : 'Sense informació'}
+        <>
+        <span className="partner">
+          {info.caller_name ? info.caller_name : 'Nom no informat'}
+          </span>
+          <span
+          style={{color: 'gray'}}>{info.caller_vat}
         </span>
+        </>
       )}
+      </Stack>
+    <Stack direction="row" justifyContent="space-between" gap={1}>
       {solved && info.contract_number && (
         <>
-          &nbsp;
-          <span className="contract" title="Contracte">
-            {info.contract_number}
+          <span className="contract">
+            {info.contract_address}
+            </span>
+           <span
+            style={{color: 'gray'}}>{info.contract_number}
           </span>
         </>
       )}
+    </Stack>
       {!solved ? (
         <span className="pending">{"Pendent d'anotar"}</span>
       ) : (
@@ -113,7 +131,6 @@ function FormatedCall({ info }) {
 }
 
 function CallEntry({ item, disabled }) {
-  const categories = CallInfo.categories.use()
   const currentCall = useSubscriptable(CallInfo.currentCall)
   const isSelected = item.call_timestamp === currentCall
   const solved = item.category_ids.length !== 0
@@ -121,7 +138,6 @@ function CallEntry({ item, disabled }) {
     if (solved) return
     CallInfo.toggleLog(item.call_timestamp, item.phone_number)
   }
-  const filtered_categories = categories.filter(({id}) => item.category_ids.includes(id))
   return (
     <ListItem
       key={item.call_timestamp}
@@ -133,20 +149,6 @@ function CallEntry({ item, disabled }) {
     >
       <ListItemText
         primary={<FormatedCall info={item} />}
-        secondary={
-          <span
-            style={{
-              display: 'block',
-              whiteSpace: 'nowrap',
-              textOverflow: 'ellipsis',
-              overflow: 'hidden',
-            }}
-          >
-            {filtered_categories.map((category) => (
-                <div>{category.code}</div>
-            ))}
-          </span>
-        }
         title={item.comments}
       />
     </ListItem>
