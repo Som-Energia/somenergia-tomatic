@@ -25,10 +25,6 @@ Detected issues
     - To discuss: is category.code required, already having category.id
         - One use left for category_code is being a short for display, but too cryptic "SC_FA_GE"
         - PENDENT
-    - Pointless boolean parameter in get_phonecall_categories
-        - We won't need a listing without disabled entries (disabled means taggable, but still displayable for old entries)
-        - Without defaults and keywords is hard to document what the 'True' means (above we use a temp)
-        - OK el treiem
 """
 
 class CallRegistry():
@@ -62,8 +58,7 @@ class CallRegistry():
     def categories(self) -> Categories:
         # TODO: odoo should return the categories key when not filtering
         # TODO: The optional parameter cannot be passed keyword
-        include_disabled = True
-        result = self.erp.CrmPhonecall.get_phonecall_categories(include_disabled)
+        result = self.erp.CrmPhonecall.get_phonecall_categories()
         self._process_server_errors(result)
         # TODO: Remove this hack
         result = self._fix_categories(result)
