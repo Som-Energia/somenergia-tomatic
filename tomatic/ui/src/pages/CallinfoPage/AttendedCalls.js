@@ -105,6 +105,12 @@ function FormatedCall({ info }) {
           <>
             <span
               className="partner"
+              style={{
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+              }}
+              title = {info.caller_name}
             >
               {info.caller_name ? info.caller_name : 'Nom no informat'}
             </span>
@@ -117,6 +123,12 @@ function FormatedCall({ info }) {
           <>
             <span
               className="contract"
+              style={{
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+              }}
+              title={info.contract_address}
             >
               {info.contract_address}
             </span>
