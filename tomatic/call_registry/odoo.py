@@ -21,10 +21,6 @@ Detected issues
         - OK -> id
     - Retorned id, odoo_id -> updated_id
         - Ok
-    - Los ids no seteados tendrian que ser None
-        - caller_erp_id es False
-        - contract_erp_id es ''
-        - OK
     - All dates as tz informed iso strings (current dummy second call returns a dummy DateTime)
         - OK dates intercanviades totes en format string iso json amb T i Z
 - Categories
@@ -62,17 +58,11 @@ class CallRegistry():
         return call
 
     def _fix_calls(self, calls):
-        import datetime
-        #print("Prefix:\n", calls)
+        # XMLRpc turns Nones in to False, recover them
         for call in calls['calls']:
-
-            # TODO: null caller_erp_id shoulbe None, not False
             call['caller_erp_id'] = call['caller_erp_id'] or None
-
-            # TODO: null contract_erp_id shoulbe None, not ''
             call['contract_erp_id'] = call['contract_erp_id'] or None
 
-        #print("Postfix:\n", calls)
         return calls
 
     def _process_server_errors(self, result) -> None:
