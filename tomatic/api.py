@@ -222,7 +222,9 @@ async def forced_turns_edit_slot(day, houri: int, turni: int, name, request: Req
         raise ApiError(str(e))
     return await forced_turns()
 
-@app.patch('/api/forcedturns/addColumn')
+# TODO: Remove casing in urls
+@app.patch('/api/forcedturns/addColumn', deprecated=True)
+@app.patch('/api/forcedturns/line/add')
 @yamlerrors
 async def forcedturns_add_line():
     try:
@@ -231,7 +233,9 @@ async def forcedturns_add_line():
         raise ApiError(str(e))
     return await forced_turns()
 
-@app.patch('/api/forcedturns/removeColumn')
+# TODO: Remove casing in urls
+@app.patch('/api/forcedturns/removeColumn', deprecated=True)
+@app.patch('/api/forcedturns/line/remove')
 @yamlerrors
 async def forced_turns_delete_line():
     try:
