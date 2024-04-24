@@ -201,7 +201,7 @@ class Api_Test(unittest.TestCase):
 
         registry = CallRegistry(self.data_path)
         calls = registry.get_calls('vic')
-        self.assertEqual(len(calls.operator_calls), 1)
+        self.assertEqual(len(calls.calls), 1)
 
     def test__callinfo_ringring__get(self):
         self.setupPersons("""\
@@ -223,7 +223,7 @@ class Api_Test(unittest.TestCase):
 
         registry = CallRegistry(self.data_path)
         calls = registry.get_calls('vic')
-        self.assertEqual(len(calls.operator_calls), 1)
+        self.assertEqual(len(calls.calls), 1)
 
     def test__call_categories(self):
         (self.data_path / "call_registry").mkdir()
@@ -251,7 +251,7 @@ class Api_Test(unittest.TestCase):
     def test__call_log__when_empty(self):
         response = self.client.get('/api/call/log')
         self.assertResponseEqual(response, """
-            operator_calls: []
+            calls: []
         """)
 
     def test__call_log__with_calls(self):
@@ -271,12 +271,12 @@ class Api_Test(unittest.TestCase):
         response = self.client.get('/api/call/log')
 
         data = ns.loads(response.text)
-        calls = data.get("operator_calls", [])
+        calls = data.get("calls", [])
         id = calls[0].get('id', "ID not informed")
         call_timestamp = calls[0].get('call_timestamp', "call_timestamp not informed")
         pbx_call_id = calls[0].get('pbx_call_id', "pbx_call_id not informed")
         self.assertResponseEqual(response, f"""
-            operator_calls:
+            calls:
             - call_timestamp: {call_timestamp}
               caller_erp_id: null
               caller_name: ''

@@ -54,7 +54,7 @@ class Call(NewCall):
     id: int
 
 class CallLog(pydantic.BaseModel):
-    operator_calls: list[Call] # TODO: rename as calls
+    calls: list[Call] # TODO: rename as calls
 
 
 class UpdatedCallLog(CallLog):

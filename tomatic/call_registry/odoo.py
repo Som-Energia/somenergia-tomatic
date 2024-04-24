@@ -25,8 +25,6 @@ Detected issues
         - caller_erp_id es False
         - contract_erp_id es ''
         - OK
-    - Response operator_calls -> calls for the type to be reusable in the future
-        - OK
     - All dates as tz informed iso strings (current dummy second call returns a dummy DateTime)
         - OK dates intercanviades totes en format string iso json amb T i Z
 - Categories
@@ -74,7 +72,7 @@ class CallRegistry():
     def _fix_calls(self, calls):
         import datetime
         #print("Prefix:\n", calls)
-        for call in calls['operator_calls']:
+        for call in calls['calls']:
 
             # TODO: null caller_erp_id shoulbe None, not False
             call['caller_erp_id'] = call['caller_erp_id'] or None
@@ -103,7 +101,7 @@ class CallRegistry():
     def get_calls(self, operator: str) -> CallLog:
         # TODO: entrypoint missing
         #result = self.erp.CrmPhonecall.get_operator_phone_calls(operator)
-        result = dict(operator_calls=[])
+        result = dict(calls=[])
         self._process_server_errors(result)
         # TODO: Remove this hack
         result = self._fix_calls(result)

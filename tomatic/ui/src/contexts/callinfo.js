@@ -337,7 +337,7 @@ CallInfo.retrievePersonCalls = function () {
     .then(
       function (response) {
         console.debug('Info GET Response: ', response)
-        CallInfo.personCalls(response.operator_calls)
+        CallInfo.personCalls(response.calls)
       },
       function (error) {
         CallInfo.personCalls([])
