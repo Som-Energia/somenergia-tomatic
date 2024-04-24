@@ -43,18 +43,17 @@ def now(date, time):
 @click.option('--backend', '-b',
     default=None,
     type=click.Choice(pbxtypes),
-    help="Override pbx backend in configuration",
+    help="Override configured pbx backend",
     )
 @click.option('--queue', '-q',
     default=None,
-    help="Override pbx queue in configuration",
+    help="Override configured pbx queue",
     )
 @click.option('--call-registry',
     default=None,
     type=click.Choice(call_registry.available_backends),
-    help="Override call registry backend in configuration (dbconfig.tomatic.callregistry)",
+    help="Override configured call registry backend",
     )
-
 @click.option('--printrules',
     is_flag=True,
     help="Prints the url patterns being serverd",
