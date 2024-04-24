@@ -122,6 +122,8 @@ def main():
         category_ids=[1],
         caller_vat="ES12345678Z",
     ))
+    edited_call_id = result.updated_id
+    dump(result)
 
 if __name__ == '__main__':
     main()
