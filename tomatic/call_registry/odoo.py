@@ -7,6 +7,7 @@ TODO:
 - Pass limits and dates to call list
 - Wait: Error handling is not implemented in odoo yet
 - Blocked: When doing ui, decide whether we can get profit of the returned calls in create/update ops. If not remove them.
+- dummy data vats are nifs (missing ES)
 """
 
 class CallRegistry():
@@ -27,6 +28,9 @@ class CallRegistry():
     def _fix_calls(self, calls):
         # XMLRpc turns Nones in to False, recover them
         for call in calls['calls']:
+            vat = call['caller_vat']
+            if vat and len(vat)<=10:
+                call['caller_vat'] = 'ES'+vat
             call['caller_erp_id'] = call['caller_erp_id'] or None
             call['contract_erp_id'] = call['contract_erp_id'] or None
 
