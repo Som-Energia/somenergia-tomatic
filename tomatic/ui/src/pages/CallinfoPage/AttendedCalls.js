@@ -133,7 +133,7 @@ function FormatedCall({ info }) {
                 textOverflow: 'ellipsis',
                 overflow: 'hidden',
               }}
-              title = {info.caller_name}
+              title={info.caller_name}
             >
               {info.caller_name ? info.caller_name : 'Nom no informat'}
             </span>
