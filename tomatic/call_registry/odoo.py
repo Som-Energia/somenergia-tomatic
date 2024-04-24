@@ -56,10 +56,12 @@ class CallRegistry():
         self.erp = erppeek.Client(**configdb.tomatic.holidaysodoo)
 
     def _fix_categories(self, categories):
+        # Turn empty colors into None
         for category in categories['categories']:
             del category['name_l1']
             del category['name_l2']
             del category['name_l3']
+            category['color'] = category['color'] or None
         return categories
 
     def _fix_modify_call(self, call):
