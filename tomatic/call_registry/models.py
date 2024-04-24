@@ -16,8 +16,6 @@ RgbColor = pydantic.constr(
 
 class Category(
     pydantic.BaseModel,
-    # TODO: to allow description_ln, but we should got ride of them
-    extra='allow',
 ):
     id: int
     name: str

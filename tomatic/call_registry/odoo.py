@@ -28,13 +28,6 @@ Detected issues
     - All dates as tz informed iso strings (current dummy second call returns a dummy DateTime)
         - OK dates intercanviades totes en format string iso json amb T i Z
 - Categories
-    - name_l1, name_l2...
-        - not in the specs, we do not need or use it
-        - the number layers could be subject to change, so building the attribute name
-        - Because of that if we do not remove it, it is better an array
-        - 'name' already taken so: levels, hierarchy... ??
-        - Anyway no in the spec, forces us to add it or to allow any which is unsafe
-        - Ok el treiem
     - category.enabled -> disabled
         - in the document, 'disabled', odoo dummy 'enabled'
         - We addapted to 'enabled' but 'disabled' could be more practical
@@ -58,9 +51,6 @@ class CallRegistry():
     def _fix_categories(self, categories):
         # Turn empty colors into None
         for category in categories['categories']:
-            del category['name_l1']
-            del category['name_l2']
-            del category['name_l3']
             category['color'] = category['color'] or None
         return categories
 
