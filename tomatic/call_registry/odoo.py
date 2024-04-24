@@ -55,9 +55,9 @@ class CallRegistry():
         return Categories(**result)
 
     def get_calls(self, operator: str) -> CallLog:
-        # TODO: entrypoint missing
-        #result = self.erp.CrmPhonecall.get_operator_phone_calls(operator)
-        result = dict(calls=[])
+        result = self.erp.CrmPhonecall.get_operator_calls(dict(
+            operator=operator,
+        ))
         self._process_server_errors(result)
         # TODO: Remove this hack
         result = self._fix_calls(result)
