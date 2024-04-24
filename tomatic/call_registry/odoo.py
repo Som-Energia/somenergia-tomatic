@@ -14,11 +14,6 @@ Detected issues
         - OK, decission post-posed.
     - Missing caller_vat field in the returned call list
         - OK, ho revisen
-    - call.id vs call.odoo_id
-        - create_call_and_get_operator_calls returns call.id
-        - update_call_and_get_operator_calls expects call.odoo_id
-        - we are using id but could change it
-        - OK -> id
     - All dates as tz informed iso strings (current dummy second call returns a dummy DateTime)
         - OK dates intercanviades totes en format string iso json amb T i Z
 - Categories
@@ -47,10 +42,6 @@ class CallRegistry():
         for category in categories['categories']:
             category['color'] = category['color'] or None
         return categories
-
-    def _fix_modify_call(self, call):
-        call['odoo_id'] = call.pop('id')
-        return call
 
     def _fix_create_call(self, call):
         return call
@@ -99,8 +90,6 @@ class CallRegistry():
 
     def modify_existing_call(self, call: Call) -> UpdatedCallLog:
         call = call.model_dump(mode='json')
-        # TODO: Remove this hack
-        call = self._fix_modify_call(call)
         result = self.erp.CrmPhonecall.update_call_and_get_operator_calls(call)
         self._process_server_errors(result)
         # TODO: Remove this hack
@@ -141,7 +130,7 @@ def main():
     step("Editing existing call")
     now = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
     result = registry.modify_existing_call(Call(
-        id=1, # TODO: odoo expects odoo_id, let's make them equal
+        id=1,
         operator='operadora01',
         pbx_call_id='pbx_id',
         call_timestamp=now,

@@ -58,8 +58,8 @@ class DummyTest(unittest.TestCase):
 
     def assertCallList(self, response, expectedCalls):
         self.assertModelEqual(response, ns(calls=[
-            self.full_call(odoo_id, call)
-            for odoo_id, call in expectedCalls
+            self.full_call(id, call)
+            for id, call in expectedCalls
         ]))
 
     def setUp(self):
