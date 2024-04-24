@@ -96,6 +96,7 @@ class DummyTest(unittest.TestCase):
           enabled: false
         """)
 
+
     def test__categories__default_fields_are_filled(self):
         (self.path / "call_registry" / "categories.yaml").write_text("""
         categories:
@@ -186,17 +187,18 @@ class DummyTest(unittest.TestCase):
     def test__modify_existing_call__with_only_one_call(self):
         # given a single registered call
         odoo_id1 = self.register(self.call_alice1)
-        # we obtain the list of calls
+        # we obtain back the list of calls
         calls = self.registry.get_calls('alice').operator_calls
-        # We choose the only call that we have
+        # we choose the only call we have
         edited_call = calls[0]
-        # We edit the fields
+        # and edit some of its fields fields
         edited_call.comments = 'New comment'
         edited_call.category_ids = [2]
 
         # when we modify the value of the fields
         response = self.registry.modify_existing_call(edited_call)
 
+        # then we get back the list of calls with the modification
         self.assertModelEqual(response, ns(
             odoo_id = edited_call.id,
             operator_calls = [
@@ -208,18 +210,19 @@ class DummyTest(unittest.TestCase):
         # given many registered calls for an operator
         odoo_id1 = self.register(self.call_alice1)
         odoo_id2 = self.register(self.call_alice2)
-        # we obtain the list of calls
+        # we obtain back the list of calls
         calls = self.registry.get_calls('alice').operator_calls
-        # We choose to edit the second one
+        # we choose to edit the second one
         unmodified_call = calls[0]
         edited_call = calls[1]
-        # We edit the fields
+        # and edit edit some fields
         edited_call.comments = 'New comment'
         edited_call.category_ids = [2]
 
         # when we modify the value of the fields
         response = self.registry.modify_existing_call(edited_call)
 
+        # then we get back the list of calls with the modification
         self.assertModelEqual(response, ns(
             odoo_id = edited_call.id,
             operator_calls = [
