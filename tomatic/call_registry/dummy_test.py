@@ -181,7 +181,7 @@ class DummyTest(unittest.TestCase):
         odoo_id2 = self.register(self.call_barbara)
         self.assertNotEqual(odoo_id1, odoo_id2)
 
-    # Call typification
+    # Call modification
 
     def test__modify_existing_call__with_only_one_call(self):
         # given a single registered call
@@ -189,39 +189,28 @@ class DummyTest(unittest.TestCase):
         # we obtain the list of calls
         calls = self.registry.get_calls('alice').operator_calls
         # We choose the only call that we have
-        call = calls[0]
+        edited_call = calls[0]
         # We edit the fields
-        call.comments = 'New comment'
-        call.category_ids = [2]
+        edited_call.comments = 'New comment'
+        edited_call.category_ids = [2]
 
         # when we modify the value of the fields
-        response = self.registry.modify_existing_call(call)
+        response = self.registry.modify_existing_call(edited_call)
 
-        self.assertModelEqual(response, f"""
-            odoo_id: {call.id}
-            operator_calls:
-            - call_timestamp: {call.call_timestamp}
-              caller_erp_id: null
-              caller_name: ''
-              caller_vat: ''
-              category_ids: [2]   # <- THIS CHANGES
-              comments: 'New comment' # <- THIS CHANGES
-              contract_address: ''
-              contract_erp_id: null
-              contract_number: ''
-              id: {call.id}
-              operator: alice
-              pbx_call_id: {call.pbx_call_id}
-              phone_number: '666555444'
-              """)
+        self.assertModelEqual(response, ns(
+            odoo_id = edited_call.id,
+            operator_calls = [
+                edited_call.model_dump(),
+            ],
+        ))
 
     def test__modify_existing_call__with_many_calls__changes_the_one_of_matching_id(self):
-        # given a many registered calls for an operator
+        # given many registered calls for an operator
         odoo_id1 = self.register(self.call_alice1)
         odoo_id2 = self.register(self.call_alice2)
         # we obtain the list of calls
         calls = self.registry.get_calls('alice').operator_calls
-        # We choose the only call that we have
+        # We choose to edit the second one
         unmodified_call = calls[0]
         edited_call = calls[1]
         # We edit the fields
@@ -239,26 +228,7 @@ class DummyTest(unittest.TestCase):
             ],
         ))
 
-
-    def _test__typify_call__modifies_existing_call(self):
-        # given a new registered call
-        odoo_id1 = self.register(self.call_alice1)
-        # we choose the call to be modified
-        call_alice1 = self.registry.get_call('alice', odoo_id1)
-        # when we modify the value of a field
-        self.registry.modify_existing_call(
-            call_alice1, ns(comments = 'This is a new comment')
-        )
-        # then when we load the alice calls again
-        response = self.registry.get_calls('alice')
-        # we check in the call if the comment is being modified
-        self.assertModelEqual(response, ns(operator_calls=[
-            self.full_call(
-                odoo_id1, ns(**self.call_alice1, comments = 'This is a new comment')
-            ),
-        ]))
-
-
-    def test__typify_call__manual_call__creates_a_new_call(self):  self.skipTest("Not yet implemented")
+    def test__modify_existing_call__when_id_not_found__issues_error(self):  self.skipTest("Not yet implemented")
+    def test__modify_existing_call__when_operator_changed__issues_error(self):  self.skipTest("Not yet implemented")
 
 
