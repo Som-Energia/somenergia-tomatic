@@ -2,6 +2,10 @@ import os
 from . import dummy
 from . import odoo
 
+available_backends = [
+    'dummy',
+    'odoo',
+]
 
 def configured_backend():
     backend = os.environ.get('TOMATIC_CALL_REGISTRY')

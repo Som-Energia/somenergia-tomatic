@@ -7,6 +7,7 @@ from consolemsg import warn, step
 from tomatic.api import app, schedules
 from tomatic import __version__
 from tomatic.pbx import pbxqueue, pbxtypes
+from tomatic import call_registry
 import os
 
 def now(date, time):
@@ -42,12 +43,18 @@ def now(date, time):
 @click.option('--backend', '-b',
     default=None,
     type=click.Choice(pbxtypes),
-    help="Override pbx backend configured in configuration",
+    help="Override pbx backend in configuration",
     )
 @click.option('--queue', '-q',
     default=None,
-    help="Override pbx queue configured in configuration",
+    help="Override pbx queue in configuration",
     )
+@click.option('--call-registry',
+    default=None,
+    type=click.Choice(call_registry.available_backends),
+    help="Override call registry backend in configuration (dbconfig.tomatic.callregistry)",
+    )
+
 @click.option('--printrules',
     is_flag=True,
     help="Prints the url patterns being serverd",
@@ -64,10 +71,9 @@ def now(date, time):
     type=click.Choice(['tomatic', 'pebrotic', 'ketchup']),
     help="Identify the instance as this variant",
     )
-
-def main(fake, debug, host, port, printrules, date, time, backend, queue, variant):
+def main(fake, debug, host, port, printrules, date, time, backend, queue, variant, call_registry):
     "Runs the Tomatic web and API"
-    print(fake, debug, host, port, printrules, date, time, backend, queue, variant)
+    print(fake, debug, host, port, printrules, date, time, backend, queue, variant, call_registry)
 
     if printrules:
         for rule in app.routes:
@@ -84,6 +90,9 @@ def main(fake, debug, host, port, printrules, date, time, backend, queue, varian
 
     if variant:
         os.environ["TOMATIC_VARIANT"] = variant
+
+    if call_registry:
+        os.environ['TOMATIC_CALL_REGISTRY'] = call_registry
 
     step("Starting API")
     if printrules:
