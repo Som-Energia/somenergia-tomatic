@@ -57,7 +57,7 @@ class DummyTest(unittest.TestCase):
         self.assertNsEqual(model.model_dump(), expected)
 
     def assertCallList(self, response, expectedCalls):
-        self.assertModelEqual(response, ns(operator_calls=[
+        self.assertModelEqual(response, ns(calls=[
             self.full_call(odoo_id, call)
             for odoo_id, call in expectedCalls
         ]))
@@ -188,7 +188,7 @@ class DummyTest(unittest.TestCase):
         # given a single registered call
         odoo_id1 = self.register(self.call_alice1)
         # we obtain back the list of calls
-        calls = self.registry.get_calls('alice').operator_calls
+        calls = self.registry.get_calls('alice').calls
         # we choose the only call we have
         edited_call = calls[0]
         # and edit some of its fields fields
@@ -201,7 +201,7 @@ class DummyTest(unittest.TestCase):
         # then we get back the list of calls with the modification
         self.assertModelEqual(response, ns(
             odoo_id = edited_call.id,
-            operator_calls = [
+            calls = [
                 edited_call.model_dump(),
             ],
         ))
@@ -211,7 +211,7 @@ class DummyTest(unittest.TestCase):
         odoo_id1 = self.register(self.call_alice1)
         odoo_id2 = self.register(self.call_alice2)
         # we obtain back the list of calls
-        calls = self.registry.get_calls('alice').operator_calls
+        calls = self.registry.get_calls('alice').calls
         # we choose to edit the second one
         unmodified_call = calls[0]
         edited_call = calls[1]
@@ -225,7 +225,7 @@ class DummyTest(unittest.TestCase):
         # then we get back the list of calls with the modification
         self.assertModelEqual(response, ns(
             odoo_id = edited_call.id,
-            operator_calls = [
+            calls = [
                 unmodified_call.model_dump(),
                 edited_call.model_dump(),
             ],

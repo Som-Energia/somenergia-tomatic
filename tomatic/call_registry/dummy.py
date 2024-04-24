@@ -21,7 +21,7 @@ class CallRegistry():
     def _load_calls(self, operator) -> CallLog:
         registry_file = self.registry_path / f'calls-{operator}.yaml'
         if not registry_file.exists():
-            return CallLog(operator_calls=[])
+            return CallLog(calls=[])
         return CallLog(**ns.load(registry_file))
 
     def _save_calls(self, operator, log: CallLog) -> None:
@@ -34,7 +34,7 @@ class CallRegistry():
     def add_incoming_call(self, newcall: NewCall) -> UpdatedCallLog:
         log = self._load_calls(newcall.operator)
         odoo_id = random.getrandbits(128)
-        log.operator_calls.append(
+        log.calls.append(
             Call(
                 id=odoo_id,
                  **newcall.model_dump()
@@ -49,15 +49,15 @@ class CallRegistry():
     # TODO: test this
     def _find_call(self, operator: str, id: int):
         log = self._load_calls(operator)
-        for call in log.operator_calls:
+        for call in log.calls:
             if call.id == id: return call
 
     def modify_existing_call(self, call: Call) -> UpdatedCallLog:
         calls = self._load_calls(call.operator)
 
-        for index, candidate in enumerate(calls.operator_calls):
+        for index, candidate in enumerate(calls.calls):
             if candidate.id == call.id:
-                calls.operator_calls[index] = call
+                calls.calls[index] = call
                 break
 
         self._save_calls(call.operator, calls)
