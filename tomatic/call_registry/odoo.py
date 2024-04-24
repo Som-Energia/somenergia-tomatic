@@ -2,29 +2,11 @@ from .models import CallLog, Call, NewCall, UpdatedCallLog, Categories
 import erppeek
 
 """
-Detected issues
+TODO:
 
-
-- Errors do not contain stacktrace yet
-- Calls
-    - Missing entry point for just obtaining the call list (no create, no update)
-        - OK
-    - Not sure if we finnally can use the call list returned when updating or creating
-        - Let's keep it, to see if we can still use it but if we don't it eventually, would be optimal to remove it
-        - OK, decission post-posed.
-    - Missing caller_vat field in the returned call list
-        - OK, ho revisen
-    - All dates as tz informed iso strings (current dummy second call returns a dummy DateTime)
-        - OK dates intercanviades totes en format string iso json amb T i Z
-- Categories
-    - category.enabled -> disabled
-        - in the document, 'disabled', odoo dummy 'enabled'
-        - We addapted to 'enabled' but 'disabled' could be more practical
-        - 'disabled' as default is enabled, it could have more igual que en html, cuando no esta present es false
-        - KO no cal adaptar-ho
-    - To discuss: is category.code required, already having category.id
-        - One use left for category_code is being a short for display, but too cryptic "SC_FA_GE"
-        - PENDENT
+- Pass limits and dates to call list
+- Wait: Error handling is not implemented in odoo yet
+- Blocked: When doing ui, decide whether we can get profit of the returned calls in create/update ops. If not remove them.
 """
 
 class CallRegistry():
