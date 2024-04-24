@@ -10,6 +10,7 @@ import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import IconButton from '@mui/material/IconButton'
 import CircularProgress from '@mui/material/CircularProgress'
+import Tooltip from '@mui/material/Tooltip'
 import CallInfo from '../../contexts/callinfo'
 import Auth from '../../services/auth'
 import { useDialog } from '../../components/DialogProvider'
@@ -94,11 +95,33 @@ function FormatedCall({ info }) {
         <span className="phone">
           {info.phone_number ? info.phone_number : 'Registre Manual'}
         </span>
-        <span>
-          {filtered_categories.map((category) => (
-            <span style={{ color: 'gray' }}>{category.code}</span>
-          ))}
-        </span>
+        <Tooltip
+          title={
+            <span>
+              {filtered_categories.map((category) => (
+                <div>{`[${category.code}] ${category.name}`}</div>
+              ))}
+            </span>
+          }
+        >
+          <span
+            style={{
+              textAlign: 'right',
+              flex: 1,
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              color: 'gray',
+            }}
+          >
+            {filtered_categories.map((category) => (
+              <>
+                &nbsp;
+                {category.code}
+              </>
+            ))}
+          </span>
+        </Tooltip>
       </Stack>
       <Stack direction="row" justifyContent="space-between" gap={1}>
         {solved && (
