@@ -15,6 +15,7 @@ import Auth from '../../services/auth'
 import { useDialog } from '../../components/DialogProvider'
 import { useSubscriptable } from '../../services/subscriptable'
 import TypificationDialog from './TypificationDialog'
+import {vat2nif} from '../../services/vat'
 
 function CallLockButton() {
   const autoRefresh = CallInfo.autoRefresh.use()
@@ -104,7 +105,7 @@ function FormatedCall({ info }) {
           {info.caller_name ? info.caller_name : 'Nom no informat'}
           </span>
           <span
-          style={{color: 'gray'}}>{info.caller_vat}
+          style={{color: 'gray'}}>{vat2nif(info.caller_vat)}
         </span>
         </>
       )}
