@@ -47,18 +47,24 @@ class CallRegistry():
         )
 
     # TODO: test this
-    def get_call(self, operator: str, id: int):
+    def _find_call(self, operator: str, id: int):
         log = self._load_calls(operator)
-        call = list(filter(lambda call: call.id == id, log.operator_calls))
-        return call[0]
+        for call in log.operator_calls:
+            if call.id == id: return call
 
-    def modify_existing_call(self, call, fields):
-        calls = self.get_calls(call.operator)
+    def modify_existing_call(self, call: Call) -> UpdatedCallLog:
+        calls = self._load_calls(call.operator)
+        calls.operator_calls[0] = call
+
+        self._save_calls(call.operator, calls)
+        return UpdatedCallLog(
+            odoo_id = call.id,
+            **calls.model_dump()
+        )
 
         for index, operator_call in enumerate(calls.operator_calls):
             if operator_call.id == call.id:
                 calls.operator_calls[index] = dict(operator_call, **fields)
                 break
 
-        self._save_calls(call.operator, calls)
 

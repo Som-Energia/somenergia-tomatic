@@ -2,7 +2,7 @@ import unittest
 import pydantic
 import datetime
 from .dummy import CallRegistry
-from .models import CallLog, NewCall
+from .models import CallLog, NewCall, Call
 from somutils.testutils import temp_path
 from yamlns import ns
 
@@ -183,7 +183,40 @@ class DummyTest(unittest.TestCase):
 
     # Call typification
 
-    def test__typify_call__modifies_existing_call(self):
+    def test__modify_existing_call__with_only_one_call(self):
+        # given a single registered call
+        odoo_id1 = self.register(self.call_alice1)
+        # we obtain the list of calls
+        calls = self.registry.get_calls('alice').operator_calls
+        # We choose the only call that we have
+        call = calls[0]
+        # We edit the fields
+        call.comments = 'New comment'
+        call.category_ids = [2]
+
+        # when we modify the value of the fields
+        response = self.registry.modify_existing_call(call)
+
+        self.assertModelEqual(response, f"""
+            odoo_id: {call.id}
+            operator_calls:
+            - call_timestamp: {call.call_timestamp}
+              caller_erp_id: null
+              caller_name: ''
+              caller_vat: ''
+              category_ids: [2]   # <- THIS CHANGES
+              comments: 'New comment' # <- THIS CHANGES
+              contract_address: ''
+              contract_erp_id: null
+              contract_number: ''
+              id: {call.id}
+              operator: alice
+              pbx_call_id: {call.pbx_call_id}
+              phone_number: '666555444'
+              """)
+    
+
+    def _test__typify_call__modifies_existing_call(self):
         # given a new registered call
         odoo_id1 = self.register(self.call_alice1)
         # we choose the call to be modified
