@@ -23,6 +23,10 @@ class CallRegistry():
         return categories
 
     def _fix_create_call(self, call):
+        # XMLRpc rejects Nones, turn into False, 
+        call['caller_erp_id'] = call['caller_erp_id'] or False
+        call['contract_erp_id'] = call['contract_erp_id'] or False
+        print(call)
         return call
 
     def _fix_calls(self, calls):
@@ -71,6 +75,7 @@ class CallRegistry():
 
     def modify_existing_call(self, call: Call) -> UpdatedCallLog:
         call = call.model_dump(mode='json')
+        call = self._fix_create_call(call)
         result = self.erp.CrmPhonecall.update_call_and_get_operator_calls(call)
         self._process_server_errors(result)
         # TODO: Remove this hack
