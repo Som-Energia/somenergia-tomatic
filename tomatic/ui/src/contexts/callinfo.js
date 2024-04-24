@@ -320,31 +320,6 @@ CallInfo.retrieveCategories = function () {
     )
 }
 
-CallInfo.updatingCategories = false // Whether we are still loading crm categoies
-CallInfo.updateCategories = function () {
-  CallInfo.updatingCategories = true
-  api
-    .request({
-      url: '/api/call/categories/update',
-    })
-    .then(
-      function (response) {
-        console.debug('Info GET Response: ', response)
-        if (response.info.message !== 'ok') {
-          console.debug(
-            'Error al actualitzar les categories de trucades telefòniques: ',
-            response.info.message,
-          )
-        } else {
-          CallInfo.updatingCategories = false
-          CallInfo.retrieveCategories()
-        }
-      },
-      function (error) {
-        console.debug('Info GET apicall failed: ', error)
-      },
-    )
-}
 
 CallInfo.personCalls = reactiveProp([]) // User call registry
 

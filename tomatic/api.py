@@ -499,18 +499,6 @@ async def notifyIncommingCall(phone: str, extension: str, callid: str = None):
     await asyncio.gather(*notifications)
     return yamlfy(result='ok')
 
-# TODO: delete me, please
-@app.get('/api/personlog')
-@app.get('/api/personlog/{user}')
-def getCallLog(user=None, validatedUser = Depends(validatedUser)):
-    calls = CallRegistry().callsByUser(user or validatedUser)
-    return yamlfy(
-        info=ns(
-            info=calls,
-            message='ok',
-        )
-    )
-
 @app.get('/api/call/log')
 @app.get('/api/call/log/{user}')
 def get_user_call_log(user=None, validatedUser = Depends(validatedUser)):
@@ -538,12 +526,6 @@ def call_annotation_categories(user = Depends(validatedUser)):
     from .call_registry import CallRegistry as NewCallRegistry
     categories = NewCallRegistry().categories()
     return yamlfy(**categories.model_dump())
-
-@app.get('/api/call/categories/update')
-def updateClaimTypes(user = Depends(validatedUser)):
-    with erp() as O:
-        CallRegistry().updateAnnotationCategories(O)
-    return yamlfy(info=ns(message='ok'))
 
 @app.get('/api/calendar/{person}')
 def shift_calendar(person):
