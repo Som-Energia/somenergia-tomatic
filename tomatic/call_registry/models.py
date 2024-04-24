@@ -56,6 +56,6 @@ class CallLog(pydantic.BaseModel):
 
 
 class UpdatedCallLog(CallLog):
-    odoo_id: int
+    updated_id: int
 
 

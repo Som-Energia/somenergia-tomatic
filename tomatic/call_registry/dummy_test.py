@@ -51,7 +51,7 @@ class DummyTest(unittest.TestCase):
         response = self.registry.add_incoming_call(
             NewCall(**call),
         )
-        return response.odoo_id
+        return response.updated_id
 
     def assertModelEqual(self, model, expected):
         self.assertNsEqual(model.model_dump(), expected)
@@ -200,7 +200,7 @@ class DummyTest(unittest.TestCase):
 
         # then we get back the list of calls with the modification
         self.assertModelEqual(response, ns(
-            odoo_id = edited_call.id,
+            updated_id = edited_call.id,
             calls = [
                 edited_call.model_dump(),
             ],
@@ -224,7 +224,7 @@ class DummyTest(unittest.TestCase):
 
         # then we get back the list of calls with the modification
         self.assertModelEqual(response, ns(
-            odoo_id = edited_call.id,
+            updated_id = edited_call.id,
             calls = [
                 unmodified_call.model_dump(),
                 edited_call.model_dump(),

@@ -19,8 +19,6 @@ Detected issues
         - update_call_and_get_operator_calls expects call.odoo_id
         - we are using id but could change it
         - OK -> id
-    - Retorned id, odoo_id -> updated_id
-        - Ok
     - All dates as tz informed iso strings (current dummy second call returns a dummy DateTime)
         - OK dates intercanviades totes en format string iso json amb T i Z
 - Categories
@@ -137,7 +135,7 @@ def main():
         call_timestamp=now,
     ))
 
-    created_call_id = result.odoo_id
+    created_call_id = result.updated_id
     dump(result)
 
     step("Editing existing call")
