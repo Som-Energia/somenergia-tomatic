@@ -7,6 +7,9 @@ TODO:
 - Pass limits and dates to call list
 - Wait: Error handling is not implemented in odoo yet
 - Blocked: When doing ui, decide whether we can get profit of the returned calls in create/update ops. If not remove them.
+- create didn't save categories
+- create does not takes caller_vat
+- update accessed odoo_id instead of id
 - dummy data vats are nifs (missing ES)
 """
 
@@ -59,17 +62,14 @@ class CallRegistry():
             operator=operator,
         ))
         self._process_server_errors(result)
-        # TODO: Remove this hack
         result = self._fix_calls(result)
         return CallLog(**result)
 
     def add_incoming_call(self, newcall: NewCall) -> UpdatedCallLog:
         newcall = newcall.model_dump(mode='json')
-        # TODO: Remove this hack
         newcall = self._fix_create_call(newcall)
         result = self.erp.CrmPhonecall.create_call_and_get_operator_calls(newcall)
         self._process_server_errors(result)
-        # TODO: Remove this hack
         result = self._fix_calls(result)
         return UpdatedCallLog(**result)
 
@@ -78,7 +78,6 @@ class CallRegistry():
         call = self._fix_create_call(call)
         result = self.erp.CrmPhonecall.update_call_and_get_operator_calls(call)
         self._process_server_errors(result)
-        # TODO: Remove this hack
         result = self._fix_calls(result)
         return UpdatedCallLog(**result)
 
