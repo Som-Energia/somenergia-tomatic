@@ -33,7 +33,7 @@ from consolemsg import error, step, warn, u
 from . import __version__ as version
 from . import callinfo
 from .callregistry import CallRegistry
-from .call_registry.models import NewCall
+from .call_registry.models import NewCall, Call
 from . import schedulestorage
 from . import schedulestorageforcedturns
 from .pbx import pbxqueue as pbx
@@ -509,16 +509,11 @@ def get_user_call_log(user=None, validatedUser = Depends(validatedUser)):
 @app.post('/api/call/annotate')
 async def annotate_call(request: Request, user = Depends(validatedUser)):
     "Annotates a call"
-    annotation = ns.loads(await request.body())
-    CallRegistry().annotateCall(annotation)
-    user = annotation.get('user', None)
-    if user:
-        await asyncio.gather(
-            *backchannel.notifyCallLogChanged(user)
-        )
-    return yamlfy(info=ns(
-        message="ok"
-    ))
+    call = ns.loads(await request.body())
+    from .call_registry import CallRegistry as NewCallRegistry
+    annotation = Call(**call)
+    call = NewCallRegistry().modify_existing_call(annotation)
+    return yamlfy(**call.model_dump())
 
 @app.get('/api/call/categories')
 def call_annotation_categories(user = Depends(validatedUser)):

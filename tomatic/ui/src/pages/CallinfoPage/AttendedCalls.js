@@ -170,7 +170,7 @@ function CallEntry({ item, disabled }) {
   const solved = item.category_ids.length !== 0
   const itemClicked = function (ev) {
     if (solved) return
-    CallInfo.toggleLog(item.call_timestamp, item.phone_number)
+    CallInfo.toggleLog(item.id, item.call_timestamp, item.phone_number)
   }
   return (
     <ListItem

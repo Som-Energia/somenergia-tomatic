@@ -33,20 +33,38 @@ export default function TypificationDialog({ onClose }) {
       ? contract.number + ' - ' + contract.cups_adress
       : ' Cap contracte especificat'
 
+  const id = CallInfo.call.id
+
   function handleClose() {
     onClose()
   }
   function submit() {
+    const call = {
+      operator: userid,
+      call_timestamp: timestamp,
+      // pbx_call_id: not yet
+      phone_number: phoneNumber,
+      // caller_erp_id: optional
+      caller_vat: partner?.dni,
+      // caller_name: ??
+      // contract_erp_id: optional
+      // contract_address
+      contract_number: contract?.number,  
+      category_ids: typification.map((t) => t.id),
+      comments: comment,
+      id: 12345, // TODO: check
+    }
+    CallInfo.modifyCall(call)
     // TODO: actually submit
-    console.log('Emulating submission:', {
-      user: userid,
-      partner: partner?.dni,
-      contract: contract?.number,
-      calldate: timestamp,
-      callphone: phoneNumber,
-      typification: typification.map((t) => t.key),
-      comment: comment,
-    })
+    // console.log('Emulating submission:', {
+    //   user: userid,
+    //   partner: partner?.dni,
+    //   contract: contract?.number,
+    //   calldate: timestamp,
+    //   callphone: phoneNumber,
+    //   typification: typification.map((t) => t.key),
+    //   comment: comment,
+    // })
     onClose()
   }
   const isValid = typification.length !== 0

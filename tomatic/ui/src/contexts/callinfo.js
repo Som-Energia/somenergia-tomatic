@@ -26,6 +26,7 @@ CallInfo.search_query = subscriptable((...args) => {
 })
 
 CallInfo.call = {
+  id: '', // call id
   phone: '', // phone of the currently selected call registry
   date: '', // isodate of the last unbinded search or the currently selected call registry
   category: '', // annotated category for the call
@@ -346,13 +347,22 @@ CallInfo.retrievePersonCalls = function () {
     )
 }
 
+CallInfo.modifyCall = function (call) {
+  api.request({
+    method: 'POST',
+    url: '/api/call/annotate',
+    body: { ...call },
+  })
+}
+
 CallInfo.isLogSelected = function (date) {
   return CallInfo.call.date === date
 }
 
-CallInfo.selectLog = function (date, phone) {
+CallInfo.selectLog = function (id, date, phone) {
   CallInfo.clearAnnotation()
   CallInfo.resetSearch()
+  CallInfo.call.id = id
   CallInfo.call.date = date
   CallInfo.call.phone = phone
   CallInfo.search_query({
@@ -372,12 +382,12 @@ CallInfo.deselectLog = function () {
   CallInfo.currentCall.notify()
 }
 
-CallInfo.toggleLog = function (date, phone) {
+CallInfo.toggleLog = function (id, date, phone) {
   //console.log("Toggling", date, phone, CallInfo.call.date);
   if (CallInfo.isLogSelected(date)) {
     CallInfo.deselectLog()
   } else {
-    CallInfo.selectLog(date, phone)
+    CallInfo.selectLog(id, date, phone)
   }
 }
 
