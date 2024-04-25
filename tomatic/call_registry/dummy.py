@@ -33,7 +33,7 @@ class CallRegistry():
 
     def add_incoming_call(self, newcall: NewCall) -> UpdatedCallLog:
         log = self._load_calls(newcall.operator)
-        updated_id = random.getrandbits(128)
+        updated_id = random.getrandbits(32)
         log.calls.append(
             Call(
                 id=updated_id,

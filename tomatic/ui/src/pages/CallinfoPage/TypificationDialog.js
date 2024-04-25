@@ -52,19 +52,10 @@ export default function TypificationDialog({ onClose }) {
       contract_number: contract?.number,  
       category_ids: typification.map((t) => t.id),
       comments: comment,
-      id: 12345, // TODO: check
+      id: id,
     }
+    console.log(id)
     CallInfo.modifyCall(call)
-    // TODO: actually submit
-    // console.log('Emulating submission:', {
-    //   user: userid,
-    //   partner: partner?.dni,
-    //   contract: contract?.number,
-    //   calldate: timestamp,
-    //   callphone: phoneNumber,
-    //   typification: typification.map((t) => t.key),
-    //   comment: comment,
-    // })
     onClose()
   }
   const isValid = typification.length !== 0
