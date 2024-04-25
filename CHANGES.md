@@ -9,6 +9,7 @@
     - Contract and Person info is stored (erp id, code and description)
     - Removed all the claim stuff by now
     - Categories have colors and can be disabled for new calls (but visible in already typified calls)
+- New cli option for api: `--call-registry` to override configured callregistry backend
 - Upgrade notes:
     - New dbconfig tomatic.callregistry (dummy or odoo)
     - FastAPI version upgraded to avoid warning messages
