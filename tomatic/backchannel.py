@@ -1,4 +1,5 @@
 from consolemsg import step
+import json
 
 class BackChannel(object):
     """
@@ -26,10 +27,14 @@ class BackChannel(object):
         else:
             error("Type of message not recognized.")
 
-    def broadCastUserSessions(self, user, message):
+    def broadCastUserSessions(self, user, type, **kwds):
         """
         Sends the same message to all sessions of the same user.
         """
+        message = json.dumps(dict(
+            type=type,
+            **kwds
+        ))
         return [
             self._senders[sessionId](message)
             for sessionId, sessionuser in self._users.items()
@@ -47,12 +52,16 @@ class BackChannel(object):
         del self._senders[sessionId]
         del self._users[sessionId]
 
-    def notifyIncommingCall(self, user, callerid, time):
-        return self.broadCastUserSessions(user, f"PHONE:{callerid}:{time}")
+    def notifyIncommingCall(self, user, phone, time, call_id):
+        return self.broadCastUserSessions(user, "PHONE",
+            call_id=call_id,
+            phone=phone,
+            date=time,
+        )
 
     def notifyCallLogChanged(self, user):
         if user is None: return []
-        return self.broadCastUserSessions(user, f"REFRESH:{user}")
+        return self.broadCastUserSessions(user, "REFRESH")
 
 
 

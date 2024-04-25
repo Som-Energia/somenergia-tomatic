@@ -471,7 +471,7 @@ async def notifyIncommingCall(phone: str, extension: str, callid: str = None):
     phone = cleanupPhone(phone)
     pbx_call_id = callid or f"{time}-{phone}"
 
-    CallRegistry().add_incoming_call(
+    result = CallRegistry().add_incoming_call(
         NewCall(
             operator=user,
             call_timestamp=time,
@@ -480,7 +480,7 @@ async def notifyIncommingCall(phone: str, extension: str, callid: str = None):
         )
     )
 
-    notifications = backchannel.notifyIncommingCall(user, phone, time)
+    notifications = backchannel.notifyIncommingCall(user, phone, time, result.updated_id)
     if not notifications:
         warn(
             f"No sesion on extension {extension} "

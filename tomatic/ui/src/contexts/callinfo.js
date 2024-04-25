@@ -423,16 +423,17 @@ CallInfo.sendIdentification = function () {
 
 CallInfo.onMessageReceived = function (event) {
   console.log('WS:', event.data)
-  var message = event.data.split(':')
-  var type_of_message = message[0]
-  if (type_of_message === 'PHONE') {
-    var phone = message[1]
-    var date = message[2] + ':' + message[3] + ':' + message[4]
-    CallInfo.callReceived(date, phone)
+  const message = JSON.parse(event.data)
+  if (message.type === 'PHONE') {
+    CallInfo.callReceived(
+      message.date,
+      message.phone,
+      message.callid,
+    )
     CallInfo.retrievePersonCalls()
     return
   }
-  if (type_of_message === 'REFRESH') {
+  if (message.type === 'REFRESH') {
     CallInfo.retrievePersonCalls()
     return
   }
