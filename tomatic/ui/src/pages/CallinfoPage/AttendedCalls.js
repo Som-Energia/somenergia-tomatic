@@ -98,8 +98,8 @@ function FormatedCall({ info }) {
         <Tooltip
           title={
             <span>
-              {filtered_categories.map((category) => (
-                <div>{`[${category.code}] ${category.name}`}</div>
+              {filtered_categories.map((category, i) => (
+                <div key={i}>{`[${category.code}] ${category.name}`}</div>
               ))}
             </span>
           }
@@ -114,11 +114,11 @@ function FormatedCall({ info }) {
               color: 'gray',
             }}
           >
-            {filtered_categories.map((category) => (
-              <>
+            {filtered_categories.map((category, i) => (
+              <React.Fragment key={i}>
                 &nbsp;
                 {category.code}
-              </>
+              </React.Fragment>
             ))}
           </span>
         </Tooltip>
@@ -234,7 +234,7 @@ function AttendedCallList() {
               needsDate = true
             }
             return (
-              <React.Fragment key={item.call_timestamp}>
+              <React.Fragment key={index}>
                 {needsDate && (
                   <ListSubheader className="registres dateseparator">
                     {itemWeekDay + ' ' + itemDate}
