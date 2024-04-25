@@ -348,11 +348,19 @@ CallInfo.retrievePersonCalls = function () {
 }
 
 CallInfo.modifyCall = function (call) {
+  const context = "Tipificant la trucada"
   api.request({
     method: 'POST',
     url: '/api/call/annotate',
     body: { ...call },
-  })
+  }).then(
+    function(response) {
+      // all ok
+    },
+    function(error) {
+      messages.error(error+'', {context})
+    }
+  )
 }
 
 CallInfo.isLogSelected = function (date) {
