@@ -32,7 +32,6 @@ from consolemsg import error, step, warn, u
 
 from . import __version__ as version
 from . import callinfo
-from .callregistry import CallRegistry as OldCallRegistry
 from .call_registry.models import NewCall, Call
 from .call_registry import CallRegistry
 from . import schedulestorage
