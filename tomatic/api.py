@@ -32,8 +32,9 @@ from consolemsg import error, step, warn, u
 
 from . import __version__ as version
 from . import callinfo
-from .callregistry import CallRegistry
+from .callregistry import CallRegistry as OldCallRegistry
 from .call_registry.models import NewCall, Call
+from .call_registry import CallRegistry
 from . import schedulestorage
 from . import schedulestorageforcedturns
 from .pbx import pbxqueue as pbx
@@ -471,18 +472,7 @@ async def notifyIncommingCall(phone: str, extension: str, callid: str = None):
     phone = cleanupPhone(phone)
     pbx_call_id = callid or f"{time}-{phone}"
 
-    # TODO: cleanup old call registration
-    CallRegistry().annotateCall(ns(
-        user = user,
-        date = time,
-        phone = phone,
-        partner = '',
-        contract = '',
-        reason = '',
-    ))
-
-    from .call_registry import CallRegistry as NewCallRegistry
-    NewCallRegistry().add_incoming_call(
+    CallRegistry().add_incoming_call(
         NewCall(
             operator=user,
             call_timestamp=time,
@@ -502,17 +492,15 @@ async def notifyIncommingCall(phone: str, extension: str, callid: str = None):
 @app.get('/api/call/log')
 @app.get('/api/call/log/{user}')
 def get_user_call_log(user=None, validatedUser = Depends(validatedUser)):
-    from .call_registry import CallRegistry as NewCallRegistry
-    calls = NewCallRegistry().get_calls(operator=user or validatedUser.get('username'))
+    calls = CallRegistry().get_calls(operator=user or validatedUser.get('username'))
     return yamlfy(**calls.model_dump())
 
 @app.post('/api/call/annotate')
 async def annotate_call(request: Request, user = Depends(validatedUser)):
     "Annotates a call"
     call = ns.loads(await request.body())
-    from .call_registry import CallRegistry as NewCallRegistry
-    annotation = Call(**call)
-    calls = NewCallRegistry().modify_existing_call(annotation)
+    call = Call(**call)
+    calls = CallRegistry().modify_existing_call(call)
     if user:
         # Notify all the browser tabs the user has open
         notifications = backchannel.notifyCallLogChanged(user)
@@ -522,8 +510,7 @@ async def annotate_call(request: Request, user = Depends(validatedUser)):
 @app.get('/api/call/categories')
 def call_annotation_categories(user = Depends(validatedUser)):
     "Returns a list of categories to annotate calls"
-    from .call_registry import CallRegistry as NewCallRegistry
-    categories = NewCallRegistry().categories()
+    categories = CallRegistry().categories()
     return yamlfy(**categories.model_dump())
 
 @app.get('/api/calendar/{person}')
