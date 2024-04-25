@@ -512,8 +512,8 @@ async def annotate_call(request: Request, user = Depends(validatedUser)):
     call = ns.loads(await request.body())
     from .call_registry import CallRegistry as NewCallRegistry
     annotation = Call(**call)
-    call = NewCallRegistry().modify_existing_call(annotation)
-    return yamlfy(**call.model_dump())
+    calls = NewCallRegistry().modify_existing_call(annotation)
+    return yamlfy(**calls.model_dump())
 
 @app.get('/api/call/categories')
 def call_annotation_categories(user = Depends(validatedUser)):
