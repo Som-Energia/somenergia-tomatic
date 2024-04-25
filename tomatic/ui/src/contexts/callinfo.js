@@ -359,10 +359,9 @@ CallInfo.isLogSelected = function (date) {
   return CallInfo.call.date === date
 }
 
-CallInfo.selectLog = function (id, date, phone) {
+CallInfo.selectLog = function (date, phone) {
   CallInfo.clearAnnotation()
   CallInfo.resetSearch()
-  CallInfo.call.id = id
   CallInfo.call.date = date
   CallInfo.call.phone = phone
   CallInfo.search_query({
@@ -382,12 +381,12 @@ CallInfo.deselectLog = function () {
   CallInfo.currentCall.notify()
 }
 
-CallInfo.toggleLog = function (id, date, phone) {
+CallInfo.toggleLog = function (date, phone) {
   //console.log("Toggling", date, phone, CallInfo.call.date);
   if (CallInfo.isLogSelected(date)) {
     CallInfo.deselectLog()
   } else {
-    CallInfo.selectLog(id, date, phone)
+    CallInfo.selectLog(date, phone)
   }
 }
 
