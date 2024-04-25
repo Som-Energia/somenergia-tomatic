@@ -1,3 +1,6 @@
+body
+  --call-list-button: #228B22
+
 body:has(.kumato-mode)
   --call-list-background: #242424
   --call-list-color: white
@@ -184,20 +187,14 @@ body
   .contract-details
     margin: 10px
 
-  .icon-exit
-    font-size: 25px
-    color: #E1232C
-
   .icon-lock
-    font-size: 16px
+    color: var(--call-list-button)
 
   .icon-new-tab
-    font-size: 16px
-    color: #228B22
+    color: var(--call-list-button)
 
   .icon-clipboard
-    font-size: 22px
-    color: #228B22
+    color: var(--call-list-button)
 
   .tooltip
     --tooltip-arrow-size: 5px

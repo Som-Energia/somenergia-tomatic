@@ -11,6 +11,10 @@ import ListItemText from '@mui/material/ListItemText'
 import IconButton from '@mui/material/IconButton'
 import CircularProgress from '@mui/material/CircularProgress'
 import Tooltip from '@mui/material/Tooltip'
+import ContentPasteIcon from '@mui/icons-material/ContentPaste'
+import LockOpenIcon from '@mui/icons-material/LockOpen'
+import LockIcon from '@mui/icons-material/Lock'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import CallInfo from '../../contexts/callinfo'
 import Auth from '../../services/auth'
 import { useDialog } from '../../components/DialogProvider'
@@ -30,13 +34,11 @@ function CallLockButton() {
         CallInfo.autoRefresh.toggle()
       }}
     >
-      <div className="icon-lock">
-        {autoRefresh ? (
-          <i className="fas fa-lock-open" />
-        ) : (
-          <i className="fas fa-lock" />
-        )}
-      </div>
+      {autoRefresh ? (
+        <LockOpenIcon className="icon-lock" />
+      ) : (
+        <LockIcon className="icon-lock" />
+      )}
     </IconButton>
   )
 }
@@ -49,9 +51,7 @@ function NewTabButton() {
         window.open(window.location, '_blank')
       }}
     >
-      <div className="icon-new-tab">
-        <i className="fas fa-external-link-alt" />
-      </div>
+      <OpenInNewIcon className="icon-new-tab" />
     </IconButton>
   )
 }
@@ -74,9 +74,7 @@ function AnnotationButton() {
       }}
       disabled={CallInfo.savingAnnotation || Auth.username() === ''}
     >
-      <div className="icon-clipboard">
-        <i className="far fa-clipboard" />
-      </div>
+      <ContentPasteIcon className="icon-clipboard" />
     </IconButton>
   )
 }
