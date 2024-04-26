@@ -63,7 +63,8 @@ setup(
         'psutil', # execution
         'pony',
         'emili',
-        'fastapi',
+        'fastapi>=0.110', # Using new api
+        'pydantic>=2', # Using new api
         'python-multipart', # formdata in fastapi
         'uvicorn[standard]', # server for fastapi (standard for websockets)
         'aiofiles', # Static files for fastapi
