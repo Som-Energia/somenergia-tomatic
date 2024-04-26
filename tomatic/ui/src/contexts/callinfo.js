@@ -356,12 +356,14 @@ CallInfo.toggleLog = function (date, phone, call_id) {
 }
 
 CallInfo.callData = function (call_id) {
+  const context = `Cercant dades per la trucada ${call_id}`
+  if (!call_id) return
   for (const call of CallInfo.personCalls() || []) {
     if (call.id === call_id) {
       return call
     }
   }
-  console.warning(`Failed to obtain data for call id ${call_id}`)
+  messages.warning("No s'ha trobat", {context})
 }
 
 CallInfo.searchCustomer = function () {

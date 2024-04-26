@@ -40,7 +40,7 @@ export default function TypificationDialog({ onClose }) {
     onClose()
   }
   function submit() {
-    const callData = CallInfo.callData(call_id) || {
+    const baseCall = CallInfo.callData(call_id) || {
       // Manual call from scratch
       call_timestamp: timestamp,
       operator: userid,
@@ -48,7 +48,7 @@ export default function TypificationDialog({ onClose }) {
       phone_number: phoneNumber,
     }
     const call = {
-      ...callData,
+      ...baseCall,
       caller_erp_id: partner?.erp_id,
       caller_vat: partner?.dni,
       caller_name: partner?.name,
