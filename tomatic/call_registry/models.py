@@ -7,12 +7,11 @@ VatNumber = Annotated[
     pydantic.AfterValidator(stdnum.eu.vat.validate),
 ]   
 
-RgbColor = pydantic.constr(
+RgbColor = Annotated[str, pydantic.StringConstraints(
     pattern="^#([a-fA-F0-9]{3}){1,2}$",
     to_lower=True,
     strip_whitespace=True,
-)
-
+)]
 
 class Category(
     pydantic.BaseModel,
