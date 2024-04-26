@@ -167,6 +167,15 @@ tomatic_pbx:
         Fer servir només quan es canvia alguna extensió o si es creen usuaris nous
         i no es poden esperar a divendres.
 
+desenvolupament:
+  description: Scripts de desenvolupament ⚠️ ☢️☣️
+  scripts:
+    proves_callregistry_odoo:
+      title: Prova callregistry odoo
+      description: Exercita els punts d'entrada d'odoo pel call registry
+      workdir: .
+      script: .venv/bin/python -m tomatic.call_registry.odoo
+
 tomatic_old:
   description: Tomàtic (Historics)
   scripts:
