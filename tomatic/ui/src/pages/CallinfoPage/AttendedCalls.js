@@ -60,7 +60,7 @@ function AnnotationButton() {
 
   return (
     <IconButton
-      title={'Anota la trucada fent servir aquest contracte'}
+      title={'Anota la trucada seleccionada fent servir aquest contracte'}
       onClick={() => {
         const oldAutoRefresh = CallInfo.autoRefresh()
         CallInfo.autoRefresh(false)
@@ -95,11 +95,11 @@ function FormatedCall({ info }) {
         </span>
         <Tooltip
           title={
-            <span>
+            <>
               {filtered_categories.map((category, i) => (
-                <div key={i}>{`[${category.code}] ${category.name}`}</div>
+                <Box key={i}>{`[${category.code}] ${category.name}`}</Box>
               ))}
-            </span>
+            </>
           }
         >
           <span
@@ -133,7 +133,11 @@ function FormatedCall({ info }) {
               }}
               title={info.caller_name}
             >
-              {info.caller_name ? info.caller_name : 'Nom no informat'}
+              {info.caller_name
+                ? info.caller_name
+                : info.caller_erp_id
+                ? 'Nom no informat'
+                : 'Persona no identificada'}
             </span>
             <span style={{ color: 'gray' }}>{vat2nif(info.caller_vat)}</span>
           </>
@@ -157,7 +161,7 @@ function FormatedCall({ info }) {
           </>
         )}
       </Stack>
-      {!solved ? <span className="pending">{"Pendent d'anotar"}</span> : ''}
+      {!solved ? <Box className="pending">{"Pendent d'anotar"}</Box> : ''}
     </>
   )
 }
