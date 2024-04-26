@@ -167,12 +167,12 @@ function FormatedCall({ call }) {
 }
 
 function CallEntry({ call, disabled }) {
-  const currentCall = useSubscriptable(CallInfo.currentCall)
-  const isSelected = call.call_timestamp === currentCall
+  const currentCall = CallInfo.currentCall.use()
+  const isSelected = call.id === currentCall
   const solved = call.category_ids.length !== 0
   const itemClicked = function (ev) {
     if (solved) return
-    CallInfo.toggleLog(call.call_timestamp, call.phone_number)
+    CallInfo.toggleLog(call.call_timestamp, call.phone_number, call.id)
   }
   return (
     <ListItem

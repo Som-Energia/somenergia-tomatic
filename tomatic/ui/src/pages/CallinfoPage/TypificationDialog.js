@@ -12,14 +12,17 @@ import TypificationChooser from './TypificationChooser'
 import AuthContext from '../../contexts/AuthContext'
 
 export default function TypificationDialog({ onClose }) {
+  const now = new Date().toISOString()
   const [comment, setComment] = React.useState('')
   const [typification, setTypification] = React.useState([])
   const { userid, fullname } = React.useContext(AuthContext)
   const partner = CallInfo.selectedPartner()
   const contract = CallInfo.selectedContract()
-  const phoneNumber = CallInfo.call.phone || 'Entrada manual'
-  const timestamp =
-    CallInfo.call.date === '' ? new Date().toISOString() : CallInfo.call.date
+  const call_id = CallInfo.currentCall.use()
+
+  const call = CallInfo.callData(call_id)
+  const phoneNumber = call?.phone_number || 'Entrada manual'
+  const timestamp = call?.call_timestamp || now
   const day = new Date(timestamp).toLocaleDateString()
   const time = new Date(timestamp).toLocaleTimeString()
   const person =
@@ -33,28 +36,28 @@ export default function TypificationDialog({ onClose }) {
       ? contract.number + ' - ' + contract.cups_adress
       : ' Cap contracte especificat'
 
-  const id = CallInfo.call.id
-
   function handleClose() {
     onClose()
   }
   function submit() {
-    const call = {
-      operator: userid,
+    const callData = CallInfo.callData(call_id) || {
+      // Manual call from scratch
       call_timestamp: timestamp,
-      // pbx_call_id: not yet
+      operator: userid,
+      pbx_call_id: phoneNumber.split().join('') + now,
       phone_number: phoneNumber,
-      // caller_erp_id: optional
+    }
+    const call = {
+      ...callData,
+      caller_erp_id: partner?.erp_id,
       caller_vat: partner?.dni,
-      // caller_name: ??
-      // contract_erp_id: optional
-      // contract_address
+      caller_name: partner?.name,
+      contract_erp_id: contract?.erp_id,
+      contract_address: contract?.cups_adress,
       contract_number: contract?.number,  
       category_ids: typification.map((t) => t.id),
       comments: comment,
-      id: id,
     }
-    console.log(id)
     CallInfo.modifyCall(call)
     onClose()
   }

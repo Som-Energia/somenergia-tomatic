@@ -25,17 +25,6 @@ CallInfo.search_query = subscriptable((...args) => {
   CallInfo.search_query.notify()
 })
 
-CallInfo.call = {
-  id: '', // call id
-  phone: '', // phone of the currently selected call registry
-  date: '', // isodate of the last unbinded search or the currently selected call registry
-  category: '', // annotated category for the call
-  notes: '', // annotated comments for the call
-}
-CallInfo.currentCall = subscriptable(() => {
-  return CallInfo.call.date
-})
-
 CallInfo.savingAnnotation = false
 
 var postAnnotation = function (annotation) {
@@ -64,31 +53,6 @@ var postAnnotation = function (annotation) {
     )
 }
 
-CallInfo.saveCallLog = function () {
-  CallInfo.savingAnnotation = true
-  var partner = CallInfo.selectedPartner()
-  var contract = CallInfo.selectedContract()
-  var user = Auth.username()
-  var partner_code = partner !== null ? partner.id_soci : ''
-  var contract_number = contract !== null ? contract.number : ''
-  var isodate = CallInfo.call.date || new Date().toISOString()
-  postAnnotation({
-    user: user,
-    date: isodate,
-    phone: CallInfo.call.phone,
-    partner: partner_code,
-    contract: contract_number,
-    reason: CallInfo.call.category.description,
-    notes: CallInfo.call.notes,
-  })
-}
-
-CallInfo.clearAnnotation = function () {
-  CallInfo.call.category = ''
-  CallInfo.call.notes = ''
-  CallInfo.savingAnnotation = false
-}
-
 // Nicely clears search results
 CallInfo.resetSearch = function () {
   CallInfo.selectPartner(0)
@@ -101,11 +65,11 @@ CallInfo.changeUser = function (newUser) {
   CallInfo.autoRefresh(true)
 }
 
-CallInfo.callReceived = function (date, phone) {
+CallInfo.callReceived = function (date, phone, call_id) {
   if (!CallInfo.autoRefresh()) {
     return
   }
-  CallInfo.selectLog(date, phone)
+  CallInfo.selectLog(date, phone, call_id)
 }
 
 function formatContractNumber(number) {
@@ -246,10 +210,6 @@ var retrieveInfo = function () {
         const results = response.info.info
         fixContractNumbers(results)
         CallInfo.results(results)
-        if (CallInfo.call.date === '') {
-          // TODO: If selection is none
-          CallInfo.call.date = new Date().toISOString()
-        }
         // Keep the context, just in case a second query is started
         // and CallInfo.results() is overwritten
         var context = CallInfo.results()
@@ -287,7 +247,6 @@ var retrieveInfo = function () {
     )
 }
 
-
 CallInfo.notifyUsage = function (event) {
   api.request({
     method: 'POST',
@@ -320,7 +279,6 @@ CallInfo.retrieveCategories = function () {
       },
     )
 }
-
 
 CallInfo.personCalls = reactiveProp([]) // User call registry
 
@@ -367,44 +325,47 @@ CallInfo.modifyCall = function (call) {
     )
 }
 
-CallInfo.isLogSelected = function (date) {
-  return CallInfo.call.date === date
+CallInfo.currentCall = reactiveProp(null)
+
+CallInfo.isLogSelected = function (call_id) {
+  return CallInfo.currentCall() === call_id
 }
 
-CallInfo.selectLog = function (date, phone) {
-  CallInfo.clearAnnotation()
+CallInfo.selectLog = function (date, phone, call_id) {
   CallInfo.resetSearch()
-  CallInfo.call.date = date
-  CallInfo.call.phone = phone
   CallInfo.search_query({
     text: phone,
     field: 'phone',
   })
-  CallInfo.currentCall.notify()
+  CallInfo.currentCall(call_id)
   retrieveInfo()
 }
 
 CallInfo.deselectLog = function () {
-  CallInfo.clearAnnotation()
   CallInfo.resetSearch()
-  CallInfo.call.date = ''
-  CallInfo.call.phone = ''
   CallInfo.search_query({ text: '' })
-  CallInfo.currentCall.notify()
+  CallInfo.currentCall(null)
 }
 
-CallInfo.toggleLog = function (date, phone) {
-  //console.log("Toggling", date, phone, CallInfo.call.date);
-  if (CallInfo.isLogSelected(date)) {
+CallInfo.toggleLog = function (date, phone, call_id) {
+  if (CallInfo.isLogSelected(call_id)) {
     CallInfo.deselectLog()
   } else {
-    CallInfo.selectLog(date, phone)
+    CallInfo.selectLog(date, phone, call_id)
   }
+}
+
+CallInfo.callData = function (call_id) {
+  for (const call of CallInfo.personCalls() || []) {
+    if (call.id === call_id) {
+      return call
+    }
+  }
+  console.warning(`Failed to obtain data for call id ${call_id}`)
 }
 
 CallInfo.searchCustomer = function () {
   // clear
-  CallInfo.clearAnnotation()
   CallInfo.resetSearch()
   // end of clear
   if (CallInfo.search_query().text === '') return
@@ -429,11 +390,7 @@ CallInfo.onMessageReceived = function (event) {
   console.log('WS:', event.data)
   const message = JSON.parse(event.data)
   if (message.type === 'PHONE') {
-    CallInfo.callReceived(
-      message.date,
-      message.phone,
-      message.callid,
-    )
+    CallInfo.callReceived(message.date, message.phone, message.call_id)
     CallInfo.retrievePersonCalls()
     return
   }
