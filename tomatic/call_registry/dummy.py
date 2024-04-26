@@ -59,6 +59,8 @@ class CallRegistry():
             if candidate.id == call.id:
                 calls.calls[index] = call
                 break
+        else:
+            raise Exception(f"Call {call.id} not found (TODO: better handling of this case)")
 
         self._save_calls(call.operator, calls)
         return UpdatedCallLog(
