@@ -1,9 +1,9 @@
 import React from 'react'
 import Box from '@mui/material/Box'
-import Chip from '@mui/material/Chip'
 import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
 import CallInfo from '../../contexts/callinfo'
+import CategoryChip from './CategoryChip'
 
 export default function TypificationChooser({ typification, setTypification }) {
   const categories = CallInfo.categories.use()
@@ -75,23 +75,7 @@ export default function TypificationChooser({ typification, setTypification }) {
         // Only for the color
         value.map((option, index) => {
           const props = getTagProps({ index })
-          return (
-            <Chip
-              {...props}
-              sx={{
-                ...props.sx,
-                bgcolor: option.color,
-                color: (theme) =>
-                  option.color && theme.palette.getContrastText(option.color),
-                '.MuiChip-deleteIcon': {
-                  color: (theme) =>
-                    option.color && theme.palette.getContrastText(option.color),
-                  opacity: 0.9,
-                },
-              }}
-              label={option.name}
-            />
-          )
+          return <CategoryChip category={option} {...props} />
         })
       }
     />
