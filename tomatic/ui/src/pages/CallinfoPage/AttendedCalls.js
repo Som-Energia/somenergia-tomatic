@@ -15,6 +15,9 @@ import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 import LockOpenIcon from '@mui/icons-material/LockOpen'
 import LockIcon from '@mui/icons-material/Lock'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import SellIcon from '@mui/icons-material/Sell'
+import CommentIcon from '@mui/icons-material/Comment'
+import CategoryChip from './CategoryChip'
 import CallInfo from '../../contexts/callinfo'
 import Auth from '../../services/auth'
 import { useDialog } from '../../components/DialogProvider'
@@ -92,33 +95,36 @@ function FormatedCall({ call }) {
         <span className="phone">
           {call.phone_number ? call.phone_number : 'Registre Manual'}
         </span>
-        <Tooltip
-          title={
-            <>
-              {filtered_categories.map((category, i) => (
-                <Box key={i}>{`[${category.code}] ${category.name}`}</Box>
-              ))}
-            </>
-          }
-        >
-          <span
-            style={{
-              textAlign: 'right',
-              flex: 1,
-              whiteSpace: 'nowrap',
-              textOverflow: 'ellipsis',
-              overflow: 'hidden',
-              color: 'gray',
-            }}
-          >
-            {filtered_categories.map((category, i) => (
-              <React.Fragment key={i}>
-                &nbsp;
-                {category.code}
-              </React.Fragment>
-            ))}
-          </span>
-        </Tooltip>
+        <Stack direction="row" justifyContent="end" gap={1} flex={1}>
+          {call.comments && (
+            <Tooltip
+              arrow
+              sx={{ color: 'gray', alignText: 'right' }}
+              title={<Box whiteSpace="pre-wrap">{call.comments}</Box>}
+            >
+              <CommentIcon />
+            </Tooltip>
+          )}
+          {call.category_ids?.length ? (
+            <Tooltip
+              arrow
+              sx={{
+                color: 'gray',
+                alignText: 'right',
+                '& .MuiTooltip-tooltip': { maxWidth: 'none', bgcolor: 'red' },
+              }}
+              title={
+                <>
+                  {filtered_categories.map((category, i) => (
+                    <CategoryChip key={i} size="small" {...{ category }} />
+                  ))}
+                </>
+              }
+            >
+              <SellIcon />
+            </Tooltip>
+          ) : null}
+        </Stack>
       </Stack>
       <Stack direction="row" justifyContent="space-between" gap={1}>
         {solved && (
@@ -182,10 +188,7 @@ function CallEntry({ call, disabled }) {
       onClick={solved ? undefined : itemClicked}
       button={!solved}
     >
-      <ListItemText
-        primary={<FormatedCall call={call} />}
-        title={call.comments}
-      />
+      <ListItemText primary={<FormatedCall call={call} />} />
     </ListItem>
   )
 }
