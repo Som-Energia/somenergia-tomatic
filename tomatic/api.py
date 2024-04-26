@@ -471,14 +471,13 @@ async def notifyIncommingCall(phone: str, extension: str, callid: str = None):
     phone = cleanupPhone(phone)
     pbx_call_id = callid or f"{time}-{phone}"
 
-    result = CallRegistry().add_incoming_call(
-        NewCall(
-            operator=user,
-            call_timestamp=time,
-            phone_number=phone,
-            pbx_call_id=pbx_call_id,
-        )
+    call = NewCall(
+        operator=user,
+        call_timestamp=time,
+        phone_number=phone,
+        pbx_call_id=pbx_call_id,
     )
+    result = CallRegistry().add_incoming_call(call)
 
     notifications = backchannel.notifyIncommingCall(user, phone, time, result.updated_id)
     if not notifications:
