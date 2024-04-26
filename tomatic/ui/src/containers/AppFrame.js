@@ -83,12 +83,13 @@ const AppBar = styled(MuiAppBar, {
 
 function ResponsiveAppBar({ children }) {
   const isKumatoMode = Tomatic.isKumatoMode.use()
+  const variant = Tomatic.variant.use()
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [drawerOpen, setDrawerOpen] = React.useState(false)
 
   const appBackground =
-    variantBackground[Tomatic.variant] || appBackground_tomatic
-  const appTitle = variantTitle[Tomatic.variant] || variantTitle['tomatic']
+    variantBackground[variant] || appBackground_tomatic
+  const appTitle = variantTitle[variant] || variantTitle['tomatic']
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
@@ -98,7 +99,7 @@ function ResponsiveAppBar({ children }) {
   }
 
   return (
-    <Box id="tomatic" className={'main variant-' + Tomatic.variant}>
+    <Box id="tomatic" className={'main variant-' + variant}>
       <AppBar
         position="sticky"
         sx={{

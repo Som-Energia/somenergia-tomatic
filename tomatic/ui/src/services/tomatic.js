@@ -21,7 +21,7 @@ Tomatic.init = function () {
 
 // Server version
 
-Tomatic.variant = 'tomatic'
+Tomatic.variant = reactiveProp('tomatic')
 Tomatic.versionTimer = 0
 Tomatic.checkVersionPeriodically = function () {
   console.log('Checking version')
@@ -41,7 +41,7 @@ Tomatic.checkVersion = function () {
       url: '/api/version',
     })
     .then(function (response) {
-      Tomatic.variant = response.variant
+      Tomatic.variant(response.variant)
       if (response.version === Tomatic.packageinfo.version) return
       console.log(
         'New server version',
