@@ -15,6 +15,7 @@ from .auth import validatedUser
 from . import persons
 from .testutils import environ
 from .call_registry.dummy import CallRegistry
+from .call_registry.models import NewCall, Call
 
 def setNow(year,month,day,hour,minute):
     api.now=lambda:datetime(year,month,day,hour,minute)
@@ -289,6 +290,96 @@ class Api_Test(unittest.TestCase):
               id: {id}
               operator: vic
               pbx_call_id: {pbx_call_id}
+              phone_number: '567567567'
+        """)
+
+    def test__annotate_manual_call(self):
+        call = NewCall(
+            call_timestamp="2020-02-02T02:02:02Z",
+            pbx_call_id='my_pbx_id',
+            phone_number='567567567',
+            category_ids= [1,2],
+            comments= '',
+            operator='vic',
+        )
+
+
+        response = self.client.post('/api/call/annotate',
+            data=self.model_yaml(call),
+        )
+
+        data = ns.loads(response.text)
+        calls = data.get("calls", [])
+        id = data.get('updated_id', 'updated_id not informed')
+        call_timestamp = calls[0].get('call_timestamp', "call_timestamp not informed")
+        self.assertResponseEqual(response, f"""
+            updated_id: {id}
+            calls:
+            - call_timestamp: {call_timestamp}
+              caller_erp_id: null
+              caller_name: ''
+              caller_vat: ''
+              category_ids: [1,2]
+              comments: ''
+              contract_address: ''
+              contract_erp_id: null
+              contract_number: ''
+              id: {id}
+              operator: vic
+              pbx_call_id: 'my_pbx_id'
+              phone_number: '567567567'
+        """)
+
+    def model_yaml(self, model):
+        return ns(model.model_dump(mode='json')).dump().encode('utf-8'),
+
+
+    def test__annotate_existing_call(self):
+        # Given an existing call
+        existing_call = NewCall(
+            call_timestamp="2020-02-02T02:02:02Z",
+            pbx_call_id='my_pbx_id',
+            phone_number='567567567',
+            operator='vic',
+        )
+        response = self.client.post('/api/call/annotate',
+            data=self.model_yaml(existing_call)
+        )
+        data = ns.loads(response.text)
+        id = data.updated_id
+        saved_existing_call = data.calls[0]
+
+        # When we annotate the call
+        edited_call = Call(
+            **dict(
+                saved_existing_call,
+                category_ids= [1,2],
+                comments= '',
+            )
+        )
+        response = self.client.put('/api/call/annotate', # POST->PUT is different
+            data=self.model_yaml(edited_call),
+        )
+
+        # Then the call is updated with the annotation
+        data = ns.loads(response.text)
+        calls = data.get("calls", [])
+        call_timestamp = saved_existing_call.call_timestamp
+        self.assertResponseEqual(response, f"""
+            updated_id: {id}
+            calls:
+            - call_timestamp: {call_timestamp}
+              caller_erp_id: null
+              caller_name: ''
+              caller_vat: ''
+              category_ids: [1,2]
+              comments: ''
+              contract_address: ''
+              contract_erp_id: null
+              contract_number: ''
+              id: {id}
+              operator: vic
+              pbx_call_id: 'my_pbx_id'
               phone_number: '567567567'
         """)
 

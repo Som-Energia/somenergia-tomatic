@@ -495,7 +495,7 @@ def get_user_call_log(user=None, validatedUser = Depends(validatedUser)):
     return yamlfy(**calls.model_dump())
 
 @app.put('/api/call/annotate')
-async def annotate_call(request: Request, user = Depends(validatedUser)):
+async def annotate_existing_call(request: Request, user = Depends(validatedUser)):
     "Annotates an existing call"
     call = ns.loads(await request.body())
     call = Call(**call)
@@ -507,7 +507,7 @@ async def annotate_call(request: Request, user = Depends(validatedUser)):
     return yamlfy(**calls.model_dump())
 
 @app.post('/api/call/annotate')
-async def annotate_call(request: Request, user = Depends(validatedUser)):
+async def annotate_manual_call(request: Request, user = Depends(validatedUser)):
     "Creates a new manual call"
     call = ns.loads(await request.body())
     call = NewCall(**call)
