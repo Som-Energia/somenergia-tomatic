@@ -499,10 +499,10 @@ async def annotate_call(request: Request, user = Depends(validatedUser)):
     call = ns.loads(await request.body())
     call = Call(**call)
     calls = CallRegistry().modify_existing_call(call)
-    if user:
-        # Notify all the browser tabs the user has open
-        notifications = backchannel.notifyCallLogChanged(user)
-        await asyncio.gather(*notifications)
+    # Notify all the browser tabs the user has open
+    notifications = backchannel.notifyCallLogChanged(user)
+    step(f"Notificant a {len(notifications)} sessions de {user}")
+    await asyncio.gather(*notifications)
     return yamlfy(**calls.model_dump())
 
 @app.get('/api/call/categories')
