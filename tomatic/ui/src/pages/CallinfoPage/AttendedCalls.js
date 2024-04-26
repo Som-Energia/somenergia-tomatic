@@ -79,19 +79,19 @@ function AnnotationButton() {
   )
 }
 
-function FormatedCall({ info }) {
+function FormatedCall({ call }) {
   const categories = CallInfo.categories.use()
-  const time = new Date(info.call_timestamp).toLocaleTimeString()
-  const solved = info.category_ids.length !== 0
+  const time = new Date(call.call_timestamp).toLocaleTimeString()
+  const solved = call.category_ids.length !== 0
   const filtered_categories = categories.filter(({ id }) =>
-    info.category_ids.includes(id),
+    call.category_ids.includes(id),
   )
   return (
     <>
       <Stack direction="row" justifyContent="space-between" gap={1}>
         <span className="time">{time}</span>
         <span className="phone">
-          {info.phone_number ? info.phone_number : 'Registre Manual'}
+          {call.phone_number ? call.phone_number : 'Registre Manual'}
         </span>
         <Tooltip
           title={
@@ -131,20 +131,20 @@ function FormatedCall({ info }) {
                 textOverflow: 'ellipsis',
                 overflow: 'hidden',
               }}
-              title={info.caller_name}
+              title={call.caller_name}
             >
-              {info.caller_name
-                ? info.caller_name
-                : info.caller_erp_id
+              {call.caller_name
+                ? call.caller_name
+                : call.caller_erp_id
                 ? 'Nom no informat'
                 : 'Persona no identificada'}
             </span>
-            <span style={{ color: 'gray' }}>{vat2nif(info.caller_vat)}</span>
+            <span style={{ color: 'gray' }}>{vat2nif(call.caller_vat)}</span>
           </>
         )}
       </Stack>
       <Stack direction="row" justifyContent="space-between" gap={1}>
-        {solved && info.contract_number && (
+        {solved && call.contract_number && (
           <>
             <span
               className="contract"
@@ -153,11 +153,11 @@ function FormatedCall({ info }) {
                 textOverflow: 'ellipsis',
                 overflow: 'hidden',
               }}
-              title={info.contract_address}
+              title={call.contract_address}
             >
-              {info.contract_address}
+              {call.contract_address}
             </span>
-            <span style={{ color: 'gray' }}>{info.contract_number}</span>
+            <span style={{ color: 'gray' }}>{call.contract_number}</span>
           </>
         )}
       </Stack>
@@ -166,17 +166,17 @@ function FormatedCall({ info }) {
   )
 }
 
-function CallEntry({ item, disabled }) {
+function CallEntry({ call, disabled }) {
   const currentCall = useSubscriptable(CallInfo.currentCall)
-  const isSelected = item.call_timestamp === currentCall
-  const solved = item.category_ids.length !== 0
+  const isSelected = call.call_timestamp === currentCall
+  const solved = call.category_ids.length !== 0
   const itemClicked = function (ev) {
     if (solved) return
-    CallInfo.toggleLog(item.call_timestamp, item.phone_number)
+    CallInfo.toggleLog(call.call_timestamp, call.phone_number)
   }
   return (
     <ListItem
-      key={item.call_timestamp}
+      key={call.call_timestamp}
       className={'registres' + (isSelected ? ' selected' : '')}
       selected={isSelected}
       disabled={disabled}
@@ -184,8 +184,8 @@ function CallEntry({ item, disabled }) {
       button={!solved}
     >
       <ListItemText
-        primary={<FormatedCall info={item} />}
-        title={item.comments}
+        primary={<FormatedCall call={call} />}
+        title={call.comments}
       />
     </ListItem>
   )
@@ -222,10 +222,10 @@ function AttendedCallList() {
         {personCalls
           .slice(0)
           .reverse()
-          .map(function (item, index) {
+          .map(function (call, index) {
             var needsDate = false
-            var itemDate = new Date(item.call_timestamp).toLocaleDateString()
-            var itemWeekDay = new Date(item.call_timestamp).toLocaleDateString(
+            var itemDate = new Date(call.call_timestamp).toLocaleDateString()
+            var itemWeekDay = new Date(call.call_timestamp).toLocaleDateString(
               undefined,
               {
                 weekday: 'long',
@@ -242,7 +242,7 @@ function AttendedCallList() {
                     {itemWeekDay + ' ' + itemDate}
                   </ListSubheader>
                 )}
-                <CallEntry item={item} />
+                <CallEntry call={call} />
               </React.Fragment>
             )
           })}
