@@ -494,12 +494,24 @@ def get_user_call_log(user=None, validatedUser = Depends(validatedUser)):
     calls = CallRegistry().get_calls(operator=user or validatedUser.get('username'))
     return yamlfy(**calls.model_dump())
 
-@app.post('/api/call/annotate')
+@app.put('/api/call/annotate')
 async def annotate_call(request: Request, user = Depends(validatedUser)):
-    "Annotates a call"
+    "Annotates an existing call"
     call = ns.loads(await request.body())
     call = Call(**call)
     calls = CallRegistry().modify_existing_call(call)
+    # Notify all the browser tabs the user has open
+    notifications = backchannel.notifyCallLogChanged(user)
+    step(f"Notificant a {len(notifications)} sessions de {user}")
+    await asyncio.gather(*notifications)
+    return yamlfy(**calls.model_dump())
+
+@app.post('/api/call/annotate')
+async def annotate_call(request: Request, user = Depends(validatedUser)):
+    "Creates a new manual call"
+    call = ns.loads(await request.body())
+    call = NewCall(**call)
+    calls = CallRegistry().add_incoming_call(call)
     # Notify all the browser tabs the user has open
     notifications = backchannel.notifyCallLogChanged(user)
     step(f"Notificant a {len(notifications)} sessions de {user}")

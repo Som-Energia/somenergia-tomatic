@@ -301,9 +301,9 @@ CallInfo.modifyCall = function (call) {
   CallInfo.savingAnnotation = true
   api
     .request({
-      method: 'POST',
+      method: call.id ? 'PUT' : 'POST',
       url: '/api/call/annotate',
-      body: { ...call },
+      body: { ...call, id: call.id || undefined },
     })
     .then(
       function (response) {
@@ -357,9 +357,8 @@ CallInfo.callData = function (call_id) {
       return call
     }
   }
-  messages.warning("No s'ha trobat", {context})
+  messages.warning("No s'ha trobat", { context })
 }
-
 
 ///// Web Sockets
 
