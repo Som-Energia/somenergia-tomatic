@@ -1,6 +1,9 @@
 import pydantic
+from typing_extensions import Self
 from typing import Literal, Annotated, Optional, Union
 import stdnum.eu.vat
+import re
+import datetime
 
 VatNumber = Annotated[
     str,
@@ -12,6 +15,15 @@ RgbColor = Annotated[str, pydantic.StringConstraints(
     to_lower=True,
     strip_whitespace=True,
 )]
+
+def _cleanupPhone(phone):
+    phone = re.sub('[^0-9]', '', phone) # remove non digits
+    phone = re.sub(r'^0?0?34','', phone) # remove prefixes
+    return phone
+
+PhoneNumber = Annotated[str,
+    pydantic.BeforeValidator(_cleanupPhone),
+]
 
 class Category(
     pydantic.BaseModel,
@@ -31,8 +43,8 @@ class NewCall(pydantic.BaseModel):
     call_timestamp: pydantic.AwareDatetime
 
     # Optional: not informed when a manual call
+    phone_number: PhoneNumber = ''
     pbx_call_id: str = ''
-    phone_number: str = ''
 
     # Caller: optional when caller not in database
     caller_erp_id: Optional[int] = None
@@ -46,6 +58,15 @@ class NewCall(pydantic.BaseModel):
 
     category_ids: list[int] = []
     comments: str = ""
+
+    @pydantic.model_validator(mode='after')
+    def _default_pbx_call_id(self) -> Self:
+        "If empty, sets a default pbx id based on other attributes"
+        if not self.pbx_call_id:
+            timestamp = self.call_timestamp
+            utctime = timestamp.astimezone(datetime.timezone.utc)
+            self.pbx_call_id = f"{utctime:%Y-%m-%dT%H:%M:%SZ}-{self.phone_number}"
+        return self
 
 class Call(NewCall):
     id: int

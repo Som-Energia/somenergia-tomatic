@@ -460,31 +460,21 @@ async def notify_incomming_call(
     """
     return await notifyIncommingCall(phone, ext, callid)
 
-# TODO: move cleanup to models
-def cleanupPhone(phone):
-    phone = re.sub('[^0-9]', '', phone) # remove non digits
-    phone = re.sub(r'^0?0?34','', phone) # remove prefixes
-    return phone
-
 async def notifyIncommingCall(phone: str, extension: str, callid: str = None):
-    time = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
     user = persons.byExtension(extension)
-    phone = cleanupPhone(phone)
-    pbx_call_id = callid or f"{time}-{phone}"
 
     call = NewCall(
         operator=user,
-        call_timestamp=time,
+        call_timestamp=datetime.now(timezone.utc),
         phone_number=phone,
-        pbx_call_id=pbx_call_id,
     )
     result = CallRegistry().add_incoming_call(call)
 
-    notifications = backchannel.notifyIncommingCall(user, phone, time, result.updated_id)
+    notifications = backchannel.notifyIncommingCall(user, call.phone_number, str(call.call_timestamp), result.updated_id)
     if not notifications:
         warn(
             f"No sesion on extension {extension} "
-            f"to notify incomming call from {phone} at {time}")
+            f"to notify incomming call from {call.phone_number} at {call.call_timestamp}")
     await asyncio.gather(*notifications)
     return yamlfy(result='ok')
 
