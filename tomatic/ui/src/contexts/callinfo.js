@@ -10,10 +10,14 @@ import dummy_categories from '../data/categories.yaml'
 var websock = null
 var CallInfo = {}
 
+///// Auto refresh (the lock icon)
+
 CallInfo.autoRefresh = reactiveProp(true)
 CallInfo.autoRefresh.toggle = () => {
   CallInfo.autoRefresh(!CallInfo.autoRefresh())
 }
+
+///// Search params
 
 CallInfo._search_query = {
   text: '',
@@ -25,44 +29,23 @@ CallInfo.search_query = subscriptable((...args) => {
   CallInfo.search_query.notify()
 })
 
-CallInfo.savingAnnotation = false
-
-var postAnnotation = function (annotation) {
-  api
-    .request({
-      method: 'POST',
-      url: '/api/call/annotate',
-      body: annotation,
-    })
-    .then(
-      function (response) {
-        console.debug('Info POST Response: ', response)
-        if (response.info.message !== 'ok') {
-          console.debug(
-            'Error al desar motius telefon: ',
-            response.info.message,
-          )
-        } else {
-          console.debug('INFO case saved')
-          CallInfo.deselectLog()
-        }
-      },
-      function (error) {
-        console.debug('Info POST apicall failed: ', error)
-      },
-    )
-}
-
 // Nicely clears search results
 CallInfo.resetSearch = function () {
   CallInfo.selectPartner(0)
   CallInfo.results({})
 }
 
-CallInfo.changeUser = function (newUser) {
+CallInfo.searchCustomer = function () {
+  CallInfo.resetSearch()
+  if (CallInfo.search_query().text === '') return
+  retrieveInfo()
+}
+
+CallInfo.handleUserChanged = function (newUser) {
   CallInfo.deselectLog()
   CallInfo.personCalls([])
   CallInfo.autoRefresh(true)
+  CallInfo.retrievePersonCalls()
 }
 
 CallInfo.callReceived = function (date, phone, call_id) {
@@ -126,6 +109,8 @@ CallInfo.searchStatus = function () {
   return 'SUCCESS'
 }
 
+///// Person and Contract tabs status
+
 CallInfo.currentPerson = 0 // Selected person from search data
 CallInfo.currentContract = 0 // Selected contract selected person
 
@@ -172,7 +157,8 @@ CallInfo.selectPartner = function (idx) {
   CallInfo.selectedContract.notify()
 }
 
-// Retrieved search data
+///// Search results
+
 CallInfo.results = reactiveProp({})
 CallInfo.loadingDetails = reactiveProp(false)
 
@@ -247,6 +233,8 @@ var retrieveInfo = function () {
     )
 }
 
+///// Usage instrumentation
+
 CallInfo.notifyUsage = function (event) {
   api.request({
     method: 'POST',
@@ -257,7 +245,7 @@ CallInfo.notifyUsage = function (event) {
   })
 }
 
-// Call categories
+///// Call categories
 
 CallInfo.categories = reactiveProp([])
 CallInfo.retrieveCategories = function () {
@@ -279,6 +267,8 @@ CallInfo.retrieveCategories = function () {
       },
     )
 }
+
+///// Call log
 
 CallInfo.personCalls = reactiveProp([]) // User call registry
 
@@ -305,8 +295,10 @@ CallInfo.retrievePersonCalls = function () {
     )
 }
 
+CallInfo.savingAnnotation = false
 CallInfo.modifyCall = function (call) {
   const context = 'Tipificant la trucada'
+  CallInfo.savingAnnotation = true
   api
     .request({
       method: 'POST',
@@ -315,11 +307,13 @@ CallInfo.modifyCall = function (call) {
     })
     .then(
       function (response) {
+        CallInfo.savingAnnotation = false
         messages.success('Anotació desada', { context })
         CallInfo.deselectLog()
         CallInfo.personCalls(response.calls)
       },
       function (error) {
+        CallInfo.savingAnnotation = false
         messages.error(error + '', { context })
       },
     )
@@ -366,13 +360,8 @@ CallInfo.callData = function (call_id) {
   messages.warning("No s'ha trobat", {context})
 }
 
-CallInfo.searchCustomer = function () {
-  // clear
-  CallInfo.resetSearch()
-  // end of clear
-  if (CallInfo.search_query().text === '') return
-  retrieveInfo()
-}
+
+///// Web Sockets
 
 var connectWebSocket = function () {
   var url = new URL('/backchannel', window.location.href)
@@ -416,6 +405,8 @@ CallInfo.emulateCall = function (phone, extension) {
     })
 }
 
+///// Global Initialization
+
 CallInfo.retrieveCategories()
 CallInfo.retrievePersonCalls()
 
@@ -424,8 +415,8 @@ Auth.onLogin.subscribe(CallInfo.sendIdentification)
 Auth.onLogin.subscribe(CallInfo.retrievePersonCalls)
 Auth.onLogout.subscribe(CallInfo.sendIdentification)
 Auth.onLogout.subscribe(CallInfo.retrievePersonCalls)
-Auth.onUserChanged.subscribe(CallInfo.changeUser)
-Auth.onUserChanged.subscribe(CallInfo.retrievePersonCalls)
+Auth.onUserChanged.subscribe(CallInfo.handleUserChanged)
+// TODO: Avoid development reload is creating a new connection on every edit
 connectWebSocket()
 
 export default CallInfo

@@ -83,6 +83,7 @@ class CallRegistry():
 
 
 def main():
+    # Run me with: python -m tomatic.call_registry.odoo
     import datetime
     from yamlns import ns
     from consolemsg import step, warn

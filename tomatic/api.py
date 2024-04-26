@@ -460,6 +460,7 @@ async def notify_incomming_call(
     """
     return await notifyIncommingCall(phone, ext, callid)
 
+# TODO: move cleanup to models
 def cleanupPhone(phone):
     phone = re.sub('[^0-9]', '', phone) # remove non digits
     phone = re.sub(r'^0?0?34','', phone) # remove prefixes
