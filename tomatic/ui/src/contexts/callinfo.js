@@ -10,10 +10,14 @@ import dummy_categories from '../data/categories.yaml'
 var websock = null
 var CallInfo = {}
 
+///// Auto refresh (the lock icon)
+
 CallInfo.autoRefresh = reactiveProp(true)
 CallInfo.autoRefresh.toggle = () => {
   CallInfo.autoRefresh(!CallInfo.autoRefresh())
 }
+
+///// Search params
 
 CallInfo._search_query = {
   text: '',
@@ -25,86 +29,30 @@ CallInfo.search_query = subscriptable((...args) => {
   CallInfo.search_query.notify()
 })
 
-CallInfo.call = {
-  phone: '', // phone of the currently selected call registry
-  date: '', // isodate of the last unbinded search or the currently selected call registry
-  category: '', // annotated category for the call
-  notes: '', // annotated comments for the call
-}
-CallInfo.currentCall = subscriptable(() => {
-  return CallInfo.call.date
-})
-
-CallInfo.savingAnnotation = false
-
-var postAnnotation = function (annotation) {
-  api
-    .request({
-      method: 'POST',
-      url: '/api/call/annotate',
-      body: annotation,
-    })
-    .then(
-      function (response) {
-        console.debug('Info POST Response: ', response)
-        if (response.info.message !== 'ok') {
-          console.debug(
-            'Error al desar motius telefon: ',
-            response.info.message,
-          )
-        } else {
-          console.debug('INFO case saved')
-          CallInfo.deselectLog()
-        }
-      },
-      function (error) {
-        console.debug('Info POST apicall failed: ', error)
-      },
-    )
-}
-
-CallInfo.saveCallLog = function () {
-  CallInfo.savingAnnotation = true
-  var partner = CallInfo.selectedPartner()
-  var contract = CallInfo.selectedContract()
-  var user = Auth.username()
-  var partner_code = partner !== null ? partner.id_soci : ''
-  var contract_number = contract !== null ? contract.number : ''
-  var isodate = CallInfo.call.date || new Date().toISOString()
-  postAnnotation({
-    user: user,
-    date: isodate,
-    phone: CallInfo.call.phone,
-    partner: partner_code,
-    contract: contract_number,
-    reason: CallInfo.call.category.description,
-    notes: CallInfo.call.notes,
-  })
-}
-
-CallInfo.clearAnnotation = function () {
-  CallInfo.call.category = ''
-  CallInfo.call.notes = ''
-  CallInfo.savingAnnotation = false
-}
-
 // Nicely clears search results
 CallInfo.resetSearch = function () {
   CallInfo.selectPartner(0)
   CallInfo.results({})
 }
 
-CallInfo.changeUser = function (newUser) {
+CallInfo.searchCustomer = function () {
+  CallInfo.resetSearch()
+  if (CallInfo.search_query().text === '') return
+  retrieveInfo()
+}
+
+CallInfo.handleUserChanged = function (newUser) {
   CallInfo.deselectLog()
   CallInfo.personCalls([])
   CallInfo.autoRefresh(true)
+  CallInfo.retrievePersonCalls()
 }
 
-CallInfo.callReceived = function (date, phone) {
+CallInfo.callReceived = function (date, phone, call_id) {
   if (!CallInfo.autoRefresh()) {
     return
   }
-  CallInfo.selectLog(date, phone)
+  CallInfo.selectLog(date, phone, call_id)
 }
 
 function formatContractNumber(number) {
@@ -161,6 +109,8 @@ CallInfo.searchStatus = function () {
   return 'SUCCESS'
 }
 
+///// Person and Contract tabs status
+
 CallInfo.currentPerson = 0 // Selected person from search data
 CallInfo.currentContract = 0 // Selected contract selected person
 
@@ -207,7 +157,8 @@ CallInfo.selectPartner = function (idx) {
   CallInfo.selectedContract.notify()
 }
 
-// Retrieved search data
+///// Search results
+
 CallInfo.results = reactiveProp({})
 CallInfo.loadingDetails = reactiveProp(false)
 
@@ -245,10 +196,6 @@ var retrieveInfo = function () {
         const results = response.info.info
         fixContractNumbers(results)
         CallInfo.results(results)
-        if (CallInfo.call.date === '') {
-          // TODO: If selection is none
-          CallInfo.call.date = new Date().toISOString()
-        }
         // Keep the context, just in case a second query is started
         // and CallInfo.results() is overwritten
         var context = CallInfo.results()
@@ -286,6 +233,7 @@ var retrieveInfo = function () {
     )
 }
 
+///// Usage instrumentation
 
 CallInfo.notifyUsage = function (event) {
   api.request({
@@ -297,7 +245,7 @@ CallInfo.notifyUsage = function (event) {
   })
 }
 
-// Call categories
+///// Call categories
 
 CallInfo.categories = reactiveProp([])
 CallInfo.retrieveCategories = function () {
@@ -311,8 +259,8 @@ CallInfo.retrieveCategories = function () {
 
         if (!response) return
         // TODO: Take them from the API
-        //CallInfo.categories(response.categories)
-        CallInfo.categories(dummy_categories.categories)
+        CallInfo.categories(response.categories)
+        //CallInfo.categories(dummy_categories.categories)
       },
       function (error) {
         console.debug('Info GET apicall failed: ', error)
@@ -320,31 +268,7 @@ CallInfo.retrieveCategories = function () {
     )
 }
 
-CallInfo.updatingCategories = false // Whether we are still loading crm categoies
-CallInfo.updateCategories = function () {
-  CallInfo.updatingCategories = true
-  api
-    .request({
-      url: '/api/call/categories/update',
-    })
-    .then(
-      function (response) {
-        console.debug('Info GET Response: ', response)
-        if (response.info.message !== 'ok') {
-          console.debug(
-            'Error al actualitzar les categories de trucades telefòniques: ',
-            response.info.message,
-          )
-        } else {
-          CallInfo.updatingCategories = false
-          CallInfo.retrieveCategories()
-        }
-      },
-      function (error) {
-        console.debug('Info GET apicall failed: ', error)
-      },
-    )
-}
+///// Call log
 
 CallInfo.personCalls = reactiveProp([]) // User call registry
 
@@ -357,20 +281,12 @@ CallInfo.retrievePersonCalls = function () {
   CallInfo.personCalls(undefined) // Loading
   api
     .request({
-      url: '/api/personlog/' + username,
+      url: '/api/call/log',
     })
     .then(
       function (response) {
         console.debug('Info GET Response: ', response)
-        if (response.info.message !== 'ok') {
-          console.debug(
-            'Error al obtenir trucades ateses.',
-            response.info.message,
-          )
-          CallInfo.personCalls([])
-        } else {
-          CallInfo.personCalls(response.info.info)
-        }
+        CallInfo.personCalls(response.calls)
       },
       function (error) {
         CallInfo.personCalls([])
@@ -379,49 +295,72 @@ CallInfo.retrievePersonCalls = function () {
     )
 }
 
-CallInfo.isLogSelected = function (date) {
-  return CallInfo.call.date === date
+CallInfo.savingAnnotation = false
+CallInfo.modifyCall = function (call) {
+  const context = 'Tipificant la trucada'
+  CallInfo.savingAnnotation = true
+  api
+    .request({
+      method: call.id ? 'PUT' : 'POST',
+      url: '/api/call/annotate',
+      body: { ...call, id: call.id || undefined },
+    })
+    .then(
+      function (response) {
+        CallInfo.savingAnnotation = false
+        messages.success('Anotació desada', { context })
+        CallInfo.deselectLog()
+        CallInfo.personCalls(response.calls)
+      },
+      function (error) {
+        CallInfo.savingAnnotation = false
+        messages.error(error + '', { context })
+      },
+    )
 }
 
-CallInfo.selectLog = function (date, phone) {
-  CallInfo.clearAnnotation()
+CallInfo.currentCall = reactiveProp(null)
+
+CallInfo.isLogSelected = function (call_id) {
+  return CallInfo.currentCall() === call_id
+}
+
+CallInfo.selectLog = function (date, phone, call_id) {
   CallInfo.resetSearch()
-  CallInfo.call.date = date
-  CallInfo.call.phone = phone
   CallInfo.search_query({
     text: phone,
     field: 'phone',
   })
-  CallInfo.currentCall.notify()
+  CallInfo.currentCall(call_id)
   retrieveInfo()
 }
 
 CallInfo.deselectLog = function () {
-  CallInfo.clearAnnotation()
   CallInfo.resetSearch()
-  CallInfo.call.date = ''
-  CallInfo.call.phone = ''
   CallInfo.search_query({ text: '' })
-  CallInfo.currentCall.notify()
+  CallInfo.currentCall(null)
 }
 
-CallInfo.toggleLog = function (date, phone) {
-  //console.log("Toggling", date, phone, CallInfo.call.date);
-  if (CallInfo.isLogSelected(date)) {
+CallInfo.toggleLog = function (date, phone, call_id) {
+  if (CallInfo.isLogSelected(call_id)) {
     CallInfo.deselectLog()
   } else {
-    CallInfo.selectLog(date, phone)
+    CallInfo.selectLog(date, phone, call_id)
   }
 }
 
-CallInfo.searchCustomer = function () {
-  // clear
-  CallInfo.clearAnnotation()
-  CallInfo.resetSearch()
-  // end of clear
-  if (CallInfo.search_query().text === '') return
-  retrieveInfo()
+CallInfo.callData = function (call_id) {
+  const context = `Cercant dades per la trucada ${call_id}`
+  if (!call_id) return
+  for (const call of CallInfo.personCalls() || []) {
+    if (call.id === call_id) {
+      return call
+    }
+  }
+  messages.warning("No s'ha trobat", { context })
 }
+
+///// Web Sockets
 
 var connectWebSocket = function () {
   var url = new URL('/backchannel', window.location.href)
@@ -439,16 +378,13 @@ CallInfo.sendIdentification = function () {
 
 CallInfo.onMessageReceived = function (event) {
   console.log('WS:', event.data)
-  var message = event.data.split(':')
-  var type_of_message = message[0]
-  if (type_of_message === 'PHONE') {
-    var phone = message[1]
-    var date = message[2] + ':' + message[3] + ':' + message[4]
-    CallInfo.callReceived(date, phone)
+  const message = JSON.parse(event.data)
+  if (message.type === 'PHONE') {
+    CallInfo.callReceived(message.date, message.phone, message.call_id)
     CallInfo.retrievePersonCalls()
     return
   }
-  if (type_of_message === 'REFRESH') {
+  if (message.type === 'REFRESH') {
     CallInfo.retrievePersonCalls()
     return
   }
@@ -468,6 +404,8 @@ CallInfo.emulateCall = function (phone, extension) {
     })
 }
 
+///// Global Initialization
+
 CallInfo.retrieveCategories()
 CallInfo.retrievePersonCalls()
 
@@ -476,8 +414,8 @@ Auth.onLogin.subscribe(CallInfo.sendIdentification)
 Auth.onLogin.subscribe(CallInfo.retrievePersonCalls)
 Auth.onLogout.subscribe(CallInfo.sendIdentification)
 Auth.onLogout.subscribe(CallInfo.retrievePersonCalls)
-Auth.onUserChanged.subscribe(CallInfo.changeUser)
-Auth.onUserChanged.subscribe(CallInfo.retrievePersonCalls)
+Auth.onUserChanged.subscribe(CallInfo.handleUserChanged)
+// TODO: Avoid development reload is creating a new connection on every edit
 connectWebSocket()
 
 export default CallInfo

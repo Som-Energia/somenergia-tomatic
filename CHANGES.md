@@ -1,5 +1,28 @@
 # Changelog
 
+## Unreleased
+
+- Odoo based Call Registry for typifications
+- New typification system:
+    - Uses Odoo as backend, yaml backend also available for development or fallback
+    - Removed all the claim stuff by now
+    - Multiple categories can be applied to a call
+    - Comments are not mandatory
+    - Contract info includes erp id, contract number and address
+    - Customer info includes erp id, vat number and name
+    - Display more information in the call log and better organized
+    - Categories have colors to help identification
+    - Categories can be disables for new calls but still visible in already typified calls
+- New cli option for api: `--call-registry` to override configured callregistry backend
+- Upgrade notes:
+    - New dbconfig tomatic.callregistry (dummy or odoo)
+    - FastAPI version upgraded to avoid warning messages
+    - New envvar `TOMATIC_CALL_REGISTRY` to override call registry backend
+    - New envvar `TOMATIC_DATA_PATH` to override data path (by now, just works for the callregistry)
+    - Old data directory `callinfo/` can be cleanup.
+    - Now data/callregistry/ is used and just for for dummy purposes
+    - `callinfo/` and `data/callregistry` are not compatible in formats do not rename
+
 ## 5.7.1 2024-04-15
 
 - Fix: removed trailing slash in tomatic/says endpoint
@@ -36,6 +59,7 @@
 - A menu option to emulate an incoming call for testing purposes
 - Upgrade notes:
     - Node version 20 required
+    - Added new Python dependencies
 
 ## 5.5.3 2024-03-12
 

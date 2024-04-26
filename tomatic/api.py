@@ -32,7 +32,8 @@ from consolemsg import error, step, warn, u
 
 from . import __version__ as version
 from . import callinfo
-from .callregistry import CallRegistry
+from .call_registry.models import NewCall, Call
+from .call_registry import CallRegistry
 from . import schedulestorage
 from . import schedulestorageforcedturns
 from .pbx import pbxqueue as pbx
@@ -151,16 +152,16 @@ async def websocketSession(websocket: WebSocket):
 
 @app.get('/')
 @app.get('/{file}')
-def tomatic(request: Request, file=None):
+def web_site(request: Request, file=None):
     return FileResponse(distpath / (file or 'index.html'))
 
 @app.get('/static/{dir}/{file}')
-def tomatic(request: Request, file=None, dir=None):
+def static_files(request: Request, file=None, dir=None):
     return FileResponse(distpath / 'static' / dir / (file or 'index.html'))
 
 @app.get('/api/version')
 @yamlerrors
-def apiVersion():
+def api_version():
     return yamlfy(
         version = version,
         variant = os.environ.get('TOMATIC_VARIANT', 'tomatic')
@@ -177,7 +178,8 @@ def log_user_event(user, event):
 
 @app.post('/api/logger/{event}')
 @yamlerrors
-async def logger(request: Request, event: str):
+async def user_event_logger(request: Request, event: str):
+    "records an event for the user for instrumentation"
     log = ns.loads(await request.body())
     user = log.get('user', 'anonymous')
     log_user_event(user, event)
@@ -187,12 +189,12 @@ async def logger(request: Request, event: str):
 
 @app.get('/api/graella/list')
 @yamlerrors
-def listGraelles(user = Depends(validatedUser)):
+def timetable_list(user = Depends(validatedUser)):
     return yamlfy(weeks=schedules.list())
 
 @app.get('/api/graella/retireold')
 @yamlerrors
-def retireOldTimeTable(user = Depends(validatedUser)):
+def retire_old_timetables(user = Depends(validatedUser)):
     today = datetime.today()
     twoMondaysAgo = str((today - timedelta(days=today.weekday()+7*2)).date())
     step("Retiring timetables older than {}", twoMondaysAgo)
@@ -206,56 +208,60 @@ def retireOldTimeTable(user = Depends(validatedUser)):
 
 @app.get('/api/forcedturns')
 @yamlerrors
-async def graellaTornsFixesYaml(user = Depends(validatedUser)):
+async def forced_turns(user = Depends(validatedUser)):
     timetable = forcedTurns.load()
     return yamlfy(**timetable)
 
 @app.patch('/api/forcedturns/{day}/{houri}/{turni}/{name}')
 @yamlerrors
-async def editFixedSlot(day, houri: int, turni: int, name, request: Request, user = Depends(validatedUser)):
+async def forced_turns_edit_slot(day, houri: int, turni: int, name, request: Request, user = Depends(validatedUser)):
     user=user['username']
     try:
         forcedTurns.editSlot(day, houri, turni, name, user)
     except schedulestorageforcedturns.BadEdit as e:
         raise ApiError(str(e))
-    return await graellaTornsFixesYaml()
+    return await forced_turns()
 
-@app.patch('/api/forcedturns/addColumn')
+# TODO: Remove casing in urls
+@app.patch('/api/forcedturns/addColumn', deprecated=True)
+@app.patch('/api/forcedturns/line/add')
 @yamlerrors
-async def addColumn():
+async def forcedturns_add_line():
     try:
         forcedTurns.addColumn()
     except schedulestorageforcedturns.BadEdit as e:
         raise ApiError(str(e))
-    return await graellaTornsFixesYaml()
+    return await forced_turns()
 
-@app.patch('/api/forcedturns/removeColumn')
+# TODO: Remove casing in urls
+@app.patch('/api/forcedturns/removeColumn', deprecated=True)
+@app.patch('/api/forcedturns/line/remove')
 @yamlerrors
-async def removeColumn():
+async def forced_turns_delete_line():
     try:
         forcedTurns.removeColumn()
     except schedulestorageforcedturns.BadEdit as e:
         raise ApiError(str(e))
-    return await graellaTornsFixesYaml()
+    return await forced_turns()
 
 @app.get('/api/graella-{week}.yaml')
 @app.get('/api/graella/{week}')
 @yamlerrors
-def graellaYaml(week, user = Depends(validatedUser)):
+def timetable(week, user = Depends(validatedUser)):
     schedule = schedules.load(week)
 
     return yamlfy(**schedule)
 
 @app.patch('/api/graella/{week}/{day}/{houri}/{turni}/{name}')
 @yamlerrors
-async def editSlot(week, day, houri: int, turni: int, name, request: Request, user = Depends(validatedUser)):
+async def edit_timetable_slot(week, day, houri: int, turni: int, name, request: Request, user = Depends(validatedUser)):
     #user = (await request.body()).decode('utf8').split('"')[1]
     user=user['username']
     try:
         schedules.editSlot(week, day, houri, turni, name, user)
     except schedulestorage.BadEdit as e:
         raise ApiError(str(e))
-    return await graellaYaml(week)
+    return await timetable(week)
 
 
 def cachedQueueStatus(force=False):
@@ -268,7 +274,7 @@ def cachedQueueStatus(force=False):
 
 @app.post('/api/graella')
 @yamlerrors
-def uploadGraella(yaml: UploadFile = File(...), week=None, user = Depends(validatedUser)):
+def upload_timetable(yaml: UploadFile = File(...), week=None, user = Depends(validatedUser)):
     step("uploading {}".format(yaml.filename))
     graella = ns.load(yaml.file)
     logmsg = (
@@ -316,26 +322,15 @@ def resume_line(person, user = Depends(validatedUser)):
         currentQueue = cachedQueueStatus(force=True)
     )
 
-@app.get('/api/persons/extension/{extension}')
-@yamlerrors
-def personInfoFromExtension(extension, user = Depends(validatedUser)):
-    allpersons=persons.persons()
-    names = [name for name,ext in allpersons.extensions.items() if ext == extension]
-    if not names:
-        return 'nobody@somenergia.coop'
-    name = names[0]
-    email = allpersons.emails[name]
-    return email
-
 @app.get('/api/persons')
 @yamlerrors
-def personInfo():
+def person_info():
     result=persons.persons()
     return yamlfy(persons=result)
 
 @app.post('/api/person/{person}')
 @yamlerrors
-async def setPersonInfo(person, request: Request, user = Depends(validatedUser)):
+async def set_person_info(person, request: Request, user = Depends(validatedUser)):
     data = ns.loads(await request.body())
     if person != user.username:
         requireAdmin(user)
@@ -344,7 +339,7 @@ async def setPersonInfo(person, request: Request, user = Depends(validatedUser))
 
 @app.delete('/api/person/{person}')
 @yamlerrors
-async def deletePerson(person, user = Depends(validatedUser)):
+async def delete_person(person, user = Depends(validatedUser)):
     requireAdmin(user)
     persons.delete(person)
     return yamlfy(persons=persons.persons())
@@ -352,19 +347,21 @@ async def deletePerson(person, user = Depends(validatedUser)):
 @app.get('/api/busy/{person}')
 @yamlerrors
 def busy(person, user = Depends(validatedUser)):
+    "Get person's busy hours"
     from . import busy
     return yamlfy(**busy.busy(person))
 
 @app.post('/api/busy/{person}')
 @yamlerrors
-async def busy_post(person, request: Request, user = Depends(validatedUser)):
+async def set_busy(person, request: Request, user = Depends(validatedUser)):
+    "Set person's busy hours"
     from . import busy
     data = ns.loads(await request.body())
     return yamlfy(**busy.update_busy(person, data))
 
 @app.get('/api/busy/download/weekly')
 @yamlerrors
-def downloadWeeklyBusy(): # TODO requires validation
+def download_weekly_busy_hours_file(): # TODO requires validation
     response = FileResponse(
         path='indisponibilitats.conf',
         #as_attachment=True,
@@ -374,7 +371,7 @@ def downloadWeeklyBusy(): # TODO requires validation
 
 @app.get('/api/busy/download/oneshot')
 @yamlerrors
-def downloadOneShotBusy(): # TODO requires validation
+def download_one_shot_busy_hours_file(): # TODO requires validation
     return FileResponse(
         'oneshot.conf',
         #as_attachment=True,
@@ -383,7 +380,7 @@ def downloadOneShotBusy(): # TODO requires validation
 
 @app.get('/api/shifts/download/credit/{week}')
 @yamlerrors
-def downloadWeekShiftCredit(week): # TODO requires validation
+def download_week_shift_credit(week): # TODO requires validation
     try:
         credit = schedules.credit(week)
     except schedulestorage.StorageError as e:
@@ -399,7 +396,8 @@ def yamlinfoerror(code, message, *args, **kwds):
 
 @app.get('/api/info/{field}/{value}')
 @yamlerrors
-def getInfoPersonBy(field: callinfo.SearchField, value: str, user = Depends(validatedUser)):
+def customer_info(field: callinfo.SearchField, value: str, user = Depends(validatedUser)):
+    "Retrieves customer information"
     decoded_value = urllib.parse.unquote(value)
     data = None
     with erp() as O:
@@ -424,7 +422,8 @@ def getInfoPersonBy(field: callinfo.SearchField, value: str, user = Depends(vali
     return yamlfy(info=result)
 
 @app.post('/api/info/contractdetails')
-async def getContractDetails(request: Request, user = Depends(validatedUser)):
+async def contract_details(request: Request, user = Depends(validatedUser)):
+    "Returns lesser or slower details of the contracts"
     params = ns.loads(await request.body())
     with erp() as O:
         info = callinfo.CallInfo(O)
@@ -438,31 +437,50 @@ async def getContractDetails(request: Request, user = Depends(validatedUser)):
 
 
 @app.get('/api/info/ringring')
-async def callingPhone(phone: str, extension: str):
-    return await notifyIncommingCall(phone, extension)
+async def notify_incomming_call(
+    phone: str,
+    extension: str,
+    callid: str = None,
+):
+    """
+    Notifies (from a pbx) that there is an incomming call
+    from the phone number to the extension
+    """
+    return await notifyIncommingCall(phone, extension, callid)
 
 @app.post('/api/info/ringring')
-async def callingPhonePost(phone: str = Form(...), ext: str = Form(...)):
-    return await notifyIncommingCall(phone, ext)
+async def notify_incomming_call(
+    phone: str = Form(...),
+    ext: str = Form(...),
+    callid: str = Form(None)
+):
+    """
+    Notifies (from a pbx) that there is an incomming call
+    from the phone number to the extension
+    """
+    return await notifyIncommingCall(phone, ext, callid)
 
+# TODO: move cleanup to models
 def cleanupPhone(phone):
     phone = re.sub('[^0-9]', '', phone) # remove non digits
     phone = re.sub(r'^0?0?34','', phone) # remove prefixes
     return phone
 
-async def notifyIncommingCall(phone: str, extension: str):
+async def notifyIncommingCall(phone: str, extension: str, callid: str = None):
     time = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
     user = persons.byExtension(extension)
     phone = cleanupPhone(phone)
-    CallRegistry().annotateCall(ns(
-        user = user,
-        date = time,
-        phone = phone,
-        partner = '',
-        contract = '',
-        reason = '',
-    ))
-    notifications = backchannel.notifyIncommingCall(user, phone, time)
+    pbx_call_id = callid or f"{time}-{phone}"
+
+    call = NewCall(
+        operator=user,
+        call_timestamp=time,
+        phone_number=phone,
+        pbx_call_id=pbx_call_id,
+    )
+    result = CallRegistry().add_incoming_call(call)
+
+    notifications = backchannel.notifyIncommingCall(user, phone, time, result.updated_id)
     if not notifications:
         warn(
             f"No sesion on extension {extension} "
@@ -470,45 +488,45 @@ async def notifyIncommingCall(phone: str, extension: str):
     await asyncio.gather(*notifications)
     return yamlfy(result='ok')
 
+@app.get('/api/call/log')
+@app.get('/api/call/log/{user}')
+def get_user_call_log(user=None, validatedUser = Depends(validatedUser)):
+    calls = CallRegistry().get_calls(operator=user or validatedUser.get('username'))
+    return yamlfy(**calls.model_dump())
 
-@app.get('/api/personlog')
-@app.get('/api/personlog/{user}')
-def getCallLog(user=None, validatedUser = Depends(validatedUser)):
-    calls = CallRegistry().callsByUser(user or validatedUser)
-    return yamlfy(
-        info=ns(
-            info=calls,
-            message='ok',
-        )
-    )
-
+@app.put('/api/call/annotate')
+async def annotate_existing_call(request: Request, user = Depends(validatedUser)):
+    "Annotates an existing call"
+    call = ns.loads(await request.body())
+    call = Call(**call)
+    calls = CallRegistry().modify_existing_call(call)
+    # Notify all the browser tabs the user has open
+    notifications = backchannel.notifyCallLogChanged(user)
+    step(f"Notificant a {len(notifications)} sessions de {user}")
+    await asyncio.gather(*notifications)
+    return yamlfy(**calls.model_dump())
 
 @app.post('/api/call/annotate')
-async def callAnnotate(request: Request, user = Depends(validatedUser)):
-    annotation = ns.loads(await request.body())
-    CallRegistry().annotateCall(annotation)
-    user = annotation.get('user', None)
-    if user:
-        await asyncio.gather(
-            *backchannel.notifyCallLogChanged(user)
-        )
-    return yamlfy(info=ns(
-        message="ok"
-    ))
+async def annotate_manual_call(request: Request, user = Depends(validatedUser)):
+    "Creates a new manual call"
+    call = ns.loads(await request.body())
+    call = NewCall(**call)
+    calls = CallRegistry().add_incoming_call(call)
+    # Notify all the browser tabs the user has open
+    notifications = backchannel.notifyCallLogChanged(user)
+    step(f"Notificant a {len(notifications)} sessions de {user}")
+    await asyncio.gather(*notifications)
+    return yamlfy(**calls.model_dump())
 
 @app.get('/api/call/categories')
-def annotationCategories(user = Depends(validatedUser)):
-    categories = CallRegistry().annotationCategories()
-    return yamlfy(**categories)
-
-@app.get('/api/call/categories/update')
-def updateClaimTypes(user = Depends(validatedUser)):
-    with erp() as O:
-        CallRegistry().updateAnnotationCategories(O)
-    return yamlfy(info=ns(message='ok'))
+def call_annotation_categories(user = Depends(validatedUser)):
+    "Returns a list of categories to annotate calls"
+    categories = CallRegistry().categories()
+    return yamlfy(**categories.model_dump())
 
 @app.get('/api/calendar/{person}')
-def icalendar(person):
+def shift_calendar(person):
+    "Returns an ical with the attention shifts of the person"
     log_user_event(person, "calendarRefresh")
     calendar = schedules.personIcs(person)
     from fastapi.responses import StreamingResponse

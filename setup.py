@@ -42,7 +42,6 @@ setup(
         'scripts/tomatic_scheduler.py',
         'scripts/tomatic_shiftload.py',
         'scripts/tomatic_stats.py',
-        'scripts/tomatic_uploadcases.py',
         'scripts/tomatic_uploadtimetable.py',
         ],
     install_requires=[
@@ -52,44 +51,38 @@ setup(
         'tomato-cooker>=0.4.0', # api changed
         'yamlns',
         'consolemsg',
-        'parse',
-        'jsmin',
         'py-Asterisk',
         'paramiko',
         'python-slugify',
         'deansi',
         #'ooop==0.2.2-xt',
-        'PyMySQL',
         'click',
         'decorator',
         'requests',
         'ERPpeek',
-        'psutil',
+        'psutil', # execution
         'pony',
         'emili',
         'fastapi',
         'python-multipart', # formdata in fastapi
         'uvicorn[standard]', # server for fastapi (standard for websockets)
         'aiofiles', # Static files for fastapi
-        'hangups',
         'elasticsearch<8', # 8 version is incompatible with irontec server
         'ics<0.8', # icalendar generation. 0.8 changes interface and not yet available in all Pythons
         'itsdangerous', # auth
         'authlib<1.0', # auth
         'httpx<1', # auth, 1.0 changes API, incompatible with fastapi 0.95.0 and earlier
         'python-jose[cryptography]', # auth
-        'charset-normalizer<3', # request and httpio complains once 3.x is out
-        'httplib2', # Google chat code
         'pandas',
         'matplotlib',
         'typer',
+        'python-stdnum',
     #],
     #tests_require=[
         'pytest-cov',
         'pytest',
         'coverage',
         'b2btest',
-        'lxml',
         'erppeek',
         'ERPPeek-WST',
         'mock',

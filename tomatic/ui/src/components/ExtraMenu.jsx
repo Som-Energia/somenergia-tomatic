@@ -86,13 +86,6 @@ export default function ExtraMenu() {
         },
       },
       {
-        icon: '🏷️',
-        title: 'Anotacions: Actualitza categories',
-        action: function () {
-          // TODO: Call the api
-        },
-      },
-      {
         icon: '🤙',
         title: 'Emula trucada entrant',
         action: () => {

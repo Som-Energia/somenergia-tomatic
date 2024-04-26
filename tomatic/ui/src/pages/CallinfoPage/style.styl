@@ -1,9 +1,14 @@
+body
+  --call-list-button: #228B22
+  --call-list-selected-background: #cdcdff
+
 body:has(.kumato-mode)
   --call-list-background: #242424
+  --call-list-selected-background: #2d4f2d
   --call-list-color: white
   --call-list-time: orange
   --call-list-phone: #a8f
-  --call-list-partner: #e55
+  --call-list-partner: #d77
   --call-list-contract: #6f7
 
   main
@@ -76,7 +81,7 @@ body
               color: dimgrey
               color: yellow
           .registres.selected
-              background: #cdcdff
+              background: var(--call-list-selected-background)
           .registres.dateseparator
               background: #e2e5e2
               color: #888
@@ -184,20 +189,14 @@ body
   .contract-details
     margin: 10px
 
-  .icon-exit
-    font-size: 25px
-    color: #E1232C
-
   .icon-lock
-    font-size: 16px
+    color: var(--call-list-button)
 
   .icon-new-tab
-    font-size: 16px
-    color: #228B22
+    color: var(--call-list-button)
 
   .icon-clipboard
-    font-size: 22px
-    color: #228B22
+    color: var(--call-list-button)
 
   .tooltip
     --tooltip-arrow-size: 5px

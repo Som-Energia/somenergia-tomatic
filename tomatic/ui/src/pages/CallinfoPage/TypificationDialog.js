@@ -12,14 +12,17 @@ import TypificationChooser from './TypificationChooser'
 import AuthContext from '../../contexts/AuthContext'
 
 export default function TypificationDialog({ onClose }) {
+  const now = new Date().toISOString()
   const [comment, setComment] = React.useState('')
   const [typification, setTypification] = React.useState([])
   const { userid, fullname } = React.useContext(AuthContext)
   const partner = CallInfo.selectedPartner()
   const contract = CallInfo.selectedContract()
-  const phoneNumber = CallInfo.call.phone || 'Entrada manual'
-  const timestamp =
-    CallInfo.call.date === '' ? new Date().toISOString() : CallInfo.call.date
+  const call_id = CallInfo.currentCall.use()
+
+  const call = CallInfo.callData(call_id)
+  const phoneNumber = call?.phone_number || 'Entrada manual'
+  const timestamp = call?.call_timestamp || now
   const day = new Date(timestamp).toLocaleDateString()
   const time = new Date(timestamp).toLocaleTimeString()
   const person =
@@ -37,19 +40,28 @@ export default function TypificationDialog({ onClose }) {
     onClose()
   }
   function submit() {
-    // TODO: actually submit
-    console.log('Emulating submission:', {
-      user: userid,
-      partner: partner?.dni,
-      contract: contract?.number,
-      calldate: timestamp,
-      callphone: phoneNumber,
-      typification: typification.map((t) => t.key),
-      comment: comment,
-    })
+    const baseCall = CallInfo.callData(call_id) || {
+      // Manual call from scratch
+      call_timestamp: timestamp,
+      operator: userid,
+      pbx_call_id: phoneNumber.split().join('') + now,
+      phone_number: phoneNumber,
+    }
+    const call = {
+      ...baseCall,
+      caller_erp_id: partner?.erp_id,
+      caller_vat: partner?.dni,
+      caller_name: partner?.name,
+      contract_erp_id: contract?.erp_id,
+      contract_address: contract?.cups_adress,
+      contract_number: contract?.number,  
+      category_ids: typification.map((t) => t.id),
+      comments: comment,
+    }
+    CallInfo.modifyCall(call)
     onClose()
   }
-  const isValid = !!comment && typification.length !== 0
+  const isValid = typification.length !== 0
 
   return (
     <>

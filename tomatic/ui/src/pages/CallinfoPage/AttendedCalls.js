@@ -10,11 +10,19 @@ import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import IconButton from '@mui/material/IconButton'
 import CircularProgress from '@mui/material/CircularProgress'
+import Tooltip from '@mui/material/Tooltip'
+import ContentPasteIcon from '@mui/icons-material/ContentPaste'
+import LockOpenIcon from '@mui/icons-material/LockOpen'
+import LockIcon from '@mui/icons-material/Lock'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import SellIcon from '@mui/icons-material/Sell'
+import CommentIcon from '@mui/icons-material/Comment'
+import CategoryChip from './CategoryChip'
 import CallInfo from '../../contexts/callinfo'
 import Auth from '../../services/auth'
 import { useDialog } from '../../components/DialogProvider'
-import { useSubscriptable } from '../../services/subscriptable'
 import TypificationDialog from './TypificationDialog'
+import { vat2nif } from '../../services/vat'
 
 function CallLockButton() {
   const autoRefresh = CallInfo.autoRefresh.use()
@@ -28,13 +36,11 @@ function CallLockButton() {
         CallInfo.autoRefresh.toggle()
       }}
     >
-      <div className="icon-lock">
-        {autoRefresh ? (
-          <i className="fas fa-lock-open" />
-        ) : (
-          <i className="fas fa-lock" />
-        )}
-      </div>
+      {autoRefresh ? (
+        <LockOpenIcon className="icon-lock" />
+      ) : (
+        <LockIcon className="icon-lock" />
+      )}
     </IconButton>
   )
 }
@@ -47,9 +53,7 @@ function NewTabButton() {
         window.open(window.location, '_blank')
       }}
     >
-      <div className="icon-new-tab">
-        <i className="fas fa-external-link-alt" />
-      </div>
+      <OpenInNewIcon className="icon-new-tab" />
     </IconButton>
   )
 }
@@ -58,7 +62,7 @@ function AnnotationButton() {
 
   return (
     <IconButton
-      title={'Anota la trucada fent servir aquest contracte'}
+      title={'Anota la trucada seleccionada fent servir aquest contracte'}
       onClick={() => {
         const oldAutoRefresh = CallInfo.autoRefresh()
         CallInfo.autoRefresh(false)
@@ -72,78 +76,119 @@ function AnnotationButton() {
       }}
       disabled={CallInfo.savingAnnotation || Auth.username() === ''}
     >
-      <div className="icon-clipboard">
-        <i className="far fa-clipboard" />
-      </div>
+      <ContentPasteIcon className="icon-clipboard" />
     </IconButton>
   )
 }
 
-function FormatedCall({ info }) {
-  var time = new Date(info.date).toLocaleTimeString()
+function FormatedCall({ call }) {
+  const categories = CallInfo.categories.use()
+  const time = new Date(call.call_timestamp).toLocaleTimeString()
+  const solved = call.category_ids.length !== 0
+  const filtered_categories = categories.filter(({ id }) =>
+    call.category_ids.includes(id),
+  )
   return (
     <>
-      <span className="time">{time}</span>
-      &nbsp;
-      <span className="phone">
-        {info.phone ? info.phone : 'Registre Manual'}
-      </span>
-      &nbsp;&nbsp;
-      {info.reason && (
-        <span className="partner" title="Persona Atesa">
-          {info.partner ? info.partner : 'Sense informació'}
+      <Stack direction="row" justifyContent="space-between" gap={1}>
+        <span className="time">{time}</span>
+        <span className="phone">
+          {call.phone_number ? call.phone_number : 'Registre Manual'}
         </span>
-      )}
-      {info.reason && info.contract && (
-        <>
-          &nbsp;
-          <span className="contract" title="Contracte">
-            {info.contract}
-          </span>
-        </>
-      )}
-      {!info.reason ? (
-        <span className="pending">{"Pendent d'anotar"}</span>
-      ) : (
-        ''
-      )}
+        <Stack direction="row" justifyContent="end" gap={1} flex={1}>
+          {call.comments && (
+            <Tooltip
+              arrow
+              sx={{ color: 'gray', alignText: 'right' }}
+              title={<Box whiteSpace="pre-wrap">{call.comments}</Box>}
+            >
+              <CommentIcon />
+            </Tooltip>
+          )}
+          {call.category_ids?.length ? (
+            <Tooltip
+              arrow
+              sx={{
+                color: 'gray',
+                alignText: 'right',
+                '& .MuiTooltip-tooltip': { maxWidth: 'none', bgcolor: 'red' },
+              }}
+              title={
+                <>
+                  {filtered_categories.map((category, i) => (
+                    <CategoryChip key={i} size="small" {...{ category }} />
+                  ))}
+                </>
+              }
+            >
+              <SellIcon />
+            </Tooltip>
+          ) : null}
+        </Stack>
+      </Stack>
+      <Stack direction="row" justifyContent="space-between" gap={1}>
+        {solved && (
+          <>
+            <span
+              className="partner"
+              style={{
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+              }}
+              title={call.caller_name}
+            >
+              {call.caller_name
+                ? call.caller_name
+                : call.caller_erp_id
+                ? 'Nom no informat'
+                : 'Persona no identificada'}
+            </span>
+            <span style={{ color: 'gray' }}>{vat2nif(call.caller_vat)}</span>
+          </>
+        )}
+      </Stack>
+      <Stack direction="row" justifyContent="space-between" gap={1}>
+        {solved && call.contract_number && (
+          <>
+            <span
+              className="contract"
+              style={{
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+              }}
+              title={call.contract_address}
+            >
+              {call.contract_address}
+            </span>
+            <span style={{ color: 'gray' }}>{call.contract_number}</span>
+          </>
+        )}
+      </Stack>
+      {!solved ? <Box className="pending">{"Pendent d'anotar"}</Box> : ''}
     </>
   )
 }
 
-function CallEntry({ item, disabled }) {
-  const currentCall = useSubscriptable(CallInfo.currentCall)
-  const isSelected = item.date === currentCall
-  const solved = item.reason !== ''
+function CallEntry({ call, disabled }) {
+  const currentCall = CallInfo.currentCall.use()
+  const isSelected = call.id === currentCall
+  const solved = call.category_ids.length !== 0
   const itemClicked = function (ev) {
-    if (item.reason !== '') return
-    CallInfo.toggleLog(item.date, item.phone)
+    if (solved) return
+    CallInfo.toggleLog(call.call_timestamp, call.phone_number, call.id)
   }
   return (
     <ListItem
-      key={item.date}
+      key={call.call_timestamp}
       className={'registres' + (isSelected ? ' selected' : '')}
       selected={isSelected}
       disabled={disabled}
       onClick={solved ? undefined : itemClicked}
       button={!solved}
     >
-      <ListItemText
-        primary={<FormatedCall info={item} />}
-        secondary={
-          <span
-            style={{
-              display: 'block',
-              whiteSpace: 'nowrap',
-              textOverflow: 'ellipsis',
-              overflow: 'hidden',
-            }}
-          >
-            {item.reason}
-          </span>
-        }
-        title={item.reason}
-      />
+      <ListItemText primary={<FormatedCall call={call} />} />
     </ListItem>
   )
 }
@@ -179,10 +224,10 @@ function AttendedCallList() {
         {personCalls
           .slice(0)
           .reverse()
-          .map(function (item, index) {
+          .map(function (call, index) {
             var needsDate = false
-            var itemDate = new Date(item.date).toLocaleDateString()
-            var itemWeekDay = new Date(item.date).toLocaleDateString(
+            var itemDate = new Date(call.call_timestamp).toLocaleDateString()
+            var itemWeekDay = new Date(call.call_timestamp).toLocaleDateString(
               undefined,
               {
                 weekday: 'long',
@@ -193,13 +238,13 @@ function AttendedCallList() {
               needsDate = true
             }
             return (
-              <React.Fragment key={item.date}>
+              <React.Fragment key={index}>
                 {needsDate && (
                   <ListSubheader className="registres dateseparator">
                     {itemWeekDay + ' ' + itemDate}
                   </ListSubheader>
                 )}
-                <CallEntry item={item} />
+                <CallEntry call={call} />
               </React.Fragment>
             )
           })}
