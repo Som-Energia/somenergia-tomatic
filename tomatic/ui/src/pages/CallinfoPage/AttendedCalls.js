@@ -18,7 +18,6 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import CallInfo from '../../contexts/callinfo'
 import Auth from '../../services/auth'
 import { useDialog } from '../../components/DialogProvider'
-import { useSubscriptable } from '../../services/subscriptable'
 import TypificationDialog from './TypificationDialog'
 import { vat2nif } from '../../services/vat'
 
