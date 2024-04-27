@@ -58,17 +58,8 @@ export default function TypificationChooser({ typification, setTypification }) {
         <Box
           element={<li />}
           {...props}
-          sx={{
-            ...props.sx,
-            bgcolor: option.color,
-            color: (theme) =>
-              option.color && theme.palette.getContrastText(option.color),
-            ':hover': {
-              color: 'inherit',
-            },
-          }}
         >
-          {option.name}
+          <CategoryChip category={option} />
         </Box>
       )}
       renderTags={(value, getTagProps) =>

@@ -312,7 +312,7 @@ function ResponsiveAppBar({ children }) {
         className={isKumatoMode ? 'kumato-mode' : ''}
         component="main"
         sx={{
-          minHeight: "calc(100vh - 70px)",
+          minHeight: 'calc(100vh - 70px)',
           flexGrow: 1,
           paddingLeft: {
             xs: 0,
@@ -322,7 +322,7 @@ function ResponsiveAppBar({ children }) {
       >
         <LoginRequired>{children}</LoginRequired>
       </Box>
-      <SnackbarMessages variant="filled"/>
+      <SnackbarMessages variant="filled" />
     </Box>
   )
 }
