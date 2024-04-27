@@ -11,10 +11,22 @@ import Button from '@mui/material/Button'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import tomaticAvatar from '../images/tomatic-logo.png'
+import Tomatic from '../services/tomatic'
+import avatarTomatic from '../images/tomatic-logo.png'
+import avatarPebrotic from '../images/pebrotic-logo.png'
+import avatarKetchup from '../images/ketchup-logo.png'
+
+const avatarByVariant = {
+  tomatic: avatarTomatic,
+  pebrotic: avatarPebrotic,
+  ketchup: avatarKetchup,
+}
 
 export default function SimpleCard(props) {
   const { title, error, content, button, action } = props
+  const variant = Tomatic.variant.use()
+
+  const avatar = avatarByVariant[variant] || avatarTomatic
 
   return (
     <Box
@@ -44,7 +56,7 @@ export default function SimpleCard(props) {
               <Avatar
                 variant="rounded"
                 sx={{ width: 100, height: 100 }}
-                src={tomaticAvatar}
+                src={avatar}
               ></Avatar>
             }
           ></CardHeader>
