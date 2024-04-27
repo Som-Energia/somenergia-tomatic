@@ -15,9 +15,9 @@ import PeopleIcon from '@mui/icons-material/People'
 import MenuIcon from '@mui/icons-material/Menu'
 import PhoneCallbackIcon from '@mui/icons-material/PhoneCallback'
 import appBackground_tomatic from '../images/tomatic_bg.jpg'
-import appBackground_pebrotic from '../images/pebrotic.jpg'
-import appBackground_ketchup from '../images/ketchup.png'
 import appLogo from '../images/tomatic-logo-24.png'
+import appLogo_pebrotic from '../images/pebrotic-logo-24.png'
+import appLogo_ketchup from '../images/ketchup-logo-24.png'
 import SnackbarMessages from '../components/SnackbarMessages'
 import NavigationDrawer, { drawerWidth } from '../components/NavigationDrawer'
 import ProfileButton from '../components/ProfileButton'
@@ -25,7 +25,6 @@ import ExtraMenu from '../components/ExtraMenu'
 import LoginRequired from '../containers/LoginRequired'
 import { Link } from 'react-router-dom'
 import Tomatic from '../services/tomatic'
-
 
 const pages = [
   {
@@ -46,16 +45,16 @@ const pages = [
   },
 ]
 
-const variantBackground = {
-  tomatic: appBackground_tomatic,
-  pebrotic: appBackground_pebrotic,
-  ketchup: appBackground_ketchup,
-}
-
 const variantTitle = {
   tomatic: 'Tomàtic - Som Energia',
   pebrotic: 'Pebròtic - Som Energia',
   ketchup: 'Ketchup - Som Energia',
+}
+
+const variantLogo = {
+  tomatic: appLogo,
+  pebrotic: appLogo_pebrotic,
+  ketchup: appLogo_ketchup,
 }
 
 const AppBar = styled(MuiAppBar, {
@@ -87,9 +86,8 @@ function ResponsiveAppBar({ children }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [drawerOpen, setDrawerOpen] = React.useState(false)
 
-  const appBackground =
-    variantBackground[variant] || appBackground_tomatic
   const appTitle = variantTitle[variant] || variantTitle['tomatic']
+  const appLogo = variantLogo[variant] || variantLogo['tomatic']
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
@@ -98,12 +96,26 @@ function ResponsiveAppBar({ children }) {
     setAnchorElNav(null)
   }
 
+  React.useEffect(() => {
+    document.title = appTitle
+  }, [appTitle])
+
+  React.useEffect(() => {
+    let link = document.querySelector("link[rel~='icon']")
+    if (!link) {
+      link = document.createElement('link')
+      link.rel = 'icon'
+      document.getElementsByTagName('head')[0].appendChild(link)
+    }
+    link.href = appLogo
+  }, [appLogo])
+
   return (
     <Box id="tomatic" className={'main variant-' + variant}>
       <AppBar
         position="sticky"
         sx={{
-          backgroundImage: `url(${appBackground})`,
+          backgroundImage: `var(--banner)`,
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'right',
@@ -158,6 +170,7 @@ function ResponsiveAppBar({ children }) {
               letterSpacing: '.1rem',
               color: 'inherit',
               textDecoration: 'none',
+              textShadow: '2pt 2pt black',
             }}
           >
             {appTitle}
@@ -245,6 +258,7 @@ function ResponsiveAppBar({ children }) {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
+              textShadow: '2pt 2pt black',
             }}
           >
             {appTitle}
