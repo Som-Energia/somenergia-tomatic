@@ -81,7 +81,7 @@ function fixContractNumbersInDetails(response) {
 
 function fixContractNumbersInCallLog(response) {
   response.calls.forEach(function (call){
-    console.log({a: call.contract_number})
+    if (!call.contract_number) return
     call.contract_number = formatContractNumber(call.contract_number)
   }
   )
