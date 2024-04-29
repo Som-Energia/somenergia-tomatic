@@ -80,11 +80,10 @@ function fixContractNumbersInDetails(response) {
 }
 
 function fixContractNumbersInCallLog(response) {
-  response.calls.forEach(function (call){
+  response.calls.forEach(function (call) {
     if (!call.contract_number) return
     call.contract_number = formatContractNumber(call.contract_number)
-  }
-  )
+  })
 }
 
 function contractNumbers(info) {
