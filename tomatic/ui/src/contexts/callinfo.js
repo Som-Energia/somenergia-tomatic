@@ -329,7 +329,7 @@ CallInfo.selectLog = function (date, phone, call_id) {
   CallInfo.resetSearch()
   CallInfo.search_query({
     text: phone,
-    field: 'phone',
+    field: 'auto',
   })
   CallInfo.currentCall(call_id)
   retrieveInfo()
