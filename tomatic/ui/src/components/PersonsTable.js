@@ -88,7 +88,7 @@ const columns = [
     numeric: true,
     disablePadding: false,
     label: 'Taula',
-    view: (row) => row.table === -1 ? '-' : row.table,
+    view: (row) => (row.table === -1 ? '-' : row.table),
   },
   {
     id: 'groups',
@@ -114,8 +114,14 @@ function PersonsTable() {
   const [personToEditBusy, setPersonToEditBusy] = React.useState(null)
   const persons = Tomatic.persons.use()
   // All three need to update on persons. Use && to silence the linter
-  const rows = React.useMemo(() => persons && Tomatic.allPeopleData(), [persons])
-  const tables = React.useMemo(() => persons && Tomatic.tableOptions(), [persons])
+  const rows = React.useMemo(
+    () => persons && Tomatic.allPeopleData(),
+    [persons],
+  )
+  const tables = React.useMemo(
+    () => persons && Tomatic.tableOptions(),
+    [persons],
+  )
   const groups = React.useMemo(() => persons && Tomatic.allGroups(), [persons])
 
   function deletePersons(persons) {

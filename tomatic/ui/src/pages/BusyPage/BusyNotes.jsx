@@ -2,7 +2,7 @@ import React from 'react'
 import { MuiMarkdown } from 'mui-markdown'
 import Paper from '@mui/material/Paper'
 
-const text=`
+const text = `
 Marcar indisponibilitats evita que se'ns assignin torns en hores en què no podem fer atenció
 
 - Les **indisponibilitats** entraran en vigor en la següent graella que es generi.
@@ -23,11 +23,7 @@ Marcar indisponibilitats evita que se'ns assignin torns en hores en què no pode
 export default function BusyNotes() {
   return (
     <Paper sx={{ p: 1 }}>
-    <MuiMarkdown>
-      {text}
-    </MuiMarkdown>
+      <MuiMarkdown>{text}</MuiMarkdown>
     </Paper>
   )
 }
-
-

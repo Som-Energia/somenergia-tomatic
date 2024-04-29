@@ -1,6 +1,6 @@
 import React from 'react'
 import Tomatic from '../services/tomatic'
-import {luminance, contrast} from '../services/colorutils'
+import { luminance, contrast } from '../services/colorutils'
 
 function PersonStyles() {
   var persons = Tomatic.persons.use()

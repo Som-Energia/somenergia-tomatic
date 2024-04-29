@@ -55,5 +55,3 @@ export function prop(initialValue) {
   subscriptable(accessor)
   return accessor
 }
-
-

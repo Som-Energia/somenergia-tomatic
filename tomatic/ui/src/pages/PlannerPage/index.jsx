@@ -173,7 +173,12 @@ export default function PlannerPage() {
         'tbody tr:hover': { backgroundColor: '#7771' },
       }}
     >
-      <Stack direction="row" justifyContent="end" alignItems="center" margin={1}>
+      <Stack
+        direction="row"
+        justifyContent="end"
+        alignItems="center"
+        margin={1}
+      >
         <h2>Planificador de graelles</h2>
         <Box flex={1} />
         <Box>

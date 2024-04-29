@@ -3,7 +3,6 @@ import Tomatic from '../services/tomatic'
 import Grid from '@mui/material/Grid'
 import styled from '@emotion/styled'
 
-
 function PersonPickerCell({ name, onPick }) {
   const CellItem = styled.div`
     cursor: pointer;
@@ -37,8 +36,14 @@ function PersonPicker(props) {
     >
       {Object.keys(extensions)
         .sort()
-        .map((name, i) => <PersonPickerCell name={name} key={i} onPick={onPick}/>)}
-      {nobodyPickable ? <PersonPickerCell name={'ningu'} onPick={onPick}/> : []}
+        .map((name, i) => (
+          <PersonPickerCell name={name} key={i} onPick={onPick} />
+        ))}
+      {nobodyPickable ? (
+        <PersonPickerCell name={'ningu'} onPick={onPick} />
+      ) : (
+        []
+      )}
     </Grid>
   )
 }

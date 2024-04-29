@@ -7,7 +7,7 @@ export function preferedWeek(weeks, now = new Date()) {
   // Instead of moving each monday and compare them to now,
   // we move now once and compare it with each monday
   const limitDate = new Date(now.getTime() - expirationms - tzoffset)
-  const expireDate = limitDate.toISOString().slice(0,10)
+  const expireDate = limitDate.toISOString().slice(0, 10)
   return weeks.sort().reduce((result, candidate) => {
     if (result >= expireDate) return result
     return candidate

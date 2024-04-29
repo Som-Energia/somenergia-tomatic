@@ -56,10 +56,7 @@ export default function TypificationChooser({ typification, setTypification }) {
         />
       )}
       renderOption={(props, option, state, ownerSate) => (
-        <Box
-          element={<li />}
-          {...props}
-        >
+        <Box element={<li />} {...props}>
           <CategoryChip category={option} />
         </Box>
       )}

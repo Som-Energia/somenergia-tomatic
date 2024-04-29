@@ -69,7 +69,7 @@ export default function CustomerSearch() {
           onKeyDown={(ev) => {
             if (ev.key === 'Enter') handleSearch()
           }}
-          sx={{minWidth: '10rem'}}
+          sx={{ minWidth: '10rem' }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

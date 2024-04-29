@@ -72,7 +72,7 @@ function AnnotationButton() {
         }
         openDialog({
           maxWidth: 'md',
-          children: <TypificationDialog onClose={onClose}/>,
+          children: <TypificationDialog onClose={onClose} />,
           onClose: onClose,
         })
       }}

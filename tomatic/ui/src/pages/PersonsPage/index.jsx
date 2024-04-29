@@ -9,14 +9,13 @@ export default function PbxPage() {
     <>
       <Doc
         message={
-        'Permet modificar la configuració personal de cadascú: ' +
+          'Permet modificar la configuració personal de cadascú: ' +
           'Color, taula, extensió, indisponibilitats...'
         }
       />
-      <Box sx={{padding: 2}}>
+      <Box sx={{ padding: 2 }}>
         <Persons />
       </Box>
     </>
   )
 }
-

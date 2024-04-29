@@ -51,7 +51,7 @@ export default function Persons() {
             </Box>
           </Box>
         ))}
-      <Box className={`extension add`} onClick={()=>editPerson()}>
+      <Box className={`extension add`} onClick={() => editPerson()}>
         {'nova'} <br /> {'persona'}
       </Box>
     </Box>

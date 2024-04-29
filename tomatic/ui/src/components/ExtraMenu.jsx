@@ -28,7 +28,7 @@ export default function ExtraMenu() {
 
   function openTomaticSaysDialog() {
     openDialog({
-      children: <TomaticSaysDialog {...{closeDialog}} />
+      children: <TomaticSaysDialog {...{ closeDialog }} />,
     })
   }
 

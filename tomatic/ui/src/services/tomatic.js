@@ -71,15 +71,16 @@ function savedPreferDarkMode() {
   const jsonValue = localStorage.getItem('kumato', 'null')
   try {
     return JSON.parse(jsonValue)
-  }
-  catch(error) {
+  } catch (error) {
     console.log(jsonValue)
-    messages.error(error+'', {context: "Loading kumato mode from local storage"})
+    messages.error(error + '', {
+      context: 'Loading kumato mode from local storage',
+    })
     return null
   }
 }
 Tomatic.isKumatoMode = reactiveProp(
-  savedPreferDarkMode() ?? browserPrefersDarkMode()
+  savedPreferDarkMode() ?? browserPrefersDarkMode(),
 )
 Tomatic.isKumatoMode.subscribe(() => {
   localStorage.kumato = Tomatic.isKumatoMode()
@@ -380,7 +381,7 @@ Tomatic.requestQueue = function (suffix) {
       Tomatic.queue(response?.currentQueue || [])
     })
     .catch((error) => {
-      messages.error( ''+error, { context })
+      messages.error('' + error, { context })
     })
 }
 
@@ -501,7 +502,7 @@ Tomatic.requestGrid = function (week) {
         Tomatic.grid(data)
       },
       function (error) {
-        messages.error(error+'' || 'Error inexperat', { context })
+        messages.error(error + '' || 'Error inexperat', { context })
       },
     )
 }
@@ -514,13 +515,7 @@ Tomatic.weekdays = {
   dv: 'Divendres',
 }
 
-const defaultHours = [
-  '09:00',
-  '10:15',
-  '11:30',
-  '12:45',
-  '14:00',
-]
+const defaultHours = ['09:00', '10:15', '11:30', '12:45', '14:00']
 
 Tomatic.weekday = function (short, alternative) {
   return Tomatic.weekdays[short] || alternative || '??'
@@ -678,12 +673,12 @@ Tomatic.says = function (message) {
       context,
       method: 'POST',
       url: '/api/tomatic/says',
-      body: {message},
+      body: { message },
     })
     .then(
       function (response) {
         if (response.result === 'ok') {
-          messages.success("Missatge enviat", { context })
+          messages.success('Missatge enviat', { context })
           return
         }
         messages.error(response.message, { context })

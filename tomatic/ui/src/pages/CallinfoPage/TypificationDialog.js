@@ -54,7 +54,7 @@ export default function TypificationDialog({ onClose }) {
       caller_name: partner?.name,
       contract_erp_id: contract?.erp_id,
       contract_address: contract?.cups_adress,
-      contract_number: contract?.number,  
+      contract_number: contract?.number,
       category_ids: typification.map((t) => t.id),
       comments: comment,
     }
@@ -65,9 +65,9 @@ export default function TypificationDialog({ onClose }) {
 
   return (
     <>
-      <DialogTitle >{'Tipificant trucada'}</DialogTitle>
+      <DialogTitle>{'Tipificant trucada'}</DialogTitle>
       <DialogContent>
-        <Stack gap={2}  minWidth="45vw">
+        <Stack gap={2} minWidth="45vw">
           <Card
             className="final-motius"
             sx={{

@@ -21,9 +21,11 @@ import './containers/style.styl'
 Tomatic.init()
 
 function Frame() {
-  return <AppFrame>
-    <Outlet />
-  </AppFrame>
+  return (
+    <AppFrame>
+      <Outlet />
+    </AppFrame>
+  )
 }
 
 const router = createHashRouter(
