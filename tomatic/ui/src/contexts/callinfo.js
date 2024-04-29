@@ -79,6 +79,14 @@ function fixContractNumbersInDetails(response) {
   return response
 }
 
+function fixContractNumbersInCallLog(response) {
+  response.calls.forEach(function (call){
+    console.log({a: call.contract_number})
+    call.contract_number = formatContractNumber(call.contract_number)
+  }
+  )
+}
+
 function contractNumbers(info) {
   var result = {}
   info.partners.forEach(function (partner) {
@@ -285,6 +293,7 @@ CallInfo.retrievePersonCalls = function () {
     })
     .then(
       function (response) {
+        fixContractNumbersInCallLog(response)
         console.debug('Info GET Response: ', response)
         CallInfo.personCalls(response.calls)
       },
@@ -307,6 +316,7 @@ CallInfo.modifyCall = function (call) {
     })
     .then(
       function (response) {
+        fixContractNumbersInCallLog(response)
         CallInfo.savingAnnotation = false
         messages.success('Anotació desada', { context })
         CallInfo.deselectLog()
