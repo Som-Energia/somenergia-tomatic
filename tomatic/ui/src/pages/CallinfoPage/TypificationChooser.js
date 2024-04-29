@@ -9,6 +9,7 @@ export default function TypificationChooser({ typification, setTypification }) {
   const categories = CallInfo.categories.use()
 
   function searchMatches(searchQuery, category) {
+    if (!category.enabled) return false
     if (!searchQuery) return true
     console.log({ searchQuery, category })
     return searchQuery
