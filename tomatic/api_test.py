@@ -43,6 +43,9 @@ class Api_Test(unittest.TestCase):
     def tearDown(self):
         del api.app.dependency_overrides[validatedUser]
 
+    def model_yaml(self, model):
+        return ns(model.model_dump(mode='json')).dump().encode('utf-8'),
+
     def assertResponseEqual(self, response, data, status=200):
         if type(data) == str:
             data = ns.loads(data)
@@ -329,10 +332,6 @@ class Api_Test(unittest.TestCase):
               pbx_call_id: 'my_pbx_id'
               phone_number: '567567567'
         """)
-
-    def model_yaml(self, model):
-        return ns(model.model_dump(mode='json')).dump().encode('utf-8'),
-
 
     def test__annotate_existing_call(self):
         # Given an existing call
