@@ -67,7 +67,7 @@ export default function TypificationDialog({ onClose }) {
     <>
       <DialogTitle >{'Tipificant trucada'}</DialogTitle>
       <DialogContent>
-        <Stack gap={2}  minWidth="50vw">
+        <Stack gap={2}  minWidth="45vw">
           <Card
             className="final-motius"
             sx={{
