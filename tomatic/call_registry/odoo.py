@@ -80,6 +80,14 @@ class CallRegistry():
         self._process_server_errors(result)
         result = self._fix_calls(result)
         return UpdatedCallLog(**result)
+    
+    def delete_annotation(self, call: Call) -> UpdatedCallLog:
+        call = call.model_dump(mode='json')
+        call = self._fix_create_call(call)
+        result = self.erp.CrmPhonecall.update_call_and_get_operator_calls(call)
+        self._process_server_errors(result)
+        result = self._fix_calls(result)
+        return UpdatedCallLog(**result)
 
 
 def main():
@@ -120,6 +128,20 @@ def main():
         operator='operadora01',
         pbx_call_id='pbx_id',
         call_timestamp=now,
+        category_ids=[1],
+        caller_vat="ES12345678Z",
+    ))
+    edited_call_id = result.updated_id
+    dump(result)
+
+    step("Esborrant la annotació")
+    now = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
+    result = registry.delete_annotation(Call(
+        id=1,
+        operator='operadora01',
+        pbx_call_id='pbx_id',
+        call_timestamp=now,
+        comments='holi',
         category_ids=[1],
         caller_vat="ES12345678Z",
     ))
