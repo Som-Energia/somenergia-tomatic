@@ -80,6 +80,7 @@ class CallRegistry():
         calls = self._load_calls(call.operator)
         call.comments = ''
         call.category_ids = []
+        
         for index, candidate in enumerate(calls.calls):
             if candidate.id == call.id:
                 calls.calls[index] = call

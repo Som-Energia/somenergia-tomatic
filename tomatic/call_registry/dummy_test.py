@@ -246,7 +246,7 @@ class DummyTest(unittest.TestCase):
     def test__modify_existing_call__when_operator_changed__issues_error(self):  self.skipTest("Not yet implemented")
 
     #Delete annotation
-
+    
     def test__delete_annotation__with_only_one_call(self):
         # given a single registered call
         odoo_id1 = self.register(self.call_alice3)
