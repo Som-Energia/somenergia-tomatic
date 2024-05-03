@@ -16,6 +16,7 @@ import LockIcon from '@mui/icons-material/Lock'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import SellIcon from '@mui/icons-material/Sell'
 import CommentIcon from '@mui/icons-material/Comment'
+import DeleteIcon from '@mui/icons-material/Delete'
 import CategoryChip from './CategoryChip'
 import CallInfo from '../../contexts/callinfo'
 import AnnotationButton from './AnnotationButton'
@@ -97,6 +98,20 @@ function FormatedCall({ call }) {
               <SellIcon />
             </Tooltip>
           ) : null}
+          {call.comments || call.category_ids?.length ?(
+          <Tooltip
+          arrow
+              sx={{
+                color: 'gray',
+                cursor: 'pointer',
+                alignText: 'right',
+                '& .MuiTooltip-tooltip': { maxWidth: 'none', bgcolor: 'red' },
+              }}
+              title={'Esborra la anotació de aquesta trucada'} >
+                <DeleteIcon onClick={CallInfo.deleteAnnotation(call)} />
+              </Tooltip>
+          )
+          : null}
         </Stack>
       </Stack>
       <Stack direction="row" justifyContent="space-between" gap={1}>
