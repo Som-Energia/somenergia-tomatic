@@ -508,6 +508,18 @@ async def annotate_manual_call(request: Request, user = Depends(validatedUser)):
     await asyncio.gather(*notifications)
     return yamlfy(**calls.model_dump())
 
+@app.put('/api/call/deleteannotation')
+async def delete_annotation(request: Request, user = Depends(validatedUser)):
+    "Deletes annotation of existing call"
+    call = ns.loads(await request.body())
+    call = Call(**call)
+    calls = CallRegistry().delete_annotation(call)
+    # Notify all the browser tabs the user has open
+    notifications = backchannel.notifyCallLogChanged(user)
+    step(f"Notificant a {len(notifications)} sessions de {user}")
+    await asyncio.gather(*notifications)
+    return yamlfy(**calls.model_dump())
+
 @app.get('/api/call/categories')
 def call_annotation_categories(user = Depends(validatedUser)):
     "Returns a list of categories to annotate calls"
