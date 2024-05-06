@@ -125,6 +125,7 @@ class CallInfo(object):
             'som_partner_account','res_partner_category_soci')[1]
 
         result = ns(
+            erp_id=partner_data.id,
             id_soci=self.anonymize(partner_data.ref) if partner_data.ref else "",
             lang=partner_data.lang,
             name=self.anonymize(partner_data.name),
@@ -456,6 +457,7 @@ class CallInfo(object):
             atr_cases = None if shallow else self.atrCases(contract['id'])
             ret.contracts.append(
                 ns(
+                    erp_id=contract['id'],
                     start_date=contract['data_alta'],
                     end_date=end_date,
                     power=powers(contract['potencies_periode']),
