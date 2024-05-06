@@ -240,7 +240,7 @@ function AttendedCallList() {
               needsDate = true
             }
             return (
-              <React.Fragment key={index}>
+              <React.Fragment key={call.id}>
                 {needsDate && (
                   <ListSubheader className="registres dateseparator">
                     {itemWeekDay + ' ' + itemDate}
