@@ -98,20 +98,20 @@ function FormatedCall({ call }) {
               <SellIcon />
             </Tooltip>
           ) : null}
-          {call.comments || call.category_ids?.length ?(
-          <Tooltip
-          arrow
+          {call.comments || call.category_ids?.length ? (
+            <Tooltip
+              arrow
               sx={{
                 color: 'gray',
                 cursor: 'pointer',
                 alignText: 'right',
                 '& .MuiTooltip-tooltip': { maxWidth: 'none', bgcolor: 'red' },
               }}
-              title={'Esborra la anotació de aquesta trucada'} >
-                <DeleteIcon onClick={() => CallInfo.deleteAnnotation(call)} />
-              </Tooltip>
-          )
-          : null}
+              title={'Esborra la anotació de aquesta trucada'}
+            >
+              <DeleteIcon onClick={() => CallInfo.deleteAnnotation(call)} />
+            </Tooltip>
+          ) : null}
         </Stack>
       </Stack>
       <Stack direction="row" justifyContent="space-between" gap={1}>

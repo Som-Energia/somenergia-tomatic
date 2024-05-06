@@ -328,7 +328,7 @@ CallInfo.modifyCall = function (call) {
     )
 }
 
- CallInfo.deleteAnnotation = function (call){
+CallInfo.deleteAnnotation = function (call) {
   const context = 'Esborrant la anotació'
   CallInfo.savingAnnotation = true
   api
