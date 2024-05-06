@@ -225,7 +225,7 @@ function AttendedCallList() {
       <List dense={true}>
         {personCalls
           .slice(0)
-          .reverse()
+          .sort((a, b) => (a.call_timestamp <= b.call_timestamp ? 1 : -1))
           .map(function (call, index) {
             var needsDate = false
             var itemDate = new Date(call.call_timestamp).toLocaleDateString()
