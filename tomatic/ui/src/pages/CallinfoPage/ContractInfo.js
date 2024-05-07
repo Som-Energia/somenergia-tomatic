@@ -5,12 +5,6 @@ import TabbedCard from './TabbedCard'
 import ContractAlarms from './ContractAlarms'
 import { useSubscriptable } from '../../services/subscriptable'
 
-function formatContractNumber(number) {
-  var result = number + ''
-  while (result.length < 7) result = '0' + result
-  return result
-}
-
 function formatInterval(contract) {
   var hasStart = contract.start_date !== false
   var hasEnd = contract.end_date !== ''
@@ -29,7 +23,6 @@ function InfoLine({ ...rest }) {
 
 function ContractContent() {
   const contract = useSubscriptable(CallInfo.selectedContract)
-  const s_num = formatContractNumber(contract.number)
   const from_til = formatInterval(contract)
   const roles = [
     ['T', contract.is_titular, 'Titular: Si té el contracte al seu nom'],
@@ -54,7 +47,7 @@ function ContractContent() {
         </Box>
         <Box>
           <Box className="label">{'Número: '}</Box>
-          {s_num}
+          {contract.number}
         </Box>
       </InfoLine>
       <InfoLine>
