@@ -334,8 +334,18 @@ CallInfo.deleteAnnotation = function (call) {
   api
     .request({
       method: 'PUT',
-      url: 'api/call/deleteannotation',
-      body: { ...call, id: call.id || undefined },
+      url: 'api/call/annotate',
+      body: {
+        ...call,
+        comments: '',
+        categories: [],
+        caller_erp_id: null,
+        caller_vat: '',
+        caller_name: '',
+        contract_erp_id: null,
+        contract_number: '',
+        contract_address: '',
+      },
     })
     .then(
       function (response) {
