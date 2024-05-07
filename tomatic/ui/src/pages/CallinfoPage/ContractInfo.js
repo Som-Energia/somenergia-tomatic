@@ -9,7 +9,7 @@ function formatInterval(contract) {
   var hasStart = contract.start_date !== false
   var hasEnd = contract.end_date !== ''
   if (!hasStart) {
-    return 'No especificat'
+    return 'No iniciat'
   }
   if (!hasEnd) {
     return contract.start_date + ' ⇨ Actualitat'
