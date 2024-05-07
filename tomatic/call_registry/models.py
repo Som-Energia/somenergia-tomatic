@@ -31,6 +31,7 @@ class Category(
     id: int
     name: str
     code: str
+    levels: list[str]
     keywords: list[str] = []
     color: Optional[RgbColor] = None
     enabled: bool = True

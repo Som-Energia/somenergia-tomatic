@@ -238,6 +238,9 @@ class Api_Test(unittest.TestCase):
               code: mycategory
               keywords: ["akeyword"]
               color: "#eeaaee"
+              levels:
+              - level 1
+              - level 2
         """)
 
         response = self.client.get('/api/call/categories')
@@ -250,6 +253,9 @@ class Api_Test(unittest.TestCase):
               keywords: ["akeyword"]
               color: "#eeaaee"
               enabled: true
+              levels:
+              - level 1
+              - level 2
         """)
 
     def test__call_log__when_empty(self):
