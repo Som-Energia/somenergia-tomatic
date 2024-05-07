@@ -109,24 +109,13 @@ To customize that message you can create a plain text file as
     - Set `tomatic.oauth.client_id` to the client id of the created credential
     - Set `tomatic.oauth.client_secret` to the client secret of the created credential
 
-### Setting up Hangouts notification
+### Setting Up Google Chat Hook
 
-**TODO:** Hangouts API has been dropped by Google. Document the new api setup.
-
-This can be done by using the hangups application that should have been installed as dependency.
-
-- Create the account in hangouts.google.com for the notification bot
-- Generate an access key
-  ```
-  $ hangups --manual-login
-  ```
-  The key will be stored in `~/.cache/hangups/refresh_token.txt`
-- Figure out the target channel ID. You can do so by running this hangups example:
-  [`build_conversation_list.py`](https://raw.githubusercontent.com/tdryer/hangups/master/examples/build_conversation_list.py)
-  which requires this other file to be in the same dir:
-  [`common.py`](https://raw.githubusercontent.com/tdryer/hangups/master/examples/common.py)
-- Write down channel ID in `config.yaml` as `hangoutChannel`
-- You can test it by running `tomatic_says.py hello world`
+- Go to the Google Chat channel/space you want to notify in
+- Go to the channel configuration and then "Applications and integrations"
+- Create a new Webhook, setting up the name and the avatar
+- Copy the resulting URL
+- Set up `tomatic.monitorChatChannel` at `dbconfig.py` with such URL
 
 ### Setting Dummy Call Registry
 
