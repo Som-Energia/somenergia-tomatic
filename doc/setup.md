@@ -128,6 +128,16 @@ This can be done by using the hangups application that should have been installe
 - Write down channel ID in `config.yaml` as `hangoutChannel`
 - You can test it by running `tomatic_says.py hello world`
 
+### Setting Dummy Call Registry
+
+Using a dummy backend for the call registry requires
+a categories file. You can take it from an existing
+properly setup odoo with:
+
+```bash
+tomatic_retrieve.py callcategories
+```
+
 ### PBX callerid callback
 
 Tomatic can auto-search of the current incomming call.

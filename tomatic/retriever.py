@@ -131,5 +131,13 @@ def downloadShiftCredit(config):
     r.raise_for_status()
     Path(filename).write_bytes(r.content)
 
+def downloadCallCategories(config):
+    from .call_registry.dummy import CallRegistry as DummyRegistry
+    from .call_registry.odoo import CallRegistry as OdooRegistry
+    categories = OdooRegistry().categories()
+    DummyRegistry().save_categories(categories)
+
+
+
 
 # vim: et ts=4 sw=4
