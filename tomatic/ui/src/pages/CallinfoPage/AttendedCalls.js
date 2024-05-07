@@ -11,7 +11,6 @@ import ListItemText from '@mui/material/ListItemText'
 import IconButton from '@mui/material/IconButton'
 import CircularProgress from '@mui/material/CircularProgress'
 import Tooltip from '@mui/material/Tooltip'
-import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 import LockOpenIcon from '@mui/icons-material/LockOpen'
 import LockIcon from '@mui/icons-material/Lock'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
@@ -19,9 +18,7 @@ import SellIcon from '@mui/icons-material/Sell'
 import CommentIcon from '@mui/icons-material/Comment'
 import CategoryChip from './CategoryChip'
 import CallInfo from '../../contexts/callinfo'
-import Auth from '../../services/auth'
-import { useDialog } from '../../components/DialogProvider'
-import TypificationDialog from './TypificationDialog'
+import AnnotationButton from './AnnotationButton'
 import { vat2nif } from '../../services/vat'
 
 function CallLockButton() {
@@ -57,32 +54,6 @@ function NewTabButton() {
     </IconButton>
   )
 }
-function AnnotationButton() {
-  const [openDialog, closeDialog] = useDialog()
-
-  return (
-    <IconButton
-      title={'Anota la trucada seleccionada fent servir aquest contracte'}
-      onClick={() => {
-        const oldAutoRefresh = CallInfo.autoRefresh()
-        CallInfo.autoRefresh(false)
-        function onClose() {
-          CallInfo.autoRefresh(oldAutoRefresh)
-          closeDialog()
-        }
-        openDialog({
-          maxWidth: 'md',
-          children: <TypificationDialog onClose={onClose} />,
-          onClose: onClose,
-        })
-      }}
-      disabled={CallInfo.savingAnnotation || Auth.username() === ''}
-    >
-      <ContentPasteIcon className="icon-clipboard" />
-    </IconButton>
-  )
-}
-
 function FormatedCall({ call }) {
   const categories = CallInfo.categories.use()
   const time = new Date(call.call_timestamp).toLocaleTimeString()
