@@ -80,14 +80,6 @@ class CallRegistry():
         self._process_server_errors(result)
         result = self._fix_calls(result)
         return UpdatedCallLog(**result)
-    
-    def delete_annotation(self, call: Call) -> UpdatedCallLog:
-        call = call.model_dump(mode='json')
-        call = self._fix_create_call(call)
-        result = self.erp.CrmPhonecall.update_call_and_get_operator_calls(call)
-        self._process_server_errors(result)
-        result = self._fix_calls(result)
-        return UpdatedCallLog(**result)
 
 
 def main():

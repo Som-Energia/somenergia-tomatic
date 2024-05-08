@@ -245,24 +245,4 @@ class DummyTest(unittest.TestCase):
     def test__modify_existing_call__when_id_not_found__issues_error(self):  self.skipTest("Not yet implemented")
     def test__modify_existing_call__when_operator_changed__issues_error(self):  self.skipTest("Not yet implemented")
 
-    #Delete annotation
-    
-    def test__delete_annotation__with_only_one_call(self):
-        # given a single registered call
-        odoo_id1 = self.register(self.call_alice3)
-        # we obtain back the list of calls
-        calls = self.registry.get_calls('alice').calls
-        # we choose the only call we have
-        edited_call = calls[0]
-        # when we modify delete de annotation
-        response = self.registry.delete_annotation(edited_call)
-
-        # then we get back the list of calls with the modification
-        self.assertModelEqual(response, ns(
-            updated_id = edited_call.id,
-            calls = [
-                edited_call.model_dump(),
-            ],
-        ))
-
 

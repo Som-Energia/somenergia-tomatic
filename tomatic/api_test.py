@@ -388,59 +388,6 @@ class Api_Test(unittest.TestCase):
               phone_number: '567567567'
         """)
 
-    def test__delete_annotation(self):
-        # Given an existing call
-        existing_call = NewCall(
-            call_timestamp="2020-02-02T02:02:02Z",
-            pbx_call_id='my_pbx_id',
-            phone_number='567567567',
-            operator='vic',
-        )
-        response = self.client.post('/api/call/annotate',
-            data=self.model_yaml(existing_call)
-        )
-        data = ns.loads(response.text)
-        id = data.updated_id
-        saved_existing_call = data.calls[0]
-
-        # When we annotate the call
-        edited_call = Call(
-            **dict(
-                saved_existing_call,
-                category_ids= [1,2],
-                comments= '',
-            )
-        )
-        response = self.client.put('/api/call/annotate', # POST->PUT is different
-            data=self.model_yaml(edited_call),
-        )
-
-        # Then annotation of the call is deleted
-        response = self.client.put('/api/call/deleteannotation', # POST->PUT is different
-            data=self.model_yaml(edited_call),
-        )
-
-        data = ns.loads(response.text)
-        calls = data.get("calls", [])
-        call_timestamp = saved_existing_call.call_timestamp
-        self.assertResponseEqual(response, f"""
-            updated_id: {id}
-            calls:
-            - call_timestamp: {call_timestamp}
-              caller_erp_id: null
-              caller_name: ''
-              caller_vat: ''
-              category_ids: []
-              comments: ''
-              contract_address: ''
-              contract_erp_id: null
-              contract_number: ''
-              id: {id}
-              operator: vic
-              pbx_call_id: 'my_pbx_id'
-              phone_number: '567567567'
-        """)
-
 if __name__ == "__main__":
 
     import sys

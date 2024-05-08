@@ -75,21 +75,3 @@ class CallRegistry():
             updated_id = call.id,
             **calls.model_dump()
         )
-    
-    def delete_annotation(self, call: Call) -> UpdatedCallLog:
-        calls = self._load_calls(call.operator)
-        call.comments = ''
-        call.category_ids = []
-        
-        for index, candidate in enumerate(calls.calls):
-            if candidate.id == call.id:
-                calls.calls[index] = call
-                break
-        else:
-            raise Exception(f"Call {call.id} not found (TODO: better handling of this case)")
-
-        self._save_calls(call.operator, calls)
-        return UpdatedCallLog(
-            updated_id = call.id,
-            **calls.model_dump()
-        )
