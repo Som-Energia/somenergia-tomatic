@@ -84,6 +84,7 @@ class DummyTest(unittest.TestCase):
           keywords: ["akeyword"]
           color: "#eeaaee"
           enabled: false
+          levels: []
         """)
         response = self.registry.categories()
         self.assertModelEqual(response, """
@@ -94,6 +95,7 @@ class DummyTest(unittest.TestCase):
           keywords: ["akeyword"]
           color: "#eeaaee"
           enabled: false
+          levels: []
         """)
 
 
@@ -103,6 +105,7 @@ class DummyTest(unittest.TestCase):
         - id: 1
           name: Category just with mandatory fields
           code: mycategory
+          levels: []
         """)
         response = self.registry.categories()
         self.assertModelEqual(response, """
@@ -113,6 +116,7 @@ class DummyTest(unittest.TestCase):
           keywords: []
           color: null
           enabled: true
+          levels: []
         """)
 
     # Registering incomming calls

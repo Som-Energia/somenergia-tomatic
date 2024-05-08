@@ -23,6 +23,7 @@ def parseArgs():
             'idealload',
             'shiftcredit',
             'busy',
+            'callcategories',
         ],
         help="especifica quin tipus de informació es descarrega"
     )
@@ -82,6 +83,7 @@ def main():
         downloadFestivities,
         downloadBusy,
         downloadShiftCredit,
+        downloadCallCategories,
         addDays,
     )
 
@@ -125,6 +127,11 @@ def main():
     if not args.command or 'shiftcredit' in args.command:
         step("Baixant bossa d'hores del tomatic...")
         downloadShiftCredit(config)
+
+    if not args.command or 'callcategories' in args.command:
+        step("Baixant llistat de categories...")
+        downloadCallCategories(config)
+
 
 if __name__ == '__main__':
     main()

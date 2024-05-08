@@ -1,6 +1,8 @@
 from .models import CallLog, Call, NewCall, UpdatedCallLog, Categories
+from typing import Optional
 import pathlib
 import random
+import os
 from yamlns import ns
 
 class CallRegistry():
@@ -8,7 +10,8 @@ class CallRegistry():
     Dummy implementation for call registry using local files.
     """
 
-    def __init__(self, path: pathlib.Path):
+    def __init__(self, path: Optional[pathlib.Path] = None):
+        path = path or os.environ.get('TOMATIC_DATA_PATH', 'data')
         self.registry_path = pathlib.Path(path) / "call_registry"
         self.registry_path.mkdir(exist_ok=True, parents=True)
 
@@ -17,6 +20,11 @@ class CallRegistry():
         if not category_file.exists():
             return Categories(categories=[])
         return Categories(**ns.load(category_file))
+
+    def save_categories(self, categories: Categories) -> None:
+        """Not part of the common interface"""
+        category_file = self.registry_path / f'categories.yaml'
+        ns(categories.model_dump()).dump(category_file)
 
     def _load_calls(self, operator) -> CallLog:
         registry_file = self.registry_path / f'calls-{operator}.yaml'
