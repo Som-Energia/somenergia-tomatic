@@ -2,9 +2,9 @@
 
 ## Backlog
 
-- [ ] Commit Makefile
-- [ ] Makefile: Target to deploy in server
-- [ ] Api test: remove p.yaml in teardown
+- [x] Commit Makefile
+- [x] Makefile: Target to deploy in server
+- [x] Api test: remove p.yaml in teardown
 - [ ] Delete persons: protect some users (ningu and admins)
 - [ ] Initial setup
      - [ ] Option --fake is not working in debug mode since FastAPI migration.
@@ -21,7 +21,7 @@
           - [ ] indisponibilitats-vacances.conf
           - [ ] holidays.conf
 - [ ] Remove config.yaml from git (backup the file to use it in production)
-- [ ] Remove extensions for Inalàmbric / Recepcio / Contestador
+- [x] Remove extensions for Inalàmbric / Recepcio / Contestador
 - [ ] Configurable timetable directory ('graelles')
 - [ ] Configurable execution directory ('executions')
 - [ ] Move shiftload generated files to a configurable dir (maybe same as timetables dir?)
@@ -29,14 +29,13 @@
 - [x] Google login
 - [ ] API tests in fastapi
 - [ ] Accept fragile erp tests
-- [ ] GSpread docs say that moving the credential to `~/.config/gspread/service_account.json` avoids having to pass it around as parameter
 - [ ] `tomatic_calls` should use persons module instead referring persons.yaml directly
 
 - Planner:
-     - [ ] Refactor as Single Page App
+     - [x] Refactor as Single Page App
      - [ ] Style it
      - [ ] Show cutting reasons of best solutions
-     - [ ] Show cost sources when hovering the cost
+     - [x] Show cost sources when hovering the cost
      - [ ] Ask before deleting, killing, uploading...
 - Scheduler:
      - [ ] Like we did with callinfo, review files loaded and dumped to rationalize it
