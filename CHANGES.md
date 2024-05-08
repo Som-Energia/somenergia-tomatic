@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Fix: ortography on some messages
+
 ## 5.8.0 2024-05-08
 
 - Odoo based Call Registry for typifications

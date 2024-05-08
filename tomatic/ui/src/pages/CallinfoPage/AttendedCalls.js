@@ -107,7 +107,7 @@ function FormatedCall({ call }) {
                 alignText: 'right',
                 '& .MuiTooltip-tooltip': { maxWidth: 'none', bgcolor: 'red' },
               }}
-              title={'Esborra la anotació de aquesta trucada'}
+              title={"Treu l'anotació d'aquesta trucada"}
             >
               <DeleteIcon onClick={() => CallInfo.deleteAnnotation(call)} />
             </Tooltip>
