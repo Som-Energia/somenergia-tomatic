@@ -5,7 +5,7 @@ import Auth from '../../services/auth'
 import TypificationDialog from './TypificationDialog'
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 
-export default function AnnotationButton() {
+export default function AnnotationButton({ ignoreContract }) {
   const [openDialog, closeDialog] = useDialog()
 
   return (
@@ -20,7 +20,12 @@ export default function AnnotationButton() {
         }
         openDialog({
           maxWidth: 'md',
-          children: <TypificationDialog onClose={onClose} />,
+          children: (
+            <TypificationDialog
+              onClose={onClose}
+              ignoreContract={ignoreContract}
+            />
+          ),
           onClose: onClose,
         })
       }}
@@ -30,5 +35,3 @@ export default function AnnotationButton() {
     </IconButton>
   )
 }
-
-

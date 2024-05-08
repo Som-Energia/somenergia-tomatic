@@ -11,13 +11,13 @@ import CallInfo from '../../contexts/callinfo'
 import TypificationChooser from './TypificationChooser'
 import AuthContext from '../../contexts/AuthContext'
 
-export default function TypificationDialog({ onClose }) {
+export default function TypificationDialog({ onClose, ignoreContract }) {
   const now = new Date().toISOString()
   const [comment, setComment] = React.useState('')
   const [typification, setTypification] = React.useState([])
   const { userid, fullname } = React.useContext(AuthContext)
   const partner = CallInfo.selectedPartner()
-  const contract = CallInfo.selectedContract()
+  const contract = ignoreContract ? null : CallInfo.selectedContract()
   const call_id = CallInfo.currentCall.use()
 
   const call = CallInfo.callData(call_id)

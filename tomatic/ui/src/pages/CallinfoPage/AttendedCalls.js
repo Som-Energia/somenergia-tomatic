@@ -249,7 +249,7 @@ export default function AttendedCalls({ data }) {
           <Stack direction="row">
             <CallLockButton />
             <NewTabButton />
-            <AnnotationButton />
+            <AnnotationButton ignoreContract />
           </Stack>
         }
       ></CardHeader>
