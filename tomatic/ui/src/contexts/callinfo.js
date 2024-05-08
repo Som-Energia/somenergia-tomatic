@@ -338,7 +338,7 @@ CallInfo.deleteAnnotation = function (call) {
       body: {
         ...call,
         comments: '',
-        categories: [],
+        category_ids: [],
         caller_erp_id: null,
         caller_vat: '',
         caller_name: '',
