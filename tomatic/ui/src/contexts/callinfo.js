@@ -310,7 +310,7 @@ CallInfo.modifyCall = function (call) {
   api
     .request({
       method: call.id ? 'PUT' : 'POST',
-      url: '/api/call/annotate',
+      url: 'api/call/annotate',
       body: { ...call, id: call.id || undefined },
     })
     .then(
@@ -318,6 +318,39 @@ CallInfo.modifyCall = function (call) {
         fixContractNumbersInCallLog(response)
         CallInfo.savingAnnotation = false
         messages.success('Anotació desada', { context })
+        CallInfo.deselectLog()
+        CallInfo.personCalls(response.calls)
+      },
+      function (error) {
+        CallInfo.savingAnnotation = false
+        messages.error(error + '', { context })
+      },
+    )
+}
+
+CallInfo.deleteAnnotation = function (call) {
+  const context = 'Esborrant la anotació'
+  CallInfo.savingAnnotation = true
+  api
+    .request({
+      method: 'PUT',
+      url: 'api/call/annotate',
+      body: {
+        ...call,
+        comments: '',
+        category_ids: [],
+        caller_erp_id: null,
+        caller_vat: '',
+        caller_name: '',
+        contract_erp_id: null,
+        contract_number: '',
+        contract_address: '',
+      },
+    })
+    .then(
+      function (response) {
+        CallInfo.savingAnnotation = false
+        messages.success('Anotació esborrada', { context })
         CallInfo.deselectLog()
         CallInfo.personCalls(response.calls)
       },

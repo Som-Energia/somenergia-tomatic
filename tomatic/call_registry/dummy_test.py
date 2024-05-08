@@ -31,6 +31,13 @@ class DummyTest(unittest.TestCase):
         phone_number = "444333222",
     )
 
+    call_alice3 = ns(
+        operator = 'alice',
+        call_timestamp = "2020-01-03T00:00:00+00:00",
+        pbx_call_id = "2020-01-03T00:00:00+00:00-555444333-bababa",
+        phone_number = "444333222",
+        comments = "holi",
+    )
     default_fields = ns(
         caller_erp_id = None,
         caller_vat = '',

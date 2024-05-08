@@ -13,6 +13,7 @@
     - Display more information in the call log and better organized
     - Categories have colors to help identification
     - Categories can be disables for new calls but still visible in already typified calls
+	- Annotation can be removed
 - `tomatic_retrieve.py callcategories` to retrieve dummy categories from odoo
 - New cli option for api: `--call-registry` to override configured callregistry backend
 - Upgrade notes:

@@ -126,6 +126,20 @@ def main():
     edited_call_id = result.updated_id
     dump(result)
 
+    step("Esborrant la annotació")
+    now = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
+    result = registry.delete_annotation(Call(
+        id=1,
+        operator='operadora01',
+        pbx_call_id='pbx_id',
+        call_timestamp=now,
+        comments='holi',
+        category_ids=[1],
+        caller_vat="ES12345678Z",
+    ))
+    edited_call_id = result.updated_id
+    dump(result)
+
 if __name__ == '__main__':
     main()
 

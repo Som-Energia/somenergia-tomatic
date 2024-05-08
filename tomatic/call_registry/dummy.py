@@ -75,5 +75,3 @@ class CallRegistry():
             updated_id = call.id,
             **calls.model_dump()
         )
-
-
