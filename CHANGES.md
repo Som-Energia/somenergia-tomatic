@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.8.1 2024-05-13
 
 - Fix: ortography on some messages
 
