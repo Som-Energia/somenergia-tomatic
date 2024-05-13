@@ -66,8 +66,7 @@ sudo chown root:root crontab
 sudo chmod 755 crontab
 # Frontend deployment
 npm install
-npm run build # for development assets
-npm run deploy # for production assets
+make deploy # for development and production assets
 # Backend deployment
 source .venv/bin/activate
 pip install -e .
