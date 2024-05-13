@@ -64,12 +64,8 @@ git rebase
 # Rebase changes the properties of crontab file
 sudo chown root:root crontab
 sudo chmod 755 crontab
-# Frontend deployment
-npm install
+# Frontend and backend deployment
 make deploy # for development and production assets
-# Backend deployment
-source .venv/bin/activate
-pip install -e .
 # Restart the application
 sudo supervisorctl restart tomatic
 ```
