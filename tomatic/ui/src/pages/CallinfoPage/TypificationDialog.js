@@ -85,7 +85,7 @@ export default function TypificationDialog({ onClose }) {
               <strong>Referent al contracte:</strong> {contractInfo}
             </Box>
             <Box>
-              <strong>Atésa per:</strong> {fullname}
+              <strong>Atesa per:</strong> {fullname}
             </Box>
           </Card>
           <TypificationChooser {...{ typification, setTypification }} />
