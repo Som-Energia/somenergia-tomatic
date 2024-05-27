@@ -3,10 +3,14 @@ import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
+import Tooltip from '@mui/material/Tooltip'
 import Card from '@mui/material/Card'
 import TextField from '@mui/material/TextField'
+import BackspaceIcon from '@mui/icons-material/Backspace'
+import ReplayCircleFilledIcon from '@mui/icons-material/ReplayCircleFilled'
 import CallInfo from '../../contexts/callinfo'
 import TypificationChooser from './TypificationChooser'
 import AuthContext from '../../contexts/AuthContext'
@@ -15,6 +19,7 @@ export default function TypificationDialog({ onClose }) {
   const now = new Date().toISOString()
   const [comment, setComment] = React.useState('')
   const [typification, setTypification] = React.useState([])
+  const [bindContract, setBindContract] = React.useState(true)
   const { userid, fullname } = React.useContext(AuthContext)
   const partner = CallInfo.selectedPartner()
   const contract = CallInfo.selectedContract()
@@ -32,7 +37,7 @@ export default function TypificationDialog({ onClose }) {
         }`
       : 'Cap persona especificada'
   const contractInfo =
-    contract !== null
+    contract !== null && bindContract
       ? contract.number + ' - ' + contract.cups_adress
       : ' Cap contracte especificat'
 
@@ -52,9 +57,9 @@ export default function TypificationDialog({ onClose }) {
       caller_erp_id: partner?.erp_id,
       caller_vat: partner?.dni,
       caller_name: partner?.name,
-      contract_erp_id: contract?.erp_id,
-      contract_address: contract?.cups_adress,
-      contract_number: contract?.number,
+      contract_erp_id: bindContract ? contract?.erp_id : undefined,
+      contract_address: bindContract ? contract?.cups_adress : undefined,
+      contract_number: bindContract ? contract?.number : undefined,
       category_ids: typification.map((t) => t.id),
       comments: comment,
     }
@@ -81,9 +86,39 @@ export default function TypificationDialog({ onClose }) {
             <Box>
               <strong>De:</strong> {person}
             </Box>
-            <Box>
-              <strong>Referent al contracte:</strong> {contractInfo}
-            </Box>
+            <Stack
+              direction="horizontal"
+              justifyContent="space-between"
+              gap={1}
+            >
+              <Box>
+                <strong>Referent al contracte:</strong> {contractInfo}
+              </Box>
+              {contract ? (
+                <Box>
+                  <Tooltip
+                    title={
+                      bindContract
+                        ? 'Desvincular el contracte'
+                        : 'Recuperar el contracte'
+                    }
+                  >
+                    <IconButton
+                      size="small"
+                      onClick={() => {
+                        setBindContract((old) => !old)
+                      }}
+                    >
+                      {bindContract ? (
+                        <BackspaceIcon />
+                      ) : (
+                        <ReplayCircleFilledIcon />
+                      )}
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              ) : null}
+            </Stack>
             <Box>
               <strong>Atesa per:</strong> {fullname}
             </Box>
