@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.9.0 2024-05-27
+
+- Button to unbind contract when annotating calls
+- Fix: more misspells
+
 ## 5.8.1 2024-05-13
 
 - Fix: ortography on some messages
