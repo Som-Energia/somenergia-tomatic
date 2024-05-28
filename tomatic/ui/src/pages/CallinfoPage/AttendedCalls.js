@@ -19,6 +19,7 @@ import CommentIcon from '@mui/icons-material/Comment'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CategoryChip from './CategoryChip'
 import CallInfo from '../../contexts/callinfo'
+import { useConfirmationDialog } from '../../components/DialogProvider'
 import AnnotationButton from './AnnotationButton'
 import { vat2nif } from '../../services/vat'
 
@@ -59,6 +60,7 @@ function FormatedCall({ call }) {
   const categories = CallInfo.categories.use()
   const time = new Date(call.call_timestamp).toLocaleTimeString()
   const solved = call.category_ids.length !== 0
+  const userConfirmation = useConfirmationDialog()
   const filtered_categories = categories.filter(({ id }) =>
     call.category_ids.includes(id),
   )
@@ -105,11 +107,26 @@ function FormatedCall({ call }) {
                 color: 'gray',
                 cursor: 'pointer',
                 alignText: 'right',
-                '& .MuiTooltip-tooltip': { maxWidth: 'none', bgcolor: 'red' },
               }}
               title={"Treu l'anotació d'aquesta trucada"}
             >
-              <DeleteIcon onClick={() => CallInfo.deleteAnnotation(call)} />
+              <DeleteIcon
+                onClick={() =>
+                  userConfirmation({
+                    title: 'Vols eliminar la tipificació de la trucada?',
+                    body: "S'eliminaran les categories, el comentari i la vinculació amb el contracte i la persona. Es mantindrà la trucada que podràs tornar a tipificar.",
+                    proceedButton: {
+                      children: 'Si, endavant',
+                      color: 'error',
+                    },
+                    abortButton: {
+                      children: 'No cal',
+                    },
+                  })
+                    .then(() => CallInfo.deleteAnnotation(call))
+                    .catch(() => console.log('Neteja abortada'))
+                }
+              />
             </Tooltip>
           ) : null}
         </Stack>

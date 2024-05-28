@@ -9,6 +9,10 @@
 
 import React from 'react'
 import Dialog from '@mui/material/Dialog'
+import DialogContent from '@mui/material/DialogContent'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogActions from '@mui/material/DialogActions'
+import Button from '@mui/material/Button'
 import Grow from '@mui/material/Grow'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useTheme } from '@mui/material/styles'
@@ -88,6 +92,63 @@ export default function DialogProvider({ children }) {
       })}
     </DialogContext.Provider>
   )
+}
+
+/**
+This hook returns a function to open a confirmation dialog.
+The returned function returns a Promise that will be resolved
+or reject as the dialog is.
+
+
+const userConfirmation = useConfirmationDialog()
+
+function handleClick() {
+    userConfirmation({
+      title: "Proceed?",
+      children: "Do you want to proceed?",
+    })
+    .then(()=> whatever)
+    .catch(()=> undo stuff )
+  }
+*/
+export function useConfirmationDialog() {
+  const [openDialog, closeDialog] = useDialog()
+  function userConfirmation({ title, body, proceedButton, abortButton }) {
+    let resolvePromise
+    let rejectPromise
+    const promise = new Promise((resolve, reject) => {
+      resolvePromise = resolve
+      rejectPromise = reject
+    })
+    function abort() {
+      closeDialog()
+      rejectPromise(false)
+    }
+    function proceed() {
+      resolvePromise(true)
+      closeDialog()
+    }
+    openDialog({
+      closeDialog: abort,
+      children: (
+        <>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogContent>{body}</DialogContent>
+          <DialogActions>
+            <Button children={'Aborta'} {...abortButton} onClick={abort} />
+            <Button
+              variant="contained"
+              children={'Procedeix'}
+              {...proceedButton}
+              onClick={proceed}
+            />
+          </DialogActions>
+        </>
+      ),
+    })
+    return promise
+  }
+  return userConfirmation
 }
 
 export const useDialog = () => React.useContext(DialogContext)
