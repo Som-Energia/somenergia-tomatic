@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.9.1 2024-05-28
+
+- Confirmation dialog for clearing typification
+
 ## 5.9.0 2024-05-27
 
 - Button to unbind contract when annotating calls
