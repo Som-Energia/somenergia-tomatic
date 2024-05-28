@@ -1,58 +1,63 @@
-import m from 'mithril'
 import jsyaml from 'js-yaml'
 import Auth from './auth'
 import messages from './messages'
 
-const debugApi = false
+const debugApi = true
 //const apiPrefix = 'http://localhost:4555'
 const apiPrefix = ''
 
-var api = {
-  request: function (options) {
-    options = { ...options }
-    const { context } = options
-    options.config = function (xhr) {
-      xhr.setRequestHeader('Authorization', 'Bearer ' + Auth.token())
-    }
-    options.responseType = 'yaml' // whatever different of json indeed
-    options.deserialize = api.deserialize
-    options.url = apiPrefix + options.url
-    debugApi &&
-      console.log(
-        options.method || 'GET',
-        options.url,
-        'Launched',
-        options.params || options.body || '',
-      )
-    return m
-      .request(options)
-      .then(function (result) {
-        debugApi &&
-          console.log(options.method || 'GET', options.url, 'Received', result)
-        return result
-      })
-      .catch(function (error) {
-        debugApi &&
-          console.log(options.method || 'GET', options.url, 'Error', error)
-        // Forbidden
-        if (error.code === 403) {
-          messages.error('Operació no permesa', { context })
-          return undefined
-        }
-        // Unauthorized
-        if (error.code === 401) {
-          Auth.logout()
-          return undefined
-        }
-        throw error
-      })
-  },
-
-  deserialize: function (responseText) {
-    return jsyaml.load(responseText)
-  },
+const api = {}
+api.request = ({ context, url, ...options }) => {
+  const method = options.method || 'GET'
+  const fullUrl = apiPrefix + url
+  debugApi &&
+    console.log(
+      method,
+      fullUrl,
+      'Launched',
+      options.params || options.body || '',
+    )
+  return fetch(fullUrl, {
+    ...options,
+    mode: 'same-origin',
+    redirect: 'error',
+    headers: {
+      "authorization": 'Bearer ' + Auth.token(),
+      'content-type': 'application/x-yaml',
+    },
+    body: method === 'GET' ? undefined : jsyaml.dump(url.body),
+    // TODO: params
+  })
+    .then(function (response) {
+      console.log(response)
+      if (!response.ok) throw response
+      return response
+    })
+    .then(async function (response) {
+      const text = await response.text()
+        return jsyaml.load(text)
+    })
+    .then(function (result) {
+      debugApi && console.log(method, fullUrl, 'Received', result)
+      return result
+    })
+    .catch(function (error) {
+      debugApi && console.log(method, fullUrl, 'Error', error)
+      // Forbidden
+      if (error.status === 403) {
+        messages.error('Operació no permesa', { context })
+        return undefined
+      }
+      // Unauthorized
+      if (error.status === 401) {
+        Auth.logout()
+        return undefined
+      }
+      console.log("Que la tiro")
+      throw error
+    })
 }
-// vim: et ts=2 sw=2
 
 export default api
+
 // vim: et ts=2 sw=2
