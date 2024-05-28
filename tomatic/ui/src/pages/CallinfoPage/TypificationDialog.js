@@ -87,7 +87,7 @@ export default function TypificationDialog({ onClose }) {
               <strong>De:</strong> {person}
             </Box>
             <Stack
-              direction="horizontal"
+              direction="row"
               justifyContent="space-between"
               gap={1}
             >
