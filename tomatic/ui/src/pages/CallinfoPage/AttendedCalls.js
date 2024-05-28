@@ -75,7 +75,7 @@ function FormatedCall({ call }) {
           {call.comments && (
             <Tooltip
               arrow
-              sx={{ color: 'gray', alignText: 'right' }}
+              sx={{ color: 'gray' }}
               title={<Box whiteSpace="pre-wrap">{call.comments}</Box>}
             >
               <CommentIcon />
@@ -86,7 +86,6 @@ function FormatedCall({ call }) {
               arrow
               sx={{
                 color: 'gray',
-                alignText: 'right',
                 '& .MuiTooltip-tooltip': { maxWidth: 'none', bgcolor: 'red' },
               }}
               title={
@@ -106,7 +105,6 @@ function FormatedCall({ call }) {
               sx={{
                 color: 'gray',
                 cursor: 'pointer',
-                alignText: 'right',
               }}
               title={"Treu l'anotació d'aquesta trucada"}
             >
