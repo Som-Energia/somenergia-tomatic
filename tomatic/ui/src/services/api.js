@@ -31,7 +31,7 @@ function deserializeResponse(context) {
 }
 
 function handleHttpErrors(context) {
-  return function (response) {
+  return async function (response) {
     if (!response) return response
     if (response.ok) return response
     // Forbidden
@@ -44,7 +44,13 @@ function handleHttpErrors(context) {
       Auth.logout()
       return undefined
     }
-    throw response
+    if (response.status === 302) {
+      messages.error('Tens desactivada la VPN!', { context })
+      return undefined
+    }
+    messages.error(`Error inesperat ${response.status} ${ response.statusText}\n${ await response.text()}`, {context})
+    console.error(response)
+    return
   }
 }
 
