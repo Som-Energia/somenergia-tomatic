@@ -7,9 +7,9 @@ const debugApi = true
 const apiPrefix = ''
 
 const api = {}
-api.request = ({ context, url, ...options }) => {
+api.request = ({ context, url, params, body, headers, ...options }) => {
   const method = options.method || 'GET'
-  const fullUrl = apiPrefix + url
+  const fullUrl = apiPrefix + url + new URLSearchParams(params)
   debugApi &&
     console.log(
       method,
@@ -18,15 +18,15 @@ api.request = ({ context, url, ...options }) => {
       options.params || options.body || '',
     )
   return fetch(fullUrl, {
-    ...options,
     mode: 'same-origin',
     redirect: 'error',
     headers: {
-      "authorization": 'Bearer ' + Auth.token(),
+      authorization: 'Bearer ' + Auth.token(),
       'content-type': 'application/x-yaml',
+      ...headers,
     },
-    body: method === 'GET' ? undefined : jsyaml.dump(url.body),
-    // TODO: params
+    body: body ? jsyaml.dump(body) : undefined,
+    ...options,
   })
     .then(function (response) {
       console.log(response)

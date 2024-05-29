@@ -435,7 +435,7 @@ CallInfo.onMessageReceived = function (event) {
 CallInfo.emulateCall = function (phone, extension) {
   api
     .request({
-      url: '/api/info/ringring',
+      url: '/api/info/ringring?',
       params: {
         extension: extension,
         phone: phone,
