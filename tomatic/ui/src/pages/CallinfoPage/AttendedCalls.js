@@ -84,10 +84,7 @@ function FormatedCall({ call }) {
           {call.category_ids?.length ? (
             <Tooltip
               arrow
-              sx={{
-                color: 'gray',
-                '& .MuiTooltip-tooltip': { maxWidth: 'none', bgcolor: 'red' },
-              }}
+              sx={{ color: 'gray' }}
               title={
                 <>
                   {filtered_categories.map((category, i) => (

@@ -49,7 +49,12 @@ function handleHttpErrors(context) {
       messages.error('Tens desactivada la VPN!', { context })
       return undefined
     }
-    messages.error(`Error inesperat ${response.status} ${ response.statusText}\n${ await response.text()}`, {context})
+    messages.error(
+      `Error inesperat ${response.status} ${
+        response.statusText
+      }\n${await response.text()}`,
+      { context },
+    )
     console.error(response)
     return
   }

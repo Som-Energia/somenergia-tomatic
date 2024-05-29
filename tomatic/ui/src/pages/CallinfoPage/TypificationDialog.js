@@ -86,11 +86,7 @@ export default function TypificationDialog({ onClose }) {
             <Box>
               <strong>De:</strong> {person}
             </Box>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              gap={1}
-            >
+            <Stack direction="row" justifyContent="space-between" gap={1}>
               <Box>
                 <strong>Referent al contracte:</strong> {contractInfo}
               </Box>
