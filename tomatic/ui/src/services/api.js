@@ -67,7 +67,7 @@ api.request = ({ context, url, params, body, headers, ...options }) => {
     )
   return fetch(fullUrl, {
     mode: 'same-origin',
-    redirect: 'error',
+    redirect: 'manual',
     headers: {
       authorization: 'Bearer ' + Auth.token(),
       'content-type': 'application/x-yaml',
