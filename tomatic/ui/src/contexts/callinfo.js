@@ -246,7 +246,9 @@ var retrieveInfo = function () {
 ///// Usage instrumentation
 
 CallInfo.notifyUsage = function (event) {
+  const context = 'Registrant ús'
   api.request({
+    context,
     method: 'POST',
     url: '/api/logger/' + event,
     body: {
@@ -259,6 +261,7 @@ CallInfo.notifyUsage = function (event) {
 
 CallInfo.categories = reactiveProp([])
 CallInfo.retrieveCategories = function () {
+  const context = 'Obtenint categories de tipificació'
   api
     .request({
       url: '/api/call/categories',
@@ -283,6 +286,7 @@ CallInfo.retrieveCategories = function () {
 CallInfo.personCalls = reactiveProp([]) // User call registry
 
 CallInfo.retrievePersonCalls = function () {
+  const context = 'Obtening les trucades ateses'
   var username = Auth.username()
   if (username === -1 || username === '') {
     CallInfo.personCalls([])
@@ -291,19 +295,15 @@ CallInfo.retrievePersonCalls = function () {
   CallInfo.personCalls(undefined) // Loading
   api
     .request({
+      context,
       url: '/api/call/log',
     })
-    .then(
-      function (response) {
-        fixContractNumbersInCallLog(response)
-        console.debug('Info GET Response: ', response)
-        CallInfo.personCalls(response.calls)
-      },
-      function (error) {
-        CallInfo.personCalls([])
-        console.debug('Info GET apicall failed: ', error)
-      },
-    )
+    .then(function (response) {
+      if (!response) return
+      fixContractNumbersInCallLog(response)
+      console.debug('Info GET Response: ', response)
+      CallInfo.personCalls(response.calls)
+    })
 }
 
 CallInfo.savingAnnotation = false
@@ -318,6 +318,10 @@ CallInfo.modifyCall = function (call) {
     })
     .then(
       function (response) {
+        if (!response) {
+          CallInfo.savingAnnotation = false
+          return
+        }
         fixContractNumbersInCallLog(response)
         CallInfo.savingAnnotation = false
         messages.success('Anotació desada', { context })
