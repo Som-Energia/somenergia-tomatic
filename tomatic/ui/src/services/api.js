@@ -44,6 +44,7 @@ function handleHttpErrors(context) {
       Auth.logout()
       return undefined
     }
+    // TODO: Not working yet
     if (response.status === 302) {
       messages.error('Tens desactivada la VPN!', { context })
       return undefined
