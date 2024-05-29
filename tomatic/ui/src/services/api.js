@@ -4,7 +4,49 @@ import messages from './messages'
 
 const debugApi = true
 //const apiPrefix = 'http://localhost:4555'
+//const apiPrefix = 'https://tomatic.somenergia.coop'
 const apiPrefix = ''
+
+// Response/Error handling functions
+
+function handleNetworkProblem(context) {
+  return function (error) {
+    console.error(context, error)
+    messages.error('API error: ' + error, { context })
+    return undefined
+  }
+}
+
+function deserializeResponse(context) {
+  return async function (response) {
+    if (response === undefined) return undefined
+    const text = await response.text()
+    try {
+      return jsyaml.load(text)
+    } catch (error) {
+      messages.warn('API YAML format error: ' + error, { context })
+    }
+    return text
+  }
+}
+
+function handleHttpErrors(context) {
+  return function (response) {
+    if (!response) return response
+    if (response.ok) return response
+    // Forbidden
+    if (response.status === 403) {
+      messages.error('Operació no permesa', { context })
+      return undefined
+    }
+    // Unauthorized
+    if (response.status === 401) {
+      Auth.logout()
+      return undefined
+    }
+    throw response
+  }
+}
 
 const api = {}
 api.request = ({ context, url, params, body, headers, ...options }) => {
@@ -28,34 +70,9 @@ api.request = ({ context, url, params, body, headers, ...options }) => {
     body: body ? jsyaml.dump(body) : undefined,
     ...options,
   })
-    .then(function (response) {
-      console.log(response)
-      if (!response.ok) throw response
-      return response
-    })
-    .then(async function (response) {
-      const text = await response.text()
-        return jsyaml.load(text)
-    })
-    .then(function (result) {
-      debugApi && console.log(method, fullUrl, 'Received', result)
-      return result
-    })
-    .catch(function (error) {
-      debugApi && console.log(method, fullUrl, 'Error', error)
-      // Forbidden
-      if (error.status === 403) {
-        messages.error('Operació no permesa', { context })
-        return undefined
-      }
-      // Unauthorized
-      if (error.status === 401) {
-        Auth.logout()
-        return undefined
-      }
-      console.log("Que la tiro")
-      throw error
-    })
+    .catch(handleNetworkProblem(context))
+    .then(handleHttpErrors(context))
+    .then(deserializeResponse(context))
 }
 
 export default api
