@@ -164,7 +164,7 @@ function TimeTable(props) {
       <Stack
         direction="row"
         flexWrap="wrap"
-        justifyContent="space-arround"
+        justifyContent="space-around"
         sx={{ '& > *': { flex: 1 } }}
       >
         {grid?.log ? Changelog(grid) : []}
