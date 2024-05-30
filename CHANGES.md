@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- Rewriten api calls to use fetch instead mithril.request
+    - Drops mithril dependency
+    - Modular error handling
+    - All api calls pass context to error handlers
+    - Specific report for disconnected VPN errors
+- Style CSS error clearing
+
 ## 5.9.1 2024-05-28
 
 - Confirmation dialog for clearing typification
