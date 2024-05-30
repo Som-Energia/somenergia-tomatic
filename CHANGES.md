@@ -8,6 +8,8 @@
     - All api calls pass context to error handlers
     - Specific report for disconnected VPN errors
 - Style CSS error clearing
+- Upgrade notes:
+    - JS dependencies removed, in order to clear them, clear `node_modules` and redeploy
 
 ## 5.10.1 2024-05-13
 
