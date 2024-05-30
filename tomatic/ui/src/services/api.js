@@ -45,7 +45,7 @@ function handleHttpErrors(context) {
       return undefined
     }
     // TODO: Not working yet
-    if (response.status === 302) {
+    if (response.status === 302 || response.type === 'opaqueredirect') {
       messages.error('Tens desactivada la VPN!', { context })
       return undefined
     }
