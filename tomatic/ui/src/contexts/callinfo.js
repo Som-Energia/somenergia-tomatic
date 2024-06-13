@@ -175,18 +175,24 @@ var retrieveInfo = function () {
   let searchField = CallInfo.search_query().field
   if (searchField === 'auto') searchField = autofiltertype(searchValue) || 'all'
   const encodedValue = encodeURIComponent(searchValue)
+  const context = 'Cercant dades de la usuaria'
   function exitWithError(msg) {
-    messages.error(msg)
+    messages.error(msg, { context })
     CallInfo.results({ 1: 'error' })
   }
 
   api
     .request({
+      context,
       url: '/api/info/' + searchField + '/' + encodedValue,
     })
     .then(
       function (response) {
         console.debug('Info GET Response: ', response)
+        if (!response) {
+          CallInfo.results({ 1: 'error' })
+          return
+        }
         if (response.info.message === 'response_too_long') {
           CallInfo.results({ 1: 'toomuch' })
           return
@@ -205,27 +211,24 @@ var retrieveInfo = function () {
         CallInfo.results(results)
         // Keep the context, just in case a second query is started
         // and CallInfo.results() is overwritten
-        var context = CallInfo.results()
+        var contextResults = CallInfo.results()
         CallInfo.loadingDetails(true)
         api
           .request({
+            context,
             method: 'POST',
             url: '/api/info/contractdetails',
             body: {
-              contracts: contractNumbers(context),
+              contracts: contractNumbers(contextResults),
             },
           })
           .then(fixContractNumbersInDetails)
           .then(function (response) {
-            context.partners.forEach(function (partner) {
+            contextResults.partners.forEach(function (partner) {
               partner.contracts.forEach(function (contract) {
                 var number = formatContractNumber(contract.number)
                 var retrieved = response.info.info[number]
-                if (retrieved === undefined) {
-                  return exitWithError(
-                    'No extended contract info for contract' + number,
-                  )
-                }
+                if (retrieved === undefined) return
                 contract.invoices = retrieved.invoices
                 contract.lectures_comptadors = retrieved.lectures_comptadors
                 contract.atr_cases = retrieved.atr_cases
@@ -243,7 +246,9 @@ var retrieveInfo = function () {
 ///// Usage instrumentation
 
 CallInfo.notifyUsage = function (event) {
+  const context = 'Registrant ús'
   api.request({
+    context,
     method: 'POST',
     url: '/api/logger/' + event,
     body: {
@@ -256,6 +261,7 @@ CallInfo.notifyUsage = function (event) {
 
 CallInfo.categories = reactiveProp([])
 CallInfo.retrieveCategories = function () {
+  const context = 'Obtenint categories de tipificació'
   api
     .request({
       url: '/api/call/categories',
@@ -280,6 +286,7 @@ CallInfo.retrieveCategories = function () {
 CallInfo.personCalls = reactiveProp([]) // User call registry
 
 CallInfo.retrievePersonCalls = function () {
+  const context = 'Obtening les trucades ateses'
   var username = Auth.username()
   if (username === -1 || username === '') {
     CallInfo.personCalls([])
@@ -288,19 +295,15 @@ CallInfo.retrievePersonCalls = function () {
   CallInfo.personCalls(undefined) // Loading
   api
     .request({
+      context,
       url: '/api/call/log',
     })
-    .then(
-      function (response) {
-        fixContractNumbersInCallLog(response)
-        console.debug('Info GET Response: ', response)
-        CallInfo.personCalls(response.calls)
-      },
-      function (error) {
-        CallInfo.personCalls([])
-        console.debug('Info GET apicall failed: ', error)
-      },
-    )
+    .then(function (response) {
+      if (!response) return
+      fixContractNumbersInCallLog(response)
+      console.debug('Info GET Response: ', response)
+      CallInfo.personCalls(response.calls)
+    })
 }
 
 CallInfo.savingAnnotation = false
@@ -315,6 +318,10 @@ CallInfo.modifyCall = function (call) {
     })
     .then(
       function (response) {
+        if (!response) {
+          CallInfo.savingAnnotation = false
+          return
+        }
         fixContractNumbersInCallLog(response)
         CallInfo.savingAnnotation = false
         messages.success('Anotació desada', { context })
@@ -435,7 +442,7 @@ CallInfo.onMessageReceived = function (event) {
 CallInfo.emulateCall = function (phone, extension) {
   api
     .request({
-      url: '/api/info/ringring',
+      url: '/api/info/ringring?',
       params: {
         extension: extension,
         phone: phone,

@@ -93,8 +93,10 @@ Tomatic.toggleKumato = function () {
 
 Tomatic.persons = reactiveProp({})
 Tomatic.requestPersons = function () {
+  const context = 'Obtenint dades del personal'
   return api
     .request({
+      context,
       url: '/api/persons',
     })
     .then(function (response) {
@@ -375,6 +377,7 @@ Tomatic.requestQueue = function (suffix) {
   const context = "Actualitzant l'estat de la cua"
   api
     .request({
+      context,
       url: '/api/queue' + (suffix || ''),
     })
     .then(function (response) {
@@ -402,8 +405,10 @@ Tomatic.restoreLine = function (line) {
 
 Tomatic.forcedTurns = reactiveProp({})
 Tomatic.requestForcedTurns = function () {
+  const context = 'Obtenint els torns fixos'
   api
     .request({
+      context,
       url: '/api/forcedturns',
     })
     .then(function (data) {
@@ -446,6 +451,7 @@ Tomatic.forcedTurnsAddColumn = function () {
   const context = `Afegint línia als torns fixos`
   api
     .request({
+      context,
       method: 'PATCH',
       url: '/api/forcedturns/addColumn',
     })
@@ -463,6 +469,7 @@ Tomatic.forcedTurnsRemoveColumn = function () {
   const context = `Eliminant linia als torns fixos`
   api
     .request({
+      context,
       method: 'PATCH',
       url: '/api/forcedturns/removeColumn',
     })
@@ -488,23 +495,19 @@ Tomatic.requestGrid = function (week) {
   }
   api
     .request({
+      context,
       url: '/api/graella-' + week + '.yaml',
     })
-    .then(
-      function (data) {
-        if (!data) Tomatic.grid(undefined)
-        data.days = data.days || 'dl dm dx dj dv'.split(' ')
-        // TODO: Delete on API
-        delete data.colors
-        delete data.names
-        delete data.extensions
-        delete data.tables // TODO: This one was never added
-        Tomatic.grid(data)
-      },
-      function (error) {
-        messages.error(error + '' || 'Error inexperat', { context })
-      },
-    )
+    .then(function (data) {
+      if (!data) Tomatic.grid(undefined)
+      data.days = data.days || 'dl dm dx dj dv'.split(' ')
+      // TODO: Delete on API
+      delete data.colors
+      delete data.names
+      delete data.extensions
+      delete data.tables // TODO: This one was never added
+      Tomatic.grid(data)
+    })
 }
 
 Tomatic.weekdays = {
@@ -540,6 +543,7 @@ Tomatic.editCell = function (day, houri, turni, name, myname) {
   const context = `Editant la graella`
   api
     .request({
+      context,
       method: 'PATCH',
       url:
         '/api/graella/' +
@@ -562,8 +566,10 @@ Tomatic.currentWeek.subscribe(() => {
   Tomatic.requestGrid(Tomatic.currentWeek())
 })
 Tomatic.requestWeeks = function () {
+  const context = 'Obtenint llista de graelles'
   api
     .request({
+      context,
       url: '/api/graella/list',
     })
     .then(function (newWeeklist) {
