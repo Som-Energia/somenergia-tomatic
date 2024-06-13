@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.10.0 2024-05-13
+
+- data/noservice.conf to configure non-holidays whole staff busy days
+
 ## 5.9.1 2024-05-28
 
 - Confirmation dialog for clearing typification
