@@ -62,6 +62,11 @@ class PlannerExecution(Execution):
             config.forcedTimeTable = 'forced-turns.yaml'
             (self.path/'forced-turns.yaml').symlink_to(forcedTurnsFile.resolve())
 
+        noservice_file = self.configPath/'data'/'noservice.conf'
+        if noservice_file.exists():
+            (self.path/'data').mkdir()
+            (self.path/'data'/'noservice.conf').symlink_to(noservice_file.resolve())
+
         config.dump(self.path/'config.yaml')
 
     def listInfo(self):
