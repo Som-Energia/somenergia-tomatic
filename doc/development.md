@@ -168,6 +168,7 @@ taula.html
         - downloaded as `/api/busy/download/weekly`
     - `indisponibilitats-vacances.conf`
     - `holidays.conf`
+    - `data/noservice.conf` # To be appended to holidays when retrieving
     - `leaves.conf`
 
 - Credit

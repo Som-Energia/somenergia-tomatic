@@ -96,6 +96,10 @@ def downloadFestivities(config):
     with holidaysfile.open('w', encoding='utf8') as output:
         for festivity in Festivities.read(festivity_ids, ['date','meeting_id']) or []:
             output.write('{date}\t{meeting_id[1]}\n'.format(**festivity))
+        no_service_file = Path('data')/'noservice.conf'
+        if no_service_file.exists():
+            no_service_days = no_service_file.read_text()
+            output.write(no_service_days)
 
 def downloadPersons(config):
     step("Baixant informació de les persones del tomatic...")
