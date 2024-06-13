@@ -1,5 +1,10 @@
 # Changelog
 
+
+## 5.10.1 2024-05-13
+
+- Fix: Use `noservice.conf` in the planner sandbox
+
 ## 5.10.0 2024-05-13
 
 - data/noservice.conf to configure non-holidays whole staff busy days
