@@ -1,12 +1,12 @@
 # Changelog
 
-## Unreleased
+## 5.10.2 2024-07-03
 
-- Rewriten api calls to use fetch instead mithril.request
-    - Drops mithril dependency
+- Better API errors detection
+    - API error context shown besides the error message (ie. Authorization error while fetching users)
+    - VPN detection improved
     - Modular error handling
-    - All api calls pass context to error handlers
-    - Specific report for disconnected VPN errors
+- Rewriten api calls to use fetch instead mithril.request, mithril dropped
 - Style CSS error clearing
 - Upgrade notes:
     - JS dependencies removed, in order to clear them, clear `node_modules` and redeploy
