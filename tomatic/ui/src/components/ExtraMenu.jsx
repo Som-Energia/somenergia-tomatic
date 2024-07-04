@@ -12,8 +12,7 @@ import EmulateCallDialog from './EmulateCallDialog'
 import TomaticSaysDialog from './TomaticSaysDialog'
 import Tomatic from '../services/tomatic'
 
-const scriptLauncherBase =
-  window.location.protocol + '//' + window.location.hostname + ':5000'
+const scriptLauncherBase = '/scriptlauncher'
 
 export default function ExtraMenu() {
   const [anchorElMenu, setAnchorElMenu] = React.useState(null)
