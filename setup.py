@@ -69,6 +69,7 @@ setup(
         'uvicorn[standard]', # server for fastapi (standard for websockets)
         'aiofiles', # Static files for fastapi
         'elasticsearch<8', # 8 version is incompatible with irontec server
+        'urllib3<2', # indirect, restriction from elasticsearch
         'ics<0.8', # icalendar generation. 0.8 changes interface and not yet available in all Pythons
         'itsdangerous', # auth
         'authlib<1.0', # auth
