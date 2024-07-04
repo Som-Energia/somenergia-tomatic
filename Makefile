@@ -43,6 +43,7 @@ ui-style:
 
 clean:
 	rm -rf node_modules .venv tomatic/dist 
+	find -name __pycache__ -exec rm -r {} \+
 
 
 define HELP
