@@ -63,6 +63,16 @@ npm install
 npm run deploy # for production assets
 ```
 
+### Setting up scriptlauncher
+
+Tomatic works alongside an scriptlauncher.
+Tomatic redirects to /scriptlauncher,
+but scriptlauncher must serve in / so it needs its own domain
+and the frontend server must redirect /scriptlauncher
+to / on scriptlauncher domain.
+
+Run scriptlauncher passing the `scriptlauncher.yaml` file that comes with Tomatic.
+
 ### Setting up minizinc (used by timetable scheduler)
 
 ```bash
