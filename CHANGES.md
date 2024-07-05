@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.10.3 2024-07-05
+
+- Server independent and portless redirect to scriptlauncher
+- Upgrade notes:
+    - Configure your frontend server to redirect /scriplauncher
+      the dns serving scriplauncher
+
 ## 5.10.2 2024-07-03
 
 - Better API errors detection
