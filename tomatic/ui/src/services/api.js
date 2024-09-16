@@ -63,7 +63,7 @@ function handleHttpErrors(context) {
 const api = {}
 api.request = ({ context, url, params, body, headers, ...options }) => {
   const method = options.method || 'GET'
-  const fullUrl = apiPrefix + url + new URLSearchParams(params)
+  const fullUrl = apiPrefix + url + (params ? '?' + new URLSearchParams(params) : '')
   debugApi &&
     console.log(
       method,
