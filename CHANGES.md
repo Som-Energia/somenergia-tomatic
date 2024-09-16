@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Fix: Build `fullUrl` properly when `params`
+
 ## 5.10.3 2024-07-05
 
 - Server independent and portless redirect to scriptlauncher
