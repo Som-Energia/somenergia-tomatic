@@ -303,10 +303,11 @@ class Backtracker(object):
         if motiu == 'FullLoad':
             return # Not worth to log
 
-        with open(self.config.monitoringFile,'a') as output:
-            output.write("<div class='error'>Incompletable: ")
-            output.write(u(message))
-            output.write("</div>")
+        if self.nMonitoredSolutions <= self.config.maxMonitoredSolutions:
+            with open(self.config.monitoringFile,'a') as output:
+                output.write("<div class='error'>Incompletable: ")
+                output.write(u(message))
+                output.write("</div>")
 
         if message in self.deeperCutLog:
             return
