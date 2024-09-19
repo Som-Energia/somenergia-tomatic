@@ -29,6 +29,7 @@ aleatori: false
 stopPenalty: 0
 backtrackDepth: 100000
 maxNodesToPersevere: 100000
+maxMonitoredSolutions: 10
 costLimit: 200
 discriminateLines: true
 pruneRedundant: false
