@@ -38,6 +38,7 @@ aleatori: true
 stopPenalty: 0
 backtrackDepth: 100000
 maxNodesToPersevere: 10000
+maxMonitoredSolutions: 10
 costLimit: 200
 descartaNoPrometedores: true
 deixaEsmorzar: true
