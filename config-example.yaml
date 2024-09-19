@@ -26,6 +26,7 @@ aleatori: true   # True to randomize order to choose persons (recommended unless
 stopPenalty: 0 # The solver will stop when a complete solution with this penalty is found
 backtrackDepth: 10000000000 # How long, in node visits on the search tree, the algorithm will execute
 maxNodesToPersevere: 10000 # How long, in node visits on the search tree, the search shoul perservere on one way before try a different one
+maxMonitoredSolutions: 10 # Maximum number of solutions with the same cost monitored in monitoringFile
 costLimit: 200 # Minimum cost to consider, partial solutions above that will be discarded
 descartaNoPrometedores: true # Prune partial solutions which already have bad penalty (proportional cost is very beyond the limit)
 deixaEsmorzar: true     # True to force free one of the middle time slot to lunch

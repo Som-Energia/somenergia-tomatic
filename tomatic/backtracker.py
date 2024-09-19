@@ -33,7 +33,7 @@ class Backtracker(object):
         self.outputYaml = "graella-telefons-{}.yaml".format(config.monday)
         self.storedCost = ('uncomparableSize', 'uncomparablePenalty')
         self.globalMaxTurnsADay = config.maximHoresDiariesGeneral
-
+        self.nMonitoredSolutions = 0
         # Dimensional variables
         self.nlines = config.nTelefons
         self.hours = self.llegeixHores()
@@ -652,6 +652,7 @@ class Backtracker(object):
         timetable.cost = cost
         if firstAtCost:
             # Is the first that good, start from scratch
+            self.nMonitoredSolutions = 0
             self.storedCost = (len(partial), cost)
             timetable.dump(self.outputYaml)
             personalColors = htmlgen.htmlColors()
@@ -678,9 +679,11 @@ class Backtracker(object):
         penalitzacions = (
             htmlgen.htmlPenalties()
         )
-        with open(self.config.monitoringFile,'a') as output:
-            output.write(htmlgen.htmlTable())
-            output.write(penalitzacions)
+        self.nMonitoredSolutions += 1
+        if self.nMonitoredSolutions <= self.config.maxMonitoredSolutions:
+            with open(self.config.monitoringFile,'a') as output:
+                output.write(htmlgen.htmlTable())
+                output.write(penalitzacions)
 
         # Dump status for the planer executor
         if firstAtCost:
