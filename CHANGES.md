@@ -3,6 +3,10 @@
 ## Unreleased
 
 - Fix: Build `fullUrl` properly when `params`
+- Fix: Limit number of monitored solutions
+- Upgrade notes:
+    - add config.yaml parameter:
+	- maxMonitoredSolutions: 10
 
 ## 5.10.3 2024-07-05
 
