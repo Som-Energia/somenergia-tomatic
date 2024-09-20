@@ -303,7 +303,7 @@ class Backtracker(object):
         if motiu == 'FullLoad':
             return # Not worth to log
 
-        if self.nMonitoredSolutions <= self.config.maxMonitoredSolutions:
+        if self.nMonitoredSolutions <= self.config.get('maxMonitoredSolutions', 10):
             with open(self.config.monitoringFile,'a') as output:
                 output.write("<div class='error'>Incompletable: ")
                 output.write(u(message))
@@ -681,7 +681,7 @@ class Backtracker(object):
             htmlgen.htmlPenalties()
         )
         self.nMonitoredSolutions += 1
-        if self.nMonitoredSolutions <= self.config.maxMonitoredSolutions:
+        if self.nMonitoredSolutions <= self.config.get('maxMonitoredSolutions', 10):
             with open(self.config.monitoringFile,'a') as output:
                 output.write(htmlgen.htmlTable())
                 output.write(penalitzacions)
