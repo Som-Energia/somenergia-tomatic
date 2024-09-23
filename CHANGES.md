@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.10.4 2024-09-23
 
 - Fix: Build `fullUrl` properly when `params`
 - Fix: Limit number of monitored solutions
