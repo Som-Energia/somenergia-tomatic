@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.10.5 2024-10-21
+
+- Queue status icons
+- Talking queue operators moved up
+
 ## 5.10.4 2024-09-23
 
 - Fix: Build `fullUrl` properly when `params`
