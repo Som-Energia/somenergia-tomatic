@@ -71,9 +71,10 @@ body:has(.kumato-mode) {
 	border: none;
 }
 .queueeditor {
-	margin-left: auto;
-	margin-right: auto;
-	text-align:center;
+	display:flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 2rem 1rem;
 }
 .queueitem {
 	width: 10em;
@@ -84,10 +85,26 @@ body:has(.kumato-mode) {
 	margin: 2pt;
 	cursor: pointer;
 	transition: all 0.5s;
+	position: relative;
+	/* MUI icon: CallEnd  */
+	--queueicon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08c-.18-.17-.29-.42-.29-.7 0-.28.11-.53.29-.71C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28-.79-.74-1.69-1.36-2.67-1.85-.33-.16-.56-.5-.56-.9v-3.1C15.15 9.25 13.6 9 12 9"/></svg>');
+}
+.queueitem:not(.add)::before {
+	position: absolute;
+	top: calc(100% - 2rem);
+	left: 1rem;
+	content: " ";
+	mask-image: var(--queueicon)
+	mask-size: cover;
+	background-color: currentColor;
+	width: 3rem;
+	height: 3rem;
 }
 .queueitem.paused,
 .kumato-mode .queueitem.paused
 {
+	/* MUI icon: Pause */
+	--queueicon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><path d="M6 19h4V5H6zm8-14v14h4V5z"/></svg>');
 	color: red;
 	text-decoration: line-through;
 	background-color: #fee;
@@ -104,16 +121,22 @@ body:has(.kumato-mode) {
 }
 .queueitem.ringing
 {
+	/* MUI icon: NotificationsActive */
+	--queueicon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><path d="M7.58 4.08 6.15 2.65C3.75 4.48 2.17 7.3 2.03 10.5h2c.15-2.65 1.51-4.97 3.55-6.42m12.39 6.42h2c-.15-3.2-1.73-6.02-4.12-7.85l-1.42 1.43c2.02 1.45 3.39 3.77 3.54 6.42M18 11c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-6 11c.14 0 .27-.01.4-.04.65-.14 1.18-.58 1.44-1.18.1-.24.15-.5.15-.78h-4c.01 1.1.9 2 2.01 2"/></svg>');
 	animation: ringing .1s linear infinite alternate;
 }
 .queueitem.incall
 {
+	/* MUI icon: PhoneInTalk */
+	--queueicon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.21c.28-.26.36-.65.25-1C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1zM19 12h2c0-4.97-4.03-9-9-9v2c3.87 0 7 3.13 7 7zm-4 0h2c0-2.76-2.24-5-5-5v2c1.66 0 3 1.34 3 3z"/></svg>');
 	box-shadow: 3px 3px 4px #888888;
-	transform: translate(-1px, -1px);
+	transform: translate(-1px, -7px);
 }
 .queueitem.disconnected,
 .kumato-mode .queueitem.disconnected
 {
+	/* MUI icon: Dangerous */
+	--queueicon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><path d="M15.73 3H8.27L3 8.27v7.46L8.27 21h7.46L21 15.73V8.27zM17 15.74 15.74 17 12 13.26 8.26 17 7 15.74 10.74 12 7 8.26 8.26 7 12 10.74 15.74 7 17 8.26 13.26 12z"/></svg>');
 	transform: rotate(180deg);
 	border-color: red;
 }
@@ -126,6 +149,7 @@ body:has(.kumato-mode) {
 	border: 2pt dashed #aae;
 	color: #aae;
 	background-color: #ddf;
+	--queueicon: '';
 }
 .kumato-mode .queueitem.add {
 	color: inherit;
