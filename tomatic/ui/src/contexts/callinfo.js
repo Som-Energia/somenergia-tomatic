@@ -264,6 +264,7 @@ CallInfo.retrieveCategories = function () {
   const context = 'Obtenint categories de tipificació'
   api
     .request({
+      context,
       url: '/api/call/categories',
     })
     .then(
