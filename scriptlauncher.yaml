@@ -2,8 +2,7 @@ tomatic_equip:
   description: Tomàtic (Equip)
   scripts:
     says:
-      script: SOME_SRC/somenergia-tomatic/runhere tomatic_says.py  {quelcom}
-      #script: SOME_SRC/somenergia-tomatic/runhere tomatic_says.py  -c "{qui}" {quelcom}
+      script: ./runhere tomatic_says.py  {quelcom}
       title: Tomàtic diu
       description: |
         Digues quelcom com si fossis en Tomàtic.
@@ -24,7 +23,7 @@ tomatic_stats:
   description: Tomàtic (Stats)
   scripts:
     statshistory:
-      script: cp SOME_SRC/somenergia-tomatic/stats.csv {output}
+      script: cp ./stats.csv {output}
       title: Centraleta - Serie histórica d'estadístiques
       description: >
         Retorna les estadístiques de la centraleta que s'envien cada dia
@@ -103,11 +102,11 @@ tomatic_graelles:
       title: Graelles - Condonar deutes de torns
       description: >
         Posa a zero tots els deutes de torns acumulats positius y negatius
-      script: SOME_SRC/somenergia-tomatic/runhere tomatic_resetshiftcredit.sh
+      script: ./runhere tomatic_resetshiftcredit.sh
       parameters: {}
 
     retireold:
-      script: SOME_SRC/somenergia-tomatic/runhere tomatic_timetable.py retireold
+      script: ./runhere tomatic_timetable.py retireold
       title: Graelles - Retira les graelles antigues
       description: >
         Amaga les graelles antigues conservant només la de la setmana anterior.
@@ -117,7 +116,7 @@ tomatic_graelles:
         Això es fa cada setmana automàticament. Fer servir quan no ha funcionat.
 
     explainBusy:
-      script: SOME_SRC/somenergia-tomatic/runhere tomatic_busy.py list {monday} --required
+      script: ./runhere tomatic_busy.py list {monday} --required
       title: Graelles - Resum d'indisponibilitats per torn
       description: >
         Explica quanta gent hi ha indisponible a cada torn i perquè.
@@ -128,7 +127,7 @@ tomatic_graelles:
           type: DATE
 
     forcedBusyOverlap:
-      script: SOME_SRC/somenergia-tomatic/runhere tomatic_busy.py forced-overlap {monday}
+      script: ./runhere tomatic_busy.py forced-overlap {monday}
       title: Graelles - Conflictes entre Ïndisponibilitats i Torns forçats
       description: >
         Mostra els torns forçats que coincideixen amb indisponibilitat
@@ -142,13 +141,13 @@ tomatic_pbx:
   description: Tomàtic (Centraleta)
   scripts:
     queuestatus:
-      script: SOME_SRC/somenergia-tomatic/runhere tomatic_rtqueue.py status
+      script: ./runhere tomatic_rtqueue.py status
       title: Centraleta - Estat de la centraleta
       description: >
         Mostra l'estat dels operadors del torn actual
 
     reloadqueue:
-      script: SOME_SRC/somenergia-tomatic/runhere tomatic_rtqueue.py set
+      script: ./runhere tomatic_rtqueue.py set
       title: Centraleta - Recarrega el torn de telefon actual (amb cura!)
       description: >
         Fer servir amb cura!!!!
@@ -158,7 +157,7 @@ tomatic_pbx:
         Fer servir només en cas de que la cua hagi quedat moolt malmessa.
 
     reloadextensions:
-      script: SOME_SRC/somenergia-tomatic/runhere tomatic_extensions.py load
+      script: ./runhere tomatic_extensions.py load
       title: Centraleta - Recarrega les extensions
       description: >
         Fer servir amb cura!!!! Es possible que talli trucades.
@@ -173,14 +172,13 @@ desenvolupament:
     proves_callregistry_odoo:
       title: Prova callregistry odoo
       description: Exercita els punts d'entrada d'odoo pel call registry
-      workdir: .
       script: .venv/bin/python -m tomatic.call_registry.odoo
 
 tomatic_old:
   description: Tomàtic (Historics)
   scripts:
     carregues:
-      script: SOME_SRC/somenergia-tomatic/runhere tomatic_shiftload.py {monday} --clusterize --lines {numberOfLines} --summary {summary} --forgive
+      script: ./runhere tomatic_shiftload.py {monday} --clusterize --lines {numberOfLines} --summary {summary} --forgive
       # --weekshifts {load}
       title: Graelles - Generació de càrregues setmanals [Obsolet]
       description: >
@@ -209,21 +207,21 @@ tomatic_old:
           filename: summary-{monday}.tsv
 
     resum:
-      script: SOME_SRC/somenergia-tomatic/runhere tomatic_calls.py  summary
+      script: ./runhere tomatic_calls.py  summary
       title: Centraleta - Resum de trucades del dia
       description: >
         _Obsolet_ Funcionava amb la centraleta de Areavoip.
         Resum de les trucades rebudes del dia.
 
     perdudes:
-      script: SOME_SRC/somenergia-tomatic/runhere tomatic_calls.py  unanswered
+      script: ./runhere tomatic_calls.py  unanswered
       title: Centraleta - Detall de trucades fallides del dia
       description: >
         _Obsolet_ Funcionava amb la centraleta de Areavoip.
         Un llistat bastan cru de les trucades fallides del dia
 
     detall:
-      script: SOME_SRC/somenergia-tomatic/runhere tomatic_calls.py all
+      script: ./runhere tomatic_calls.py all
       title: Centraleta - Detall de totes les trucades del dia
       description: >
         _Obsolet_ Funcionava amb la centraleta de Areavoip.
