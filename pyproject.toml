@@ -110,15 +110,15 @@ Changelog = "https://github.com/som-energia/somenergia-tomatic/blob/master/CHANG
 
 [tool.setuptools.packages]
 
-find = { }
+find = {}
 
 [tool.coverage.run]
 relative_files = true
-#branch = true
+branch = true
 omit = ["**/*test.py"]
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules --cov=tomatic"
+addopts = "--doctest-modules --cov=tomatic --cov-config=pyproject.toml"
 testpaths = [
     'tomatic'
 ]
