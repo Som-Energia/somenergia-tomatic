@@ -71,7 +71,7 @@ jobs:
 
       - name: Unit tests
         run: |
-          pytest --cov tomatic
+          pytest
 
       - name: B2B tests
         run: |
