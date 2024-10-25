@@ -64,6 +64,7 @@ jobs:
         run: |
           touch holidays.conf
           back2back back2back.yaml
+
       - uses: actions/upload-artifact@master
         if: failure() && hashFiles('b2bdata/*result*')
         with:
@@ -80,7 +81,7 @@ jobs:
 
       - name: Google Chat Notificationa
         uses: SimonScholz/google-chat-action@main
-        if: failure()
+        if: false # failure()
         # this allows the build to succeed even when the notification fails
         # e.g. due to dependabot push, which may not have the secret
         continue-on-error: true
