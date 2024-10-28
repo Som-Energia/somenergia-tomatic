@@ -67,6 +67,10 @@ class PlannerExecution(Execution):
             (self.path/'data').mkdir()
             (self.path/'data'/'noservice.conf').symlink_to(noservice_file.resolve())
 
+        dbconfig_file = self.configPath/'dbconfig.py'
+        if dbconfig_file.exists():
+            (self.path/'dbconfig.py').symlink_to(dbconfig_file.resolve())
+
         config.dump(self.path/'config.yaml')
 
     def listInfo(self):
