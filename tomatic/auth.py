@@ -54,7 +54,7 @@ async def auth(request: Request):
         token = await oauth().google.authorize_access_token(request)
     except OAuthError as error:
         return auth_result(error=f"Error d'autenticació: {error.error}", code=400)
-    user = await oauth().google.parse_id_token(request, token)
+    user = token['userinfo']
     if not user:
         return auth_result(error='Error a la resposta de Google', code=400)
 
