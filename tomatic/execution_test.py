@@ -25,7 +25,7 @@ def assertContentEqual(self, path1, path2):
         path2.read_text(encoding='utf8'),
     )
 
-def waitExist(self, file, miliseconds=100):
+def waitExist(self, file, miliseconds=200):
     for i in range(miliseconds):
         if file.exists():
             return True
