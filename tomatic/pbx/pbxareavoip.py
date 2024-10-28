@@ -14,11 +14,11 @@ class AreaVoip(object):
 
     @staticmethod
     def defaultQueue():
-        import dbconfig
+        from .. import dbconfig
         return dbconfig.tomatic.get('areavoip',{}).get('queue', None)
 
     def __init__(self):
-        import dbconfig
+        from .. import dbconfig
         self.config = dbconfig.tomatic.areavoip
 
     def _api(self, request, **kwds):

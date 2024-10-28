@@ -25,7 +25,7 @@ def dbconfigFaker(content):
     """
     try:
         with patch.dict('sys.modules', dbconfig=type(sys)('dbconfig')):
-            import dbconfig
+            from . import dbconfig
             dbconfig.tomatic=content
             import importlib
             importlib.reload(schedulestorage)

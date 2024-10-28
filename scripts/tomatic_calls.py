@@ -23,7 +23,7 @@ srcpath = os.path.dirname(os.path.abspath(__file__))
 yamlconfigpath = os.path.join(srcpath,'persons.yaml')
 
 from yamlns import namespace as ns
-import dbconfig
+from tomatic import dbconfig
 args = dbconfig.tomatic.dbasterisk
 db=Database()
 db.bind(*args.args, **args.kwds)

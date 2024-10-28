@@ -7,7 +7,7 @@ from tomatic.persons import extension
 from tomatic.directmessage import send
 from tomatic.pbx import pbxqueue, pbxtypes
 from consolemsg import u
-import dbconfig
+from tomatic import dbconfig
 import click
 from tomatic import __version__
 from yamlns import namespace as ns

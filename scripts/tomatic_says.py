@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
-import dbconfig
+from tomatic import dbconfig
 from tomatic.directmessage import send
 from consolemsg import step
 

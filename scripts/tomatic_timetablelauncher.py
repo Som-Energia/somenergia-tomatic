@@ -6,7 +6,7 @@ import requests
 from emili import sendMail 
 from io import open
 from yamlns import namespace as ns
-import dbconfig
+from tomatic import dbconfig
 import time
 import uuid
 from consolemsg import step

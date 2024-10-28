@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf8 -*-
 import datetime
-import dbconfig
+from tomatic import dbconfig
 import click
 from tomatic import __version__
 from tomatic.pbx import pbxqueue, pbxtypes

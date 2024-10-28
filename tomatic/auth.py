@@ -11,27 +11,10 @@ from jose import JWTError, jwt
 from yamlns import namespace as ns
 from consolemsg import error
 from . import persons
+from .dbconfig import config
 import os
 JWT_ALGORITHM='HS256'
 CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
-
-def config(key='', default=Ellipsis):
-    keyparts = key.split('.')
-    envkey = key.replace('.','_').upper()
-    if envkey in os.environ:
-        return os.environ[envkey]
-    try:
-        import dbconfig as configuration
-        configuration = ns(configuration.__dict__)
-    except ImportError:
-        configuration = ns(tomatic=ns())
-    if not key:
-        return configuration
-    for part in keyparts[:-1]:
-        configuration = configuration.get(part, ns())
-    if default is Ellipsis and keyparts[-1] not in configuration:
-        raise KeyError(key)
-    return configuration.get(keyparts[-1], default)
 
 @lru_cache
 def oauth():

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import dbconfig
+from tomatic import dbconfig
 import click
 from yamlns import namespace as ns
 

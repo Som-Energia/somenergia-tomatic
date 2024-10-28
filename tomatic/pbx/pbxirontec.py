@@ -30,11 +30,11 @@ class Irontec(object):
 
     @staticmethod
     def defaultQueue():
-        import dbconfig
+        from .. import dbconfig
         return dbconfig.tomatic.get('irontec',{}).get('queue',None)
 
     def __init__(self):
-        import dbconfig
+        from .. import dbconfig
         self.config = dbconfig.tomatic.get('irontec', ns())
         self.token = None
 
@@ -162,7 +162,7 @@ class Irontec(object):
 
     def calls(self, queue, date=None):
         from elasticsearch import Elasticsearch as Searcher
-        import dbconfig
+        from .. import dbconfig
         searcher = Searcher(**dbconfig.tomatic.irontec_elk)
         date = date or str(datetime.date.today())
         daystart = datetime.time(0) # TODO: from config

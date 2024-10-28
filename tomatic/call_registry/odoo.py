@@ -16,8 +16,8 @@ TODO:
 class CallRegistry():
 
     def __init__(self):
-        import dbconfig as configdb
-        self.erp = erppeek.Client(**configdb.tomatic.holidaysodoo)
+        from .. import dbconfig
+        self.erp = erppeek.Client(**dbconfig.tomatic.holidaysodoo)
 
     def _fix_categories(self, categories):
         # Turn empty colors into None

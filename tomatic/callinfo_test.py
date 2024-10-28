@@ -8,7 +8,7 @@ from .callinfo import CallInfo
 
 import erppeek
 try:
-    import dbconfig
+    from . import dbconfig
 except ImportError:
     dbconfig = None
 

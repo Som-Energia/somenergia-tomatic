@@ -10,7 +10,7 @@ pbxtypes = [
 ]
 
 def pbxcreate(pbxtype):
-    import dbconfig
+    from .. import dbconfig
     pbxtype = (
         pbxtype or (
         dbconfig.tomatic.get('pbx', None) or (

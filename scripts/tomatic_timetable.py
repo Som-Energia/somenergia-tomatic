@@ -92,7 +92,7 @@ def workforce(tsv):
 def launch(monday):
     import requests
     from emili import sendMail 
-    import dbconfig
+    from tomatic import dbconfig
     import time
     import uuid
 

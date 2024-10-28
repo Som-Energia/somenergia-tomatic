@@ -28,7 +28,7 @@ def addDays(date, ndays):
 def downloadVacations(config):
     step("Baixant vacances de l'odoo...")
 
-    import dbconfig
+    from . import dbconfig
     import erppeek
     erp = erppeek.Client(**dbconfig.tomatic.holidaysodoo)
     firstDay = addDays(config.monday, 0)
@@ -81,7 +81,7 @@ def downloadFestivities(config):
         year=366, # This is useful for many other uses, not yet slower
     )
 
-    import dbconfig
+    from . import dbconfig
     import erppeek
     from yamlns.dateutils import Date
     erp = erppeek.Client(**dbconfig.tomatic.holidaysodoo)

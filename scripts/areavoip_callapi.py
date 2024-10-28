@@ -2,10 +2,10 @@
 # -*- encoding: utf8 -*-
 
 from consolemsg import u, step, out
-import dbconfig
 import sys
 import os
 import click
+from tomatic import dbconfig
 from tomatic import __version__
 from yamlns import namespace as ns
 

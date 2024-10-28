@@ -4,7 +4,7 @@
 from __future__ import print_function
 from tomatic.callinfo import CallInfo
 
-import dbconfig
+from tomatic import dbconfig
 import erppeek
 import sys
 

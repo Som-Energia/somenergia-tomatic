@@ -10,7 +10,7 @@ from .scheduling import Scheduling, choosers
 
 dbconfig=None
 try:
-    import dbconfig
+    from . import dbconfig
 except ImportError:
     pass
 

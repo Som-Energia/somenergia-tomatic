@@ -11,7 +11,7 @@ def configured_backend():
     backend = os.environ.get('TOMATIC_CALL_REGISTRY')
     if backend: return backend
 
-    import dbconfig
+    from .. import dbconfig
     backend = dbconfig.tomatic.get('callregistry')
     if backend: return backend
 

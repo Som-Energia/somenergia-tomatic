@@ -16,7 +16,7 @@ import time
 from .. import persons
 from .asteriskcli import queueFromSsh
 try:
-    import dbconfig
+    from .. import dbconfig
 except ImportError:
     dbconfig = None
 

@@ -41,7 +41,7 @@ from . import persons
 from .backchannel import BackChannel
 
 try:
-    import dbconfig
+    from . import dbconfig
 except ImportError:
     dbconfig = None
 
