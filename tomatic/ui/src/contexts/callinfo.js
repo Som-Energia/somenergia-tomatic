@@ -5,7 +5,7 @@ import subscriptable from '../services/subscriptable'
 import { prop as reactiveProp } from '../services/subscriptable'
 import messages from '../services/messages'
 import autofiltertype from '../services/autofiltertype'
-import dummy_categories from '../data/categories.yaml'
+//import dummy_categories from '../data/categories.yaml'
 
 var websock = null
 var CallInfo = {}

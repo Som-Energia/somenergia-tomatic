@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Migrated to pyproject
+- Fix: Failed to merge multiprocess coverage data,
+  since subprocesses didn't take the same configuration.
+- Script launcher entries do not use SOME_SRC anymore
+
 ## 5.10.5 2024-10-21
 
 - Queue status icons
