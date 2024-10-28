@@ -92,20 +92,11 @@ jobs:
           parallel: true
           flag-name: Unit tests
 
-      - name: Google Chat Notificationa
-        uses: SimonScholz/google-chat-action@main
-        if: false # failure()
-        # this allows the build to succeed even when the notification fails
-        # e.g. due to dependabot push, which may not have the secret
-        continue-on-error: true
+      - name: Notify
+        uses: Som-Energia/ghactions-notify@main
+        if: always()
         with:
-          # https://docs.github.com/en/webhooks/webhook-events-and-payloads
-          webhookUrl: ${{ secrets.WEBHOOK_ALERTES_WEBAPPS }}
-          jobStatus: ${{ job.status }}
-          imageUrl: ${{ format('https://github.com/{0}.png', github.event.head_commit.author.username) }}
-          imageAltText: ${{ github.event.head_commit.author.name }}
-          subtitle: ${{ github.event.head_commit.message }}
-          title: "${{ format('{0} -- [{1}]', github.event.repository.name, github.event.ref) }}"
+          webhook: ${{ secrets.WEBHOOK_ALERTES_WEBAPPS }}
 
   coveralls_finish:
     needs: build
