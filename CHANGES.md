@@ -2,10 +2,17 @@
 
 ## Unreleased
 
-- Migrated to pyproject
 - Fix: Failed to merge multiprocess coverage data,
   since subprocesses didn't take the same configuration.
+- Security: upgraded authlib dependency, flawed with
+  several issues CVE-2022-39175, CVE-2022-39174
+- Migrated to pyproject
+- dbconfig is a tomatic paquet module looking for a
+  epinonimous file in working dir, because pyproject
+  installed modules do not find it.
 - Script launcher entries do not use SOME_SRC anymore
+- Upgrade notes:
+    - Backend dependencies reinstall required
 
 ## 5.10.5 2024-10-21
 
