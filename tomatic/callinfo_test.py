@@ -12,7 +12,7 @@ from .testutils import personaldata
 
 @unittest.skipIf(not os.environ.get("TOMATIC_TEST_ERP"),
     "Define the environment TOMATIC_TEST_ERP to pass those tests")
-@unittest.skipIf(not secrets('erppeek'),
+@unittest.skipIf(not secrets('erppeek', None),
     "Requires configuring secrets for erppeek")
 @unittest.skipIf(not personaldata,
     "Requires personaldata private data file")
