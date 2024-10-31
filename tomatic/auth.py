@@ -5,7 +5,6 @@ from fastapi import APIRouter, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordBearer
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
-from starlette.config import Config
 from authlib.integrations.starlette_client import OAuth, OAuthError
 from jose import JWTError, jwt
 from yamlns import namespace as ns
