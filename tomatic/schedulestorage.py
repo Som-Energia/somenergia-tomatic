@@ -21,9 +21,7 @@ def utcnow():
 	# Py3 only version
 	#return datetime.datetime.now(tz=datetime.timezone.utc)
 
-def fillConfigurationInfo():
-    return ns.load('config.yaml')
-CONFIG = fillConfigurationInfo()
+CONFIG = params()
 
 class StorageError(Exception): pass
 

@@ -41,12 +41,15 @@ class Storage(object):
         return self._dirname/'backups'
 
     def createEmptyFile(self):
-        emptytimetable = {}
-        emptytimetable['days'] = 'dl dm dx dj dv'.split(' ')
-        emptytimetable['turns'] = ['L1']
-        emptytimetable['hours'] = ['09:00','10:15','11:30','12:45','14:00']
-        emptytimetable['timetable'] = {'dl': [[None]], 'dm': [[None]], 'dx': [[None]], 'dj': [[None]], 'dv': [[None]]}
-        timetable = ns(**emptytimetable)
+        timetable = ns(
+            days = params.diesVisualitzacio,
+            turns = ['L1'],
+            hours = params.hours,
+            timetable = dict(
+                (day, [[None]])
+                for day in params.diesVisualitzacio
+            ),
+        )
         self.save(timetable)
 
     def load(self):
