@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.10.6 2024-10-30
 
 - Fix: Failed to merge multiprocess coverage data,
   since subprocesses didn't take the same configuration.
