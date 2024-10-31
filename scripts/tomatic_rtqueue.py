@@ -7,7 +7,7 @@ from tomatic.persons import extension
 from tomatic.directmessage import send
 from tomatic.pbx import pbxqueue, pbxtypes
 from consolemsg import u
-from tomatic import dbconfig
+from tomatic.config import secrets
 import click
 from tomatic import __version__
 from yamlns import namespace as ns
@@ -17,7 +17,7 @@ def table(data):
 
 
 backend_option = click.option('--backend', '-b',
-    default=dbconfig.tomatic.get('pbx',None) or 'irontec',
+    default=secrets('tomatic.pbx', 'irontec'),
     type=click.Choice(pbxtypes),
     help="PBX backend to use",
 )
@@ -201,8 +201,8 @@ def monitor(backend, queue):
 
     if newDisconnected:
         print("Compte: agents desconectades: {}".format(', '.join(list(newDisconnected))))
-        if dbconfig.tomatic.get('monitorChatChannel', None):
-            send(dbconfig.tomatic.monitorChatChannel,
+        if secrets('tomatic.monitorChatChannel', None):
+            send(secrets('tomatic.monitorChatChannel'),
                 "Compte: agents desconectades: {}".format(', '.join(list(newDisconnected))))
 
     # Store the current for the next monitoring

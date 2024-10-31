@@ -7,13 +7,13 @@ from yamlns import namespace as ns
 from .callinfo import CallInfo
 
 import erppeek
-from .config import dbconfig, secrets
+from .config import secrets
 from .testutils import personaldata
 
 @unittest.skipIf(not os.environ.get("TOMATIC_TEST_ERP"),
     "Define the environment TOMATIC_TEST_ERP to pass those tests")
 @unittest.skipIf(not secrets('erppeek'),
-    "Requires configuring dbconfig.erppeek")
+    "Requires configuring secrets for erppeek")
 @unittest.skipIf(not personaldata,
     "Requires personaldata private data file")
 class CallInfo_Test(unittest.TestCase):

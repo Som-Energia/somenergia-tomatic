@@ -92,12 +92,12 @@ def workforce(tsv):
 def launch(monday):
     import requests
     from emili import sendMail 
-    from tomatic import dbconfig
+    from tomatic.config import secrets
     import time
     import uuid
 
     config = ns.load('config.yaml')
-    minutes = dbconfig.tomatic.get('plannerGraceTime', 2*60)
+    minutes = secrets('tomatic.plannerGraceTime', 2*60)
 
     step(f"Timetables: Lauching timetable for {monday}")
     execution_id = PlannerExecution.start(
@@ -163,13 +163,13 @@ Segurament es deu a algun error de configuració.
 
 Revisa el missatge al final de tot de [la sortida]({config.baseUrl}/api/planner/status/{execution_id}),
 i si no es res que puguis interpretar tu mateixa,
-reenvia aquest mateix correu a incidencies ({dbconfig.tomatic.supportmail}).
+reenvia aquest mateix correu a incidencies ({secrets('tomatic.supportmail')}).
 """
 
 
     sendMail(
-        sender=dbconfig.tomatic.dailystats.sender,
-        to=dbconfig.tomatic.dailystats.recipients,
+        sender=secrets('tomatic.dailystats.sender'),
+        to=secrets('tomatic.dailystats.recipients'),
         subject=f"ERROR: Graella setmanal sense solució {execution_id}",
         md=failure_template.format(
             monday=monday,
