@@ -91,7 +91,7 @@ def main(fake, debug, host, port, printrules, date, time, backend, queue, varian
         os.environ["TOMATIC_VARIANT"] = variant
 
     if call_registry:
-        os.environ['TOMATIC_CALL_REGISTRY'] = call_registry
+        os.environ['TOMATIC_CALLREGISTRY'] = call_registry
 
     step("Starting API")
     if printrules:

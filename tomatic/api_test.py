@@ -29,7 +29,7 @@ class Api_Test(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
         self.data_path = self.enterContext(temp_path())
-        self.enterContext(environ("TOMATIC_CALL_REGISTRY", 'dummy'))
+        self.enterContext(environ("TOMATIC_CALLREGISTRY", 'dummy'))
         self.enterContext(environ("TOMATIC_DATA_PATH", str(self.data_path)))
         self.client = TestClient(api.app)
         api.app.dependency_overrides[validatedUser] = (
