@@ -41,13 +41,14 @@ class Storage(object):
         return self._dirname/'backups'
 
     def createEmptyFile(self):
+        days = params().diesVisualitzacio
         timetable = ns(
-            days = params.diesVisualitzacio,
+            days = days,
             turns = ['L1'],
-            hours = params.hours,
+            hours = params().hours,
             timetable = dict(
                 (day, [[None]])
-                for day in params.diesVisualitzacio
+                for day in days
             ),
         )
         self.save(timetable)
