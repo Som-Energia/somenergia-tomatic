@@ -3,10 +3,7 @@
 from yamlns import namespace as ns
 from .. import persons
 from ..remote import Remote
-try:
-    from .. import dbconfig
-except ImportError:
-    dbconfig = None
+from ..config import secrets
 
 """
 This is a patch until we find a way to obtain this info
@@ -52,7 +49,7 @@ def extractQueuepeerInfo(line):
 
 # TODO: Untested
 def queueFromSsh(queue):
-    remote = Remote(**dbconfig.tomatic.ssh)
+    remote = Remote(**secrets('tomatic.ssh'))
     output = remote.run("asterisk -rx 'queue show {}'".format(self._queue))
     return [
         extractQueuepeerInfo(line)
@@ -81,7 +78,7 @@ somenergia has 0 calls (max unlimited) in 'leastrecent' strategy (4s holdtime, 3
    No Callers
 """
     if sql:
-        remote = Remote(**dbconfig.tomatic.ssh)
+        remote = Remote(**secrets('tomatic.ssh'))
         sortida = remote.run('''echo 'select callerid, paused, sippeers.* from queue_members join sippeers on queue_members.interface = concat("SIP/", sippeers.name);' | sudo mysql asterisk''')
         click.echo(sortida)
 

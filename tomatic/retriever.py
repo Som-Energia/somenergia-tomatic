@@ -6,6 +6,7 @@ from pathlib import Path
 from consolemsg import step, out, warn, fail, u
 from yamlns import namespace as ns
 from .persons import persons
+from .config import secrets
 
 # Dirty Hack: Behave like python3 open regarding unicode
 def open(*args, **kwd):
@@ -28,9 +29,8 @@ def addDays(date, ndays):
 def downloadVacations(config):
     step("Baixant vacances de l'odoo...")
 
-    from . import dbconfig
     import erppeek
-    erp = erppeek.Client(**dbconfig.tomatic.holidaysodoo)
+    erp = erppeek.Client(**secrets('tomatic.holidaysodoo'))
     firstDay = addDays(config.monday, 0)
     lastDay = addDays(config.monday, 4)
     absences = erp.model('hr.leave').get_leaves(
@@ -81,10 +81,9 @@ def downloadFestivities(config):
         year=366, # This is useful for many other uses, not yet slower
     )
 
-    from . import dbconfig
     import erppeek
     from yamlns.dateutils import Date
-    erp = erppeek.Client(**dbconfig.tomatic.holidaysodoo)
+    erp = erppeek.Client(**secrets('tomatic.holidaysodoo'))
     firstDay = addDays(config.monday, 0)
     lastDay = addDays(config.monday, intervals['year'])
     Festivities = erp.model('hr.holidays.public.line')

@@ -7,6 +7,7 @@ from .. import persons
 import datetime
 import os
 from consolemsg import step, error
+from ..config import secrets
 
 class AreaVoip(object):
 
@@ -14,12 +15,10 @@ class AreaVoip(object):
 
     @staticmethod
     def defaultQueue():
-        from .. import dbconfig
-        return dbconfig.tomatic.get('areavoip',{}).get('queue', None)
+        return secrets('tomatic.areavoip.queue', None)
 
     def __init__(self):
-        from .. import dbconfig
-        self.config = dbconfig.tomatic.areavoip
+        self.config = secrets('tomatic.areavoip', ns())
 
     def _api(self, request, **kwds):
         secondsTimeout = int(kwds.pop('secondsTimeout', 2))

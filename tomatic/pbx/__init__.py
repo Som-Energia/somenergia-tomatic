@@ -10,10 +10,10 @@ pbxtypes = [
 ]
 
 def pbxcreate(pbxtype):
-    from .. import dbconfig
+    from ..config import secrets
     pbxtype = (
         pbxtype or (
-        dbconfig.tomatic.get('pbx', None) or (
+        secrets('tomatic.pbx', None) or (
         'irontec'
     )))
 

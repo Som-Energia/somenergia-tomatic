@@ -1,5 +1,6 @@
 from .models import CallLog, Call, NewCall, UpdatedCallLog, Categories
 import erppeek
+from ..config import secrets
 
 """
 TODO:
@@ -16,8 +17,7 @@ TODO:
 class CallRegistry():
 
     def __init__(self):
-        from .. import dbconfig
-        self.erp = erppeek.Client(**dbconfig.tomatic.holidaysodoo)
+        self.erp = erppeek.Client(**secrets('tomatic.holidaysodoo'))
 
     def _fix_categories(self, categories):
         # Turn empty colors into None

@@ -24,14 +24,10 @@ def dbconfigFaker(content):
     with `content` as the `tomatic` attribute
     """
     try:
-        with patch.dict('sys.modules', dbconfig=type(sys)('dbconfig')):
-            from . import dbconfig
-            dbconfig.tomatic=content
-            import importlib
-            importlib.reload(schedulestorage)
+        with patch.dict('tomatic.config.dbconfig', tomatic=content):
             yield
     finally:
-        importlib.reload(schedulestorage)
+        pass
 
 
 class ScheduleStorage_Test(unittest.TestCase):

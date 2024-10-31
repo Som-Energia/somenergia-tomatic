@@ -7,16 +7,15 @@ from yamlns import namespace as ns
 from .callinfo import CallInfo
 
 import erppeek
-try:
-    from . import dbconfig
-except ImportError:
-    dbconfig = None
-
+from .config import dbconfig, secrets
+from .testutils import personaldata
 
 @unittest.skipIf(not os.environ.get("TOMATIC_TEST_ERP"),
     "Define the environment TOMATIC_TEST_ERP to pass those tests")
-@unittest.skipIf(not dbconfig or not dbconfig.erppeek,
+@unittest.skipIf(not secrets('erppeek'),
     "Requires configuring dbconfig.erppeek")
+@unittest.skipIf(not personaldata,
+    "Requires personaldata private data file")
 class CallInfo_Test(unittest.TestCase):
 
     from somutils.testutils import assertNsEqual
@@ -31,9 +30,9 @@ class CallInfo_Test(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         if os.environ.get("TRAVIS"): return
-        if not dbconfig: return
-        if not dbconfig.erppeek: return
-        cls.O = erppeek.Client(**dbconfig.erppeek)
+        erppeek_conf = secrets('erppeek', None)
+        if not erppeek_conf: return
+        cls.O = erppeek.Client(**erppeek_conf)
 
     def test_addressByPhone_whenMatchesNone(self):
         info = CallInfo(self.O)

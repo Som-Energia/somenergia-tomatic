@@ -9,6 +9,7 @@ from enum import Enum
 from somutils import isodates
 from .. import persons
 from pathlib import Path
+from ..config import secrets
 
 def TODO(*args, **kwds):
     raise NotImplementedError()
@@ -30,12 +31,10 @@ class Irontec(object):
 
     @staticmethod
     def defaultQueue():
-        from .. import dbconfig
-        return dbconfig.tomatic.get('irontec',{}).get('queue',None)
+        return secrets('tomatic.irontec.queue', None)
 
     def __init__(self):
-        from .. import dbconfig
-        self.config = dbconfig.tomatic.get('irontec', ns())
+        self.config = secrets('tomatic.irontec.irontec', ns())
         self.token = None
 
     def _login(self):
@@ -162,8 +161,7 @@ class Irontec(object):
 
     def calls(self, queue, date=None):
         from elasticsearch import Elasticsearch as Searcher
-        from .. import dbconfig
-        searcher = Searcher(**dbconfig.tomatic.irontec_elk)
+        searcher = Searcher(**secrets('tomatic.irontec_elk'))
         date = date or str(datetime.date.today())
         daystart = datetime.time(0) # TODO: from config
         daystop = datetime.time(23,59,59) # TODO: from config

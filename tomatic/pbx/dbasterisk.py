@@ -15,10 +15,7 @@ from yamlns import namespace as ns
 import time
 from .. import persons
 from .asteriskcli import queueFromSsh
-try:
-    from .. import dbconfig
-except ImportError:
-    dbconfig = None
+from ..config import secrets
 
 class DbAsterisk(object):
 
@@ -52,8 +49,8 @@ class DbAsterisk(object):
             type = Optional(str) #, enum('friend','user','peer')
 
         if not args and not kwds:
-            args = dbconfig.tomatic.get('dbasterisk',{}).get('args',[])
-            kwds = dbconfig.tomatic.get('dbasterisk',{}).get('kwds',{})
+            args = secrets('tomatic.dbasterisk.args', [])
+            kwds = secrets('tomatic.dbasterisk.kwds', {})
 
         #sql_debug(True)
         db.bind(*args, **kwds)
@@ -76,7 +73,7 @@ class DbAsterisk(object):
     @db_session
     def queue(self, queue):
         """
-        if dbconfig and 'ssh' in dbconfig.tomatic:
+        if secrets('tomatic.ssh', None):
             return queueFromSsh(queue)
         """
 

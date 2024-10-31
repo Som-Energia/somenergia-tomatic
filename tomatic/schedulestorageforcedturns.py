@@ -7,12 +7,9 @@ from yamlns import namespace as ns
 from consolemsg import step
 from .shiftload import loadSum
 from .scheduling import Scheduling, choosers
+from .config import secrets, params
 
-dbconfig=None
-try:
-    from . import dbconfig
-except ImportError:
-    pass
+packagedir = Path(__file__).parent
 
 class BadEdit(Exception): pass
 
@@ -30,12 +27,11 @@ class Storage(object):
     "Stores schedules by week into a folder"
 
     def __init__(self, dirname=None):
-        if not dirname and dbconfig:
-            dirname = dbconfig.tomatic.get('forcedturnspath')
-        if not dirname:
-            packagedir = Path(__file__).parent
-            dirname = packagedir/'..'/'data'
-        self._dirname = Path(dirname)
+        self._dirname = Path(
+            dirname or
+            secrets('tomatic.forcedturnspath', None) or 
+            packagedir/'..'/'data'
+        )
 
     def _timetableFile(self):
         return self._dirname / 'forced-turns.yaml'
