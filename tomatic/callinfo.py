@@ -2,6 +2,7 @@
 
 from yamlns import namespace as ns
 from enum import Enum, auto
+from config import params
 
 ENERGETICA_PARTNER_ID = 38039
 
@@ -34,8 +35,7 @@ class CallInfo(object):
         self.meter_readings_limit = meter_readings_limit
 
         if not self.results_limit:
-            config = ns.load('config.yaml')
-            self.results_limit = config.threshold_hits
+            self.results_limit = params.threshold_hits
 
         if not self.invoices_limit:
             self.invoices_limit = 12
