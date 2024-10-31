@@ -7,7 +7,7 @@ from .config import secrets
 
 pydantic_minor_version = '.'.join(pydantic_version.split('.')[:2])
 
-personaldata = secrets('personaldata')
+personaldata = secrets('personaldata', None)
 #try:
 #    personaldata = ns.load('testdata/personaldata.yaml')
 #except:
