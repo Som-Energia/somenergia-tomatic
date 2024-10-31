@@ -104,12 +104,12 @@ class CallInfo_Test(unittest.TestCase):
 
     def test_partnerByDni_whenMatchesOne(self):
         info = CallInfo(self.O)
-        ids = info.partnerByDni(dbconfig.personaldata["nif"])
+        ids = info.partnerByDni(personaldata["nif"])
         self.assertEqual(ids, [217])
 
     def test_partnerByDni_partial(self):
         info = CallInfo(self.O)
-        ids = info.partnerByDni(dbconfig.personaldata["nif"][:-3])
+        ids = info.partnerByDni(personaldata["nif"][:-3])
         self.assertEqual(ids, [133888, 72676, 217])
 
     def test_partnerByName_whenMatchesNone(self):
@@ -119,9 +119,9 @@ class CallInfo_Test(unittest.TestCase):
 
     def test_partnerByName_whenMatchesOne(self):
         info = CallInfo(self.O)
-        complete_name = dbconfig.personaldata["surname"]
+        complete_name = personaldata["surname"]
         complete_name += ", "
-        complete_name += dbconfig.personaldata["name"]
+        complete_name += personaldata["name"]
         ids = info.partnerByName(
             complete_name
         )
@@ -129,7 +129,7 @@ class CallInfo_Test(unittest.TestCase):
 
     def test_partnerByName_partial(self):
         info = CallInfo(self.O)
-        ids = info.partnerByName(dbconfig.personaldata["surname"][:-3])
+        ids = info.partnerByName(personaldata["surname"][:-3])
         self.assertEqual(ids, [67747, 217])
 
     def test_partnerByAddressId_whenMatchesNone(self):
@@ -1225,28 +1225,28 @@ class CallInfo_Test(unittest.TestCase):
     @unittest.skip("Review and save expected.")
     def test_getBySoci_global(self):
         info = CallInfo(self.O, invoices_limit=1, meter_readings_limit=1)
-        data = info.getBySoci(dbconfig.personaldata["nsoci"])
+        data = info.getBySoci(personaldata["nsoci"])
         self.assertB2BEqual(data.dump())
 
     @unittest.skip("Review and save expected.")
     def test_getByDni_global(self):
         info = CallInfo(self.O, invoices_limit=1, meter_readings_limit=1)
-        data = info.getByDni(dbconfig.personaldata["nif"])
+        data = info.getByDni(personaldata["nif"])
         self.assertB2BEqual(data.dump())
 
     @unittest.skip("Review and save expected.")
     def test_getByName_global(self):
         info = CallInfo(self.O, invoices_limit=1, meter_readings_limit=1)
-        complete_name = dbconfig.personaldata["surname"]
+        complete_name = personaldata["surname"]
         complete_name += ", "
-        complete_name += dbconfig.personaldata["name"]
+        complete_name += personaldata["name"]
         data = info.getByName(complete_name)
         self.assertB2BEqual(data.dump())
 
     @unittest.skip("Review and save expected.")
     def test_getByPartnersId_global(self):
         info = CallInfo(self.O, invoices_limit=1, meter_readings_limit=1)
-        data = info.getByPartnersId([dbconfig.personaldata["partnerid"]])
+        data = info.getByPartnersId([personaldata["partnerid"]])
         self.assertB2BEqual(data.dump())
 
     def test_getByPartnersId_whenTooManyResults(self):
