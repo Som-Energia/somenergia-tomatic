@@ -40,10 +40,7 @@ from .pbx import pbxqueue as pbx
 from . import persons
 from .backchannel import BackChannel
 
-try:
-    from . import dbconfig
-except ImportError:
-    dbconfig = None
+from .config import secrets
 
 
 packagedir = Path(__file__).parent
@@ -58,7 +55,7 @@ def erp():
         erp.clients = []
         erp.available = []
     if not erp.available:
-        newclient = erppeek.Client(**dbconfig.erppeek)
+        newclient = erppeek.Client(**secrets('erppeek'))
         erp.clients.append(newclient)
         erp.available.append(newclient)
     client = erp.available.pop()
@@ -534,12 +531,13 @@ async def tomatic_says(
 ):
     data = ns.loads(await request.body())
     from .directmessage.tomatic_webhook import send
-    if not dbconfig.tomatic.get("monitorChatChannel"):
+    channel = secrets('tomatic.monitorChatChannel', None)
+    if not channel:
         return ApiError("No direct channel conrigured")
     if not data.get('message') :
         return ApiError("Empty message", 403)
     send(
-        dbconfig.tomatic.monitorChatChannel,
+        channel,
         data.message
     )
     return yamlfy(result="ok")

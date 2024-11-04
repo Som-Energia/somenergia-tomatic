@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Fix: missing dbconfig make the tests fails on CI
+- dbconfig encapsulated in tomatic.config.secrets
+- config.yaml partially encapsulated as tomatic.config.params
+- Upgrade notes
+    - TOMATIC_CALL_REGISTRY -> TOMATIC_CALLREGISTRY, to match dbconfig
+
 ## 5.10.6 2024-10-30
 
 - Fix: Failed to merge multiprocess coverage data,

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf8 -*-
 import datetime
-from tomatic import dbconfig
+from tomatic.config import secrets
 import click
 from tomatic import __version__
 from tomatic.pbx import pbxqueue, pbxtypes
@@ -109,7 +109,7 @@ deltas=[
 
 backend_option = click.option('--backend', '-b',
     type=click.Choice(pbxtypes),
-    default=dbconfig.tomatic.get('pbx',None) or 'irontec',
+    default=secrets('tomatic.pbx','irontec'),
     help="PBX backend to use",
 )
 queue_option = click.option('--queue', '-q',
@@ -179,8 +179,8 @@ def cli(backend, queue, date, start, sendchat, sendmail, nodump):
     stats.atentioncalls = stats.callsreceived - stats.testcalls
     if sendmail:
         sendMail(
-            sender=dbconfig.tomatic.dailystats.sender,
-            to=dbconfig.tomatic.dailystats.recipients,
+            sender=secrets('tomatic.dailystats.sender'),
+            to=secrets('tomatic.dailystats.recipients'),
             subject="Informe diari de trucades - {date}".format(**stats),
             md=template.format(**dict(
                 stats,
@@ -196,7 +196,7 @@ def cli(backend, queue, date, start, sendchat, sendmail, nodump):
             ],
         )
     if sendchat:
-        send(dbconfig.tomatic.monitorChatChannel,
+        send(secrets('tomatic.monitorChatChannel'),
             "Hola Súpers! Us passem el registre de trucades d'avui! "
             f"Rebudes: {stats['callsreceived'] - stats['latecalls'] - stats['earlycalls'] - stats['testcalls']}. "
             f"Contestades: {stats['answeredcalls']}. "

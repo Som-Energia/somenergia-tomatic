@@ -5,13 +5,12 @@ from fastapi import APIRouter, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordBearer
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
-from starlette.config import Config
 from authlib.integrations.starlette_client import OAuth, OAuthError
 from jose import JWTError, jwt
 from yamlns import namespace as ns
 from consolemsg import error
 from . import persons
-from .dbconfig import config
+from .config import secrets
 import os
 JWT_ALGORITHM='HS256'
 CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
@@ -25,7 +24,7 @@ def oauth():
         client_kwargs={
             'scope': 'openid email profile'
         },
-        **config('tomatic.oauth')
+        **secrets('tomatic.oauth')
     )
     return oauth
 
@@ -68,7 +67,7 @@ async def auth(request: Request):
 
 def expiration_timestamp(expiration_delta=None):
     expires_delta = expiration_delta or datetime.timedelta(
-        **config('tomatic.jwt.expiration', dict(hours=10))
+        **secrets('tomatic.jwt.expiration', dict(hours=10))
     )
     utcnow = datetime.datetime.now(datetime.timezone.utc)
     expiration = utcnow + expires_delta
@@ -91,7 +90,7 @@ def create_access_token(data: dict, expiration_delta: datetime.timedelta = None)
     payload['exp'] = expiration_timestamp(expiration_delta)
     token = jwt.encode(
         payload,
-        config('tomatic.jwt.secret_key'),
+        secrets('tomatic.jwt.secret_key'),
         algorithm=JWT_ALGORITHM,
     )
     return token
@@ -108,7 +107,7 @@ def auth_error(message):
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def validatedUser(token: str = Depends(oauth2_scheme)):
-    environ_user = config('tomatic.auth.dummy', None)
+    environ_user = secrets('tomatic.auth.dummy', None)
     if environ_user:
         if environ_user.isalpha():
             return dict(
@@ -124,7 +123,7 @@ def validatedUser(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(
             token,
-            config('tomatic.jwt.secret_key'),
+            secrets('tomatic.jwt.secret_key'),
             algorithms=JWT_ALGORITHM,
         )
     except JWTError as e:

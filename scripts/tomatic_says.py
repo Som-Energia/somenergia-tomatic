@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
-from tomatic import dbconfig
+from tomatic.config import secrets
 from tomatic.directmessage import send
 from consolemsg import step
 
@@ -18,7 +18,7 @@ if __name__ == '__main__':
         step("Sending: '{}'", message)
 
         send(
-            dbconfig.tomatic.monitorChatChannel,
+            secrets('tomatic.monitorChatChannel'),
             message
         )
 

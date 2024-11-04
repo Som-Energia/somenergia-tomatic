@@ -7,11 +7,9 @@ from yamlns import namespace as ns
 from tomatic import persons
 from .shiftload import loadSum
 from .scheduling import Scheduling, choosers
-dbconfig=None
-try:
-    from . import dbconfig
-except ImportError:
-    pass
+from .config import secrets, params
+
+packagedir = Path(__file__).parent
 
 class BadEdit(Exception): pass
 
@@ -23,9 +21,7 @@ def utcnow():
 	# Py3 only version
 	#return datetime.datetime.now(tz=datetime.timezone.utc)
 
-def fillConfigurationInfo():
-    return ns.load('config.yaml')
-CONFIG = fillConfigurationInfo()
+CONFIG = params()
 
 class StorageError(Exception): pass
 
@@ -33,12 +29,11 @@ class Storage(object):
     "Stores schedules by week into a folder"
 
     def __init__(self, dirname=None):
-        if not dirname and dbconfig:
-            dirname = dbconfig.tomatic.get('storagepath')
-        if not dirname:
-            packagedir = Path(__file__).parent
-            dirname = packagedir/'..'/'graelles'
-        self._dirname = Path(dirname)
+        self._dirname = Path(
+            dirname or
+            secrets('tomatic.storagepath', None) or 
+            packagedir/'..'/'graelles'
+        )
 
     def _checkMonday(self, monday):
         try:
@@ -252,18 +247,14 @@ from .remote import remotewrite
 from consolemsg import step
 
 def publishStatic(timetable):
-    step("publishStatic")
-    if not dbconfig: return
-    step("publishStatic: dbconfig exists")
-    if not hasattr(dbconfig, 'tomatic'): return
-    step("publishStatic: tomatic exists")
-    if not hasattr(dbconfig.tomatic, 'publishStatic'): return
-    step("publishStatic: publishStatic exists {}", dbconfig.tomatic.publishStatic)
-    params = dbconfig.tomatic.publishStatic
+    publishStatic = secrets('tomatic.publishStatic', None)
+    step("publishStatic: publishStatic {}", publishStatic)
+    if not publishStatic: return
     sched=HtmlGen(timetable)
-    params=ns(params,
-        username = params.user,
-        filename = str(Path(params.path) / 'graella-{week}.html'.format(**timetable)),
+    params=ns(
+        publishStatic, # remote write
+        username = publishStatic.user,
+        filename = str(Path(publishStatic.path) / 'graella-{week}.html'.format(**timetable)),
     )
     del params.user
     del params.path

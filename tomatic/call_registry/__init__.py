@@ -1,6 +1,7 @@
 import os
 from . import dummy
 from . import odoo
+from ..config import secrets
 
 available_backends = [
     'dummy',
@@ -8,15 +9,12 @@ available_backends = [
 ]
 
 def configured_backend():
+    # TODO: Deprecate TOMATIC_CALL_REGISTRY since secrets
+    # already enables TOMATIC_CALLREGISTRY from dbconfig
     backend = os.environ.get('TOMATIC_CALL_REGISTRY')
     if backend: return backend
 
-    from .. import dbconfig
-    backend = dbconfig.tomatic.get('callregistry')
-    if backend: return backend
-
-    default_backend = 'dummy'
-    return default_backend
+    return secrets('tomatic.callregistry', 'dummy')
 
 
 def CallRegistry():
