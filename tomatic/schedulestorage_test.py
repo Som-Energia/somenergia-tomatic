@@ -18,16 +18,13 @@ def timestamp(strdate):
         )
 
 @contextlib.contextmanager
-def dbconfigFaker(content):
+def configFaker(content):
     """
     Reloads teh schedulestorage emulating a fake dbconfig
     with `content` as the `tomatic` attribute
     """
-    try:
-        with patch.dict('tomatic.config.dbconfig', tomatic=content):
-            yield
-    finally:
-        pass
+    with patch.dict('tomatic.config.dbconfig', tomatic=content):
+        yield
 
 
 class ScheduleStorage_Test(unittest.TestCase):
@@ -55,7 +52,7 @@ class ScheduleStorage_Test(unittest.TestCase):
         (self.storagedir/filename).write_text(content, encoding='utf8')
 
     def test_default_withDbConfig(self):
-        with dbconfigFaker(ns(storagepath='mydir')):
+        with configFaker(ns(storagepath='mydir')):
             storage = schedulestorage.Storage()
             self.assertEqual(
                 storage.backupdir.parent,
@@ -63,7 +60,7 @@ class ScheduleStorage_Test(unittest.TestCase):
             )
 
     def test_default_withoutDbConfig(self):
-        with dbconfigFaker(ns()):
+        with configFaker(ns()):
             storage = schedulestorage.Storage()
             self.assertEqual(
                 storage.backupdir.parent,
