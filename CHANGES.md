@@ -1,12 +1,15 @@
 # Changelog
 
-## Unreleased
+## 5.11.0 2024-11-04
 
+- Breaking changes: new configuration infrastructure
 - Fix: missing dbconfig make the tests fails on CI
 - dbconfig encapsulated in tomatic.config.secrets
 - config.yaml partially encapsulated as tomatic.config.params
 - Upgrade notes
     - TOMATIC_CALL_REGISTRY -> TOMATIC_CALLREGISTRY, to match dbconfig
+    - Ensure to remove installed dbconfig.py
+
 
 ## 5.10.6 2024-10-30
 
