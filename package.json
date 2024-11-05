@@ -1,6 +1,6 @@
 {
   "name": "somenergia-tomatic",
-  "version": "5.11.0",
+  "version": "5.11.1",
   "description": "Phone Support Companion",
   "dependencies": {
     "@emotion/css": "^11.10.6",

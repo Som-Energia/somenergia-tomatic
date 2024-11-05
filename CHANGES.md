@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.11.1 2024-11-05
+
+- Fix: forcing authlib version >=3.1, api changes
+- Fix: irontec configuration is config.tomatic.irontec
+  not config.tomatic.irontec.irontec
+
 ## 5.11.0 2024-11-04
 
 - Breaking changes: new configuration infrastructure
