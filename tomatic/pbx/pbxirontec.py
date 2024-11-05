@@ -34,7 +34,7 @@ class Irontec(object):
         return secrets('tomatic.irontec.queue', None)
 
     def __init__(self):
-        self.config = secrets('tomatic.irontec.irontec', ns())
+        self.config = secrets('tomatic.irontec', ns())
         self.token = None
 
     def _login(self):
