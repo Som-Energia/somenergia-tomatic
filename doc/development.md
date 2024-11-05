@@ -62,6 +62,7 @@ cd /opt/www/somenergia-tomatic # Or wherever you installed it
 git fetch
 git rebase
 # Rebase changes the properties of crontab file
+# (this is not need in somenergia since a cron does it)
 sudo chown root:root crontab
 sudo chmod 755 crontab
 # Create/Upgrade environtments, install frontend and backend dependencies and compile assets
@@ -128,8 +129,8 @@ What smoke tests you should be doing after an upgrade to check most components s
 ### Timetable generation
 
 - `shiftload.py`: Compute how many shifts each person has to do weekly
-- `backtracker.py`: The main timetable solver
-- `minizinc.py`: Minizinc based timetable solver
+- `minizinc.py`: Minizinc based timetable solver (current)
+- `backtracker.py`: Backtracking based timetable solver (deprecated)
 - `plannerexecution.py`: Encapsulates an asynchronous execution of a sandboxed timetable planner (used by `planner_api.py`)
 
 ### CRM
