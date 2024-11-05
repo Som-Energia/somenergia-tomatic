@@ -35,7 +35,7 @@ tomatic_stats:
           filename: centraleta-historic-estadistiques.csv
 
     weekcallprofile:
-      script: ./runhere tomatic_stats.py week-profile {output}
+      script: ./runhere tomatic_stats.py weekly-profile {output}
       title: Centraleta - Perfil típic setmanal de trucades
       description: >
         Retorna una gràfica amb la distribució estadística
