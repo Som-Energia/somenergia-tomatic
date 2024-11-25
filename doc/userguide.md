@@ -226,9 +226,9 @@ I del contracte seleccionat les seves factures, lectures, casos atr...
 
 De tota la informació que hi surt, cal explicar una mica les següents:
 
-**Accés directe als correus del HelpScout:**
+**Accés directe als correus del FreeScout:**
 Si cliques a l'adreça de correu de la persona
-s'obre al HelpScout amb tots els missatges
+s'obre al FreeScout amb tots els missatges
 que hem intercanviat amb ella.
 
 <img align="right" clear="right" src="images/contractinfo-roles.png"/>
