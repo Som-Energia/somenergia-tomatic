@@ -27,7 +27,7 @@ dependencies = [
     'MarkupSafe',
     'somutils>=1.9', # use of enterContext
     'tomato-cooker>=0.4.0', # api changed
-    'yamlns',
+    'yamlns==0.10.0',
     'consolemsg',
     'py-Asterisk',
     'paramiko',
