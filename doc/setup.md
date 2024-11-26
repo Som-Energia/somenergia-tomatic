@@ -34,6 +34,8 @@ make ui-dev
 make api-dev
 ```
 
+See Tomàtic interface on `http://localhost:4555/`
+
 ### Production Setup
 
 - Install pyenv in the running user. Follow ["Basic github install"](https://github.com/pyenv/pyenv#basic-github-checkout)
