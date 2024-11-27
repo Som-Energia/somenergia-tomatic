@@ -27,7 +27,7 @@ dependencies = [
     'MarkupSafe',
     'somutils>=1.9', # use of enterContext
     'tomato-cooker>=0.4.0', # api changed
-    'yamlns==0.10.0',
+    'yamlns==0.10.0', # Pinned for AttributeError: 'tuple' object has no attribute 'split'
     'consolemsg',
     'py-Asterisk',
     'paramiko',
