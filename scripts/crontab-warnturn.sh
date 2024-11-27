@@ -13,7 +13,6 @@ if [ -e "$MESSAGE_FILE" ]; then
         tomatic_says.py "$LINE"
     done
 else
-    tomatic_says.py "Dubtes a la intranet: https://intranet.helpscoutdocs.com/"
     tomatic_says.py "Info de trucada entrant a http://tomatic.somenergia.coop/#/Trucada"
 fi
 

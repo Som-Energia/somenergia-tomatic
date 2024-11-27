@@ -34,7 +34,7 @@ function PartnerContent() {
   }
   const partner = useSubscriptable(CallInfo.selectedPartner)
   // TODO: Move urls to an external configuration
-  const helpscouturl = 'https://secure.helpscout.net/search/?query='
+  const freescouturl = 'https://freescout.somenergia.coop/search?q='
   const ovhijackurl = 'https://oficinavirtual.somenergia.coop/et/auth/user/?q='
   const emails = partner.email.split(',')
   const dni =
@@ -99,12 +99,12 @@ function PartnerContent() {
             <Box className="partner-info-item" key={i}>
               <IconLabel icon="fa.fa-envelope" label="Email" /> {email} (
               <a
-                href={helpscouturl + email}
+                href={freescouturl + email}
                 target="_blank"
                 rel="noreferrer"
-                title="Cerca correus al Helpscout"
+                title="Cerca correus al FreeScout"
               >
-                Helpscout
+                FreeScout
               </a>
               )
             </Box>
