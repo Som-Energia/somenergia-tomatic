@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.11.2 2024-11-27
+
+- Ref: Change HS url for FS url
+- Fix: forcing yamlns version ==0.10.0, lib changes
+
 ## 5.11.1 2024-11-05
 
 - Fix: forcing authlib version >=3.1, api changes
