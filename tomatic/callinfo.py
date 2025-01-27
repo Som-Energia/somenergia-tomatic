@@ -384,6 +384,9 @@ class CallInfo(object):
 
         ret = ns(contracts=[])
 
+        contract_without_binding_partner_category_id = self.O.IrModelData.get_object_reference(
+            'som_polissa_soci','origen_ct_sense_socia_category')[1]
+
         all_contracts = self.O.GiscedataPolissa.read(contracts_ids, [
             'data_alta',
             'data_baixa',
@@ -489,7 +492,8 @@ class CallInfo(object):
                     selfconsumption=contract['autoconsumo'] not in [
                         '00',
                     ],
-                    without_binding_partner= 53 in contract['category_id'],
+                    without_binding_partner= contract_without_binding_partner_category_id in
+                        contract['category_id'],
                 )
             )
         return ret
