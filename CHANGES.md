@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+- New: contract without binding partner
+
 ## 5.11.2 2024-11-27
 
 - Ref: Change HS url for FS url
