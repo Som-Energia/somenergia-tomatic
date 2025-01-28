@@ -120,9 +120,18 @@ class CallInfo(object):
                 result.add(self.getPartnerId(contract.direccio_notificacio[0]))
         return list(result)
 
+    def getObjectReferenceId(self, module, object):
+        reference_value = False
+        try:
+            reference_id = self.O.IrModelData.get_object_reference(module, object)
+        except Exception as e:
+            print("Error llegint {}: {} in {}", object, module, e)
+        if reference_id:
+            reference_value = reference_id[1]
+        return reference_value
+
     def partnerInfo(self, partner_data):
-        partner_category_id = self.O.IrModelData.get_object_reference(
-            'som_partner_account','res_partner_category_soci')[1]
+        partner_category_id = self.getObjectReferenceId('som_partner_account','res_partner_category_soci')
 
         result = ns(
             erp_id=partner_data.id,
@@ -384,15 +393,6 @@ class CallInfo(object):
 
         ret = ns(contracts=[])
 
-        def is_contract_without_binding_partner(contract_categories):
-            contract_without_binding_partner_category = False
-            without_binding_partner_category = self.O.IrModelData.get_object_reference(
-            'som_polissa_soci','origen_ct_sense_socia_category')
-            if without_binding_partner_category:
-                category_id = without_binding_partner_category[1]
-                contract_without_binding_partner_category = category_id in contract_categories
-            return contract_without_binding_partner_category
-
         all_contracts = self.O.GiscedataPolissa.read(contracts_ids, [
             'data_alta',
             'data_baixa',
@@ -498,10 +498,21 @@ class CallInfo(object):
                     selfconsumption=contract['autoconsumo'] not in [
                         '00',
                     ],
-                    without_binding_partner= is_contract_without_binding_partner(contract['category_id']),
+                    without_binding_partner= self.is_contract_without_binding_partner(contract['category_id']),
                 )
             )
         return ret
+
+    def is_contract_without_binding_partner(self, contract_categories):
+        contract_without_binding_partner_category = False
+        category_id = self.getObjectReferenceId(
+            'som_polissa_soci',
+            'origen_ct_sense_socia_category')
+
+        if category_id:
+            contract_without_binding_partner_category = category_id in contract_categories
+
+        return contract_without_binding_partner_category
 
     def getByPhone(self, phone, shallow=False):
         address_ids = self.addressByPhone(phone)
