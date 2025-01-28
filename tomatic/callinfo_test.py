@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
+from mock import patch
 import b2btest
 import os
 from yamlns import namespace as ns
@@ -1203,6 +1204,27 @@ class CallInfo_Test(unittest.TestCase):
             contracts_ids,
             [169183, 38127]
         )
+
+    @patch('tomatic.callinfo.CallInfo.getObjectReferenceId')
+    def test_is_contract_without_binding_partner__partner_has_category(self, mockReferenceId):
+        mockReferenceId.return_value = 2
+        info = CallInfo(self.O, anonymize=True)
+        result = info.is_contract_without_binding_partner([1,2,3])
+        self.assertTrue(result)
+
+    @patch('tomatic.callinfo.CallInfo.getObjectReferenceId')
+    def test_is_contract_without_binding_partner__category_non_exists(self, mockReferenceId):
+        mockReferenceId.return_value = False
+        info = CallInfo(self.O, anonymize=True)
+        result = info.is_contract_without_binding_partner([1,2,3])
+        self.assertFalse(result)
+
+    @patch('tomatic.callinfo.CallInfo.getObjectReferenceId')
+    def test_is_contract_without_binding_partner__partner_has_not_category(self, mockReferenceId):
+        mockReferenceId.return_value = 4
+        info = CallInfo(self.O, anonymize=True)
+        result = info.is_contract_without_binding_partner([1,2,3])
+        self.assertFalse(result)
 
     @unittest.skip("Review and save expected.")
     def test_getByPhone_global(self):
