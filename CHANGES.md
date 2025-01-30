@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.11.3 2025-01-30
 - New: contract without binding partner
 
 ## 5.11.2 2024-11-27
