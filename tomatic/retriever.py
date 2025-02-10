@@ -80,21 +80,20 @@ def downloadFestivities(config):
         workweek=4, # This is what is needed just for schedulings
         year=366, # This is useful for many other uses, not yet slower
     )
-
     import erppeek
-    from yamlns.dateutils import Date
     erp = erppeek.Client(**secrets('tomatic.holidaysodoo'))
     firstDay = addDays(config.monday, 0)
     lastDay = addDays(config.monday, intervals['year'])
-    Festivities = erp.model('hr.holidays.public.line')
-    festivity_ids = Festivities.search([
-        ('date', '>=', str(firstDay)),
-        ('date', '<=', str(lastDay)),
-    ])
+    festivities = erp.model('hr.holidays.public.line').get_festivities(
+        firstDay.strftime("%Y-%m-%d"), lastDay.strftime("%Y-%m-%d")
+    )
     holidaysfile = Path('holidays.conf')
     with holidaysfile.open('w', encoding='utf8') as output:
-        for festivity in Festivities.read(festivity_ids, ['date','meeting_id']) or []:
-            output.write('{date}\t{meeting_id[1]}\n'.format(**festivity))
+        for festivity in festivities:
+            output.write('{date}\t{name}\n'.format(
+                date=festivity['date'],
+                name=festivity['name']
+            ))
         no_service_file = Path('data')/'noservice.conf'
         if no_service_file.exists():
             no_service_days = no_service_file.read_text()
