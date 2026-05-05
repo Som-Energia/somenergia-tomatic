@@ -464,6 +464,7 @@ async def notifyIncommingCall(phone: str, extension: str, callid: str = None):
         operator=user,
         call_timestamp=datetime.now(timezone.utc),
         phone_number=phone,
+        pbx_call_id=callid,
     )
     result = CallRegistry().add_incoming_call(call)
 
