@@ -151,13 +151,13 @@ class Irontec(object):
             self.resume(queue, name)
         extension = persons.extension(name)
         if not extension: return
-        result = self._api('put', '/agent/pause/'+extension+'/'+queue)
+        result = self._api('put', '/agent/pause/'+extension+'/'+extension)
 
     def resume(self, queue, name):
         """Resumes the person in the queue"""
         extension = persons.extension(name)
         if not extension: return
-        result = self._api('put', '/agent/unpause/'+extension+'/'+queue)
+        result = self._api('put', '/agent/unpause/'+extension+'/'+extension)
 
     def calls(self, queue, date=None):
         from elasticsearch import Elasticsearch as Searcher
