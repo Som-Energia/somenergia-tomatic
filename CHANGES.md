@@ -1,5 +1,9 @@
 # Changelog
 
+## unreleased
+
+- Ref: change pause/unpause irontech's endpoint
+
 ## 5.11.4 2025-02-13
 
 - Get festivities from Odoo
@@ -26,9 +30,8 @@
 - dbconfig encapsulated in tomatic.config.secrets
 - config.yaml partially encapsulated as tomatic.config.params
 - Upgrade notes
-    - TOMATIC_CALL_REGISTRY -> TOMATIC_CALLREGISTRY, to match dbconfig
-    - Ensure to remove installed dbconfig.py
-
+  - TOMATIC_CALL_REGISTRY -> TOMATIC_CALLREGISTRY, to match dbconfig
+  - Ensure to remove installed dbconfig.py
 
 ## 5.10.6 2024-10-30
 
@@ -42,7 +45,7 @@
   installed modules do not find it.
 - Script launcher entries do not use SOME_SRC anymore
 - Upgrade notes:
-    - Backend dependencies reinstall required
+  - Backend dependencies reinstall required
 
 ## 5.10.5 2024-10-21
 
@@ -54,26 +57,26 @@
 - Fix: Build `fullUrl` properly when `params`
 - Fix: Limit number of monitored solutions
 - Upgrade notes:
-    - add config.yaml parameter:
-	- maxMonitoredSolutions: 10
+  - add config.yaml parameter:
+  - maxMonitoredSolutions: 10
 
 ## 5.10.3 2024-07-05
 
 - Server independent and portless redirect to scriptlauncher
 - Upgrade notes:
-    - Configure your frontend server to redirect /scriplauncher
-      the dns serving scriplauncher
+  - Configure your frontend server to redirect /scriplauncher
+    the dns serving scriplauncher
 
 ## 5.10.2 2024-07-03
 
 - Better API errors detection
-    - API error context shown besides the error message (ie. Authorization error while fetching users)
-    - VPN detection improved
-    - Modular error handling
+  - API error context shown besides the error message (ie. Authorization error while fetching users)
+  - VPN detection improved
+  - Modular error handling
 - Rewriten api calls to use fetch instead mithril.request, mithril dropped
 - Style CSS error clearing
 - Upgrade notes:
-    - JS dependencies removed, in order to clear them, clear `node_modules` and redeploy
+  - JS dependencies removed, in order to clear them, clear `node_modules` and redeploy
 
 ## 5.10.1 2024-05-13
 
@@ -100,26 +103,26 @@
 
 - Odoo based Call Registry for typifications
 - New typification system:
-    - Uses Odoo as backend, yaml backend also available for development or fallback
-    - Removed all the claim stuff by now
-    - Multiple categories can be applied to a call
-    - Comments are not mandatory
-    - Contract info includes erp id, contract number and address
-    - Customer info includes erp id, vat number and name
-    - Display more information in the call log and better organized
-    - Categories have colors to help identification
-    - Categories can be disables for new calls but still visible in already typified calls
-	- Annotation can be removed
+  - Uses Odoo as backend, yaml backend also available for development or fallback
+  - Removed all the claim stuff by now
+  - Multiple categories can be applied to a call
+  - Comments are not mandatory
+  - Contract info includes erp id, contract number and address
+  - Customer info includes erp id, vat number and name
+  - Display more information in the call log and better organized
+  - Categories have colors to help identification
+  - Categories can be disables for new calls but still visible in already typified calls
+  - Annotation can be removed
 - `tomatic_retrieve.py callcategories` to retrieve dummy categories from odoo
 - New cli option for api: `--call-registry` to override configured callregistry backend
 - Upgrade notes:
-    - New dbconfig tomatic.callregistry (dummy or odoo)
-    - FastAPI version upgraded to avoid warning messages
-    - New envvar `TOMATIC_CALL_REGISTRY` to override call registry backend
-    - New envvar `TOMATIC_DATA_PATH` to override data path (by now, just works for the callregistry)
-    - Old data directory `callinfo/` can be cleanup.
-    - Now data/callregistry/ is used and just for for dummy purposes
-    - `callinfo/` and `data/callregistry` are not compatible in formats do not rename
+  - New dbconfig tomatic.callregistry (dummy or odoo)
+  - FastAPI version upgraded to avoid warning messages
+  - New envvar `TOMATIC_CALL_REGISTRY` to override call registry backend
+  - New envvar `TOMATIC_DATA_PATH` to override data path (by now, just works for the callregistry)
+  - Old data directory `callinfo/` can be cleanup.
+  - Now data/callregistry/ is used and just for for dummy purposes
+  - `callinfo/` and `data/callregistry` are not compatible in formats do not rename
 
 ## 5.7.1 2024-04-15
 
@@ -130,10 +133,10 @@
 
 - Only admins can edit others profile
 - Migrated to React missing pages
-    - PBX page
-    - Persons page (color boxes version)
-    - Busy Editor
-    - Timetable Planner
+  - PBX page
+  - Persons page (color boxes version)
+  - Busy Editor
+  - Timetable Planner
 - Mithril files cleaned up (just api left)
 - Fix: minizinc planner reported launch times with offset (TZ problem)
 - Fix: PersonEditor looped forever in reset
@@ -142,8 +145,8 @@
 - Improved dark mode colors in call log
 - Fonts readability by not using polythene fonts family and size
 - Upgrade notes:
-    - Because admin group is now required to edit others profile ensure
-      that certain users belong to this group.
+  - Because admin group is now required to edit others profile ensure
+    that certain users belong to this group.
 
 ## 5.6.0 2024-03-22
 
@@ -156,8 +159,8 @@
 - New Makefile targets to deploy
 - A menu option to emulate an incoming call for testing purposes
 - Upgrade notes:
-    - Node version 20 required
-    - Added new Python dependencies
+  - Node version 20 required
+  - Added new Python dependencies
 
 ## 5.5.3 2024-03-12
 
@@ -174,8 +177,8 @@
 
 - Chat message for every shift change can be configured
 - Upgrade notes:
-    - To change default shift change message create
-      a plain text file data/turn-change-message.txt configuration file
+  - To change default shift change message create
+    a plain text file data/turn-change-message.txt configuration file
 
 ## 5.5.0 2023-11-23
 
@@ -212,41 +215,41 @@
 ## 5.4.0 2023-09-12
 
 - Using a rewritten Minizinc model
-    - More flexible to find solutions in complicated scenarios
-      by turning constraints into penalties. From more penalized
-      to less penalized:
-        - Incompletion (most penalized, quadratic for day/person)
-        - Missing fixed turns
-        - Day overload (quadratic for day/person)
-        - Odd daily configurations:
-            - Marathon, Discontinuous, FarDiscontinuous, NoBrunch
-        - Optional busy (former model, considered them non-optional
-          and if that failed, removed them at all, now they just
-          give penalty, so most of them are respected even if one
-          of them is unfeasible)
-    - More complete progress and final reports
-        - Report completion properly
-        - Report source of penalty
-    - Holes are moved to the end of each turn
+  - More flexible to find solutions in complicated scenarios
+    by turning constraints into penalties. From more penalized
+    to less penalized:
+    - Incompletion (most penalized, quadratic for day/person)
+    - Missing fixed turns
+    - Day overload (quadratic for day/person)
+    - Odd daily configurations:
+      - Marathon, Discontinuous, FarDiscontinuous, NoBrunch
+    - Optional busy (former model, considered them non-optional
+      and if that failed, removed them at all, now they just
+      give penalty, so most of them are respected even if one
+      of them is unfeasible)
+  - More complete progress and final reports
+    - Report completion properly
+    - Report source of penalty
+  - Holes are moved to the end of each turn
 - Using contrast color in static timetables (planner, tomatic-static)
 - Fix: Minizinc marked festivities as Ningu instead of Festiu
 - Persons name for ICS calendars events
 - Google Drive clean up:
-    - Not downloading leaves from google drive anymore
-    - Removed drive related code and dependencies
+  - Not downloading leaves from google drive anymore
+  - Removed drive related code and dependencies
 - Upgrade notes:
-    - dependencies updated: somutils, tomato-cooker
-        - run `pip install -e .`
-    - removed cli options
-        - `--certificate`
-        - `--drive-file`
-    - removed config.yaml parameters
-        - documentDrive
-        - driveCertificate
-        - fullCarregaIdeal
-        - idealLoadValuesRange
-        - idealLoadValuesName
-        - leavesSheet
+  - dependencies updated: somutils, tomato-cooker
+    - run `pip install -e .`
+  - removed cli options
+    - `--certificate`
+    - `--drive-file`
+  - removed config.yaml parameters
+    - documentDrive
+    - driveCertificate
+    - fullCarregaIdeal
+    - idealLoadValuesRange
+    - idealLoadValuesName
+    - leavesSheet
 
 ## 5.3.0 2023-08-08
 
@@ -255,7 +258,7 @@
 - Fix: in some duplicated holidays generated negative loads
 - Fix: properly indicate successfull executions on backtracker or minizinc
 - Upgrade notes:
-    - new parameter adjustLines in config.yaml
+  - new parameter adjustLines in config.yaml
 
 ## 5.2.2 2023-07-27
 
@@ -271,29 +274,29 @@
 - Fix: Callinfo: Contracts starting with a single zero, did not load details
 - Fix: Callinfo: Changing to a single zero contract tab, did not work
 - Upgrade notes:
-    - Run `tomatic_timetable.py importidealload` to import the last
-      ideal loads into `persons.yaml` (there is also a scriptlauncher script)
+  - Run `tomatic_timetable.py importidealload` to import the last
+    ideal loads into `persons.yaml` (there is also a scriptlauncher script)
 
 ## 5.1.0 2023-07-20
 
 - New fixed turns editor component
 - WIP: React based timetable editor
 - New React components:
-    - WeekPicker
-    - TimeTable
-    - EditDialog
-    - PersonPicker
-    - Doc
-    - ForcedTurns
-    - TimeTablePage
+  - WeekPicker
+  - TimeTable
+  - EditDialog
+  - PersonPicker
+  - Doc
+  - ForcedTurns
+  - TimeTablePage
 - Create schedulestorageforcedturns to manage backend
-    - Refactor pending to unify with schedulestorage
+  - Refactor pending to unify with schedulestorage
 - Add endpoints for forcedturns
 - Add temporary end point to render react grid
-    - Pending replace current mithril grid by react grid
+  - Pending replace current mithril grid by react grid
 - Create empty timetable for forced turns when it does not exits
 - Upgrade notes:
-    - Add configuration to dbconfig: forcedturnspath (see dbconfig-example)
+  - Add configuration to dbconfig: forcedturnspath (see dbconfig-example)
 
 ## 5.0.2 2023-07-14
 
@@ -301,8 +304,8 @@
 - Removed notoi vacations retriever
 - Removed drive vacations retriever
 - Upgrade notes:
-    - Remove notoi var group from dbconfig.py, related to notoi vacations retriever
-    - Remove newYearHack var from config.yaml, related to drive vacations retriever
+  - Remove notoi var group from dbconfig.py, related to notoi vacations retriever
+  - Remove newYearHack var from config.yaml, related to drive vacations retriever
 
 ## 5.0.1 2023-07-03
 
@@ -313,15 +316,15 @@
 - New React UI, still in progress (Mithril and React will coexist for a while)
 - Lateral menu
 - New persons editor
-    - List based view that allows comparing values
-    - Also sorting, filtering...
-    - Groups assignment are editable
-    - Turn loads are editable
+  - List based view that allows comparing values
+  - Also sorting, filtering...
+  - Groups assignment are editable
+  - Turn loads are editable
 - Upgrade notes:
-    - New frontend dependencies, npm install required
-    - Recommended to delete `node_modules` and packages-lock.json`
-    - Frontend development flow has changed, see docs
-    - Ideal loads are now kept in persons.yaml
+  - New frontend dependencies, npm install required
+  - Recommended to delete `node_modules` and packages-lock.json`
+  - Frontend development flow has changed, see docs
+  - Ideal loads are now kept in persons.yaml
 
 ## 4.14.0 2023-06-26
 
@@ -346,14 +349,14 @@
 - Minizinc scheduler obeys the forced turns
 - Minizinc with deterministic mode for b2b tests
 - Upgrade notes:
-    - Requires tomato-cooker upgrade tot 0.2
-    - data/forced-turns.yaml should contain a timetable
-      with the forced turns.
-    - suggestion: while there is no ui to edit it
-      we suggest to link to a timetable in the past
-    - If you use a generated timetable for that,
-      remember to change 'ningu' to null, because,
-      'ningu' means a forced empty slot.
+  - Requires tomato-cooker upgrade tot 0.2
+  - data/forced-turns.yaml should contain a timetable
+    with the forced turns.
+  - suggestion: while there is no ui to edit it
+    we suggest to link to a timetable in the past
+  - If you use a generated timetable for that,
+    remember to change 'ningu' to null, because,
+    'ningu' means a forced empty slot.
 
 ## 4.12.6 2023-05-17
 
@@ -375,9 +378,9 @@
 - Fix Minizinc to use finalLoad instead of idealLoad
 - Remove degub parameter from uvicorn to be compatible with new version
 - Upgrade notes:
-    - Parameters in `config.fastapi` have been moved to `dbconfig.py`
-	- `GOOGLE_CLIENT_ID` -> `tomatic.oauth.client_id` 
-	- `GOOGLE_CLIENT_SECRET` -> `tomatic.oauth.client_secret`
+  - Parameters in `config.fastapi` have been moved to `dbconfig.py`
+  - `GOOGLE_CLIENT_ID` -> `tomatic.oauth.client_id`
+  - `GOOGLE_CLIENT_SECRET` -> `tomatic.oauth.client_secret`
     - Rename old-calls/ -> stats/
     - Move all call-YYYY-MM-DD.yaml in working dir to stats/
 
@@ -423,11 +426,11 @@
 
 - Google OAuth authentication
 - Upgrade notes:
-    - You should create a google oauth client id
-      https://console.cloud.google.com/apis/credentials
-    - Define accordantly `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
-      in `config.fastapi`
-    - Update `dbconfig.py` with the jwt variables. See (`dbconfig-example.py`)
+  - You should create a google oauth client id
+    https://console.cloud.google.com/apis/credentials
+  - Define accordantly `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
+    in `config.fastapi`
+  - Update `dbconfig.py` with the jwt variables. See (`dbconfig-example.py`)
 
 ## 4.10.0 2023-01-03
 
@@ -435,17 +438,17 @@
   provided, use the extension as part of the made off email to ensure
   they are distinct, since the pbx requires that.
 - scheduler:
-    - Fix: when reporting too many empty slots the hour was zero based
-    - scheduler: Cost to simultaneous empty slots in timetable
-    - Renamed prunning and cut reason id's to english
-    - status.yaml stores the penalties
+  - Fix: when reporting too many empty slots the hour was zero based
+  - scheduler: Cost to simultaneous empty slots in timetable
+  - Renamed prunning and cut reason id's to english
+  - status.yaml stores the penalties
 - ICS calendar for a user /api/calendar/<user>
 - Execution list: Reasons for penalties are shown on hovering the cost value
 - Upgrade Notes:
-    - Add `costTornBuit` parameter to `config.yaml`
-    - Set `maxNingusPerTurn` parameter in `config.yaml` to a higher value now
-      now that is not required to have nice results and it blocks solutions
-      when not enough actual turns are available.
+  - Add `costTornBuit` parameter to `config.yaml`
+  - Set `maxNingusPerTurn` parameter in `config.yaml` to a higher value now
+    now that is not required to have nice results and it blocks solutions
+    when not enough actual turns are available.
 
 ## 4.9.0 2022-11-02
 
@@ -473,8 +476,8 @@
 
 - Locking callinfo autorefresh while annotating
 - Improved timetable planner input fields
-    - Week chosen by a date picker restricted to mondays
-    - nlines uses a number field
+  - Week chosen by a date picker restricted to mondays
+  - nlines uses a number field
 - wednesday placed first on the search order since
   it is now the harder day to allocate every week.
 
@@ -491,7 +494,7 @@
 - Removed number redirections and fixed extensions from static
   timetable html
 - Upgrade notes
-    - dbconfig.py: Add the tomatic.supportmail parameter
+  - dbconfig.py: Add the tomatic.supportmail parameter
 
 ## 4.7.0 2022-08-18
 
@@ -499,14 +502,14 @@
 - Day search order can be set from the timetable planner
 - Fix: Call log JS exception when no user logged in
 - After setup resilience:
-    - Resilient to a non existing persons.yaml after install
-    - Resilient to a non existing execution dir
+  - Resilient to a non existing persons.yaml after install
+  - Resilient to a non existing execution dir
 - Menu:
-    - New menu option for the user guides
-    - Cool unicode icons on the menu
+  - New menu option for the user guides
+  - Cool unicode icons on the menu
 - Documentation:
-    - Updated initial setup
-    - How to circumvent `--fake` not working with `--debug`
+  - Updated initial setup
+  - How to circumvent `--fake` not working with `--debug`
 
 ## 4.6.2 2022-07-21
 
@@ -527,21 +530,21 @@
 - Internal: Components extracted as modules
 
 - Update notes:
-    - npm install required (emotion and babel dependencies)
-    - config.yaml `callinfoPath` should point to the parent of current `my_calls_log`.
-      If not specified it will be `callinfo` by default (relative to the working path).
-    - config.yaml: `my_calls_log` should be removed
-    - day
-    - `callinfo/dailycalls.yaml` not used anymore,
-       now `callinfo/dailycalls/calls-[user].yaml is used
+  - npm install required (emotion and babel dependencies)
+  - config.yaml `callinfoPath` should point to the parent of current `my_calls_log`.
+    If not specified it will be `callinfo` by default (relative to the working path).
+  - config.yaml: `my_calls_log` should be removed
+  - day
+  - `callinfo/dailycalls.yaml` not used anymore,
+    now `callinfo/dailycalls/calls-[user].yaml is used
 
 ## 4.6.0 2022-07-12
 
 - Stats mails shows the seconds also in 00:00:00 format
 - Scheduler:
-    - Load computation inside scheduler
-    - If achieved load is not enough nobody/ningu is added
-    - Made nobody/ningu flexible to add (not a regular person)
+  - Load computation inside scheduler
+  - If achieved load is not enough nobody/ningu is added
+  - Made nobody/ningu flexible to add (not a regular person)
 
 ## 4.5.7 2022-06-02
 
@@ -582,10 +585,9 @@ Post new provider fixes
 ## 4.5.2 2022-04-05
 
 - `areavoip_dumpstats`:
-    - Fix: `--nodump` option was ignored
-    - Instaled with setup.py
+  - Fix: `--nodump` option was ignored
+  - Instaled with setup.py
 - pbxareavoip: better error reporting
-
 
 ## 4.5.1 2022-03-31
 
@@ -596,7 +598,6 @@ Post new provider fixes
 - Env `TOMATIC_DEBUG_PBX` to enable PBX traces
 - `areavoip_dumpstats`: dumps historical call registry
 
-
 ## 4.5.0 2022-02-08
 
 - login: Contrast colors persons buttons
@@ -606,8 +607,8 @@ Post new provider fixes
 - dailyreport also reports stats by chat
 - irontec: implementation of the stats functionality
 - new cli commands:
-    - `tomatic_rtqueue.py stats` to get the daily stats
-    - `tomatic_rtqueue.py calls` to get the raw daily call details
+  - `tomatic_rtqueue.py stats` to get the daily stats
+  - `tomatic_rtqueue.py calls` to get the raw daily call details
 
 ## 4.4.2 2022-01-28
 
@@ -637,15 +638,15 @@ Post new provider fixes
 ## 4.4.0 2022-01-27
 
 - Call annotation workflow redesign
-    - Claims and infos unified, single log, api entry, topic list...
-    - Structured info on topics/categories are retrieved
-      from api avoiding fragile parsing of the description
-    - Save Annotation without call, person or contract
-    - `tomatic_uploadcases.py` upload both info and claims
-    - All categories have a code and optionally a section
-    - Translate HelpDesk section as CONSULTA
-    - Translate
-    - ERP user is set on cases
+  - Claims and infos unified, single log, api entry, topic list...
+  - Structured info on topics/categories are retrieved
+    from api avoiding fragile parsing of the description
+  - Save Annotation without call, person or contract
+  - `tomatic_uploadcases.py` upload both info and claims
+  - All categories have a code and optionally a section
+  - Translate HelpDesk section as CONSULTA
+  - Translate
+  - ERP user is set on cases
 - Custom banners for pebrotic and ketchup variants by CLI
 - Fix: search values trimmed and urlencoded
 
@@ -665,9 +666,9 @@ Post new provider fixes
 
 - First version Irontec PBX Backend
 - PBX backend generalization and plugability
-    - PBX backend factory
-    - Add dbconfig.tomatic.pbx option to choose the default PBX
-    - `--backend` option for all PBX related CLI tools
+  - PBX backend factory
+  - Add dbconfig.tomatic.pbx option to choose the default PBX
+  - `--backend` option for all PBX related CLI tools
 - Daily stats mail now include a csv file with the historical data
 
 ## 4.2.5 2021-11-23
@@ -765,18 +766,18 @@ Post new provider fixes
 - Fix: Zero energy invoices now are shown as 0 not blank
 - Fix: Better detection changing users on other tabs
 - Implementation changes
-    - Callinfo model and view split so that subviews can acces common state directly
+  - Callinfo model and view split so that subviews can acces common state directly
 - Menú options to planter and scripts
 - Kumato mode (dark style)
 
 ## 3.11.0 2021-06-15
 
 - Call info
-    - Interface redesigned to be responsive and more usable
-    - Manual annotations (without an incomming call)
-    - Colored scrollable call log
-    - Backend info stored in a single directory
-    - More reliable backend info storage
+  - Interface redesigned to be responsive and more usable
+  - Manual annotations (without an incomming call)
+  - Colored scrollable call log
+  - Backend info stored in a single directory
+  - More reliable backend info storage
 - Server has --queue option to enable a second
   Tomatic instance with a testing queue to make
   experiments
@@ -813,25 +814,25 @@ Post new provider fixes
 - Areavoip stats history available in the scriptlauncher
 - Script to reset accomulated credit/debit
 - `tomatic_shiftload`
-	- option `--forgive` to not take any debit or credit from the past
-	- option `--summary file.tsv` dumps the stages of the computation
-	- all those options made available in script launcher
+  - option `--forgive` to not take any debit or credit from the past
+  - option `--summary file.tsv` dumps the stages of the computation
+  - all those options made available in script launcher
 
-## 3.9.2  2021-02-24
+## 3.9.2 2021-02-24
 
 - FIX: arevoip api requires new parameter to add agents to queue
 
-## 3.9.1  2021-02-12
+## 3.9.1 2021-02-12
 
 - `areavoip_dailyreport.py` dumps daily stats in a csv
 - `areavoip_dailyreport.py` temporary wrapper to run it on current server
 - FIX: missing dependency on emili
 
-## 3.9.0  2021-02-12
+## 3.9.0 2021-02-12
 
 - areavoip: Take stats from api and send them daily by mail
 
-## 3.8.0  2021-02-12
+## 3.8.0 2021-02-12
 
 - Added 2021 holidays
 - Common error handling to all entry points
@@ -845,20 +846,20 @@ Post new provider fixes
 - Api CLI options `--date` and `--time` make fake pbx (`--fake`)
   to preload the queue at that moment acording to the timetables.
 - Persons rule:
-	- Fix: Persons information no more queried to the timetable
-		but the persons module based on `persons.yaml`
-	- Queue `pause`, `add` and derivatives are safely ignored
-		when the person has no extension in persons.yaml
-	- `persons.update()` to centralize info updating
+  - Fix: Persons information no more queried to the timetable
+    but the persons module based on `persons.yaml`
+  - Queue `pause`, `add` and derivatives are safely ignored
+    when the person has no extension in persons.yaml
+  - `persons.update()` to centralize info updating
 - Refactorings to unify pbx backends interfaces
-	- Operations in PBX backends dealing with timetibles
-	  have been extracted out
-	- `ScheduleStorage.queueScheduleFor` can provide
-	  a queue for a given time
-	- Api uses a wrapper which methods have an implicit default queue
+  - Operations in PBX backends dealing with timetibles
+    have been extracted out
+  - `ScheduleStorage.queueScheduleFor` can provide
+    a queue for a given time
+  - Api uses a wrapper which methods have an implicit default queue
 - Cleaned some of the test warnings
 
-## 3.7.0  2020-11-30
+## 3.7.0 2020-11-30
 
 - PBX backend to use the Areavoip (Nubelphon) API
 - PBX backends now use agent ids instead extensions
@@ -866,45 +867,45 @@ Post new provider fixes
 - Added a nice favicon
 - Few remaining Py3 fixes
 
-## 3.6.5  2020-09-16
+## 3.6.5 2020-09-16
 
 - Fix: shiftload stalled when compensation don't get a better credit
 - Fix: scriptlauncher entry for `tomatic_says` failed
 - Cron warn each operator by hangouts individually on new turn
 - Experimental API /api/persons/extension/<extension> to get the email for a given extension
 - Documentation:
-	- How to upgrade
+  - How to upgrade
 
-## 3.6.4  2020-06-04
+## 3.6.4 2020-06-04
 
 - Documentation:
-    - How to setup drive data sources
-    - How to setup Hangouts notifications
+  - How to setup drive data sources
+  - How to setup Hangouts notifications
 - Dependency fixes for old Python2
 - `tomatic_says.py`:
-    - Migrated to `async/await` syntax (unsupported by python 3.4 and earlier)
-    - README indicates how to setup: authentication, token files...
-    - new option `-t,--tokenfile` to change the default token file (implies changing sender)
-    - new option `-c,--channel` to change the default target of the message (config.yaml/hangoutsChannel)
-    - Addressing a conversation by full name or hangouts id (base64 code)
-    - Addressing a person by tomatic id, email, full hangouts name, or hangouts `gaia_id` (21 digits)
-    - When target is not found a list of available targets is displayed
+  - Migrated to `async/await` syntax (unsupported by python 3.4 and earlier)
+  - README indicates how to setup: authentication, token files...
+  - new option `-t,--tokenfile` to change the default token file (implies changing sender)
+  - new option `-c,--channel` to change the default target of the message (config.yaml/hangoutsChannel)
+  - Addressing a conversation by full name or hangouts id (base64 code)
+  - Addressing a person by tomatic id, email, full hangouts name, or hangouts `gaia_id` (21 digits)
+  - When target is not found a list of available targets is displayed
 
-## 3.6.3  2020-06-03
+## 3.6.3 2020-06-03
 
 - Penalties info is included in html timetable uploaded to the tomatic-static website
 - Penalties info is included in html timetable shown in the planner execution result
 - Busy reasons are displayed in planner when hovering over the blocking time slot
 
-## 3.6.2  2020-06-01
+## 3.6.2 2020-06-01
 
 - api: `--ring` option to enable incoming call notifications
 - `tomatic_busy.py`
-	- explains the reasons why people is busy each time
-	- takes persons from ponderatedIdeal
-	- scriptlauncher item to call it
+  - explains the reasons why people is busy each time
+  - takes persons from ponderatedIdeal
+  - scriptlauncher item to call it
 
-## 3.6.1  2020-05-18
+## 3.6.1 2020-05-18
 
 - Auto-backup timetables on edit and upload
 - Fix: planner upload does it locally instead of calling manual upload api
@@ -913,45 +914,45 @@ Post new provider fixes
 - Callinfo: Fix: downloading complaint reason freezed flask
   threads while downloading info from drive. Tomatic load should be faster.
 
-## 3.6.0  2020-05-11
+## 3.6.0 2020-05-11
 
 - Web frontend to launch and monitor sandboxed schedulers /api/planner
 
-## 3.5.1  2020-04-29
+## 3.5.1 2020-04-29
 
 - FIX: Health leaves had no effect in capacity
 - Entry point and script launcher to retire old timetables
 
-## 3.5.0  2020-03-20
+## 3.5.0 2020-03-20
 
 - New functionality to keep track of shift credit across weeks
 - Day-off retrieval from notoi API
-	- Relates by emails
-	- Removed config params that shoud be constants
-	- Extracted Notoi proxy class
+  - Relates by emails
+  - Removed config params that shoud be constants
+  - Extracted Notoi proxy class
 - New script: `tomatic_uploadtimetable.py`
 - API: download shiftload and overload from last
-	`tomatic_shiftload.py` execution for the week
-	- /api/shifts/download/shiftload/<week>
-	- /api/shifts/download/overload/<week>
+  `tomatic_shiftload.py` execution for the week
+  - /api/shifts/download/shiftload/<week>
+  - /api/shifts/download/overload/<week>
 
-## 3.4.0  2020-03-09
+## 3.4.0 2020-03-09
 
 - New script: `tomatic_shiftload.py` to automate weekly load generation
 - New script: `tomatic_mergedicts.py` to perform person by person manipulations
-	in person->value yaml dicts (add, substract, extract
+  in person->value yaml dicts (add, substract, extract
 - script `scheduler.py` renamed as `tomatic_schedule.py`
 - Scheduler: `--lines` option to indicate the number of lines
 - Scheduler: `--personsfile` option to indicate the persons file
 - Scheduler: Holidays are automatically removed from search days
 - Scheduler: Fix: people without table (ningu) is in table -1 (None)
 
-## 3.3.1  2020-02-24
+## 3.3.1 2020-02-24
 
 - Fixes on persons.yaml split
 - Travis compilation
 
-## 3.3.0  2020-02-24
+## 3.3.0 2020-02-24
 
 - Py3 compatibility
 - Scheduler: algorithm modifications to indiscriminate lines
@@ -959,17 +960,16 @@ Post new provider fixes
 - Scheduler: busy files and person info are downloaded from tomatic api
 - Scheduler: B2B tested, required stop conditions and deterministic execution
 
-## 3.1.0  2019-10-18
+## 3.1.0 2019-10-18
 
 - Callinfo: ability to fill claims
 
-## 3.0.0  2019-07-24
+## 3.0.0 2019-07-24
 
 - Call info
 - User identification
 - Must identify before edit schedule
 
-## 2.1.0  2018-02-07
+## 2.1.0 2018-02-07
 
 - First tagged release
-
