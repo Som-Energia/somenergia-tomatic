@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.11.6 2026-10-16
+
+- Fix: Add ERP user validation has more length
+
 ## 5.11.5 2026-05-26
 
 - Ref: change pause/unpause irontech's endpoint
