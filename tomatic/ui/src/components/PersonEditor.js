@@ -65,11 +65,11 @@ const fields = {
   erpuser: {
     label: 'Usuari ERP',
     help: "Usuari amb el que entres a l'erp.",
-    pattern: '^[a-zA-Z]{3,10}$',
+    pattern: '^[a-zA-Z]{3,20}$',
     validator: (value) => {
       if (value === undefined) return false
       if (value.length === 0) return false
-      if (!value.match(/^[a-zA-Z]{3,10}$/))
+      if (!value.match(/^[a-zA-Z]{3,20}$/))
         return "El nom d'usuari ERP és invàlid"
       return false
     },
